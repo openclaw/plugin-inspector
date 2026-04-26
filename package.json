@@ -1,0 +1,42 @@
+{
+  "name": "@openclaw/plugin-inspector",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Offline compatibility inspector for OpenClaw plugins.",
+  "type": "module",
+  "license": "MIT",
+  "author": "OpenClaw",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openclaw/plugin-inspector.git"
+  },
+  "bugs": {
+    "url": "https://github.com/openclaw/plugin-inspector/issues"
+  },
+  "homepage": "https://github.com/openclaw/plugin-inspector#readme",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "plugin-inspector": "./src/cli.js"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./capture-api": "./src/capture-api.js"
+  },
+  "files": [
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "check": "npm test && npm pack --dry-run",
+    "test": "node --test test/*.test.js"
+  },
+  "keywords": [
+    "openclaw",
+    "plugin",
+    "compatibility",
+    "ci"
+  ]
+}

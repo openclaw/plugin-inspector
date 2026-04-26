@@ -1,0 +1,10 @@
+{
+  "id": "sample-plugin",
+  "name": "Sample Plugin",
+  "version": "0.1.0",
+  "contracts": {
+    "tools": {
+      "sample": true
+    }
+  }
+}

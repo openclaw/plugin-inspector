@@ -1,0 +1,336 @@
+import { existsSync } from "node:fs";
+import { readdir, readFile } from "node:fs/promises";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
+import { createCaptureApi } from "./capture-api.js";
+import { fixtureCheckoutPath, fixtureSourceRoot } from "./config.js";
+import { buildReport } from "./report.js";
+
+export async function inspectFixtureSet(config, options = {}) {
+  const inspections = [];
+  const failures = [];
+
+  for (const fixture of config.fixtures) {
+    const inspection = await inspectPlugin(fixture, { ...options, config });
+    inspections.push(inspection);
+
+    for (const [key, observed] of [
+      ["hooks", inspection.hooks],
+      ["registrations", inspection.registrations],
+      ["manifestContracts", inspection.manifestContracts],
+    ]) {
+      const expected = fixture.expect?.[key] ?? [];
+      const missing = expected.filter((value) => !observed.includes(value));
+      if (missing.length > 0) {
+        failures.push(`${fixture.id}: missing ${key}: ${missing.join(", ")}`);
+      }
+    }
+  }
+
+  return buildReport({ config, inspections, failures, generatedAt: options.generatedAt });
+}
+
+export async function inspectPlugin(fixture, options = {}) {
+  const config = options.config ?? { rootDir: options.rootDir ?? process.cwd() };
+  const checkoutPath = fixtureCheckoutPath(config, fixture);
+  const sourceRoot = fixtureSourceRoot(config, fixture);
+
+  if (!existsSync(checkoutPath)) {
+    return emptyInspection(fixture, "missing");
+  }
+
+  const files = await listSourceFiles(sourceRoot, { includeDist: Boolean(fixture.package) });
+  if (sourceRoot !== checkoutPath) {
+    files.push(...(await listSourceFiles(checkoutPath, { shallowRootOnly: true })));
+  }
+
+  const hooks = new Set();
+  const registrations = new Set();
+  const hookDetails = [];
+  const registrationDetails = [];
+  const sdkImportDetails = [];
+
+  for (const filePath of files) {
+    const text = await readFile(filePath, "utf8");
+    const relativePath = path.relative(config.rootDir ?? process.cwd(), filePath);
+    const sourceInspection = inspectSourceText(text, relativePath);
+
+    for (const hook of sourceInspection.hooks) {
+      hooks.add(hook.name);
+      hookDetails.push(hook);
+    }
+    for (const registration of sourceInspection.registrations) {
+      registrations.add(registration.name);
+      registrationDetails.push(registration);
+    }
+    for (const sdkImport of sourceInspection.sdkImports) {
+      sdkImportDetails.push(sdkImport);
+    }
+  }
+
+  const manifestInspection = await readManifestContracts(config, checkoutPath, sourceRoot);
+  const packageInspection = await readPackageMetadata(config, checkoutPath, sourceRoot);
+
+  return {
+    id: fixture.id,
+    status: "ok",
+    hooks: [...hooks].sort(),
+    hookDetails: sortDetails(hookDetails),
+    registrations: [...registrations].sort(),
+    registrationDetails: sortDetails(registrationDetails),
+    manifestContracts: manifestInspection.contracts,
+    manifestFiles: manifestInspection.files,
+    manifestErrors: manifestInspection.errors,
+    packageFiles: packageInspection.files,
+    packageErrors: packageInspection.errors,
+    packageEntrypoints: packageInspection.entrypoints,
+    sdkImports: uniqueDetails(sdkImportDetails),
+    sourceFiles: files.map((filePath) => path.relative(config.rootDir ?? process.cwd(), filePath)).sort(),
+  };
+}
+
+export function inspectSourceText(text, filePath = "source.js") {
+  const searchableText = stripComments(text);
+  const hooks = collectDetailedMatches(searchableText, /\bapi\.on\(\s*["'`]([^"'`]+)["'`]/g, filePath, "name");
+  const registrations = [
+    ...collectDetailedMatches(searchableText, /\bapi\.(register[A-Za-z0-9]+)\s*\(/g, filePath, "name"),
+    ...collectDetailedMatches(searchableText, /\b(defineChannelPluginEntry)\s*\(/g, filePath, "name"),
+    ...collectDetailedMatches(searchableText, /\b(createChatChannelPlugin)\s*\(/g, filePath, "name"),
+    ...collectDetailedMatches(searchableText, /\b(definePluginEntry)\s*\(/g, filePath, "name"),
+  ];
+  const sdkImports = collectDetailedMatches(
+    searchableText,
+    /(?:from\s*["'`]|import\(\s*["'`])([^"'`]*openclaw\/plugin-sdk[^"'`]*)/g,
+    filePath,
+    "specifier",
+  );
+
+  return {
+    hooks,
+    registrations,
+    sdkImports,
+  };
+}
+
+export async function captureEntrypoint(entrypoint, options = {}) {
+  const resolvedEntrypoint = path.resolve(options.cwd ?? process.cwd(), entrypoint);
+  const module = await import(pathToFileURL(resolvedEntrypoint).href);
+  const register = findRegisterExport(module);
+
+  if (!register) {
+    return {
+      status: "no-register-export",
+      entrypoint: resolvedEntrypoint,
+      captured: [],
+    };
+  }
+
+  const api = createCaptureApi(options.apiOptions);
+  await register(api);
+  return {
+    status: "captured",
+    entrypoint: resolvedEntrypoint,
+    captured: api.getCapturedContracts(),
+  };
+}
+
+function findRegisterExport(module) {
+  if (typeof module.register === "function") {
+    return module.register;
+  }
+  if (typeof module.default === "function") {
+    return module.default;
+  }
+  if (typeof module.default?.register === "function") {
+    return module.default.register;
+  }
+  return null;
+}
+
+function emptyInspection(fixture, status) {
+  return {
+    id: fixture.id,
+    status,
+    hooks: [],
+    hookDetails: [],
+    registrations: [],
+    registrationDetails: [],
+    manifestContracts: [],
+    manifestFiles: [],
+    manifestErrors: [],
+    packageFiles: [],
+    packageErrors: [],
+    packageEntrypoints: [],
+    sdkImports: [],
+    sourceFiles: [],
+  };
+}
+
+function collectDetailedMatches(text, regex, filePath, key) {
+  const details = [];
+  for (const match of text.matchAll(regex)) {
+    const line = lineForOffset(text, match.index ?? 0);
+    details.push({
+      [key]: match[1],
+      file: filePath,
+      line,
+      ref: `${filePath}:${line}`,
+    });
+  }
+  return details;
+}
+
+async function readManifestContracts(config, checkoutPath, sourceRoot) {
+  const manifests = new Set(
+    [path.join(sourceRoot, "openclaw.plugin.json"), path.join(checkoutPath, "openclaw.plugin.json")].filter(
+      existsSync,
+    ),
+  );
+  const contracts = new Set();
+  const files = [];
+  const errors = [];
+
+  for (const manifestFile of manifests) {
+    const relativePath = path.relative(config.rootDir ?? process.cwd(), manifestFile);
+    files.push(relativePath);
+    try {
+      const manifest = JSON.parse(await readFile(manifestFile, "utf8"));
+      for (const key of Object.keys(manifest.contracts ?? {})) {
+        contracts.add(key);
+      }
+    } catch {
+      contracts.add("invalidManifest");
+      errors.push(`${relativePath}: invalid JSON`);
+    }
+  }
+
+  return {
+    contracts: [...contracts].sort(),
+    files: files.sort(),
+    errors,
+  };
+}
+
+async function readPackageMetadata(config, checkoutPath, sourceRoot) {
+  const packageFiles = new Set(
+    [path.join(sourceRoot, "package.json"), path.join(checkoutPath, "package.json")].filter(existsSync),
+  );
+  const files = [];
+  const errors = [];
+  const entrypoints = new Set();
+
+  for (const packageFile of packageFiles) {
+    const relativePath = path.relative(config.rootDir ?? process.cwd(), packageFile);
+    files.push(relativePath);
+    try {
+      const packageJson = JSON.parse(await readFile(packageFile, "utf8"));
+      collectEntrypoint(entrypoints, packageJson.main);
+      collectEntrypoint(entrypoints, packageJson.module);
+      collectEntrypoint(entrypoints, packageJson.openclaw?.entry);
+      collectEntrypoint(entrypoints, packageJson.openclaw?.entrypoint);
+      collectEntrypoint(entrypoints, packageJson.exports?.["."]?.import);
+      collectEntrypoint(entrypoints, packageJson.exports?.["."]?.default);
+    } catch {
+      errors.push(`${relativePath}: invalid JSON`);
+    }
+  }
+
+  return {
+    files: files.sort(),
+    errors,
+    entrypoints: [...entrypoints].sort(),
+  };
+}
+
+function collectEntrypoint(entrypoints, value) {
+  if (typeof value === "string" && value.length > 0) {
+    entrypoints.add(value);
+  }
+}
+
+async function listSourceFiles(root, options = {}) {
+  if (!existsSync(root)) {
+    return [];
+  }
+
+  const output = [];
+  await walk(root, output, options);
+  return output;
+}
+
+async function walk(dir, output, options) {
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const entryPath = path.join(dir, entry.name);
+    const normalized = entryPath.split(path.sep).join("/");
+
+    if (entry.isDirectory()) {
+      if (shouldSkipDir(entry.name, normalized, options)) {
+        continue;
+      }
+      if (options.shallowRootOnly) {
+        continue;
+      }
+      await walk(entryPath, output, options);
+      continue;
+    }
+
+    if (isSourceFile(entry.name, normalized)) {
+      output.push(entryPath);
+    }
+  }
+}
+
+function shouldSkipDir(name, normalizedPath, options = {}) {
+  return (
+    name === "node_modules" ||
+    (!options.includeDist && name === "dist") ||
+    name === "build" ||
+    name === "coverage" ||
+    name === ".git" ||
+    name === "test" ||
+    name === "tests" ||
+    /\/test-shims\//.test(`${normalizedPath}/`)
+  );
+}
+
+function isSourceFile(name, normalizedPath) {
+  return (
+    /\.(cjs|mjs|js|ts)$/.test(name) &&
+    !name.endsWith(".d.ts") &&
+    !/\.test\./.test(name) &&
+    !/\.spec\./.test(name)
+  );
+}
+
+function lineForOffset(text, offset) {
+  let line = 1;
+  for (let index = 0; index < offset; index += 1) {
+    if (text.charCodeAt(index) === 10) {
+      line += 1;
+    }
+  }
+  return line;
+}
+
+function stripComments(text) {
+  return text
+    .replace(/\/\*[\s\S]*?\*\//g, (comment) => comment.replace(/[^\n]/g, " "))
+    .replace(/\/\/.*$/gm, (comment) => " ".repeat(comment.length));
+}
+
+function sortDetails(details) {
+  return [...details].sort((left, right) => {
+    const leftName = left.name ?? left.specifier ?? "";
+    const rightName = right.name ?? right.specifier ?? "";
+    return leftName.localeCompare(rightName) || left.ref.localeCompare(right.ref);
+  });
+}
+
+function uniqueDetails(details) {
+  const byKey = new Map();
+  for (const detail of sortDetails(details)) {
+    const key = `${detail.name ?? detail.specifier}:${detail.ref}`;
+    byKey.set(key, detail);
+  }
+  return [...byKey.values()];
+}

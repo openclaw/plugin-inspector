@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "submoduleRoot": ".",
+  "fixtures": [
+    {
+      "id": "sample-plugin",
+      "path": "sample-plugin",
+      "repo": "https://github.com/openclaw/sample-plugin.git",
+      "priority": "high",
+      "seams": ["native-tool"],
+      "expect": {
+        "hooks": ["before_tool_call"],
+        "registrations": ["registerTool", "definePluginEntry"],
+        "manifestContracts": ["tools"]
+      },
+      "why": "Covers static hook, tool registration, SDK import, and manifest contract inspection."
+    }
+  ]
+}

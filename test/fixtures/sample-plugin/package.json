@@ -1,0 +1,12 @@
+{
+  "name": "sample-plugin",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./src/index.js",
+  "openclaw": {
+    "entrypoint": "./src/index.js",
+    "compat": {
+      "pluginApi": "^0.1.0"
+    }
+  }
+}
