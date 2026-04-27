@@ -4,9 +4,43 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { createCaptureApi } from "./capture-api.js";
 import { fixtureCheckoutPath, fixtureSourceRoot } from "./config.js";
-import { buildReport } from "./report.js";
+import { buildCompatibilityFixtureReport } from "./fixture-summary.js";
+import { readOpenClawTargetSurface } from "./openclaw-target.js";
+import { buildCompatibilityReport, buildReport } from "./report.js";
 
 export async function inspectFixtureSet(config, options = {}) {
+  const { inspections, failures } = await inspectConfiguredFixtures(config, options);
+  return buildReport({ config, inspections, failures, generatedAt: options.generatedAt });
+}
+
+export async function inspectCompatibilityFixtureSet(config, options = {}) {
+  const { inspections, failures } = await inspectConfiguredFixtures(config, options);
+  const targetOpenClaw =
+    options.targetOpenClaw ??
+    (await readOpenClawTargetSurface({
+      configuredPath: options.openclawPath,
+      manifest: config,
+      rootDir: config.rootDir,
+    }));
+
+  return buildCompatibilityReport({
+    config,
+    inspections,
+    failures,
+    generatedAt: options.generatedAt,
+    targetOpenClaw,
+    buildFixtureReport: ({ fixture, inspection }) =>
+      buildCompatibilityFixtureReport({
+        fixture,
+        inspection,
+        checkoutPath: fixtureCheckoutPath(config, fixture),
+        sourceRoot: fixtureSourceRoot(config, fixture),
+        rootDir: config.rootDir,
+      }),
+  });
+}
+
+async function inspectConfiguredFixtures(config, options = {}) {
   const inspections = [];
   const failures = [];
 
@@ -27,7 +61,7 @@ export async function inspectFixtureSet(config, options = {}) {
     }
   }
 
-  return buildReport({ config, inspections, failures, generatedAt: options.generatedAt });
+  return { inspections, failures };
 }
 
 export async function inspectPlugin(fixture, options = {}) {

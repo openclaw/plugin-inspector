@@ -106,14 +106,19 @@ export {
 } from "./openclaw-target.js";
 export {
   captureEntrypoint,
+  inspectCompatibilityFixtureSet,
   inspectFixtureSet,
   inspectPlugin,
   inspectSourceText,
 } from "./inspector.js";
 export {
+  defaultPluginRootConfigFiles,
   fixtureCheckoutPath,
   fixtureSourceRoot,
   loadInspectorConfig,
+  loadPluginRootConfig,
+  normalizeInspectorConfig,
+  normalizePluginRootConfig,
   validateInspectorConfig,
 } from "./config.js";
 export {
@@ -143,6 +148,7 @@ export {
   classifyCompatRecordCoverage,
   renderMarkdownReport,
   renderTextSummary,
+  writeCompatibilityReport,
   writeReport,
 } from "./report.js";
 export {

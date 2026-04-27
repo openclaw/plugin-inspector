@@ -1,7 +1,9 @@
+import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 
 export const npmPackagePayloadDir = ".crabpot-package";
+export const defaultPluginRootConfigFiles = ["plugin-inspector.config.json", ".plugin-inspector.json"];
 
 export async function loadInspectorConfig(configPath, options = {}) {
   if (!configPath) {
@@ -10,9 +12,26 @@ export async function loadInspectorConfig(configPath, options = {}) {
   const resolvedPath = path.resolve(options.cwd ?? process.cwd(), configPath);
   const config = JSON.parse(await readFile(resolvedPath, "utf8"));
   const rootDir = path.resolve(options.cwd ?? process.cwd(), options.rootDir ?? path.dirname(resolvedPath));
-  validateInspectorConfig(config);
+  const normalizedConfig = await normalizeInspectorConfig(config, { rootDir });
+  validateInspectorConfig(normalizedConfig);
   return {
-    ...config,
+    ...normalizedConfig,
+    rootDir,
+    configPath: resolvedPath,
+  };
+}
+
+export async function loadPluginRootConfig(configPath = null, options = {}) {
+  const rootDir = path.resolve(options.cwd ?? process.cwd());
+  const resolvedPath = configPath ? path.resolve(rootDir, configPath) : findPluginRootConfigPath(rootDir);
+  if (!resolvedPath && !existsSync(path.join(rootDir, "package.json")) && !existsSync(path.join(rootDir, "openclaw.plugin.json"))) {
+    throw new Error("run from a plugin root with package.json/openclaw.plugin.json, or pass --config");
+  }
+  const config = resolvedPath ? JSON.parse(await readFile(resolvedPath, "utf8")) : { version: 1 };
+  const normalizedConfig = await normalizePluginRootConfig(config, { rootDir });
+  validateInspectorConfig(normalizedConfig);
+  return {
+    ...normalizedConfig,
     rootDir,
     configPath: resolvedPath,
   };
@@ -89,4 +108,75 @@ export function fixtureSourceRoot(config, fixture) {
     return path.join(checkoutPath, npmPackagePayloadDir);
   }
   return checkoutPath;
+}
+
+export async function normalizePluginRootConfig(config, options = {}) {
+  const rootDir = path.resolve(options.rootDir ?? process.cwd());
+  const plugin = config.plugin ?? {};
+  const packageJson = await readJsonIfExists(path.join(rootDir, "package.json"));
+  const pluginManifest = await readJsonIfExists(path.join(rootDir, "openclaw.plugin.json"));
+  const sourceRoot = plugin.sourceRoot ?? config.sourceRoot ?? ".";
+  const fixture = {
+    id: plugin.id ?? pluginManifest?.id ?? packageId(packageJson?.name) ?? "plugin",
+    name: plugin.name ?? pluginManifest?.name ?? packageJson?.name ?? "Plugin",
+    path: ".",
+    repo: "local",
+    priority: plugin.priority ?? config.priority ?? "high",
+    seams: plugin.seams ?? config.seams ?? inferPluginSeams(pluginManifest, packageJson),
+    why: plugin.why ?? config.why ?? "local OpenClaw plugin root",
+    expect: plugin.expect ?? config.expect,
+  };
+
+  if (sourceRoot !== ".") {
+    fixture.subdir = sourceRoot;
+  }
+
+  return {
+    version: 1,
+    submoduleRoot: ".",
+    openclaw: config.openclaw,
+    fixtures: [fixture],
+  };
+}
+
+export async function normalizeInspectorConfig(config, options = {}) {
+  if (Array.isArray(config.fixtures)) {
+    return config;
+  }
+  return normalizePluginRootConfig(config, options);
+}
+
+function findPluginRootConfigPath(rootDir) {
+  return defaultPluginRootConfigFiles.map((file) => path.join(rootDir, file)).find(existsSync) ?? null;
+}
+
+async function readJsonIfExists(filePath) {
+  if (!existsSync(filePath)) {
+    return null;
+  }
+  return JSON.parse(await readFile(filePath, "utf8"));
+}
+
+function packageId(packageName) {
+  if (!packageName) {
+    return null;
+  }
+  return packageName
+    .split("/")
+    .pop()
+    .replace(/^openclaw-/, "")
+    .replace(/[^a-zA-Z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .toLowerCase();
+}
+
+function inferPluginSeams(pluginManifest, packageJson) {
+  const contracts = Object.keys(pluginManifest?.contracts ?? {});
+  if (contracts.includes("tools")) {
+    return ["dynamic-tool"];
+  }
+  if (packageJson?.openclaw?.extensions || packageJson?.openclaw?.runtimeExtensions) {
+    return ["plugin-runtime"];
+  }
+  return ["plugin-metadata"];
 }

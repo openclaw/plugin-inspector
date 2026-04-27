@@ -1,5 +1,6 @@
 import path from "node:path";
-import { renderMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderMarkdownTable, writeArtifacts, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderCompatibilityIssuesReport, renderCompatibilityMarkdownReport } from "./compatibility-report.js";
 import { buildContractProbes } from "./contract-probes.js";
 import { classifyCompatibilityFixture } from "./fixture-summary.js";
 import { buildIssues, summarizeIssueClasses } from "./issues.js";
@@ -239,6 +240,23 @@ export async function writeReport(report, options = {}) {
     markdown: renderMarkdownReport(report),
     check: options.check,
   });
+}
+
+export async function writeCompatibilityReport(report, options = {}) {
+  const outDir = path.resolve(options.cwd ?? process.cwd(), options.outDir ?? "reports");
+  const basename = options.basename ?? "plugin-inspector-report";
+  const jsonPath = path.join(outDir, `${basename}.json`);
+  const markdownPath = path.join(outDir, `${basename}.md`);
+  const issuesPath = path.join(outDir, options.issuesBasename ?? "plugin-inspector-issues.md");
+
+  return writeArtifacts(
+    [
+      { name: "jsonPath", path: jsonPath, json: report },
+      { name: "markdownPath", path: markdownPath, markdown: renderCompatibilityMarkdownReport(report) },
+      { name: "issuesPath", path: issuesPath, markdown: renderCompatibilityIssuesReport(report) },
+    ],
+    { check: options.check },
+  );
 }
 
 export function renderTextSummary(report) {

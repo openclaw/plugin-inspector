@@ -1,29 +1,55 @@
 #!/usr/bin/env node
 import {
   captureEntrypoint,
+  inspectCompatibilityFixtureSet,
   inspectFixtureSet,
   loadInspectorConfig,
+  loadPluginRootConfig,
   renderTextSummary,
   writeArtifacts,
+  writeCompatibilityReport,
   writeReport,
 } from "./index.js";
 
 const args = process.argv.slice(2);
-const command = args[0];
+const command = args[0]?.startsWith("-") ? "check" : (args[0] ?? "check");
+const commandArgs = args[0]?.startsWith("-") ? args : args.slice(1);
 
 try {
-  if (!command || command === "--help" || command === "-h") {
+  if (args.includes("--help") || args.includes("-h")) {
     printHelp();
+  } else if (command === "check") {
+    await runCheck(commandArgs);
   } else if (command === "inspect" || command === "report" || command === "ci") {
-    await runReport(command, args.slice(1));
+    await runReport(command, commandArgs);
   } else if (command === "capture") {
-    await runCapture(args.slice(1));
+    await runCapture(commandArgs);
   } else {
     throw new Error(`unknown command: ${command}`);
   }
 } catch (error) {
   console.error(error.message);
   process.exitCode = 1;
+}
+
+async function runCheck(commandArgs) {
+  const configPath = readFlag(commandArgs, "--config");
+  const outDir = readFlag(commandArgs, "--out") ?? "reports";
+  const openclawPath = commandArgs.includes("--no-openclaw") ? false : readFlag(commandArgs, "--openclaw");
+  const json = commandArgs.includes("--json");
+  const config = configPath ? await loadInspectorConfig(configPath) : await loadPluginRootConfig();
+  const report = await inspectCompatibilityFixtureSet(config, { openclawPath });
+  await writeCompatibilityReport(report, { outDir });
+
+  if (json) {
+    console.log(JSON.stringify(report, null, 2));
+  } else {
+    console.log(renderTextSummary(report));
+  }
+
+  if (report.status !== "pass") {
+    throw new Error(`plugin-inspector found ${report.summary.breakageCount} breakages`);
+  }
 }
 
 async function runReport(command, commandArgs) {
@@ -77,6 +103,7 @@ function printHelp() {
   console.log(`plugin-inspector
 
 Usage:
+  plugin-inspector check [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--json]
   plugin-inspector report --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector inspect --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector ci --config <path> [--out <dir>]

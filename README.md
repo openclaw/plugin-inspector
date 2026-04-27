@@ -12,32 +12,117 @@ During development, use a local checkout or packed tarball:
 
 ```bash
 npm install --save-dev ../plugin-inspector
+npx plugin-inspector check --no-openclaw
 ```
 
-Future package name:
+After the package is published, plugin repos should install it as a dev
+dependency and run it from the plugin root:
 
 ```bash
 npm install --save-dev @openclaw/plugin-inspector
+npx @openclaw/plugin-inspector check
 ```
 
 ## CLI
 
-Inspect a crabpot-compatible fixture config:
+Run the default plugin-root check from a plugin package directory:
+
+```bash
+plugin-inspector check
+```
+
+That command reads the current directory as one plugin, inspects package
+metadata, `openclaw.plugin.json`, source imports, `api.on(...)`,
+`api.register*`, and writes:
+
+- `reports/plugin-inspector-report.json`
+- `reports/plugin-inspector-report.md`
+- `reports/plugin-inspector-issues.md`
+
+Use `--no-openclaw` when CI should not compare against a local OpenClaw
+checkout:
+
+```bash
+plugin-inspector check --no-openclaw
+```
+
+Use a simple plugin-root config when you want stable fixture metadata or
+expected seams:
+
+```json
+{
+  "version": 1,
+  "plugin": {
+    "id": "weather",
+    "priority": "high",
+    "seams": ["dynamic-tool"],
+    "sourceRoot": "src",
+    "expect": {
+      "registrations": ["registerTool"]
+    }
+  },
+  "openclaw": {
+    "defaultCheckoutPath": "../openclaw"
+  }
+}
+```
+
+Then run:
+
+```bash
+plugin-inspector check --config plugin-inspector.config.json
+```
+
+Fixture-set configs are still supported for crabpot-style compatibility suites:
 
 ```bash
 plugin-inspector report --config crabpot.config.json --out reports
-```
-
-Fail if expected hooks, registrations, or manifest contracts are missing:
-
-```bash
-plugin-inspector ci --config crabpot.config.json --out reports --check
 ```
 
 Capture a plugin entrypoint in an explicitly isolated execution lane:
 
 ```bash
 PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture ./dist/index.js
+```
+
+### CI
+
+With a dev dependency:
+
+```json
+{
+  "scripts": {
+    "plugin:check": "plugin-inspector check --no-openclaw"
+  }
+}
+```
+
+GitHub Actions:
+
+```yaml
+name: plugin-inspector
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run plugin:check
+      - uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: plugin-inspector-reports
+          path: reports/plugin-inspector-*
 ```
 
 ## API
