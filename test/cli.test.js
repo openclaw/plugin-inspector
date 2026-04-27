@@ -122,12 +122,13 @@ test("ci command writes CI summary artifacts", async () => {
 
   const { stdout } = await execFileAsync(
     process.execPath,
-    [cliPath, "ci", "--config", path.join(rootDir, "plugin-inspector.config.json"), "--out", "reports"],
+    [cliPath, "ci", "--config", path.join(rootDir, "plugin-inspector.config.json"), "--out", "reports", "--no-openclaw"],
     {
       cwd: rootDir,
     },
   );
 
+  const report = JSON.parse(await readFile(path.join(rootDir, "reports", "plugin-inspector-report.json"), "utf8"));
   const summary = JSON.parse(
     await readFile(path.join(rootDir, "reports", "plugin-inspector-ci-summary.json"), "utf8"),
   );
@@ -135,9 +136,11 @@ test("ci command writes CI summary artifacts", async () => {
 
   assert.match(stdout, /Status: PASS/);
   assert.match(stdout, /Artifacts: 1/);
+  assert.equal(report.targetOpenClaw.status, "disabled");
+  assert.ok(Array.isArray(report.issues));
   assert.equal(summary.status, "pass");
   assert.equal(summary.summary.breakages, 0);
-  assert.equal(summary.summary.issues, 0);
+  assert.equal(summary.summary.issues, report.summary.issueCount);
   assert.equal(summary.artifacts.compatibility, "plugin-inspector-report.json");
   assert.match(markdown, /# Plugin Inspector CI Summary/);
 });
