@@ -196,6 +196,7 @@ export {
   validateSyntheticProbePlan,
   writeSyntheticProbePlan,
 } from "./synthetic-probes.js";
+export { buildSyntheticProbePlanFromReport } from "./synthetic-probe-suite.js";
 export {
   buildWorkspacePlan,
   defaultWorkspacePlanOptions,

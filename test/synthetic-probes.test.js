@@ -10,6 +10,7 @@ import {
   runCapturedSyntheticProbes,
   validateSyntheticProbePlan,
 } from "../src/advanced.js";
+import { buildSyntheticProbePlanFromReport } from "../src/synthetic-probe-suite.js";
 
 test("synthetic probe plan maps capture inventory to executable probes", () => {
   const plan = buildSyntheticProbePlan({
@@ -46,6 +47,33 @@ test("synthetic probe plan maps capture inventory to executable probes", () => {
   assert.equal(plan.summary.probeCount, 2);
   assert.equal(plan.summary.readyCount, 2);
   assert.match(renderSyntheticProbeMarkdown(plan), /registerTool/);
+});
+
+test("synthetic probe plan can be built from a compatibility report", () => {
+  const plan = buildSyntheticProbePlanFromReport({
+    generatedAt: "test",
+    targetOpenClaw: {
+      capturedRegistrars: ["registerTool"],
+      sdkExports: [],
+    },
+    summary: {},
+    fixtures: [
+      {
+        id: "fixture",
+        priority: "high",
+        hookDetails: [{ name: "before_tool_call", ref: "src/index.js:1" }],
+        registrationDetails: [{ name: "registerTool", ref: "src/index.js:2" }],
+        sdkImportDetails: [],
+        packages: [],
+      },
+    ],
+    contractProbes: [],
+  });
+
+  assert.equal(plan.generatedAt, "test");
+  assert.equal(plan.summary.probeCount, 2);
+  assert.equal(plan.summary.readyCount, 2);
+  assert.deepEqual(validateSyntheticProbePlan(plan), []);
 });
 
 test("synthetic probe plan blocks unclassified registrars", () => {

@@ -36,6 +36,8 @@
     "./ref-diff": "./src/ref-diff.js",
     "./runtime-capture-report": "./src/runtime-capture-report.js",
     "./runtime-profile": "./src/runtime-profile.js",
+    "./synthetic-probe-suite": "./src/synthetic-probe-suite.js",
+    "./synthetic-probes": "./src/synthetic-probes.js",
     "./workspace-plan": "./src/workspace-plan.js"
   },
   "files": [
