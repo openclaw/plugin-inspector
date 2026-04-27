@@ -8,6 +8,16 @@ export {
   writeCiSummary,
 } from "./ci-summary.js";
 export {
+  buildIssues,
+  classifyIssueFinding,
+  deprecatedCompatRecords,
+  issueId,
+  issueMetadata,
+  issueMetadataByCode,
+  knownIssueCodes,
+  summarizeIssueClasses,
+} from "./issues.js";
+export {
   captureEntrypoint,
   inspectFixtureSet,
   inspectPlugin,
