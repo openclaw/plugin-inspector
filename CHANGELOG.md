@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.1.3 - 2026-04-27
+
+### Added
+
+- Add reserved bundled-plugin SDK import detection so external plugins get explicit compatibility findings for private OpenClaw SDK shims.
+- Add packaged workspace capture and synthetic-probe helper CLIs for generated isolated workspace plans.
+
+### Changed
+
+- Make `plugin-inspector ci` write compatibility-backed CI summary artifacts instead of the legacy inventory report.
+- Default packaged helper captures to the mocked OpenClaw SDK while preserving `--real-sdk` opt-in behavior.
+- Detect the default runtime capture artifact at `reports/plugin-inspector-runtime-capture.json`.
+- Report the actual log count in CLI text summaries.
+
 ## 0.1.2 - 2026-04-27
 
 ### Added
