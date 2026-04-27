@@ -211,6 +211,20 @@ test("init command writes plugin config and CI workflow", async () => {
   assert.match(workflow, /pnpm dlx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk/);
 });
 
+test("init command detects plugin package managers", async () => {
+  const rootDir = await createCliPluginRoot("plugin-inspector-cli-init-pm-");
+  const cliPath = path.resolve("src/cli.js");
+  await writeFile(path.join(rootDir, "pnpm-lock.yaml"), "lockfileVersion: '9.0'\n", "utf8");
+
+  await execFileAsync(process.execPath, [cliPath, "init", "--plugin-root", rootDir, "--ci", "--force"]);
+  const workflow = await readFile(path.join(rootDir, ".github", "workflows", "plugin-inspector.yml"), "utf8");
+
+  assert.match(workflow, /cache: pnpm/);
+  assert.match(workflow, /corepack enable/);
+  assert.match(workflow, /pnpm install --frozen-lockfile/);
+  assert.match(workflow, /pnpm dlx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk/);
+});
+
 async function createCliPluginRoot(prefix) {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), prefix));
   await mkdir(path.join(rootDir, "src"), { recursive: true });

@@ -9,6 +9,7 @@ export const defaultInitWorkflowPath = ".github/workflows/plugin-inspector.yml";
 export async function writePluginInspectorInit(options = {}) {
   const pluginRoot = path.resolve(options.pluginRoot ?? options.cwd ?? process.cwd());
   const configPath = path.resolve(pluginRoot, options.configPath ?? defaultInitConfigPath);
+  const packageManager = options.packageManager ?? (await detectPackageManager(pluginRoot));
   const written = [];
 
   if (existsSync(configPath) && options.force !== true) {
@@ -26,11 +27,11 @@ export async function writePluginInspectorInit(options = {}) {
       throw new Error(`${path.relative(pluginRoot, workflowPath)} already exists; pass --force to overwrite it`);
     }
     await mkdir(path.dirname(workflowPath), { recursive: true });
-    await writeFile(workflowPath, renderGithubActionsWorkflow({ packageManager: options.packageManager }), "utf8");
+    await writeFile(workflowPath, renderGithubActionsWorkflow({ packageManager }), "utf8");
     written.push(workflowPath);
   }
 
-  return { pluginRoot, configPath, written };
+  return { pluginRoot, configPath, packageManager, written };
 }
 
 export async function buildPluginInspectorConfig(options = {}) {
@@ -86,6 +87,29 @@ ${setup.corepack ? "      - run: corepack enable\n" : ""}      - run: ${setup.in
           name: plugin-inspector-reports
           path: reports/plugin-inspector-*
 `;
+}
+
+export async function detectPackageManager(pluginRoot) {
+  const root = path.resolve(pluginRoot ?? process.cwd());
+  const packageJson = await readJsonIfExists(path.join(root, "package.json"));
+  const packageManager = packageJson?.packageManager;
+  if (typeof packageManager === "string") {
+    const [name] = packageManager.split("@");
+    if (["npm", "pnpm", "yarn", "bun"].includes(name)) {
+      return name;
+    }
+  }
+
+  if (existsSync(path.join(root, "pnpm-lock.yaml"))) {
+    return "pnpm";
+  }
+  if (existsSync(path.join(root, "yarn.lock"))) {
+    return "yarn";
+  }
+  if (existsSync(path.join(root, "bun.lockb")) || existsSync(path.join(root, "bun.lock"))) {
+    return "bun";
+  }
+  return "npm";
 }
 
 function inferSourceRoot(packageJson) {

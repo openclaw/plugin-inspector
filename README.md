@@ -24,6 +24,9 @@ Add a local config and GitHub Actions workflow:
 npx @openclaw/plugin-inspector init --ci
 ```
 
+`init --ci` detects `packageManager` and common lockfiles. Pass
+`--package-manager pnpm`, `npm`, `yarn`, or `bun` when you want to override it.
+
 Or install it as a dev dependency:
 
 ```bash

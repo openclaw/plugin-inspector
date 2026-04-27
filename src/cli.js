@@ -95,7 +95,7 @@ async function runInit(commandArgs) {
   const pluginRoot = readFlag(commandArgs, "--plugin-root") ?? readFlag(commandArgs, "--root");
   const configPath = readFlag(commandArgs, "--config") ?? undefined;
   const workflowPath = readFlag(commandArgs, "--workflow") ?? undefined;
-  const packageManager = readFlag(commandArgs, "--package-manager") ?? "npm";
+  const packageManager = readFlag(commandArgs, "--package-manager") ?? undefined;
   const result = await writePluginInspectorInit({
     pluginRoot,
     configPath,

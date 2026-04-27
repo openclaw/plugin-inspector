@@ -138,6 +138,7 @@ export {
   buildPluginInspectorConfig,
   defaultInitConfigPath,
   defaultInitWorkflowPath,
+  detectPackageManager,
   renderGithubActionsWorkflow,
   writePluginInspectorInit,
 } from "./init.js";

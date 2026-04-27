@@ -135,6 +135,7 @@ test("public API can initialize plugin inspector files", async () => {
   const workflow = await readFile(path.join(pluginRoot, ".github", "workflows", "plugin-inspector.yml"), "utf8");
 
   assert.equal(result.written.length, 2);
+  assert.equal(result.packageManager, "npm");
   assert.equal(config.plugin.id, "weather");
   assert.equal(config.capture.mockSdk, true);
   assert.match(workflow, /npx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk/);
