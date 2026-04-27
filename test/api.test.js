@@ -99,7 +99,7 @@ test("public API can initialize plugin inspector files", async () => {
   assert.equal(result.written.length, 2);
   assert.equal(config.plugin.id, "weather");
   assert.equal(config.capture.mockSdk, true);
-  assert.match(workflow, /npx @openclaw\/plugin-inspector check --no-openclaw/);
+  assert.match(workflow, /npx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk/);
 });
 
 test("public API honors config-driven runtime capture", async () => {
