@@ -83,7 +83,7 @@ async function runCheck(commandArgs) {
   if (json) {
     console.log(JSON.stringify(report, null, 2));
   } else {
-    console.log(renderTextSummary(report));
+    console.log(renderTextSummary(report, { artifacts: paths }));
   }
 
   if (report.status !== "pass") {
@@ -128,7 +128,7 @@ async function runReport(command, commandArgs) {
   if (json) {
     console.log(JSON.stringify(report, null, 2));
   } else {
-    console.log(renderTextSummary(report));
+    console.log(renderTextSummary(report, { artifacts: paths }));
   }
 
   if (check && report.status !== "pass") {

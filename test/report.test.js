@@ -18,6 +18,7 @@ import {
   renderJunitXml,
   renderMarkdownReport,
   renderMarkdownTable,
+  renderTextSummary,
   writeArtifacts,
   writeCiOutputArtifacts,
   writeReport,
@@ -30,6 +31,53 @@ test("markdown report includes summary and inventory", async () => {
 
   assert.match(markdown, /# OpenClaw Plugin Inspector Report/);
   assert.match(markdown, /\| sample-plugin \| high \| native-tool \| before_tool_call \| definePluginEntry, registerTool \| tools \|/);
+});
+
+test("text summary includes artifact paths and top blocking findings", () => {
+  const summary = renderTextSummary(
+    {
+      status: "fail",
+      summary: {
+        fixtureCount: 1,
+        breakageCount: 1,
+        issueCount: 1,
+        logCount: 0,
+      },
+      breakages: [
+        {
+          fixture: "weather",
+          code: "missing-expected-seam",
+          level: "breakage",
+          message: "weather: missing expected registration registerTool",
+          evidence: ["src/index.js:12"],
+        },
+      ],
+      warnings: [],
+      issues: [
+        {
+          fixture: "weather",
+          code: "sdk-export-missing",
+          severity: "P0",
+          status: "blocking",
+          title: "SDK export is missing",
+          evidence: ["src/index.js:1"],
+        },
+      ],
+    },
+    {
+      artifacts: {
+        jsonPath: "reports/plugin-inspector-report.json",
+        markdownPath: "reports/plugin-inspector-report.md",
+      },
+    },
+  );
+
+  assert.match(summary, /Status: FAIL/);
+  assert.match(summary, /Issues: 1/);
+  assert.match(summary, /Reports:/);
+  assert.match(summary, /json: reports\/plugin-inspector-report\.json/);
+  assert.match(summary, /Top findings:/);
+  assert.match(summary, /BREAKAGE weather missing-expected-seam/);
 });
 
 test("compatibility report renderer supports issue metadata and evidence links", () => {

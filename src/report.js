@@ -260,13 +260,48 @@ export async function writeCompatibilityReport(report, options = {}) {
   );
 }
 
-export function renderTextSummary(report) {
-  return [
+export function renderTextSummary(report, options = {}) {
+  const lines = [
     `Status: ${report.status.toUpperCase()}`,
     `Fixtures: ${report.summary.fixtureCount}`,
     `Breakages: ${report.summary.breakageCount}`,
+    ...(typeof report.summary.issueCount === "number" ? [`Issues: ${report.summary.issueCount}`] : []),
     `Logs: ${report.summary.logCount}`,
-  ].join("\n");
+  ];
+  const artifacts = Object.entries(options.artifacts ?? {}).filter(([, filePath]) => Boolean(filePath));
+  if (artifacts.length > 0) {
+    lines.push("", "Reports:", ...artifacts.map(([name, filePath]) => `- ${artifactLabel(name)}: ${filePath}`));
+  }
+  const findings = topTextFindings(report, options.topFindings ?? 3);
+  if (findings.length > 0) {
+    lines.push("", "Top findings:", ...findings.map((finding) => `- ${finding}`));
+  }
+  return lines.join("\n");
+}
+
+function topTextFindings(report, limit) {
+  if (report.status === "pass" || limit <= 0) {
+    return [];
+  }
+  return [
+    ...(report.breakages ?? []).map((finding) => formatTextFinding(finding, "breakage")),
+    ...(report.issues ?? [])
+      .filter((issue) => issue.status === "blocking" || issue.severity === "P0" || issue.severity === "P1")
+      .map((issue) => formatTextFinding(issue, issue.severity ?? "issue")),
+    ...(report.warnings ?? []).map((finding) => formatTextFinding(finding, "warning")),
+  ].slice(0, limit);
+}
+
+function formatTextFinding(finding, fallbackLevel) {
+  const level = finding.level ?? finding.severity ?? fallbackLevel;
+  const code = finding.code ? ` ${finding.code}` : "";
+  const message = finding.message ?? finding.title ?? "see report";
+  const evidence = Array.isArray(finding.evidence) && finding.evidence.length > 0 ? ` (${finding.evidence[0]})` : "";
+  return `${String(level).toUpperCase()} ${finding.fixture ?? "unknown"}${code}: ${message}${evidence}`;
+}
+
+function artifactLabel(name) {
+  return String(name).replace(/Path$/u, "");
 }
 
 export function renderMarkdownReport(report) {
