@@ -5,6 +5,7 @@ import path from "node:path";
 import { test } from "node:test";
 import {
   buildCompatibilityFixtureReport,
+  classifyPackageContracts,
   inspectFixtureSet,
   loadInspectorConfig,
   renderCompatibilityIssuesReport,
@@ -192,6 +193,48 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
     requiresBuild: false,
   });
   assert.deepEqual(report.sdkImports, ["openclaw/plugin-sdk"]);
+});
+
+test("package contract classifier reports install and entrypoint blockers", () => {
+  const result = classifyPackageContracts({
+    fixture: {
+      id: "fixture",
+      path: "plugins/fixture",
+    },
+    inspection: {
+      registrations: ["registerTool"],
+    },
+    fixtureReport: {
+      pluginManifests: [{ version: "2.0.0" }],
+      package: {
+        path: "plugins/fixture/package.json",
+        name: "fixture-plugin",
+        version: "1.0.0",
+        dependencies: ["zod"],
+        peerDependencies: [],
+        optionalDependencies: [],
+        openclaw: {
+          compatPluginApi: null,
+          entrypoints: [
+            {
+              kind: "extension",
+              specifier: "dist/index.js",
+              relativePath: "plugins/fixture/dist/index.js",
+              exists: false,
+              requiresBuild: true,
+            },
+          ],
+        },
+      },
+    },
+  });
+
+  assert.ok(result.logs.some((finding) => finding.code === "package-metadata"));
+  assert.ok(result.warnings.some((finding) => finding.code === "package-manifest-version-drift"));
+  assert.ok(result.warnings.some((finding) => finding.code === "package-plugin-api-compat-missing"));
+  assert.ok(result.suggestions.some((finding) => finding.code === "package-build-artifact-entrypoint"));
+  assert.ok(result.suggestions.some((finding) => finding.code === "package-dependency-install-required"));
+  assert.ok(result.decisions.some((decision) => decision.seam === "cold-import"));
 });
 
 test("writeReport writes JSON and Markdown artifacts", async () => {
