@@ -7,5 +7,6 @@ export {
   renderTextSummary,
   runPluginCheck,
   setupPluginInspector,
+  writeCiOutputArtifacts,
   writePluginReports,
 } from "./api.js";

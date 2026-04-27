@@ -4,6 +4,7 @@ import { loadInspectorConfig, loadPluginRootConfig } from "./config.js";
 import { writePluginInspectorInit } from "./init.js";
 import { captureEntrypoint } from "./inspector.js";
 import { renderTextSummary, writeCompatibilityReport } from "./report.js";
+import { writeCiOutputArtifacts } from "./ci-outputs.js";
 import { buildRuntimeCaptureReport, writeRuntimeCaptureReport } from "./runtime-capture-report.js";
 import { inspectCompatibilityFixtureSet, inspectFixtureSet } from "./inspector.js";
 
@@ -88,4 +89,4 @@ export async function setupPluginInspector(options = {}) {
   return writePluginInspectorInit(options);
 }
 
-export { createCaptureApi, renderTextSummary };
+export { createCaptureApi, renderTextSummary, writeCiOutputArtifacts };

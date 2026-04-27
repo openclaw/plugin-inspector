@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import {
+  buildSarifReport,
   buildCompatibilityReport,
   buildCompatibilityFixtureReport,
   classifyCompatibilityFixture,
@@ -14,9 +15,11 @@ import {
   loadInspectorConfig,
   renderCompatibilityIssuesReport,
   renderCompatibilityMarkdownReport,
+  renderJunitXml,
   renderMarkdownReport,
   renderMarkdownTable,
   writeArtifacts,
+  writeCiOutputArtifacts,
   writeReport,
 } from "../src/advanced.js";
 
@@ -462,6 +465,44 @@ test("writeReport writes JSON and Markdown artifacts", async () => {
 
   assert.equal(json.status, "pass");
   assert.match(markdown, /Status: PASS/);
+});
+
+test("CI output helpers write SARIF and JUnit artifacts", async () => {
+  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-ci-outputs-"));
+  const report = {
+    status: "fail",
+    summary: { fixtureCount: 1, breakageCount: 1 },
+    fixtures: [{ id: "weather", path: "." }],
+    breakages: [
+      {
+        fixture: "weather",
+        code: "missing-expected-seam",
+        level: "breakage",
+        message: "weather: missing expected registration registerTool",
+        evidence: ["registerTool @ src/index.js:12:4"],
+      },
+    ],
+    warnings: [],
+    suggestions: [],
+    issues: [],
+  };
+
+  const sarif = buildSarifReport(report);
+  const junit = renderJunitXml(report);
+  const paths = await writeCiOutputArtifacts(report, {
+    outDir,
+    sarifPath: "plugin-inspector.sarif",
+    junitPath: "plugin-inspector.junit.xml",
+  });
+
+  assert.equal(sarif.version, "2.1.0");
+  assert.equal(sarif.runs[0].results[0].ruleId, "missing-expected-seam");
+  assert.equal(sarif.runs[0].results[0].level, "error");
+  assert.equal(sarif.runs[0].results[0].locations[0].physicalLocation.artifactLocation.uri, "src/index.js");
+  assert.match(junit, /tests="1" failures="1"/);
+  assert.match(junit, /missing expected registration registerTool/);
+  assert.equal(JSON.parse(await readFile(paths.sarifPath, "utf8")).runs[0].results.length, 1);
+  assert.match(await readFile(paths.junitPath, "utf8"), /<testsuite name="plugin-inspector"/);
 });
 
 test("artifact helpers write stable CI files", async () => {

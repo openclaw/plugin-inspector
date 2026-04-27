@@ -34,6 +34,14 @@ export {
   writeCiSummary,
 } from "./ci-summary.js";
 export {
+  buildSarifReport,
+  defaultJunitPath,
+  defaultSarifPath,
+  renderJunitXml,
+  reportFindings,
+  writeCiOutputArtifacts,
+} from "./ci-outputs.js";
+export {
   buildContractProbes,
   contractProbeRules,
   probePriority,
