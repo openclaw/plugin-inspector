@@ -188,19 +188,70 @@ export async function captureEntrypointWithMockSdk(entrypoint, options = {}) {
     pluginRoot: options.pluginRoot,
     apiOptions: options.apiOptions,
   };
-  const { stdout } = await execFileAsync(
-    process.execPath,
-    ["--preserve-symlinks", runnerPath, JSON.stringify(payload)],
-    {
-      cwd: options.cwd ?? process.cwd(),
-      env: {
-        ...process.env,
-        ...(options.env ?? {}),
+  try {
+    const { stdout } = await execFileAsync(
+      process.execPath,
+      ["--preserve-symlinks", runnerPath, JSON.stringify(payload)],
+      {
+        cwd: options.cwd ?? process.cwd(),
+        env: {
+          ...process.env,
+          ...(options.env ?? {}),
+        },
+        maxBuffer: 1024 * 1024 * 10,
       },
-      maxBuffer: 1024 * 1024 * 10,
-    },
-  );
-  return JSON.parse(stdout);
+    );
+    return JSON.parse(stdout);
+  } catch (error) {
+    throw classifyMockSdkCaptureError(error);
+  }
+}
+
+export function classifyMockSdkCaptureError(error) {
+  const rawMessage = [error?.stderr, error?.stdout, error?.message].filter(Boolean).join("\n");
+  const missingExport = rawMessage.match(/does not provide an export named ['"]([^'"]+)['"]/)?.[1];
+  if (missingExport) {
+    return enrichCaptureError(error, {
+      message: `Mock SDK import failed: openclaw/plugin-sdk is missing export ${missingExport}`,
+      failureClass: "missing-sdk-export",
+      missingExport,
+    });
+  }
+
+  const missingModule =
+    rawMessage.match(/Cannot find (?:package|module) ['"]([^'"]*openclaw\/plugin-sdk[^'"]*)['"]/)?.[1] ??
+    rawMessage.match(/Package subpath ['"](\.\/plugin-sdk\/[^'"]+)['"]/)?.[1];
+  if (missingModule || rawMessage.includes("openclaw/plugin-sdk")) {
+    return enrichCaptureError(error, {
+      message: `Mock SDK import failed: ${missingModule ?? "openclaw/plugin-sdk module could not be resolved"}`,
+      failureClass: "missing-sdk-module",
+      missingModule,
+    });
+  }
+
+  return enrichCaptureError(error, {
+    message: firstMeaningfulErrorLine(rawMessage) ?? "Mock SDK capture failed",
+    failureClass: "mock-sdk-capture-error",
+  });
+}
+
+function enrichCaptureError(error, details) {
+  const wrapped = new Error(details.message, { cause: error });
+  wrapped.failureClass = details.failureClass;
+  if (details.missingExport) {
+    wrapped.missingExport = details.missingExport;
+  }
+  if (details.missingModule) {
+    wrapped.missingModule = details.missingModule;
+  }
+  return wrapped;
+}
+
+function firstMeaningfulErrorLine(message) {
+  return String(message)
+    .split("\n")
+    .map((line) => line.trim())
+    .find((line) => line && !line.startsWith("Command failed:"));
 }
 
 function findRegisterExport(module) {

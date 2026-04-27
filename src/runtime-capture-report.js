@@ -71,11 +71,18 @@ export function renderRuntimeCaptureMarkdown(captureReport, options = {}) {
         result.fixture,
         result.status,
         result.entrypoint,
-        (result.captured ?? []).map((item) => `${item.kind}:${item.name}`).join(", ") || result.error || "-",
+        (result.captured ?? []).map((item) => `${item.kind}:${item.name}`).join(", ") || formatCaptureError(result),
       ]),
       ["Fixture", "Status", "Entrypoint", "Captured"],
     ),
   ].join("\n");
+}
+
+function formatCaptureError(result) {
+  if (!result.error) {
+    return "-";
+  }
+  return result.failureClass ? `${result.failureClass}: ${result.error}` : result.error;
 }
 
 function captureTargets(fixture, rootDir) {
@@ -124,6 +131,9 @@ async function captureTarget(target, options) {
       packagePath: target.packagePath,
       entrypoint: target.entrypoint.relativePath,
       error: error.message,
+      ...(error.failureClass ? { failureClass: error.failureClass } : {}),
+      ...(error.missingExport ? { missingExport: error.missingExport } : {}),
+      ...(error.missingModule ? { missingModule: error.missingModule } : {}),
       captured: [],
     };
   }
