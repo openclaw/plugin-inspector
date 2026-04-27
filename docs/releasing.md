@@ -59,6 +59,33 @@ This runs tests and `npm pack --dry-run`. Once a version has been published,
 `npm publish --dry-run` rejects that same version, so the real publish check is
 the tag workflow.
 
+## Crabpot follow-through
+
+Before tagging a release, update Crabpot's `pluginInspectorRef` to the
+plugin-inspector commit being released and run:
+
+```bash
+npm run release:crabpot -- --crabpot ../crabpot
+```
+
+The checklist verifies the source ref and prints the required Crabpot smoke
+commands:
+
+```bash
+CRABPOT_PLUGIN_INSPECTOR_CLI=source npm run plugin-inspector:smoke
+npm run plugin-inspector:smoke
+```
+
+After the npm package is published, update Crabpot's `pluginInspectorPackage` to
+the released version and run the stricter post-publish check:
+
+```bash
+npm run release:crabpot -- --crabpot ../crabpot --published
+```
+
+Do not consider a release complete until the Crabpot source ref, package pin,
+local smoke proof, and Crabpot CI proof are all current.
+
 ## Publish
 
 For the initial release:

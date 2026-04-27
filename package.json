@@ -49,6 +49,7 @@
   ],
   "scripts": {
     "check": "npm test && npm pack --dry-run",
+    "release:crabpot": "node scripts/check-crabpot-followthrough.mjs",
     "release:local": "npm run check",
     "test": "node --test test/*.test.js"
   },
