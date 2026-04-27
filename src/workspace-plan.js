@@ -211,7 +211,8 @@ export function renderWorkspacePlanMarkdown(plan, options = {}) {
 }
 
 async function buildEntrypointPlan({ fixtureId, entrypoint, packageSummary, packageJson, settings, targetOpenClawPath }) {
-  const packageDir = path.posix.dirname(packageSummary.path);
+  const packagePath = normalizeRepoPath(packageSummary.path);
+  const packageDir = path.posix.dirname(packagePath);
   const packageManager = detectPackageManager(settings.rootDir, packageDir, packageJson);
   const lockfile = findNearestLockfile(settings.rootDir, packageDir);
   const buildScript = packageJson.scripts?.build;
@@ -272,7 +273,7 @@ async function buildEntrypointPlan({ fixtureId, entrypoint, packageSummary, pack
       blockers.push({
         code: "missing-build-script",
         message: "entrypoint points at build output but package.json has no build script",
-        evidence: packageSummary.path,
+        evidence: packagePath,
       });
     }
   }
@@ -295,7 +296,7 @@ async function buildEntrypointPlan({ fixtureId, entrypoint, packageSummary, pack
   return {
     id: entrypoint.id,
     fixture: fixtureId,
-    packagePath: packageSummary.path,
+    packagePath,
     packageName: packageSummary.name,
     entrypoint: entrypoint.path,
     status: entrypoint.status,
@@ -409,7 +410,7 @@ function isWithinPath(rootDir, candidatePath) {
 }
 
 async function readPackageJson(rootDir, packagePath) {
-  return JSON.parse(await readFile(path.join(rootDir, packagePath), "utf8"));
+  return JSON.parse(await readFile(path.join(rootDir, ...normalizeRepoPath(packagePath).split("/")), "utf8"));
 }
 
 function installCommand(packageManager) {
@@ -466,6 +467,10 @@ function targetOpenClawWorkspacePath(settings, fixtureId, targetOpenClawPath) {
 
 function repoRelative(value) {
   return String(value).replaceAll(path.sep, "/");
+}
+
+function normalizeRepoPath(value) {
+  return String(value).replaceAll("\\", "/");
 }
 
 function posixJoin(...parts) {

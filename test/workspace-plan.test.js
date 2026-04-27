@@ -152,7 +152,7 @@ function readinessReport() {
         ],
         packages: [
           {
-            path: "plugins/fixture/package.json",
+            path: "plugins\\fixture\\package.json",
             name: "fixture",
             dependencies: ["left-pad"],
             peerDependencies: [],
@@ -169,7 +169,7 @@ function readinessReport() {
             },
           },
           {
-            path: "plugins/build/package.json",
+            path: "plugins\\build\\package.json",
             name: "build-fixture",
             dependencies: [],
             peerDependencies: [],
