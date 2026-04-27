@@ -47,15 +47,18 @@ import {
   buildCiSummary,
   buildColdImportReadiness,
   buildContractCapture,
+  buildPlatformProbes,
   createCaptureApi,
   inspectFixtureSet,
   loadInspectorConfig,
   renderColdImportReadinessMarkdown,
   renderContractCaptureMarkdown,
+  renderPlatformProbesMarkdown,
   renderMarkdownReport,
   writeCiSummary,
   writeColdImportReadiness,
   writeContractCapture,
+  writePlatformProbes,
   writeReport,
 } from "@openclaw/plugin-inspector";
 
@@ -71,6 +74,9 @@ await writeContractCapture(capture);
 
 const readiness = buildColdImportReadiness({ report });
 await writeColdImportReadiness(readiness);
+
+const platformProbes = buildPlatformProbes({ plan: existingWorkspacePlan });
+await writePlatformProbes(platformProbes);
 ```
 
 ## Scope

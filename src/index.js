@@ -59,6 +59,13 @@ export {
   validateInspectorConfig,
 } from "./config.js";
 export {
+  buildPlatformProbes,
+  defaultPlatformTargets,
+  renderPlatformProbesMarkdown,
+  validatePlatformProbes,
+  writePlatformProbes,
+} from "./platform-probes.js";
+export {
   renderMarkdownReport,
   renderTextSummary,
   writeReport,
