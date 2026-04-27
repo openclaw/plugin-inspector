@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
@@ -121,6 +121,27 @@ test("ci summary status fails on blocking report classes", () => {
   assert.equal(deriveCiStatus({ profileDiff: { summary: { failCount: 1 } } }), "fail");
   assert.equal(deriveCiStatus({ execution: { summary: { failCount: 1 } } }), "fail");
   assert.equal(deriveCiStatus({}), "pass");
+});
+
+test("ci summary discovers runtime capture artifacts from default paths", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-ci-summary-runtime-capture-"));
+  const reportsDir = path.join(dir, "reports");
+  await mkdir(reportsDir, { recursive: true });
+  await writeFile(
+    path.join(reportsDir, "plugin-inspector-report.json"),
+    `${JSON.stringify({ summary: { breakageCount: 0, warningCount: 0, suggestionCount: 0, issueCount: 0, p0IssueCount: 0, p1IssueCount: 0, liveIssueCount: 0, liveP0IssueCount: 0, compatGapCount: 0, deprecationWarningCount: 0, inspectorGapCount: 0, upstreamIssueCount: 0 }, issues: [] }, null, 2)}\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(reportsDir, "plugin-inspector-runtime-capture.json"),
+    `${JSON.stringify({ summary: { targetCount: 1, capturedCount: 1, skippedCount: 0, failedCount: 0, registrationCount: 2, hookCount: 0 } }, null, 2)}\n`,
+    "utf8",
+  );
+
+  const summary = await buildCiSummary({ reportsDir, artifactBaseDir: dir });
+
+  assert.equal(summary.artifacts.compatibility, "reports/plugin-inspector-report.json");
+  assert.equal(summary.artifacts.capture, "reports/plugin-inspector-runtime-capture.json");
 });
 
 test("ci summary writer emits JSON and Markdown artifacts", async () => {

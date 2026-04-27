@@ -5,7 +5,7 @@ import { readOptionalJsonFile } from "./json-file.js";
 
 export const defaultCiReportPaths = {
   compatibility: "reports/plugin-inspector-report.json",
-  capture: "reports/plugin-inspector-capture.json",
+  capture: "reports/plugin-inspector-runtime-capture.json",
   synthetic: "reports/plugin-inspector-synthetic-probes.json",
   coldImport: "reports/plugin-inspector-cold-import.json",
   workspace: "reports/plugin-inspector-workspace-plan.json",
