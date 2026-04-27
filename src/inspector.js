@@ -200,7 +200,7 @@ export async function captureEntrypointWithMockSdk(entrypoint, options = {}) {
   try {
     const { stdout } = await execFileAsync(
       process.execPath,
-      ["--preserve-symlinks", runnerPath, JSON.stringify(payload)],
+      ["--no-warnings", "--preserve-symlinks", runnerPath, JSON.stringify(payload)],
       {
         cwd: options.cwd ?? process.cwd(),
         env: {

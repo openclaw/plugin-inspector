@@ -166,10 +166,18 @@ function registrationReturnValue(name, args, context) {
 }
 
 function createRuntimeContext(options) {
+  const runtime = options.runtime ?? {};
   return {
+    ...runtime,
+    agent: runtime.agent ?? {},
     env: options.env ?? {},
     logger: options.logger ?? console,
     now: () => new Date(0),
+    tts: runtime.tts ?? {},
+    state: {
+      resolveStateDir: () => options.stateDir ?? process.cwd(),
+      ...(runtime.state ?? {}),
+    },
   };
 }
 

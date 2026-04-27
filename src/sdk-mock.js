@@ -1,5 +1,8 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+
+const SOURCE_EXTENSIONS = new Set([".js", ".mjs", ".cjs", ".ts", ".mts", ".cts"]);
+const SKIP_DIRS = new Set([".git", "coverage", "node_modules", "reports"]);
 
 export const mockSdkSubpathExports = {
   "plugin-entry": [
@@ -212,10 +215,13 @@ export const mockSdkExportNames = [
   ]),
 ].sort();
 
-export async function createMockSdkPackage(rootDir) {
+export async function createMockSdkPackage(rootDir, options = {}) {
   const packageDir = path.join(rootDir, "node_modules", "openclaw");
   const pluginSdkDir = path.join(packageDir, "plugin-sdk");
+  const externalDir = path.join(rootDir, "mock-modules", "external");
   await mkdir(pluginSdkDir, { recursive: true });
+  await mkdir(externalDir, { recursive: true });
+  const imports = options.pluginRoot ? await collectRuntimeImports(options.pluginRoot) : emptyRuntimeImports();
   await writeFile(
     path.join(packageDir, "package.json"),
     `${JSON.stringify(
@@ -237,7 +243,474 @@ export async function createMockSdkPackage(rootDir) {
   for (const [subpath, exportNames] of Object.entries(mockSdkSubpathExports)) {
     await writeFile(path.join(pluginSdkDir, `${subpath}.js`), mockSdkSubpathSource(exportNames), "utf8");
   }
-  return packageDir;
+  for (const specifier of imports.openclawSdkSpecifiers) {
+    if (specifier === "openclaw/plugin-sdk") {
+      continue;
+    }
+    const relative = specifier.slice("openclaw/plugin-sdk/".length);
+    if (mockSdkSubpathExports[relative]) {
+      continue;
+    }
+    const targetPath = path.join(pluginSdkDir, `${relative}.js`);
+    await mkdir(path.dirname(targetPath), { recursive: true });
+    await writeFile(
+      targetPath,
+      dynamicMockModuleSource(imports.bySpecifier.get(specifier) ?? new Set(), {
+        includeSdkRuntime: true,
+        zod: relative === "zod",
+      }),
+      "utf8",
+    );
+  }
+
+  const externalMap = {};
+  for (const specifier of imports.bareSpecifiers) {
+    const fileName = `${safeModuleFileName(specifier)}.js`;
+    externalMap[specifier] = path.join(externalDir, fileName);
+    await writeFile(
+      path.join(externalDir, fileName),
+      externalMockModuleSource(specifier, imports.bySpecifier.get(specifier) ?? new Set()),
+      "utf8",
+    );
+  }
+
+  const fallbackExternalPath = path.join(externalDir, "__fallback__.js");
+  await writeFile(fallbackExternalPath, externalMockModuleSource("__fallback__", new Set()), "utf8");
+  const loaderPath = path.join(rootDir, "mock-loader.mjs");
+  await writeFile(
+    loaderPath,
+    mockLoaderSource({
+      externalMap,
+      fallbackExternalPath,
+      pluginSdkDir,
+    }),
+    "utf8",
+  );
+
+  return { packageDir, loaderPath, pluginSdkDir };
+}
+
+function emptyRuntimeImports() {
+  return {
+    bySpecifier: new Map(),
+    openclawSdkSpecifiers: new Set(["openclaw/plugin-sdk"]),
+    bareSpecifiers: new Set(),
+  };
+}
+
+async function collectRuntimeImports(pluginRoot) {
+  const bySpecifier = new Map();
+  const openclawSdkSpecifiers = new Set(["openclaw/plugin-sdk"]);
+  const bareSpecifiers = new Set();
+  for (const filePath of await listSourceFiles(pluginRoot)) {
+    const text = await readFile(filePath, "utf8");
+    for (const entry of parseModuleImports(text)) {
+      if (entry.specifier.startsWith("openclaw/plugin-sdk")) {
+        openclawSdkSpecifiers.add(entry.specifier);
+      } else if (isMockableBareSpecifier(entry.specifier)) {
+        bareSpecifiers.add(entry.specifier);
+      } else {
+        continue;
+      }
+      const names = bySpecifier.get(entry.specifier) ?? new Set();
+      for (const name of entry.names) {
+        names.add(name);
+      }
+      bySpecifier.set(entry.specifier, names);
+    }
+  }
+  return { bySpecifier, openclawSdkSpecifiers, bareSpecifiers };
+}
+
+async function listSourceFiles(dir) {
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files = [];
+  for (const entry of entries) {
+    if (entry.name.startsWith(".") && entry.name !== ".clawhub") {
+      continue;
+    }
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      if (!SKIP_DIRS.has(entry.name)) {
+        files.push(...(await listSourceFiles(fullPath)));
+      }
+      continue;
+    }
+    if (entry.isFile() && SOURCE_EXTENSIONS.has(path.extname(entry.name))) {
+      files.push(fullPath);
+    }
+  }
+  return files;
+}
+
+function parseModuleImports(text) {
+  const entries = [];
+  const patterns = [
+    /\bimport\s+([\s\S]*?)\s+from\s+["']([^"']+)["']/g,
+    /\bexport\s+(?:type\s+)?(?:\*\s+from|\{([\s\S]*?)\}\s+from)\s+["']([^"']+)["']/g,
+  ];
+  for (const pattern of patterns) {
+    for (const match of text.matchAll(pattern)) {
+      const specifier = match[2];
+      if (specifier) {
+        entries.push({ specifier, names: parseNamedImports(match[1] ?? "") });
+      }
+    }
+  }
+  for (const match of text.matchAll(/\bimport\s+["']([^"']+)["']/g)) {
+    entries.push({ specifier: match[1], names: new Set() });
+  }
+  return entries;
+}
+
+function parseNamedImports(clause) {
+  const names = new Set();
+  const named = /\{([\s\S]*?)\}/.exec(clause)?.[1] ?? clause;
+  for (const rawPart of named.split(",")) {
+    const part = rawPart.trim();
+    if (!part || part.startsWith("type ")) {
+      continue;
+    }
+    const sourceName = part.replace(/^type\s+/u, "").split(/\s+as\s+/u)[0]?.trim();
+    if (sourceName && /^[A-Za-z_$][\w$]*$/u.test(sourceName)) {
+      names.add(sourceName);
+    }
+  }
+  return names;
+}
+
+function isMockableBareSpecifier(specifier) {
+  return (
+    !specifier.startsWith(".") &&
+    !specifier.startsWith("/") &&
+    !specifier.startsWith("node:") &&
+    !specifier.startsWith("data:") &&
+    !specifier.startsWith("file:")
+  );
+}
+
+function safeModuleFileName(specifier) {
+  return specifier.replace(/[^A-Za-z0-9._-]+/gu, "__");
+}
+
+function mockLoaderSource({ externalMap, fallbackExternalPath, pluginSdkDir }) {
+  return `import { existsSync } from "node:fs";
+import { readFile } from "node:fs/promises";
+import { builtinModules, stripTypeScriptTypes } from "node:module";
+import path from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+
+const externalMap = new Map(Object.entries(${JSON.stringify(externalMap)}));
+const fallbackExternalPath = ${JSON.stringify(fallbackExternalPath)};
+const pluginSdkDir = ${JSON.stringify(pluginSdkDir)};
+const builtins = new Set([...builtinModules, ...builtinModules.map((name) => \`node:\${name}\`)]);
+
+export async function resolve(specifier, context, nextResolve) {
+  if (specifier === "openclaw/plugin-sdk") {
+    return moduleUrl(path.join(pluginSdkDir, "index.js"));
+  }
+  if (specifier.startsWith("openclaw/plugin-sdk/")) {
+    const subpath = specifier.slice("openclaw/plugin-sdk/".length);
+    return moduleUrl(path.join(pluginSdkDir, \`\${subpath}.js\`));
+  }
+  try {
+    return await nextResolve(specifier, context);
+  } catch (error) {
+    const resolved = resolveExtensionless(specifier, context.parentURL);
+    if (resolved) {
+      return moduleUrl(resolved);
+    }
+    if (isMockableBareSpecifier(specifier)) {
+      return moduleUrl(externalMap.get(specifier) ?? fallbackExternalPath);
+    }
+    throw error;
+  }
+}
+
+export async function load(url, context, nextLoad) {
+  if (url.startsWith("file:") && /\\.[cm]?ts$/u.test(fileURLToPath(url))) {
+    const rawSource = await readFile(fileURLToPath(url), "utf8");
+    return { format: "module", source: stripTypeScriptTypes(rawSource, { mode: "transform" }), shortCircuit: true };
+  }
+  return nextLoad(url, context);
+}
+
+function moduleUrl(filePath) {
+  return { url: pathToFileURL(filePath).href, shortCircuit: true };
+}
+
+function resolveExtensionless(specifier, parentURL) {
+  if (!parentURL || (!specifier.startsWith(".") && !specifier.startsWith("/"))) {
+    return null;
+  }
+  const parentDir = path.dirname(fileURLToPath(parentURL));
+  const base = specifier.startsWith("/") ? specifier : path.resolve(parentDir, specifier);
+  const parsed = path.parse(base);
+  const withoutJsExtension = [".js", ".mjs", ".cjs"].includes(parsed.ext) ? path.join(parsed.dir, parsed.name) : null;
+  const candidates = [
+    base,
+    ...(withoutJsExtension ? [\`\${withoutJsExtension}.ts\`, \`\${withoutJsExtension}.mts\`, \`\${withoutJsExtension}.cts\`] : []),
+    \`\${base}.js\`,
+    \`\${base}.mjs\`,
+    \`\${base}.ts\`,
+    path.join(base, "index.js"),
+    path.join(base, "index.mjs"),
+    path.join(base, "index.ts"),
+  ];
+  return candidates.find((candidate) => existsSync(candidate)) ?? null;
+}
+
+function isMockableBareSpecifier(specifier) {
+  return !builtins.has(specifier) &&
+    !specifier.startsWith(".") &&
+    !specifier.startsWith("/") &&
+    !specifier.startsWith("data:") &&
+    !specifier.startsWith("file:");
+}
+`;
+}
+
+function dynamicMockModuleSource(exportNames, options = {}) {
+  const names = new Set([...exportNames].filter(isValidExportName));
+  if (options.zod) {
+    addZodExports(names);
+  }
+  return `${genericMockRuntimeSource(options)}
+${[...names].map(genericExportStatement).join("\n")}
+
+export default ${options.zod ? "createZNamespace()" : 'createMockValue("default")'};
+`;
+}
+
+function externalMockModuleSource(specifier, exportNames) {
+  const names = new Set([...exportNames].filter(isValidExportName));
+  if (specifier === "zod") {
+    addZodExports(names);
+  }
+  return dynamicMockModuleSource(names, { zod: specifier === "zod" });
+}
+
+function addZodExports(names) {
+  for (const name of ["z", "any", "array", "boolean", "enum", "literal", "number", "object", "record", "string", "unknown"]) {
+    names.add(name);
+  }
+}
+
+function isValidExportName(name) {
+  return name !== "default" && /^[A-Za-z_$][\w$]*$/u.test(name);
+}
+
+function genericExportStatement(name) {
+  if (name === "z") {
+    return "export const z = createZNamespace();";
+  }
+  if (name === "Type") {
+    return "export const Type = createTypeNamespace();";
+  }
+  if (["any", "array", "boolean", "enum", "literal", "number", "object", "record", "string", "unknown"].includes(name)) {
+    if (name === "enum") {
+      return "const zodEnum = createZNamespace().enum;\nexport { zodEnum as enum };";
+    }
+    return `export const ${name} = createZNamespace().${name};`;
+  }
+  if (["createChatChannelPlugin", "createPlugin", "defineChannelPluginEntry", "definePlugin", "definePluginEntry", "defineSetupPluginEntry"].includes(name)) {
+    return name === "definePluginEntry" ? "export { definePluginEntry };" : `export const ${name} = definePluginEntry;`;
+  }
+  if (/^[A-Z].*Schema$/u.test(name)) {
+    return `export const ${name} = createSchema();`;
+  }
+  return `export const ${name} = createMockValue(${JSON.stringify(name)});`;
+}
+
+function genericMockRuntimeSource(options = {}) {
+  return `${options.includeSdkRuntime ? `function definePluginEntry(entry) {
+  if (entry && typeof entry === "object" && typeof entry.register === "function") {
+    return entry;
+  }
+  if (entry && typeof entry === "object" && typeof entry.registerFull === "function") {
+    return { ...entry, register: entry.registerFull };
+  }
+  return typeof entry === "function" ? { register: entry } : entry;
+}
+` : ""}
+function createMockValue(name) {
+  function fn(...args) {
+    if (name.startsWith("normalize")) {
+      return typeof args[0] === "string" ? args[0] : "";
+    }
+    if (name === "jsonResult") {
+      return { type: "json", value: args[0] };
+    }
+    if (name === "readStringParam") {
+      return typeof args[0] === "string" ? args[0] : "";
+    }
+    return createMockValue(name);
+  }
+  return new Proxy(fn, {
+    get(_target, property) {
+      if (property === "then") {
+        return undefined;
+      }
+      if (property === Symbol.toPrimitive) {
+        return () => name;
+      }
+      if (property === "toString") {
+        return () => name;
+      }
+      if (property === "valueOf") {
+        return () => name;
+      }
+      return createMockValue(\`\${name}.\${String(property)}\`);
+    },
+    construct() {
+      return createMockValue(name);
+    },
+  });
+}
+
+function createZNamespace() {
+  const namespace = {
+    any: () => createSchema(),
+    array: () => createSchema([]),
+    boolean: () => createSchema(),
+    enum: (values) => createSchema(Array.isArray(values) ? values[0] : undefined),
+    literal: (value) => createSchema(value),
+    number: () => createSchema(),
+    object: (shape = {}) => createSchema(undefined, shape),
+    record: () => createSchema({}),
+    string: () => createSchema(),
+    unknown: () => createSchema(),
+  };
+  return new Proxy(namespace, {
+    get(target, property) {
+      if (property in target) {
+        return target[property];
+      }
+      return () => createSchema();
+    },
+  });
+}
+
+function createSchema(defaultValue, shape) {
+  const schema = {
+    parse(value) {
+      if (shape && isPlainObject(value ?? defaultValue ?? {})) {
+        const source = isPlainObject(value) ? value : {};
+        const output = isPlainObject(defaultValue) ? clonePlain(defaultValue) : {};
+        for (const [key, fieldSchema] of Object.entries(shape)) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            output[key] = parseWithSchema(fieldSchema, source[key]);
+            continue;
+          }
+          const parsed = parseWithSchema(fieldSchema, undefined);
+          if (parsed !== undefined) {
+            output[key] = parsed;
+          }
+        }
+        return output;
+      }
+      return value === undefined ? clonePlain(defaultValue) : value;
+    },
+    default(value) {
+      return createSchema(value, shape);
+    },
+    optional() {
+      return this;
+    },
+    nullable() {
+      return this;
+    },
+    nullish() {
+      return this;
+    },
+    strict() {
+      return this;
+    },
+    passthrough() {
+      return this;
+    },
+    regex() {
+      return this;
+    },
+    min() {
+      return this;
+    },
+    max() {
+      return this;
+    },
+    int() {
+      return this;
+    },
+    positive() {
+      return this;
+    },
+    nonnegative() {
+      return this;
+    },
+    url() {
+      return this;
+    },
+    describe() {
+      return this;
+    },
+    refine() {
+      return this;
+    },
+    superRefine() {
+      return this;
+    },
+    transform() {
+      return this;
+    },
+  };
+  return new Proxy(schema, {
+    get(target, property) {
+      if (property in target) {
+        return target[property];
+      }
+      return () => target;
+    },
+  });
+}
+
+function parseWithSchema(schema, value) {
+  return schema && typeof schema.parse === "function" ? schema.parse(value) : value;
+}
+
+function clonePlain(value) {
+  if (value === undefined || value === null) {
+    return value;
+  }
+  return JSON.parse(JSON.stringify(value));
+}
+
+function isPlainObject(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function createTypeNamespace() {
+  const namespace = {
+    Any: () => ({}),
+    Array: (items = {}) => ({ type: "array", items }),
+    Boolean: () => ({ type: "boolean" }),
+    Literal: (value) => ({ const: value }),
+    Number: () => ({ type: "number" }),
+    Object: (properties = {}) => ({ type: "object", properties }),
+    Optional: (schema) => schema,
+    String: (options = {}) => ({ type: "string", ...options }),
+    Union: (schemas = []) => ({ anyOf: schemas }),
+    Unknown: () => ({}),
+  };
+  return new Proxy(namespace, {
+    get(target, property) {
+      if (property in target) {
+        return target[property];
+      }
+      return (...args) => ({ kind: String(property), args });
+    },
+  });
+}
+`;
 }
 
 function mockSdkSource() {
