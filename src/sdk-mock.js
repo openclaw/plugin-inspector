@@ -718,6 +718,37 @@ function mockSdkSource() {
   return typeof entry === "function" ? { register: entry } : entry;
 }
 
+function isPlainObject(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function parseWithSchema(schema, value) {
+  return schema && typeof schema.parse === "function" ? schema.parse(value) : value;
+}
+
+function createConfigSchema(schema = {}) {
+  if (schema && typeof schema.parse === "function") {
+    return schema;
+  }
+  const shape = isPlainObject(schema?.shape) ? schema.shape : isPlainObject(schema?.properties) ? schema.properties : schema;
+  return {
+    ...schema,
+    parse(value = {}) {
+      if (!isPlainObject(shape)) {
+        return isPlainObject(value) ? value : {};
+      }
+      const source = isPlainObject(value) ? value : {};
+      const output = { ...source };
+      for (const [key, fieldSchema] of Object.entries(shape)) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          output[key] = parseWithSchema(fieldSchema, source[key]);
+        }
+      }
+      return output;
+    },
+  };
+}
+
 export function definePluginEntry(entry) {
   return normalizeEntry(entry);
 }
@@ -759,13 +790,13 @@ export function defineSingleProviderPluginEntry(options) {
 }
 
 export function buildPluginConfigSchema(schema = {}) {
-  return schema;
+  return createConfigSchema(schema);
 }
 
-export const emptyPluginConfigSchema = { type: "object", properties: {}, additionalProperties: false };
+export const emptyPluginConfigSchema = createConfigSchema({ type: "object", properties: {}, additionalProperties: false });
 
 export function buildChannelConfigSchema(schema = {}) {
-  return schema;
+  return createConfigSchema(schema);
 }
 
 export const emptyChannelConfigSchema = emptyPluginConfigSchema;
@@ -951,14 +982,28 @@ export function createAuthRateLimiter() {
 }
 
 export function createProviderApiKeyAuthMethod(options = {}) {
-  return { type: "apiKey", ...options };
+  return {
+    id: options.id ?? "apiKey",
+    type: "apiKey",
+    ...options,
+    async resolve(ctx = {}) {
+      return ctx.apiKey ?? ctx.key ?? ctx.token ?? null;
+    },
+  };
 }
 
 export function buildSingleProviderApiKeyCatalog(options = {}) {
+  const auth = options.auth ?? createProviderApiKeyAuthMethod(options.authOptions);
   return {
+    auth,
     order: "simple",
     async run(ctx) {
-      return { provider: await options.buildProvider?.(ctx) };
+      const provider = (await options.buildProvider?.(ctx)) ?? options.provider ?? { id: options.id ?? "provider", auth };
+      return {
+        provider,
+        providers: [provider],
+        models: (await options.buildModels?.(ctx)) ?? options.models ?? [],
+      };
     },
   };
 }
