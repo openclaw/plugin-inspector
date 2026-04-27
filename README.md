@@ -1,4 +1,4 @@
-# 💊 plugin-inspector
+# 💊 OpenClaw Plugin Inspector
 
 `plugin-inspector` is the reusable OpenClaw plugin compatibility inspector. It
 wraps the static inspection, registration capture, and report model prototyped
