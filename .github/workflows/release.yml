@@ -71,12 +71,34 @@ jobs:
         run: npm publish --access public
 
       - name: Publish GitHub release
-        uses: release-drafter/release-drafter@v7
-        with:
-          publish: true
-          tag: ${{ env.RELEASE_TAG }}
-          version: ${{ env.RELEASE_VERSION }}
-          name: "plugin-inspector ${{ env.RELEASE_TAG }}"
-          prerelease: ${{ contains(env.RELEASE_TAG, 'beta') || contains(env.RELEASE_TAG, 'alpha') || contains(env.RELEASE_TAG, 'rc') }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          NOTES_FILE="$(mktemp)"
+          RELEASE_VERSION="${RELEASE_VERSION}" node <<'NODE' > "${NOTES_FILE}"
+          const fs = require("fs");
+          const version = process.env.RELEASE_VERSION;
+          const lines = fs.readFileSync("CHANGELOG.md", "utf8").split(/\r?\n/);
+          const start = lines.findIndex((line) => line.startsWith(`## ${version} - `));
+          if (start === -1) {
+            console.error(`CHANGELOG.md is missing a ${version} release section`);
+            process.exit(1);
+          }
+          const end = lines.findIndex((line, index) => index > start && line.startsWith("## "));
+          const body = lines.slice(start + 1, end === -1 ? lines.length : end).join("\n").trim();
+          process.stdout.write(`## plugin-inspector v${version}\n\n${body}\n`);
+          NODE
+
+          release_flags=(--title "plugin-inspector ${RELEASE_TAG}" --notes-file "${NOTES_FILE}" --verify-tag)
+          if [[ "${RELEASE_TAG}" =~ (alpha|beta|rc) ]]; then
+            release_flags+=(--prerelease)
+          else
+            release_flags+=(--latest)
+          fi
+
+          if gh release view "${RELEASE_TAG}" >/dev/null 2>&1; then
+            gh release edit "${RELEASE_TAG}" "${release_flags[@]}" --draft=false
+          else
+            gh release create "${RELEASE_TAG}" "${release_flags[@]}"
+          fi
