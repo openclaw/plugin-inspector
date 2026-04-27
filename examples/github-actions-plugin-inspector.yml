@@ -16,6 +16,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run plugin:check
+      - run: npm run plugin:check:runtime
       - uses: actions/upload-artifact@v5
         if: always()
         with:

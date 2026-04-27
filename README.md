@@ -85,8 +85,21 @@ plugin-inspector report --config crabpot.config.json --out reports
 Capture a plugin entrypoint in an explicitly isolated execution lane:
 
 ```bash
-PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture ./dist/index.js
+PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture ./dist/index.js --mock-sdk
 ```
+
+Run the optional runtime capture smoke during `check`:
+
+```bash
+PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector check --no-openclaw --capture
+```
+
+Runtime capture creates a temporary mock `openclaw/plugin-sdk` package, imports
+declared OpenClaw package entrypoints, calls their `register(api)` function with
+the capture API, and writes:
+
+- `reports/plugin-inspector-runtime-capture.json`
+- `reports/plugin-inspector-runtime-capture.md`
 
 ### CI
 
@@ -95,7 +108,8 @@ With a dev dependency:
 ```json
 {
   "scripts": {
-    "plugin:check": "plugin-inspector check --no-openclaw"
+    "plugin:check": "plugin-inspector check --no-openclaw",
+    "plugin:check:runtime": "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector check --no-openclaw --capture"
   }
 }
 ```
@@ -121,6 +135,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run plugin:check
+      - run: npm run plugin:check:runtime
       - uses: actions/upload-artifact@v5
         if: always()
         with:
@@ -142,6 +157,7 @@ import {
   buildProfileDiff,
   buildRefDiff,
   buildRuntimeProfile,
+  buildRuntimeCaptureReport,
   buildWorkspacePlan,
   createCaptureApi,
   inspectFixtureSet,
@@ -156,6 +172,7 @@ import {
   renderProfileDiffMarkdown,
   renderRefDiffMarkdown,
   renderRuntimeProfileMarkdown,
+  renderRuntimeCaptureMarkdown,
   renderWorkspacePlanMarkdown,
   renderMarkdownReport,
   validateCiPolicyReport,
@@ -170,6 +187,7 @@ import {
   writeProfileDiff,
   writeRefDiff,
   writeRuntimeProfile,
+  writeRuntimeCaptureReport,
   writeWorkspacePlan,
   writeReport,
 } from "@openclaw/plugin-inspector";
@@ -209,6 +227,9 @@ const runtimeProfile = await buildRuntimeProfile({
   commands: [{ id: "node-boot", label: "Node boot", category: "baseline", args: ["-e", "0"] }],
 });
 await writeRuntimeProfile(runtimeProfile);
+
+const runtimeCapture = await buildRuntimeCaptureReport({ report, rootDir: process.cwd() });
+await writeRuntimeCaptureReport(runtimeCapture);
 
 const refDiff = await buildRefDiff({ baseReport, headReport });
 await writeRefDiff(refDiff);
