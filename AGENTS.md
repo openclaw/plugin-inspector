@@ -6,5 +6,9 @@
 - Do not publish npm packages without explicit owner approval.
 - Preserve stable report field names and finding codes; downstream CI and
   crabpot reports may consume them.
+- When changing plugin-inspector behavior, CLI/package entrypoints, release
+  metadata, or the npm package version, update crabpot's
+  `@openclaw/plugin-inspector` pin/docs/smoke path as needed and run the
+  crabpot plugin-inspector smoke before calling the work done.
 - Prefer public OpenClaw plugin contracts over core internals. If target
   OpenClaw source parsing is needed, isolate it behind explicit helpers.
