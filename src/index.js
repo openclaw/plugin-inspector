@@ -1,5 +1,13 @@
 export { createCaptureApi } from "./capture-api.js";
 export {
+  buildCiSummary,
+  defaultCiReportPaths,
+  deriveCiStatus,
+  readCiReports,
+  renderCiSummaryMarkdown,
+  writeCiSummary,
+} from "./ci-summary.js";
+export {
   captureEntrypoint,
   inspectFixtureSet,
   inspectPlugin,

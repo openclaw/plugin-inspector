@@ -44,16 +44,21 @@ PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture ./dist/index.js
 
 ```js
 import {
+  buildCiSummary,
   createCaptureApi,
   inspectFixtureSet,
   loadInspectorConfig,
   renderMarkdownReport,
+  writeCiSummary,
   writeReport,
 } from "@openclaw/plugin-inspector";
 
 const config = await loadInspectorConfig("crabpot.config.json");
 const report = await inspectFixtureSet(config);
 await writeReport(report, { outDir: "reports" });
+
+const summary = await buildCiSummary({ reportsDir: "reports" });
+await writeCiSummary(summary);
 ```
 
 ## Scope
