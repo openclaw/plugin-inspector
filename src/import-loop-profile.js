@@ -2,7 +2,9 @@ import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { resolveFromRoot } from "./path-utils.js";
 import { runProfiledProcess } from "./process-profile.js";
+import { assertRunCount, percentile } from "./stats.js";
 
 const defaultCliPath = fileURLToPath(new URL("./cli.js", import.meta.url));
 
@@ -20,7 +22,7 @@ export async function buildImportLoopProfile(options = {}) {
   const rootDir = path.resolve(options.rootDir ?? process.cwd());
   const runs = options.runs ?? defaultImportLoopProfileOptions.runs;
   const entrypoint = options.entrypoint ?? defaultImportLoopProfileOptions.entrypoint;
-  assertRuns(runs);
+  assertRunCount(runs, 20);
 
   const samples = [];
   for (let index = 0; index < runs; index += 1) {
@@ -160,24 +162,6 @@ function buildCaptureCommand(options) {
 async function readCaptureOutput(outputPath) {
   const { readFile } = await import("node:fs/promises");
   return JSON.parse(await readFile(outputPath, "utf8"));
-}
-
-function percentile(sortedValues, percentileValue) {
-  if (sortedValues.length === 0) {
-    return 0;
-  }
-  const index = Math.min(sortedValues.length - 1, Math.ceil(sortedValues.length * percentileValue) - 1);
-  return sortedValues[index];
-}
-
-function assertRuns(runs) {
-  if (!Number.isInteger(runs) || runs < 1 || runs > 20) {
-    throw new Error("runs must be an integer between 1 and 20");
-  }
-}
-
-function resolveFromRoot(rootDir, value) {
-  return path.isAbsolute(value) ? value : path.join(rootDir, value);
 }
 
 function markdownTable(rows, headers) {

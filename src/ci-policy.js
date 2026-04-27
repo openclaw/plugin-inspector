@@ -1,5 +1,6 @@
 import path from "node:path";
 import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { resolveFromRoot } from "./path-utils.js";
 
 export const defaultCiPolicyReportOptions = {
   generatedAt: "deterministic",
@@ -251,10 +252,6 @@ function failedExecutionEvidence(executionResults) {
 
 function actionRank(value) {
   return { fail: 0, warn: 1, pass: 2 }[value] ?? 3;
-}
-
-function resolveFromRoot(rootDir, value) {
-  return path.isAbsolute(value) ? value : path.join(rootDir, value);
 }
 
 function markdownTable(rows, headers) {

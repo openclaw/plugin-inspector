@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { resolveRequiredFromRoot } from "./path-utils.js";
 
 export const defaultProfileDiffOptions = {
   baselinePath: "baselines/runtime/main.json",
@@ -14,11 +15,11 @@ export const defaultProfileDiffOptions = {
 
 export async function buildProfileDiff(options = {}) {
   const rootDir = path.resolve(options.rootDir ?? process.cwd());
-  const policy = options.policy ?? (await readJson(resolveFromRoot(rootDir, options.policyPath ?? defaultProfileDiffOptions.policyPath)));
-  const current = options.current ?? (await readJson(resolveFromRoot(rootDir, options.currentPath)));
+  const policy = options.policy ?? (await readJson(profileDiffPath(rootDir, options.policyPath ?? defaultProfileDiffOptions.policyPath)));
+  const current = options.current ?? (await readJson(profileDiffPath(rootDir, options.currentPath)));
   const baseline =
     options.baseline ??
-    (await readOptionalJson(resolveFromRoot(rootDir, options.baselinePath ?? defaultProfileDiffOptions.baselinePath)));
+    (await readOptionalJson(profileDiffPath(rootDir, options.baselinePath ?? defaultProfileDiffOptions.baselinePath)));
   const checks = baseline ? compareProfiles({ baseline, current, policy, strict: options.strict }) : [];
 
   if (!baseline) {
@@ -58,8 +59,8 @@ export function validateProfileDiff(diff) {
 
 export async function writeProfileDiff(diff, options = {}) {
   const rootDir = path.resolve(options.rootDir ?? process.cwd());
-  const jsonPath = resolveFromRoot(rootDir, options.jsonPath ?? defaultProfileDiffOptions.jsonPath);
-  const markdownPath = resolveFromRoot(rootDir, options.markdownPath ?? defaultProfileDiffOptions.markdownPath);
+  const jsonPath = profileDiffPath(rootDir, options.jsonPath ?? defaultProfileDiffOptions.jsonPath);
+  const markdownPath = profileDiffPath(rootDir, options.markdownPath ?? defaultProfileDiffOptions.markdownPath);
   return writeJsonMarkdownArtifacts({
     jsonPath,
     markdownPath,
@@ -220,11 +221,8 @@ async function readOptionalJson(jsonPath) {
   return existsSync(jsonPath) ? readJson(jsonPath) : null;
 }
 
-function resolveFromRoot(rootDir, candidatePath) {
-  if (!candidatePath) {
-    throw new Error("profile diff path is required");
-  }
-  return path.isAbsolute(candidatePath) ? candidatePath : path.resolve(rootDir, candidatePath);
+function profileDiffPath(rootDir, candidatePath) {
+  return resolveRequiredFromRoot(rootDir, candidatePath, "profile diff");
 }
 
 function markdownTable(rows, headers) {

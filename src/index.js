@@ -6,6 +6,8 @@ export {
   writeArtifacts,
   writeJsonMarkdownArtifacts,
 } from "./artifacts.js";
+export { resolveFromRoot, resolveRequiredFromRoot } from "./path-utils.js";
+export { assertRunCount, percentile } from "./stats.js";
 export { createCaptureApi } from "./capture-api.js";
 export {
   buildCiPolicyReport,

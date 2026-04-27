@@ -1,6 +1,8 @@
 import path from "node:path";
 import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { resolveFromRoot } from "./path-utils.js";
 import { runProfiledProcess } from "./process-profile.js";
+import { assertRunCount, percentile } from "./stats.js";
 
 export const defaultRuntimeProfileOptions = {
   generatedAt: "deterministic",
@@ -25,7 +27,7 @@ export async function buildRuntimeProfile(options = {}) {
   const generatedAt = options.generatedAt ?? defaultRuntimeProfileOptions.generatedAt;
   const runs = options.runs ?? defaultRuntimeProfileOptions.runs;
   const commands = [];
-  assertRuns(runs);
+  assertRunCount(runs, 10);
 
   for (const command of options.commands ?? defaultRuntimeProfileCommands) {
     const samples = [];
@@ -280,24 +282,6 @@ async function profileCommand(command, options) {
     stdio: ["ignore", "pipe", "pipe"],
     roundAverageCpuPercent: true,
   });
-}
-
-function percentile(sortedValues, percentileValue) {
-  if (sortedValues.length === 0) {
-    return 0;
-  }
-  const index = Math.min(sortedValues.length - 1, Math.ceil(sortedValues.length * percentileValue) - 1);
-  return sortedValues[index];
-}
-
-function assertRuns(runs) {
-  if (!Number.isInteger(runs) || runs < 1 || runs > 10) {
-    throw new Error("runs must be an integer between 1 and 10");
-  }
-}
-
-function resolveFromRoot(rootDir, value) {
-  return path.isAbsolute(value) ? value : path.join(rootDir, value);
 }
 
 function markdownTable(rows, headers) {
