@@ -116,12 +116,21 @@ export {
   defaultPluginRootConfigFiles,
   fixtureCheckoutPath,
   fixtureSourceRoot,
+  inferPluginSeams,
   loadInspectorConfig,
   loadPluginRootConfig,
   normalizeInspectorConfig,
   normalizePluginRootConfig,
+  packageId,
   validateInspectorConfig,
 } from "./config.js";
+export {
+  buildPluginInspectorConfig,
+  defaultInitConfigPath,
+  defaultInitWorkflowPath,
+  renderGithubActionsWorkflow,
+  writePluginInspectorInit,
+} from "./init.js";
 export {
   buildPlatformProbes,
   defaultPlatformTargets,

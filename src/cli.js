@@ -7,6 +7,7 @@ import {
   captureEntrypoint,
   inspectFixtureSet,
   loadInspectorConfig,
+  writePluginInspectorInit,
   writeArtifacts,
   writeReport,
 } from "./advanced.js";
@@ -20,6 +21,8 @@ try {
     printHelp();
   } else if (command === "check") {
     await runCheck(commandArgs);
+  } else if (command === "init") {
+    await runInit(commandArgs);
   } else if (command === "inspect" || command === "report" || command === "ci") {
     await runReport(command, commandArgs);
   } else if (command === "capture") {
@@ -34,11 +37,13 @@ try {
 
 async function runCheck(commandArgs) {
   const configPath = readFlag(commandArgs, "--config");
+  const pluginRoot = readFlag(commandArgs, "--plugin-root") ?? readFlag(commandArgs, "--root");
   const outDir = readFlag(commandArgs, "--out") ?? "reports";
   const openclawPath = commandArgs.includes("--no-openclaw") ? false : readFlag(commandArgs, "--openclaw");
   const json = commandArgs.includes("--json");
-  const capture = commandArgs.includes("--capture");
-  const { report } = await runPluginCheck({ configPath, outDir, openclawPath, capture });
+  const capture = readRuntimeFlag(commandArgs);
+  const mockSdk = readMockSdkFlag(commandArgs);
+  const { report } = await runPluginCheck({ configPath, pluginRoot, outDir, openclawPath, capture, mockSdk });
 
   if (json) {
     console.log(JSON.stringify(report, null, 2));
@@ -48,6 +53,25 @@ async function runCheck(commandArgs) {
 
   if (report.status !== "pass") {
     throw new Error(`plugin-inspector found ${report.summary.breakageCount} breakages`);
+  }
+}
+
+async function runInit(commandArgs) {
+  const pluginRoot = readFlag(commandArgs, "--plugin-root") ?? readFlag(commandArgs, "--root");
+  const configPath = readFlag(commandArgs, "--config") ?? undefined;
+  const workflowPath = readFlag(commandArgs, "--workflow") ?? undefined;
+  const packageManager = readFlag(commandArgs, "--package-manager") ?? "npm";
+  const result = await writePluginInspectorInit({
+    pluginRoot,
+    configPath,
+    workflowPath,
+    packageManager,
+    ci: commandArgs.includes("--ci"),
+    force: commandArgs.includes("--force"),
+  });
+
+  for (const filePath of result.written) {
+    console.log(`wrote ${filePath}`);
   }
 }
 
@@ -75,7 +99,7 @@ async function runCapture(commandArgs) {
   const entrypoint = commandArgs.find((arg) => !arg.startsWith("-"));
   const outputPath = readFlag(commandArgs, "--output");
   const pluginRoot = readFlag(commandArgs, "--plugin-root");
-  const mockSdk = commandArgs.includes("--mock-sdk");
+  const mockSdk = readMockSdkFlag(commandArgs) ?? commandArgs.includes("--mock-sdk");
   if (!entrypoint) {
     throw new Error("capture requires an entrypoint path");
   }
@@ -100,14 +124,49 @@ function readFlag(commandArgs, name) {
   return commandArgs[index + 1] ?? null;
 }
 
+function readRuntimeFlag(commandArgs) {
+  if (commandArgs.includes("--runtime") || commandArgs.includes("--capture")) {
+    return true;
+  }
+  if (commandArgs.includes("--no-runtime") || commandArgs.includes("--no-capture")) {
+    return false;
+  }
+  return undefined;
+}
+
+function readMockSdkFlag(commandArgs) {
+  const sdk = readFlag(commandArgs, "--sdk");
+  if (sdk === "mock") {
+    return true;
+  }
+  if (sdk === "real") {
+    return false;
+  }
+  if (sdk && !["mock", "real"].includes(sdk)) {
+    throw new Error("--sdk must be mock or real");
+  }
+  if (commandArgs.includes("--mock-sdk")) {
+    return true;
+  }
+  if (commandArgs.includes("--real-sdk")) {
+    return false;
+  }
+  return undefined;
+}
+
 function printHelp() {
   console.log(`plugin-inspector
 
 Usage:
-  plugin-inspector check [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--capture] [--json]
+  plugin-inspector
+  plugin-inspector check [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--json]
+  plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--package-manager npm|pnpm|yarn|bun] [--force]
   plugin-inspector report --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector inspect --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector ci --config <path> [--out <dir>]
-  PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture <entrypoint> [--mock-sdk] [--plugin-root <path>] [--output <path>]
+  PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture <entrypoint> [--mock-sdk|--real-sdk] [--plugin-root <path>] [--output <path>]
+
+Default check runs from the current plugin root and writes reports/ unless --out is set.
+Runtime capture is opt-in because it imports plugin code; use --runtime with PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1.
 `);
 }

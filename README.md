@@ -1,36 +1,46 @@
 <img src="docs/plugin-inspector-banner.jpg" alt="openclaw plugin inspector banner"/>
 
-# 💊 OpenClaw Plugin Inspector
+# OpenClaw Plugin Inspector
 
-`plugin-inspector` is the reusable OpenClaw plugin compatibility inspector. It
-wraps the static inspection, registration capture, and report model prototyped
-in crabpot into an npm-publishable package.
+`plugin-inspector` is the offline compatibility check for OpenClaw plugins. Run
+it from a plugin root to inspect package metadata, `openclaw.plugin.json`, SDK
+imports, `api.on(...)`, `api.register*`, and optional runtime registration
+capture.
 
-## Install
+## Quick Start
 
-Install it as a dev dependency in a plugin repo:
+From a plugin package directory:
+
+```bash
+npx @openclaw/plugin-inspector
+```
+
+That runs `check`, writes report artifacts to `reports/`, and exits non-zero
+when compatibility breakages are found.
+
+Add a local config and GitHub Actions workflow:
+
+```bash
+npx @openclaw/plugin-inspector init --ci
+```
+
+Or install it as a dev dependency:
 
 ```bash
 npm install --save-dev @openclaw/plugin-inspector
+npx plugin-inspector check
 ```
 
-Then run it from the plugin root:
+## Commands
 
 ```bash
 npx @openclaw/plugin-inspector check
+npx @openclaw/plugin-inspector check --plugin-root ./plugins/weather
+npx @openclaw/plugin-inspector init --ci --package-manager pnpm
 ```
 
-## CLI
-
-Run the default plugin-root check from a plugin package directory:
-
-```bash
-plugin-inspector check
-```
-
-That command reads the current directory as one plugin, inspects package
-metadata, `openclaw.plugin.json`, source imports, `api.on(...)`,
-`api.register*`, and writes:
+`check` reads the current directory as one plugin unless `--plugin-root` is set.
+It writes:
 
 - `reports/plugin-inspector-report.json`
 - `reports/plugin-inspector-report.md`
@@ -43,8 +53,8 @@ checkout:
 plugin-inspector check --no-openclaw
 ```
 
-Use a simple plugin-root config when you want stable fixture metadata or
-expected seams:
+Use `plugin-inspector.config.json` when CI needs stable fixture metadata,
+expected seams, or runtime capture defaults:
 
 ```json
 {
@@ -58,6 +68,9 @@ expected seams:
       "registrations": ["registerTool"]
     }
   },
+  "capture": {
+    "mockSdk": true
+  },
   "openclaw": {
     "defaultCheckoutPath": "../openclaw"
   }
@@ -70,48 +83,51 @@ Then run:
 plugin-inspector check --config plugin-inspector.config.json
 ```
 
-Copy-ready examples live in `examples/plugin-inspector.config.json` and
+`init --ci` writes this shape for you, plus
+`.github/workflows/plugin-inspector.yml`. Copy-ready examples also live in
+`examples/plugin-inspector.config.json` and
 `examples/github-actions-plugin-inspector.yml`.
 
-Fixture-set configs are still supported for crabpot-style compatibility suites:
+## Runtime Capture
+
+Runtime capture imports plugin entrypoints in an isolated subprocess and records
+the registrations made during `register(api)`. It is opt-in because it executes
+plugin code:
 
 ```bash
-plugin-inspector report --config crabpot.config.json --out reports
+PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 npx @openclaw/plugin-inspector check --runtime --mock-sdk
 ```
 
-Capture a plugin entrypoint in an explicitly isolated execution lane:
+By default, runtime capture uses a generated mock for `openclaw/plugin-sdk` and
+common external packages so plugin code can load in clean CI without OpenClaw
+installed. Use `--real-sdk` only when the plugin workspace already has real SDK
+dependencies installed and you intentionally want to test that path.
+
+Runtime capture writes:
+
+- `reports/plugin-inspector-runtime-capture.json`
+- `reports/plugin-inspector-runtime-capture.md`
+
+You can also capture one entrypoint directly:
 
 ```bash
 PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture ./dist/index.js --mock-sdk
 ```
 
-Run the optional runtime capture smoke during `check`:
+## CI
 
-```bash
-PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector check --no-openclaw --capture
-```
-
-Runtime capture creates a temporary mock `openclaw/plugin-sdk` package, imports
-declared OpenClaw package entrypoints, calls their `register(api)` function with
-the capture API, and writes:
-
-- `reports/plugin-inspector-runtime-capture.json`
-- `reports/plugin-inspector-runtime-capture.md`
-
-### CI
-
-With a dev dependency:
+Minimal package scripts:
 
 ```json
 {
   "scripts": {
     "plugin:check": "plugin-inspector check --no-openclaw",
-    "plugin:check:runtime": "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector check --no-openclaw --capture"
+    "plugin:check:runtime": "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector check --no-openclaw --runtime --mock-sdk"
   }
 }
 ```
 
-GitHub Actions:
+GitHub Actions without a local dev dependency:
 
 ```yaml
 name: plugin-inspector
@@ -131,14 +147,39 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: npm run plugin:check
-      - run: npm run plugin:check:runtime
+      - run: npx @openclaw/plugin-inspector check --no-openclaw
+      - run: PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 npx @openclaw/plugin-inspector check --no-openclaw --runtime --mock-sdk
       - uses: actions/upload-artifact@v5
         if: always()
         with:
           name: plugin-inspector-reports
           path: reports/plugin-inspector-*
 ```
+
+## Fixture Suites
+
+Fixture-set configs are still supported for crabpot-style compatibility suites:
+
+```bash
+plugin-inspector report --config crabpot.config.json --out reports
+```
+
+Use fixture suites when one repo wants to inspect many plugins. Use plugin-root
+`check` for normal plugin CI.
+
+## Mocking Model
+
+Default inspection is static, offline, and credential-free. Runtime capture is
+the only mode that imports plugin code.
+
+When `--mock-sdk` is enabled, the inspector generates temporary modules for
+`openclaw/plugin-sdk` subpaths and unresolved external packages discovered in
+the plugin import graph. The mock SDK captures registrations; it does not call
+network services, launch OpenClaw, run provider SDKs, or emulate service
+lifecycle side effects.
+
+Use the mock lane for plugin compatibility CI. Keep live provider/service tests
+in the plugin repo behind their own credentials and explicit opt-in flags.
 
 ## Scope
 
@@ -148,5 +189,5 @@ metadata, and source files, then reports observed `api.on(...)`,
 OpenClaw target checkout parsing is limited to public compatibility registries,
 SDK package exports, manifest types, hooks, and captured registrar metadata.
 
-Cold import capture and synthetic contract probes are explicit opt-in modes.
-Live lanes will stay credential-gated and must never run in default CI.
+Cold import capture, synthetic contract probes, and runtime capture are explicit
+opt-in modes. Live lanes stay credential-gated and must never run in default CI.

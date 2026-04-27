@@ -9,6 +9,7 @@ import {
   inspectPluginRoot,
   loadPluginConfig,
   runPluginCheck,
+  setupPluginInspector,
 } from "../src/index.js";
 
 test("public API runs the plugin-root check and writes reports", async () => {
@@ -59,6 +60,41 @@ test("public API exposes capture through an explicit entrypoint helper", async (
     result.captured.map((item) => `${item.kind}:${item.name}`),
     ["hook:before_tool_call", "registration:registerTool"],
   );
+});
+
+test("public API can initialize plugin inspector files", async () => {
+  const pluginRoot = await createPluginRoot();
+
+  const result = await setupPluginInspector({ pluginRoot, ci: true, packageManager: "npm" });
+  const config = JSON.parse(await readFile(path.join(pluginRoot, "plugin-inspector.config.json"), "utf8"));
+  const workflow = await readFile(path.join(pluginRoot, ".github", "workflows", "plugin-inspector.yml"), "utf8");
+
+  assert.equal(result.written.length, 2);
+  assert.equal(config.plugin.id, "weather");
+  assert.equal(config.capture.mockSdk, true);
+  assert.match(workflow, /npx @openclaw\/plugin-inspector check --no-openclaw/);
+});
+
+test("public API honors config-driven runtime capture", async () => {
+  const pluginRoot = await createPluginRoot();
+  await writeFile(
+    path.join(pluginRoot, "plugin-inspector.config.json"),
+    `${JSON.stringify({ version: 1, capture: { runtime: true, mockSdk: true } }, null, 2)}\n`,
+    "utf8",
+  );
+
+  const previous = process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED;
+  process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED = "1";
+  try {
+    const result = await runPluginCheck({ pluginRoot, outDir: "reports", openclawPath: false });
+    assert.equal(result.runtimeCapture.summary.registrationCount, 1);
+  } finally {
+    if (previous === undefined) {
+      delete process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED;
+    } else {
+      process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED = previous;
+    }
+  }
 });
 
 async function createPluginRoot() {
