@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.1 - 2026-04-27
+
+### Changed
+
+- Refresh npm package docs with the simplified CLI-first README and public API surface cleanup.
+
 ## 0.1.0 - 2026-04-27
 
 Initial public package release for `@openclaw/plugin-inspector`.
