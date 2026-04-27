@@ -96,6 +96,7 @@ test("issue builder applies metadata and class summaries", () => {
   });
 
   assert.ok(knownIssueCodes.has("sdk-export-missing"));
+  assert.ok(knownIssueCodes.has("reserved-sdk-import"));
   assert.deepEqual(
     issues.map((issue) => [issue.fixture, issue.code, issue.severity, issue.issueClass, issue.status]),
     [

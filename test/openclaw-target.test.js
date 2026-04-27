@@ -6,6 +6,7 @@ import { test } from "node:test";
 import {
   openClawTargetPathCandidates,
   parseCompatRecordEntries,
+  parsePluginSdkEntrypointSpecifiers,
   parsePluginSdkExports,
   parseTypeFields,
   readOpenClawTargetSurface,
@@ -69,6 +70,14 @@ export type PluginManifestContracts = {
     }),
     "utf8",
   );
+  await mkdir(path.join(targetRoot, "src/plugin-sdk"), { recursive: true });
+  await writeFile(
+    path.join(targetRoot, "src/plugin-sdk/entrypoints.ts"),
+    `export const reservedBundledPluginSdkEntrypoints = ["browser-security-runtime"] as const;
+export const supportedBundledFacadeSdkEntrypoints = ["lmstudio"] as const;
+export const publicPluginOwnedSdkEntrypoints = ["speech-core"] as const;\n`,
+    "utf8",
+  );
 
   const target = await readOpenClawTargetSurface({
     rootDir,
@@ -89,6 +98,9 @@ export type PluginManifestContracts = {
   assert.deepEqual(target.apiRegistrars, ["registerService", "registerTool"]);
   assert.deepEqual(target.capturedRegistrars, ["registerService", "registerTool"]);
   assert.deepEqual(target.sdkExports, ["openclaw/plugin-sdk", "openclaw/plugin-sdk/channels"]);
+  assert.deepEqual(target.reservedSdkExports, ["openclaw/plugin-sdk/browser-security-runtime"]);
+  assert.deepEqual(target.supportedFacadeSdkExports, ["openclaw/plugin-sdk/lmstudio"]);
+  assert.deepEqual(target.publicPluginOwnedSdkExports, ["openclaw/plugin-sdk/speech-core"]);
   assert.deepEqual(target.manifestFields, ["contracts", "id"]);
   assert.deepEqual(target.manifestContractFields, ["channels", "tools"]);
   assert.equal(target.compatRegistryPath, "openclaw/src/plugins/compat/registry.ts");
@@ -115,6 +127,13 @@ test("OpenClaw target parsing helpers stay deterministic", () => {
     "openclaw/plugin-sdk",
     "openclaw/plugin-sdk/tools",
   ]);
+  assert.deepEqual(
+    parsePluginSdkEntrypointSpecifiers(
+      'export const reservedBundledPluginSdkEntrypoints = ["browser-security-runtime", "matrix"] as const;',
+      "reservedBundledPluginSdkEntrypoints",
+    ),
+    ["openclaw/plugin-sdk/browser-security-runtime", "openclaw/plugin-sdk/matrix"],
+  );
   assert.deepEqual(
     parseCompatRecordEntries(`
       { code: "b", status: "supported" }

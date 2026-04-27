@@ -361,8 +361,14 @@ test("target OpenClaw coverage classifier reports missing public surface", () =>
       registrationDetails: [{ name: "registerMissing", ref: "plugins/fixture/src/index.ts:2" }],
     },
     fixtureReport: {
-      sdkImports: ["openclaw/plugin-sdk/missing"],
-      sdkImportDetails: [{ specifier: "openclaw/plugin-sdk/missing", ref: "plugins/fixture/src/index.ts:3" }],
+      sdkImports: ["openclaw/plugin-sdk/browser-security-runtime", "openclaw/plugin-sdk/missing"],
+      sdkImportDetails: [
+        {
+          specifier: "openclaw/plugin-sdk/browser-security-runtime",
+          ref: "plugins/fixture/src/index.ts:3",
+        },
+        { specifier: "openclaw/plugin-sdk/missing", ref: "plugins/fixture/src/index.ts:4" },
+      ],
       pluginManifests: [
         {
           path: "plugins/fixture/openclaw.plugin.json",
@@ -375,7 +381,8 @@ test("target OpenClaw coverage classifier reports missing public surface", () =>
       status: "ok",
       hookNames: ["known_hook"],
       apiRegistrars: ["registerTool"],
-      sdkExports: ["openclaw/plugin-sdk"],
+      sdkExports: ["openclaw/plugin-sdk", "openclaw/plugin-sdk/browser-security-runtime"],
+      reservedSdkExports: ["openclaw/plugin-sdk/browser-security-runtime"],
       manifestFields: ["id"],
       manifestContractFields: ["tools"],
     },
@@ -383,6 +390,7 @@ test("target OpenClaw coverage classifier reports missing public surface", () =>
 
   assert.ok(result.warnings.some((finding) => finding.code === "unknown-hook-name"));
   assert.ok(result.warnings.some((finding) => finding.code === "unknown-registration-name"));
+  assert.ok(result.warnings.some((finding) => finding.code === "reserved-sdk-import"));
   assert.ok(result.warnings.some((finding) => finding.code === "sdk-export-missing"));
   assert.ok(result.warnings.some((finding) => finding.code === "manifest-unknown-fields"));
   assert.ok(result.warnings.some((finding) => finding.code === "manifest-unknown-contracts"));
