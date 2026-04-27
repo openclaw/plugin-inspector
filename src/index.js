@@ -46,3 +46,14 @@ export {
   renderTextSummary,
   writeReport,
 } from "./report.js";
+export {
+  buildSyntheticProbePlan,
+  defaultSyntheticHookContexts,
+  defaultSyntheticHookEvents,
+  defaultSyntheticRegistrationArguments,
+  renderSyntheticProbeMarkdown,
+  runCapturedSyntheticProbes,
+  syntheticRegistrationExecutionProfiles,
+  validateSyntheticProbePlan,
+  writeSyntheticProbePlan,
+} from "./synthetic-probes.js";
