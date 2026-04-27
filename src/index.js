@@ -88,6 +88,13 @@ export {
   writePlatformProbes,
 } from "./platform-probes.js";
 export {
+  buildProfileDiff,
+  defaultProfileDiffOptions,
+  renderProfileDiffMarkdown,
+  validateProfileDiff,
+  writeProfileDiff,
+} from "./profile-diff.js";
+export {
   renderMarkdownReport,
   renderTextSummary,
   writeReport,

@@ -50,6 +50,7 @@ import {
   buildExecutionResultsReport,
   buildImportLoopProfile,
   buildPlatformProbes,
+  buildProfileDiff,
   buildWorkspacePlan,
   createCaptureApi,
   inspectFixtureSet,
@@ -60,6 +61,7 @@ import {
   renderExecutionResultsMarkdown,
   renderImportLoopProfileMarkdown,
   renderPlatformProbesMarkdown,
+  renderProfileDiffMarkdown,
   renderWorkspacePlanMarkdown,
   renderMarkdownReport,
   writeCiSummary,
@@ -68,6 +70,7 @@ import {
   writeExecutionResultsReport,
   writeImportLoopProfile,
   writePlatformProbes,
+  writeProfileDiff,
   writeWorkspacePlan,
   writeReport,
 } from "@openclaw/plugin-inspector";
@@ -98,6 +101,9 @@ await writeExecutionResultsReport(executionResults);
 
 const importLoop = await buildImportLoopProfile({ entrypoint: "dist/index.js", runs: 3 });
 await writeImportLoopProfile(importLoop);
+
+const profileDiff = await buildProfileDiff({ current, baseline, policy });
+await writeProfileDiff(profileDiff);
 ```
 
 ## Scope
