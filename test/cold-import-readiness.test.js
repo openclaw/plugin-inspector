@@ -52,7 +52,7 @@ test("cold import readiness preserves combined blocker evidence", () => {
         dependencies: ["left-pad"],
         sdkImportDetails: [
           {
-            specifier: "openclaw/plugin-sdk/discord",
+            specifier: "openclaw/plugin-sdk/legacy-helper",
             ref: "index.js:1",
           },
         ],

@@ -13,7 +13,7 @@ test("contract probes map issue findings to executable backlog rows", () => {
       {
         fixture: "codex-app-server",
         code: "sdk-export-missing",
-        evidence: ["openclaw/plugin-sdk/discord"],
+        evidence: ["openclaw/plugin-sdk/legacy-helper"],
       },
       {
         fixture: "agentchat",

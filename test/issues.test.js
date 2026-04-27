@@ -8,7 +8,7 @@ test("issue ids are stable fingerprints", () => {
     code: "sdk-export-missing",
     severity: "P1",
     compatRecord: "plugin-sdk-export-aliases",
-    evidence: ["openclaw/plugin-sdk/discord @ plugins/codex-app-server/src/controller.ts:104"],
+    evidence: ["openclaw/plugin-sdk/legacy-helper @ plugins/sample-plugin/src/controller.ts:104"],
   };
 
   assert.equal(issueId(finding), issueId({ ignored: "field", ...finding }));
@@ -73,7 +73,7 @@ test("issue builder applies metadata and class summaries", () => {
         level: "warning",
         message: "missing sdk export",
         compatRecord: "plugin-sdk-export-aliases",
-        evidence: ["openclaw/plugin-sdk/discord"],
+        evidence: ["openclaw/plugin-sdk/legacy-helper"],
       },
       {
         fixture: "agentchat",

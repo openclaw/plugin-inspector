@@ -146,7 +146,7 @@ function readinessReport() {
         priority: "high",
         sdkImportDetails: [
           {
-            specifier: "openclaw/plugin-sdk/discord",
+            specifier: "openclaw/plugin-sdk/legacy-helper",
             ref: "plugins/fixture/src/index.ts:1",
           },
         ],
