@@ -139,6 +139,8 @@ export {
   writeRefDiff,
 } from "./ref-diff.js";
 export {
+  buildCompatibilityReport,
+  classifyCompatRecordCoverage,
   renderMarkdownReport,
   renderTextSummary,
   writeReport,

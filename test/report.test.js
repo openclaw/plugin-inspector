@@ -4,8 +4,10 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import {
+  buildCompatibilityReport,
   buildCompatibilityFixtureReport,
   classifyCompatibilityFixture,
+  classifyCompatRecordCoverage,
   classifyPackageContracts,
   classifyTargetOpenClawCoverage,
   inspectFixtureSet,
@@ -130,6 +132,117 @@ test("compatibility report renderer supports issue metadata and evidence links",
   assert.match(issues, /# Crabpot Issue Findings/);
   assert.match(issues, /P0! \*\*sample-plugin\*\* `live-issue` `core-compat-adapter`/);
   assert.match(issues, /\[linked\]\(plugins\/sample\/src\/index\.ts:1\)/);
+});
+
+test("compatibility report assembly classifies fixtures, issues, probes, and compat records", async () => {
+  const report = await buildCompatibilityReport({
+    generatedAt: "test",
+    fixtures: [
+      {
+        id: "fixture",
+        name: "Fixture",
+        path: "plugins/fixture",
+        priority: "high",
+        seams: ["native-tool"],
+        why: "covers native tool seams",
+      },
+    ],
+    inspections: [
+      {
+        id: "fixture",
+        status: "ok",
+        hooks: ["before_tool_call"],
+        hookDetails: [{ name: "before_tool_call", ref: "plugins/fixture/src/index.ts:1" }],
+        registrations: ["registerTool"],
+        registrationDetails: [{ name: "registerTool", ref: "plugins/fixture/src/index.ts:2" }],
+        manifestContracts: [],
+        manifestFiles: [],
+        sdkImports: [{ specifier: "openclaw/plugin-sdk", ref: "plugins/fixture/src/index.ts:3" }],
+        sourceFiles: ["plugins/fixture/src/index.ts"],
+      },
+    ],
+    failures: ["fixture: missing hooks: missing_hook"],
+    targetOpenClaw: {
+      status: "ok",
+      compatRecords: [],
+      compatRecordStatuses: {},
+      hookNames: ["before_tool_call"],
+      apiRegistrars: ["registerTool"],
+      capturedRegistrars: ["registerTool"],
+      sdkExports: ["openclaw/plugin-sdk"],
+      manifestFields: ["id"],
+      manifestContractFields: [],
+    },
+    buildFixtureReport: ({ fixture, inspection }) => ({
+      id: fixture.id,
+      name: fixture.name,
+      priority: fixture.priority,
+      seams: fixture.seams,
+      why: fixture.why,
+      status: inspection.status,
+      hooks: inspection.hooks,
+      hookDetails: inspection.hookDetails,
+      registrations: inspection.registrations,
+      registrationDetails: inspection.registrationDetails,
+      manifestContracts: inspection.manifestContracts,
+      manifestFiles: [],
+      sourceFiles: inspection.sourceFiles,
+      pluginManifests: [],
+      package: {
+        path: "plugins/fixture/package.json",
+        name: "fixture-plugin",
+        version: "1.0.0",
+        dependencies: [],
+        peerDependencies: [],
+        optionalDependencies: [],
+        openclaw: {
+          compatPluginApi: "^1.0.0",
+          entrypoints: [
+            {
+              kind: "extension",
+              specifier: "dist/index.js",
+              relativePath: "plugins/fixture/dist/index.js",
+              exists: true,
+              requiresBuild: false,
+            },
+          ],
+        },
+      },
+      packages: [],
+      sdkImports: ["openclaw/plugin-sdk"],
+      sdkImportDetails: inspection.sdkImports,
+    }),
+  });
+
+  assert.equal(report.status, "fail");
+  assert.equal(report.summary.fixtureCount, 1);
+  assert.equal(report.summary.breakageCount, 1);
+  assert.ok(report.logs.some((finding) => finding.code === "seam-inventory"));
+  assert.ok(report.warnings.some((finding) => finding.code === "legacy-root-sdk-import"));
+  assert.ok(report.suggestions.some((finding) => finding.code === "before-tool-call-probe"));
+  assert.ok(report.suggestions.some((finding) => finding.code === "missing-compat-record"));
+  assert.ok(report.issues.some((issue) => issue.code === "missing-expected-seam"));
+  assert.ok(report.contractProbes.some((probe) => probe.id === "hook.before_tool_call.terminal-block-approval:fixture"));
+  assert.ok(report.decisions.some((decision) => decision.seam === "compat-registry"));
+});
+
+test("compat record coverage logs unavailable targets", () => {
+  const logs = [];
+  classifyCompatRecordCoverage({
+    targetOpenClaw: { status: "missing", configuredPath: "../openclaw" },
+    findings: [{ fixture: "fixture", compatRecord: "legacy-root-sdk-import" }],
+    suggestions: [],
+    logs,
+    decisions: [],
+  });
+
+  assert.deepEqual(logs[0], {
+    fixture: "openclaw",
+    code: "target-openclaw-unavailable",
+    level: "log",
+    message: "target OpenClaw checkout was not available, so compat record coverage was not checked",
+    evidence: ["../openclaw"],
+  });
 });
 
 test("compatibility fixture summary reads manifests and OpenClaw package metadata", async () => {
