@@ -156,7 +156,12 @@ export async function captureEntrypoint(entrypoint, options = {}) {
   }
 
   const resolvedEntrypoint = path.resolve(options.cwd ?? process.cwd(), entrypoint);
-  const module = await import(pathToFileURL(resolvedEntrypoint).href);
+  let module;
+  try {
+    module = await import(pathToFileURL(resolvedEntrypoint).href);
+  } catch (error) {
+    throw classifyCapturePhaseError(error, "entrypoint-import-error");
+  }
   const register = findRegisterExport(module);
 
   if (!register) {
@@ -168,7 +173,11 @@ export async function captureEntrypoint(entrypoint, options = {}) {
   }
 
   const api = createCaptureApi(options.apiOptions);
-  await register(api);
+  try {
+    await register(api);
+  } catch (error) {
+    throw classifyCapturePhaseError(error, "registration-execution-error");
+  }
   const result = {
     status: "captured",
     entrypoint: resolvedEntrypoint,
@@ -229,9 +238,24 @@ export function classifyMockSdkCaptureError(error) {
     });
   }
 
+  const failureClass = rawMessage.match(/\[plugin-inspector:([^\]]+)\]/)?.[1];
+  if (failureClass) {
+    return enrichCaptureError(error, {
+      message: firstMeaningfulErrorLine(rawMessage.replace(/\[plugin-inspector:[^\]]+\]/, "")) ?? "Mock SDK capture failed",
+      failureClass,
+    });
+  }
+
   return enrichCaptureError(error, {
     message: firstMeaningfulErrorLine(rawMessage) ?? "Mock SDK capture failed",
     failureClass: "mock-sdk-capture-error",
+  });
+}
+
+export function classifyCapturePhaseError(error, failureClass) {
+  return enrichCaptureError(error, {
+    message: error instanceof Error ? error.message : String(error),
+    failureClass,
   });
 }
 

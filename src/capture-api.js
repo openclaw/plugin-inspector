@@ -95,6 +95,7 @@ export function createCaptureApi(options = {}) {
         }
         if (typeof property === "string" && isRegistrarProperty(property)) {
           return (...args) => {
+            const returnValue = registrationReturnValue(property, args, { api, registrarProfiles });
             const captureIndex =
               captured.push({
                 kind: "registration",
@@ -107,10 +108,11 @@ export function createCaptureApi(options = {}) {
                 kind: "registration",
                 name: property,
                 arguments: args,
+                returnValue,
                 captureIndex,
               });
             }
-            return registrationReturnValue(property, args, { api, registrarProfiles });
+            return returnValue;
           };
         }
         return undefined;
