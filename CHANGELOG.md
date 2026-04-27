@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.2.0 - 2026-04-27
+
+### Added
+
+- Add package.json `pluginInspector` config discovery for plugin-root checks.
+- Add `plugin-inspector config` for resolved plugin-root config summaries.
+- Add author-facing `plugin-inspector inspect` plugin-root flow.
+- Add CI-native SARIF and JUnit outputs; `plugin-inspector ci` writes them by default.
+
+### Changed
+
+- Make generated CI workflows use one `plugin-inspector ci --no-openclaw --runtime --mock-sdk` command.
+- Harden runtime capture for string handler registrations, parse-capable config schema helpers, and provider auth/catalog SDK mocks.
+
 ## 0.1.3 - 2026-04-27
 
 ### Added
