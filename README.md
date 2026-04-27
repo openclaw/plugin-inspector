@@ -45,11 +45,14 @@ PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture ./dist/index.js
 ```js
 import {
   buildCiSummary,
+  buildContractCapture,
   createCaptureApi,
   inspectFixtureSet,
   loadInspectorConfig,
+  renderContractCaptureMarkdown,
   renderMarkdownReport,
   writeCiSummary,
+  writeContractCapture,
   writeReport,
 } from "@openclaw/plugin-inspector";
 
@@ -59,6 +62,9 @@ await writeReport(report, { outDir: "reports" });
 
 const summary = await buildCiSummary({ reportsDir: "reports" });
 await writeCiSummary(summary);
+
+const capture = buildContractCapture({ report });
+await writeContractCapture(capture);
 ```
 
 ## Scope
@@ -67,5 +73,5 @@ Default inspection is offline and credential-free. It reads manifests, package
 metadata, and source files, then reports observed `api.on(...)`,
 `api.register*`, `define*`, SDK imports, and manifest contracts.
 
-Cold import, SDK mocking, synthetic contract probes, and live lanes will be
-added behind explicit opt-in modes. Live checks must never run in default CI.
+Cold import capture and synthetic contract probes are explicit opt-in modes.
+Live lanes will stay credential-gated and must never run in default CI.

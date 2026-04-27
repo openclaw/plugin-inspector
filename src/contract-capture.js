@@ -1,4 +1,9 @@
 import { renderMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import {
+  defaultSyntheticHookContexts,
+  defaultSyntheticHookEvents,
+  defaultSyntheticRegistrationArguments,
+} from "./synthetic-probes.js";
 
 export const defaultRegistrationAssertions = {
   defineChannelPluginEntry: ["channel id is stable", "setup/config schema can be read", "message envelope metadata is preserved"],
@@ -18,23 +23,7 @@ export const defaultRegistrationAssertions = {
   registerTool: ["tool name is stable", "input schema is captured", "result shape metadata is captured"],
 };
 
-export const defaultRegistrationArguments = {
-  defineChannelPluginEntry: [{ id: "fixture-channel", setup: "function", receive: "function" }],
-  definePluginEntry: [{ id: "fixture-plugin", register: "function" }],
-  registerChannel: [{ id: "fixture-channel", send: "function", receive: "function" }],
-  registerCli: [{ name: "fixture-command", args: [{ name: "input", type: "string" }] }],
-  registerCommand: [{ name: "fixture-command", handler: "function" }],
-  registerContextEngine: [{ id: "fixture-context-engine", factory: "function" }],
-  registerGatewayMethod: [{ name: "fixture.gateway.method", inputSchema: { type: "object" }, handler: "function" }],
-  registerHook: ["before_prompt_build", "function"],
-  registerHttpRoute: [{ method: "POST", path: "/fixture/probe", handler: "function" }],
-  registerInteractiveHandler: [{ id: "fixture-interaction", handler: "function" }],
-  registerMemoryPromptSection: [{ id: "fixture-memory-section", render: "function" }],
-  registerMemoryRuntime: [{ id: "fixture-memory-runtime", create: "function" }],
-  registerService: [{ name: "fixture-service", start: "function", stop: "function" }],
-  registerSpeechProvider: [{ id: "fixture-speech", speak: "function" }],
-  registerTool: [{ name: "fixture_tool", inputSchema: { type: "object", properties: {} }, run: "function" }],
-};
+export const defaultRegistrationArguments = defaultSyntheticRegistrationArguments;
 
 export const defaultHookAssertions = {
   agent_end: ["final conversation payload is redacted as expected", "agent id and run metadata are present"],
@@ -49,124 +38,9 @@ export const defaultHookAssertions = {
   subagent_spawned: ["spawn payload is preserved", "parent/subagent metadata are present"],
 };
 
-export const defaultHookEvents = {
-  agent_end: {
-    runId: "run-fixture",
-    agentId: "agent-fixture",
-    conversationId: "conversation-fixture",
-    status: "completed",
-    transcript: [{ role: "assistant", content: "[redacted fixture output]" }],
-  },
-  before_agent_start: {
-    agentId: "agent-fixture",
-    runId: "run-fixture",
-    config: { source: "crabpot" },
-  },
-  before_prompt_build: {
-    runId: "run-fixture",
-    agentId: "agent-fixture",
-    conversationId: "conversation-fixture",
-    messages: [{ role: "user", content: "fixture prompt" }],
-    metadata: { source: "crabpot" },
-  },
-  before_tool_call: {
-    runId: "run-fixture",
-    toolName: "fixture_tool",
-    params: {},
-    toolCallId: "call-fixture",
-  },
-  inbound_claim: {
-    channelId: "fixture-channel",
-    source: { type: "external", id: "fixture-source" },
-    message: { id: "message-fixture", text: "claim this message" },
-  },
-  llm_input: {
-    agentId: "agent-fixture",
-    model: "gpt-5.4",
-    messages: [{ role: "user", content: "[redacted fixture input]" }],
-  },
-  llm_output: {
-    agentId: "agent-fixture",
-    model: "gpt-5.4",
-    output: { role: "assistant", content: "[redacted fixture output]" },
-  },
-  subagent_delivery_target: {
-    childSessionKey: "child-session",
-    agentId: "agent-child",
-    label: "fixture child",
-    mode: "run",
-    requester: { channel: "fixture-channel", accountId: "fixture-account" },
-  },
-  subagent_ended: {
-    childSessionKey: "child-session",
-    agentId: "agent-child",
-    status: "completed",
-  },
-  subagent_spawned: {
-    childSessionKey: "child-session",
-    agentId: "agent-child",
-    label: "fixture child",
-    mode: "run",
-  },
-};
+export const defaultHookEvents = defaultSyntheticHookEvents;
 
-export const defaultHookContexts = {
-  agent_end: {
-    runId: "run-fixture",
-    agentId: "agent-fixture",
-    sessionId: "session-fixture",
-    channelId: "fixture-channel",
-  },
-  before_agent_start: {
-    runId: "run-fixture",
-    agentId: "agent-fixture",
-    sessionId: "session-fixture",
-  },
-  before_prompt_build: {
-    runId: "run-fixture",
-    agentId: "agent-fixture",
-    sessionId: "session-fixture",
-    channelId: "fixture-channel",
-  },
-  before_tool_call: {
-    runId: "run-fixture",
-    agentId: "agent-fixture",
-    sessionId: "session-fixture",
-    toolName: "fixture_tool",
-    toolCallId: "call-fixture",
-  },
-  inbound_claim: {
-    channelId: "fixture-channel",
-    pluginId: "fixture-plugin",
-  },
-  llm_input: {
-    runId: "run-fixture",
-    agentId: "agent-fixture",
-    sessionId: "session-fixture",
-    channelId: "fixture-channel",
-  },
-  llm_output: {
-    runId: "run-fixture",
-    agentId: "agent-fixture",
-    sessionId: "session-fixture",
-    channelId: "fixture-channel",
-  },
-  subagent_delivery_target: {
-    runId: "run-fixture",
-    childSessionKey: "child-session",
-    requesterSessionKey: "parent-session",
-  },
-  subagent_ended: {
-    runId: "run-fixture",
-    childSessionKey: "child-session",
-    requesterSessionKey: "parent-session",
-  },
-  subagent_spawned: {
-    runId: "run-fixture",
-    childSessionKey: "child-session",
-    requesterSessionKey: "parent-session",
-  },
-};
+export const defaultHookContexts = defaultSyntheticHookContexts;
 
 export function buildContractCapture(options = {}) {
   const report = options.report;
