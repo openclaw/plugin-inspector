@@ -203,6 +203,47 @@ export const defaultSyntheticRegistrationArguments = {
   registerTool: [{ name: "fixture_tool", inputSchema: { type: "object", properties: {} }, run: "function" }],
 };
 
+export const defaultSyntheticRegistrationProbeInputs = {
+  registerCli: {
+    execute: commandProbeArgs,
+    handler: commandProbeArgs,
+    run: commandProbeArgs,
+  },
+  registerCommand: {
+    execute: commandProbeArgs,
+    handler: commandProbeArgs,
+    run: commandProbeArgs,
+  },
+  registerGatewayMethod: {
+    execute: gatewayProbeArgs,
+    handler: gatewayProbeArgs,
+    run: gatewayProbeArgs,
+  },
+  registerHttpRoute: {
+    execute: httpRouteProbeArgs,
+    handler: httpRouteProbeArgs,
+    run: httpRouteProbeArgs,
+  },
+  registerInteractiveHandler: {
+    execute: interactiveProbeArgs,
+    handler: interactiveProbeArgs,
+    run: interactiveProbeArgs,
+  },
+  registerService: {
+    start: lifecycleProbeArgs,
+    stop: lifecycleProbeArgs,
+  },
+  registerSpeechProvider: {
+    speak: speechProbeArgs,
+    synthesize: speechProbeArgs,
+  },
+  registerTool: {
+    execute: toolExecuteProbeArgs,
+    handler: toolRunProbeArgs,
+    run: toolRunProbeArgs,
+  },
+};
+
 export function buildSyntheticProbePlan(options = {}) {
   if (!options.capture) {
     throw new TypeError("buildSyntheticProbePlan requires a capture inventory");
@@ -411,7 +452,7 @@ async function runRegistrationProbes(entry, retainedEntry, captureIndex, options
     return [metadataOnlyResult(entry, captureIndex, profile.reason)];
   }
 
-  const descriptor = retainedEntry.arguments?.[0];
+  const descriptor = retainedEntry.arguments?.[0] ?? retainedEntry.returnValue;
   if (!descriptor || typeof descriptor !== "object") {
     return [blockedResult(entry, captureIndex, "captured registration has no object descriptor")];
   }
@@ -419,7 +460,7 @@ async function runRegistrationProbes(entry, retainedEntry, captureIndex, options
     return [blockedResult(entry, captureIndex, `captured registration requires ${profile.option}=true`)];
   }
 
-  const invocations = registrationInvocations(entry.name, descriptor, profile, options);
+  const invocations = registrationInvocations(entry.name, descriptor, retainedEntry.returnValue, profile, options);
   if (invocations.length === 0) {
     return [blockedResult(entry, captureIndex, "captured registration has no supported callable probe")];
   }
@@ -437,14 +478,21 @@ async function runRegistrationProbes(entry, retainedEntry, captureIndex, options
   );
 }
 
-function registrationInvocations(registrar, descriptor, profile, options) {
+function registrationInvocations(registrar, descriptor, returnValue, profile, options) {
   const invocations = [];
+  const allowReturnValueFallback = descriptor === returnValue;
 
   for (const property of profile.callableProperties) {
-    if (typeof descriptor[property] === "function") {
+    const callable =
+      typeof descriptor[property] === "function"
+        ? descriptor[property]
+        : allowReturnValueFallback
+          ? returnValue?.[property]
+          : undefined;
+    if (typeof callable === "function") {
       invocations.push({
         label: `${registrar}.${property}`,
-        invoke: () => invokeRegistrationCallable(descriptor[property], registrar, property, options),
+        invoke: () => invokeRegistrationCallable(callable, registrar, property, options),
       });
     }
   }
@@ -453,10 +501,9 @@ function registrationInvocations(registrar, descriptor, profile, options) {
 
 function invokeRegistrationCallable(callable, registrar, property, options) {
   const event = syntheticRegistrationEvent(registrar, property, options);
-  if (property === "execute") {
-    return callable("call-fixture", event.params, new AbortController().signal, () => undefined);
-  }
-  return callable(event);
+  const inputFactory = options.registrationProbeInputs?.[registrar]?.[property] ?? defaultSyntheticRegistrationProbeInputs[registrar]?.[property];
+  const args = inputFactory ? inputFactory(event, options) : [event];
+  return callable(...args);
 }
 
 function syntheticRegistrationEvent(registrar, property, options) {
@@ -476,6 +523,103 @@ function syntheticRegistrationEvent(registrar, property, options) {
       name: beforeToolCall.toolName,
     },
   };
+}
+
+function toolRunProbeArgs(event) {
+  return [
+    event.params,
+    {
+      source: event.source,
+      toolName: event.toolName,
+      toolCallId: event.toolCall.id,
+      signal: new AbortController().signal,
+      logger: console,
+    },
+  ];
+}
+
+function toolExecuteProbeArgs(event) {
+  return [event.toolCall.id, event.params, new AbortController().signal, () => undefined];
+}
+
+function httpRouteProbeArgs(event) {
+  return [
+    {
+      method: "POST",
+      path: "/fixture/probe",
+      url: "http://127.0.0.1/fixture/probe",
+      headers: event.headers,
+      body: event.body,
+      json: async () => event.body,
+      text: async () => JSON.stringify(event.body),
+    },
+    {
+      source: event.source,
+      params: event.params,
+      logger: console,
+    },
+  ];
+}
+
+function commandProbeArgs(event) {
+  return [
+    event.input,
+    {
+      source: event.source,
+      signal: new AbortController().signal,
+      logger: console,
+    },
+  ];
+}
+
+function gatewayProbeArgs(event) {
+  return [
+    {
+      params: event.params,
+      body: event.body,
+      headers: event.headers,
+    },
+    {
+      source: event.source,
+      logger: console,
+    },
+  ];
+}
+
+function interactiveProbeArgs(event) {
+  return [
+    {
+      id: "interaction-fixture",
+      payload: event.body,
+    },
+    {
+      source: event.source,
+      logger: console,
+    },
+  ];
+}
+
+function lifecycleProbeArgs(event) {
+  return [
+    {
+      source: event.source,
+      logger: console,
+      signal: new AbortController().signal,
+    },
+  ];
+}
+
+function speechProbeArgs(event) {
+  return [
+    {
+      text: "fixture speech request",
+      voice: "fixture",
+    },
+    {
+      source: event.source,
+      logger: console,
+    },
+  ];
 }
 
 async function runProbe({ captureIndex, kind, seam, label, invoke }) {

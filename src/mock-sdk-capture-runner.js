@@ -12,6 +12,9 @@ try {
   const result = await run(options);
   process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
 } catch (error) {
+  if (error.failureClass) {
+    process.stderr.write(`[plugin-inspector:${error.failureClass}]\n`);
+  }
   process.stderr.write(`${error.stack ?? error.message}\n`);
   process.exitCode = 1;
 }
@@ -33,7 +36,12 @@ async function run(options) {
 }
 
 async function captureLinkedEntrypoint(entrypoint, options) {
-  const module = await import(pathToFileURL(entrypoint).href);
+  let module;
+  try {
+    module = await import(pathToFileURL(entrypoint).href);
+  } catch (error) {
+    throw capturePhaseError(error, "entrypoint-import-error");
+  }
   const register = findRegisterExport(module);
 
   if (!register) {
@@ -46,13 +54,26 @@ async function captureLinkedEntrypoint(entrypoint, options) {
   }
 
   const api = createCaptureApi(options.apiOptions);
-  await register(api);
-  return {
+  try {
+    await register(api);
+  } catch (error) {
+    throw capturePhaseError(error, "registration-execution-error");
+  }
+  const result = {
     status: "captured",
     entrypoint: options.entrypoint,
     mockSdk: true,
     captured: api.getCapturedContracts(),
   };
+  if (options.apiOptions?.retainHandlers === true) {
+    result.retained = api.getRetainedContracts();
+  }
+  return result;
+}
+
+function capturePhaseError(error, failureClass) {
+  error.failureClass = failureClass;
+  return error;
 }
 
 function findRegisterExport(module) {

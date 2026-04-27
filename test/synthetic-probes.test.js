@@ -96,6 +96,30 @@ test("synthetic probes invoke retained hook and tool handlers", async () => {
   );
 });
 
+test("synthetic probes pass registrar-specific handler inputs", async () => {
+  const capture = await captureLocalFixture([
+    "export function register(api) {",
+    "  api.registerTool({",
+    "    name: 'fixture_tool',",
+    "    run(params, ctx) { return { sawParams: typeof params === 'object', toolName: ctx.toolName }; },",
+    "  });",
+    "  api.registerHttpRoute({",
+    "    method: 'POST',",
+    "    path: '/fixture',",
+    "    handler(req, ctx) { return { method: req.method, hasLogger: Boolean(ctx.logger) }; },",
+    "  });",
+    "}",
+  ]);
+
+  const result = await runCapturedSyntheticProbes(capture);
+
+  assert.equal(result.summary.failCount, 0);
+  assert.deepEqual(
+    result.results.map((item) => `${item.status}:${item.label}`),
+    ["pass:registerTool.run", "pass:registerHttpRoute.handler"],
+  );
+});
+
 test("synthetic probes keep opt-in registrations guarded", async () => {
   const capture = await captureLocalFixture([
     "export function register(api) {",
@@ -110,6 +134,34 @@ test("synthetic probes keep opt-in registrations guarded", async () => {
   const executed = await runCapturedSyntheticProbes(capture, { includeLifecycle: true });
   assert.equal(executed.summary.passCount, 1);
   assert.equal(executed.results[0].label, "registerService.start");
+});
+
+test("mock SDK capture preserves retained registration metadata across subprocesses", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-mock-sdk-"));
+  const entrypoint = path.join(dir, "fixture.mjs");
+  await writeFile(
+    entrypoint,
+    [
+      'import { definePluginEntry } from "openclaw/plugin-sdk";',
+      "",
+      "export default definePluginEntry((api) => {",
+      "  api.registerTool({ name: 'fixture_tool', run(params) { return { sawParams: typeof params === 'object' }; } });",
+      "});",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const capture = await captureEntrypoint("fixture.mjs", {
+    cwd: dir,
+    pluginRoot: dir,
+    mockSdk: true,
+    apiOptions: { retainHandlers: true },
+  });
+  const result = await runCapturedSyntheticProbes(capture);
+
+  assert.equal(capture.retained.length, 1);
+  assert.equal(result.summary.blockedCount, 1);
+  assert.match(result.results[0].reason, /no supported callable probe/);
 });
 
 async function captureLocalFixture(lines) {

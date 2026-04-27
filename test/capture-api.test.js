@@ -68,8 +68,11 @@ test("capture API can retain handlers for probes", () => {
   const api = createCaptureApi({ retainHandlers: true });
 
   api.on("llm_output", handler);
+  const service = api.registerService({ name: "fixture-service" });
 
   const retained = api.getRetainedContracts();
-  assert.equal(retained.length, 1);
+  assert.equal(retained.length, 2);
   assert.equal(retained[0].handler, handler);
+  assert.equal(retained[1].returnValue, service);
+  assert.equal(typeof retained[1].returnValue.start, "function");
 });
