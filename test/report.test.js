@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import {
+  buildCompatibilityFixtureReport,
   inspectFixtureSet,
   loadInspectorConfig,
   renderCompatibilityIssuesReport,
@@ -126,6 +127,71 @@ test("compatibility report renderer supports issue metadata and evidence links",
   assert.match(issues, /# Crabpot Issue Findings/);
   assert.match(issues, /P0! \*\*sample-plugin\*\* `live-issue` `core-compat-adapter`/);
   assert.match(issues, /\[linked\]\(plugins\/sample\/src\/index\.ts:1\)/);
+});
+
+test("compatibility fixture summary reads manifests and OpenClaw package metadata", async () => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-fixture-summary-"));
+  const fixtureDir = path.join(rootDir, "plugin");
+  await mkdir(path.join(fixtureDir, "src"), { recursive: true });
+  await writeFile(
+    path.join(fixtureDir, "openclaw.plugin.json"),
+    `${JSON.stringify({ id: "fixture", name: "Fixture", version: "1.0.0", contracts: { tools: {} } }, null, 2)}\n`,
+    "utf8",
+  );
+  await writeFile(path.join(fixtureDir, "src", "index.js"), "export function register() {}\n", "utf8");
+  await writeFile(
+    path.join(fixtureDir, "package.json"),
+    `${JSON.stringify(
+      {
+        name: "fixture-plugin",
+        version: "1.0.0",
+        type: "module",
+        dependencies: { zod: "^1.0.0" },
+        openclaw: {
+          extensions: ["src/index.js"],
+          compat: { pluginApi: "^1.0.0" },
+        },
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  const report = await buildCompatibilityFixtureReport({
+    rootDir,
+    checkoutPath: fixtureDir,
+    sourceRoot: fixtureDir,
+    fixture: {
+      id: "fixture",
+      name: "Fixture",
+      priority: "high",
+      seams: ["native-tool"],
+      why: "covers package metadata",
+    },
+    inspection: {
+      status: "ok",
+      hooks: [],
+      hookDetails: [],
+      registrations: ["registerTool"],
+      registrationDetails: [],
+      manifestContracts: ["tools"],
+      manifestFiles: ["plugin/openclaw.plugin.json"],
+      sourceFiles: ["plugin/src/index.js"],
+      sdkImports: [{ specifier: "openclaw/plugin-sdk" }],
+    },
+  });
+
+  assert.equal(report.pluginManifests[0].id, "fixture");
+  assert.equal(report.package.name, "fixture-plugin");
+  assert.equal(report.package.openclaw.compatPluginApi, "^1.0.0");
+  assert.deepEqual(report.package.openclaw.entrypoints[0], {
+    kind: "extension",
+    specifier: "src/index.js",
+    relativePath: "plugin/src/index.js",
+    exists: true,
+    requiresBuild: false,
+  });
+  assert.deepEqual(report.sdkImports, ["openclaw/plugin-sdk"]);
 });
 
 test("writeReport writes JSON and Markdown artifacts", async () => {

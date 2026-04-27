@@ -80,6 +80,12 @@ export {
   writeExecutionResultsReport,
 } from "./execution-results.js";
 export {
+  buildCompatibilityFixtureReport,
+  readPackageSummaries,
+  readPluginManifests,
+  summarizePackage,
+} from "./fixture-summary.js";
+export {
   buildImportLoopProfile,
   defaultImportLoopProfileOptions,
   renderImportLoopProfileMarkdown,
