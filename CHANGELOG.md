@@ -15,6 +15,7 @@
 
 - Make generated CI workflows use one `plugin-inspector ci --no-openclaw --runtime --mock-sdk` command.
 - Make `plugin-inspector init --ci` detect `packageManager` and common lockfiles before generating CI install/run commands.
+- Make `plugin-inspector init` output repo-relative file paths and preflight generated files before writing.
 - Harden runtime capture for string handler registrations, parse-capable config schema helpers, and provider auth/catalog SDK mocks.
 
 ## 0.1.3 - 2026-04-27
