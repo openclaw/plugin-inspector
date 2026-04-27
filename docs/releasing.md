@@ -1,11 +1,32 @@
 # Releasing plugin-inspector
 
-`plugin-inspector` publishes from a signed Git tag through the GitHub Actions
+`plugin-inspector` publishes from an annotated Git tag through the GitHub Actions
 release workflow. The workflow runs the test suite, verifies the npm tarball,
 publishes a GitHub release, and publishes the public npm package through npm
 trusted publishing.
 
 ## First-time setup
+
+Important: npm trusted publishing cannot create the initial package record. The
+package must already exist on npm before a trusted publisher can be configured.
+
+To preserve OIDC provenance for `0.1.0`, publish a temporary `0.0.0` bootstrap
+package with owner npm credentials, then configure trusted publishing and rerun
+the release workflow for `v0.1.0`.
+
+The `@openclaw` npm scope must exist and the publishing account must have write
+access to it. If that scope is not available, rename the package before the
+first publish.
+
+One safe bootstrap shape:
+
+```bash
+BOOTSTRAP_DIR="$(mktemp -d)"
+printf '{"name":"@openclaw/plugin-inspector","version":"0.0.0","description":"OpenClaw plugin inspector bootstrap placeholder","license":"MIT"}\n' > "${BOOTSTRAP_DIR}/package.json"
+printf '# @openclaw/plugin-inspector\n\nBootstrap placeholder. Use 0.1.0 or newer.\n' > "${BOOTSTRAP_DIR}/README.md"
+npm publish "${BOOTSTRAP_DIR}" --access public --tag bootstrap
+npm deprecate @openclaw/plugin-inspector@0.0.0 "Bootstrap placeholder; use 0.1.0 or newer."
+```
 
 Configure npm trusted publishing for `@openclaw/plugin-inspector`:
 
@@ -21,6 +42,12 @@ The package `repository.url` must continue to match
 npm trusted publishing uses GitHub Actions OIDC and does not use an `NPM_TOKEN`
 secret. npm automatically creates provenance attestations for trusted publishes
 from a public GitHub repository.
+
+The equivalent CLI setup after the package exists is:
+
+```bash
+npm trust github @openclaw/plugin-inspector --repo openclaw/plugin-inspector --file release.yml
+```
 
 ## Local verification
 
