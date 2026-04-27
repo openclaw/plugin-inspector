@@ -30,6 +30,33 @@ test("public API runs the plugin-root check and writes reports", async () => {
   assert.equal(paths.jsonPath, path.join(pluginRoot, "reports", "plugin-inspector-report.json"));
 });
 
+test("public API reads plugin config from package.json", async () => {
+  const pluginRoot = await createPluginRoot({
+    packageConfig: {
+      plugin: {
+        id: "weather-pkg",
+        priority: "medium",
+        seams: ["channel"],
+        sourceRoot: "src",
+        expect: {
+          registrations: ["definePluginEntry"],
+        },
+      },
+      capture: {
+        mockSdk: true,
+      },
+    },
+  });
+
+  const config = await loadPluginConfig({ pluginRoot });
+
+  assert.equal(config.configPath, "package.json#pluginInspector");
+  assert.equal(config.fixtures[0].id, "weather-pkg");
+  assert.equal(config.fixtures[0].priority, "medium");
+  assert.deepEqual(config.fixtures[0].seams, ["channel"]);
+  assert.equal(config.capture.mockSdk, true);
+});
+
 test("public API keeps crabpot-style fixture configs behind an explicit helper", async () => {
   const report = await inspectFixtureSetConfig({ configPath: "test/fixtures/inspector.config.json" });
 
@@ -97,24 +124,27 @@ test("public API honors config-driven runtime capture", async () => {
   }
 });
 
-async function createPluginRoot() {
+async function createPluginRoot(options = {}) {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-api-root-"));
   await mkdir(path.join(rootDir, "src"), { recursive: true });
+  const packageJson = {
+    name: "@example/openclaw-weather",
+    version: "1.0.0",
+    type: "module",
+    openclaw: {
+      extensions: ["src/index.js"],
+      compat: { pluginApi: "^1.0.0" },
+    },
+  };
+  if (options.packageConfig) {
+    packageJson.pluginInspector = {
+      version: 1,
+      ...options.packageConfig,
+    };
+  }
   await writeFile(
     path.join(rootDir, "package.json"),
-    `${JSON.stringify(
-      {
-        name: "@example/openclaw-weather",
-        version: "1.0.0",
-        type: "module",
-        openclaw: {
-          extensions: ["src/index.js"],
-          compat: { pluginApi: "^1.0.0" },
-        },
-      },
-      null,
-      2,
-    )}\n`,
+    `${JSON.stringify(packageJson, null, 2)}\n`,
     "utf8",
   );
   await writeFile(

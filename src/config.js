@@ -4,6 +4,7 @@ import path from "node:path";
 
 export const npmPackagePayloadDir = ".crabpot-package";
 export const defaultPluginRootConfigFiles = ["plugin-inspector.config.json", ".plugin-inspector.json"];
+export const packageJsonConfigKeys = ["pluginInspector", "plugin-inspector"];
 
 export async function loadInspectorConfig(configPath, options = {}) {
   if (!configPath) {
@@ -24,16 +25,23 @@ export async function loadInspectorConfig(configPath, options = {}) {
 export async function loadPluginRootConfig(configPath = null, options = {}) {
   const rootDir = path.resolve(options.cwd ?? process.cwd());
   const resolvedPath = configPath ? path.resolve(rootDir, configPath) : findPluginRootConfigPath(rootDir);
-  if (!resolvedPath && !existsSync(path.join(rootDir, "package.json")) && !existsSync(path.join(rootDir, "openclaw.plugin.json"))) {
+  const packageJsonPath = path.join(rootDir, "package.json");
+  const packageJson = await readJsonIfExists(packageJsonPath);
+  const packageConfig = packageJsonConfig(packageJson);
+
+  if (!resolvedPath && !packageJson && !existsSync(path.join(rootDir, "openclaw.plugin.json"))) {
     throw new Error("run from a plugin root with package.json/openclaw.plugin.json, or pass --config");
   }
-  const config = resolvedPath ? JSON.parse(await readFile(resolvedPath, "utf8")) : { version: 1 };
+
+  const config = resolvedPath
+    ? JSON.parse(await readFile(resolvedPath, "utf8"))
+    : (packageConfig.config ?? { version: 1 });
   const normalizedConfig = await normalizePluginRootConfig(config, { rootDir });
   validateInspectorConfig(normalizedConfig);
   return {
     ...normalizedConfig,
     rootDir,
-    configPath: resolvedPath,
+    configPath: resolvedPath ?? packageConfig.configPath,
   };
 }
 
@@ -162,6 +170,25 @@ export async function normalizeInspectorConfig(config, options = {}) {
 
 function findPluginRootConfigPath(rootDir) {
   return defaultPluginRootConfigFiles.map((file) => path.join(rootDir, file)).find(existsSync) ?? null;
+}
+
+function packageJsonConfig(packageJson) {
+  if (!packageJson) {
+    return { config: null, configPath: null };
+  }
+  for (const key of packageJsonConfigKeys) {
+    if (packageJson[key] === undefined) {
+      continue;
+    }
+    if (!packageJson[key] || typeof packageJson[key] !== "object" || Array.isArray(packageJson[key])) {
+      throw new Error(`package.json ${key} must be an object`);
+    }
+    return {
+      config: packageJson[key],
+      configPath: `package.json#${key}`,
+    };
+  }
+  return { config: null, configPath: null };
 }
 
 async function readJsonIfExists(filePath) {

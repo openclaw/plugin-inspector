@@ -53,8 +53,9 @@ checkout:
 plugin-inspector check --no-openclaw
 ```
 
-Use `plugin-inspector.config.json` when CI needs stable fixture metadata,
-expected seams, or runtime capture defaults:
+Use either `plugin-inspector.config.json` or a `package.json`
+`pluginInspector` block when CI needs stable fixture metadata, expected seams,
+or runtime capture defaults:
 
 ```json
 {
@@ -83,9 +84,32 @@ Then run:
 plugin-inspector check --config plugin-inspector.config.json
 ```
 
+For a single plugin package, the same config can live in `package.json`:
+
+```json
+{
+  "scripts": {
+    "plugin:check": "plugin-inspector check --no-openclaw"
+  },
+  "pluginInspector": {
+    "version": 1,
+    "plugin": {
+      "id": "weather",
+      "priority": "high",
+      "seams": ["dynamic-tool"],
+      "sourceRoot": "src"
+    },
+    "capture": {
+      "mockSdk": true
+    }
+  }
+}
+```
+
 `init --ci` writes this shape for you, plus
 `.github/workflows/plugin-inspector.yml`. Copy-ready examples also live in
 `examples/plugin-inspector.config.json` and
+`examples/package-json-plugin-inspector.json` and
 `examples/github-actions-plugin-inspector.yml`.
 
 ## Runtime Capture

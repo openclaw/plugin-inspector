@@ -122,6 +122,7 @@ export {
   loadPluginRootConfig,
   normalizeInspectorConfig,
   normalizePluginRootConfig,
+  packageJsonConfigKeys,
   packageId,
   validateInspectorConfig,
 } from "./config.js";

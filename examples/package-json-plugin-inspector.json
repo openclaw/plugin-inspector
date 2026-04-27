@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "plugin:check": "plugin-inspector check --no-openclaw",
+    "plugin:check:runtime": "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector check --no-openclaw --runtime --mock-sdk"
+  },
+  "pluginInspector": {
+    "version": 1,
+    "plugin": {
+      "id": "weather",
+      "priority": "high",
+      "seams": ["dynamic-tool"],
+      "sourceRoot": "src",
+      "expect": {
+        "registrations": ["registerTool"]
+      }
+    },
+    "capture": {
+      "mockSdk": true
+    }
+  }
+}
