@@ -6,5 +6,6 @@ export {
   loadPluginConfig,
   renderTextSummary,
   runPluginCheck,
+  setupPluginInspector,
   writePluginReports,
 } from "./api.js";

@@ -52,6 +52,19 @@ export function validateInspectorConfig(config) {
     errors.push("config.fixtures must be a non-empty array");
   }
 
+  if (config.capture !== undefined) {
+    if (!config.capture || typeof config.capture !== "object" || Array.isArray(config.capture)) {
+      errors.push("config.capture must be an object when present");
+    } else {
+      if (config.capture.runtime !== undefined && typeof config.capture.runtime !== "boolean") {
+        errors.push("config.capture.runtime must be a boolean when present");
+      }
+      if (config.capture.mockSdk !== undefined && typeof config.capture.mockSdk !== "boolean") {
+        errors.push("config.capture.mockSdk must be a boolean when present");
+      }
+    }
+  }
+
   const ids = new Set();
   const paths = new Set();
   for (const fixture of config.fixtures ?? []) {
@@ -134,6 +147,7 @@ export async function normalizePluginRootConfig(config, options = {}) {
   return {
     version: 1,
     submoduleRoot: ".",
+    capture: config.capture,
     openclaw: config.openclaw,
     fixtures: [fixture],
   };
@@ -157,7 +171,7 @@ async function readJsonIfExists(filePath) {
   return JSON.parse(await readFile(filePath, "utf8"));
 }
 
-function packageId(packageName) {
+export function packageId(packageName) {
   if (!packageName) {
     return null;
   }
@@ -170,7 +184,7 @@ function packageId(packageName) {
     .toLowerCase();
 }
 
-function inferPluginSeams(pluginManifest, packageJson) {
+export function inferPluginSeams(pluginManifest, packageJson) {
   const contracts = Object.keys(pluginManifest?.contracts ?? {});
   if (contracts.includes("tools")) {
     return ["dynamic-tool"];

@@ -1,6 +1,7 @@
 import path from "node:path";
 import { createCaptureApi } from "./capture-api.js";
 import { loadInspectorConfig, loadPluginRootConfig } from "./config.js";
+import { writePluginInspectorInit } from "./init.js";
 import { captureEntrypoint } from "./inspector.js";
 import { renderTextSummary, writeCompatibilityReport } from "./report.js";
 import { buildRuntimeCaptureReport, writeRuntimeCaptureReport } from "./runtime-capture-report.js";
@@ -45,24 +46,25 @@ export async function writePluginReports(report, options = {}) {
 
 export async function runPluginCheck(options = {}) {
   const outDir = options.outDir ?? "reports";
-  const report = await inspectPluginRoot(options);
-  const paths = await writePluginReports(report, { ...options, outDir });
+  const config = await loadPluginConfig(options);
+  const report = await inspectPluginRoot({ ...options, config });
+  const paths = await writePluginReports(report, { ...options, pluginRoot: config.rootDir, outDir });
   const result = { report, paths };
+  const capture = options.capture ?? config.capture?.runtime ?? false;
+  const mockSdk = options.mockSdk ?? config.capture?.mockSdk ?? true;
 
-  if (options.capture === true) {
+  if (capture === true) {
     if (process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED !== "1") {
       throw new Error("runtime capture imports plugin code; rerun with PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 in an isolated workspace");
     }
-    const config = await loadPluginConfig(options);
     const runtimeCapture = await buildRuntimeCaptureReport({
-      mockSdk: options.mockSdk ?? true,
+      mockSdk,
       report,
       rootDir: config.rootDir,
     });
-    const outputRoot = options.cwd ?? options.pluginRoot ?? process.cwd();
     const runtimeCapturePaths = await writeRuntimeCaptureReport(runtimeCapture, {
-      jsonPath: path.resolve(outputRoot, outDir, "plugin-inspector-runtime-capture.json"),
-      markdownPath: path.resolve(outputRoot, outDir, "plugin-inspector-runtime-capture.md"),
+      jsonPath: path.resolve(config.rootDir, outDir, "plugin-inspector-runtime-capture.json"),
+      markdownPath: path.resolve(config.rootDir, outDir, "plugin-inspector-runtime-capture.md"),
     });
     result.runtimeCapture = runtimeCapture;
     result.runtimeCapturePaths = runtimeCapturePaths;
@@ -80,6 +82,10 @@ export async function runPluginCheck(options = {}) {
 
 export async function capturePluginEntrypoint(entrypoint, options = {}) {
   return captureEntrypoint(entrypoint, options);
+}
+
+export async function setupPluginInspector(options = {}) {
+  return writePluginInspectorInit(options);
 }
 
 export { createCaptureApi, renderTextSummary };
