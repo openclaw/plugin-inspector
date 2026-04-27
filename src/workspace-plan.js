@@ -1,15 +1,16 @@
 import { existsSync } from "node:fs";
 import { mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { buildColdImportReadiness } from "./cold-import-readiness.js";
 import { normalizeRepoPath, posixJoin, slugForArtifact } from "./path-utils.js";
 
 export const defaultWorkspacePlanOptions = {
-  captureScript: "plugin-inspector-capture",
+  captureScript: null,
   optInEnv: "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1",
   resultsRoot: ".plugin-inspector/results",
-  syntheticProbeScript: "plugin-inspector-synthetic-probes",
+  syntheticProbeScript: null,
   workspaceRoot: ".plugin-inspector/workspaces",
 };
 
@@ -450,12 +451,23 @@ function runCommand(packageManager, script) {
 
 function captureCommand(settings, fixtureId, entrypoint, workspacePath) {
   const loader = entrypoint.blockers.some((blocker) => blocker.code === "ts-loader-required") ? " --import tsx" : "";
-  return `${settings.optInEnv} node${loader} ${settings.captureScript} ${entrypoint.specifier} --output ${workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "capture")}`;
+  const script = helperScript(settings, workspacePath, settings.captureScript, "capture-cli.js");
+  return `${settings.optInEnv} node${loader} ${script} ${entrypoint.specifier} --mock-sdk --output ${workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "capture")}`;
 }
 
 function syntheticProbeCommand(settings, fixtureId, entrypoint, workspacePath) {
   const loader = entrypoint.blockers.some((blocker) => blocker.code === "ts-loader-required") ? " --import tsx" : "";
-  return `${settings.optInEnv} node${loader} ${settings.syntheticProbeScript} --entrypoint ${entrypoint.specifier} --output ${workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "synthetic")}`;
+  const script = helperScript(settings, workspacePath, settings.syntheticProbeScript, "synthetic-probes-cli.js");
+  return `${settings.optInEnv} node${loader} ${script} --entrypoint ${entrypoint.specifier} --mock-sdk --output ${workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "synthetic")}`;
+}
+
+function helperScript(settings, workspacePath, configuredScript, helperFileName) {
+  if (configuredScript) {
+    return configuredScript;
+  }
+  const helperPath = fileURLToPath(new URL(`./${helperFileName}`, import.meta.url));
+  const workspaceFsPath = path.join(settings.rootDir, workspacePath);
+  return repoRelative(path.relative(workspaceFsPath, helperPath));
 }
 
 function targetOpenClawWorkspacePath(settings, fixtureId, targetOpenClawPath) {
