@@ -120,6 +120,36 @@ test("synthetic probes pass registrar-specific handler inputs", async () => {
   );
 });
 
+test("synthetic probes pass channel envelopes and gateway responders", async () => {
+  const capture = await captureLocalFixture([
+    "export function register(api) {",
+    "  api.registerChannel({",
+    "    id: 'fixture_channel',",
+    "    async send(ctx) { return { messageId: ctx.replyToId, to: ctx.to }; },",
+    "    async receive(ctx) { return { messageId: ctx.message.id, peer: ctx.route.peer.id }; },",
+    "  });",
+    "  api.registerGatewayMethod('fixture.ping', ({ respond, params }) => respond(true, { sawParams: typeof params === 'object' }));",
+    "}",
+  ]);
+
+  const blocked = await runCapturedSyntheticProbes(capture);
+  assert.equal(blocked.summary.blockedCount, 1);
+
+  const result = await runCapturedSyntheticProbes(capture, { includeChannelRuntime: true });
+
+  assert.equal(result.summary.failCount, 0);
+  assert.deepEqual(
+    result.results.map((item) => `${item.status}:${item.label}`),
+    [
+      "pass:registerChannel.send",
+      "pass:registerChannel.receive",
+      "pass:registerGatewayMethod.handler",
+      "pass:registerGatewayMethod.run",
+      "pass:registerGatewayMethod.execute",
+    ],
+  );
+});
+
 test("synthetic probes can execute string plus handler registrations", async () => {
   const capture = await captureLocalFixture([
     "export function register(api) {",

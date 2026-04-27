@@ -1,6 +1,6 @@
 export const defaultCaptureApiRegistrarProfiles = {
   registerChannel: {
-    returnValue: ({ args }) => registrationObject(args, { id: "channel" }),
+    returnValue: ({ args }) => channelRegistrationObject(args),
   },
   registerCli: {
     returnValue: ({ args }) => registrationObject(args, { name: "cli" }),
@@ -12,7 +12,7 @@ export const defaultCaptureApiRegistrarProfiles = {
     returnValue: ({ args }) => registrationObject(args, { id: "context-engine" }),
   },
   registerGatewayMethod: {
-    returnValue: ({ args }) => registrationObject(args, { name: "gateway.method" }),
+    returnValue: ({ args }) => gatewayMethodRegistrationObject(args),
   },
   registerHook: {
     returnValue: ({ api }) => api,
@@ -37,9 +37,10 @@ export const defaultCaptureApiRegistrarProfiles = {
   },
   registerService: {
     returnValue: ({ args }) => ({
-      ...registrationObject(args, { name: "service" }),
+      ...registrationObject(args, { id: "service", name: "service" }),
       start: async () => undefined,
       stop: async () => undefined,
+      dispose: async () => undefined,
     }),
   },
   registerSpeechProvider: {
@@ -125,6 +126,7 @@ export function createCaptureApi(options = {}) {
 
 export function createCaptureContext(options = {}) {
   return {
+    registrationMode: options.registrationMode ?? "full",
     config: options.config ?? {},
     logger: options.logger ?? console,
     pluginConfig: options.pluginConfig ?? {},
@@ -142,6 +144,12 @@ export function createCaptureContext(options = {}) {
     },
     gateway: options.gateway ?? {
       baseUrl: "http://127.0.0.1:0",
+      async call(method, params) {
+        return { ok: true, method, params };
+      },
+      respond(ok, result, error) {
+        return { ok, result, ...(error ? { error } : {}) };
+      },
       registerRoute(route) {
         return {
           ...route,
@@ -240,6 +248,36 @@ function registrationObject(args, defaults) {
     }, callable);
   }
   return withCallableDefaults({ ...defaults }, callable);
+}
+
+function channelRegistrationObject(args) {
+  const first = args[0];
+  const registration = registrationObject(args, { id: "channel" });
+  if (first?.plugin && typeof first.plugin === "object") {
+    return {
+      ...registration,
+      id: objectId(first.plugin) ?? registration.id,
+      plugin: first.plugin,
+    };
+  }
+  return registration;
+}
+
+function gatewayMethodRegistrationObject(args) {
+  const [method, handler, options] = args;
+  const registration = registrationObject(args, { name: "gateway.method" });
+  if (typeof method !== "string") {
+    return registration;
+  }
+  return {
+    ...registration,
+    name: method,
+    method,
+    handler: typeof handler === "function" ? handler : registration.handler,
+    run: typeof handler === "function" ? handler : registration.run,
+    execute: typeof handler === "function" ? handler : registration.execute,
+    scope: options?.scope ?? registration.scope,
+  };
 }
 
 function firstCallable(args) {

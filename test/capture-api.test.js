@@ -31,6 +31,25 @@ test("capture API defaults to known OpenClaw registrar profiles", () => {
   assert.ok(defaultCaptureApiRegistrarProfiles.registerTool);
 });
 
+test("capture API returns useful channel, gateway, and lifecycle descriptors", () => {
+  const api = createCaptureApi();
+  const channel = api.registerChannel({ plugin: { id: "fixture-channel", outbound: { sendText() {} } } });
+  const gatewayMethod = api.registerGatewayMethod(
+    "fixture.ping",
+    ({ respond }) => respond(true, { ok: true }),
+    { scope: "operator.read" },
+  );
+  const service = api.registerService({ id: "fixture-service" });
+
+  assert.equal(api.registrationMode, "full");
+  assert.equal(channel.id, "fixture-channel");
+  assert.equal(channel.plugin.id, "fixture-channel");
+  assert.equal(gatewayMethod.method, "fixture.ping");
+  assert.equal(gatewayMethod.scope, "operator.read");
+  assert.deepEqual(gatewayMethod.handler({ respond: api.gateway.respond }), { ok: true, result: { ok: true } });
+  assert.equal(typeof service.dispose, "function");
+});
+
 test("capture API accepts custom registrar return profiles", () => {
   const api = createCaptureApi({
     registrarProfiles: {

@@ -326,6 +326,76 @@ test("runtime capture mock SDK supports config schemas and provider catalogs", a
   );
 });
 
+test("runtime capture mock SDK supports channel entries, gateway responders, and action gates", async () => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-channel-entry-"));
+  await mkdir(path.join(rootDir, "src"), { recursive: true });
+  await writeFile(
+    path.join(rootDir, "package.json"),
+    `${JSON.stringify(
+      {
+        name: "openclaw-channel-entry",
+        version: "1.0.0",
+        type: "module",
+        openclaw: {
+          extensions: ["src/index.mjs"],
+          compat: { pluginApi: "^1.0.0" },
+        },
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(rootDir, "src", "index.mjs"),
+    [
+      'import { createActionGate } from "openclaw/plugin-sdk/channel-actions";',
+      'import { buildChannelOutboundSessionRoute, createChannelPluginBase, createChatChannelPlugin, defineChannelPluginEntry } from "openclaw/plugin-sdk/channel-core";',
+      "",
+      "const gate = createActionGate({ gateway: true });",
+      "const route = buildChannelOutboundSessionRoute({ agentId: 'agent', channel: 'fixture-channel', to: 'sender', chatType: 'direct' });",
+      "const plugin = createChatChannelPlugin({",
+      "  base: createChannelPluginBase({",
+      "    id: 'fixture-channel',",
+      "    setup: () => ({ accountId: 'default' }),",
+      "  }),",
+      "  outbound: {",
+      "    base: { resolveOutboundSessionRoute: () => route },",
+      "    attachedResults: {",
+      "      channel: 'fixture-channel',",
+      "      sendText: async ({ text }) => ({ messageId: text }),",
+      "    },",
+      "  },",
+      "});",
+      "",
+      "export default defineChannelPluginEntry({",
+      "  id: 'fixture-channel-entry',",
+      "  name: 'Fixture channel',",
+      "  description: 'Fixture channel',",
+      "  plugin,",
+      "  registerFull(api) {",
+      "    if (gate('gateway')) {",
+      "      api.registerGatewayMethod('fixture.ping', ({ respond }) => respond(true, { ok: true }), { scope: 'operator.read' });",
+      "    }",
+      "    api.registerService({ id: 'fixture-service', start() {}, stop() {} });",
+      "  },",
+      "});",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const config = await loadPluginRootConfig(null, { cwd: rootDir });
+  const compatibilityReport = await inspectCompatibilityFixtureSet(config, { openclawPath: false });
+  const captureReport = await buildRuntimeCaptureReport({ report: compatibilityReport, rootDir });
+
+  assert.equal(captureReport.summary.failedCount, 0);
+  assert.deepEqual(
+    captureReport.results[0].captured.map((entry) => `${entry.kind}:${entry.name}`),
+    ["registration:registerChannel", "registration:registerGatewayMethod", "registration:registerService"],
+  );
+  assert.equal(captureReport.results[0].captured[0].arguments[0].keys.includes("plugin"), true);
+});
+
 test("runtime capture keeps dist chunk imports rooted at their original package", async () => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-dist-"));
   await mkdir(path.join(rootDir, "dist", "extensions", "weather"), { recursive: true });

@@ -214,6 +214,12 @@ export const defaultSyntheticRegistrationProbeInputs = {
     handler: commandProbeArgs,
     run: commandProbeArgs,
   },
+  registerChannel: {
+    handleMessage: channelReceiveProbeArgs,
+    receive: channelReceiveProbeArgs,
+    send: channelSendProbeArgs,
+    sendMessage: channelSendProbeArgs,
+  },
   registerGatewayMethod: {
     execute: gatewayProbeArgs,
     handler: gatewayProbeArgs,
@@ -523,6 +529,9 @@ function syntheticRegistrationEvent(registrar, property, options) {
       id: beforeToolCall.toolCallId,
       name: beforeToolCall.toolName,
     },
+    respond(ok, result, error) {
+      return { ok, result, ...(error ? { error } : {}) };
+    },
   };
 }
 
@@ -576,13 +585,56 @@ function commandProbeArgs(event) {
 function gatewayProbeArgs(event) {
   return [
     {
+      ...event,
       params: event.params,
       body: event.body,
       headers: event.headers,
+      respond: event.respond,
     },
     {
       source: event.source,
       logger: console,
+    },
+  ];
+}
+
+function channelSendProbeArgs(event) {
+  return [
+    {
+      source: event.source,
+      channelId: "fixture-channel",
+      accountId: "fixture-account",
+      to: "fixture-recipient",
+      text: "fixture message",
+      replyToId: "fixture-reply",
+      threadId: "fixture-thread",
+      logger: console,
+      signal: new AbortController().signal,
+    },
+  ];
+}
+
+function channelReceiveProbeArgs(event) {
+  return [
+    {
+      source: event.source,
+      channelId: "fixture-channel",
+      accountId: "fixture-account",
+      message: {
+        id: "message-fixture",
+        text: "fixture inbound message",
+        sender: { id: "sender-fixture", displayName: "Fixture Sender" },
+      },
+      route: {
+        sessionKey: "fixture-session",
+        baseSessionKey: "fixture-base-session",
+        peer: { kind: "direct", id: "sender-fixture" },
+        chatType: "direct",
+        from: "sender-fixture",
+        to: "fixture-channel",
+      },
+      logger: console,
+      signal: new AbortController().signal,
     },
   ];
 }
@@ -604,7 +656,10 @@ function lifecycleProbeArgs(event) {
   return [
     {
       source: event.source,
+      config: {},
       logger: console,
+      runtime: { env: {}, logger: console },
+      secrets: { get: async () => null, has: async () => false },
       signal: new AbortController().signal,
     },
   ];

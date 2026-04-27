@@ -11,8 +11,11 @@ export const mockSdkSubpathExports = {
     "emptyPluginConfigSchema",
   ],
   core: [
+    "buildChannelOutboundSessionRoute",
     "buildChannelConfigSchema",
     "buildPluginConfigSchema",
+    "createActionGate",
+    "createChannelPluginBase",
     "createChatChannelPlugin",
     "createDedupeCache",
     "defineChannelPluginEntry",
@@ -22,12 +25,24 @@ export const mockSdkSubpathExports = {
     "emptyPluginConfigSchema",
     "jsonResult",
     "readNumberParam",
+    "readReactionParams",
+    "readStringArrayParam",
+    "readStringParam",
+  ],
+  "channel-actions": [
+    "createActionGate",
+    "jsonResult",
+    "readNumberParam",
+    "readReactionParams",
+    "readStringArrayParam",
     "readStringParam",
   ],
   "channel-core": [
     "buildChannelConfigSchema",
+    "buildChannelOutboundSessionRoute",
     "buildThreadAwareOutboundSessionRoute",
     "clearAccountEntryFields",
+    "createChannelPluginBase",
     "createChatChannelPlugin",
     "defineChannelPluginEntry",
     "defineSetupPluginEntry",
@@ -718,6 +733,10 @@ function mockSdkSource() {
   return typeof entry === "function" ? { register: entry } : entry;
 }
 
+function normalizeRegistrationMode(api) {
+  return api?.registrationMode ?? "full";
+}
+
 function isPlainObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
@@ -754,15 +773,139 @@ export function definePluginEntry(entry) {
 }
 
 export function defineChannelPluginEntry(entry) {
-  return normalizeEntry(entry);
+  if (!isPlainObject(entry) || !entry.plugin) {
+    return normalizeEntry(entry);
+  }
+  const resolved = {
+    id: entry.id,
+    name: entry.name,
+    description: entry.description,
+    configSchema: createConfigSchema(entry.configSchema),
+    channelPlugin: entry.plugin,
+    register(api) {
+      const mode = normalizeRegistrationMode(api);
+      if (mode === "cli-metadata") {
+        entry.registerCliMetadata?.(api);
+        return;
+      }
+      api.registerChannel?.({ plugin: entry.plugin });
+      entry.setRuntime?.(api.runtime);
+      if (mode === "discovery") {
+        entry.registerCliMetadata?.(api);
+        return;
+      }
+      if (mode !== "full") {
+        return;
+      }
+      entry.registerCliMetadata?.(api);
+      entry.registerFull?.(api);
+    },
+  };
+  if (entry.setRuntime) {
+    resolved.setChannelRuntime = entry.setRuntime;
+  }
+  return resolved;
 }
 
 export function defineSetupPluginEntry(entry) {
-  return normalizeEntry(entry);
+  return isPlainObject(entry) && entry.plugin ? entry : { plugin: entry };
 }
 
 export function createChatChannelPlugin(entry) {
-  return normalizeEntry(entry);
+  if (!isPlainObject(entry) || !entry.base) {
+    return normalizeEntry(entry);
+  }
+  return {
+    ...entry.base,
+    conversationBindings: {
+      supportsCurrentConversationBinding: true,
+      ...(entry.base.conversationBindings ?? {}),
+    },
+    ...(entry.security ? { security: resolveChannelSecurity(entry.security) } : {}),
+    ...(entry.pairing ? { pairing: resolveChannelPairing(entry.pairing) } : {}),
+    ...(entry.threading ? { threading: resolveChannelThreading(entry.threading) } : {}),
+    ...(entry.outbound ? { outbound: resolveChannelOutbound(entry.outbound) } : {}),
+  };
+}
+
+export function createChannelPluginBase(params = {}) {
+  return {
+    id: params.id ?? "fixture-channel",
+    meta: { id: params.id ?? "fixture-channel", ...(params.meta ?? {}) },
+    ...(params.setupWizard ? { setupWizard: params.setupWizard } : {}),
+    ...(params.capabilities ? { capabilities: params.capabilities } : {}),
+    ...(params.commands ? { commands: params.commands } : {}),
+    ...(params.doctor ? { doctor: params.doctor } : {}),
+    ...(params.agentPrompt ? { agentPrompt: params.agentPrompt } : {}),
+    ...(params.streaming ? { streaming: params.streaming } : {}),
+    ...(params.reload ? { reload: params.reload } : {}),
+    ...(params.gatewayMethods ? { gatewayMethods: params.gatewayMethods } : {}),
+    ...(params.configSchema ? { configSchema: createConfigSchema(params.configSchema) } : {}),
+    ...(params.config ? { config: params.config } : {}),
+    ...(params.security ? { security: params.security } : {}),
+    ...(params.groups ? { groups: params.groups } : {}),
+    setup: params.setup ?? (() => ({})),
+  };
+}
+
+function resolveChannelSecurity(security) {
+  if (!isPlainObject(security) || !security.dm) {
+    return security;
+  }
+  return {
+    resolveDmPolicy: ({ account } = {}) => ({
+      policy: security.dm.resolvePolicy?.(account ?? {}) ?? security.dm.defaultPolicy ?? "allow",
+      allowFrom: security.dm.resolveAllowFrom?.(account ?? {}) ?? [],
+    }),
+    ...(security.collectWarnings ? { collectWarnings: security.collectWarnings } : {}),
+    ...(security.collectAuditFindings ? { collectAuditFindings: security.collectAuditFindings } : {}),
+  };
+}
+
+function resolveChannelPairing(pairing) {
+  if (!isPlainObject(pairing) || !pairing.text) {
+    return pairing;
+  }
+  return {
+    idLabel: pairing.text.idLabel,
+    normalizeAllowEntry: pairing.text.normalizeAllowEntry,
+    notifyApproval: (ctx) => pairing.text.notify?.({ ...ctx, message: pairing.text.message }),
+  };
+}
+
+function resolveChannelThreading(threading) {
+  if (!isPlainObject(threading)) {
+    return threading;
+  }
+  if (threading.resolveReplyToMode) {
+    return threading;
+  }
+  return {
+    ...threading,
+    resolveReplyToMode: () =>
+      threading.topLevelReplyToMode ??
+      threading.scopedAccountReplyToMode?.fallback ??
+      "thread",
+  };
+}
+
+function resolveChannelOutbound(outbound) {
+  if (!isPlainObject(outbound) || !outbound.attachedResults) {
+    return outbound;
+  }
+  const { base = {}, attachedResults } = outbound;
+  return {
+    ...base,
+    ...(attachedResults.sendText
+      ? { sendText: async (ctx) => ({ channel: attachedResults.channel, ...(await attachedResults.sendText(ctx)) }) }
+      : {}),
+    ...(attachedResults.sendMedia
+      ? { sendMedia: async (ctx) => ({ channel: attachedResults.channel, ...(await attachedResults.sendMedia(ctx)) }) }
+      : {}),
+    ...(attachedResults.sendPoll
+      ? { sendPoll: async (ctx) => ({ channel: attachedResults.channel, ...(await attachedResults.sendPoll(ctx)) }) }
+      : {}),
+  };
 }
 
 export function definePlugin(entry) {
@@ -805,13 +948,63 @@ export function jsonResult(value) {
   return { content: [{ type: "text", text: JSON.stringify(value) }] };
 }
 
-export function readNumberParam(value, fallback = 0) {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : fallback;
+export function readNumberParam(value, keyOrFallback = 0, options = {}) {
+  const raw = isPlainObject(value) ? value[keyOrFallback] : value;
+  const parsed = Number(raw);
+  if (Number.isFinite(parsed)) {
+    return options.integer ? Math.trunc(parsed) : parsed;
+  }
+  return isPlainObject(value) ? undefined : keyOrFallback;
 }
 
-export function readStringParam(value, fallback = "") {
-  return typeof value === "string" ? value : fallback;
+export function readStringParam(value, keyOrFallback = "") {
+  if (isPlainObject(value)) {
+    const raw = value[keyOrFallback];
+    return typeof raw === "string" ? raw : undefined;
+  }
+  return typeof value === "string" ? value : keyOrFallback;
+}
+
+export function readStringArrayParam(value, key) {
+  const raw = isPlainObject(value) ? value[key] : value;
+  if (Array.isArray(raw)) {
+    return raw.map((entry) => String(entry));
+  }
+  return typeof raw === "string" && raw ? [raw] : [];
+}
+
+export function readReactionParams(value = {}) {
+  return {
+    messageId: value.messageId ?? value.id ?? "",
+    reaction: value.reaction ?? value.emoji ?? "",
+  };
+}
+
+export function createActionGate(actions = {}) {
+  return (key, defaultValue = true) => {
+    const value = actions?.[key];
+    return value === undefined ? defaultValue : value !== false;
+  };
+}
+
+export function buildChannelOutboundSessionRoute(params = {}) {
+  const peer = params.peer ?? { kind: params.chatType ?? "direct", id: params.to ?? "fixture-peer" };
+  const baseSessionKey = [
+    params.agentId ?? "agent",
+    params.channel ?? "channel",
+    params.accountId ?? "default",
+    peer.kind,
+    peer.id,
+  ].filter(Boolean).join(":");
+  return {
+    sessionKey: baseSessionKey,
+    baseSessionKey,
+    peer,
+    chatType: params.chatType ?? peer.kind ?? "direct",
+    from: params.from ?? "fixture-source",
+    to: params.to ?? peer.id,
+    ...(params.threadId !== undefined ? { threadId: params.threadId } : {}),
+  };
 }
 
 export function createDedupeCache() {
@@ -1129,7 +1322,7 @@ export function createSubsystemLogger() {
 }
 
 export function buildThreadAwareOutboundSessionRoute(route = {}) {
-  return route;
+  return route.route ?? route;
 }
 
 export function clearAccountEntryFields(entry = {}) {
