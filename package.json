@@ -25,6 +25,7 @@
     "./capture-api": "./src/capture-api.js",
     "./cold-import-readiness": "./src/cold-import-readiness.js",
     "./contract-capture": "./src/contract-capture.js",
+    "./openclaw-target": "./src/openclaw-target.js",
     "./platform-probes": "./src/platform-probes.js"
   },
   "files": [

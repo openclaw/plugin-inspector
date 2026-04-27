@@ -51,6 +51,7 @@ import {
   createCaptureApi,
   inspectFixtureSet,
   loadInspectorConfig,
+  readOpenClawTargetSurface,
   renderColdImportReadinessMarkdown,
   renderContractCaptureMarkdown,
   renderPlatformProbesMarkdown,
@@ -75,6 +76,8 @@ await writeContractCapture(capture);
 const readiness = buildColdImportReadiness({ report });
 await writeColdImportReadiness(readiness);
 
+const target = await readOpenClawTargetSurface({ manifest: config });
+
 const platformProbes = buildPlatformProbes({ plan: existingWorkspacePlan });
 await writePlatformProbes(platformProbes);
 ```
@@ -84,6 +87,8 @@ await writePlatformProbes(platformProbes);
 Default inspection is offline and credential-free. It reads manifests, package
 metadata, and source files, then reports observed `api.on(...)`,
 `api.register*`, `define*`, SDK imports, and manifest contracts.
+OpenClaw target checkout parsing is limited to public compatibility registries,
+SDK package exports, manifest types, hooks, and captured registrar metadata.
 
 Cold import capture and synthetic contract probes are explicit opt-in modes.
 Live lanes will stay credential-gated and must never run in default CI.
