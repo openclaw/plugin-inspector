@@ -419,7 +419,7 @@ async function runRegistrationProbes(entry, retainedEntry, captureIndex, options
     return [blockedResult(entry, captureIndex, `captured registration requires ${profile.option}=true`)];
   }
 
-  const invocations = registrationInvocations(entry.name, descriptor, profile);
+  const invocations = registrationInvocations(entry.name, descriptor, profile, options);
   if (invocations.length === 0) {
     return [blockedResult(entry, captureIndex, "captured registration has no supported callable probe")];
   }
@@ -437,41 +437,43 @@ async function runRegistrationProbes(entry, retainedEntry, captureIndex, options
   );
 }
 
-function registrationInvocations(registrar, descriptor, profile) {
+function registrationInvocations(registrar, descriptor, profile, options) {
   const invocations = [];
 
   for (const property of profile.callableProperties) {
     if (typeof descriptor[property] === "function") {
       invocations.push({
         label: `${registrar}.${property}`,
-        invoke: () => invokeRegistrationCallable(descriptor[property], registrar, property),
+        invoke: () => invokeRegistrationCallable(descriptor[property], registrar, property, options),
       });
     }
   }
   return invocations;
 }
 
-function invokeRegistrationCallable(callable, registrar, property) {
-  const event = syntheticRegistrationEvent(registrar, property);
+function invokeRegistrationCallable(callable, registrar, property, options) {
+  const event = syntheticRegistrationEvent(registrar, property, options);
   if (property === "execute") {
     return callable("call-fixture", event.params, new AbortController().signal, () => undefined);
   }
   return callable(event);
 }
 
-function syntheticRegistrationEvent(registrar, property) {
+function syntheticRegistrationEvent(registrar, property, options) {
+  const hookEvents = options.hookEvents ?? defaultSyntheticHookEvents;
+  const beforeToolCall = hookEvents.before_tool_call ?? defaultSyntheticHookEvents.before_tool_call;
   return {
-    source: "plugin-inspector.synthetic",
+    source: options.syntheticSource ?? "plugin-inspector.synthetic",
     registrar,
     property,
     params: {},
     input: {},
     body: {},
     headers: {},
-    toolName: defaultSyntheticHookEvents.before_tool_call.toolName,
+    toolName: beforeToolCall.toolName,
     toolCall: {
-      id: defaultSyntheticHookEvents.before_tool_call.toolCallId,
-      name: defaultSyntheticHookEvents.before_tool_call.toolName,
+      id: beforeToolCall.toolCallId,
+      name: beforeToolCall.toolName,
     },
   };
 }
