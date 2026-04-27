@@ -29,6 +29,7 @@
     "./import-loop-profile": "./src/import-loop-profile.js",
     "./openclaw-target": "./src/openclaw-target.js",
     "./platform-probes": "./src/platform-probes.js",
+    "./profile-diff": "./src/profile-diff.js",
     "./workspace-plan": "./src/workspace-plan.js"
   },
   "files": [
