@@ -140,8 +140,8 @@ test("public API can initialize plugin inspector files", async () => {
   assert.equal(config.plugin.id, "weather");
   assert.equal(config.capture.mockSdk, true);
   assert.equal(packageJson.scripts["plugin:check"], "plugin-inspector inspect --no-openclaw");
-  assert.equal(packageJson.scripts["plugin:ci"], "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector ci --no-openclaw --runtime --mock-sdk");
-  assert.match(workflow, /npx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk/);
+  assert.equal(packageJson.scripts["plugin:ci"], "plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute");
+  assert.match(workflow, /npx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute/);
 });
 
 test("public API initializes source root from package export maps", async () => {
@@ -197,18 +197,8 @@ test("public API honors config-driven runtime capture", async () => {
     "utf8",
   );
 
-  const previous = process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED;
-  process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED = "1";
-  try {
-    const result = await runPluginCheck({ pluginRoot, outDir: "reports", openclawPath: false });
-    assert.equal(result.runtimeCapture.summary.registrationCount, 1);
-  } finally {
-    if (previous === undefined) {
-      delete process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED;
-    } else {
-      process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED = previous;
-    }
-  }
+  const result = await runPluginCheck({ pluginRoot, outDir: "reports", openclawPath: false, allowExecution: true });
+  assert.equal(result.runtimeCapture.summary.registrationCount, 1);
 });
 
 async function createPluginRoot(options = {}) {

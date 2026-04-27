@@ -19,7 +19,7 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 npx @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk
+      - run: npx @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute
       - uses: github/codeql-action/upload-sarif@v3
         if: always()
         with:

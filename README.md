@@ -146,8 +146,12 @@ the registrations made during `register(api)`. It is opt-in because it executes
 plugin code:
 
 ```bash
-PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 npx @openclaw/plugin-inspector check --runtime --mock-sdk
+npx @openclaw/plugin-inspector check --runtime --mock-sdk --allow-execute
 ```
+
+`--allow-execute` is the explicit guard for modes that import plugin code. The
+older `PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1` environment guard still works for
+custom harnesses.
 
 By default, runtime capture uses a generated mock for `openclaw/plugin-sdk` and
 common external packages so plugin code can load in clean CI without OpenClaw
@@ -162,7 +166,7 @@ Runtime capture writes:
 You can also capture one entrypoint directly:
 
 ```bash
-PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture ./dist/index.js --mock-sdk
+plugin-inspector capture ./dist/index.js --mock-sdk --allow-execute
 ```
 
 ## CI
@@ -173,7 +177,7 @@ Minimal package scripts:
 {
   "scripts": {
     "plugin:check": "plugin-inspector inspect --no-openclaw",
-    "plugin:ci": "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector ci --no-openclaw --runtime --mock-sdk"
+    "plugin:ci": "plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute"
   }
 }
 ```
@@ -198,7 +202,7 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 npx @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk
+      - run: npx @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute
       - uses: actions/upload-artifact@v5
         if: always()
         with:

@@ -8,12 +8,14 @@
 - Add `plugin-inspector config` for resolved plugin-root config summaries.
 - Add author-facing `plugin-inspector inspect` plugin-root flow.
 - Add CI-native SARIF and JUnit outputs; `plugin-inspector ci` writes them by default.
+- Add `--allow-execute` as a cross-platform runtime capture opt-in flag.
 - Add `plugin-inspector init --scripts` for `plugin:check` and `plugin:ci` package scripts.
 - Add public synthetic probe suite helpers for building probe plans from compatibility reports.
 
 ### Changed
 
 - Make generated CI workflows use one `plugin-inspector ci --no-openclaw --runtime --mock-sdk` command.
+- Make generated runtime CI commands use `--allow-execute` instead of shell-specific inline environment syntax.
 - Make `plugin-inspector init --ci` detect `packageManager` and common lockfiles before generating CI install/run commands.
 - Make `plugin-inspector init` output repo-relative file paths and preflight generated files before writing.
 - Make `plugin-inspector init` infer `sourceRoot: "src"` from package export maps like `"./src/index.js"`.

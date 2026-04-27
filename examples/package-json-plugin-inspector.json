@@ -1,7 +1,7 @@
 {
   "scripts": {
     "plugin:check": "plugin-inspector inspect --no-openclaw",
-    "plugin:ci": "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector ci --no-openclaw --runtime --mock-sdk"
+    "plugin:ci": "plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute"
   },
   "pluginInspector": {
     "version": 1,

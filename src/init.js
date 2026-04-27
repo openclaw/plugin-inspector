@@ -7,7 +7,7 @@ export const defaultInitConfigPath = "plugin-inspector.config.json";
 export const defaultInitWorkflowPath = ".github/workflows/plugin-inspector.yml";
 export const defaultInitPackageScripts = {
   "plugin:check": "plugin-inspector inspect --no-openclaw",
-  "plugin:ci": "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector ci --no-openclaw --runtime --mock-sdk",
+  "plugin:ci": "plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute",
 };
 
 export async function writePluginInspectorInit(options = {}) {
@@ -106,7 +106,7 @@ jobs:
           node-version: 24
           cache: ${setup.cache}
 ${setup.corepack ? "      - run: corepack enable\n" : ""}      - run: ${setup.install}
-      - run: PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 ${setup.exec} @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk
+      - run: ${setup.exec} @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute
       - uses: actions/upload-artifact@v5
         if: always()
         with:

@@ -7,7 +7,7 @@ jobs:
     steps:
       - checkout
       - run: npm ci
-      - run: PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 npx @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk
+      - run: npx @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute
       - store_test_results:
           path: reports
       - store_artifacts:

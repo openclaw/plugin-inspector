@@ -97,8 +97,8 @@ export async function runPluginCheck(options = {}) {
   const mockSdk = options.mockSdk ?? config.capture?.mockSdk ?? true;
 
   if (capture === true) {
-    if (process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED !== "1") {
-      throw new Error("runtime capture imports plugin code; rerun with PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 in an isolated workspace");
+    if (!executionAllowed(options)) {
+      throw new Error("runtime capture imports plugin code; rerun with PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 or --allow-execute in an isolated workspace");
     }
     const runtimeCapture = await buildRuntimeCaptureReport({
       mockSdk,
@@ -132,6 +132,10 @@ export async function setupPluginInspector(options = {}) {
 }
 
 export { createCaptureApi, renderTextSummary, writeCiOutputArtifacts };
+
+function executionAllowed(options) {
+  return options.allowExecution === true || process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED === "1";
+}
 
 async function loadFixtureSetConfig(options) {
   if (options.config) {

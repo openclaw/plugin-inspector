@@ -72,8 +72,17 @@ async function runCheck(commandArgs) {
   const json = commandArgs.includes("--json");
   const capture = readRuntimeFlag(commandArgs);
   const mockSdk = readMockSdkFlag(commandArgs);
+  const allowExecution = readAllowExecutionFlag(commandArgs);
   const ciOutputs = readCiOutputFlags(commandArgs);
-  const { report, paths } = await runPluginCheck({ configPath, pluginRoot, outDir, openclawPath, capture, mockSdk });
+  const { report, paths } = await runPluginCheck({
+    allowExecution,
+    capture,
+    configPath,
+    mockSdk,
+    openclawPath,
+    outDir,
+    pluginRoot,
+  });
   await writeCiOutputArtifacts(report, {
     ...ciOutputs,
     cwd: path.dirname(paths.jsonPath),
@@ -146,8 +155,10 @@ async function runCi(commandArgs) {
   const json = commandArgs.includes("--json");
   const capture = readRuntimeFlag(commandArgs);
   const mockSdk = readMockSdkFlag(commandArgs);
+  const allowExecution = readAllowExecutionFlag(commandArgs);
   const ciOutputs = readCiOutputFlags(commandArgs, { defaultEnabled: true });
   const { report, reportDir } = await runCiCompatibilityReport({
+    allowExecution,
     capture,
     configPath,
     mockSdk,
@@ -186,7 +197,7 @@ async function runCi(commandArgs) {
   }
 }
 
-async function runCiCompatibilityReport({ capture, configPath, mockSdk, openclawPath, outDir, pluginRoot }) {
+async function runCiCompatibilityReport({ allowExecution, capture, configPath, mockSdk, openclawPath, outDir, pluginRoot }) {
   if (configPath) {
     const config = await loadInspectorConfig(configPath, { cwd: pluginRoot });
     const report = await inspectCompatibilityFixtureSet(config, { openclawPath });
@@ -197,7 +208,7 @@ async function runCiCompatibilityReport({ capture, configPath, mockSdk, openclaw
     };
   }
 
-  const { report } = await runPluginCheck({ pluginRoot, outDir, openclawPath, capture, mockSdk });
+  const { report } = await runPluginCheck({ allowExecution, capture, mockSdk, openclawPath, outDir, pluginRoot });
   return {
     report,
     reportDir: path.resolve(pluginRoot ?? process.cwd(), outDir),
@@ -209,11 +220,12 @@ async function runCapture(commandArgs) {
   const outputPath = readFlag(commandArgs, "--output");
   const pluginRoot = readFlag(commandArgs, "--plugin-root");
   const mockSdk = readMockSdkFlag(commandArgs) ?? commandArgs.includes("--mock-sdk");
+  const allowExecution = readAllowExecutionFlag(commandArgs);
   if (!entrypoint) {
     throw new Error("capture requires an entrypoint path");
   }
-  if (process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED !== "1") {
-    throw new Error("capture imports plugin code; rerun with PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 in an isolated workspace");
+  if (!allowExecution && process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED !== "1") {
+    throw new Error("capture imports plugin code; rerun with PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 or --allow-execute in an isolated workspace");
   }
 
   const result = await captureEntrypoint(entrypoint, { mockSdk, pluginRoot });
@@ -283,6 +295,10 @@ function readMockSdkFlag(commandArgs) {
   return undefined;
 }
 
+function readAllowExecutionFlag(commandArgs) {
+  return commandArgs.includes("--allow-execute");
+}
+
 function renderCiTextSummary(summary) {
   return [
     `Status: ${summary.status.toUpperCase()}`,
@@ -310,16 +326,16 @@ function printHelp() {
 
 Usage:
   plugin-inspector
-  plugin-inspector check [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--json]
+  plugin-inspector check [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--json]
   plugin-inspector config [--plugin-root <path>] [--config <path>] [--json]
   plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--scripts] [--package-manager npm|pnpm|yarn|bun] [--force]
   plugin-inspector report --config <path> [--out <dir>] [--check] [--json]
-  plugin-inspector inspect [--plugin-root <path>] [--config <path>] [--out <dir>] [--check] [--json] [--sarif [path]] [--junit [path]]
-  plugin-inspector ci [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--json] [--no-sarif] [--no-junit]
-  PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture <entrypoint> [--mock-sdk|--real-sdk] [--plugin-root <path>] [--output <path>]
+  plugin-inspector inspect [--plugin-root <path>] [--config <path>] [--out <dir>] [--check] [--json] [--sarif [path]] [--junit [path]] [--allow-execute]
+  plugin-inspector ci [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--json] [--no-sarif] [--no-junit]
+  plugin-inspector capture <entrypoint> [--mock-sdk|--real-sdk] [--allow-execute] [--plugin-root <path>] [--output <path>]
 
 Default check runs from the current plugin root and writes reports/ unless --out is set.
 CI writes SARIF and JUnit artifacts by default; check/inspect can write them with --sarif and --junit.
-Runtime capture is opt-in because it imports plugin code; use --runtime with PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1.
+Runtime capture is opt-in because it imports plugin code; use --runtime with --allow-execute or PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1.
 `);
 }

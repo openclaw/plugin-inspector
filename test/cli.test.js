@@ -55,13 +55,11 @@ test("check command runs from a plugin root without fixture config", async () =>
   assert.ok(report.fixtures[0].package.openclaw.entrypoints.some((entrypoint) => entrypoint.exists));
   assert.match(issues, /# OpenClaw Plugin Issue Findings/);
 
-  await execFileAsync(process.execPath, [cliPath, "check", "--out", "capture-reports", "--no-openclaw", "--capture"], {
-    cwd: rootDir,
-    env: {
-      ...process.env,
-      PLUGIN_INSPECTOR_EXECUTE_ISOLATED: "1",
-    },
-  });
+  await execFileAsync(
+    process.execPath,
+    [cliPath, "check", "--out", "capture-reports", "--no-openclaw", "--capture", "--allow-execute"],
+    { cwd: rootDir },
+  );
   const capture = JSON.parse(
     await readFile(path.join(rootDir, "capture-reports", "plugin-inspector-runtime-capture.json"), "utf8"),
   );
@@ -75,13 +73,9 @@ test("check command can target a plugin root and use runtime aliases", async () 
 
   await execFileAsync(
     process.execPath,
-    [cliPath, "--plugin-root", rootDir, "--out", "reports", "--no-openclaw", "--runtime", "--mock-sdk"],
+    [cliPath, "--plugin-root", rootDir, "--out", "reports", "--no-openclaw", "--runtime", "--mock-sdk", "--allow-execute"],
     {
       cwd: os.tmpdir(),
-      env: {
-        ...process.env,
-        PLUGIN_INSPECTOR_EXECUTE_ISOLATED: "1",
-      },
     },
   );
 
@@ -126,12 +120,8 @@ test("check command can enable runtime capture from plugin config", async () => 
   );
   const cliPath = path.resolve("src/cli.js");
 
-  await execFileAsync(process.execPath, [cliPath, "check", "--out", "reports", "--no-openclaw"], {
+  await execFileAsync(process.execPath, [cliPath, "check", "--out", "reports", "--no-openclaw", "--allow-execute"], {
     cwd: rootDir,
-    env: {
-      ...process.env,
-      PLUGIN_INSPECTOR_EXECUTE_ISOLATED: "1",
-    },
   });
 
   const capture = JSON.parse(
@@ -211,7 +201,7 @@ test("init command writes plugin config and CI workflow", async () => {
   assert.equal(config.plugin.id, "weather");
   assert.equal(config.plugin.sourceRoot, "src");
   assert.equal(config.capture.mockSdk, true);
-  assert.match(workflow, /pnpm dlx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk/);
+  assert.match(workflow, /pnpm dlx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute/);
 });
 
 test("init command detects plugin package managers", async () => {
@@ -225,7 +215,7 @@ test("init command detects plugin package managers", async () => {
   assert.match(workflow, /cache: pnpm/);
   assert.match(workflow, /corepack enable/);
   assert.match(workflow, /pnpm install --frozen-lockfile/);
-  assert.match(workflow, /pnpm dlx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk/);
+  assert.match(workflow, /pnpm dlx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute/);
 });
 
 test("init command can add package scripts", async () => {
@@ -236,7 +226,7 @@ test("init command can add package scripts", async () => {
   const packageJson = JSON.parse(await readFile(path.join(rootDir, "package.json"), "utf8"));
 
   assert.equal(packageJson.scripts["plugin:check"], "plugin-inspector inspect --no-openclaw");
-  assert.equal(packageJson.scripts["plugin:ci"], "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector ci --no-openclaw --runtime --mock-sdk");
+  assert.equal(packageJson.scripts["plugin:ci"], "plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute");
 });
 
 async function createCliPluginRoot(prefix) {
