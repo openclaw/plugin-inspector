@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-import { mkdtemp, rm } from "node:fs/promises";
+import { rmSync } from "node:fs";
+import { mkdtemp } from "node:fs/promises";
 import { register } from "node:module";
 import os from "node:os";
 import path from "node:path";
@@ -26,13 +27,16 @@ async function run(options) {
   const pluginRoot = path.resolve(options.cwd ?? process.cwd(), options.pluginRoot ?? path.dirname(entrypoint));
   const workspace = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-sdk-"));
 
-  try {
-    const { loaderPath } = await createMockSdkPackage(workspace, { pluginRoot });
-    register(pathToFileURL(loaderPath));
-    return await captureLinkedEntrypoint(entrypoint, options);
-  } finally {
-    await rm(workspace, { force: true, recursive: true });
-  }
+  cleanupTempDirOnExit(workspace);
+  const { loaderPath } = await createMockSdkPackage(workspace, { pluginRoot });
+  register(pathToFileURL(loaderPath));
+  return await captureLinkedEntrypoint(entrypoint, options);
+}
+
+function cleanupTempDirOnExit(dir) {
+  process.once("exit", () => {
+    rmSync(dir, { force: true, recursive: true });
+  });
 }
 
 async function captureLinkedEntrypoint(entrypoint, options) {

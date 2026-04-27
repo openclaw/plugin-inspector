@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-import { mkdtemp, rm } from "node:fs/promises";
+import { rmSync } from "node:fs";
+import { mkdtemp } from "node:fs/promises";
 import { register } from "node:module";
 import os from "node:os";
 import path from "node:path";
@@ -59,17 +60,20 @@ async function captureForSyntheticProbes(entrypoint, options) {
   const resolvedEntrypoint = path.resolve(process.cwd(), entrypoint);
   const pluginRoot = path.resolve(process.cwd(), options.pluginRoot ?? path.dirname(resolvedEntrypoint));
   const workspace = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-synthetic-mock-sdk-"));
-  try {
-    const { loaderPath } = await createMockSdkPackage(workspace, { pluginRoot });
-    register(pathToFileURL(loaderPath));
-    return captureEntrypoint(entrypoint, {
-      ...options,
-      mockSdk: false,
-      pluginRoot,
-    });
-  } finally {
-    await rm(workspace, { force: true, recursive: true });
-  }
+  cleanupTempDirOnExit(workspace);
+  const { loaderPath } = await createMockSdkPackage(workspace, { pluginRoot });
+  register(pathToFileURL(loaderPath));
+  return captureEntrypoint(entrypoint, {
+    ...options,
+    mockSdk: false,
+    pluginRoot,
+  });
+}
+
+function cleanupTempDirOnExit(dir) {
+  process.once("exit", () => {
+    rmSync(dir, { force: true, recursive: true });
+  });
 }
 
 function readFlag(commandArgs, name) {
