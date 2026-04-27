@@ -1,3 +1,5 @@
+<img src="docs/plugin-inspector-banner.jpg" alt="openclaw plugin inspector banner"/>
+
 # 💊 OpenClaw Plugin Inspector
 
 `plugin-inspector` is the reusable OpenClaw plugin compatibility inspector. It
