@@ -1,12 +1,17 @@
 #!/usr/bin/env node
+import path from "node:path";
 import {
   renderTextSummary,
   runPluginCheck,
 } from "./index.js";
 import {
+  buildCiSummary,
   captureEntrypoint,
+  inspectCompatibilityFixtureSet,
   inspectFixtureSet,
   loadInspectorConfig,
+  writeCiSummary,
+  writeCompatibilityReport,
   writePluginInspectorInit,
   writeArtifacts,
   writeReport,
@@ -23,8 +28,10 @@ try {
     await runCheck(commandArgs);
   } else if (command === "init") {
     await runInit(commandArgs);
-  } else if (command === "inspect" || command === "report" || command === "ci") {
+  } else if (command === "inspect" || command === "report") {
     await runReport(command, commandArgs);
+  } else if (command === "ci") {
+    await runCi(commandArgs);
   } else if (command === "capture") {
     await runCapture(commandArgs);
   } else {
@@ -95,6 +102,62 @@ async function runReport(command, commandArgs) {
   }
 }
 
+async function runCi(commandArgs) {
+  const configPath = readFlag(commandArgs, "--config");
+  const pluginRoot = readFlag(commandArgs, "--plugin-root") ?? readFlag(commandArgs, "--root");
+  const outDir = readFlag(commandArgs, "--out") ?? "reports";
+  const openclawPath = commandArgs.includes("--no-openclaw") ? false : readFlag(commandArgs, "--openclaw");
+  const json = commandArgs.includes("--json");
+  const { report, reportDir } = await runCiCompatibilityReport({
+    configPath,
+    openclawPath,
+    outDir,
+    pluginRoot,
+  });
+
+  const summary = await buildCiSummary({
+    artifactBaseDir: reportDir,
+    reportPaths: {
+      compatibility: "plugin-inspector-report.json",
+    },
+    reports: {
+      compatibility: report,
+    },
+  });
+  await writeCiSummary(summary, {
+    jsonPath: path.join(reportDir, "plugin-inspector-ci-summary.json"),
+    markdownPath: path.join(reportDir, "plugin-inspector-ci-summary.md"),
+  });
+
+  if (json) {
+    console.log(JSON.stringify(summary, null, 2));
+  } else {
+    console.log(renderCiTextSummary(summary));
+  }
+
+  if (summary.status !== "pass") {
+    throw new Error("plugin-inspector ci summary failed");
+  }
+}
+
+async function runCiCompatibilityReport({ configPath, openclawPath, outDir, pluginRoot }) {
+  if (configPath) {
+    const config = await loadInspectorConfig(configPath, { cwd: pluginRoot });
+    const report = await inspectCompatibilityFixtureSet(config, { openclawPath });
+    await writeCompatibilityReport(report, { cwd: config.rootDir, outDir });
+    return {
+      report,
+      reportDir: path.resolve(config.rootDir, outDir),
+    };
+  }
+
+  const { report } = await runPluginCheck({ pluginRoot, outDir, openclawPath });
+  return {
+    report,
+    reportDir: path.resolve(pluginRoot ?? process.cwd(), outDir),
+  };
+}
+
 async function runCapture(commandArgs) {
   const entrypoint = commandArgs.find((arg) => !arg.startsWith("-"));
   const outputPath = readFlag(commandArgs, "--output");
@@ -154,6 +217,15 @@ function readMockSdkFlag(commandArgs) {
   return undefined;
 }
 
+function renderCiTextSummary(summary) {
+  return [
+    `Status: ${summary.status.toUpperCase()}`,
+    `Breakages: ${summary.summary.breakages}`,
+    `Issues: ${summary.summary.issues}`,
+    `Artifacts: ${Object.values(summary.artifacts).filter(Boolean).length}`,
+  ].join("\n");
+}
+
 function printHelp() {
   console.log(`plugin-inspector
 
@@ -163,7 +235,7 @@ Usage:
   plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--package-manager npm|pnpm|yarn|bun] [--force]
   plugin-inspector report --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector inspect --config <path> [--out <dir>] [--check] [--json]
-  plugin-inspector ci --config <path> [--out <dir>]
+  plugin-inspector ci [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--json]
   PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture <entrypoint> [--mock-sdk|--real-sdk] [--plugin-root <path>] [--output <path>]
 
 Default check runs from the current plugin root and writes reports/ unless --out is set.
