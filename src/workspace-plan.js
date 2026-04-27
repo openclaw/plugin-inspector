@@ -3,6 +3,7 @@ import { mkdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { buildColdImportReadiness } from "./cold-import-readiness.js";
+import { normalizeRepoPath, posixJoin, slugForArtifact } from "./path-utils.js";
 
 export const defaultWorkspacePlanOptions = {
   captureScript: "plugin-inspector-capture",
@@ -469,20 +470,17 @@ function repoRelative(value) {
   return String(value).replaceAll(path.sep, "/");
 }
 
-function normalizeRepoPath(value) {
-  return String(value).replaceAll("\\", "/");
-}
-
-function posixJoin(...parts) {
-  return parts.filter(Boolean).join("/").replace(/\/+/g, "/");
-}
-
 function artifactPath(settings, fixtureId, entrypoint, kind) {
-  return posixJoin(settings.resultsRoot, fixtureId, `${artifactSlug(entrypoint.id)}.${kind}.json`);
+  return posixJoin(settings.resultsRoot, fixtureId, `${slugForArtifact(entrypoint.id)}.${kind}.json`);
 }
 
 function workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, kind) {
-  return workspaceRelativeArtifactPath(settings, fixtureId, workspacePath, `${artifactSlug(entrypoint.id)}.${kind}.json`);
+  return workspaceRelativeArtifactPath(
+    settings,
+    fixtureId,
+    workspacePath,
+    `${slugForArtifact(entrypoint.id)}.${kind}.json`,
+  );
 }
 
 function workspaceRelativeArtifactPath(settings, fixtureId, workspacePath, fileName) {
@@ -491,10 +489,6 @@ function workspaceRelativeArtifactPath(settings, fixtureId, workspacePath, fileN
 
 function auditArtifactPath(settings, fixtureId) {
   return posixJoin(settings.resultsRoot, fixtureId, "package-audit.json");
-}
-
-function artifactSlug(value) {
-  return value.replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
 function markdownTable(rows, headers) {

@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { slugForArtifact } from "./path-utils.js";
 
 export function buildColdImportReadiness(options = {}) {
   const report = options.report;
@@ -199,7 +200,7 @@ function classifyEntrypointReadiness({ fixture, packageSummary, entrypoint, root
   }
 
   return {
-    id: `cold-import.${entrypoint.kind}:${fixture.id}:${slugRef(entrypoint.relativePath)}`,
+    id: `cold-import.${entrypoint.kind}:${fixture.id}:${slugForArtifact(entrypoint.relativePath)}`,
     fixture: fixture.id,
     packagePath: packageSummary.path,
     kind: entrypoint.kind,
@@ -259,10 +260,6 @@ function assertionForBlocker(code) {
     "unknown-entrypoint-extension": "entrypoint extension has an explicit loader",
   };
   return assertions[code] ?? "cold import blocker has a documented mitigation";
-}
-
-function slugRef(ref) {
-  return ref.replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
 function unique(values) {

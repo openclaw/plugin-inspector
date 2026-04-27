@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
-import { resolveFromRoot } from "./path-utils.js";
+import { resolveFromRoot, toRepoPath } from "./path-utils.js";
 
 export const defaultExecutionResultsOptions = {
   generatedAt: "deterministic",
@@ -290,10 +290,6 @@ function repoRelative(value, options = {}) {
     return toRepoPath(relative || ".");
   }
   return toRepoPath(value);
-}
-
-function toRepoPath(value) {
-  return String(value).replaceAll("\\", "/").replaceAll(path.sep, "/");
 }
 
 function markdownTable(rows, headers) {

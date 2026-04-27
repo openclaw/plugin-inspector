@@ -1,4 +1,5 @@
 import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { slugForArtifact } from "./path-utils.js";
 import {
   defaultSyntheticHookContexts,
   defaultSyntheticHookEvents,
@@ -60,7 +61,7 @@ export function buildContractCapture(options = {}) {
     id: fixture.id,
     priority: fixture.priority,
     registrations: fixture.registrationDetails.map((registration) => ({
-      id: `registration.${registration.name}:${fixture.id}:${slugRef(registration.ref)}`,
+      id: `registration.${registration.name}:${fixture.id}:${slugForArtifact(registration.ref)}`,
       fixture: fixture.id,
       registrar: registration.name,
       ref: registration.ref,
@@ -69,7 +70,7 @@ export function buildContractCapture(options = {}) {
       syntheticArguments: registrationArguments[registration.name] ?? [{}],
     })),
     hooks: fixture.hookDetails.map((hook) => ({
-      id: `hook.${hook.name}:${fixture.id}:${slugRef(hook.ref)}`,
+      id: `hook.${hook.name}:${fixture.id}:${slugForArtifact(hook.ref)}`,
       fixture: fixture.id,
       hook: hook.name,
       ref: hook.ref,
@@ -79,7 +80,7 @@ export function buildContractCapture(options = {}) {
       syntheticContext: hookContexts[hook.name] ?? { hook: hook.name, fixture: fixture.id },
     })),
     sdkImports: fixture.sdkImportDetails.map((sdkImport) => ({
-      id: `sdk.${sdkImport.specifier}:${fixture.id}:${slugRef(sdkImport.ref)}`,
+      id: `sdk.${sdkImport.specifier}:${fixture.id}:${slugForArtifact(sdkImport.ref)}`,
       fixture: fixture.id,
       specifier: sdkImport.specifier,
       ref: sdkImport.ref,
@@ -258,7 +259,7 @@ export function renderContractCaptureMarkdown(capture, options = {}) {
 function packageEntrypoints(fixture) {
   return fixture.packages.flatMap((packageSummary) =>
     (packageSummary.openclaw?.entrypoints ?? []).map((entrypoint) => ({
-      id: `package.${entrypoint.kind}:${fixture.id}:${slugRef(entrypoint.relativePath)}`,
+      id: `package.${entrypoint.kind}:${fixture.id}:${slugForArtifact(entrypoint.relativePath)}`,
       fixture: fixture.id,
       kind: entrypoint.kind,
       specifier: entrypoint.specifier,
@@ -280,10 +281,6 @@ function assertionsForProbeTarget(target) {
     "tool-runtime": ["tool schema is captured", "tool result metadata is retained"],
   };
   return assertions[target] ?? ["probe has fixture evidence and a target contract"];
-}
-
-function slugRef(ref) {
-  return ref.replace(/[^a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
 function markdownTable(rows, headers) {
