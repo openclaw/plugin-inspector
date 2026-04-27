@@ -99,6 +99,14 @@ export {
   writeProfileDiff,
 } from "./profile-diff.js";
 export {
+  buildRefDiff,
+  defaultRefDiffDimensions,
+  defaultRefDiffOptions,
+  renderRefDiffMarkdown,
+  validateRefDiff,
+  writeRefDiff,
+} from "./ref-diff.js";
+export {
   renderMarkdownReport,
   renderTextSummary,
   writeReport,

@@ -51,6 +51,7 @@ import {
   buildImportLoopProfile,
   buildPlatformProbes,
   buildProfileDiff,
+  buildRefDiff,
   buildRuntimeProfile,
   buildWorkspacePlan,
   createCaptureApi,
@@ -63,6 +64,7 @@ import {
   renderImportLoopProfileMarkdown,
   renderPlatformProbesMarkdown,
   renderProfileDiffMarkdown,
+  renderRefDiffMarkdown,
   renderRuntimeProfileMarkdown,
   renderWorkspacePlanMarkdown,
   renderMarkdownReport,
@@ -74,6 +76,7 @@ import {
   writeImportLoopProfile,
   writePlatformProbes,
   writeProfileDiff,
+  writeRefDiff,
   writeRuntimeProfile,
   writeWorkspacePlan,
   writeReport,
@@ -111,6 +114,9 @@ const runtimeProfile = await buildRuntimeProfile({
   commands: [{ id: "node-boot", label: "Node boot", category: "baseline", args: ["-e", "0"] }],
 });
 await writeRuntimeProfile(runtimeProfile);
+
+const refDiff = await buildRefDiff({ baseReport, headReport });
+await writeRefDiff(refDiff);
 
 const profileDiff = await buildProfileDiff({ current, baseline, policy });
 await writeProfileDiff(profileDiff);
