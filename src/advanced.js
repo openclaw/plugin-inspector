@@ -100,6 +100,7 @@ export {
   openClawTargetPathCandidates,
   parseCompatRecordEntries,
   parseExportedStringArray,
+  parsePluginSdkEntrypointSpecifiers,
   parsePluginSdkExports,
   parseTypeFields,
   readOpenClawTargetSurface,

@@ -31,6 +31,7 @@ export async function readOpenClawTargetSurface(options = {}) {
   const apiBuilderPath = path.join(resolvedPath, "src/plugins/api-builder.ts");
   const capturedRegistrationPath = path.join(resolvedPath, "src/plugins/captured-registration.ts");
   const manifestTypesPath = path.join(resolvedPath, "src/plugins/manifest.ts");
+  const pluginSdkEntrypointsPath = path.join(resolvedPath, "src/plugin-sdk/entrypoints.ts");
   const packagePath = path.join(resolvedPath, "package.json");
 
   const registrySource = await readFile(registryPath, "utf8");
@@ -47,6 +48,18 @@ export async function readOpenClawTargetSurface(options = {}) {
     : [];
   const sdkExports = existsSync(packagePath)
     ? parsePluginSdkExports(JSON.parse(await readFile(packagePath, "utf8")))
+    : [];
+  const pluginSdkEntrypointsSource = existsSync(pluginSdkEntrypointsPath)
+    ? await readFile(pluginSdkEntrypointsPath, "utf8")
+    : "";
+  const reservedSdkExports = pluginSdkEntrypointsSource
+    ? parsePluginSdkEntrypointSpecifiers(pluginSdkEntrypointsSource, "reservedBundledPluginSdkEntrypoints")
+    : [];
+  const supportedFacadeSdkExports = pluginSdkEntrypointsSource
+    ? parsePluginSdkEntrypointSpecifiers(pluginSdkEntrypointsSource, "supportedBundledFacadeSdkEntrypoints")
+    : [];
+  const publicPluginOwnedSdkExports = pluginSdkEntrypointsSource
+    ? parsePluginSdkEntrypointSpecifiers(pluginSdkEntrypointsSource, "publicPluginOwnedSdkEntrypoints")
     : [];
 
   return {
@@ -69,6 +82,13 @@ export async function readOpenClawTargetSurface(options = {}) {
     packagePath: existsSync(packagePath) ? relativePath(rootDir, packagePath) : null,
     sdkExportCount: sdkExports.length,
     sdkExports,
+    pluginSdkEntrypointsPath: existsSync(pluginSdkEntrypointsPath)
+      ? relativePath(rootDir, pluginSdkEntrypointsPath)
+      : null,
+    reservedSdkExportCount: reservedSdkExports.length,
+    reservedSdkExports,
+    supportedFacadeSdkExports,
+    publicPluginOwnedSdkExports,
     manifestTypesPath: existsSync(manifestTypesPath) ? relativePath(rootDir, manifestTypesPath) : null,
     manifestFieldCount: manifestFields.length,
     manifestFields,
@@ -149,9 +169,16 @@ function emptyTargetSurface({ configuredPath, searchedPaths = undefined, status 
     apiRegistrars: [],
     capturedRegistrars: [],
     sdkExports: [],
+    reservedSdkExports: [],
+    supportedFacadeSdkExports: [],
+    publicPluginOwnedSdkExports: [],
     manifestFields: [],
     manifestContractFields: [],
   };
+}
+
+export function parsePluginSdkEntrypointSpecifiers(source, exportName) {
+  return parseExportedStringArray(source, exportName).map((entrypoint) => `openclaw/plugin-sdk/${entrypoint}`).sort();
 }
 
 function parseCapturedRegistrars(source) {

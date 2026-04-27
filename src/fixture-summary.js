@@ -626,7 +626,12 @@ function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, war
 
   const sdkExports = new Set(targetOpenClaw.sdkExports);
   const unknownImports = fixtureReport.sdkImportDetails.filter((sdkImport) => !sdkExports.has(sdkImport.specifier));
-  if (unknownImports.length === 0) {
+  const reservedSdkExports = new Set(targetOpenClaw.reservedSdkExports ?? []);
+  const reservedImports = fixtureReport.sdkImportDetails.filter((sdkImport) =>
+    reservedSdkExports.has(sdkImport.specifier),
+  );
+
+  if (reservedImports.length === 0 && unknownImports.length === 0) {
     logs.push({
       fixture: fixture.id,
       code: "sdk-exports-present",
@@ -637,21 +642,40 @@ function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, war
     return;
   }
 
-  warnings.push({
-    fixture: fixture.id,
-    code: "sdk-export-missing",
-    level: "warning",
-    message: "fixture imports plugin SDK aliases that are not exported by the target OpenClaw package",
-    evidence: detailEvidence(unknownImports, "specifier"),
-    compatRecord: "plugin-sdk-export-aliases",
-  });
-  decisions.push({
-    fixture: fixture.id,
-    decision: "core-compat-adapter",
-    seam: "sdk-alias",
-    action: "Restore the package export alias or publish a versioned migration map before cold-importing old plugins.",
-    evidence: unique(unknownImports.map((sdkImport) => sdkImport.specifier)).join(", "),
-  });
+  if (unknownImports.length > 0) {
+    warnings.push({
+      fixture: fixture.id,
+      code: "sdk-export-missing",
+      level: "warning",
+      message: "fixture imports plugin SDK aliases that are not exported by the target OpenClaw package",
+      evidence: detailEvidence(unknownImports, "specifier"),
+      compatRecord: "plugin-sdk-export-aliases",
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "core-compat-adapter",
+      seam: "sdk-alias",
+      action: "Restore the package export alias or publish a versioned migration map before cold-importing old plugins.",
+      evidence: unique(unknownImports.map((sdkImport) => sdkImport.specifier)).join(", "),
+    });
+  }
+
+  if (reservedImports.length > 0) {
+    warnings.push({
+      fixture: fixture.id,
+      code: "reserved-sdk-import",
+      level: "warning",
+      message: "fixture imports reserved bundled-plugin SDK compatibility subpaths",
+      evidence: detailEvidence(reservedImports, "specifier"),
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "plugin-upstream-fix",
+      seam: "sdk-import",
+      action: "Move the plugin to documented public SDK subpaths or plugin-local helpers before relying on this compatibility shim.",
+      evidence: unique(reservedImports.map((sdkImport) => sdkImport.specifier)).join(", "),
+    });
+  }
 }
 
 function classifyManifestFieldCoverage({ fixture, fixtureReport, targetOpenClaw, warnings, logs, decisions }) {

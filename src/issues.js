@@ -32,6 +32,7 @@ export const knownIssueCodes = new Set([
   "provider-auth-env-vars",
   "registration-capture-gap",
   "runtime-tool-capture",
+  "reserved-sdk-import",
   "sdk-export-missing",
 ]);
 
@@ -77,6 +78,12 @@ export const issueMetadataByCode = {
     owner: "core",
     decision: "core-compat-adapter",
     title: "plugin SDK import aliases are missing from target package exports",
+  },
+  "reserved-sdk-import": {
+    severity: "P1",
+    owner: "plugin",
+    decision: "plugin-upstream-fix",
+    title: "plugin imports reserved bundled-plugin SDK compatibility subpaths",
   },
   "missing-compat-record": {
     severity: "P1",
@@ -310,6 +317,7 @@ function issueClassFor(code, options) {
       "package-openclaw-entry-missing",
       "package-openclaw-metadata-missing",
       "package-plugin-api-compat-missing",
+      "reserved-sdk-import",
     ].includes(code)
   ) {
     return "upstream-metadata";

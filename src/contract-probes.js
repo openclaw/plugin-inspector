@@ -29,6 +29,11 @@ export const contractProbeRules = {
     contract: "Every observed OpenClaw plugin SDK import remains exported by the target OpenClaw package.",
     target: "sdk-alias",
   },
+  "reserved-sdk-import": {
+    id: "sdk.import.reserved-bundled-plugin-boundary",
+    contract: "External plugins use documented public SDK subpaths instead of reserved bundled-plugin compatibility shims.",
+    target: "sdk-import",
+  },
   "provider-auth-env-vars": {
     id: "manifest.compat.provider-auth-env-vars",
     contract: "Legacy provider auth env metadata continues to map into config/help surfaces.",
