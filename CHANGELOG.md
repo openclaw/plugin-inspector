@@ -8,10 +8,13 @@
 - Add `plugin-inspector config` for resolved plugin-root config summaries.
 - Add author-facing `plugin-inspector inspect` plugin-root flow.
 - Add CI-native SARIF and JUnit outputs; `plugin-inspector ci` writes them by default.
+- Add `plugin-inspector init --scripts` for `plugin:check` and `plugin:ci` package scripts.
+- Add public synthetic probe suite helpers for building probe plans from compatibility reports.
 
 ### Changed
 
 - Make generated CI workflows use one `plugin-inspector ci --no-openclaw --runtime --mock-sdk` command.
+- Make `plugin-inspector init --ci` detect `packageManager` and common lockfiles before generating CI install/run commands.
 - Harden runtime capture for string handler registrations, parse-capable config schema helpers, and provider auth/catalog SDK mocks.
 
 ## 0.1.3 - 2026-04-27
