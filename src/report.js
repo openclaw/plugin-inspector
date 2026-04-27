@@ -160,6 +160,7 @@ export async function buildCompatibilityReport(options = {}) {
       warningCount: warnings.length,
       suggestionCount: suggestions.length,
       decisionCount: decisions.length,
+      logCount: logs.length,
       issueCount: issues.length,
       p0IssueCount: issues.filter((issue) => issue.severity === "P0").length,
       p1IssueCount: issues.filter((issue) => issue.severity === "P1").length,

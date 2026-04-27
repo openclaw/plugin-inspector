@@ -47,6 +47,9 @@ test("check command runs from a plugin root without fixture config", async () =>
   const issues = await readFile(path.join(rootDir, "reports", "plugin-inspector-issues.md"), "utf8");
 
   assert.match(stdout, /Status: PASS/);
+  assert.equal(report.summary.logCount, report.logs.length);
+  assert.match(stdout, new RegExp(`Logs: ${report.logs.length}\\b`));
+  assert.doesNotMatch(stdout, /Logs: undefined/);
   assert.equal(report.targetOpenClaw.status, "disabled");
   assert.equal(report.fixtures[0].id, "weather");
   assert.ok(report.fixtures[0].package.openclaw.entrypoints.some((entrypoint) => entrypoint.exists));
