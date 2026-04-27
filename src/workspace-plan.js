@@ -387,7 +387,7 @@ function detectPackageManager(rootDir, packageDir, packageJson) {
 function findNearestLockfile(rootDir, packageDir) {
   const candidates = ["pnpm-lock.yaml", "package-lock.json", "yarn.lock", "bun.lock", "bun.lockb"];
   let current = path.resolve(rootDir, packageDir);
-  while (current.startsWith(rootDir)) {
+  while (isWithinPath(rootDir, current)) {
     for (const candidate of candidates) {
       const lockfile = path.join(current, candidate);
       if (existsSync(lockfile)) {
@@ -401,6 +401,11 @@ function findNearestLockfile(rootDir, packageDir) {
     current = parent;
   }
   return null;
+}
+
+function isWithinPath(rootDir, candidatePath) {
+  const relative = path.relative(rootDir, candidatePath);
+  return relative === "" || (!relative.startsWith("..") && !path.isAbsolute(relative));
 }
 
 async function readPackageJson(rootDir, packagePath) {
