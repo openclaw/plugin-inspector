@@ -47,6 +47,12 @@ export {
   summarizeIssueClasses,
 } from "./issues.js";
 export {
+  buildExecutionResultsReport,
+  defaultExecutionResultsOptions,
+  renderExecutionResultsMarkdown,
+  writeExecutionResultsReport,
+} from "./execution-results.js";
+export {
   defaultOpenClawCheckoutPaths,
   openClawTargetPathCandidates,
   parseCompatRecordEntries,

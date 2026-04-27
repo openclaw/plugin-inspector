@@ -47,6 +47,7 @@ import {
   buildCiSummary,
   buildColdImportReadiness,
   buildContractCapture,
+  buildExecutionResultsReport,
   buildPlatformProbes,
   buildWorkspacePlan,
   createCaptureApi,
@@ -55,12 +56,14 @@ import {
   readOpenClawTargetSurface,
   renderColdImportReadinessMarkdown,
   renderContractCaptureMarkdown,
+  renderExecutionResultsMarkdown,
   renderPlatformProbesMarkdown,
   renderWorkspacePlanMarkdown,
   renderMarkdownReport,
   writeCiSummary,
   writeColdImportReadiness,
   writeContractCapture,
+  writeExecutionResultsReport,
   writePlatformProbes,
   writeWorkspacePlan,
   writeReport,
@@ -86,6 +89,9 @@ await writeWorkspacePlan(workspacePlan);
 
 const platformProbes = buildPlatformProbes({ plan: workspacePlan });
 await writePlatformProbes(platformProbes);
+
+const executionResults = await buildExecutionResultsReport({ resultsDir: ".plugin-inspector/results" });
+await writeExecutionResultsReport(executionResults);
 ```
 
 ## Scope
