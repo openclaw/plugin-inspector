@@ -2,19 +2,25 @@
 
 `plugin-inspector` publishes from a signed Git tag through the GitHub Actions
 release workflow. The workflow runs the test suite, verifies the npm tarball,
-publishes a GitHub release, and publishes the public npm package with
-provenance.
+publishes a GitHub release, and publishes the public npm package through npm
+trusted publishing.
 
 ## First-time setup
 
-Add an npm automation token to the repository Actions secrets:
+Configure npm trusted publishing for `@openclaw/plugin-inspector`:
 
-```bash
-gh secret set NPM_TOKEN --app actions
-```
+- provider: GitHub Actions
+- organization/user: `openclaw`
+- repository: `plugin-inspector`
+- workflow filename: `release.yml`
+- environment: blank
 
-The token must be allowed to publish `@openclaw/plugin-inspector` with public
-access.
+The package `repository.url` must continue to match
+`git+https://github.com/openclaw/plugin-inspector.git`.
+
+npm trusted publishing uses GitHub Actions OIDC and does not use an `NPM_TOKEN`
+secret. npm automatically creates provenance attestations for trusted publishes
+from a public GitHub repository.
 
 ## Local verification
 
@@ -36,6 +42,10 @@ git push origin v0.1.0
 
 The same workflow can be triggered manually from GitHub Actions with
 `tag_name=v0.1.0`.
+
+If npm publish fails with `ENEEDAUTH` or a misleading package-not-found error,
+check that the npm trusted publisher configuration exactly matches the GitHub
+repository and `.github/workflows/release.yml`.
 
 ## Release notes
 

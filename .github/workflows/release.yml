@@ -53,15 +53,22 @@ jobs:
       - name: Verify package
         run: npm run release:local
 
-      - name: Verify npm token
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Verify OIDC-capable npm
         run: |
           set -euo pipefail
-          if [ -z "${NODE_AUTH_TOKEN}" ]; then
-            echo "NPM_TOKEN repository secret is required to publish @openclaw/plugin-inspector."
+          NPM_VERSION="$(npm --version)"
+          NPM_VERSION="${NPM_VERSION}" node -e '
+            const [major, minor, patch] = process.env.NPM_VERSION.split(".").map(Number);
+            if (major < 11 || (major === 11 && (minor < 5 || (minor === 5 && patch < 1)))) {
+              process.exit(1);
+            }
+          ' || {
+            echo "npm ${NPM_VERSION} is too old for trusted publishing; npm 11.5.1 or newer is required."
             exit 1
-          fi
+          }
+
+      - name: Publish npm package
+        run: npm publish --access public
 
       - name: Publish GitHub release
         uses: release-drafter/release-drafter@v7
@@ -73,8 +80,3 @@ jobs:
           prerelease: ${{ contains(env.RELEASE_TAG, 'beta') || contains(env.RELEASE_TAG, 'alpha') || contains(env.RELEASE_TAG, 'rc') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish npm package
-        run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
