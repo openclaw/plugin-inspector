@@ -1,7 +1,6 @@
-import { spawn } from "node:child_process";
 import path from "node:path";
-import { performance } from "node:perf_hooks";
 import { renderMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { runProfiledProcess } from "./process-profile.js";
 
 export const defaultRuntimeProfileOptions = {
   generatedAt: "deterministic",
@@ -273,107 +272,14 @@ async function profileCommand(command, options) {
     }
   }
 
-  const start = performance.now();
-  const heapStartMb = heapUsedMb();
-  let firstRssKb = 0;
-  let peakRssKb = 0;
-  let peakCpuPercent = 0;
-  const cpuSamples = [];
-  let pollInFlight = false;
-  const child = spawn(command.command ?? process.execPath, args, {
+  return runProfiledProcess({
+    command: command.command ?? process.execPath,
+    args,
     cwd: command.cwd ?? options.rootDir,
     env: { ...process.env, ...options.env, ...command.env },
     stdio: ["ignore", "pipe", "pipe"],
+    roundAverageCpuPercent: true,
   });
-  const stdout = [];
-  const stderr = [];
-  child.stdout.on("data", (chunk) => stdout.push(chunk));
-  child.stderr.on("data", (chunk) => stderr.push(chunk));
-
-  const recordStats = (stats) => {
-    if (stats.rssKb > 0 && firstRssKb === 0) {
-      firstRssKb = stats.rssKb;
-    }
-    peakRssKb = Math.max(peakRssKb, stats.rssKb);
-    peakCpuPercent = Math.max(peakCpuPercent, stats.cpuPercent);
-    if (stats.cpuPercent > 0) {
-      cpuSamples.push(stats.cpuPercent);
-    }
-  };
-  const poll = setInterval(() => {
-    if (pollInFlight) {
-      return;
-    }
-    pollInFlight = true;
-    readProcessStats(child.pid)
-      .then(recordStats)
-      .finally(() => {
-        pollInFlight = false;
-      });
-  }, 100);
-
-  const exitCode = await new Promise((resolve, reject) => {
-    child.on("error", (error) => {
-      clearInterval(poll);
-      reject(error);
-    });
-    child.on("exit", (code) => resolve(code ?? 1));
-  });
-  clearInterval(poll);
-  const finalStats = await readProcessStats(child.pid);
-  if (finalStats.rssKb > 0 && firstRssKb === 0) {
-    firstRssKb = finalStats.rssKb;
-  }
-  peakRssKb = Math.max(peakRssKb, finalStats.rssKb);
-  peakCpuPercent = Math.max(peakCpuPercent, finalStats.cpuPercent);
-  if (finalStats.cpuPercent > 0) {
-    cpuSamples.push(finalStats.cpuPercent);
-  }
-
-  const wallMs = Math.round(performance.now() - start);
-  const averageCpuPercent =
-    cpuSamples.length > 0
-      ? Math.round((cpuSamples.reduce((sum, value) => sum + value, 0) / cpuSamples.length) * 10) / 10
-      : 0;
-
-  return {
-    wallMs,
-    peakRssMb: Math.round((peakRssKb / 1024) * 10) / 10,
-    rssDeltaMb: Math.round(((peakRssKb - firstRssKb) / 1024) * 10) / 10,
-    peakCpuPercent,
-    cpuMsEstimate: Math.round((wallMs * averageCpuPercent) / 100),
-    harnessHeapDeltaMb: Math.round((heapUsedMb() - heapStartMb) * 10) / 10,
-    exitCode,
-    stdoutPreview: Buffer.concat(stdout).toString("utf8").trim().split("\n").slice(-2).join("\n"),
-    stderrPreview: Buffer.concat(stderr).toString("utf8").trim().split("\n").slice(-2).join("\n"),
-  };
-}
-
-async function readProcessStats(pid) {
-  if (!pid || process.platform === "win32") {
-    return { rssKb: 0, cpuPercent: 0 };
-  }
-  return new Promise((resolve) => {
-    const ps = spawn("ps", ["-o", "rss=", "-o", "%cpu=", "-p", String(pid)], {
-      stdio: ["ignore", "pipe", "ignore"],
-    });
-    const chunks = [];
-    ps.stdout.on("data", (chunk) => chunks.push(chunk));
-    ps.on("error", () => resolve({ rssKb: 0, cpuPercent: 0 }));
-    ps.on("exit", () => {
-      const [rssRaw, cpuRaw] = Buffer.concat(chunks).toString("utf8").trim().split(/\s+/);
-      const rssKb = Number.parseInt(rssRaw, 10);
-      const cpuPercent = Number.parseFloat(cpuRaw);
-      resolve({
-        rssKb: Number.isFinite(rssKb) ? rssKb : 0,
-        cpuPercent: Number.isFinite(cpuPercent) ? cpuPercent : 0,
-      });
-    });
-  });
-}
-
-function heapUsedMb() {
-  return Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 10) / 10;
 }
 
 function percentile(sortedValues, percentileValue) {
