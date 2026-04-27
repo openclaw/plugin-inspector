@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { readOptionalJsonFile } from "./json-file.js";
 
 export const defaultCiReportPaths = {
   compatibility: "reports/plugin-inspector-report.json",
@@ -72,7 +73,7 @@ export async function readCiReports(reportsDir, reportPaths = defaultCiReportPat
   const reports = {};
   for (const [key, defaultPath] of Object.entries(reportPaths)) {
     const reportPath = path.join(reportsDir, path.basename(defaultPath));
-    reports[key] = await readOptionalJson(reportPath);
+    reports[key] = await readOptionalJsonFile(reportPath);
   }
   return reports;
 }
@@ -99,11 +100,13 @@ export function deriveCiStatus(reports) {
 export async function writeCiSummary(summary, options = {}) {
   const jsonPath = options.jsonPath ?? path.join(process.cwd(), "reports/plugin-inspector-ci-summary.json");
   const markdownPath = options.markdownPath ?? path.join(process.cwd(), "reports/plugin-inspector-ci-summary.md");
-  await mkdir(path.dirname(jsonPath), { recursive: true });
-  await mkdir(path.dirname(markdownPath), { recursive: true });
-  await writeFile(jsonPath, `${JSON.stringify(summary, null, 2)}\n`, "utf8");
-  await writeFile(markdownPath, `${renderCiSummaryMarkdown(summary)}\n`, "utf8");
-  return { jsonPath, markdownPath };
+  return writeJsonMarkdownArtifacts({
+    jsonPath,
+    markdownPath,
+    json: summary,
+    markdown: renderCiSummaryMarkdown(summary),
+    check: options.check,
+  });
 }
 
 export function renderCiSummaryMarkdown(summary) {
@@ -215,21 +218,6 @@ function topIssues(report) {
     }));
 }
 
-async function readOptionalJson(jsonPath) {
-  return existsSync(jsonPath) ? JSON.parse(await readFile(jsonPath, "utf8")) : null;
-}
-
 function markdownTable(rows, headers) {
-  if (rows.length === 0) {
-    return "_none_";
-  }
-
-  const allRows = [headers, ...rows.map((row) => row.map((cell) => String(cell ?? "-")))];
-  const widths = headers.map((_, columnIndex) => Math.max(...allRows.map((row) => row[columnIndex].length)));
-  const renderRow = (row) => `| ${row.map((cell, index) => cell.padEnd(widths[index])).join(" | ")} |`;
-  return [
-    renderRow(headers),
-    renderRow(widths.map((width) => "-".repeat(width))),
-    ...rows.map((row) => renderRow(row.map((cell) => String(cell ?? "-")))),
-  ].join("\n");
+  return renderPaddedMarkdownTable(rows, headers, { nullValue: "-" });
 }

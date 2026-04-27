@@ -14,6 +14,7 @@ export {
   slugForArtifact,
   toRepoPath,
 } from "./path-utils.js";
+export { readJsonFile, readOptionalJsonFile } from "./json-file.js";
 export { assertRunCount, percentile } from "./stats.js";
 export { createCaptureApi } from "./capture-api.js";
 export {

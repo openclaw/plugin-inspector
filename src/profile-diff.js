@@ -1,7 +1,6 @@
-import { existsSync } from "node:fs";
-import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { readJsonFile, readOptionalJsonFile } from "./json-file.js";
 import { resolveRequiredFromRoot } from "./path-utils.js";
 
 export const defaultProfileDiffOptions = {
@@ -15,11 +14,12 @@ export const defaultProfileDiffOptions = {
 
 export async function buildProfileDiff(options = {}) {
   const rootDir = path.resolve(options.rootDir ?? process.cwd());
-  const policy = options.policy ?? (await readJson(profileDiffPath(rootDir, options.policyPath ?? defaultProfileDiffOptions.policyPath)));
-  const current = options.current ?? (await readJson(profileDiffPath(rootDir, options.currentPath)));
+  const policy =
+    options.policy ?? (await readJsonFile(profileDiffPath(rootDir, options.policyPath ?? defaultProfileDiffOptions.policyPath)));
+  const current = options.current ?? (await readJsonFile(profileDiffPath(rootDir, options.currentPath)));
   const baseline =
     options.baseline ??
-    (await readOptionalJson(profileDiffPath(rootDir, options.baselinePath ?? defaultProfileDiffOptions.baselinePath)));
+    (await readOptionalJsonFile(profileDiffPath(rootDir, options.baselinePath ?? defaultProfileDiffOptions.baselinePath)));
   const checks = baseline ? compareProfiles({ baseline, current, policy, strict: options.strict }) : [];
 
   if (!baseline) {
@@ -211,14 +211,6 @@ function profileSummary(profile) {
     targetOpenClaw: profile.targetOpenClaw,
     fixtureInventory: profile.fixtureInventory,
   };
-}
-
-async function readJson(jsonPath) {
-  return JSON.parse(await readFile(jsonPath, "utf8"));
-}
-
-async function readOptionalJson(jsonPath) {
-  return existsSync(jsonPath) ? readJson(jsonPath) : null;
 }
 
 function profileDiffPath(rootDir, candidatePath) {
