@@ -1,4 +1,4 @@
-import { renderMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 
 export const syntheticRegistrationExecutionProfiles = {
   defineChannelPluginEntry: {
@@ -540,5 +540,5 @@ function summarizeValue(value) {
 }
 
 function markdownTable(rows, headers) {
-  return renderMarkdownTable(rows, headers, { empty: "_none_", escape: false, padding: true });
+  return renderPaddedMarkdownTable(rows, headers);
 }

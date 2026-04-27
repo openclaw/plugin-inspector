@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { renderMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 
 export function buildColdImportReadiness(options = {}) {
   const report = options.report;
@@ -270,5 +270,5 @@ function unique(values) {
 }
 
 function markdownTable(rows, headers) {
-  return renderMarkdownTable(rows, headers, { empty: "_none_", escape: false, padding: true });
+  return renderPaddedMarkdownTable(rows, headers);
 }

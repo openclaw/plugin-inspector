@@ -2,6 +2,7 @@ export {
   escapeMarkdownTableCell,
   renderArtifactContent,
   renderMarkdownTable,
+  renderPaddedMarkdownTable,
   writeArtifacts,
   writeJsonMarkdownArtifacts,
 } from "./artifacts.js";

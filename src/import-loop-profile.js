@@ -1,7 +1,7 @@
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { renderMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { runProfiledProcess } from "./process-profile.js";
 
 const defaultCliPath = fileURLToPath(new URL("./cli.js", import.meta.url));
@@ -181,5 +181,5 @@ function resolveFromRoot(rootDir, value) {
 }
 
 function markdownTable(rows, headers) {
-  return renderMarkdownTable(rows, headers, { empty: "_none_", escape: false, padding: true });
+  return renderPaddedMarkdownTable(rows, headers);
 }

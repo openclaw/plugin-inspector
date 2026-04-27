@@ -1,5 +1,5 @@
 import path from "node:path";
-import { renderMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 
 export const defaultCiPolicyReportOptions = {
   generatedAt: "deterministic",
@@ -258,5 +258,5 @@ function resolveFromRoot(rootDir, value) {
 }
 
 function markdownTable(rows, headers) {
-  return renderMarkdownTable(rows, headers, { empty: "_none_", escape: false, padding: true });
+  return renderPaddedMarkdownTable(rows, headers);
 }

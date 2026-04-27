@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { renderMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 
 export const defaultProfileDiffOptions = {
   baselinePath: "baselines/runtime/main.json",
@@ -228,5 +228,5 @@ function resolveFromRoot(rootDir, candidatePath) {
 }
 
 function markdownTable(rows, headers) {
-  return renderMarkdownTable(rows, headers, { empty: "_none_", escape: false, padding: true });
+  return renderPaddedMarkdownTable(rows, headers);
 }

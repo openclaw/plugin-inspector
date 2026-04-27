@@ -85,6 +85,15 @@ export function renderMarkdownTable(rows, headers, options = {}) {
     .join("\n");
 }
 
+export function renderPaddedMarkdownTable(rows, headers, options = {}) {
+  return renderMarkdownTable(rows, headers, {
+    empty: "_none_",
+    escape: false,
+    padding: true,
+    ...options,
+  });
+}
+
 export function escapeMarkdownTableCell(value) {
   return value.replace(/\|/g, "\\|").replace(/\n/g, "<br>");
 }
