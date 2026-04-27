@@ -47,6 +47,15 @@ export {
   summarizeIssueClasses,
 } from "./issues.js";
 export {
+  defaultOpenClawCheckoutPaths,
+  openClawTargetPathCandidates,
+  parseCompatRecordEntries,
+  parseExportedStringArray,
+  parsePluginSdkExports,
+  parseTypeFields,
+  readOpenClawTargetSurface,
+} from "./openclaw-target.js";
+export {
   captureEntrypoint,
   inspectFixtureSet,
   inspectPlugin,
