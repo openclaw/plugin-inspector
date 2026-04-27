@@ -18,7 +18,7 @@
     "node": ">=22"
   },
   "bin": {
-    "plugin-inspector": "./src/cli.js"
+    "plugin-inspector": "src/cli.js"
   },
   "exports": {
     ".": "./src/index.js",
@@ -41,10 +41,12 @@
     "src",
     "examples",
     "README.md",
+    "CHANGELOG.md",
     "LICENSE"
   ],
   "scripts": {
-    "check": "npm test && npm pack --dry-run",
+    "check": "npm test && npm pack --dry-run && npm publish --dry-run --access public",
+    "release:local": "npm run check",
     "test": "node --test test/*.test.js"
   },
   "keywords": [

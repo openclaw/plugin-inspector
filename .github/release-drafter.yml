@@ -1,0 +1,95 @@
+name-template: "plugin-inspector v$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
+category-template: "### $TITLE"
+change-template: "- $TITLE (#$NUMBER) @$AUTHOR"
+change-title-escapes: '\<*_&'
+no-changes-template: "- No merged pull requests in this release."
+
+categories:
+  - title: "Features"
+    labels:
+      - "feature"
+      - "enhancement"
+      - "feat"
+  - title: "Fixes"
+    labels:
+      - "bug"
+      - "fix"
+  - title: "Other Changes"
+    labels:
+      - "perf"
+      - "chore"
+      - "ci"
+      - "build"
+      - "dependencies"
+      - "dep"
+      - "deps"
+      - "docs"
+      - "refactor"
+      - "test"
+      - "tests"
+      - "other"
+
+exclude-labels:
+  - "skip-changelog"
+  - "no-changelog"
+
+version-resolver:
+  major:
+    labels:
+      - "major"
+  minor:
+    labels:
+      - "feat"
+      - "feature"
+      - "enhancement"
+  patch:
+    labels:
+      - "bug"
+      - "fix"
+      - "perf"
+      - "chore"
+      - "ci"
+      - "build"
+      - "dependencies"
+      - "dep"
+      - "deps"
+      - "docs"
+      - "refactor"
+      - "test"
+      - "tests"
+      - "other"
+  default: patch
+
+autolabeler:
+  - label: "skip-changelog"
+    title:
+      - '/^chore\(release\):/i'
+  - label: "feat"
+    title:
+      - '/^feat(\(.+\))?:/i'
+  - label: "fix"
+    title:
+      - '/^fix(\(.+\))?:/i'
+  - label: "docs"
+    title:
+      - '/^docs(\(.+\))?:/i'
+  - label: "refactor"
+    title:
+      - '/^refactor(\(.+\))?:/i'
+  - label: "test"
+    title:
+      - '/^test(s)?(\(.+\))?:/i'
+  - label: "chore"
+    title:
+      - '/^chore(\(.+\))?:/i'
+
+template: |
+  ## plugin-inspector v$RESOLVED_VERSION
+
+  Offline compatibility inspector for OpenClaw plugins.
+
+  $CHANGES
+
+  ### Contributors
+  $CONTRIBUTORS
