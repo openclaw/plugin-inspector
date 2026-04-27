@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
@@ -89,5 +89,35 @@ test("capture entrypoint imports a local fixture and records registrations", asy
   assert.deepEqual(
     result.captured.map((item) => `${item.kind}:${item.name}`),
     ["hook:before_tool_call", "registration:registerTool"],
+  );
+});
+
+test("capture entrypoint can mock OpenClaw plugin SDK imports", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-sdk-capture-"));
+  await mkdir(path.join(dir, "src"), { recursive: true });
+  const entrypoint = path.join(dir, "src", "index.mjs");
+  await writeFile(
+    entrypoint,
+    [
+      'import { definePluginEntry } from "openclaw/plugin-sdk";',
+      "",
+      "export default definePluginEntry((api) => {",
+      "  api.registerTool({ name: 'fixture_tool', inputSchema: { type: 'object' }, run() {} });",
+      "});",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = await captureEntrypoint("src/index.mjs", {
+    cwd: dir,
+    pluginRoot: dir,
+    mockSdk: true,
+  });
+
+  assert.equal(result.status, "captured");
+  assert.equal(result.mockSdk, true);
+  assert.deepEqual(
+    result.captured.map((item) => `${item.kind}:${item.name}`),
+    ["registration:registerTool"],
   );
 });

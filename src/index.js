@@ -106,6 +106,7 @@ export {
 } from "./openclaw-target.js";
 export {
   captureEntrypoint,
+  captureEntrypointWithMockSdk,
   inspectCompatibilityFixtureSet,
   inspectFixtureSet,
   inspectPlugin,
@@ -159,6 +160,7 @@ export {
   validateRuntimeProfile,
   writeRuntimeProfile,
 } from "./runtime-profile.js";
+export { createMockSdkPackage } from "./sdk-mock.js";
 export {
   buildSyntheticProbePlan,
   defaultSyntheticHookContexts,

@@ -1,12 +1,16 @@
 import { existsSync } from "node:fs";
+import { execFile } from "node:child_process";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
+import { promisify } from "node:util";
 import { createCaptureApi } from "./capture-api.js";
 import { fixtureCheckoutPath, fixtureSourceRoot } from "./config.js";
 import { buildCompatibilityFixtureReport } from "./fixture-summary.js";
 import { readOpenClawTargetSurface } from "./openclaw-target.js";
 import { buildCompatibilityReport, buildReport } from "./report.js";
+
+const execFileAsync = promisify(execFile);
 
 export async function inspectFixtureSet(config, options = {}) {
   const { inspections, failures } = await inspectConfiguredFixtures(config, options);
@@ -147,6 +151,10 @@ export function inspectSourceText(text, filePath = "source.js") {
 }
 
 export async function captureEntrypoint(entrypoint, options = {}) {
+  if (options.mockSdk === true) {
+    return captureEntrypointWithMockSdk(entrypoint, options);
+  }
+
   const resolvedEntrypoint = path.resolve(options.cwd ?? process.cwd(), entrypoint);
   const module = await import(pathToFileURL(resolvedEntrypoint).href);
   const register = findRegisterExport(module);
@@ -170,6 +178,29 @@ export async function captureEntrypoint(entrypoint, options = {}) {
     result.retained = api.getRetainedContracts();
   }
   return result;
+}
+
+export async function captureEntrypointWithMockSdk(entrypoint, options = {}) {
+  const runnerPath = fileURLToPath(new URL("./mock-sdk-capture-runner.js", import.meta.url));
+  const payload = {
+    entrypoint,
+    cwd: options.cwd ?? process.cwd(),
+    pluginRoot: options.pluginRoot,
+    apiOptions: options.apiOptions,
+  };
+  const { stdout } = await execFileAsync(
+    process.execPath,
+    ["--preserve-symlinks", runnerPath, JSON.stringify(payload)],
+    {
+      cwd: options.cwd ?? process.cwd(),
+      env: {
+        ...process.env,
+        ...(options.env ?? {}),
+      },
+      maxBuffer: 1024 * 1024 * 10,
+    },
+  );
+  return JSON.parse(stdout);
 }
 
 function findRegisterExport(module) {

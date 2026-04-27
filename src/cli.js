@@ -75,6 +75,8 @@ async function runReport(command, commandArgs) {
 async function runCapture(commandArgs) {
   const entrypoint = commandArgs.find((arg) => !arg.startsWith("-"));
   const outputPath = readFlag(commandArgs, "--output");
+  const pluginRoot = readFlag(commandArgs, "--plugin-root");
+  const mockSdk = commandArgs.includes("--mock-sdk");
   if (!entrypoint) {
     throw new Error("capture requires an entrypoint path");
   }
@@ -82,7 +84,7 @@ async function runCapture(commandArgs) {
     throw new Error("capture imports plugin code; rerun with PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 in an isolated workspace");
   }
 
-  const result = await captureEntrypoint(entrypoint);
+  const result = await captureEntrypoint(entrypoint, { mockSdk, pluginRoot });
   const json = `${JSON.stringify(result, null, 2)}\n`;
   if (outputPath) {
     await writeArtifacts([{ path: outputPath, content: json }]);
@@ -107,6 +109,6 @@ Usage:
   plugin-inspector report --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector inspect --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector ci --config <path> [--out <dir>]
-  PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture <entrypoint> [--output <path>]
+  PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture <entrypoint> [--mock-sdk] [--plugin-root <path>] [--output <path>]
 `);
 }
