@@ -14,7 +14,7 @@ async function run(commandArgs) {
   const entrypoint = commandArgs.find((arg) => !arg.startsWith("-"));
   const outputPath = readFlag(commandArgs, "--output");
   const pluginRoot = readFlag(commandArgs, "--plugin-root");
-  const mockSdk = readMockSdkFlag(commandArgs) ?? commandArgs.includes("--mock-sdk");
+  const mockSdk = readMockSdkFlag(commandArgs) ?? true;
 
   if (!entrypoint) {
     throw new Error("capture requires an entrypoint path");

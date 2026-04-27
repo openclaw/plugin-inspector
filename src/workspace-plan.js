@@ -452,13 +452,13 @@ function runCommand(packageManager, script) {
 function captureCommand(settings, fixtureId, entrypoint, workspacePath) {
   const loader = entrypoint.blockers.some((blocker) => blocker.code === "ts-loader-required") ? " --import tsx" : "";
   const script = helperScript(settings, workspacePath, settings.captureScript, "capture-cli.js");
-  return `${settings.optInEnv} node${loader} ${script} ${entrypoint.specifier} --output ${workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "capture")}`;
+  return `${settings.optInEnv} node${loader} ${script} ${entrypoint.specifier} --mock-sdk --output ${workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "capture")}`;
 }
 
 function syntheticProbeCommand(settings, fixtureId, entrypoint, workspacePath) {
   const loader = entrypoint.blockers.some((blocker) => blocker.code === "ts-loader-required") ? " --import tsx" : "";
   const script = helperScript(settings, workspacePath, settings.syntheticProbeScript, "synthetic-probes-cli.js");
-  return `${settings.optInEnv} node${loader} ${script} --entrypoint ${entrypoint.specifier} --output ${workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "synthetic")}`;
+  return `${settings.optInEnv} node${loader} ${script} --entrypoint ${entrypoint.specifier} --mock-sdk --output ${workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "synthetic")}`;
 }
 
 function helperScript(settings, workspacePath, configuredScript, helperFileName) {

@@ -117,8 +117,10 @@ test("workspace plan defaults point at packaged helper wrappers", async (t) => {
   const syntheticStep = entrypoint.steps.find((step) => step.kind === "synthetic-probe");
 
   assert.ok(captureStep.command.includes("src/capture-cli.js"));
+  assert.ok(captureStep.command.includes("--mock-sdk"));
   assert.ok(syntheticStep.command.includes("src/synthetic-probes-cli.js"));
   assert.ok(syntheticStep.command.includes("--entrypoint ./src/index.ts"));
+  assert.ok(syntheticStep.command.includes("--mock-sdk"));
   assert.ok(syntheticStep.command.includes(".synthetic.json"));
 
   const captureHelper = resolveNodeScriptFromStep(captureStep, rootDir);

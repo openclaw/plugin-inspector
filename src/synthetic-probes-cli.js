@@ -1,5 +1,11 @@
 #!/usr/bin/env node
+import { mkdtemp, rm } from "node:fs/promises";
+import { register } from "node:module";
+import os from "node:os";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { captureEntrypoint, runCapturedSyntheticProbes, writeArtifacts } from "./advanced.js";
+import { createMockSdkPackage } from "./sdk-mock.js";
 
 const args = process.argv.slice(2);
 
@@ -17,7 +23,7 @@ async function run(commandArgs) {
   const includeLifecycle = commandArgs.includes("--include-lifecycle");
   const includeChannelRuntime = commandArgs.includes("--include-channel-runtime");
   const includeProviderCapabilities = commandArgs.includes("--include-provider-capabilities");
-  const mockSdk = readMockSdkFlag(commandArgs) ?? commandArgs.includes("--mock-sdk");
+  const mockSdk = readMockSdkFlag(commandArgs) ?? true;
 
   if (!entrypoint) {
     throw new Error("synthetic probes require --entrypoint <path>");
@@ -26,7 +32,7 @@ async function run(commandArgs) {
     throw new Error("synthetic probes import plugin code; rerun with PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 in an isolated workspace");
   }
 
-  const capture = await captureEntrypoint(entrypoint, {
+  const capture = await captureForSyntheticProbes(entrypoint, {
     mockSdk,
     pluginRoot,
     apiOptions: { retainHandlers: true },
@@ -42,6 +48,27 @@ async function run(commandArgs) {
     await writeArtifacts([{ path: outputPath, content: json }]);
   } else {
     process.stdout.write(json);
+  }
+}
+
+async function captureForSyntheticProbes(entrypoint, options) {
+  if (options.mockSdk !== true) {
+    return captureEntrypoint(entrypoint, options);
+  }
+
+  const resolvedEntrypoint = path.resolve(process.cwd(), entrypoint);
+  const pluginRoot = path.resolve(process.cwd(), options.pluginRoot ?? path.dirname(resolvedEntrypoint));
+  const workspace = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-synthetic-mock-sdk-"));
+  try {
+    const { loaderPath } = await createMockSdkPackage(workspace, { pluginRoot });
+    register(pathToFileURL(loaderPath));
+    return captureEntrypoint(entrypoint, {
+      ...options,
+      mockSdk: false,
+      pluginRoot,
+    });
+  } finally {
+    await rm(workspace, { force: true, recursive: true });
   }
 }
 

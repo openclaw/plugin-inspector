@@ -8,24 +8,13 @@ import { test } from "node:test";
 
 const execFileAsync = promisify(execFile);
 
-test("capture and synthetic helper CLIs smoke test against a shimmed SDK", async () => {
+test("capture and synthetic helper CLIs default to the mocked SDK", async () => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-helper-cli-"));
   await mkdir(path.join(rootDir, "src"), { recursive: true });
-  await mkdir(path.join(rootDir, "node_modules", "openclaw"), { recursive: true });
 
   await writeFile(
     path.join(rootDir, "package.json"),
     `${JSON.stringify({ name: "fixture", type: "module" }, null, 2)}\n`,
-    "utf8",
-  );
-  await writeFile(
-    path.join(rootDir, "node_modules", "openclaw", "package.json"),
-    `${JSON.stringify({ name: "openclaw", type: "module", exports: { "./plugin-sdk": "./plugin-sdk.js" } }, null, 2)}\n`,
-    "utf8",
-  );
-  await writeFile(
-    path.join(rootDir, "node_modules", "openclaw", "plugin-sdk.js"),
-    "export function definePluginEntry(register) { return { register }; }\n",
     "utf8",
   );
   await writeFile(
