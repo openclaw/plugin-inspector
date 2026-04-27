@@ -31,6 +31,10 @@ export {
   writeContractCapture,
 } from "./contract-capture.js";
 export {
+  knownIssueClasses,
+  validateContractCoverage,
+} from "./contract-coverage.js";
+export {
   buildColdImportReadiness,
   renderColdImportReadinessMarkdown,
   validateColdImportReadiness,

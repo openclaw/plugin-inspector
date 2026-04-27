@@ -64,6 +64,7 @@ import {
   renderProfileDiffMarkdown,
   renderWorkspacePlanMarkdown,
   renderMarkdownReport,
+  validateContractCoverage,
   writeCiSummary,
   writeColdImportReadiness,
   writeContractCapture,
@@ -84,6 +85,7 @@ await writeCiSummary(summary);
 
 const capture = buildContractCapture({ report });
 await writeContractCapture(capture);
+const coverageErrors = validateContractCoverage(report);
 
 const readiness = buildColdImportReadiness({ report });
 await writeColdImportReadiness(readiness);
