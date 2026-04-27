@@ -4,9 +4,11 @@ import {
   runPluginCheck,
 } from "./index.js";
 import {
+  buildCiSummary,
   captureEntrypoint,
   inspectFixtureSet,
   loadInspectorConfig,
+  writeCiSummary,
   writePluginInspectorInit,
   writeArtifacts,
   writeReport,
@@ -23,8 +25,10 @@ try {
     await runCheck(commandArgs);
   } else if (command === "init") {
     await runInit(commandArgs);
-  } else if (command === "inspect" || command === "report" || command === "ci") {
+  } else if (command === "inspect" || command === "report") {
     await runReport(command, commandArgs);
+  } else if (command === "ci") {
+    await runCi(commandArgs);
   } else if (command === "capture") {
     await runCapture(commandArgs);
   } else {
@@ -95,6 +99,39 @@ async function runReport(command, commandArgs) {
   }
 }
 
+async function runCi(commandArgs) {
+  const configPath = readFlag(commandArgs, "--config");
+  const outDir = readFlag(commandArgs, "--out") ?? "reports";
+  const json = commandArgs.includes("--json");
+  const config = await loadInspectorConfig(configPath);
+  const report = await inspectFixtureSet(config);
+  await writeReport(report, { outDir });
+
+  const summary = await buildCiSummary({
+    artifactBaseDir: outDir,
+    reportPaths: {
+      compatibility: "plugin-inspector-report.json",
+    },
+    reports: {
+      compatibility: report,
+    },
+  });
+  await writeCiSummary(summary, {
+    jsonPath: `${outDir}/plugin-inspector-ci-summary.json`,
+    markdownPath: `${outDir}/plugin-inspector-ci-summary.md`,
+  });
+
+  if (json) {
+    console.log(JSON.stringify(summary, null, 2));
+  } else {
+    console.log(renderCiTextSummary(summary));
+  }
+
+  if (summary.status !== "pass") {
+    throw new Error("plugin-inspector ci summary failed");
+  }
+}
+
 async function runCapture(commandArgs) {
   const entrypoint = commandArgs.find((arg) => !arg.startsWith("-"));
   const outputPath = readFlag(commandArgs, "--output");
@@ -152,6 +189,15 @@ function readMockSdkFlag(commandArgs) {
     return false;
   }
   return undefined;
+}
+
+function renderCiTextSummary(summary) {
+  return [
+    `Status: ${summary.status.toUpperCase()}`,
+    `Breakages: ${summary.summary.breakages}`,
+    `Issues: ${summary.summary.issues}`,
+    `Artifacts: ${Object.values(summary.artifacts).filter(Boolean).length}`,
+  ].join("\n");
 }
 
 function printHelp() {

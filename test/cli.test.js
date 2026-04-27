@@ -116,13 +116,39 @@ test("check command can enable runtime capture from plugin config", async () => 
   assert.equal(capture.summary.registrationCount, 1);
 });
 
+test("ci command writes CI summary artifacts", async () => {
+  const rootDir = await createCliPluginRoot("plugin-inspector-cli-ci-");
+  const cliPath = path.resolve("src/cli.js");
+
+  const { stdout } = await execFileAsync(
+    process.execPath,
+    [cliPath, "ci", "--config", path.join(rootDir, "plugin-inspector.config.json"), "--out", "reports"],
+    {
+      cwd: rootDir,
+    },
+  );
+
+  const summary = JSON.parse(
+    await readFile(path.join(rootDir, "reports", "plugin-inspector-ci-summary.json"), "utf8"),
+  );
+  const markdown = await readFile(path.join(rootDir, "reports", "plugin-inspector-ci-summary.md"), "utf8");
+
+  assert.match(stdout, /Status: PASS/);
+  assert.match(stdout, /Artifacts: 1/);
+  assert.equal(summary.status, "pass");
+  assert.equal(summary.summary.breakages, 0);
+  assert.equal(summary.summary.issues, 0);
+  assert.equal(summary.artifacts.compatibility, "plugin-inspector-report.json");
+  assert.match(markdown, /# Plugin Inspector CI Summary/);
+});
+
 test("init command writes plugin config and CI workflow", async () => {
   const rootDir = await createCliPluginRoot("plugin-inspector-cli-init-");
   const cliPath = path.resolve("src/cli.js");
 
   const { stdout } = await execFileAsync(
     process.execPath,
-    [cliPath, "init", "--plugin-root", rootDir, "--ci", "--package-manager", "pnpm"],
+    [cliPath, "init", "--plugin-root", rootDir, "--ci", "--package-manager", "pnpm", "--force"],
   );
   const config = JSON.parse(await readFile(path.join(rootDir, "plugin-inspector.config.json"), "utf8"));
   const workflow = await readFile(path.join(rootDir, ".github", "workflows", "plugin-inspector.yml"), "utf8");
@@ -163,6 +189,11 @@ async function createCliPluginRoot(prefix) {
   await writeFile(
     path.join(rootDir, "src", "index.js"),
     'import { definePluginEntry } from "openclaw/plugin-sdk";\nexport default definePluginEntry((api) => api.registerTool({ name: "weather" }));\n',
+    "utf8",
+  );
+  await writeFile(
+    path.join(rootDir, "plugin-inspector.config.json"),
+    `${JSON.stringify({ version: 1, plugin: { id: "weather", priority: "high", sourceRoot: "src" } }, null, 2)}\n`,
     "utf8",
   );
   return rootDir;
