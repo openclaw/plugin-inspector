@@ -8,6 +8,11 @@ export {
   writeCiSummary,
 } from "./ci-summary.js";
 export {
+  buildContractProbes,
+  contractProbeRules,
+  probePriority,
+} from "./contract-probes.js";
+export {
   buildIssues,
   classifyIssueFinding,
   deprecatedCompatRecords,
