@@ -160,6 +160,11 @@ export {
   validateRuntimeProfile,
   writeRuntimeProfile,
 } from "./runtime-profile.js";
+export {
+  buildRuntimeCaptureReport,
+  renderRuntimeCaptureMarkdown,
+  writeRuntimeCaptureReport,
+} from "./runtime-capture-report.js";
 export { createMockSdkPackage } from "./sdk-mock.js";
 export {
   buildSyntheticProbePlan,

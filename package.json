@@ -33,6 +33,7 @@
     "./platform-probes": "./src/platform-probes.js",
     "./profile-diff": "./src/profile-diff.js",
     "./ref-diff": "./src/ref-diff.js",
+    "./runtime-capture-report": "./src/runtime-capture-report.js",
     "./runtime-profile": "./src/runtime-profile.js",
     "./workspace-plan": "./src/workspace-plan.js"
   },

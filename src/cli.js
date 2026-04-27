@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import {
+  buildRuntimeCaptureReport,
   captureEntrypoint,
   inspectCompatibilityFixtureSet,
   inspectFixtureSet,
@@ -9,6 +10,7 @@ import {
   writeArtifacts,
   writeCompatibilityReport,
   writeReport,
+  writeRuntimeCaptureReport,
 } from "./index.js";
 
 const args = process.argv.slice(2);
@@ -37,9 +39,23 @@ async function runCheck(commandArgs) {
   const outDir = readFlag(commandArgs, "--out") ?? "reports";
   const openclawPath = commandArgs.includes("--no-openclaw") ? false : readFlag(commandArgs, "--openclaw");
   const json = commandArgs.includes("--json");
+  const capture = commandArgs.includes("--capture");
   const config = configPath ? await loadInspectorConfig(configPath) : await loadPluginRootConfig();
   const report = await inspectCompatibilityFixtureSet(config, { openclawPath });
   await writeCompatibilityReport(report, { outDir });
+  if (capture) {
+    if (process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED !== "1") {
+      throw new Error("check --capture imports plugin code; rerun with PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 in an isolated workspace");
+    }
+    const captureReport = await buildRuntimeCaptureReport({ report, rootDir: config.rootDir, mockSdk: true });
+    await writeRuntimeCaptureReport(captureReport, {
+      jsonPath: `${outDir}/plugin-inspector-runtime-capture.json`,
+      markdownPath: `${outDir}/plugin-inspector-runtime-capture.md`,
+    });
+    if (captureReport.summary.failedCount > 0) {
+      throw new Error(`plugin-inspector runtime capture failed for ${captureReport.summary.failedCount} entrypoints`);
+    }
+  }
 
   if (json) {
     console.log(JSON.stringify(report, null, 2));
@@ -105,7 +121,7 @@ function printHelp() {
   console.log(`plugin-inspector
 
 Usage:
-  plugin-inspector check [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--json]
+  plugin-inspector check [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--capture] [--json]
   plugin-inspector report --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector inspect --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector ci --config <path> [--out <dir>]

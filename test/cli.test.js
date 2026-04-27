@@ -51,4 +51,17 @@ test("check command runs from a plugin root without fixture config", async () =>
   assert.equal(report.fixtures[0].id, "weather");
   assert.ok(report.fixtures[0].package.openclaw.entrypoints.some((entrypoint) => entrypoint.exists));
   assert.match(issues, /# OpenClaw Plugin Issue Findings/);
+
+  await execFileAsync(process.execPath, [cliPath, "check", "--out", "capture-reports", "--no-openclaw", "--capture"], {
+    cwd: rootDir,
+    env: {
+      ...process.env,
+      PLUGIN_INSPECTOR_EXECUTE_ISOLATED: "1",
+    },
+  });
+  const capture = JSON.parse(
+    await readFile(path.join(rootDir, "capture-reports", "plugin-inspector-runtime-capture.json"), "utf8"),
+  );
+  assert.equal(capture.summary.capturedCount, 1);
+  assert.equal(capture.summary.registrationCount, 1);
 });
