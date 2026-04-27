@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.2 - 2026-04-27
+
+### Added
+
+- Add public SDK subpath mocks, registrar return profiles, richer lifecycle capture probes, and plugin-root `init`/`--plugin-root` CLI flows.
+
+### Changed
+
+- Harden runtime capture for TypeScript entrypoints, extensionless local imports, mocked external packages, namespace imports, async output capture, and explicit mock/real SDK lanes.
+- Refresh README and CI examples around `npx @openclaw/plugin-inspector check --no-openclaw` and opt-in runtime capture.
+
 ## 0.1.1 - 2026-04-27
 
 ### Changed
