@@ -143,12 +143,32 @@ function inferSourceRoot(packageJson) {
     packageJson?.openclaw?.entrypoint,
     ...(packageJson?.openclaw?.extensions ?? []),
     ...(packageJson?.openclaw?.runtimeExtensions ?? []),
+    ...entrypointStrings(packageJson?.exports?.["."]),
+    ...entrypointStrings(packageJson?.exports),
+    packageJson?.module,
+    packageJson?.main,
   ].filter((value) => typeof value === "string");
-  const entrypoint = entrypoints[0] ?? packageJson?.exports?.["."] ?? packageJson?.main ?? "src/index.js";
-  if (typeof entrypoint === "string" && entrypoint.startsWith("src/")) {
+  const entrypoint = entrypoints[0] ?? "src/index.js";
+  if (stripRelativePrefix(entrypoint).startsWith("src/")) {
     return "src";
   }
   return ".";
+}
+
+function entrypointStrings(value) {
+  if (typeof value === "string") {
+    return [value];
+  }
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return [];
+  }
+  return ["import", "default", "require", "node", "module"]
+    .map((key) => value[key])
+    .filter((item) => typeof item === "string");
+}
+
+function stripRelativePrefix(filePath) {
+  return filePath.replace(/^\.\//, "");
 }
 
 async function readJsonIfExists(filePath) {

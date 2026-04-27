@@ -144,6 +144,24 @@ test("public API can initialize plugin inspector files", async () => {
   assert.match(workflow, /npx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk/);
 });
 
+test("public API initializes source root from package export maps", async () => {
+  const pluginRoot = await createPluginRoot({
+    packageJson: {
+      openclaw: null,
+      exports: {
+        ".": {
+          import: "./src/plugin-entry.js",
+        },
+      },
+    },
+  });
+
+  await setupPluginInspector({ pluginRoot, force: true });
+  const config = JSON.parse(await readFile(path.join(pluginRoot, "plugin-inspector.config.json"), "utf8"));
+
+  assert.equal(config.plugin.sourceRoot, "src");
+});
+
 test("fixture-set issue renderer is available without advanced internals", () => {
   const markdown = renderFixtureSetIssuesReport(
     {
@@ -204,7 +222,11 @@ async function createPluginRoot(options = {}) {
       extensions: ["src/index.js"],
       compat: { pluginApi: "^1.0.0" },
     },
+    ...(options.packageJson ?? {}),
   };
+  if (packageJson.openclaw === null) {
+    delete packageJson.openclaw;
+  }
   if (options.packageConfig) {
     packageJson.pluginInspector = {
       version: 1,
