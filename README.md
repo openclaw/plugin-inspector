@@ -51,6 +51,7 @@ import {
   buildImportLoopProfile,
   buildPlatformProbes,
   buildProfileDiff,
+  buildRuntimeProfile,
   buildWorkspacePlan,
   createCaptureApi,
   inspectFixtureSet,
@@ -62,6 +63,7 @@ import {
   renderImportLoopProfileMarkdown,
   renderPlatformProbesMarkdown,
   renderProfileDiffMarkdown,
+  renderRuntimeProfileMarkdown,
   renderWorkspacePlanMarkdown,
   renderMarkdownReport,
   validateContractCoverage,
@@ -72,6 +74,7 @@ import {
   writeImportLoopProfile,
   writePlatformProbes,
   writeProfileDiff,
+  writeRuntimeProfile,
   writeWorkspacePlan,
   writeReport,
 } from "@openclaw/plugin-inspector";
@@ -103,6 +106,11 @@ await writeExecutionResultsReport(executionResults);
 
 const importLoop = await buildImportLoopProfile({ entrypoint: "dist/index.js", runs: 3 });
 await writeImportLoopProfile(importLoop);
+
+const runtimeProfile = await buildRuntimeProfile({
+  commands: [{ id: "node-boot", label: "Node boot", category: "baseline", args: ["-e", "0"] }],
+});
+await writeRuntimeProfile(runtimeProfile);
 
 const profileDiff = await buildProfileDiff({ current, baseline, policy });
 await writeProfileDiff(profileDiff);

@@ -104,6 +104,14 @@ export {
   writeReport,
 } from "./report.js";
 export {
+  buildRuntimeProfile,
+  defaultRuntimeProfileCommands,
+  defaultRuntimeProfileOptions,
+  renderRuntimeProfileMarkdown,
+  validateRuntimeProfile,
+  writeRuntimeProfile,
+} from "./runtime-profile.js";
+export {
   buildSyntheticProbePlan,
   defaultSyntheticHookContexts,
   defaultSyntheticHookEvents,
