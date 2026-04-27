@@ -51,6 +51,7 @@ import {
   buildImportLoopProfile,
   buildPlatformProbes,
   buildProfileDiff,
+  buildRuntimeProfile,
   buildWorkspacePlan,
   createCaptureApi,
   inspectFixtureSet,
@@ -62,9 +63,11 @@ import {
   renderImportLoopProfileMarkdown,
   renderPlatformProbesMarkdown,
   renderProfileDiffMarkdown,
+  renderRuntimeProfileMarkdown,
   renderWorkspacePlanMarkdown,
   renderMarkdownReport,
   validateContractCoverage,
+  validateRuntimeProfile,
   writeCiSummary,
   writeColdImportReadiness,
   writeContractCapture,
@@ -72,6 +75,7 @@ import {
   writeImportLoopProfile,
   writePlatformProbes,
   writeProfileDiff,
+  writeRuntimeProfile,
   writeWorkspacePlan,
   writeReport,
 } from "@openclaw/plugin-inspector";
@@ -103,6 +107,9 @@ await writeExecutionResultsReport(executionResults);
 
 const importLoop = await buildImportLoopProfile({ entrypoint: "dist/index.js", runs: 3 });
 await writeImportLoopProfile(importLoop);
+
+const runtimeProfile = await buildRuntimeProfile({ report, inspection, runs: 1 });
+await writeRuntimeProfile(runtimeProfile);
 
 const profileDiff = await buildProfileDiff({ current, baseline, policy });
 await writeProfileDiff(profileDiff);

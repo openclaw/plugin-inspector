@@ -31,6 +31,7 @@
     "./openclaw-target": "./src/openclaw-target.js",
     "./platform-probes": "./src/platform-probes.js",
     "./profile-diff": "./src/profile-diff.js",
+    "./runtime-profile": "./src/runtime-profile.js",
     "./workspace-plan": "./src/workspace-plan.js"
   },
   "files": [
