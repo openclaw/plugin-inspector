@@ -3,6 +3,21 @@ import { readdir } from "node:fs/promises";
 import path from "node:path";
 import { readJsonFile } from "./json-file.js";
 
+const conversationAccessHooks = new Set(["agent_end", "llm_input", "llm_output"]);
+const captureGapRegistrations = new Set([
+  "registerChannel",
+  "registerCommand",
+  "registerGatewayMethod",
+  "registerHttpRoute",
+  "registerInteractiveHandler",
+  "registerService",
+]);
+const channelRegistrations = new Set([
+  "createChatChannelPlugin",
+  "defineChannelPluginEntry",
+  "registerChannel",
+]);
+
 export async function buildCompatibilityFixtureReport({ fixture, inspection, checkoutPath, sourceRoot, rootDir = process.cwd() }) {
   const pluginManifests = await readPluginManifests({ checkoutPath, sourceRoot, rootDir });
   const packageSummaries = await readPackageSummaries({ checkoutPath, sourceRoot, rootDir });
@@ -312,6 +327,239 @@ export function classifyTargetOpenClawCoverage({ fixture, inspection, fixtureRep
   classifyManifestFieldCoverage({ fixture, fixtureReport, targetOpenClaw, warnings, logs, decisions });
 
   return { warnings, logs, decisions };
+}
+
+export function classifyCompatibilityFixture({ fixture, inspection, fixtureReport, targetOpenClaw }) {
+  const warnings = [];
+  const suggestions = [];
+  const logs = [];
+  const decisions = [];
+
+  if (inspection.status !== "ok") {
+    return { warnings, suggestions, logs, decisions };
+  }
+
+  const targetCoverage = classifyTargetOpenClawCoverage({ fixture, inspection, fixtureReport, targetOpenClaw });
+  warnings.push(...targetCoverage.warnings);
+  logs.push(...targetCoverage.logs);
+  decisions.push(...targetCoverage.decisions);
+
+  const packageContracts = classifyPackageContracts({ fixture, inspection, fixtureReport });
+  warnings.push(...packageContracts.warnings);
+  suggestions.push(...packageContracts.suggestions);
+  logs.push(...packageContracts.logs);
+  decisions.push(...packageContracts.decisions);
+
+  for (const pluginManifest of fixtureReport.pluginManifests) {
+    const providerAuthKeys = Object.keys(pluginManifest.providerAuthEnvVars ?? {});
+    if (providerAuthKeys.length > 0) {
+      warnings.push({
+        fixture: fixture.id,
+        code: "provider-auth-env-vars",
+        level: "warning",
+        message: "manifest uses providerAuthEnvVars legacy compatibility metadata",
+        evidence: providerAuthKeys,
+        compatRecord: "provider-auth-env-vars",
+      });
+      decisions.push({
+        fixture: fixture.id,
+        decision: "core-compat-adapter",
+        seam: "env-auth",
+        action: "Keep providerAuthEnvVars compatibility active while the inspector recommends manifest-schema migration upstream.",
+        evidence: providerAuthKeys.join(", "),
+      });
+    }
+
+    const channelEnvKeys = Object.keys(pluginManifest.channelEnvVars ?? {});
+    if (channelEnvKeys.length > 0) {
+      warnings.push({
+        fixture: fixture.id,
+        code: "channel-env-vars",
+        level: "warning",
+        message: "manifest uses channelEnvVars legacy compatibility metadata",
+        evidence: channelEnvKeys,
+        compatRecord: "channel-env-vars",
+      });
+      decisions.push({
+        fixture: fixture.id,
+        decision: "core-compat-adapter",
+        seam: "channel-env",
+        action: "Keep channelEnvVars compatibility active until channel setup metadata has a stable replacement path.",
+        evidence: channelEnvKeys.join(", "),
+      });
+    }
+  }
+
+  const conversationHooks = inspection.hooks.filter((hook) => conversationAccessHooks.has(hook));
+  const conversationHookDetails = inspection.hookDetails.filter((hook) => conversationAccessHooks.has(hook.name));
+  if (conversationHooks.length > 0) {
+    warnings.push({
+      fixture: fixture.id,
+      code: "conversation-access-hook",
+      level: "warning",
+      message: "fixture observes raw model or conversation content and needs privacy-boundary contract probes",
+      evidence: detailEvidence(conversationHookDetails),
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "inspector-follow-up",
+      seam: "conversation-access",
+      action: "Add synthetic llm_input/llm_output/agent_end probes before tightening hook payloads or redaction behavior.",
+      evidence: conversationHooks.join(", "),
+    });
+  }
+
+  const rootSdkImports = fixtureReport.sdkImports.filter((specifier) => specifier === "openclaw/plugin-sdk");
+  const rootSdkImportDetails = fixtureReport.sdkImportDetails.filter(
+    (sdkImport) => sdkImport.specifier === "openclaw/plugin-sdk",
+  );
+  if (rootSdkImports.length > 0) {
+    warnings.push({
+      fixture: fixture.id,
+      code: "legacy-root-sdk-import",
+      level: "warning",
+      message: "fixture imports the root plugin SDK barrel",
+      evidence: detailEvidence(rootSdkImportDetails, "specifier"),
+      compatRecord: "legacy-root-sdk-import",
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "core-compat-adapter",
+      seam: "sdk-import",
+      action: "Keep the root SDK barrel stable or expose a machine-readable migration map before removing aliases.",
+      evidence: unique(rootSdkImports).join(", "),
+    });
+  }
+
+  const legacyBeforeAgentStartDetails = inspection.hookDetails.filter((hook) => hook.name === "before_agent_start");
+  if (legacyBeforeAgentStartDetails.length > 0) {
+    warnings.push({
+      fixture: fixture.id,
+      code: "legacy-before-agent-start",
+      level: "warning",
+      message: "fixture uses deprecated before_agent_start hook compatibility",
+      evidence: detailEvidence(legacyBeforeAgentStartDetails),
+      compatRecord: "legacy-before-agent-start",
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "core-compat-adapter",
+      seam: "hook-compat",
+      action: "Keep before_agent_start wired while plugin authors migrate to before_model_resolve and before_prompt_build.",
+      evidence: detailEvidence(legacyBeforeAgentStartDetails).join(", "),
+    });
+  }
+
+  const captureGapRegistrationDetails = registrationCaptureGapDetails(inspection, targetOpenClaw);
+  const captureGapRegistrationNames = unique(captureGapRegistrationDetails.map((registration) => registration.name));
+  if (captureGapRegistrationNames.length > 0) {
+    suggestions.push({
+      fixture: fixture.id,
+      code: "registration-capture-gap",
+      level: "suggestion",
+      message: "future inspector capture API should record lifecycle, route, gateway, command, and interactive registrations",
+      evidence: detailEvidence(captureGapRegistrationDetails),
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "inspector-follow-up",
+      seam: "registration-capture",
+      action: "Expose or mirror a full public API capture shim before treating these runtime-only seams as covered.",
+      evidence: captureGapRegistrationNames.join(", "),
+    });
+  }
+
+  if (inspection.hooks.includes("before_tool_call")) {
+    const hookDetails = inspection.hookDetails.filter((hook) => hook.name === "before_tool_call");
+    suggestions.push({
+      fixture: fixture.id,
+      code: "before-tool-call-probe",
+      level: "suggestion",
+      message: "add contract probes for before_tool_call terminal, block, and approval semantics",
+      evidence: detailEvidence(hookDetails),
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "inspector-follow-up",
+      seam: "tool-policy",
+      action: "Probe before_tool_call return shapes before changing tool-call approval or block behavior.",
+      evidence: "before_tool_call",
+    });
+  }
+
+  const observedChannelRegistrations = inspection.registrations.filter((registration) =>
+    channelRegistrations.has(registration),
+  );
+  const channelRegistrationDetails = inspection.registrationDetails.filter((registration) =>
+    channelRegistrations.has(registration.name),
+  );
+  if (observedChannelRegistrations.length > 0) {
+    suggestions.push({
+      fixture: fixture.id,
+      code: "channel-contract-probe",
+      level: "suggestion",
+      message: "add channel envelope, config-schema, and runtime metadata probes",
+      evidence: detailEvidence(channelRegistrationDetails),
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "inspector-follow-up",
+      seam: "channel-runtime",
+      action: "Probe channel setup and message envelope contracts before changing channel runtime payloads.",
+      evidence: observedChannelRegistrations.join(", "),
+    });
+  }
+
+  const runtimeToolOnly = inspection.registrations.includes("registerTool") && !inspection.manifestContracts.includes("tools");
+  if (runtimeToolOnly) {
+    const toolRegistrationDetails = inspection.registrationDetails.filter(
+      (registration) => registration.name === "registerTool",
+    );
+    suggestions.push({
+      fixture: fixture.id,
+      code: "runtime-tool-capture",
+      level: "suggestion",
+      message: "tool shape is only visible after runtime registration capture",
+      evidence: detailEvidence(toolRegistrationDetails),
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "inspector-follow-up",
+      seam: "tool-schema",
+      action: "Capture registered tool schemas from plugin register() before judging tool compatibility.",
+      evidence: "registerTool without manifest contracts.tools",
+    });
+  }
+
+  if (inspection.manifestContracts.length > 0) {
+    logs.push({
+      fixture: fixture.id,
+      code: "declarative-contracts",
+      level: "log",
+      message: "fixture declares manifest contracts that can be checked without executing plugin code",
+      evidence: inspection.manifestContracts,
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "no-action",
+      seam: "manifest-contract",
+      action: "Keep checking this declarative contract in default offline CI.",
+      evidence: inspection.manifestContracts.join(", "),
+    });
+  }
+
+  return { warnings, suggestions, logs, decisions };
+}
+
+function registrationCaptureGapDetails(inspection, targetOpenClaw) {
+  const apiRegistrationDetails = inspection.registrationDetails.filter((registration) =>
+    registration.name.startsWith("register"),
+  );
+  if (targetOpenClaw.status === "ok" && targetOpenClaw.capturedRegistrars.length > 0) {
+    const captured = new Set(targetOpenClaw.capturedRegistrars);
+    return apiRegistrationDetails.filter((registration) => !captured.has(registration.name));
+  }
+  return apiRegistrationDetails.filter((registration) => captureGapRegistrations.has(registration.name));
 }
 
 function classifyHookNameCoverage({ fixture, inspection, targetOpenClaw, warnings, logs }) {

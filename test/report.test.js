@@ -5,6 +5,7 @@ import path from "node:path";
 import { test } from "node:test";
 import {
   buildCompatibilityFixtureReport,
+  classifyCompatibilityFixture,
   classifyPackageContracts,
   classifyTargetOpenClawCoverage,
   inspectFixtureSet,
@@ -274,6 +275,59 @@ test("target OpenClaw coverage classifier reports missing public surface", () =>
   assert.ok(result.warnings.some((finding) => finding.code === "manifest-unknown-contracts"));
   assert.ok(result.logs.some((finding) => finding.code === "manifest-fields-checked"));
   assert.ok(result.decisions.some((decision) => decision.seam === "sdk-alias"));
+});
+
+test("compatibility fixture classifier reports seam and metadata follow-ups", () => {
+  const result = classifyCompatibilityFixture({
+    fixture: { id: "fixture", path: "plugins/fixture" },
+    inspection: {
+      status: "ok",
+      hooks: ["llm_input", "before_tool_call"],
+      hookDetails: [
+        { name: "llm_input", ref: "plugins/fixture/src/index.ts:1" },
+        { name: "before_tool_call", ref: "plugins/fixture/src/index.ts:2" },
+      ],
+      registrations: ["registerTool", "registerService"],
+      registrationDetails: [
+        { name: "registerTool", ref: "plugins/fixture/src/index.ts:3" },
+        { name: "registerService", ref: "plugins/fixture/src/index.ts:4" },
+      ],
+      manifestContracts: [],
+    },
+    fixtureReport: {
+      sdkImports: ["openclaw/plugin-sdk"],
+      sdkImportDetails: [{ specifier: "openclaw/plugin-sdk", ref: "plugins/fixture/src/index.ts:5" }],
+      pluginManifests: [
+        {
+          path: "plugins/fixture/openclaw.plugin.json",
+          keys: ["id"],
+          contracts: [],
+          providerAuthEnvVars: { API_KEY: "api key" },
+          channelEnvVars: { CHANNEL_ID: "channel id" },
+        },
+      ],
+      package: null,
+    },
+    targetOpenClaw: {
+      status: "ok",
+      hookNames: ["llm_input", "before_tool_call"],
+      apiRegistrars: ["registerTool"],
+      sdkExports: ["openclaw/plugin-sdk"],
+      manifestFields: ["id"],
+      manifestContractFields: [],
+      capturedRegistrars: ["registerTool"],
+    },
+  });
+
+  assert.ok(result.warnings.some((finding) => finding.code === "provider-auth-env-vars"));
+  assert.ok(result.warnings.some((finding) => finding.code === "channel-env-vars"));
+  assert.ok(result.warnings.some((finding) => finding.code === "conversation-access-hook"));
+  assert.ok(result.warnings.some((finding) => finding.code === "legacy-root-sdk-import"));
+  assert.ok(result.warnings.some((finding) => finding.code === "package-json-missing"));
+  assert.ok(result.suggestions.some((finding) => finding.code === "registration-capture-gap"));
+  assert.ok(result.suggestions.some((finding) => finding.code === "before-tool-call-probe"));
+  assert.ok(result.suggestions.some((finding) => finding.code === "runtime-tool-capture"));
+  assert.ok(result.decisions.some((decision) => decision.seam === "conversation-access"));
 });
 
 test("writeReport writes JSON and Markdown artifacts", async () => {

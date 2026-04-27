@@ -81,6 +81,7 @@ export {
 } from "./execution-results.js";
 export {
   buildCompatibilityFixtureReport,
+  classifyCompatibilityFixture,
   classifyPackageContracts,
   classifyTargetOpenClawCoverage,
   readPackageSummaries,
