@@ -9,6 +9,9 @@
       "registrations": ["registerTool"]
     }
   },
+  "capture": {
+    "mockSdk": true
+  },
   "openclaw": {
     "defaultCheckoutPath": "../openclaw"
   }
