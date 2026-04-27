@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
+import { access, mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
@@ -82,6 +82,53 @@ test("workspace plan maps blocked entrypoints to opt-in install/build/capture st
   assert.match(renderWorkspacePlanMarkdown(plan), /Entrypoint Workspaces/);
 });
 
+test("workspace plan defaults point at packaged helper wrappers", async (t) => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-workspace-defaults-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+
+  await mkdir(path.join(rootDir, "plugins/fixture"), { recursive: true });
+  await writeFile(
+    path.join(rootDir, "plugins/fixture/package.json"),
+    JSON.stringify(
+      {
+        name: "fixture",
+        packageManager: "npm@10.0.0",
+        scripts: { build: "tsup" },
+        dependencies: { "left-pad": "^1.3.0" },
+      },
+      null,
+      2,
+    ),
+    "utf8",
+  );
+  await writeFile(path.join(rootDir, "plugins/fixture/package-lock.json"), "{}\n", "utf8");
+  await mkdir(path.join(rootDir, "plugins/build"), { recursive: true });
+  await writeFile(
+    path.join(rootDir, "plugins/build/package.json"),
+    JSON.stringify({ name: "build-fixture", scripts: { build: "tsup" } }, null, 2),
+    "utf8",
+  );
+
+  const report = readinessReport();
+  const readiness = buildColdImportReadiness({ report, rootDir });
+  const plan = await buildWorkspacePlan({ report, readiness, rootDir });
+  const entrypoint = plan.fixtures[0].entrypoints[0];
+  const captureStep = entrypoint.steps.find((step) => step.kind === "capture");
+  const syntheticStep = entrypoint.steps.find((step) => step.kind === "synthetic-probe");
+
+  assert.ok(captureStep.command.includes("src/capture-cli.js"));
+  assert.ok(syntheticStep.command.includes("src/synthetic-probes-cli.js"));
+  assert.ok(syntheticStep.command.includes("--entrypoint ./src/index.ts"));
+  assert.ok(syntheticStep.command.includes(".synthetic.json"));
+
+  const captureHelper = resolveNodeScriptFromStep(captureStep, rootDir);
+  const syntheticHelper = resolveNodeScriptFromStep(syntheticStep, rootDir);
+  await access(captureHelper);
+  await access(syntheticHelper);
+  assert.match(captureHelper, /src[\\/]capture-cli\.js$/);
+  assert.match(syntheticHelper, /src[\\/]synthetic-probes-cli\.js$/);
+});
+
 test("workspace plan validation keeps execution opt-in and explicit", () => {
   const plan = {
     mode: "execute",
@@ -130,6 +177,29 @@ test("workspace plan validation keeps execution opt-in and explicit", () => {
   const stepErrors = validateWorkspacePlan(plan);
   assert.ok(stepErrors.some((error) => error.includes("prepare step missing command, cwd, or reason")));
 });
+
+function resolveNodeScriptFromStep(step, rootDir) {
+  const tokens = step.command.trim().split(/\s+/);
+  const nodeIndex = tokens.findIndex((token) => token === "node");
+  assert.notEqual(nodeIndex, -1, `expected node invocation in command: ${step.command}`);
+
+  let scriptToken = null;
+  for (let index = nodeIndex + 1; index < tokens.length; index += 1) {
+    const token = tokens[index];
+    if (token === "--import") {
+      index += 1;
+      continue;
+    }
+    if (token.startsWith("-")) {
+      continue;
+    }
+    scriptToken = token;
+    break;
+  }
+
+  assert.ok(scriptToken, `expected script path in command: ${step.command}`);
+  return path.resolve(rootDir, step.cwd, scriptToken);
+}
 
 function readinessReport() {
   return {
