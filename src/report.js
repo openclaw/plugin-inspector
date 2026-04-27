@@ -246,18 +246,35 @@ export async function writeReport(report, options = {}) {
 export async function writeCompatibilityReport(report, options = {}) {
   const outDir = path.resolve(options.cwd ?? process.cwd(), options.outDir ?? "reports");
   const basename = options.basename ?? "plugin-inspector-report";
-  const jsonPath = path.join(outDir, `${basename}.json`);
-  const markdownPath = path.join(outDir, `${basename}.md`);
-  const issuesPath = path.join(outDir, options.issuesBasename ?? "plugin-inspector-issues.md");
+  const jsonPath = options.jsonPath ?? path.join(outDir, `${basename}.json`);
+  const markdownPath = options.markdownPath ?? path.join(outDir, `${basename}.md`);
+  const issuesPath = options.issuesPath ?? path.join(outDir, options.issuesBasename ?? "plugin-inspector-issues.md");
+  const markdownOptions = compatibilityRenderOptions(options, {
+    title: options.markdownTitle ?? options.title,
+    ...options.markdownOptions,
+  });
+  const issuesOptions = compatibilityRenderOptions(options, {
+    title: options.issuesTitle ?? options.title,
+    ...options.issuesOptions,
+  });
 
   return writeArtifacts(
     [
       { name: "jsonPath", path: jsonPath, json: report },
-      { name: "markdownPath", path: markdownPath, markdown: renderCompatibilityMarkdownReport(report) },
-      { name: "issuesPath", path: issuesPath, markdown: renderCompatibilityIssuesReport(report) },
+      { name: "markdownPath", path: markdownPath, markdown: renderCompatibilityMarkdownReport(report, markdownOptions) },
+      { name: "issuesPath", path: issuesPath, markdown: renderCompatibilityIssuesReport(report, issuesOptions) },
     ],
     { check: options.check },
   );
+}
+
+function compatibilityRenderOptions(options, overrides) {
+  const renderOptions = {
+    formatEvidence: options.formatEvidence,
+    severityLabels: options.severityLabels,
+    ...overrides,
+  };
+  return Object.fromEntries(Object.entries(renderOptions).filter(([, value]) => value !== undefined));
 }
 
 export function renderTextSummary(report, options = {}) {

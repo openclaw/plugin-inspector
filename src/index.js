@@ -1,12 +1,17 @@
 export {
   capturePluginEntrypoint,
   createCaptureApi,
+  inspectCompatibilityFixtureSetConfig,
   inspectFixtureSetConfig,
   inspectPluginRoot,
   loadPluginConfig,
+  renderFixtureSetIssuesReport,
+  renderFixtureSetMarkdownReport,
   renderTextSummary,
+  runFixtureSetReport,
   runPluginCheck,
   setupPluginInspector,
   writeCiOutputArtifacts,
+  writeFixtureSetReports,
   writePluginReports,
 } from "./api.js";

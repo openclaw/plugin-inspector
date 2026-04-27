@@ -1,6 +1,7 @@
 import path from "node:path";
 import { createCaptureApi } from "./capture-api.js";
 import { loadInspectorConfig, loadPluginRootConfig } from "./config.js";
+import { renderCompatibilityIssuesReport, renderCompatibilityMarkdownReport } from "./compatibility-report.js";
 import { writePluginInspectorInit } from "./init.js";
 import { captureEntrypoint } from "./inspector.js";
 import { renderTextSummary, writeCompatibilityReport } from "./report.js";
@@ -35,6 +36,15 @@ export async function inspectFixtureSetConfig(options = {}) {
   return inspectFixtureSet(config, { generatedAt: options.generatedAt });
 }
 
+export async function inspectCompatibilityFixtureSetConfig(options = {}) {
+  const config = await loadFixtureSetConfig(options);
+  return inspectCompatibilityFixtureSet(config, {
+    generatedAt: options.generatedAt,
+    openclawPath: options.openclawPath,
+    targetOpenClaw: options.targetOpenClaw,
+  });
+}
+
 export async function writePluginReports(report, options = {}) {
   return writeCompatibilityReport(report, {
     basename: options.basename,
@@ -43,6 +53,38 @@ export async function writePluginReports(report, options = {}) {
     issuesBasename: options.issuesBasename,
     outDir: options.outDir,
   });
+}
+
+export async function writeFixtureSetReports(report, options = {}) {
+  return writeCompatibilityReport(report, {
+    basename: options.basename,
+    check: options.check,
+    cwd: options.cwd,
+    formatEvidence: options.formatEvidence,
+    issuesBasename: options.issuesBasename,
+    issuesPath: options.issuesPath,
+    issuesTitle: options.issuesTitle,
+    jsonPath: options.jsonPath,
+    markdownPath: options.markdownPath,
+    markdownTitle: options.markdownTitle,
+    outDir: options.outDir,
+    severityLabels: options.severityLabels,
+    title: options.title,
+  });
+}
+
+export function renderFixtureSetMarkdownReport(report, options = {}) {
+  return renderCompatibilityMarkdownReport(report, options);
+}
+
+export function renderFixtureSetIssuesReport(report, options = {}) {
+  return renderCompatibilityIssuesReport(report, options);
+}
+
+export async function runFixtureSetReport(options = {}) {
+  const report = await inspectCompatibilityFixtureSetConfig(options);
+  const paths = options.write === false ? null : await writeFixtureSetReports(report, options);
+  return { report, paths };
 }
 
 export async function runPluginCheck(options = {}) {
@@ -90,3 +132,13 @@ export async function setupPluginInspector(options = {}) {
 }
 
 export { createCaptureApi, renderTextSummary, writeCiOutputArtifacts };
+
+async function loadFixtureSetConfig(options) {
+  if (options.config) {
+    return {
+      ...options.config,
+      rootDir: options.config.rootDir ?? options.rootDir ?? options.cwd ?? process.cwd(),
+    };
+  }
+  return loadInspectorConfig(options.configPath, { cwd: options.cwd ?? options.rootDir });
+}

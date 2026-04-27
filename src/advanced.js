@@ -203,3 +203,10 @@ export {
   validateWorkspacePlan,
   writeWorkspacePlan,
 } from "./workspace-plan.js";
+export {
+  inspectCompatibilityFixtureSetConfig,
+  renderFixtureSetIssuesReport,
+  renderFixtureSetMarkdownReport,
+  runFixtureSetReport,
+  writeFixtureSetReports,
+} from "./api.js";

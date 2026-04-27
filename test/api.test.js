@@ -5,11 +5,15 @@ import path from "node:path";
 import { test } from "node:test";
 import {
   capturePluginEntrypoint,
+  inspectCompatibilityFixtureSetConfig,
   inspectFixtureSetConfig,
   inspectPluginRoot,
   loadPluginConfig,
+  renderFixtureSetIssuesReport,
+  runFixtureSetReport,
   runPluginCheck,
   setupPluginInspector,
+  writeFixtureSetReports,
 } from "../src/index.js";
 
 test("public API runs the plugin-root check and writes reports", async () => {
@@ -64,6 +68,40 @@ test("public API keeps crabpot-style fixture configs behind an explicit helper",
   assert.equal(report.summary.fixtureCount, 1);
 });
 
+test("public API writes compatibility fixture-set reports with custom render options", async () => {
+  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-fixture-api-"));
+  const report = await inspectCompatibilityFixtureSetConfig({
+    configPath: "test/fixtures/inspector.config.json",
+    openclawPath: false,
+  });
+  const paths = await writeFixtureSetReports(report, {
+    jsonPath: path.join(outDir, "suite.json"),
+    markdownPath: path.join(outDir, "suite.md"),
+    issuesPath: path.join(outDir, "issues.md"),
+    markdownTitle: "Fixture Suite Compatibility",
+    issuesTitle: "Fixture Suite Issues",
+    formatEvidence: (evidence) => `linked:${evidence}`,
+  });
+  const result = await runFixtureSetReport({
+    configPath: "test/fixtures/inspector.config.json",
+    openclawPath: false,
+    outDir,
+    basename: "run",
+  });
+
+  assert.equal(report.status, "pass");
+  assert.deepEqual(paths, {
+    jsonPath: path.join(outDir, "suite.json"),
+    markdownPath: path.join(outDir, "suite.md"),
+    issuesPath: path.join(outDir, "issues.md"),
+  });
+  assert.match(await readFile(paths.markdownPath, "utf8"), /# Fixture Suite Compatibility/);
+  assert.match(await readFile(paths.issuesPath, "utf8"), /# Fixture Suite Issues/);
+  assert.equal(JSON.parse(await readFile(paths.jsonPath, "utf8")).summary.fixtureCount, 1);
+  assert.equal(result.report.summary.fixtureCount, 1);
+  assert.equal(result.paths.jsonPath, path.join(outDir, "run.json"));
+});
+
 test("public API exposes capture through an explicit entrypoint helper", async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-api-capture-"));
   const entrypoint = path.join(dir, "fixture.mjs");
@@ -100,6 +138,33 @@ test("public API can initialize plugin inspector files", async () => {
   assert.equal(config.plugin.id, "weather");
   assert.equal(config.capture.mockSdk, true);
   assert.match(workflow, /npx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk/);
+});
+
+test("fixture-set issue renderer is available without advanced internals", () => {
+  const markdown = renderFixtureSetIssuesReport(
+    {
+      generatedAt: "test",
+      status: "pass",
+      summary: {
+        issueCount: 0,
+        p0IssueCount: 0,
+        p1IssueCount: 0,
+        liveIssueCount: 0,
+        liveP0IssueCount: 0,
+        compatGapCount: 0,
+        deprecationWarningCount: 0,
+        inspectorGapCount: 0,
+        upstreamIssueCount: 0,
+        contractProbeCount: 0,
+      },
+      issues: [],
+      contractProbes: [],
+    },
+    { title: "Fixture Issues" },
+  );
+
+  assert.match(markdown, /# Fixture Issues/);
+  assert.match(markdown, /## Triage Summary/);
 });
 
 test("public API honors config-driven runtime capture", async () => {
