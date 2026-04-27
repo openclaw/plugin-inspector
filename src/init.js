@@ -15,12 +15,13 @@ export async function writePluginInspectorInit(options = {}) {
   const configPath = path.resolve(pluginRoot, options.configPath ?? defaultInitConfigPath);
   const workflowPath = options.ci === true ? path.resolve(pluginRoot, options.workflowPath ?? defaultInitWorkflowPath) : null;
   const packageManager = options.packageManager ?? (await detectPackageManager(pluginRoot));
+  const dryRun = options.dryRun === true;
   const written = [];
 
-  if (existsSync(configPath) && options.force !== true) {
+  if (!dryRun && existsSync(configPath) && options.force !== true) {
     throw new Error(`${path.relative(pluginRoot, configPath)} already exists; pass --force to overwrite it`);
   }
-  if (workflowPath && existsSync(workflowPath) && options.force !== true) {
+  if (!dryRun && workflowPath && existsSync(workflowPath) && options.force !== true) {
     throw new Error(`${path.relative(pluginRoot, workflowPath)} already exists; pass --force to overwrite it`);
   }
   const packageJsonPath = path.join(pluginRoot, "package.json");
@@ -30,20 +31,24 @@ export async function writePluginInspectorInit(options = {}) {
       throw new Error("package.json is required to write plugin-inspector package scripts");
     }
     for (const name of Object.keys(defaultInitPackageScripts)) {
-      if (packageJson.scripts?.[name] && options.force !== true) {
+      if (!dryRun && packageJson.scripts?.[name] && options.force !== true) {
         throw new Error(`package.json scripts.${name} already exists; pass --force to overwrite it`);
       }
     }
   }
 
   const config = await buildPluginInspectorConfig({ pluginRoot });
-  await mkdir(path.dirname(configPath), { recursive: true });
-  await writeFile(configPath, `${JSON.stringify(config, null, 2)}\n`, "utf8");
+  if (!dryRun) {
+    await mkdir(path.dirname(configPath), { recursive: true });
+    await writeFile(configPath, `${JSON.stringify(config, null, 2)}\n`, "utf8");
+  }
   written.push(configPath);
 
   if (workflowPath) {
-    await mkdir(path.dirname(workflowPath), { recursive: true });
-    await writeFile(workflowPath, renderGithubActionsWorkflow({ packageManager }), "utf8");
+    if (!dryRun) {
+      await mkdir(path.dirname(workflowPath), { recursive: true });
+      await writeFile(workflowPath, renderGithubActionsWorkflow({ packageManager }), "utf8");
+    }
     written.push(workflowPath);
   }
 
@@ -53,11 +58,13 @@ export async function writePluginInspectorInit(options = {}) {
       ...existingScripts,
       ...defaultInitPackageScripts,
     };
-    await writeFile(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`, "utf8");
+    if (!dryRun) {
+      await writeFile(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`, "utf8");
+    }
     written.push(packageJsonPath);
   }
 
-  return { pluginRoot, configPath, packageManager, written };
+  return { pluginRoot, configPath, dryRun, packageManager, written };
 }
 
 export async function buildPluginInspectorConfig(options = {}) {

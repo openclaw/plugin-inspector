@@ -27,6 +27,7 @@ npx @openclaw/plugin-inspector init --ci
 `init --ci` detects `packageManager` and common lockfiles. Pass
 `--package-manager pnpm`, `npm`, `yarn`, or `bun` when you want to override it.
 Add `--scripts` to write `plugin:check` and `plugin:ci` package scripts.
+Use `--dry-run` to preview the files first.
 
 Or install it as a dev dependency:
 
@@ -44,6 +45,7 @@ npx @openclaw/plugin-inspector ci --no-openclaw
 npx @openclaw/plugin-inspector config
 npx @openclaw/plugin-inspector check --plugin-root ./plugins/weather
 npx @openclaw/plugin-inspector init --ci --package-manager pnpm
+npx @openclaw/plugin-inspector init --ci --scripts --dry-run
 ```
 
 `check` and `inspect` read the current directory as one plugin unless

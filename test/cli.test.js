@@ -229,6 +229,32 @@ test("init command can add package scripts", async () => {
   assert.equal(packageJson.scripts["plugin:ci"], "plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute");
 });
 
+test("init command can preview generated files", async () => {
+  const rootDir = await createCliPluginRoot("plugin-inspector-cli-init-dry-run-");
+  const cliPath = path.resolve("src/cli.js");
+  const beforeConfig = await readFile(path.join(rootDir, "plugin-inspector.config.json"), "utf8");
+  const beforePackageJson = await readFile(path.join(rootDir, "package.json"), "utf8");
+
+  const { stdout } = await execFileAsync(process.execPath, [
+    cliPath,
+    "init",
+    "--plugin-root",
+    rootDir,
+    "--ci",
+    "--scripts",
+    "--dry-run",
+  ]);
+
+  assert.match(stdout, /^would write plugin-inspector\.config\.json$/m);
+  assert.match(stdout, /^would write \.github\/workflows\/plugin-inspector\.yml$/m);
+  assert.match(stdout, /^would write package\.json$/m);
+  assert.equal(await readFile(path.join(rootDir, "plugin-inspector.config.json"), "utf8"), beforeConfig);
+  assert.equal(await readFile(path.join(rootDir, "package.json"), "utf8"), beforePackageJson);
+  await assert.rejects(readFile(path.join(rootDir, ".github", "workflows", "plugin-inspector.yml"), "utf8"), {
+    code: "ENOENT",
+  });
+});
+
 async function createCliPluginRoot(prefix) {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), prefix));
   await mkdir(path.join(rootDir, "src"), { recursive: true });

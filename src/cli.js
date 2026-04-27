@@ -111,12 +111,13 @@ async function runInit(commandArgs) {
     workflowPath,
     packageManager,
     ci: commandArgs.includes("--ci"),
+    dryRun: commandArgs.includes("--dry-run"),
     scripts: commandArgs.includes("--scripts"),
     force: commandArgs.includes("--force"),
   });
 
   for (const filePath of result.written) {
-    console.log(`wrote ${path.relative(result.pluginRoot, filePath)}`);
+    console.log(`${result.dryRun ? "would write" : "wrote"} ${path.relative(result.pluginRoot, filePath)}`);
   }
   console.log(`package manager: ${result.packageManager}`);
 }
@@ -328,7 +329,7 @@ Usage:
   plugin-inspector
   plugin-inspector check [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--json]
   plugin-inspector config [--plugin-root <path>] [--config <path>] [--json]
-  plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--scripts] [--package-manager npm|pnpm|yarn|bun] [--force]
+  plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--scripts] [--package-manager npm|pnpm|yarn|bun] [--dry-run] [--force]
   plugin-inspector report --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector inspect [--plugin-root <path>] [--config <path>] [--out <dir>] [--check] [--json] [--sarif [path]] [--junit [path]] [--allow-execute]
   plugin-inspector ci [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--json] [--no-sarif] [--no-junit]
