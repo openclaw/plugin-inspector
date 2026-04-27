@@ -6,6 +6,8 @@ import { test } from "node:test";
 import {
   inspectFixtureSet,
   loadInspectorConfig,
+  renderCompatibilityIssuesReport,
+  renderCompatibilityMarkdownReport,
   renderMarkdownReport,
   renderMarkdownTable,
   writeArtifacts,
@@ -19,6 +21,111 @@ test("markdown report includes summary and inventory", async () => {
 
   assert.match(markdown, /# OpenClaw Plugin Inspector Report/);
   assert.match(markdown, /\| sample-plugin \| high \| native-tool \| before_tool_call \| definePluginEntry, registerTool \| tools \|/);
+});
+
+test("compatibility report renderer supports issue metadata and evidence links", () => {
+  const report = {
+    generatedAt: "test",
+    status: "pass",
+    targetOpenClaw: {
+      status: "ok",
+      compatRecords: ["plugin-sdk-export-aliases"],
+      compatRecordStatuses: { "plugin-sdk-export-aliases": "active" },
+    },
+    summary: {
+      fixtureCount: 1,
+      highPriorityFixtures: 1,
+      breakageCount: 0,
+      warningCount: 1,
+      suggestionCount: 0,
+      decisionCount: 1,
+      issueCount: 1,
+      p0IssueCount: 1,
+      p1IssueCount: 0,
+      liveIssueCount: 1,
+      liveP0IssueCount: 1,
+      compatGapCount: 0,
+      deprecationWarningCount: 0,
+      inspectorGapCount: 0,
+      upstreamIssueCount: 0,
+      fixtureRegressionCount: 0,
+      contractProbeCount: 1,
+    },
+    fixtures: [
+      {
+        id: "sample-plugin",
+        priority: "high",
+        seams: ["native-tool"],
+        hooks: ["before_tool_call"],
+        registrations: ["registerTool"],
+        manifestContracts: ["tools"],
+      },
+    ],
+    breakages: [],
+    warnings: [
+      {
+        fixture: "sample-plugin",
+        code: "sdk-export-missing",
+        level: "warning",
+        message: "SDK alias is unavailable",
+        evidence: ["plugins/sample/src/index.ts:1"],
+        compatRecord: "plugin-sdk-export-aliases",
+      },
+    ],
+    suggestions: [],
+    issues: [
+      {
+        fixture: "sample-plugin",
+        code: "sdk-export-missing",
+        issueClass: "live-issue",
+        decision: "core-compat-adapter",
+        severity: "P0",
+        title: "SDK alias is unavailable",
+        status: "blocking",
+        compatStatus: "untracked",
+        live: true,
+        evidence: ["plugins/sample/src/index.ts:1"],
+      },
+    ],
+    contractProbes: [
+      {
+        fixture: "sample-plugin",
+        priority: "P1",
+        target: "sdk-alias",
+        contract: "package export exists",
+        id: "sdk.import.package-export-cold-import:sample-plugin",
+        evidence: ["plugins/sample/src/index.ts:1"],
+      },
+    ],
+    logs: [],
+    decisions: [
+      {
+        fixture: "sample-plugin",
+        decision: "core-compat-adapter",
+        seam: "sdk-alias",
+        action: "add compat record",
+        evidence: "plugins/sample/src/index.ts:1",
+      },
+    ],
+  };
+
+  const options = {
+    title: "Crabpot Compatibility Report",
+    severityLabels: { P0: "P0!" },
+    formatEvidence: (evidence) => `[linked](${evidence})`,
+  };
+  const markdown = renderCompatibilityMarkdownReport(report, options);
+  const issues = renderCompatibilityIssuesReport(report, {
+    ...options,
+    title: "Crabpot Issue Findings",
+  });
+
+  assert.match(markdown, /# Crabpot Compatibility Report/);
+  assert.match(markdown, /## Target OpenClaw Compat Records/);
+  assert.match(markdown, /sdk\.import\.package-export-cold-import:sample-plugin/);
+  assert.match(issues, /# Crabpot Issue Findings/);
+  assert.match(issues, /P0! \*\*sample-plugin\*\* `live-issue` `core-compat-adapter`/);
+  assert.match(issues, /\[linked\]\(plugins\/sample\/src\/index\.ts:1\)/);
 });
 
 test("writeReport writes JSON and Markdown artifacts", async () => {

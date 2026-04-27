@@ -50,6 +50,10 @@ export {
   writeContractCapture,
 } from "./contract-capture.js";
 export {
+  renderCompatibilityIssuesReport,
+  renderCompatibilityMarkdownReport,
+} from "./compatibility-report.js";
+export {
   knownIssueClasses,
   validateContractCoverage,
 } from "./contract-coverage.js";
