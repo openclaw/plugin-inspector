@@ -1,0 +1,19 @@
+version: 2.1
+
+jobs:
+  plugin-inspector:
+    docker:
+      - image: cimg/node:24.0
+    steps:
+      - checkout
+      - run: npm ci
+      - run: PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 npx @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk
+      - store_test_results:
+          path: reports
+      - store_artifacts:
+          path: reports
+
+workflows:
+  plugin-inspector:
+    jobs:
+      - plugin-inspector

@@ -132,7 +132,8 @@ For a single plugin package, the same config can live in `package.json`:
 `.github/workflows/plugin-inspector.yml`. Copy-ready examples also live in
 `examples/plugin-inspector.config.json` and
 `examples/package-json-plugin-inspector.json` and
-`examples/github-actions-plugin-inspector.yml`.
+`examples/github-actions-plugin-inspector.yml`. SARIF/JUnit CI consumption
+examples live alongside them.
 
 ## Runtime Capture
 
@@ -203,6 +204,15 @@ jobs:
 
 `ci` writes the normal report, CI summary, SARIF, and JUnit files by default.
 Pass `--no-sarif` or `--no-junit` only if your CI surface cannot consume them.
+
+For GitHub code scanning, use
+`examples/github-actions-code-scanning.yml`; it uploads
+`reports/plugin-inspector.sarif` through CodeQL's SARIF upload action.
+
+For CI test-summary UIs, point JUnit ingestion at
+`reports/plugin-inspector.junit.xml`. Copy-ready GitLab and CircleCI examples
+live in `examples/gitlab-ci-plugin-inspector.yml` and
+`examples/circleci-plugin-inspector.yml`.
 
 ## Fixture Suites
 

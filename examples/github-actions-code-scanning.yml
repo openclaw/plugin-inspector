@@ -1,0 +1,31 @@
+name: plugin-inspector
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 npx @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: reports/plugin-inspector.sarif
+      - uses: actions/upload-artifact@v5
+        if: always()
+        with:
+          name: plugin-inspector-reports
+          path: reports/plugin-inspector-*

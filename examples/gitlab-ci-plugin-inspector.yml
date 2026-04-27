@@ -1,0 +1,11 @@
+plugin_inspector:
+  image: node:24
+  script:
+    - npm ci
+    - PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 npx @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk
+  artifacts:
+    when: always
+    paths:
+      - reports/plugin-inspector-*
+    reports:
+      junit: reports/plugin-inspector.junit.xml
