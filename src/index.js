@@ -7,6 +7,14 @@ export {
 } from "./artifacts.js";
 export { createCaptureApi } from "./capture-api.js";
 export {
+  buildCiPolicyReport,
+  defaultCiPolicyReportOptions,
+  renderCiPolicyMarkdown,
+  validateCiPolicy,
+  validateCiPolicyReport,
+  writeCiPolicyReport,
+} from "./ci-policy.js";
+export {
   buildCiSummary,
   defaultCiReportPaths,
   deriveCiStatus,

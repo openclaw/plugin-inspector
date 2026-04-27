@@ -45,6 +45,7 @@ PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture ./dist/index.js
 ```js
 import {
   buildCiSummary,
+  buildCiPolicyReport,
   buildColdImportReadiness,
   buildContractCapture,
   buildExecutionResultsReport,
@@ -58,6 +59,7 @@ import {
   inspectFixtureSet,
   loadInspectorConfig,
   readOpenClawTargetSurface,
+  renderCiPolicyMarkdown,
   renderColdImportReadinessMarkdown,
   renderContractCaptureMarkdown,
   renderExecutionResultsMarkdown,
@@ -68,8 +70,10 @@ import {
   renderRuntimeProfileMarkdown,
   renderWorkspacePlanMarkdown,
   renderMarkdownReport,
+  validateCiPolicyReport,
   validateContractCoverage,
   writeCiSummary,
+  writeCiPolicyReport,
   writeColdImportReadiness,
   writeContractCapture,
   writeExecutionResultsReport,
@@ -88,6 +92,9 @@ await writeReport(report, { outDir: "reports" });
 
 const summary = await buildCiSummary({ reportsDir: "reports" });
 await writeCiSummary(summary);
+
+const policyReport = buildCiPolicyReport({ policy, compatibilityReport: report });
+await writeCiPolicyReport(policyReport);
 
 const capture = buildContractCapture({ report });
 await writeContractCapture(capture);
