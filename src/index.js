@@ -20,6 +20,17 @@ export {
   probePriority,
 } from "./contract-probes.js";
 export {
+  buildContractCapture,
+  defaultHookAssertions,
+  defaultHookContexts,
+  defaultHookEvents,
+  defaultRegistrationArguments,
+  defaultRegistrationAssertions,
+  renderContractCaptureMarkdown,
+  validateContractCapture,
+  writeContractCapture,
+} from "./contract-capture.js";
+export {
   buildIssues,
   classifyIssueFinding,
   deprecatedCompatRecords,
