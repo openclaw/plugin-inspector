@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "plugin": {
+    "id": "weather",
+    "priority": "high",
+    "seams": ["dynamic-tool"],
+    "sourceRoot": "src",
+    "expect": {
+      "registrations": ["registerTool"]
+    }
+  },
+  "openclaw": {
+    "defaultCheckoutPath": "../openclaw"
+  }
+}

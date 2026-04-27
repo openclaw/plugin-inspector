@@ -73,6 +73,9 @@ Then run:
 plugin-inspector check --config plugin-inspector.config.json
 ```
 
+Copy-ready examples live in `examples/plugin-inspector.config.json` and
+`examples/github-actions-plugin-inspector.yml`.
+
 Fixture-set configs are still supported for crabpot-style compatibility suites:
 
 ```bash
