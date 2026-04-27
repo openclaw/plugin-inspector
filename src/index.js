@@ -90,3 +90,10 @@ export {
   validateSyntheticProbePlan,
   writeSyntheticProbePlan,
 } from "./synthetic-probes.js";
+export {
+  buildWorkspacePlan,
+  defaultWorkspacePlanOptions,
+  renderWorkspacePlanMarkdown,
+  validateWorkspacePlan,
+  writeWorkspacePlan,
+} from "./workspace-plan.js";

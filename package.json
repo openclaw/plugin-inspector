@@ -26,7 +26,8 @@
     "./cold-import-readiness": "./src/cold-import-readiness.js",
     "./contract-capture": "./src/contract-capture.js",
     "./openclaw-target": "./src/openclaw-target.js",
-    "./platform-probes": "./src/platform-probes.js"
+    "./platform-probes": "./src/platform-probes.js",
+    "./workspace-plan": "./src/workspace-plan.js"
   },
   "files": [
     "src",
