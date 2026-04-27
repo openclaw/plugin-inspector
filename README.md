@@ -35,6 +35,7 @@ npx plugin-inspector check
 
 ```bash
 npx @openclaw/plugin-inspector check
+npx @openclaw/plugin-inspector config
 npx @openclaw/plugin-inspector check --plugin-root ./plugins/weather
 npx @openclaw/plugin-inspector init --ci --package-manager pnpm
 ```
@@ -45,6 +46,13 @@ It writes:
 - `reports/plugin-inspector-report.json`
 - `reports/plugin-inspector-report.md`
 - `reports/plugin-inspector-issues.md`
+
+`config` prints the resolved plugin root, fixture id, seams, and capture
+settings before CI runs:
+
+```bash
+plugin-inspector config --json
+```
 
 Use `--no-openclaw` when CI should not compare against a local OpenClaw
 checkout:

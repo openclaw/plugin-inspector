@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import path from "node:path";
 import {
+  loadPluginConfig,
   renderTextSummary,
   runPluginCheck,
 } from "./index.js";
@@ -28,6 +29,8 @@ try {
     await runCheck(commandArgs);
   } else if (command === "init") {
     await runInit(commandArgs);
+  } else if (command === "config") {
+    await runConfig(commandArgs);
   } else if (command === "inspect" || command === "report") {
     await runReport(command, commandArgs);
   } else if (command === "ci") {
@@ -40,6 +43,18 @@ try {
 } catch (error) {
   console.error(error.message);
   process.exitCode = 1;
+}
+
+async function runConfig(commandArgs) {
+  const configPath = readFlag(commandArgs, "--config");
+  const pluginRoot = readFlag(commandArgs, "--plugin-root") ?? readFlag(commandArgs, "--root");
+  const config = await loadPluginConfig({ configPath, pluginRoot });
+
+  if (commandArgs.includes("--json")) {
+    console.log(JSON.stringify(config, null, 2));
+  } else {
+    console.log(renderConfigTextSummary(config));
+  }
 }
 
 async function runCheck(commandArgs) {
@@ -226,12 +241,26 @@ function renderCiTextSummary(summary) {
   ].join("\n");
 }
 
+function renderConfigTextSummary(config) {
+  const fixture = config.fixtures[0];
+  return [
+    `Plugin: ${fixture.id}`,
+    `Root: ${config.rootDir}`,
+    `Config: ${config.configPath ?? "auto"}`,
+    `Priority: ${fixture.priority}`,
+    `Seams: ${fixture.seams.join(", ")}`,
+    `Runtime capture: ${config.capture?.runtime === true ? "on" : "off"}`,
+    `Mock SDK: ${config.capture?.mockSdk === false ? "off" : "on"}`,
+  ].join("\n");
+}
+
 function printHelp() {
   console.log(`plugin-inspector
 
 Usage:
   plugin-inspector
   plugin-inspector check [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--json]
+  plugin-inspector config [--plugin-root <path>] [--config <path>] [--json]
   plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--package-manager npm|pnpm|yarn|bun] [--force]
   plugin-inspector report --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector inspect --config <path> [--out <dir>] [--check] [--json]

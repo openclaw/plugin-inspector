@@ -116,6 +116,26 @@ test("check command can enable runtime capture from plugin config", async () => 
   assert.equal(capture.summary.registrationCount, 1);
 });
 
+test("config command prints resolved plugin root config", async () => {
+  const rootDir = await createCliPluginRoot("plugin-inspector-cli-config-print-");
+  const cliPath = path.resolve("src/cli.js");
+
+  const { stdout } = await execFileAsync(process.execPath, [cliPath, "config", "--plugin-root", rootDir]);
+  const { stdout: jsonStdout } = await execFileAsync(process.execPath, [
+    cliPath,
+    "config",
+    "--plugin-root",
+    rootDir,
+    "--json",
+  ]);
+  const config = JSON.parse(jsonStdout);
+
+  assert.match(stdout, /Plugin: weather/);
+  assert.match(stdout, /Runtime capture: off/);
+  assert.equal(config.fixtures[0].id, "weather");
+  assert.equal(config.fixtures[0].subdir, "src");
+});
+
 test("ci command writes CI summary artifacts", async () => {
   const rootDir = await createCliPluginRoot("plugin-inspector-cli-ci-");
   const cliPath = path.resolve("src/cli.js");
