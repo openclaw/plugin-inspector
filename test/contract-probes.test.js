@@ -46,13 +46,13 @@ test("contract probes map issue findings to executable backlog rows", () => {
     [
       ["api.capture.runtime-registrars:wecom", "P1", "inspector-capture-api"],
       ["sdk.import.package-export-cold-import:codex-app-server", "P1", "sdk-alias"],
-      ["manifest.schema.top-level-fields:agentchat", "P2", "manifest-loader"],
+      ["manifest.schema.top-level-fields:agentchat", "P3", "manifest-loader"],
     ],
   );
 });
 
 test("contract probe priority escalates critical codes and high-priority fixtures", () => {
   assert.equal(probePriority("sdk-export-missing", "medium"), "P1");
-  assert.equal(probePriority("manifest-unknown-fields", "high"), "P1");
-  assert.equal(probePriority("manifest-unknown-fields", "medium"), "P2");
+  assert.equal(probePriority("manifest-unknown-fields", "high"), "P2");
+  assert.equal(probePriority("manifest-unknown-fields", "medium"), "P3");
 });

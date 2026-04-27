@@ -138,9 +138,9 @@ export function probePriority(code, fixturePriority) {
     return "P1";
   }
   if (fixturePriority === "high") {
-    return "P1";
+    return "P2";
   }
-  return "P2";
+  return "P3";
 }
 
 function dedupeBy(values, keyForValue) {
