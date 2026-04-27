@@ -136,6 +136,7 @@ export {
 } from "./config.js";
 export {
   buildPluginInspectorConfig,
+  defaultInitPackageScripts,
   defaultInitConfigPath,
   defaultInitWorkflowPath,
   detectPackageManager,

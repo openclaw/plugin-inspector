@@ -5,6 +5,10 @@ import { inferPluginSeams, packageId } from "./config.js";
 
 export const defaultInitConfigPath = "plugin-inspector.config.json";
 export const defaultInitWorkflowPath = ".github/workflows/plugin-inspector.yml";
+export const defaultInitPackageScripts = {
+  "plugin:check": "plugin-inspector inspect --no-openclaw",
+  "plugin:ci": "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector ci --no-openclaw --runtime --mock-sdk",
+};
 
 export async function writePluginInspectorInit(options = {}) {
   const pluginRoot = path.resolve(options.pluginRoot ?? options.cwd ?? process.cwd());
@@ -14,6 +18,18 @@ export async function writePluginInspectorInit(options = {}) {
 
   if (existsSync(configPath) && options.force !== true) {
     throw new Error(`${path.relative(pluginRoot, configPath)} already exists; pass --force to overwrite it`);
+  }
+  const packageJsonPath = path.join(pluginRoot, "package.json");
+  const packageJson = options.scripts === true ? await readJsonIfExists(packageJsonPath) : null;
+  if (options.scripts === true) {
+    if (!packageJson) {
+      throw new Error("package.json is required to write plugin-inspector package scripts");
+    }
+    for (const name of Object.keys(defaultInitPackageScripts)) {
+      if (packageJson.scripts?.[name] && options.force !== true) {
+        throw new Error(`package.json scripts.${name} already exists; pass --force to overwrite it`);
+      }
+    }
   }
 
   const config = await buildPluginInspectorConfig({ pluginRoot });
@@ -29,6 +45,16 @@ export async function writePluginInspectorInit(options = {}) {
     await mkdir(path.dirname(workflowPath), { recursive: true });
     await writeFile(workflowPath, renderGithubActionsWorkflow({ packageManager }), "utf8");
     written.push(workflowPath);
+  }
+
+  if (options.scripts === true) {
+    const existingScripts = packageJson.scripts ?? {};
+    packageJson.scripts = {
+      ...existingScripts,
+      ...defaultInitPackageScripts,
+    };
+    await writeFile(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`, "utf8");
+    written.push(packageJsonPath);
   }
 
   return { pluginRoot, configPath, packageManager, written };

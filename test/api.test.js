@@ -130,14 +130,17 @@ test("public API exposes capture through an explicit entrypoint helper", async (
 test("public API can initialize plugin inspector files", async () => {
   const pluginRoot = await createPluginRoot();
 
-  const result = await setupPluginInspector({ pluginRoot, ci: true, packageManager: "npm" });
+  const result = await setupPluginInspector({ pluginRoot, ci: true, scripts: true, packageManager: "npm" });
   const config = JSON.parse(await readFile(path.join(pluginRoot, "plugin-inspector.config.json"), "utf8"));
+  const packageJson = JSON.parse(await readFile(path.join(pluginRoot, "package.json"), "utf8"));
   const workflow = await readFile(path.join(pluginRoot, ".github", "workflows", "plugin-inspector.yml"), "utf8");
 
-  assert.equal(result.written.length, 2);
+  assert.equal(result.written.length, 3);
   assert.equal(result.packageManager, "npm");
   assert.equal(config.plugin.id, "weather");
   assert.equal(config.capture.mockSdk, true);
+  assert.equal(packageJson.scripts["plugin:check"], "plugin-inspector inspect --no-openclaw");
+  assert.equal(packageJson.scripts["plugin:ci"], "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector ci --no-openclaw --runtime --mock-sdk");
   assert.match(workflow, /npx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk/);
 });
 

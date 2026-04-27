@@ -225,6 +225,17 @@ test("init command detects plugin package managers", async () => {
   assert.match(workflow, /pnpm dlx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk/);
 });
 
+test("init command can add package scripts", async () => {
+  const rootDir = await createCliPluginRoot("plugin-inspector-cli-init-scripts-");
+  const cliPath = path.resolve("src/cli.js");
+
+  await execFileAsync(process.execPath, [cliPath, "init", "--plugin-root", rootDir, "--scripts", "--force"]);
+  const packageJson = JSON.parse(await readFile(path.join(rootDir, "package.json"), "utf8"));
+
+  assert.equal(packageJson.scripts["plugin:check"], "plugin-inspector inspect --no-openclaw");
+  assert.equal(packageJson.scripts["plugin:ci"], "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector ci --no-openclaw --runtime --mock-sdk");
+});
+
 async function createCliPluginRoot(prefix) {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), prefix));
   await mkdir(path.join(rootDir, "src"), { recursive: true });

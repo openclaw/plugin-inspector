@@ -26,6 +26,7 @@ npx @openclaw/plugin-inspector init --ci
 
 `init --ci` detects `packageManager` and common lockfiles. Pass
 `--package-manager pnpm`, `npm`, `yarn`, or `bun` when you want to override it.
+Add `--scripts` to write `plugin:check` and `plugin:ci` package scripts.
 
 Or install it as a dev dependency:
 

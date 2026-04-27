@@ -102,6 +102,7 @@ async function runInit(commandArgs) {
     workflowPath,
     packageManager,
     ci: commandArgs.includes("--ci"),
+    scripts: commandArgs.includes("--scripts"),
     force: commandArgs.includes("--force"),
   });
 
@@ -310,7 +311,7 @@ Usage:
   plugin-inspector
   plugin-inspector check [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--json]
   plugin-inspector config [--plugin-root <path>] [--config <path>] [--json]
-  plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--package-manager npm|pnpm|yarn|bun] [--force]
+  plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--scripts] [--package-manager npm|pnpm|yarn|bun] [--force]
   plugin-inspector report --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector inspect [--plugin-root <path>] [--config <path>] [--out <dir>] [--check] [--json] [--sarif [path]] [--junit [path]]
   plugin-inspector ci [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--json] [--no-sarif] [--no-junit]
