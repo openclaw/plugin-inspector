@@ -301,6 +301,167 @@ export function classifyPackageContracts({ fixture, inspection, fixtureReport })
   return { warnings, suggestions, logs, decisions };
 }
 
+export function classifyTargetOpenClawCoverage({ fixture, inspection, fixtureReport, targetOpenClaw }) {
+  const warnings = [];
+  const logs = [];
+  const decisions = [];
+
+  classifyHookNameCoverage({ fixture, inspection, targetOpenClaw, warnings, logs });
+  classifyRegistrationNameCoverage({ fixture, inspection, targetOpenClaw, warnings, logs });
+  classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, warnings, logs, decisions });
+  classifyManifestFieldCoverage({ fixture, fixtureReport, targetOpenClaw, warnings, logs, decisions });
+
+  return { warnings, logs, decisions };
+}
+
+function classifyHookNameCoverage({ fixture, inspection, targetOpenClaw, warnings, logs }) {
+  if (targetOpenClaw.status !== "ok" || targetOpenClaw.hookNames.length === 0) {
+    return;
+  }
+
+  const knownHookNames = new Set(targetOpenClaw.hookNames);
+  const unknownHooks = inspection.hookDetails.filter((hook) => !knownHookNames.has(hook.name));
+  if (unknownHooks.length === 0) {
+    logs.push({
+      fixture: fixture.id,
+      code: "hook-names-present",
+      level: "log",
+      message: "all observed hooks exist in the target OpenClaw hook registry",
+      evidence: inspection.hooks,
+    });
+    return;
+  }
+
+  warnings.push({
+    fixture: fixture.id,
+    code: "unknown-hook-name",
+    level: "warning",
+    message: "fixture registers hooks that are not present in the target OpenClaw hook registry",
+    evidence: detailEvidence(unknownHooks),
+  });
+}
+
+function classifyRegistrationNameCoverage({ fixture, inspection, targetOpenClaw, warnings, logs }) {
+  if (targetOpenClaw.status !== "ok" || targetOpenClaw.apiRegistrars.length === 0) {
+    return;
+  }
+
+  const knownRegistrars = new Set(targetOpenClaw.apiRegistrars);
+  const apiRegistrations = inspection.registrationDetails.filter((registration) =>
+    registration.name.startsWith("register"),
+  );
+  const unknownRegistrations = apiRegistrations.filter((registration) => !knownRegistrars.has(registration.name));
+  if (unknownRegistrations.length === 0) {
+    logs.push({
+      fixture: fixture.id,
+      code: "api-registrars-present",
+      level: "log",
+      message: "all observed api.register* calls exist in the target OpenClaw plugin API builder",
+      evidence: unique(apiRegistrations.map((registration) => registration.name)).sort(),
+    });
+    return;
+  }
+
+  warnings.push({
+    fixture: fixture.id,
+    code: "unknown-registration-name",
+    level: "warning",
+    message: "fixture calls api.register* methods that are not present in the target OpenClaw plugin API builder",
+    evidence: detailEvidence(unknownRegistrations),
+  });
+}
+
+function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, warnings, logs, decisions }) {
+  if (targetOpenClaw.status !== "ok" || targetOpenClaw.sdkExports.length === 0 || fixtureReport.sdkImports.length === 0) {
+    return;
+  }
+
+  const sdkExports = new Set(targetOpenClaw.sdkExports);
+  const unknownImports = fixtureReport.sdkImportDetails.filter((sdkImport) => !sdkExports.has(sdkImport.specifier));
+  if (unknownImports.length === 0) {
+    logs.push({
+      fixture: fixture.id,
+      code: "sdk-exports-present",
+      level: "log",
+      message: "all observed plugin SDK imports exist in target OpenClaw package exports",
+      evidence: fixtureReport.sdkImports,
+    });
+    return;
+  }
+
+  warnings.push({
+    fixture: fixture.id,
+    code: "sdk-export-missing",
+    level: "warning",
+    message: "fixture imports plugin SDK aliases that are not exported by the target OpenClaw package",
+    evidence: detailEvidence(unknownImports, "specifier"),
+    compatRecord: "plugin-sdk-export-aliases",
+  });
+  decisions.push({
+    fixture: fixture.id,
+    decision: "core-compat-adapter",
+    seam: "sdk-alias",
+    action: "Restore the package export alias or publish a versioned migration map before cold-importing old plugins.",
+    evidence: unique(unknownImports.map((sdkImport) => sdkImport.specifier)).join(", "),
+  });
+}
+
+function classifyManifestFieldCoverage({ fixture, fixtureReport, targetOpenClaw, warnings, logs, decisions }) {
+  if (targetOpenClaw.status !== "ok" || targetOpenClaw.manifestFields.length === 0) {
+    return;
+  }
+
+  const manifestFields = new Set(targetOpenClaw.manifestFields);
+  const contractFields = new Set(targetOpenClaw.manifestContractFields);
+  for (const pluginManifest of fixtureReport.pluginManifests) {
+    const unknownFields = pluginManifest.keys.filter((key) => !manifestFields.has(key));
+    if (unknownFields.length > 0) {
+      warnings.push({
+        fixture: fixture.id,
+        code: "manifest-unknown-fields",
+        level: "warning",
+        message: "manifest uses top-level fields that are not present in the target OpenClaw PluginManifest type",
+        evidence: unknownFields.map((field) => `${field} @ ${pluginManifest.path}`),
+      });
+      decisions.push({
+        fixture: fixture.id,
+        decision: "plugin-upstream-fix",
+        seam: "manifest-schema",
+        action: "Move unknown manifest metadata into supported package openclaw metadata or add a versioned OpenClaw manifest field.",
+        evidence: unknownFields.join(", "),
+      });
+    }
+
+    const unknownContractFields = pluginManifest.contracts.filter((field) => !contractFields.has(field));
+    if (unknownContractFields.length > 0) {
+      warnings.push({
+        fixture: fixture.id,
+        code: "manifest-unknown-contracts",
+        level: "warning",
+        message: "manifest declares contract keys that are not present in the target OpenClaw PluginManifestContracts type",
+        evidence: unknownContractFields.map((field) => `${field} @ ${pluginManifest.path}`),
+      });
+      decisions.push({
+        fixture: fixture.id,
+        decision: "plugin-upstream-fix",
+        seam: "manifest-contract",
+        action: "Use a supported manifest contract key or add a versioned OpenClaw contract field.",
+        evidence: unknownContractFields.join(", "),
+      });
+    }
+  }
+
+  if (fixtureReport.pluginManifests.length > 0) {
+    logs.push({
+      fixture: fixture.id,
+      code: "manifest-fields-checked",
+      level: "log",
+      message: "plugin manifest fields were compared with target OpenClaw manifest types",
+      evidence: fixtureReport.pluginManifests.map((manifest) => manifest.path),
+    });
+  }
+}
+
 function collectOpenClawEntrypoints(packageDir, openclaw, options) {
   const entrypoints = [
     ...openclaw.extensions.map((specifier) => ({ kind: "extension", specifier })),
@@ -360,6 +521,10 @@ function packageRank(packageSummary) {
 
 function arrayValues(value) {
   return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
+}
+
+function detailEvidence(details, key = "name") {
+  return unique(details.map((detail) => `${detail[key]} @ ${detail.ref}`));
 }
 
 function unique(values) {

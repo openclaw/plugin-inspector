@@ -82,6 +82,7 @@ export {
 export {
   buildCompatibilityFixtureReport,
   classifyPackageContracts,
+  classifyTargetOpenClawCoverage,
   readPackageSummaries,
   readPluginManifests,
   summarizePackage,

@@ -6,6 +6,7 @@ import { test } from "node:test";
 import {
   buildCompatibilityFixtureReport,
   classifyPackageContracts,
+  classifyTargetOpenClawCoverage,
   inspectFixtureSet,
   loadInspectorConfig,
   renderCompatibilityIssuesReport,
@@ -235,6 +236,44 @@ test("package contract classifier reports install and entrypoint blockers", () =
   assert.ok(result.suggestions.some((finding) => finding.code === "package-build-artifact-entrypoint"));
   assert.ok(result.suggestions.some((finding) => finding.code === "package-dependency-install-required"));
   assert.ok(result.decisions.some((decision) => decision.seam === "cold-import"));
+});
+
+test("target OpenClaw coverage classifier reports missing public surface", () => {
+  const result = classifyTargetOpenClawCoverage({
+    fixture: { id: "fixture" },
+    inspection: {
+      hooks: ["missing_hook"],
+      hookDetails: [{ name: "missing_hook", ref: "plugins/fixture/src/index.ts:1" }],
+      registrationDetails: [{ name: "registerMissing", ref: "plugins/fixture/src/index.ts:2" }],
+    },
+    fixtureReport: {
+      sdkImports: ["openclaw/plugin-sdk/missing"],
+      sdkImportDetails: [{ specifier: "openclaw/plugin-sdk/missing", ref: "plugins/fixture/src/index.ts:3" }],
+      pluginManifests: [
+        {
+          path: "plugins/fixture/openclaw.plugin.json",
+          keys: ["id", "unknownField"],
+          contracts: ["unknownContract"],
+        },
+      ],
+    },
+    targetOpenClaw: {
+      status: "ok",
+      hookNames: ["known_hook"],
+      apiRegistrars: ["registerTool"],
+      sdkExports: ["openclaw/plugin-sdk"],
+      manifestFields: ["id"],
+      manifestContractFields: ["tools"],
+    },
+  });
+
+  assert.ok(result.warnings.some((finding) => finding.code === "unknown-hook-name"));
+  assert.ok(result.warnings.some((finding) => finding.code === "unknown-registration-name"));
+  assert.ok(result.warnings.some((finding) => finding.code === "sdk-export-missing"));
+  assert.ok(result.warnings.some((finding) => finding.code === "manifest-unknown-fields"));
+  assert.ok(result.warnings.some((finding) => finding.code === "manifest-unknown-contracts"));
+  assert.ok(result.logs.some((finding) => finding.code === "manifest-fields-checked"));
+  assert.ok(result.decisions.some((decision) => decision.seam === "sdk-alias"));
 });
 
 test("writeReport writes JSON and Markdown artifacts", async () => {
