@@ -22,7 +22,8 @@
   },
   "exports": {
     ".": "./src/index.js",
-    "./capture-api": "./src/capture-api.js"
+    "./capture-api": "./src/capture-api.js",
+    "./contract-capture": "./src/contract-capture.js"
   },
   "files": [
     "src",
