@@ -223,6 +223,7 @@ function createStoreContext() {
 
 function registrationObject(args, defaults) {
   const first = args[0];
+  const callable = firstCallable(args);
   if (first && typeof first === "object") {
     return {
       ...defaults,
@@ -232,13 +233,29 @@ function registrationObject(args, defaults) {
     };
   }
   if (typeof first === "string") {
-    return {
+    return withCallableDefaults({
       ...defaults,
       name: first,
       id: defaults.id,
-    };
+    }, callable);
   }
-  return { ...defaults };
+  return withCallableDefaults({ ...defaults }, callable);
+}
+
+function firstCallable(args) {
+  return args.find((arg) => typeof arg === "function");
+}
+
+function withCallableDefaults(value, callable) {
+  if (!callable) {
+    return value;
+  }
+  return {
+    ...value,
+    handler: typeof value.handler === "function" ? value.handler : callable,
+    run: typeof value.run === "function" ? value.run : callable,
+    execute: typeof value.execute === "function" ? value.execute : callable,
+  };
 }
 
 function summarizeArguments(args) {

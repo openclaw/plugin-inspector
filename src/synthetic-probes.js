@@ -13,7 +13,7 @@ export const syntheticRegistrationExecutionProfiles = {
   },
   registerChannel: {
     mode: "channel-opt-in",
-    callableProperties: ["send", "receive"],
+    callableProperties: ["send", "sendMessage", "receive", "handleMessage"],
     option: "includeChannelRuntime",
   },
   registerCli: {
@@ -31,7 +31,7 @@ export const syntheticRegistrationExecutionProfiles = {
   },
   registerGatewayMethod: {
     mode: "direct",
-    callableProperties: ["handler", "run", "execute"],
+    callableProperties: ["handler", "run", "execute", "invoke"],
   },
   registerHttpRoute: {
     mode: "direct",
@@ -58,12 +58,12 @@ export const syntheticRegistrationExecutionProfiles = {
   },
   registerService: {
     mode: "lifecycle-opt-in",
-    callableProperties: ["start", "stop"],
+    callableProperties: ["start", "stop", "dispose"],
     option: "includeLifecycle",
   },
   registerSpeechProvider: {
     mode: "provider-opt-in",
-    callableProperties: ["speak", "synthesize"],
+    callableProperties: ["speak", "synthesize", "tts"],
     option: "includeProviderCapabilities",
   },
   registerTool: {
@@ -452,7 +452,8 @@ async function runRegistrationProbes(entry, retainedEntry, captureIndex, options
     return [metadataOnlyResult(entry, captureIndex, profile.reason)];
   }
 
-  const descriptor = retainedEntry.arguments?.[0] ?? retainedEntry.returnValue;
+  const descriptor =
+    retainedEntry.arguments?.find((value) => value && typeof value === "object") ?? retainedEntry.returnValue;
   if (!descriptor || typeof descriptor !== "object") {
     return [blockedResult(entry, captureIndex, "captured registration has no object descriptor")];
   }

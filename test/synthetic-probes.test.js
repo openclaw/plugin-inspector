@@ -120,6 +120,27 @@ test("synthetic probes pass registrar-specific handler inputs", async () => {
   );
 });
 
+test("synthetic probes can execute string plus handler registrations", async () => {
+  const capture = await captureLocalFixture([
+    "export function register(api) {",
+    "  api.registerGatewayMethod('fixture.ping', (event) => ({ method: event.registrar, property: event.property }));",
+    "}",
+  ]);
+
+  const result = await runCapturedSyntheticProbes(capture);
+
+  assert.equal(result.summary.failCount, 0);
+  assert.equal(result.summary.blockedCount, 0);
+  assert.deepEqual(
+    result.results.map((item) => `${item.status}:${item.label}`),
+    [
+      "pass:registerGatewayMethod.handler",
+      "pass:registerGatewayMethod.run",
+      "pass:registerGatewayMethod.execute",
+    ],
+  );
+});
+
 test("synthetic probes keep opt-in registrations guarded", async () => {
   const capture = await captureLocalFixture([
     "export function register(api) {",
