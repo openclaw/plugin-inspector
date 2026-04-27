@@ -99,9 +99,32 @@ test("capture entrypoint can mock OpenClaw plugin SDK imports", async () => {
   await writeFile(
     entrypoint,
     [
-      'import { definePluginEntry } from "openclaw/plugin-sdk";',
+      'import { pluginSdkMock } from "openclaw/plugin-sdk";',
+      'import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";',
+      'import { createChatChannelPlugin } from "openclaw/plugin-sdk/channel-core";',
+      'import { defineSingleProviderPluginEntry } from "openclaw/plugin-sdk/provider-entry";',
+      'import { buildSecretInputSchema } from "openclaw/plugin-sdk/secret-input";',
+      'import { registerPluginHttpRoute, resolveWebhookPath } from "openclaw/plugin-sdk/webhook-ingress";',
+      "",
+      "const provider = defineSingleProviderPluginEntry({",
+      "  id: 'fixture-provider',",
+      "  name: 'Fixture provider',",
+      "  description: 'Fixture provider',",
+      "  provider: {",
+      "    label: 'Fixture',",
+      "    docsPath: '/docs/fixture',",
+      "    catalog: { run: async () => ({ provider: { id: 'fixture-provider' } }) },",
+      "  },",
+      "});",
+      "",
+      "createChatChannelPlugin({ register() {} });",
+      "buildSecretInputSchema();",
+      "registerPluginHttpRoute({ path: resolveWebhookPath('hook') });",
       "",
       "export default definePluginEntry((api) => {",
+      "  if (!pluginSdkMock) throw new Error('expected mock SDK');",
+      "  provider.register(api);",
+      "  api.registerHttpRoute({ path: resolveWebhookPath('hook'), handler() {} });",
       "  api.registerTool({ name: 'fixture_tool', inputSchema: { type: 'object' }, run() {} });",
       "});",
     ].join("\n"),
@@ -118,6 +141,6 @@ test("capture entrypoint can mock OpenClaw plugin SDK imports", async () => {
   assert.equal(result.mockSdk, true);
   assert.deepEqual(
     result.captured.map((item) => `${item.kind}:${item.name}`),
-    ["registration:registerTool"],
+    ["registration:registerProvider", "registration:registerHttpRoute", "registration:registerTool"],
   );
 });

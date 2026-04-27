@@ -60,3 +60,52 @@ test("runtime capture report imports plugin entrypoints with mocked SDK", async 
   assert.equal(JSON.parse(await readFile(path.join(outDir, "capture.json"), "utf8")).summary.capturedCount, 1);
   assert.match(await readFile(path.join(outDir, "capture.md"), "utf8"), /registerTool/);
 });
+
+test("runtime capture report classifies missing mocked SDK exports", async () => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-capture-missing-export-"));
+  await mkdir(path.join(rootDir, "src"), { recursive: true });
+  await writeFile(
+    path.join(rootDir, "package.json"),
+    `${JSON.stringify(
+      {
+        name: "openclaw-missing-sdk-export",
+        version: "1.0.0",
+        type: "module",
+        openclaw: {
+          extensions: ["src/index.mjs"],
+          compat: { pluginApi: "^1.0.0" },
+        },
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(rootDir, "src", "index.mjs"),
+    [
+      'import { definitelyMissing } from "openclaw/plugin-sdk/plugin-entry";',
+      "",
+      "export default definitelyMissing({",
+      "  register() {},",
+      "});",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const config = await loadPluginRootConfig(null, { cwd: rootDir });
+  const compatibilityReport = await inspectCompatibilityFixtureSet(config, { openclawPath: false });
+  const captureReport = await buildRuntimeCaptureReport({ report: compatibilityReport, rootDir });
+
+  assert.equal(captureReport.summary.failedCount, 1);
+  assert.equal(captureReport.results[0].status, "error");
+  assert.equal(captureReport.results[0].failureClass, "missing-sdk-export");
+  assert.equal(captureReport.results[0].missingExport, "definitelyMissing");
+
+  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-capture-missing-export-out-"));
+  await writeRuntimeCaptureReport(captureReport, {
+    jsonPath: path.join(outDir, "capture.json"),
+    markdownPath: path.join(outDir, "capture.md"),
+  });
+  assert.match(await readFile(path.join(outDir, "capture.md"), "utf8"), /missing-sdk-export/);
+});
