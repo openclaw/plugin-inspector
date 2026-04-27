@@ -3,7 +3,7 @@ import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
-import { captureEntrypoint, inspectFixtureSet, inspectSourceText, loadInspectorConfig } from "../src/index.js";
+import { captureEntrypoint, inspectFixtureSet, inspectSourceText, loadInspectorConfig } from "../src/advanced.js";
 
 test("source inspection records hook, registrar, and SDK import evidence", () => {
   const inspection = inspectSourceText(

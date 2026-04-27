@@ -8,7 +8,7 @@ import {
   inspectCompatibilityFixtureSet,
   loadPluginRootConfig,
   writeRuntimeCaptureReport,
-} from "../src/index.js";
+} from "../src/advanced.js";
 
 test("runtime capture report imports plugin entrypoints with mocked SDK", async () => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-capture-"));

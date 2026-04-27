@@ -1,0 +1,85 @@
+import path from "node:path";
+import { createCaptureApi } from "./capture-api.js";
+import { loadInspectorConfig, loadPluginRootConfig } from "./config.js";
+import { captureEntrypoint } from "./inspector.js";
+import { renderTextSummary, writeCompatibilityReport } from "./report.js";
+import { buildRuntimeCaptureReport, writeRuntimeCaptureReport } from "./runtime-capture-report.js";
+import { inspectCompatibilityFixtureSet, inspectFixtureSet } from "./inspector.js";
+
+export async function loadPluginConfig(options = {}) {
+  if (options.config) {
+    return options.config;
+  }
+  const cwd = options.pluginRoot ?? options.cwd;
+  if (options.configPath) {
+    return options.fixtureSet === true
+      ? loadInspectorConfig(options.configPath, { cwd })
+      : loadPluginRootConfig(options.configPath, { cwd });
+  }
+  return loadPluginRootConfig(null, { cwd });
+}
+
+export async function inspectPluginRoot(options = {}) {
+  const config = await loadPluginConfig(options);
+  return inspectCompatibilityFixtureSet(config, {
+    generatedAt: options.generatedAt,
+    openclawPath: options.openclawPath,
+    targetOpenClaw: options.targetOpenClaw,
+  });
+}
+
+export async function inspectFixtureSetConfig(options = {}) {
+  const config = options.config ?? (await loadInspectorConfig(options.configPath, { cwd: options.cwd }));
+  return inspectFixtureSet(config, { generatedAt: options.generatedAt });
+}
+
+export async function writePluginReports(report, options = {}) {
+  return writeCompatibilityReport(report, {
+    basename: options.basename,
+    check: options.check,
+    cwd: options.cwd ?? options.pluginRoot,
+    issuesBasename: options.issuesBasename,
+    outDir: options.outDir,
+  });
+}
+
+export async function runPluginCheck(options = {}) {
+  const outDir = options.outDir ?? "reports";
+  const report = await inspectPluginRoot(options);
+  const paths = await writePluginReports(report, { ...options, outDir });
+  const result = { report, paths };
+
+  if (options.capture === true) {
+    if (process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED !== "1") {
+      throw new Error("runtime capture imports plugin code; rerun with PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 in an isolated workspace");
+    }
+    const config = await loadPluginConfig(options);
+    const runtimeCapture = await buildRuntimeCaptureReport({
+      mockSdk: options.mockSdk ?? true,
+      report,
+      rootDir: config.rootDir,
+    });
+    const outputRoot = options.cwd ?? options.pluginRoot ?? process.cwd();
+    const runtimeCapturePaths = await writeRuntimeCaptureReport(runtimeCapture, {
+      jsonPath: path.resolve(outputRoot, outDir, "plugin-inspector-runtime-capture.json"),
+      markdownPath: path.resolve(outputRoot, outDir, "plugin-inspector-runtime-capture.md"),
+    });
+    result.runtimeCapture = runtimeCapture;
+    result.runtimeCapturePaths = runtimeCapturePaths;
+    if (runtimeCapture.summary.failedCount > 0) {
+      throw new Error(`plugin-inspector runtime capture failed for ${runtimeCapture.summary.failedCount} entrypoints`);
+    }
+  }
+
+  if (options.failOnBreakages === true && report.status !== "pass") {
+    throw new Error(`plugin-inspector found ${report.summary.breakageCount} breakages`);
+  }
+
+  return result;
+}
+
+export async function capturePluginEntrypoint(entrypoint, options = {}) {
+  return captureEntrypoint(entrypoint, options);
+}
+
+export { createCaptureApi, renderTextSummary };

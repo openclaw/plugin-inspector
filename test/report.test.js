@@ -18,7 +18,7 @@ import {
   renderMarkdownTable,
   writeArtifacts,
   writeReport,
-} from "../src/index.js";
+} from "../src/advanced.js";
 
 test("markdown report includes summary and inventory", async () => {
   const config = await loadInspectorConfig("test/fixtures/inspector.config.json");

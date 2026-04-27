@@ -7,7 +7,7 @@ import {
   buildColdImportReadiness,
   renderColdImportReadinessMarkdown,
   validateColdImportReadiness,
-} from "../src/index.js";
+} from "../src/advanced.js";
 
 test("cold import readiness classifies entrypoint blockers", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-readiness-"));

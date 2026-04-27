@@ -1,17 +1,15 @@
 #!/usr/bin/env node
 import {
-  buildRuntimeCaptureReport,
+  renderTextSummary,
+  runPluginCheck,
+} from "./index.js";
+import {
   captureEntrypoint,
-  inspectCompatibilityFixtureSet,
   inspectFixtureSet,
   loadInspectorConfig,
-  loadPluginRootConfig,
-  renderTextSummary,
   writeArtifacts,
-  writeCompatibilityReport,
   writeReport,
-  writeRuntimeCaptureReport,
-} from "./index.js";
+} from "./advanced.js";
 
 const args = process.argv.slice(2);
 const command = args[0]?.startsWith("-") ? "check" : (args[0] ?? "check");
@@ -40,22 +38,7 @@ async function runCheck(commandArgs) {
   const openclawPath = commandArgs.includes("--no-openclaw") ? false : readFlag(commandArgs, "--openclaw");
   const json = commandArgs.includes("--json");
   const capture = commandArgs.includes("--capture");
-  const config = configPath ? await loadInspectorConfig(configPath) : await loadPluginRootConfig();
-  const report = await inspectCompatibilityFixtureSet(config, { openclawPath });
-  await writeCompatibilityReport(report, { outDir });
-  if (capture) {
-    if (process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED !== "1") {
-      throw new Error("check --capture imports plugin code; rerun with PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 in an isolated workspace");
-    }
-    const captureReport = await buildRuntimeCaptureReport({ report, rootDir: config.rootDir, mockSdk: true });
-    await writeRuntimeCaptureReport(captureReport, {
-      jsonPath: `${outDir}/plugin-inspector-runtime-capture.json`,
-      markdownPath: `${outDir}/plugin-inspector-runtime-capture.md`,
-    });
-    if (captureReport.summary.failedCount > 0) {
-      throw new Error(`plugin-inspector runtime capture failed for ${captureReport.summary.failedCount} entrypoints`);
-    }
-  }
+  const { report } = await runPluginCheck({ configPath, outDir, openclawPath, capture });
 
   if (json) {
     console.log(JSON.stringify(report, null, 2));

@@ -3,7 +3,7 @@ import { mkdtemp, readFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
-import { buildCiSummary, deriveCiStatus, renderCiSummaryMarkdown, writeCiSummary } from "../src/index.js";
+import { buildCiSummary, deriveCiStatus, renderCiSummaryMarkdown, writeCiSummary } from "../src/advanced.js";
 
 test("ci summary rolls up compatibility, policy, ref diff, and profile findings", async () => {
   const summary = await buildCiSummary({

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildIssues, classifyIssueFinding, issueId, knownIssueCodes, summarizeIssueClasses } from "../src/index.js";
+import { buildIssues, classifyIssueFinding, issueId, knownIssueCodes, summarizeIssueClasses } from "../src/advanced.js";
 
 test("issue ids are stable fingerprints", () => {
   const finding = {

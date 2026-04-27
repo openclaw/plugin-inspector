@@ -8,7 +8,7 @@ import {
   renderCiPolicyMarkdown,
   validateCiPolicyReport,
   writeCiPolicyReport,
-} from "../src/index.js";
+} from "../src/advanced.js";
 
 const policy = {
   version: 1,

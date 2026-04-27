@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildContractProbes, contractProbeRules, probePriority } from "../src/index.js";
+import { buildContractProbes, contractProbeRules, probePriority } from "../src/advanced.js";
 
 test("contract probes map issue findings to executable backlog rows", () => {
   const probes = buildContractProbes({

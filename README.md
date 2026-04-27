@@ -6,22 +6,17 @@
 wraps the static inspection, registration capture, and report model prototyped
 in crabpot into an npm-publishable package.
 
-No npm package has been published yet.
-
 ## Install
 
-During development, use a local checkout or packed tarball:
-
-```bash
-npm install --save-dev ../plugin-inspector
-npx plugin-inspector check --no-openclaw
-```
-
-After the package is published, plugin repos should install it as a dev
-dependency and run it from the plugin root:
+Install it as a dev dependency in a plugin repo:
 
 ```bash
 npm install --save-dev @openclaw/plugin-inspector
+```
+
+Then run it from the plugin root:
+
+```bash
 npx @openclaw/plugin-inspector check
 ```
 
@@ -143,101 +138,6 @@ jobs:
         with:
           name: plugin-inspector-reports
           path: reports/plugin-inspector-*
-```
-
-## API
-
-```js
-import {
-  buildCiSummary,
-  buildCiPolicyReport,
-  buildColdImportReadiness,
-  buildContractCapture,
-  buildExecutionResultsReport,
-  buildImportLoopProfile,
-  buildPlatformProbes,
-  buildProfileDiff,
-  buildRefDiff,
-  buildRuntimeProfile,
-  buildRuntimeCaptureReport,
-  buildWorkspacePlan,
-  createCaptureApi,
-  inspectFixtureSet,
-  loadInspectorConfig,
-  readOpenClawTargetSurface,
-  renderCiPolicyMarkdown,
-  renderColdImportReadinessMarkdown,
-  renderContractCaptureMarkdown,
-  renderExecutionResultsMarkdown,
-  renderImportLoopProfileMarkdown,
-  renderPlatformProbesMarkdown,
-  renderProfileDiffMarkdown,
-  renderRefDiffMarkdown,
-  renderRuntimeProfileMarkdown,
-  renderRuntimeCaptureMarkdown,
-  renderWorkspacePlanMarkdown,
-  renderMarkdownReport,
-  validateCiPolicyReport,
-  validateContractCoverage,
-  writeCiSummary,
-  writeCiPolicyReport,
-  writeColdImportReadiness,
-  writeContractCapture,
-  writeExecutionResultsReport,
-  writeImportLoopProfile,
-  writePlatformProbes,
-  writeProfileDiff,
-  writeRefDiff,
-  writeRuntimeProfile,
-  writeRuntimeCaptureReport,
-  writeWorkspacePlan,
-  writeReport,
-} from "@openclaw/plugin-inspector";
-
-const config = await loadInspectorConfig("crabpot.config.json");
-const report = await inspectFixtureSet(config);
-await writeReport(report, { outDir: "reports" });
-
-const summary = await buildCiSummary({ reportsDir: "reports" });
-await writeCiSummary(summary);
-
-const policyReport = buildCiPolicyReport({ policy, compatibilityReport: report });
-await writeCiPolicyReport(policyReport);
-
-const capture = buildContractCapture({ report });
-await writeContractCapture(capture);
-const coverageErrors = validateContractCoverage(report);
-
-const readiness = buildColdImportReadiness({ report });
-await writeColdImportReadiness(readiness);
-
-const target = await readOpenClawTargetSurface({ manifest: config });
-
-const workspacePlan = await buildWorkspacePlan({ report, readiness });
-await writeWorkspacePlan(workspacePlan);
-
-const platformProbes = buildPlatformProbes({ plan: workspacePlan });
-await writePlatformProbes(platformProbes);
-
-const executionResults = await buildExecutionResultsReport({ resultsDir: ".plugin-inspector/results" });
-await writeExecutionResultsReport(executionResults);
-
-const importLoop = await buildImportLoopProfile({ entrypoint: "dist/index.js", runs: 3 });
-await writeImportLoopProfile(importLoop);
-
-const runtimeProfile = await buildRuntimeProfile({
-  commands: [{ id: "node-boot", label: "Node boot", category: "baseline", args: ["-e", "0"] }],
-});
-await writeRuntimeProfile(runtimeProfile);
-
-const runtimeCapture = await buildRuntimeCaptureReport({ report, rootDir: process.cwd() });
-await writeRuntimeCaptureReport(runtimeCapture);
-
-const refDiff = await buildRefDiff({ baseReport, headReport });
-await writeRefDiff(refDiff);
-
-const profileDiff = await buildProfileDiff({ current, baseline, policy });
-await writeProfileDiff(profileDiff);
 ```
 
 ## Scope

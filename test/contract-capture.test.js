@@ -4,7 +4,7 @@ import {
   buildContractCapture,
   renderContractCaptureMarkdown,
   validateContractCapture,
-} from "../src/index.js";
+} from "../src/advanced.js";
 
 test("contract capture turns compatibility reports into executable inventory", () => {
   const capture = buildContractCapture({

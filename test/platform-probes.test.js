@@ -4,7 +4,7 @@ import {
   buildPlatformProbes,
   renderPlatformProbesMarkdown,
   validatePlatformProbes,
-} from "../src/index.js";
+} from "../src/advanced.js";
 
 test("platform probes classify loader and shell portability risks", () => {
   const report = buildPlatformProbes({

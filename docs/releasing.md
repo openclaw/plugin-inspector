@@ -55,8 +55,9 @@ npm trust github @openclaw/plugin-inspector --repo openclaw/plugin-inspector --f
 npm run release:local
 ```
 
-This runs tests, `npm pack --dry-run`, and `npm publish --dry-run --access
-public`.
+This runs tests and `npm pack --dry-run`. Once a version has been published,
+`npm publish --dry-run` rejects that same version, so the real publish check is
+the tag workflow.
 
 ## Publish
 

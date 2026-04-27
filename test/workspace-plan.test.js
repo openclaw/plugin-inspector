@@ -8,7 +8,7 @@ import {
   buildWorkspacePlan,
   renderWorkspacePlanMarkdown,
   validateWorkspacePlan,
-} from "../src/index.js";
+} from "../src/advanced.js";
 
 test("workspace plan maps blocked entrypoints to opt-in install/build/capture steps", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-workspace-"));

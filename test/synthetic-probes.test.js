@@ -9,7 +9,7 @@ import {
   renderSyntheticProbeMarkdown,
   runCapturedSyntheticProbes,
   validateSyntheticProbePlan,
-} from "../src/index.js";
+} from "../src/advanced.js";
 
 test("synthetic probe plan maps capture inventory to executable probes", () => {
   const plan = buildSyntheticProbePlan({

@@ -8,7 +8,7 @@ import {
   defaultProfileDiffOptions,
   renderProfileDiffMarkdown,
   validateProfileDiff,
-} from "../src/index.js";
+} from "../src/advanced.js";
 
 const policy = {
   thresholds: {
