@@ -23,6 +23,7 @@
   "exports": {
     ".": "./src/index.js",
     "./capture-api": "./src/capture-api.js",
+    "./ci-policy": "./src/ci-policy.js",
     "./cold-import-readiness": "./src/cold-import-readiness.js",
     "./contract-capture": "./src/contract-capture.js",
     "./contract-coverage": "./src/contract-coverage.js",
