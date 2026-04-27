@@ -255,6 +255,32 @@ test("init command can preview generated files", async () => {
   });
 });
 
+test("init command can print a JSON summary", async () => {
+  const rootDir = await createCliPluginRoot("plugin-inspector-cli-init-json-");
+  const cliPath = path.resolve("src/cli.js");
+
+  const { stdout } = await execFileAsync(process.execPath, [
+    cliPath,
+    "init",
+    "--plugin-root",
+    rootDir,
+    "--ci",
+    "--scripts",
+    "--dry-run",
+    "--json",
+  ]);
+  const summary = JSON.parse(stdout);
+
+  assert.equal(summary.dryRun, true);
+  assert.equal(summary.packageManager, "npm");
+  assert.equal(summary.pluginRoot, rootDir);
+  assert.deepEqual(summary.files, [
+    "plugin-inspector.config.json",
+    ".github/workflows/plugin-inspector.yml",
+    "package.json",
+  ]);
+});
+
 async function createCliPluginRoot(prefix) {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), prefix));
   await mkdir(path.join(rootDir, "src"), { recursive: true });

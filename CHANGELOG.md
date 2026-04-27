@@ -10,6 +10,7 @@
 - Add CI-native SARIF and JUnit outputs; `plugin-inspector ci` writes them by default.
 - Add `--allow-execute` as a cross-platform runtime capture opt-in flag.
 - Add `plugin-inspector init --dry-run` for setup previews.
+- Add `plugin-inspector init --json` for machine-readable setup summaries.
 - Add `plugin-inspector init --scripts` for `plugin:check` and `plugin:ci` package scripts.
 - Add public synthetic probe suite helpers for building probe plans from compatibility reports.
 

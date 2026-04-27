@@ -116,6 +116,11 @@ async function runInit(commandArgs) {
     force: commandArgs.includes("--force"),
   });
 
+  if (commandArgs.includes("--json")) {
+    console.log(JSON.stringify(initCommandSummary(result), null, 2));
+    return;
+  }
+
   for (const filePath of result.written) {
     console.log(`${result.dryRun ? "would write" : "wrote"} ${path.relative(result.pluginRoot, filePath)}`);
   }
@@ -309,6 +314,15 @@ function renderCiTextSummary(summary) {
   ].join("\n");
 }
 
+function initCommandSummary(result) {
+  return {
+    dryRun: result.dryRun,
+    packageManager: result.packageManager,
+    pluginRoot: result.pluginRoot,
+    files: result.written.map((filePath) => path.relative(result.pluginRoot, filePath)),
+  };
+}
+
 function renderConfigTextSummary(config) {
   const fixture = config.fixtures[0];
   return [
@@ -329,7 +343,7 @@ Usage:
   plugin-inspector
   plugin-inspector check [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--json]
   plugin-inspector config [--plugin-root <path>] [--config <path>] [--json]
-  plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--scripts] [--package-manager npm|pnpm|yarn|bun] [--dry-run] [--force]
+  plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--scripts] [--package-manager npm|pnpm|yarn|bun] [--dry-run] [--json] [--force]
   plugin-inspector report --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector inspect [--plugin-root <path>] [--config <path>] [--out <dir>] [--check] [--json] [--sarif [path]] [--junit [path]] [--allow-execute]
   plugin-inspector ci [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--json] [--no-sarif] [--no-junit]

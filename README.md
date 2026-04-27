@@ -46,6 +46,7 @@ npx @openclaw/plugin-inspector config
 npx @openclaw/plugin-inspector check --plugin-root ./plugins/weather
 npx @openclaw/plugin-inspector init --ci --package-manager pnpm
 npx @openclaw/plugin-inspector init --ci --scripts --dry-run
+npx @openclaw/plugin-inspector init --ci --scripts --dry-run --json
 ```
 
 `check` and `inspect` read the current directory as one plugin unless
