@@ -45,13 +45,16 @@ PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture ./dist/index.js
 ```js
 import {
   buildCiSummary,
+  buildColdImportReadiness,
   buildContractCapture,
   createCaptureApi,
   inspectFixtureSet,
   loadInspectorConfig,
+  renderColdImportReadinessMarkdown,
   renderContractCaptureMarkdown,
   renderMarkdownReport,
   writeCiSummary,
+  writeColdImportReadiness,
   writeContractCapture,
   writeReport,
 } from "@openclaw/plugin-inspector";
@@ -65,6 +68,9 @@ await writeCiSummary(summary);
 
 const capture = buildContractCapture({ report });
 await writeContractCapture(capture);
+
+const readiness = buildColdImportReadiness({ report });
+await writeColdImportReadiness(readiness);
 ```
 
 ## Scope
