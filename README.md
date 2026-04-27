@@ -35,17 +35,31 @@ npx plugin-inspector check
 
 ```bash
 npx @openclaw/plugin-inspector check
+npx @openclaw/plugin-inspector inspect
+npx @openclaw/plugin-inspector ci --no-openclaw
 npx @openclaw/plugin-inspector config
 npx @openclaw/plugin-inspector check --plugin-root ./plugins/weather
 npx @openclaw/plugin-inspector init --ci --package-manager pnpm
 ```
 
-`check` reads the current directory as one plugin unless `--plugin-root` is set.
-It writes:
+`check` and `inspect` read the current directory as one plugin unless
+`--plugin-root` is set. `inspect` is the friendly author-facing alias; `check`
+is kept for scripts. Both write:
 
 - `reports/plugin-inspector-report.json`
 - `reports/plugin-inspector-report.md`
 - `reports/plugin-inspector-issues.md`
+
+Use CI-native outputs when you want annotations or test-summary ingestion:
+
+```bash
+plugin-inspector inspect --no-openclaw --sarif --junit
+```
+
+That also writes:
+
+- `reports/plugin-inspector.sarif`
+- `reports/plugin-inspector.junit.xml`
 
 `config` prints the resolved plugin root, fixture id, seams, and capture
 settings before CI runs:
@@ -97,7 +111,7 @@ For a single plugin package, the same config can live in `package.json`:
 ```json
 {
   "scripts": {
-    "plugin:check": "plugin-inspector check --no-openclaw"
+    "plugin:check": "plugin-inspector inspect --no-openclaw"
   },
   "pluginInspector": {
     "version": 1,
@@ -153,8 +167,8 @@ Minimal package scripts:
 ```json
 {
   "scripts": {
-    "plugin:check": "plugin-inspector check --no-openclaw",
-    "plugin:check:runtime": "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector check --no-openclaw --runtime --mock-sdk"
+    "plugin:check": "plugin-inspector inspect --no-openclaw",
+    "plugin:ci": "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector ci --no-openclaw --runtime --mock-sdk"
   }
 }
 ```
@@ -179,14 +193,16 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: npx @openclaw/plugin-inspector check --no-openclaw
-      - run: PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 npx @openclaw/plugin-inspector check --no-openclaw --runtime --mock-sdk
+      - run: PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 npx @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk
       - uses: actions/upload-artifact@v5
         if: always()
         with:
           name: plugin-inspector-reports
           path: reports/plugin-inspector-*
 ```
+
+`ci` writes the normal report, CI summary, SARIF, and JUnit files by default.
+Pass `--no-sarif` or `--no-junit` only if your CI surface cannot consume them.
 
 ## Fixture Suites
 

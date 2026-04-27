@@ -8,9 +8,12 @@ import {
 import {
   buildCiSummary,
   captureEntrypoint,
+  defaultJunitPath,
+  defaultSarifPath,
   inspectCompatibilityFixtureSet,
   inspectFixtureSet,
   loadInspectorConfig,
+  writeCiOutputArtifacts,
   writeCiSummary,
   writeCompatibilityReport,
   writePluginInspectorInit,
@@ -32,7 +35,11 @@ try {
   } else if (command === "config") {
     await runConfig(commandArgs);
   } else if (command === "inspect" || command === "report") {
-    await runReport(command, commandArgs);
+    if (command === "inspect" && !commandArgs.includes("--config")) {
+      await runCheck(commandArgs);
+    } else {
+      await runReport(command, commandArgs);
+    }
   } else if (command === "ci") {
     await runCi(commandArgs);
   } else if (command === "capture") {
@@ -65,7 +72,13 @@ async function runCheck(commandArgs) {
   const json = commandArgs.includes("--json");
   const capture = readRuntimeFlag(commandArgs);
   const mockSdk = readMockSdkFlag(commandArgs);
-  const { report } = await runPluginCheck({ configPath, pluginRoot, outDir, openclawPath, capture, mockSdk });
+  const ciOutputs = readCiOutputFlags(commandArgs);
+  const { report, paths } = await runPluginCheck({ configPath, pluginRoot, outDir, openclawPath, capture, mockSdk });
+  await writeCiOutputArtifacts(report, {
+    ...ciOutputs,
+    cwd: path.dirname(paths.jsonPath),
+    outDir: ".",
+  });
 
   if (json) {
     console.log(JSON.stringify(report, null, 2));
@@ -102,9 +115,15 @@ async function runReport(command, commandArgs) {
   const outDir = readFlag(commandArgs, "--out") ?? "reports";
   const check = commandArgs.includes("--check") || command === "ci";
   const json = commandArgs.includes("--json");
+  const ciOutputs = readCiOutputFlags(commandArgs);
   const config = await loadInspectorConfig(configPath);
   const report = await inspectFixtureSet(config);
-  await writeReport(report, { outDir });
+  const paths = await writeReport(report, { outDir });
+  await writeCiOutputArtifacts(report, {
+    ...ciOutputs,
+    cwd: path.dirname(paths.jsonPath),
+    outDir: ".",
+  });
 
   if (json) {
     console.log(JSON.stringify(report, null, 2));
@@ -123,8 +142,13 @@ async function runCi(commandArgs) {
   const outDir = readFlag(commandArgs, "--out") ?? "reports";
   const openclawPath = commandArgs.includes("--no-openclaw") ? false : readFlag(commandArgs, "--openclaw");
   const json = commandArgs.includes("--json");
+  const capture = readRuntimeFlag(commandArgs);
+  const mockSdk = readMockSdkFlag(commandArgs);
+  const ciOutputs = readCiOutputFlags(commandArgs, { defaultEnabled: true });
   const { report, reportDir } = await runCiCompatibilityReport({
+    capture,
     configPath,
+    mockSdk,
     openclawPath,
     outDir,
     pluginRoot,
@@ -143,6 +167,11 @@ async function runCi(commandArgs) {
     jsonPath: path.join(reportDir, "plugin-inspector-ci-summary.json"),
     markdownPath: path.join(reportDir, "plugin-inspector-ci-summary.md"),
   });
+  await writeCiOutputArtifacts(report, {
+    ...ciOutputs,
+    cwd: reportDir,
+    outDir: ".",
+  });
 
   if (json) {
     console.log(JSON.stringify(summary, null, 2));
@@ -155,7 +184,7 @@ async function runCi(commandArgs) {
   }
 }
 
-async function runCiCompatibilityReport({ configPath, openclawPath, outDir, pluginRoot }) {
+async function runCiCompatibilityReport({ capture, configPath, mockSdk, openclawPath, outDir, pluginRoot }) {
   if (configPath) {
     const config = await loadInspectorConfig(configPath, { cwd: pluginRoot });
     const report = await inspectCompatibilityFixtureSet(config, { openclawPath });
@@ -166,7 +195,7 @@ async function runCiCompatibilityReport({ configPath, openclawPath, outDir, plug
     };
   }
 
-  const { report } = await runPluginCheck({ pluginRoot, outDir, openclawPath });
+  const { report } = await runPluginCheck({ pluginRoot, outDir, openclawPath, capture, mockSdk });
   return {
     report,
     reportDir: path.resolve(pluginRoot ?? process.cwd(), outDir),
@@ -200,6 +229,26 @@ function readFlag(commandArgs, name) {
     return null;
   }
   return commandArgs[index + 1] ?? null;
+}
+
+function readOptionalPathFlag(commandArgs, name, defaultPath) {
+  const index = commandArgs.indexOf(name);
+  if (index === -1) {
+    return null;
+  }
+  const value = commandArgs[index + 1];
+  return value && !value.startsWith("-") ? value : defaultPath;
+}
+
+function readCiOutputFlags(commandArgs, options = {}) {
+  return {
+    sarifPath: commandArgs.includes("--no-sarif")
+      ? null
+      : (readOptionalPathFlag(commandArgs, "--sarif", defaultSarifPath) ?? (options.defaultEnabled ? defaultSarifPath : null)),
+    junitPath: commandArgs.includes("--no-junit")
+      ? null
+      : (readOptionalPathFlag(commandArgs, "--junit", defaultJunitPath) ?? (options.defaultEnabled ? defaultJunitPath : null)),
+  };
 }
 
 function readRuntimeFlag(commandArgs) {
@@ -263,11 +312,12 @@ Usage:
   plugin-inspector config [--plugin-root <path>] [--config <path>] [--json]
   plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--package-manager npm|pnpm|yarn|bun] [--force]
   plugin-inspector report --config <path> [--out <dir>] [--check] [--json]
-  plugin-inspector inspect --config <path> [--out <dir>] [--check] [--json]
-  plugin-inspector ci [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--json]
+  plugin-inspector inspect [--plugin-root <path>] [--config <path>] [--out <dir>] [--check] [--json] [--sarif [path]] [--junit [path]]
+  plugin-inspector ci [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--json] [--no-sarif] [--no-junit]
   PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture <entrypoint> [--mock-sdk|--real-sdk] [--plugin-root <path>] [--output <path>]
 
 Default check runs from the current plugin root and writes reports/ unless --out is set.
+CI writes SARIF and JUnit artifacts by default; check/inspect can write them with --sarif and --junit.
 Runtime capture is opt-in because it imports plugin code; use --runtime with PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1.
 `);
 }

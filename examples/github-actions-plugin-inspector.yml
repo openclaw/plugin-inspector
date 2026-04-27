@@ -15,8 +15,7 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: npx @openclaw/plugin-inspector check --no-openclaw
-      - run: PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 npx @openclaw/plugin-inspector check --no-openclaw --runtime --mock-sdk
+      - run: PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 npx @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk
       - uses: actions/upload-artifact@v5
         if: always()
         with:

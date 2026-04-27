@@ -93,6 +93,30 @@ test("check command can target a plugin root and use runtime aliases", async () 
   assert.equal(capture.summary.capturedCount, 1);
 });
 
+test("inspect command runs from a plugin root and can write CI outputs", async () => {
+  const rootDir = await createCliPluginRoot("plugin-inspector-cli-inspect-");
+  const cliPath = path.resolve("src/cli.js");
+
+  const { stdout } = await execFileAsync(process.execPath, [
+    cliPath,
+    "inspect",
+    "--out",
+    "reports",
+    "--no-openclaw",
+    "--sarif",
+    "--junit",
+  ], {
+    cwd: rootDir,
+  });
+
+  const sarif = JSON.parse(await readFile(path.join(rootDir, "reports", "plugin-inspector.sarif"), "utf8"));
+  const junit = await readFile(path.join(rootDir, "reports", "plugin-inspector.junit.xml"), "utf8");
+
+  assert.match(stdout, /Status: PASS/);
+  assert.equal(sarif.version, "2.1.0");
+  assert.match(junit, /<testsuite name="plugin-inspector"/);
+});
+
 test("check command can enable runtime capture from plugin config", async () => {
   const rootDir = await createCliPluginRoot("plugin-inspector-cli-config-runtime-");
   await writeFile(
@@ -153,6 +177,8 @@ test("ci command writes CI summary artifacts", async () => {
     await readFile(path.join(rootDir, "reports", "plugin-inspector-ci-summary.json"), "utf8"),
   );
   const markdown = await readFile(path.join(rootDir, "reports", "plugin-inspector-ci-summary.md"), "utf8");
+  const sarif = JSON.parse(await readFile(path.join(rootDir, "reports", "plugin-inspector.sarif"), "utf8"));
+  const junit = await readFile(path.join(rootDir, "reports", "plugin-inspector.junit.xml"), "utf8");
 
   assert.match(stdout, /Status: PASS/);
   assert.match(stdout, /Artifacts: 1/);
@@ -163,6 +189,8 @@ test("ci command writes CI summary artifacts", async () => {
   assert.equal(summary.summary.issues, report.summary.issueCount);
   assert.equal(summary.artifacts.compatibility, "plugin-inspector-report.json");
   assert.match(markdown, /# Plugin Inspector CI Summary/);
+  assert.equal(sarif.runs[0].tool.driver.name, "plugin-inspector");
+  assert.match(junit, /failures="0"/);
 });
 
 test("init command writes plugin config and CI workflow", async () => {
@@ -180,8 +208,7 @@ test("init command writes plugin config and CI workflow", async () => {
   assert.equal(config.plugin.id, "weather");
   assert.equal(config.plugin.sourceRoot, "src");
   assert.equal(config.capture.mockSdk, true);
-  assert.match(workflow, /pnpm dlx @openclaw\/plugin-inspector check --no-openclaw/);
-  assert.match(workflow, /--runtime --mock-sdk/);
+  assert.match(workflow, /pnpm dlx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk/);
 });
 
 async function createCliPluginRoot(prefix) {

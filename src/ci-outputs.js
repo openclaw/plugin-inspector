@@ -70,12 +70,18 @@ export function renderJunitXml(report) {
 }
 
 export function reportFindings(report) {
-  return [
-    ...(report.breakages ?? []),
-    ...(report.warnings ?? []),
-    ...(report.suggestions ?? []),
-    ...(report.issues ?? []).map(issueToFinding),
-  ];
+  const findings = new Map();
+  for (const finding of [...(report.breakages ?? []), ...(report.warnings ?? []), ...(report.suggestions ?? [])]) {
+    findings.set(findingKey(finding), finding);
+  }
+  for (const issue of report.issues ?? []) {
+    const finding = issueToFinding(issue);
+    findings.set(findingKey(finding), {
+      ...findings.get(findingKey(finding)),
+      ...finding,
+    });
+  }
+  return [...findings.values()];
 }
 
 function issueToFinding(issue) {
@@ -88,6 +94,14 @@ function issueToFinding(issue) {
     severity: issue.severity,
     issueClass: issue.issueClass,
   };
+}
+
+function findingKey(finding) {
+  return [
+    finding.fixture ?? "",
+    finding.code ?? "",
+    ...normalizeEvidence(finding.evidence),
+  ].join("\n");
 }
 
 function sarifRule(finding) {

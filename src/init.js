@@ -79,8 +79,7 @@ jobs:
           node-version: 24
           cache: ${setup.cache}
 ${setup.corepack ? "      - run: corepack enable\n" : ""}      - run: ${setup.install}
-      - run: ${setup.exec} @openclaw/plugin-inspector check --no-openclaw
-      - run: PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 ${setup.exec} @openclaw/plugin-inspector check --no-openclaw --runtime --mock-sdk
+      - run: PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 ${setup.exec} @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk
       - uses: actions/upload-artifact@v5
         if: always()
         with:
