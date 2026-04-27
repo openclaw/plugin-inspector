@@ -53,6 +53,13 @@ export {
   writeExecutionResultsReport,
 } from "./execution-results.js";
 export {
+  buildImportLoopProfile,
+  defaultImportLoopProfileOptions,
+  renderImportLoopProfileMarkdown,
+  validateImportLoopProfile,
+  writeImportLoopProfile,
+} from "./import-loop-profile.js";
+export {
   defaultOpenClawCheckoutPaths,
   openClawTargetPathCandidates,
   parseCompatRecordEntries,

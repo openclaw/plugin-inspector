@@ -1,5 +1,12 @@
 #!/usr/bin/env node
-import { captureEntrypoint, inspectFixtureSet, loadInspectorConfig, renderTextSummary, writeReport } from "./index.js";
+import {
+  captureEntrypoint,
+  inspectFixtureSet,
+  loadInspectorConfig,
+  renderTextSummary,
+  writeArtifacts,
+  writeReport,
+} from "./index.js";
 
 const args = process.argv.slice(2);
 const command = args[0];
@@ -41,6 +48,7 @@ async function runReport(command, commandArgs) {
 
 async function runCapture(commandArgs) {
   const entrypoint = commandArgs.find((arg) => !arg.startsWith("-"));
+  const outputPath = readFlag(commandArgs, "--output");
   if (!entrypoint) {
     throw new Error("capture requires an entrypoint path");
   }
@@ -49,7 +57,12 @@ async function runCapture(commandArgs) {
   }
 
   const result = await captureEntrypoint(entrypoint);
-  console.log(JSON.stringify(result, null, 2));
+  const json = `${JSON.stringify(result, null, 2)}\n`;
+  if (outputPath) {
+    await writeArtifacts([{ path: outputPath, content: json }]);
+  } else {
+    process.stdout.write(json);
+  }
 }
 
 function readFlag(commandArgs, name) {
@@ -67,6 +80,6 @@ Usage:
   plugin-inspector report --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector inspect --config <path> [--out <dir>] [--check] [--json]
   plugin-inspector ci --config <path> [--out <dir>]
-  PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture <entrypoint>
+  PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 plugin-inspector capture <entrypoint> [--output <path>]
 `);
 }

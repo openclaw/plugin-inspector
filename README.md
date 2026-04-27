@@ -48,6 +48,7 @@ import {
   buildColdImportReadiness,
   buildContractCapture,
   buildExecutionResultsReport,
+  buildImportLoopProfile,
   buildPlatformProbes,
   buildWorkspacePlan,
   createCaptureApi,
@@ -57,6 +58,7 @@ import {
   renderColdImportReadinessMarkdown,
   renderContractCaptureMarkdown,
   renderExecutionResultsMarkdown,
+  renderImportLoopProfileMarkdown,
   renderPlatformProbesMarkdown,
   renderWorkspacePlanMarkdown,
   renderMarkdownReport,
@@ -64,6 +66,7 @@ import {
   writeColdImportReadiness,
   writeContractCapture,
   writeExecutionResultsReport,
+  writeImportLoopProfile,
   writePlatformProbes,
   writeWorkspacePlan,
   writeReport,
@@ -92,6 +95,9 @@ await writePlatformProbes(platformProbes);
 
 const executionResults = await buildExecutionResultsReport({ resultsDir: ".plugin-inspector/results" });
 await writeExecutionResultsReport(executionResults);
+
+const importLoop = await buildImportLoopProfile({ entrypoint: "dist/index.js", runs: 3 });
+await writeImportLoopProfile(importLoop);
 ```
 
 ## Scope
