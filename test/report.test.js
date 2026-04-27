@@ -3,7 +3,14 @@ import { mkdtemp, readFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
-import { inspectFixtureSet, loadInspectorConfig, renderMarkdownReport, writeReport } from "../src/index.js";
+import {
+  inspectFixtureSet,
+  loadInspectorConfig,
+  renderMarkdownReport,
+  renderMarkdownTable,
+  writeArtifacts,
+  writeReport,
+} from "../src/index.js";
 
 test("markdown report includes summary and inventory", async () => {
   const config = await loadInspectorConfig("test/fixtures/inspector.config.json");
@@ -25,4 +32,37 @@ test("writeReport writes JSON and Markdown artifacts", async () => {
 
   assert.equal(json.status, "pass");
   assert.match(markdown, /Status: PASS/);
+});
+
+test("artifact helpers write stable CI files", async () => {
+  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-artifacts-"));
+  const jsonPath = path.join(outDir, "summary.json");
+  const markdownPath = path.join(outDir, "summary.md");
+
+  const paths = await writeArtifacts(
+    [
+      { name: "jsonPath", path: jsonPath, json: { status: "pass" } },
+      { name: "markdownPath", path: markdownPath, markdown: "# Summary" },
+    ],
+    { check: true },
+  );
+
+  assert.deepEqual(paths, { jsonPath, markdownPath });
+  assert.equal(await readFile(jsonPath, "utf8"), '{\n  "status": "pass"\n}\n');
+  assert.equal(await readFile(markdownPath, "utf8"), "# Summary\n");
+});
+
+test("markdown table helper supports padded empty-table reports", () => {
+  assert.equal(
+    renderMarkdownTable(
+      [
+        ["fixture", "P1"],
+        ["none", null],
+      ],
+      ["Name", "Priority"],
+      { padding: true, nullValue: "-", escape: false },
+    ),
+    ["| Name    | Priority |", "| ------- | -------- |", "| fixture | P1       |", "| none    | -        |"].join("\n"),
+  );
+  assert.equal(renderMarkdownTable([], ["Name"], { empty: "_none_" }), "_none_");
 });

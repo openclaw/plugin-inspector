@@ -1,3 +1,10 @@
+export {
+  escapeMarkdownTableCell,
+  renderArtifactContent,
+  renderMarkdownTable,
+  writeArtifacts,
+  writeJsonMarkdownArtifacts,
+} from "./artifacts.js";
 export { createCaptureApi } from "./capture-api.js";
 export {
   buildCiSummary,

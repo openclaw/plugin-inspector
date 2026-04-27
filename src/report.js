@@ -1,5 +1,5 @@
-import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { renderMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 
 export function buildReport({ config, inspections, failures = [], generatedAt = "deterministic" }) {
   const inspectionById = new Map(inspections.map((inspection) => [inspection.id, inspection]));
@@ -84,16 +84,13 @@ export async function writeReport(report, options = {}) {
   const jsonPath = path.join(outDir, `${basename}.json`);
   const markdownPath = path.join(outDir, `${basename}.md`);
 
-  await mkdir(outDir, { recursive: true });
-  await writeFile(jsonPath, `${JSON.stringify(report, null, 2)}\n`, "utf8");
-  await writeFile(markdownPath, `${renderMarkdownReport(report)}\n`, "utf8");
-
-  if (options.check) {
-    await assertFileMatches(jsonPath, `${JSON.stringify(report, null, 2)}\n`);
-    await assertFileMatches(markdownPath, `${renderMarkdownReport(report)}\n`);
-  }
-
-  return { jsonPath, markdownPath };
+  return writeJsonMarkdownArtifacts({
+    jsonPath,
+    markdownPath,
+    json: report,
+    markdown: renderMarkdownReport(report),
+    check: options.check,
+  });
 }
 
 export function renderTextSummary(report) {
@@ -180,15 +177,7 @@ function findingsTable(findings) {
 }
 
 function markdownTable(rows, headers) {
-  const allRows = [headers, ...rows].map((row) => row.map((cell) => escapeCell(String(cell ?? ""))));
-  const separator = headers.map(() => "---");
-  return [allRows[0], separator, ...allRows.slice(1)]
-    .map((row) => `| ${row.join(" | ")} |`)
-    .join("\n");
-}
-
-function escapeCell(value) {
-  return value.replace(/\|/g, "\\|").replace(/\n/g, "<br>");
+  return renderMarkdownTable(rows, headers);
 }
 
 function emptyFixtureReport(fixture) {
@@ -204,18 +193,4 @@ function emptyFixtureReport(fixture) {
     packageFiles: [],
     packageEntrypoints: [],
   };
-}
-
-async function assertFileMatches(filePath, expected) {
-  try {
-    const actual = await readFile(filePath, "utf8");
-    if (actual !== expected) {
-      throw new Error(`${filePath} is not up to date`);
-    }
-  } catch (error) {
-    if (error?.code === "ENOENT") {
-      throw new Error(`${filePath} is missing`);
-    }
-    throw error;
-  }
 }
