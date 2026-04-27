@@ -13,11 +13,15 @@ export const defaultInitPackageScripts = {
 export async function writePluginInspectorInit(options = {}) {
   const pluginRoot = path.resolve(options.pluginRoot ?? options.cwd ?? process.cwd());
   const configPath = path.resolve(pluginRoot, options.configPath ?? defaultInitConfigPath);
+  const workflowPath = options.ci === true ? path.resolve(pluginRoot, options.workflowPath ?? defaultInitWorkflowPath) : null;
   const packageManager = options.packageManager ?? (await detectPackageManager(pluginRoot));
   const written = [];
 
   if (existsSync(configPath) && options.force !== true) {
     throw new Error(`${path.relative(pluginRoot, configPath)} already exists; pass --force to overwrite it`);
+  }
+  if (workflowPath && existsSync(workflowPath) && options.force !== true) {
+    throw new Error(`${path.relative(pluginRoot, workflowPath)} already exists; pass --force to overwrite it`);
   }
   const packageJsonPath = path.join(pluginRoot, "package.json");
   const packageJson = options.scripts === true ? await readJsonIfExists(packageJsonPath) : null;
@@ -37,11 +41,7 @@ export async function writePluginInspectorInit(options = {}) {
   await writeFile(configPath, `${JSON.stringify(config, null, 2)}\n`, "utf8");
   written.push(configPath);
 
-  if (options.ci === true) {
-    const workflowPath = path.resolve(pluginRoot, options.workflowPath ?? defaultInitWorkflowPath);
-    if (existsSync(workflowPath) && options.force !== true) {
-      throw new Error(`${path.relative(pluginRoot, workflowPath)} already exists; pass --force to overwrite it`);
-    }
+  if (workflowPath) {
     await mkdir(path.dirname(workflowPath), { recursive: true });
     await writeFile(workflowPath, renderGithubActionsWorkflow({ packageManager }), "utf8");
     written.push(workflowPath);

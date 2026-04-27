@@ -204,7 +204,10 @@ test("init command writes plugin config and CI workflow", async () => {
   const config = JSON.parse(await readFile(path.join(rootDir, "plugin-inspector.config.json"), "utf8"));
   const workflow = await readFile(path.join(rootDir, ".github", "workflows", "plugin-inspector.yml"), "utf8");
 
-  assert.match(stdout, /plugin-inspector\.config\.json/);
+  assert.match(stdout, /^wrote plugin-inspector\.config\.json$/m);
+  assert.match(stdout, /^wrote \.github\/workflows\/plugin-inspector\.yml$/m);
+  assert.match(stdout, /^package manager: pnpm$/m);
+  assert.equal(stdout.includes(rootDir), false);
   assert.equal(config.plugin.id, "weather");
   assert.equal(config.plugin.sourceRoot, "src");
   assert.equal(config.capture.mockSdk, true);

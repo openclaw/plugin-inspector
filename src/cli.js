@@ -107,8 +107,9 @@ async function runInit(commandArgs) {
   });
 
   for (const filePath of result.written) {
-    console.log(`wrote ${filePath}`);
+    console.log(`wrote ${path.relative(result.pluginRoot, filePath)}`);
   }
+  console.log(`package manager: ${result.packageManager}`);
 }
 
 async function runReport(command, commandArgs) {
