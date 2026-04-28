@@ -65,7 +65,37 @@ export {
   renderExecutionResultsMarkdown,
   writeExecutionResultsReport,
 } from "./execution-results.js";
+export {
+  buildImportLoopProfile,
+  defaultImportLoopProfileOptions,
+  renderImportLoopProfileMarkdown,
+  validateImportLoopProfile,
+  writeImportLoopProfile,
+} from "./import-loop-profile.js";
 export { classifyIssueFinding, issueId, knownIssueCodes } from "./issues.js";
 export { inspectFixtureSet, inspectPlugin, inspectSourceText } from "./inspector.js";
 export { openClawTargetPathCandidates } from "./openclaw-target.js";
+export {
+  buildProfileDiff,
+  defaultProfileDiffOptions,
+  renderProfileDiffMarkdown,
+  validateProfileDiff,
+  writeProfileDiff,
+} from "./profile-diff.js";
+export {
+  buildRefDiff,
+  defaultRefDiffDimensions,
+  defaultRefDiffOptions,
+  renderRefDiffMarkdown,
+  validateRefDiff,
+  writeRefDiff,
+} from "./ref-diff.js";
 export { renderMarkdownReport, writeReport } from "./report.js";
+export {
+  buildRuntimeProfile,
+  defaultRuntimeProfileCommands,
+  defaultRuntimeProfileOptions,
+  renderRuntimeProfileMarkdown,
+  validateRuntimeProfile,
+  writeRuntimeProfile,
+} from "./runtime-profile.js";
