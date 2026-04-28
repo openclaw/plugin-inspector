@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.2 - 2026-04-28
+
+### Fixed
+
+- Preserve runtime capture bindings for callback-based registrations so captured hooks and registrations can resolve their bound callback metadata.
+
 ## 0.3.1 - 2026-04-28
 
 ### Added
