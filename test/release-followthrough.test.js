@@ -20,6 +20,7 @@ test("crabpot follow-through checklist passes matching source refs", async () =>
 
   assert.equal(result.status, "pass");
   assert.equal(result.checks.find((check) => check.id === "crabpot-source-ref").status, "pass");
+  assert.equal(result.checks.find((check) => check.id === "crabpot-public-api-migration").status, "pass");
   assert.equal(result.checks.find((check) => check.id === "crabpot-package-pin").status, "pass");
 });
 
@@ -49,7 +50,33 @@ test("crabpot follow-through checklist fails stale refs and optionally stale pac
   assert.equal(postRelease.checks.find((check) => check.id === "crabpot-package-pin").status, "fail");
 });
 
-async function createFixtureRoots({ ref, packagePin }) {
+test("crabpot follow-through checklist fails advanced bundle script consumers", async () => {
+  const roots = await createFixtureRoots({
+    ref: "abc123",
+    packagePin: "@openclaw/plugin-inspector@1.2.3",
+    scripts: {
+      "synthetic-probes.mjs": [
+        'import { loadPluginInspector } from "./plugin-inspector-source.mjs";',
+        "const pluginInspector = await loadPluginInspector();",
+        "export const validateSyntheticProbePlan = pluginInspector.validateSyntheticProbePlan;",
+        "",
+      ].join("\n"),
+    },
+  });
+
+  const result = buildCrabpotFollowthroughChecklist({
+    pluginInspectorRoot: roots.pluginInspectorRoot,
+    crabpotRoot: roots.crabpotRoot,
+    expectedRef: "abc123",
+    expectedVersion: "1.2.3",
+  });
+
+  assert.equal(result.status, "fail");
+  assert.equal(result.checks.find((check) => check.id === "crabpot-public-api-migration").status, "fail");
+  assert.match(result.checks.find((check) => check.id === "crabpot-public-api-migration").actual, /synthetic-probes/);
+});
+
+async function createFixtureRoots({ ref, packagePin, scripts = {} }) {
   const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-release-followthrough-"));
   const pluginInspectorRoot = path.join(root, "plugin-inspector");
   const crabpotRoot = path.join(root, "crabpot");
@@ -69,5 +96,8 @@ async function createFixtureRoots({ ref, packagePin }) {
     ].join("\n"),
     "utf8",
   );
+  for (const [scriptPath, content] of Object.entries(scripts)) {
+    await writeFile(path.join(crabpotRoot, "scripts", scriptPath), content, "utf8");
+  }
   return { pluginInspectorRoot, crabpotRoot };
 }

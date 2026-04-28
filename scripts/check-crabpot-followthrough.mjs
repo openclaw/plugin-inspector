@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -34,6 +34,7 @@ export function buildCrabpotFollowthroughChecklist(options = {}) {
   const expectedVersion = options.expectedVersion ?? packageVersion(root);
   const sourcePath = path.join(crabpotRoot, "scripts", "plugin-inspector-source.mjs");
   const pins = existsSync(sourcePath) ? readCrabpotPins(sourcePath) : {};
+  const advancedConsumers = findAdvancedConsumers(crabpotRoot);
   const expectedPackage = `@openclaw/plugin-inspector@${expectedVersion}`;
   const checks = [
     {
@@ -43,6 +44,14 @@ export function buildCrabpotFollowthroughChecklist(options = {}) {
       expected: expectedRef,
       actual: pins.pluginInspectorRef ?? "missing",
       fix: `update ${path.relative(process.cwd(), sourcePath)} pluginInspectorRef to ${expectedRef}`,
+    },
+    {
+      id: "crabpot-public-api-migration",
+      status: advancedConsumers.length === 0 ? "pass" : "fail",
+      message: "crabpot scripts use the plugin-inspector root public API",
+      expected: "no advanced bundle consumers",
+      actual: advancedConsumers.length === 0 ? "none" : advancedConsumers.join(", "),
+      fix: "switch listed crabpot scripts from loadPluginInspector() to loadPluginInspectorPublicApi() or local helpers",
     },
     {
       id: "crabpot-package-pin",
@@ -119,6 +128,38 @@ function readCrabpotPins(sourcePath) {
     pluginInspectorRef: text.match(/pluginInspectorRef\s*=\s*"([^"]+)"/)?.[1],
     pluginInspectorPackage: text.match(/pluginInspectorPackage\s*=\s*"([^"]+)"/)?.[1],
   };
+}
+
+function findAdvancedConsumers(crabpotRoot) {
+  const scriptsDir = path.join(crabpotRoot, "scripts");
+  if (!existsSync(scriptsDir)) {
+    return [];
+  }
+
+  const consumers = [];
+  for (const filePath of walkFiles(scriptsDir)) {
+    if (!filePath.endsWith(".mjs") || path.basename(filePath) === "plugin-inspector-source.mjs") {
+      continue;
+    }
+    const text = readFileSync(filePath, "utf8");
+    if (/\bloadPluginInspector\s*\(/.test(text) || /src["']\s*,\s*["']advanced\.js/.test(text)) {
+      consumers.push(path.relative(crabpotRoot, filePath));
+    }
+  }
+  return consumers.sort();
+}
+
+function walkFiles(dir) {
+  const files = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    const filePath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...walkFiles(filePath));
+    } else if (entry.isFile()) {
+      files.push(filePath);
+    }
+  }
+  return files;
 }
 
 function gitHead(root) {
