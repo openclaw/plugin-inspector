@@ -99,3 +99,15 @@ export {
   validateRuntimeProfile,
   writeRuntimeProfile,
 } from "./runtime-profile.js";
+export { buildSyntheticProbePlanFromReport } from "./synthetic-probe-suite.js";
+export {
+  buildSyntheticProbePlan,
+  defaultSyntheticHookContexts,
+  defaultSyntheticHookEvents,
+  defaultSyntheticRegistrationArguments,
+  renderSyntheticProbeMarkdown,
+  runCapturedSyntheticProbes,
+  syntheticRegistrationExecutionProfiles,
+  validateSyntheticProbePlan,
+  writeSyntheticProbePlan,
+} from "./synthetic-probes.js";

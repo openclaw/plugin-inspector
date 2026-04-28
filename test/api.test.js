@@ -15,6 +15,7 @@ import {
   buildProfileDiff,
   buildRefDiff,
   buildRuntimeProfile,
+  buildSyntheticProbePlanFromReport,
   capturePluginEntrypoint,
   classifyIssueFinding,
   inspectFixtureSet,
@@ -40,6 +41,8 @@ import {
   renderProfileDiffMarkdown,
   renderRefDiffMarkdown,
   renderRuntimeProfileMarkdown,
+  renderSyntheticProbeMarkdown,
+  runCapturedSyntheticProbes,
   runFixtureSetColdImportReadiness,
   runFixtureSetPlatformProbes,
   runFixtureSetReport,
@@ -57,6 +60,7 @@ import {
   validateProfileDiff,
   validateRefDiff,
   validateRuntimeProfile,
+  validateSyntheticProbePlan,
   writeFixtureSetColdImportReadiness,
   writeFixtureSetPlatformProbes,
   writeReport,
@@ -70,6 +74,7 @@ import {
   writeProfileDiff,
   writeRefDiff,
   writeRuntimeProfile,
+  writeSyntheticProbePlan,
 } from "../src/index.js";
 
 test("public API runs the plugin-root check and writes reports", async () => {
@@ -498,6 +503,38 @@ test("public API exposes runtime profile and diff helpers", async () => {
   assert.equal(JSON.parse(await readFile(profileDiffPaths.jsonPath, "utf8")).status, "pass");
   assert.equal(JSON.parse(await readFile(refDiffPaths.jsonPath, "utf8")).status, "pass");
   assert.equal(JSON.parse(await readFile(importLoopPaths.jsonPath, "utf8")).summary.runs, 1);
+});
+
+test("public API exposes synthetic probe helpers", async () => {
+  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-synthetic-api-"));
+  const plan = buildSyntheticProbePlanFromReport({
+    generatedAt: "test",
+    targetOpenClaw: {
+      capturedRegistrars: ["registerTool"],
+      sdkExports: [],
+    },
+    summary: {},
+    fixtures: [
+      {
+        id: "weather",
+        priority: "high",
+        hookDetails: [{ name: "before_tool_call", ref: "src/index.js:1" }],
+        registrationDetails: [{ name: "registerTool", ref: "src/index.js:2" }],
+        sdkImportDetails: [],
+        packages: [],
+      },
+    ],
+    contractProbes: [],
+  });
+  const paths = await writeSyntheticProbePlan(plan, {
+    jsonPath: path.join(outDir, "synthetic.json"),
+    markdownPath: path.join(outDir, "synthetic.md"),
+  });
+
+  assert.equal(typeof runCapturedSyntheticProbes, "function");
+  assert.deepEqual(validateSyntheticProbePlan(plan), []);
+  assert.match(renderSyntheticProbeMarkdown(plan), /registerTool/);
+  assert.equal(JSON.parse(await readFile(paths.jsonPath, "utf8")).summary.probeCount, 2);
 });
 
 test("public API honors config-driven runtime capture", async () => {
