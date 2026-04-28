@@ -16,18 +16,63 @@ export const syntheticRegistrationExecutionProfiles = {
     callableProperties: ["send", "sendMessage", "receive", "handleMessage"],
     option: "includeChannelRuntime",
   },
+  registerAgentHarness: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "agent harness factories are captured as registration metadata; agent runtime execution remains isolated opt-in",
+  },
+  registerAgentToolResultMiddleware: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "agent tool-result middleware is captured as registration metadata before tool-result pipeline execution",
+  },
+  registerAutoEnableProbe: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "auto-enable probes are captured as registration metadata before runtime activation checks",
+  },
   registerCli: {
     mode: "direct",
     callableProperties: ["handler", "run", "execute"],
+  },
+  registerCliBackend: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "CLI backend descriptors are captured as registration metadata before backend process execution",
   },
   registerCommand: {
     mode: "direct",
     callableProperties: ["handler", "run", "execute"],
   },
+  registerCodexAppServerExtensionFactory: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "Codex app server extension factories are captured as registration metadata before host UI execution",
+  },
+  registerCompactionProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "compaction providers are captured as registration metadata before compaction runtime execution",
+  },
+  registerConfigMigration: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "config migrations are captured as registration metadata before mutating stored plugin config",
+  },
   registerContextEngine: {
     mode: "metadata-only",
     callableProperties: [],
     reason: "context engine factories are captured as registration metadata; engine startup remains isolated opt-in",
+  },
+  registerDetachedTaskRuntime: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "detached task runtimes are captured as registration metadata before async task execution",
+  },
+  registerGatewayDiscoveryService: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "gateway discovery services are captured as registration metadata before network discovery execution",
   },
   registerGatewayMethod: {
     mode: "direct",
@@ -46,15 +91,90 @@ export const syntheticRegistrationExecutionProfiles = {
     callableProperties: [],
     reason: "legacy hook registrar is captured as metadata; hook handlers are probed through hook events",
   },
+  registerImageGenerationProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "image generation providers are captured as registration metadata before provider runtime execution",
+  },
   registerMemoryPromptSection: {
     mode: "metadata-only",
     callableProperties: [],
     reason: "memory prompt section renderers are captured as metadata before prompt-runtime execution",
   },
+  registerMediaUnderstandingProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "media understanding providers are captured as registration metadata before provider runtime execution",
+  },
+  registerMemoryCapability: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "memory capabilities are captured as registration metadata before memory runtime execution",
+  },
+  registerMemoryCorpusSupplement: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "memory corpus supplements are captured as registration metadata before memory runtime execution",
+  },
+  registerMemoryEmbeddingProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "memory embedding providers are captured as registration metadata before provider runtime execution",
+  },
+  registerMemoryFlushPlan: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "memory flush plans are captured as registration metadata before memory runtime execution",
+  },
   registerMemoryRuntime: {
     mode: "metadata-only",
     callableProperties: [],
     reason: "memory runtime factories are captured as metadata; external memory startup remains isolated opt-in",
+  },
+  registerMemoryPromptSupplement: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "memory prompt supplements are captured as registration metadata before prompt-runtime execution",
+  },
+  registerMigrationProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "migration providers are captured as registration metadata before migration runtime execution",
+  },
+  registerMusicGenerationProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "music generation providers are captured as registration metadata before provider runtime execution",
+  },
+  registerNodeHostCommand: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "node host commands are captured as registration metadata before host process execution",
+  },
+  registerProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "provider descriptors are captured as registration metadata before provider runtime execution",
+  },
+  registerRealtimeTranscriptionProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "realtime transcription providers are captured as registration metadata before provider runtime execution",
+  },
+  registerRealtimeVoiceProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "realtime voice providers are captured as registration metadata before provider runtime execution",
+  },
+  registerReload: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "reload handlers are captured as registration metadata before runtime reload execution",
+  },
+  registerSecurityAuditCollector: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "security audit collectors are captured as registration metadata before filesystem or policy scans",
   },
   registerService: {
     mode: "lifecycle-opt-in",
@@ -69,6 +189,26 @@ export const syntheticRegistrationExecutionProfiles = {
   registerTool: {
     mode: "direct",
     callableProperties: ["run", "handler", "execute"],
+  },
+  registerTextTransforms: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "text transforms are captured as registration metadata before content mutation execution",
+  },
+  registerVideoGenerationProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "video generation providers are captured as registration metadata before provider runtime execution",
+  },
+  registerWebFetchProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "web fetch providers are captured as registration metadata before provider runtime execution",
+  },
+  registerWebSearchProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "web search providers are captured as registration metadata before provider runtime execution",
   },
 };
 

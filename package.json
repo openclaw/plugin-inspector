@@ -1,6 +1,6 @@
 {
   "name": "@openclaw/plugin-inspector",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "private": false,
   "description": "Offline compatibility inspector for OpenClaw plugins.",
   "type": "module",

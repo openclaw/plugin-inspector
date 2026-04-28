@@ -103,6 +103,75 @@ test("synthetic probe plan blocks unclassified registrars", () => {
   assert.match(validateSyntheticProbePlan(plan).join("\n"), /not been classified/);
 });
 
+test("synthetic probe plan classifies generated kitchen-sink registrars", () => {
+  const kitchenSinkRegistrars = [
+    "registerAgentHarness",
+    "registerAgentToolResultMiddleware",
+    "registerAutoEnableProbe",
+    "registerChannel",
+    "registerCli",
+    "registerCliBackend",
+    "registerCodexAppServerExtensionFactory",
+    "registerCommand",
+    "registerCompactionProvider",
+    "registerConfigMigration",
+    "registerContextEngine",
+    "registerDetachedTaskRuntime",
+    "registerGatewayDiscoveryService",
+    "registerGatewayMethod",
+    "registerHook",
+    "registerHttpRoute",
+    "registerImageGenerationProvider",
+    "registerInteractiveHandler",
+    "registerMediaUnderstandingProvider",
+    "registerMemoryCapability",
+    "registerMemoryCorpusSupplement",
+    "registerMemoryEmbeddingProvider",
+    "registerMemoryFlushPlan",
+    "registerMemoryPromptSection",
+    "registerMemoryPromptSupplement",
+    "registerMemoryRuntime",
+    "registerMigrationProvider",
+    "registerMusicGenerationProvider",
+    "registerNodeHostCommand",
+    "registerProvider",
+    "registerRealtimeTranscriptionProvider",
+    "registerRealtimeVoiceProvider",
+    "registerReload",
+    "registerSecurityAuditCollector",
+    "registerService",
+    "registerSpeechProvider",
+    "registerTextTransforms",
+    "registerTool",
+    "registerVideoGenerationProvider",
+    "registerWebFetchProvider",
+    "registerWebSearchProvider",
+  ];
+  const plan = buildSyntheticProbePlan({
+    capture: {
+      generatedAt: "test",
+      summary: { fixtureCount: 1 },
+      fixtures: [
+        {
+          id: "kitchen-sink",
+          hooks: [],
+          registrations: kitchenSinkRegistrars.map((registrar) => ({
+            id: `registration.${registrar}:kitchen-sink:index`,
+            registrar,
+            ref: "src/generated-registrars.js",
+            assertions: [`${registrar} is classified`],
+            syntheticArguments: [{}],
+          })),
+        },
+      ],
+    },
+  });
+
+  assert.equal(plan.summary.probeCount, kitchenSinkRegistrars.length);
+  assert.equal(plan.summary.blockedCount, 0);
+  assert.deepEqual(validateSyntheticProbePlan(plan), []);
+});
+
 test("synthetic probes invoke retained hook and tool handlers", async () => {
   const capture = await captureLocalFixture([
     "export function register(api) {",

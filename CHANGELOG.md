@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.3 - 2026-04-28
+
+### Fixed
+
+- Classify generated kitchen-sink public registrar coverage in synthetic probe plans so new API-surface fixtures do not fail as unknown execution profiles.
+
 ## 0.3.2 - 2026-04-28
 
 ### Fixed
