@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import {
+  buildContractCapture,
   buildFixtureSetColdImportReadiness,
   buildFixtureSetPlatformProbes,
   buildFixtureSetWorkspacePlan,
@@ -19,6 +20,7 @@ import {
   loadInspectorConfig,
   loadPluginConfig,
   openClawTargetPathCandidates,
+  renderContractCaptureMarkdown,
   renderMarkdownReport,
   renderFixtureSetColdImportReadinessMarkdown,
   renderFixtureSetIssuesReport,
@@ -30,6 +32,8 @@ import {
   runFixtureSetWorkspacePlan,
   runPluginCheck,
   setupPluginInspector,
+  validateContractCapture,
+  validateContractCoverage,
   validateColdImportReadiness,
   validateFixtureSetPlatformProbes,
   validateFixtureSetWorkspacePlan,
@@ -38,6 +42,7 @@ import {
   writeReport,
   writeFixtureSetReports,
   writeFixtureSetWorkspacePlan,
+  writeContractCapture,
 } from "../src/index.js";
 
 test("public API runs the plugin-root check and writes reports", async () => {
@@ -303,6 +308,25 @@ test("public API exposes report issue metadata helpers", () => {
   assert.match(issueId({ fixture: "weather", code: "registration-capture-gap" }), /^CRABPOT-[A-F0-9]{8}$/);
   assert.equal(classifyIssueFinding({ code: "registration-capture-gap" }).issueClass, "inspector-gap");
   assert.ok(openClawTargetPathCandidates().some((candidate) => candidate.includes("openclaw")));
+});
+
+test("public API exposes contract capture and coverage helpers", async () => {
+  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-contract-api-"));
+  const report = await inspectCompatibilityFixtureSetConfig({
+    configPath: "test/fixtures/inspector.config.json",
+    openclawPath: false,
+  });
+  const capture = buildContractCapture({ report });
+  const paths = await writeContractCapture(capture, {
+    jsonPath: path.join(outDir, "capture.json"),
+    markdownPath: path.join(outDir, "capture.md"),
+  });
+
+  assert.equal(capture.summary.fixtureCount, 1);
+  assert.deepEqual(validateContractCapture(capture), []);
+  assert.deepEqual(validateContractCoverage(report), []);
+  assert.match(renderContractCaptureMarkdown(capture), /## Registration Capture/);
+  assert.equal(JSON.parse(await readFile(paths.jsonPath, "utf8")).summary.fixtureCount, 1);
 });
 
 test("public API honors config-driven runtime capture", async () => {

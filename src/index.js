@@ -30,6 +30,18 @@ export {
   writeFixtureSetWorkspacePlan,
   writePluginReports,
 } from "./api.js";
+export {
+  buildContractCapture,
+  defaultHookAssertions,
+  defaultHookContexts,
+  defaultHookEvents,
+  defaultRegistrationArguments,
+  defaultRegistrationAssertions,
+  renderContractCaptureMarkdown,
+  validateContractCapture,
+  writeContractCapture,
+} from "./contract-capture.js";
+export { validateContractCoverage } from "./contract-coverage.js";
 export { loadInspectorConfig } from "./config.js";
 export { classifyIssueFinding, issueId, knownIssueCodes } from "./issues.js";
 export { inspectFixtureSet, inspectPlugin, inspectSourceText } from "./inspector.js";
