@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import {
+  buildFixtureSetColdImportReadiness,
   capturePluginEntrypoint,
   inspectFixtureSet,
   inspectCompatibilityFixtureSetConfig,
@@ -13,10 +14,14 @@ import {
   loadInspectorConfig,
   loadPluginConfig,
   renderMarkdownReport,
+  renderFixtureSetColdImportReadinessMarkdown,
   renderFixtureSetIssuesReport,
+  runFixtureSetColdImportReadiness,
   runFixtureSetReport,
   runPluginCheck,
   setupPluginInspector,
+  validateColdImportReadiness,
+  writeFixtureSetColdImportReadiness,
   writeReport,
   writeFixtureSetReports,
 } from "../src/index.js";
@@ -131,6 +136,31 @@ test("public API writes compatibility fixture-set reports with custom render opt
   assert.equal(JSON.parse(await readFile(paths.jsonPath, "utf8")).summary.fixtureCount, 1);
   assert.equal(result.report.summary.fixtureCount, 1);
   assert.equal(result.paths.jsonPath, path.join(outDir, "run.json"));
+});
+
+test("public API builds fixture-set cold import readiness from config", async () => {
+  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-cold-import-api-"));
+  const readiness = await buildFixtureSetColdImportReadiness({
+    configPath: "test/fixtures/inspector.config.json",
+    openclawPath: false,
+  });
+  const paths = await writeFixtureSetColdImportReadiness(readiness, {
+    jsonPath: path.join(outDir, "cold-import.json"),
+    markdownPath: path.join(outDir, "cold-import.md"),
+    title: "Fixture Cold Import",
+  });
+  const result = await runFixtureSetColdImportReadiness({
+    configPath: "test/fixtures/inspector.config.json",
+    openclawPath: false,
+    write: false,
+  });
+
+  assert.equal(readiness.summary.fixtureCount, 1);
+  assert.deepEqual(validateColdImportReadiness(readiness), []);
+  assert.match(renderFixtureSetColdImportReadinessMarkdown(readiness), /## Entrypoints/);
+  assert.equal(JSON.parse(await readFile(paths.jsonPath, "utf8")).summary.fixtureCount, 1);
+  assert.equal(result.paths, null);
+  assert.equal(result.readiness.summary.fixtureCount, 1);
 });
 
 test("public API exposes capture through an explicit entrypoint helper", async () => {

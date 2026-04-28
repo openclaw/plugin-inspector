@@ -8,6 +8,12 @@ import { renderTextSummary, writeCompatibilityReport } from "./report.js";
 import { writeCiOutputArtifacts } from "./ci-outputs.js";
 import { buildRuntimeCaptureReport, writeRuntimeCaptureReport } from "./runtime-capture-report.js";
 import { inspectCompatibilityFixtureSet, inspectFixtureSet } from "./inspector.js";
+import {
+  buildColdImportReadiness,
+  renderColdImportReadinessMarkdown,
+  validateColdImportReadiness,
+  writeColdImportReadiness,
+} from "./cold-import-readiness.js";
 
 export async function loadPluginConfig(options = {}) {
   if (options.config) {
@@ -87,6 +93,37 @@ export async function runFixtureSetReport(options = {}) {
   return { report, paths };
 }
 
+export async function buildFixtureSetColdImportReadiness(options = {}) {
+  const config = options.report ? null : await loadFixtureSetConfig(options);
+  const report =
+    options.report ??
+    (await inspectCompatibilityFixtureSet(config, {
+      generatedAt: options.generatedAt,
+      openclawPath: options.openclawPath,
+      targetOpenClaw: options.targetOpenClaw,
+    }));
+
+  return buildColdImportReadiness({
+    ...options,
+    report,
+    rootDir: options.rootDir ?? config?.rootDir ?? options.cwd,
+  });
+}
+
+export function renderFixtureSetColdImportReadinessMarkdown(readiness, options = {}) {
+  return renderColdImportReadinessMarkdown(readiness, options);
+}
+
+export async function writeFixtureSetColdImportReadiness(readiness, options = {}) {
+  return writeColdImportReadiness(readiness, options);
+}
+
+export async function runFixtureSetColdImportReadiness(options = {}) {
+  const readiness = await buildFixtureSetColdImportReadiness(options);
+  const paths = options.write === false ? null : await writeFixtureSetColdImportReadiness(readiness, options);
+  return { readiness, paths };
+}
+
 export async function runPluginCheck(options = {}) {
   const outDir = options.outDir ?? "reports";
   const config = await loadPluginConfig(options);
@@ -131,7 +168,7 @@ export async function setupPluginInspector(options = {}) {
   return writePluginInspectorInit(options);
 }
 
-export { createCaptureApi, renderTextSummary, writeCiOutputArtifacts };
+export { createCaptureApi, renderTextSummary, validateColdImportReadiness, writeCiOutputArtifacts };
 
 function executionAllowed(options) {
   return options.allowExecution === true || process.env.PLUGIN_INSPECTOR_EXECUTE_ISOLATED === "1";
