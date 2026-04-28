@@ -8,13 +8,17 @@ import {
   buildFixtureSetPlatformProbes,
   buildFixtureSetWorkspacePlan,
   capturePluginEntrypoint,
+  classifyIssueFinding,
   inspectFixtureSet,
   inspectCompatibilityFixtureSetConfig,
   inspectFixtureSetConfig,
   inspectPluginRoot,
   inspectSourceText,
+  issueId,
+  knownIssueCodes,
   loadInspectorConfig,
   loadPluginConfig,
+  openClawTargetPathCandidates,
   renderMarkdownReport,
   renderFixtureSetColdImportReadinessMarkdown,
   renderFixtureSetIssuesReport,
@@ -292,6 +296,13 @@ test("fixture-set issue renderer is available without advanced internals", () =>
 
   assert.match(markdown, /# Fixture Issues/);
   assert.match(markdown, /## Triage Summary/);
+});
+
+test("public API exposes report issue metadata helpers", () => {
+  assert.ok(knownIssueCodes.has("registration-capture-gap"));
+  assert.match(issueId({ fixture: "weather", code: "registration-capture-gap" }), /^CRABPOT-[A-F0-9]{8}$/);
+  assert.equal(classifyIssueFinding({ code: "registration-capture-gap" }).issueClass, "inspector-gap");
+  assert.ok(openClawTargetPathCandidates().some((candidate) => candidate.includes("openclaw")));
 });
 
 test("public API honors config-driven runtime capture", async () => {

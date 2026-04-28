@@ -31,5 +31,7 @@ export {
   writePluginReports,
 } from "./api.js";
 export { loadInspectorConfig } from "./config.js";
+export { classifyIssueFinding, issueId, knownIssueCodes } from "./issues.js";
 export { inspectFixtureSet, inspectPlugin, inspectSourceText } from "./inspector.js";
+export { openClawTargetPathCandidates } from "./openclaw-target.js";
 export { renderMarkdownReport, writeReport } from "./report.js";
