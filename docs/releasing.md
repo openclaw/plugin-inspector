@@ -73,6 +73,12 @@ versioned section like `## 0.3.1 - 2026-04-28`, update `package.json` to the
 same version, and update Crabpot's `pluginInspectorRef` to the exact release
 commit.
 
+Draft release notes from the current `Unreleased` section with:
+
+```bash
+npm run release:notes
+```
+
 ## Crabpot follow-through
 
 Before tagging a release, update Crabpot's `pluginInspectorRef` to the
