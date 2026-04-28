@@ -61,6 +61,51 @@ test("runtime capture report imports plugin entrypoints with mocked SDK", async 
   assert.match(await readFile(path.join(outDir, "capture.md"), "utf8"), /registerTool/);
 });
 
+test("runtime capture records conversation binding resolved callbacks", async () => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-binding-resolved-"));
+  await mkdir(path.join(rootDir, "src"), { recursive: true });
+  await writeFile(
+    path.join(rootDir, "package.json"),
+    `${JSON.stringify(
+      {
+        name: "openclaw-binding-resolved",
+        version: "1.0.0",
+        type: "module",
+        openclaw: {
+          extensions: ["src/index.mjs"],
+          compat: { pluginApi: "^1.0.0" },
+        },
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(rootDir, "src", "index.mjs"),
+    [
+      'import { definePluginEntry } from "openclaw/plugin-sdk";',
+      "",
+      "export default definePluginEntry((api) => {",
+      "  api.onConversationBindingResolved(() => undefined);",
+      "});",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const config = await loadPluginRootConfig(null, { cwd: rootDir });
+  const compatibilityReport = await inspectCompatibilityFixtureSet(config, { openclawPath: false });
+  const captureReport = await buildRuntimeCaptureReport({ report: compatibilityReport, rootDir });
+
+  assert.equal(captureReport.summary.failedCount, 0);
+  assert.equal(captureReport.summary.capturedCount, 1);
+  assert.equal(captureReport.summary.hookCount, 1);
+  assert.deepEqual(
+    captureReport.results[0].captured.map((entry) => `${entry.kind}:${entry.name}`),
+    ["hook:onConversationBindingResolved"],
+  );
+});
+
 test("runtime capture report classifies missing mocked SDK exports", async () => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-capture-missing-export-"));
   await mkdir(path.join(rootDir, "src"), { recursive: true });

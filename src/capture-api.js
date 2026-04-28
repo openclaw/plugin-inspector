@@ -82,6 +82,24 @@ export function createCaptureApi(options = {}) {
         }
         return api;
       },
+      onConversationBindingResolved(handler) {
+        const captureIndex =
+          captured.push({
+            kind: "hook",
+            name: "onConversationBindingResolved",
+            handlerType: typeof handler,
+            arguments: summarizeArguments([handler]),
+          }) - 1;
+        if (retainHandlers) {
+          retained.push({
+            kind: "hook",
+            name: "onConversationBindingResolved",
+            handler,
+            captureIndex,
+          });
+        }
+        return api;
+      },
     },
     {
       get(target, property) {
