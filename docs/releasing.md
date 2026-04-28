@@ -81,6 +81,15 @@ Draft release notes from the current `Unreleased` section with:
 npm run release:notes
 ```
 
+Preview the exact patch-release edits without changing files:
+
+```bash
+npm run release:plan
+```
+
+That prints the next patch version, release tag, changelog heading, Crabpot
+source ref, and post-publish Crabpot package pin.
+
 ## Crabpot follow-through
 
 Before tagging a release, update Crabpot's `pluginInspectorRef` to the

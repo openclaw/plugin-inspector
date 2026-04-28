@@ -7,11 +7,13 @@
 - Add grouped root facades: `pluginRoot`, `fixtureSuites`, `staticInspection`, `reports`, `contracts`, `ci`, `runtime`, and `synthetic`.
 - Expose contract capture, contract coverage, CI rollup, runtime profile, ref/profile diff, import-loop, and synthetic probe helpers from the root package API.
 - Add a release follow-through guard that fails when Crabpot scripts regress to the legacy `advanced.js` bundle.
+- Add a package-contents release guard for npm tarball entrypoints, examples, and README assets.
 
 ### Changed
 
 - Move Crabpot integration scripts to the root public API while keeping Crabpot as the fixture corpus and report consumer.
 - Keep generic artifact writing out of the root API; Crabpot-owned runner scripts write their own JSON outputs.
+- Ship the README banner asset in the npm package so the published README does not reference a missing local image.
 - Document the grouped root import path for embedding harnesses without turning the README into a full API dump.
 
 ## 0.3.0 - 2026-04-27
