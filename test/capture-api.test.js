@@ -50,6 +50,16 @@ test("capture API returns useful channel, gateway, and lifecycle descriptors", (
   assert.equal(typeof service.dispose, "function");
 });
 
+test("capture API records conversation binding resolved callbacks", () => {
+  const api = createCaptureApi();
+
+  assert.equal(api.onConversationBindingResolved(() => undefined), api);
+  assert.deepEqual(
+    api.getCapturedContracts().map((entry) => `${entry.kind}:${entry.name}`),
+    ["hook:onConversationBindingResolved"],
+  );
+});
+
 test("capture API accepts custom registrar return profiles", () => {
   const api = createCaptureApi({
     registrarProfiles: {
