@@ -5,14 +5,19 @@ import path from "node:path";
 import { test } from "node:test";
 import {
   capturePluginEntrypoint,
+  inspectFixtureSet,
   inspectCompatibilityFixtureSetConfig,
   inspectFixtureSetConfig,
   inspectPluginRoot,
+  inspectSourceText,
+  loadInspectorConfig,
   loadPluginConfig,
+  renderMarkdownReport,
   renderFixtureSetIssuesReport,
   runFixtureSetReport,
   runPluginCheck,
   setupPluginInspector,
+  writeReport,
   writeFixtureSetReports,
 } from "../src/index.js";
 
@@ -66,6 +71,32 @@ test("public API keeps crabpot-style fixture configs behind an explicit helper",
 
   assert.equal(report.status, "pass");
   assert.equal(report.summary.fixtureCount, 1);
+});
+
+test("public API exposes static source and fixture-set inspection primitives", async () => {
+  const sourceInspection = inspectSourceText(
+    [
+      'import { definePluginEntry } from "openclaw/plugin-sdk";',
+      "export default definePluginEntry((api) => {",
+      '  api.on("before_tool_call", () => undefined);',
+      '  api.registerTool({ name: "weather" });',
+      "});",
+    ].join("\n"),
+    "plugins/weather/src/index.js",
+  );
+  const config = await loadInspectorConfig("test/fixtures/inspector.config.json");
+  const report = await inspectFixtureSet(config);
+  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-root-report-"));
+  const paths = await writeReport(report, { outDir, basename: "static-inspection" });
+
+  assert.deepEqual(sourceInspection.hooks.map((hook) => hook.name), ["before_tool_call"]);
+  assert.deepEqual(sourceInspection.registrations.map((registration) => registration.name), [
+    "registerTool",
+    "definePluginEntry",
+  ]);
+  assert.equal(report.status, "pass");
+  assert.match(renderMarkdownReport(report), /# OpenClaw Plugin Inspector Report/);
+  assert.equal(paths.jsonPath, path.join(outDir, "static-inspection.json"));
 });
 
 test("public API writes compatibility fixture-set reports with custom render options", async () => {

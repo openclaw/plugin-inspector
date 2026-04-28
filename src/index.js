@@ -15,3 +15,6 @@ export {
   writeFixtureSetReports,
   writePluginReports,
 } from "./api.js";
+export { loadInspectorConfig } from "./config.js";
+export { inspectFixtureSet, inspectPlugin, inspectSourceText } from "./inspector.js";
+export { renderMarkdownReport, writeReport } from "./report.js";
