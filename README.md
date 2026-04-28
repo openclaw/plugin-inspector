@@ -18,6 +18,14 @@ npx @openclaw/plugin-inspector
 That runs `check`, writes report artifacts to `reports/`, and exits non-zero
 when compatibility breakages are found.
 
+Package-manager equivalents:
+
+```bash
+pnpm dlx @openclaw/plugin-inspector
+yarn dlx @openclaw/plugin-inspector
+bunx @openclaw/plugin-inspector
+```
+
 Add a local config and GitHub Actions workflow:
 
 ```bash
@@ -34,6 +42,18 @@ Or install it as a dev dependency:
 ```bash
 npm install --save-dev @openclaw/plugin-inspector
 npx plugin-inspector check
+```
+
+With a local dev dependency, prefer package scripts so CI and local checks use
+the same command:
+
+```json
+{
+  "scripts": {
+    "plugin:check": "plugin-inspector inspect --no-openclaw",
+    "plugin:ci": "plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute"
+  }
+}
 ```
 
 ## Commands
