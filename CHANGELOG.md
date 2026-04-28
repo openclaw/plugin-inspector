@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.1 - 2026-04-28
+
 ### Added
 
 - Add grouped root facades: `pluginRoot`, `fixtureSuites`, `staticInspection`, `reports`, `contracts`, `ci`, `runtime`, and `synthetic`.
