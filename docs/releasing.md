@@ -59,6 +59,20 @@ This runs tests and `npm pack --dry-run`. Once a version has been published,
 `npm publish --dry-run` rejects that same version, so the real publish check is
 the tag workflow.
 
+For normal patch prep before tagging, run the combined local readiness gate:
+
+```bash
+npm run release:readiness
+```
+
+That proves the package tarball locally and verifies Crabpot source-ref
+follow-through. It does not publish anything.
+
+Before creating a tag, move the `CHANGELOG.md` `Unreleased` notes into a
+versioned section like `## 0.3.1 - 2026-04-28`, update `package.json` to the
+same version, and update Crabpot's `pluginInspectorRef` to the exact release
+commit.
+
 ## Crabpot follow-through
 
 Before tagging a release, update Crabpot's `pluginInspectorRef` to the
