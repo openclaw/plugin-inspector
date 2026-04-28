@@ -17,7 +17,10 @@ import {
   buildRuntimeProfile,
   buildSyntheticProbePlanFromReport,
   capturePluginEntrypoint,
+  ci,
   classifyIssueFinding,
+  contracts,
+  fixtureSuites,
   inspectFixtureSet,
   inspectCompatibilityFixtureSetConfig,
   inspectFixtureSetConfig,
@@ -28,6 +31,7 @@ import {
   loadInspectorConfig,
   loadPluginConfig,
   openClawTargetPathCandidates,
+  pluginRoot,
   renderCiPolicyMarkdown,
   renderCiSummaryMarkdown,
   renderContractCaptureMarkdown,
@@ -42,6 +46,8 @@ import {
   renderRefDiffMarkdown,
   renderRuntimeProfileMarkdown,
   renderSyntheticProbeMarkdown,
+  reports,
+  runtime,
   runCapturedSyntheticProbes,
   runFixtureSetColdImportReadiness,
   runFixtureSetPlatformProbes,
@@ -49,6 +55,8 @@ import {
   runFixtureSetWorkspacePlan,
   runPluginCheck,
   setupPluginInspector,
+  staticInspection,
+  synthetic,
   validateCiPolicy,
   validateCiPolicyReport,
   validateContractCapture,
@@ -93,6 +101,24 @@ test("public API runs the plugin-root check and writes reports", async () => {
   assert.equal(report.status, "pass");
   assert.equal(written.fixtures[0].id, "weather");
   assert.equal(paths.jsonPath, path.join(pluginRoot, "reports", "plugin-inspector-report.json"));
+});
+
+test("public API exposes grouped facades for common workflows", () => {
+  assert.equal(pluginRoot.loadConfig, loadPluginConfig);
+  assert.equal(pluginRoot.inspect, inspectPluginRoot);
+  assert.equal(pluginRoot.runCheck, runPluginCheck);
+  assert.equal(fixtureSuites.inspect, inspectCompatibilityFixtureSetConfig);
+  assert.equal(fixtureSuites.runReport, runFixtureSetReport);
+  assert.equal(staticInspection.inspectSourceText, inspectSourceText);
+  assert.equal(reports.renderMarkdown, renderMarkdownReport);
+  assert.equal(contracts.buildCapture, buildContractCapture);
+  assert.equal(contracts.validateCoverage, validateContractCoverage);
+  assert.equal(ci.buildSummary, buildCiSummary);
+  assert.equal(ci.buildPolicyReport, buildCiPolicyReport);
+  assert.equal(runtime.buildProfile, buildRuntimeProfile);
+  assert.equal(runtime.buildRefDiff, buildRefDiff);
+  assert.equal(synthetic.buildPlanFromReport, buildSyntheticProbePlanFromReport);
+  assert.equal(synthetic.runCaptured, runCapturedSyntheticProbes);
 });
 
 test("public API reads plugin config from package.json", async () => {

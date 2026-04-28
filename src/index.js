@@ -1,3 +1,129 @@
+import * as pluginApi from "./api.js";
+import * as ciPolicyApi from "./ci-policy.js";
+import * as ciSummaryApi from "./ci-summary.js";
+import * as configApi from "./config.js";
+import * as contractCaptureApi from "./contract-capture.js";
+import * as contractCoverageApi from "./contract-coverage.js";
+import * as executionResultsApi from "./execution-results.js";
+import * as importLoopProfileApi from "./import-loop-profile.js";
+import * as inspectorApi from "./inspector.js";
+import * as issuesApi from "./issues.js";
+import * as openClawTargetApi from "./openclaw-target.js";
+import * as profileDiffApi from "./profile-diff.js";
+import * as refDiffApi from "./ref-diff.js";
+import * as reportApi from "./report.js";
+import * as runtimeProfileApi from "./runtime-profile.js";
+import * as syntheticProbeSuiteApi from "./synthetic-probe-suite.js";
+import * as syntheticProbesApi from "./synthetic-probes.js";
+
+export const pluginRoot = Object.freeze({
+  loadConfig: pluginApi.loadPluginConfig,
+  inspect: pluginApi.inspectPluginRoot,
+  runCheck: pluginApi.runPluginCheck,
+  captureEntrypoint: pluginApi.capturePluginEntrypoint,
+  setup: pluginApi.setupPluginInspector,
+});
+
+export const fixtureSuites = Object.freeze({
+  loadConfig: configApi.loadInspectorConfig,
+  inspect: pluginApi.inspectCompatibilityFixtureSetConfig,
+  inspectStatic: pluginApi.inspectFixtureSetConfig,
+  runReport: pluginApi.runFixtureSetReport,
+  writeReports: pluginApi.writeFixtureSetReports,
+  renderReport: pluginApi.renderFixtureSetMarkdownReport,
+  renderIssues: pluginApi.renderFixtureSetIssuesReport,
+  buildColdImportReadiness: pluginApi.buildFixtureSetColdImportReadiness,
+  runColdImportReadiness: pluginApi.runFixtureSetColdImportReadiness,
+  writeColdImportReadiness: pluginApi.writeFixtureSetColdImportReadiness,
+  buildWorkspacePlan: pluginApi.buildFixtureSetWorkspacePlan,
+  runWorkspacePlan: pluginApi.runFixtureSetWorkspacePlan,
+  writeWorkspacePlan: pluginApi.writeFixtureSetWorkspacePlan,
+  buildPlatformProbes: pluginApi.buildFixtureSetPlatformProbes,
+  runPlatformProbes: pluginApi.runFixtureSetPlatformProbes,
+  writePlatformProbes: pluginApi.writeFixtureSetPlatformProbes,
+});
+
+export const staticInspection = Object.freeze({
+  loadConfig: configApi.loadInspectorConfig,
+  inspectSourceText: inspectorApi.inspectSourceText,
+  inspectPlugin: inspectorApi.inspectPlugin,
+  inspectFixtureSet: inspectorApi.inspectFixtureSet,
+});
+
+export const reports = Object.freeze({
+  renderMarkdown: reportApi.renderMarkdownReport,
+  renderTextSummary: pluginApi.renderTextSummary,
+  write: reportApi.writeReport,
+  issueId: issuesApi.issueId,
+  classifyIssueFinding: issuesApi.classifyIssueFinding,
+  knownIssueCodes: issuesApi.knownIssueCodes,
+  openClawTargetPathCandidates: openClawTargetApi.openClawTargetPathCandidates,
+});
+
+export const contracts = Object.freeze({
+  buildCapture: contractCaptureApi.buildContractCapture,
+  writeCapture: contractCaptureApi.writeContractCapture,
+  renderCapture: contractCaptureApi.renderContractCaptureMarkdown,
+  validateCapture: contractCaptureApi.validateContractCapture,
+  validateCoverage: contractCoverageApi.validateContractCoverage,
+  defaults: Object.freeze({
+    registrationAssertions: contractCaptureApi.defaultRegistrationAssertions,
+    registrationArguments: contractCaptureApi.defaultRegistrationArguments,
+    hookAssertions: contractCaptureApi.defaultHookAssertions,
+    hookEvents: contractCaptureApi.defaultHookEvents,
+    hookContexts: contractCaptureApi.defaultHookContexts,
+  }),
+});
+
+export const ci = Object.freeze({
+  buildSummary: ciSummaryApi.buildCiSummary,
+  writeSummary: ciSummaryApi.writeCiSummary,
+  renderSummary: ciSummaryApi.renderCiSummaryMarkdown,
+  readReports: ciSummaryApi.readCiReports,
+  deriveStatus: ciSummaryApi.deriveCiStatus,
+  buildPolicyReport: ciPolicyApi.buildCiPolicyReport,
+  writePolicyReport: ciPolicyApi.writeCiPolicyReport,
+  renderPolicyReport: ciPolicyApi.renderCiPolicyMarkdown,
+  validatePolicy: ciPolicyApi.validateCiPolicy,
+  validatePolicyReport: ciPolicyApi.validateCiPolicyReport,
+  buildExecutionResults: executionResultsApi.buildExecutionResultsReport,
+  writeExecutionResults: executionResultsApi.writeExecutionResultsReport,
+  renderExecutionResults: executionResultsApi.renderExecutionResultsMarkdown,
+  writeOutputs: pluginApi.writeCiOutputArtifacts,
+});
+
+export const runtime = Object.freeze({
+  buildProfile: runtimeProfileApi.buildRuntimeProfile,
+  writeProfile: runtimeProfileApi.writeRuntimeProfile,
+  renderProfile: runtimeProfileApi.renderRuntimeProfileMarkdown,
+  validateProfile: runtimeProfileApi.validateRuntimeProfile,
+  buildProfileDiff: profileDiffApi.buildProfileDiff,
+  writeProfileDiff: profileDiffApi.writeProfileDiff,
+  renderProfileDiff: profileDiffApi.renderProfileDiffMarkdown,
+  validateProfileDiff: profileDiffApi.validateProfileDiff,
+  buildRefDiff: refDiffApi.buildRefDiff,
+  writeRefDiff: refDiffApi.writeRefDiff,
+  renderRefDiff: refDiffApi.renderRefDiffMarkdown,
+  validateRefDiff: refDiffApi.validateRefDiff,
+  buildImportLoopProfile: importLoopProfileApi.buildImportLoopProfile,
+  writeImportLoopProfile: importLoopProfileApi.writeImportLoopProfile,
+  renderImportLoopProfile: importLoopProfileApi.renderImportLoopProfileMarkdown,
+  validateImportLoopProfile: importLoopProfileApi.validateImportLoopProfile,
+});
+
+export const synthetic = Object.freeze({
+  buildPlan: syntheticProbesApi.buildSyntheticProbePlan,
+  buildPlanFromReport: syntheticProbeSuiteApi.buildSyntheticProbePlanFromReport,
+  writePlan: syntheticProbesApi.writeSyntheticProbePlan,
+  renderPlan: syntheticProbesApi.renderSyntheticProbeMarkdown,
+  validatePlan: syntheticProbesApi.validateSyntheticProbePlan,
+  runCaptured: syntheticProbesApi.runCapturedSyntheticProbes,
+  registrationExecutionProfiles: syntheticProbesApi.syntheticRegistrationExecutionProfiles,
+  defaultHookEvents: syntheticProbesApi.defaultSyntheticHookEvents,
+  defaultHookContexts: syntheticProbesApi.defaultSyntheticHookContexts,
+  defaultRegistrationArguments: syntheticProbesApi.defaultSyntheticRegistrationArguments,
+});
+
 export {
   capturePluginEntrypoint,
   buildFixtureSetColdImportReadiness,

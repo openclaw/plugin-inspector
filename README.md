@@ -236,6 +236,26 @@ plugin-inspector report --config crabpot.config.json --out reports
 Use fixture suites when one repo wants to inspect many plugins. Use plugin-root
 `check` for normal plugin CI.
 
+## Library Use
+
+Most plugin repos should use the CLI. Harnesses can import grouped root helpers
+when they need to embed the inspector:
+
+```js
+import { pluginRoot, fixtureSuites, contracts, ci } from "@openclaw/plugin-inspector";
+
+const { report } = await pluginRoot.runCheck({
+  pluginRoot: process.cwd(),
+  openclawPath: false,
+});
+const capture = contracts.buildCapture({ report });
+const summary = await ci.buildSummary({ reports: { compatibility: report } });
+```
+
+The root package groups stable workflows as `pluginRoot`, `fixtureSuites`,
+`staticInspection`, `reports`, `contracts`, `ci`, `runtime`, and `synthetic`.
+Named exports remain available for existing automation.
+
 ## Mocking Model
 
 Default inspection is static, offline, and credential-free. Runtime capture is
