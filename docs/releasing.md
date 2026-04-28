@@ -55,9 +55,11 @@ npm trust github @openclaw/plugin-inspector --repo openclaw/plugin-inspector --f
 npm run release:local
 ```
 
-This runs tests and `npm pack --dry-run`. Once a version has been published,
-`npm publish --dry-run` rejects that same version, so the real publish check is
-the tag workflow.
+This runs tests and the package-contents guard, which shells through
+`npm pack --dry-run --json` and fails if exported files, README assets, or
+expected examples are missing from the npm tarball. Once a version has been
+published, `npm publish --dry-run` rejects that same version, so the real
+publish check is the tag workflow.
 
 For normal patch prep before tagging, run the combined local readiness gate:
 

@@ -43,13 +43,15 @@
   "files": [
     "src",
     "examples",
+    "docs/plugin-inspector-banner.jpg",
     "README.md",
     "CHANGELOG.md",
     "LICENSE"
   ],
   "scripts": {
-    "check": "npm test && npm pack --dry-run",
+    "check": "npm test && npm run release:contents",
     "release:crabpot": "node scripts/check-crabpot-followthrough.mjs",
+    "release:contents": "node scripts/check-package-contents.mjs",
     "release:readiness": "npm run release:local && npm run release:crabpot",
     "release:local": "npm run check",
     "release:notes": "node scripts/release-notes.mjs --unreleased",
