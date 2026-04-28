@@ -14,6 +14,18 @@ import {
   validateColdImportReadiness,
   writeColdImportReadiness,
 } from "./cold-import-readiness.js";
+import {
+  buildWorkspacePlan,
+  renderWorkspacePlanMarkdown,
+  validateWorkspacePlan,
+  writeWorkspacePlan,
+} from "./workspace-plan.js";
+import {
+  buildPlatformProbes,
+  renderPlatformProbesMarkdown,
+  validatePlatformProbes,
+  writePlatformProbes,
+} from "./platform-probes.js";
 
 export async function loadPluginConfig(options = {}) {
   if (options.config) {
@@ -122,6 +134,67 @@ export async function runFixtureSetColdImportReadiness(options = {}) {
   const readiness = await buildFixtureSetColdImportReadiness(options);
   const paths = options.write === false ? null : await writeFixtureSetColdImportReadiness(readiness, options);
   return { readiness, paths };
+}
+
+export async function buildFixtureSetWorkspacePlan(options = {}) {
+  const config = options.report ? null : await loadFixtureSetConfig(options);
+  const report =
+    options.report ??
+    (await inspectCompatibilityFixtureSet(config, {
+      generatedAt: options.generatedAt,
+      openclawPath: options.openclawPath,
+      targetOpenClaw: options.targetOpenClaw,
+    }));
+  const rootDir = options.rootDir ?? config?.rootDir ?? options.cwd;
+  const readiness = options.readiness ?? buildColdImportReadiness({ ...options, report, rootDir });
+
+  return buildWorkspacePlan({
+    ...options,
+    report,
+    readiness,
+    rootDir,
+  });
+}
+
+export function renderFixtureSetWorkspacePlanMarkdown(plan, options = {}) {
+  return renderWorkspacePlanMarkdown(plan, options);
+}
+
+export function validateFixtureSetWorkspacePlan(plan, options = {}) {
+  return validateWorkspacePlan(plan, options);
+}
+
+export async function writeFixtureSetWorkspacePlan(plan, options = {}) {
+  return writeWorkspacePlan(plan, options);
+}
+
+export async function runFixtureSetWorkspacePlan(options = {}) {
+  const plan = await buildFixtureSetWorkspacePlan(options);
+  const paths = options.write === false ? null : await writeFixtureSetWorkspacePlan(plan, options);
+  return { plan, paths };
+}
+
+export async function buildFixtureSetPlatformProbes(options = {}) {
+  const plan = options.plan ?? (await buildFixtureSetWorkspacePlan(options));
+  return buildPlatformProbes({ ...options, plan });
+}
+
+export function renderFixtureSetPlatformProbesMarkdown(report, options = {}) {
+  return renderPlatformProbesMarkdown(report, options);
+}
+
+export function validateFixtureSetPlatformProbes(report, options = {}) {
+  return validatePlatformProbes(report, options);
+}
+
+export async function writeFixtureSetPlatformProbes(report, options = {}) {
+  return writePlatformProbes(report, options);
+}
+
+export async function runFixtureSetPlatformProbes(options = {}) {
+  const report = await buildFixtureSetPlatformProbes(options);
+  const paths = options.write === false ? null : await writeFixtureSetPlatformProbes(report, options);
+  return { report, paths };
 }
 
 export async function runPluginCheck(options = {}) {

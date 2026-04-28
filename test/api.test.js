@@ -5,6 +5,8 @@ import path from "node:path";
 import { test } from "node:test";
 import {
   buildFixtureSetColdImportReadiness,
+  buildFixtureSetPlatformProbes,
+  buildFixtureSetWorkspacePlan,
   capturePluginEntrypoint,
   inspectFixtureSet,
   inspectCompatibilityFixtureSetConfig,
@@ -16,14 +18,22 @@ import {
   renderMarkdownReport,
   renderFixtureSetColdImportReadinessMarkdown,
   renderFixtureSetIssuesReport,
+  renderFixtureSetPlatformProbesMarkdown,
+  renderFixtureSetWorkspacePlanMarkdown,
   runFixtureSetColdImportReadiness,
+  runFixtureSetPlatformProbes,
   runFixtureSetReport,
+  runFixtureSetWorkspacePlan,
   runPluginCheck,
   setupPluginInspector,
   validateColdImportReadiness,
+  validateFixtureSetPlatformProbes,
+  validateFixtureSetWorkspacePlan,
   writeFixtureSetColdImportReadiness,
+  writeFixtureSetPlatformProbes,
   writeReport,
   writeFixtureSetReports,
+  writeFixtureSetWorkspacePlan,
 } from "../src/index.js";
 
 test("public API runs the plugin-root check and writes reports", async () => {
@@ -161,6 +171,40 @@ test("public API builds fixture-set cold import readiness from config", async ()
   assert.equal(JSON.parse(await readFile(paths.jsonPath, "utf8")).summary.fixtureCount, 1);
   assert.equal(result.paths, null);
   assert.equal(result.readiness.summary.fixtureCount, 1);
+});
+
+test("public API builds fixture-set workspace and platform plans from config", async () => {
+  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-plan-api-"));
+  const plan = await buildFixtureSetWorkspacePlan({
+    configPath: "test/fixtures/inspector.config.json",
+    openclawPath: false,
+  });
+  const planPaths = await writeFixtureSetWorkspacePlan(plan, {
+    jsonPath: path.join(outDir, "workspace.json"),
+    markdownPath: path.join(outDir, "workspace.md"),
+  });
+  const platform = await buildFixtureSetPlatformProbes({ plan });
+  const platformPaths = await writeFixtureSetPlatformProbes(platform, {
+    jsonPath: path.join(outDir, "platform.json"),
+    markdownPath: path.join(outDir, "platform.md"),
+  });
+  const planResult = await runFixtureSetWorkspacePlan({
+    configPath: "test/fixtures/inspector.config.json",
+    openclawPath: false,
+    write: false,
+  });
+  const platformResult = await runFixtureSetPlatformProbes({ plan, write: false });
+
+  assert.equal(plan.summary.fixtureCount, 1);
+  assert.deepEqual(validateFixtureSetWorkspacePlan(plan), []);
+  assert.match(renderFixtureSetWorkspacePlanMarkdown(plan), /## Entrypoint Workspaces/);
+  assert.equal(JSON.parse(await readFile(planPaths.jsonPath, "utf8")).summary.fixtureCount, 1);
+  assert.equal(platform.summary.fixtureCount, 1);
+  assert.deepEqual(validateFixtureSetPlatformProbes(platform), []);
+  assert.match(renderFixtureSetPlatformProbesMarkdown(platform), /## Loader Probes/);
+  assert.equal(JSON.parse(await readFile(platformPaths.jsonPath, "utf8")).summary.fixtureCount, 1);
+  assert.equal(planResult.paths, null);
+  assert.equal(platformResult.paths, null);
 });
 
 test("public API exposes capture through an explicit entrypoint helper", async () => {
