@@ -4,7 +4,10 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import {
+  buildCiPolicyReport,
+  buildCiSummary,
   buildContractCapture,
+  buildExecutionResultsReport,
   buildFixtureSetColdImportReadiness,
   buildFixtureSetPlatformProbes,
   buildFixtureSetWorkspacePlan,
@@ -20,7 +23,10 @@ import {
   loadInspectorConfig,
   loadPluginConfig,
   openClawTargetPathCandidates,
+  renderCiPolicyMarkdown,
+  renderCiSummaryMarkdown,
   renderContractCaptureMarkdown,
+  renderExecutionResultsMarkdown,
   renderMarkdownReport,
   renderFixtureSetColdImportReadinessMarkdown,
   renderFixtureSetIssuesReport,
@@ -32,6 +38,8 @@ import {
   runFixtureSetWorkspacePlan,
   runPluginCheck,
   setupPluginInspector,
+  validateCiPolicy,
+  validateCiPolicyReport,
   validateContractCapture,
   validateContractCoverage,
   validateColdImportReadiness,
@@ -43,6 +51,9 @@ import {
   writeFixtureSetReports,
   writeFixtureSetWorkspacePlan,
   writeContractCapture,
+  writeCiPolicyReport,
+  writeCiSummary,
+  writeExecutionResultsReport,
 } from "../src/index.js";
 
 test("public API runs the plugin-root check and writes reports", async () => {
@@ -327,6 +338,67 @@ test("public API exposes contract capture and coverage helpers", async () => {
   assert.deepEqual(validateContractCoverage(report), []);
   assert.match(renderContractCaptureMarkdown(capture), /## Registration Capture/);
   assert.equal(JSON.parse(await readFile(paths.jsonPath, "utf8")).summary.fixtureCount, 1);
+});
+
+test("public API exposes execution and CI rollup helpers", async () => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-ci-api-"));
+  const resultDir = path.join(rootDir, ".plugin-inspector", "results", "weather");
+  const outDir = path.join(rootDir, "reports");
+  await mkdir(resultDir, { recursive: true });
+  await writeFile(
+    path.join(resultDir, "entry.synthetic.json"),
+    JSON.stringify({
+      summary: { probeCount: 1, passCount: 1, failCount: 0, blockedCount: 0 },
+      results: [{ kind: "hook", seam: "before_tool_call", label: "before_tool_call", status: "pass" }],
+    }),
+    "utf8",
+  );
+  const policy = {
+    version: 1,
+    allowedBlocked: [],
+    expectedWarnings: [],
+    thresholds: {
+      wallP95RegressionPercent: 50,
+      peakRssRegressionMb: 50,
+      bootRegressionMs: 500,
+      strictMinimumSamples: 3,
+    },
+    fixtureSets: { smoke: ["weather"] },
+  };
+  const compatibilityReport = {
+    summary: { breakageCount: 0, p1IssueCount: 0 },
+    breakages: [],
+    issues: [],
+  };
+
+  const execution = await buildExecutionResultsReport({ rootDir });
+  const policyReport = buildCiPolicyReport({ policy, compatibilityReport, executionResults: execution });
+  const summary = await buildCiSummary({
+    reports: { compatibility: compatibilityReport, execution, ciPolicy: policyReport },
+  });
+  const executionPaths = await writeExecutionResultsReport(execution, {
+    jsonPath: path.join(outDir, "execution.json"),
+    markdownPath: path.join(outDir, "execution.md"),
+  });
+  const policyPaths = await writeCiPolicyReport(policyReport, {
+    jsonPath: path.join(outDir, "policy.json"),
+    markdownPath: path.join(outDir, "policy.md"),
+  });
+  const summaryPaths = await writeCiSummary(summary, {
+    jsonPath: path.join(outDir, "summary.json"),
+    markdownPath: path.join(outDir, "summary.md"),
+  });
+
+  assert.equal(execution.summary.passCount, 1);
+  assert.doesNotThrow(() => validateCiPolicy(policy));
+  assert.deepEqual(validateCiPolicyReport(policyReport), []);
+  assert.equal(summary.status, "pass");
+  assert.match(renderExecutionResultsMarkdown(execution), /Execution Results/);
+  assert.match(renderCiPolicyMarkdown(policyReport), /CI Policy/);
+  assert.match(renderCiSummaryMarkdown(summary), /CI Summary/);
+  assert.equal(JSON.parse(await readFile(executionPaths.jsonPath, "utf8")).summary.passCount, 1);
+  assert.equal(JSON.parse(await readFile(policyPaths.jsonPath, "utf8")).status, "pass");
+  assert.equal(JSON.parse(await readFile(summaryPaths.jsonPath, "utf8")).status, "pass");
 });
 
 test("public API honors config-driven runtime capture", async () => {

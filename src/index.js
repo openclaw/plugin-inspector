@@ -42,7 +42,29 @@ export {
   writeContractCapture,
 } from "./contract-capture.js";
 export { validateContractCoverage } from "./contract-coverage.js";
+export {
+  buildCiPolicyReport,
+  defaultCiPolicyReportOptions,
+  renderCiPolicyMarkdown,
+  validateCiPolicy,
+  validateCiPolicyReport,
+  writeCiPolicyReport,
+} from "./ci-policy.js";
+export {
+  buildCiSummary,
+  defaultCiReportPaths,
+  deriveCiStatus,
+  readCiReports,
+  renderCiSummaryMarkdown,
+  writeCiSummary,
+} from "./ci-summary.js";
 export { loadInspectorConfig } from "./config.js";
+export {
+  buildExecutionResultsReport,
+  defaultExecutionResultsOptions,
+  renderExecutionResultsMarkdown,
+  writeExecutionResultsReport,
+} from "./execution-results.js";
 export { classifyIssueFinding, issueId, knownIssueCodes } from "./issues.js";
 export { inspectFixtureSet, inspectPlugin, inspectSourceText } from "./inspector.js";
 export { openClawTargetPathCandidates } from "./openclaw-target.js";
