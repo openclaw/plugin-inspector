@@ -170,6 +170,7 @@ export {
   classifyCompatRecordCoverage,
   renderMarkdownReport,
   renderTextSummary,
+  sanitizeReportArtifact,
   writeCompatibilityReport,
   writeReport,
 } from "./report.js";

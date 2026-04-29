@@ -7,6 +7,7 @@ import {
   buildSarifReport,
   buildCompatibilityReport,
   buildCompatibilityFixtureReport,
+  buildIssues,
   classifyCompatibilityFixture,
   classifyCompatRecordCoverage,
   classifyPackageContracts,
@@ -20,6 +21,7 @@ import {
   renderMarkdownTable,
   renderTextSummary,
   writeArtifacts,
+  writeCompatibilityReport,
   writeCiOutputArtifacts,
   writeReport,
 } from "../src/advanced.js";
@@ -183,6 +185,91 @@ test("compatibility report renderer supports issue metadata and evidence links",
   assert.match(issues, /# Crabpot Issue Findings/);
   assert.match(issues, /P0! \*\*sample-plugin\*\* `live-issue` `core-compat-adapter`/);
   assert.match(issues, /\[linked\]\(plugins\/sample\/src\/index\.ts:1\)/);
+});
+
+test("compatibility report artifacts sanitize absolute OpenClaw target paths", async () => {
+  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sanitized-report-"));
+  const absoluteOpenClawPath = path.join(outDir, "openclaw");
+  const report = {
+    generatedAt: "test",
+    status: "pass",
+    targetOpenClaw: {
+      status: "ok",
+      configuredPath: absoluteOpenClawPath,
+      searchedPaths: [absoluteOpenClawPath],
+      compatRecords: [],
+      compatRecordStatuses: {},
+    },
+    summary: {
+      fixtureCount: 1,
+      highPriorityFixtures: 1,
+      breakageCount: 0,
+      warningCount: 0,
+      suggestionCount: 0,
+      decisionCount: 0,
+      issueCount: 1,
+      p0IssueCount: 0,
+      p1IssueCount: 0,
+      liveIssueCount: 0,
+      liveP0IssueCount: 0,
+      compatGapCount: 0,
+      deprecationWarningCount: 0,
+      inspectorGapCount: 1,
+      upstreamIssueCount: 0,
+      fixtureRegressionCount: 0,
+      contractProbeCount: 0,
+    },
+    fixtures: [
+      {
+        id: "sample-plugin",
+        priority: "high",
+        seams: ["native-tool"],
+        hooks: [],
+        registrations: [],
+        manifestContracts: [],
+      },
+    ],
+    breakages: [],
+    warnings: [],
+    suggestions: [],
+    issues: [
+      {
+        fixture: "sample-plugin",
+        code: "package-dependency-install-required",
+        issueClass: "inspector-gap",
+        decision: "inspector-follow-up",
+        severity: "P2",
+        title: `sample-plugin: path ${absoluteOpenClawPath}`,
+        status: "open",
+        compatStatus: "none",
+        live: false,
+        evidence: [absoluteOpenClawPath],
+      },
+    ],
+    contractProbes: [],
+    logs: [],
+    decisions: [],
+  };
+
+  const markdown = renderCompatibilityMarkdownReport(report);
+  const issues = renderCompatibilityIssuesReport(report);
+  const paths = await writeCompatibilityReport(report, {
+    jsonPath: path.join(outDir, "report.json"),
+    markdownPath: path.join(outDir, "report.md"),
+    issuesPath: path.join(outDir, "issues.md"),
+  });
+  const artifact = JSON.parse(await readFile(paths.jsonPath, "utf8"));
+
+  assert.equal(report.targetOpenClaw.configuredPath, absoluteOpenClawPath);
+  assert.equal(artifact.targetOpenClaw.configuredPath, "<OPENCLAW_PATH>");
+  assert.deepEqual(artifact.targetOpenClaw.searchedPaths, ["<OPENCLAW_PATH>"]);
+  assert.equal(artifact.issues[0].evidence[0], "<OPENCLAW_PATH>");
+  assert.equal(artifact.issues[0].title, "sample-plugin: path <OPENCLAW_PATH>");
+  assert.doesNotMatch(markdown, new RegExp(escapeRegExp(absoluteOpenClawPath)));
+  assert.doesNotMatch(issues, new RegExp(escapeRegExp(absoluteOpenClawPath)));
+  assert.match(markdown, /<OPENCLAW_PATH>/);
+  assert.match(await readFile(paths.markdownPath, "utf8"), /<OPENCLAW_PATH>/);
+  assert.match(await readFile(paths.issuesPath, "utf8"), /<OPENCLAW_PATH>/);
 });
 
 test("compatibility report assembly classifies fixtures, issues, probes, and compat records", async () => {
@@ -401,6 +488,18 @@ test("package contract classifier reports install and entrypoint blockers", () =
   assert.ok(result.suggestions.some((finding) => finding.code === "package-build-artifact-entrypoint"));
   assert.ok(result.suggestions.some((finding) => finding.code === "package-dependency-install-required"));
   assert.ok(result.decisions.some((decision) => decision.seam === "cold-import"));
+
+  const issues = buildIssues({
+    suggestions: result.suggestions,
+    targetOpenClaw: { status: "ok", compatRecordStatuses: {} },
+  });
+  assert.ok(
+    issues.some(
+      (issue) =>
+        issue.code === "package-dependency-install-required" &&
+        issue.title === "fixture: cold import requires dependency installation in an isolated workspace",
+    ),
+  );
 });
 
 test("target OpenClaw coverage classifier reports missing public surface", () => {
@@ -585,3 +684,7 @@ test("markdown table helper supports padded empty-table reports", () => {
   );
   assert.equal(renderMarkdownTable([], ["Name"], { empty: "_none_" }), "_none_");
 });
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}

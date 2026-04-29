@@ -111,6 +111,8 @@ test("public API exposes grouped facades for common workflows", () => {
   assert.equal(fixtureSuites.runReport, runFixtureSetReport);
   assert.equal(staticInspection.inspectSourceText, inspectSourceText);
   assert.equal(reports.renderMarkdown, renderMarkdownReport);
+  assert.equal(typeof reports.sanitizeArtifact, "function");
+  assert.equal(typeof reports.readOpenClawTargetSurface, "function");
   assert.equal(contracts.buildCapture, buildContractCapture);
   assert.equal(contracts.validateCoverage, validateContractCoverage);
   assert.equal(ci.buildSummary, buildCiSummary);

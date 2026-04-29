@@ -3,6 +3,7 @@ import path from "node:path";
 import {
   loadPluginConfig,
   renderTextSummary,
+  sanitizeReportArtifact,
   runPluginCheck,
 } from "./index.js";
 import {
@@ -90,7 +91,7 @@ async function runCheck(commandArgs) {
   });
 
   if (json) {
-    console.log(JSON.stringify(report, null, 2));
+    console.log(JSON.stringify(sanitizeReportArtifact(report), null, 2));
   } else {
     console.log(renderTextSummary(report, { artifacts: paths }));
   }

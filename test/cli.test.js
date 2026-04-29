@@ -87,6 +87,25 @@ test("check command can target a plugin root and use runtime aliases", async () 
   assert.equal(capture.summary.capturedCount, 1);
 });
 
+test("check command sanitizes absolute OpenClaw paths in JSON output and artifacts", async () => {
+  const rootDir = await createCliPluginRoot("plugin-inspector-cli-sanitize-");
+  const openclawPath = await createTargetOpenClaw(rootDir);
+  const cliPath = path.resolve("src/cli.js");
+
+  const { stdout } = await execFileAsync(
+    process.execPath,
+    [cliPath, "check", "--out", "reports", "--openclaw", openclawPath, "--json"],
+    { cwd: rootDir },
+  );
+  const output = JSON.parse(stdout);
+  const artifact = JSON.parse(await readFile(path.join(rootDir, "reports", "plugin-inspector-report.json"), "utf8"));
+
+  assert.equal(output.targetOpenClaw.configuredPath, "<OPENCLAW_PATH>");
+  assert.equal(artifact.targetOpenClaw.configuredPath, "<OPENCLAW_PATH>");
+  assert.deepEqual(artifact.targetOpenClaw.searchedPaths, ["<OPENCLAW_PATH>"]);
+  assert.doesNotMatch(stdout, new RegExp(escapeRegExp(openclawPath)));
+});
+
 test("inspect command runs from a plugin root and can write CI outputs", async () => {
   const rootDir = await createCliPluginRoot("plugin-inspector-cli-inspect-");
   const cliPath = path.resolve("src/cli.js");
@@ -317,4 +336,19 @@ async function createCliPluginRoot(prefix) {
     "utf8",
   );
   return rootDir;
+}
+
+async function createTargetOpenClaw(rootDir) {
+  const openclawPath = path.join(rootDir, "target-openclaw");
+  await mkdir(path.join(openclawPath, "src/plugins/compat"), { recursive: true });
+  await writeFile(
+    path.join(openclawPath, "src/plugins/compat/registry.ts"),
+    'export const records = [{ code: "legacy-root-sdk-import", status: "deprecated" }];\n',
+    "utf8",
+  );
+  return openclawPath;
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }

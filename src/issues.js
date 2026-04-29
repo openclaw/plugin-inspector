@@ -119,7 +119,7 @@ export const issueMetadataByCode = {
     severity: "P2",
     owner: "inspector",
     decision: "inspector-follow-up",
-    title: "cold import requires isolated dependency installation",
+    title: "cold import requires dependency installation in an isolated workspace",
   },
   "package-entrypoint-missing": {
     severity: "P1",

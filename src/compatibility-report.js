@@ -1,4 +1,5 @@
 import { renderPaddedMarkdownTable } from "./artifacts.js";
+import { sanitizeReportArtifact } from "./report-sanitizer.js";
 
 const defaultSeverityLabels = {
   P0: "P0",
@@ -8,6 +9,7 @@ const defaultSeverityLabels = {
 };
 
 export function renderCompatibilityMarkdownReport(report, options = {}) {
+  report = sanitizeReportArtifact(report, options);
   return [
     `# ${options.title ?? "OpenClaw Plugin Compatibility Report"}`,
     "",
@@ -127,6 +129,7 @@ export function renderCompatibilityMarkdownReport(report, options = {}) {
 }
 
 export function renderCompatibilityIssuesReport(report, options = {}) {
+  report = sanitizeReportArtifact(report, options);
   return [
     `# ${options.title ?? "OpenClaw Plugin Issue Findings"}`,
     "",

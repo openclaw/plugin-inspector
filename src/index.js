@@ -53,11 +53,13 @@ export const staticInspection = Object.freeze({
 export const reports = Object.freeze({
   renderMarkdown: reportApi.renderMarkdownReport,
   renderTextSummary: pluginApi.renderTextSummary,
+  sanitizeArtifact: reportApi.sanitizeReportArtifact,
   write: reportApi.writeReport,
   issueId: issuesApi.issueId,
   classifyIssueFinding: issuesApi.classifyIssueFinding,
   knownIssueCodes: issuesApi.knownIssueCodes,
   openClawTargetPathCandidates: openClawTargetApi.openClawTargetPathCandidates,
+  readOpenClawTargetSurface: openClawTargetApi.readOpenClawTargetSurface,
 });
 
 export const contracts = Object.freeze({
@@ -200,7 +202,7 @@ export {
 } from "./import-loop-profile.js";
 export { classifyIssueFinding, issueId, knownIssueCodes } from "./issues.js";
 export { inspectFixtureSet, inspectPlugin, inspectSourceText } from "./inspector.js";
-export { openClawTargetPathCandidates } from "./openclaw-target.js";
+export { openClawTargetPathCandidates, readOpenClawTargetSurface } from "./openclaw-target.js";
 export {
   buildProfileDiff,
   defaultProfileDiffOptions,
@@ -216,7 +218,7 @@ export {
   validateRefDiff,
   writeRefDiff,
 } from "./ref-diff.js";
-export { renderMarkdownReport, writeReport } from "./report.js";
+export { renderMarkdownReport, sanitizeReportArtifact, writeReport } from "./report.js";
 export {
   buildRuntimeProfile,
   defaultRuntimeProfileCommands,

@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Fixed
+
+- Sanitize absolute target OpenClaw paths from generated report artifacts and JSON CLI output.
+- Normalize the dependency-install inspector finding title to use isolated-workspace wording.
+
 ## 0.3.3 - 2026-04-28
 
 ### Fixed

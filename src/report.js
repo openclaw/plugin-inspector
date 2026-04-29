@@ -4,6 +4,7 @@ import { renderCompatibilityIssuesReport, renderCompatibilityMarkdownReport } fr
 import { buildContractProbes } from "./contract-probes.js";
 import { classifyCompatibilityFixture } from "./fixture-summary.js";
 import { buildIssues, summarizeIssueClasses } from "./issues.js";
+import { sanitizeReportArtifact } from "./report-sanitizer.js";
 
 export function buildReport({ config, inspections, failures = [], generatedAt = "deterministic" }) {
   const inspectionById = new Map(inspections.map((inspection) => [inspection.id, inspection]));
@@ -233,12 +234,13 @@ export async function writeReport(report, options = {}) {
   const basename = options.basename ?? "plugin-inspector-report";
   const jsonPath = path.join(outDir, `${basename}.json`);
   const markdownPath = path.join(outDir, `${basename}.md`);
+  const artifactReport = sanitizeReportArtifact(report, options);
 
   return writeJsonMarkdownArtifacts({
     jsonPath,
     markdownPath,
-    json: report,
-    markdown: renderMarkdownReport(report),
+    json: artifactReport,
+    markdown: renderMarkdownReport(artifactReport),
     check: options.check,
   });
 }
@@ -249,6 +251,7 @@ export async function writeCompatibilityReport(report, options = {}) {
   const jsonPath = options.jsonPath ?? path.join(outDir, `${basename}.json`);
   const markdownPath = options.markdownPath ?? path.join(outDir, `${basename}.md`);
   const issuesPath = options.issuesPath ?? path.join(outDir, options.issuesBasename ?? "plugin-inspector-issues.md");
+  const artifactReport = sanitizeReportArtifact(report, options);
   const markdownOptions = compatibilityRenderOptions(options, {
     title: options.markdownTitle ?? options.title,
     ...options.markdownOptions,
@@ -260,13 +263,15 @@ export async function writeCompatibilityReport(report, options = {}) {
 
   return writeArtifacts(
     [
-      { name: "jsonPath", path: jsonPath, json: report },
-      { name: "markdownPath", path: markdownPath, markdown: renderCompatibilityMarkdownReport(report, markdownOptions) },
-      { name: "issuesPath", path: issuesPath, markdown: renderCompatibilityIssuesReport(report, issuesOptions) },
+      { name: "jsonPath", path: jsonPath, json: artifactReport },
+      { name: "markdownPath", path: markdownPath, markdown: renderCompatibilityMarkdownReport(artifactReport, markdownOptions) },
+      { name: "issuesPath", path: issuesPath, markdown: renderCompatibilityIssuesReport(artifactReport, issuesOptions) },
     ],
     { check: options.check },
   );
 }
+
+export { sanitizeReportArtifact };
 
 function compatibilityRenderOptions(options, overrides) {
   const renderOptions = {
