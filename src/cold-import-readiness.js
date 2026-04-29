@@ -3,6 +3,8 @@ import path from "node:path";
 import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { slugForArtifact } from "./path-utils.js";
 
+const hostLinkedRuntimeDependencies = new Set(["openclaw"]);
+
 export function buildColdImportReadiness(options = {}) {
   const report = options.report;
   if (!report) {
@@ -182,7 +184,7 @@ function classifyEntrypointReadiness({ fixture, packageSummary, entrypoint, root
     ...(packageSummary.dependencies ?? []),
     ...(packageSummary.peerDependencies ?? []),
     ...(packageSummary.optionalDependencies ?? []),
-  ]);
+  ]).filter((dependency) => !hostLinkedRuntimeDependencies.has(dependency));
   if (entrypoint.exists && runtimeDependencies.length > 0) {
     blockers.push({
       code: "dependency-install-required",

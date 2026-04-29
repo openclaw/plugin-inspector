@@ -18,6 +18,7 @@ const channelRegistrations = new Set([
   "defineChannelPluginEntry",
   "registerChannel",
 ]);
+const hostLinkedRuntimeDependencies = new Set(["openclaw"]);
 
 export async function buildCompatibilityFixtureReport({ fixture, inspection, checkoutPath, sourceRoot, rootDir = process.cwd() }) {
   const pluginManifests = await readPluginManifests({ checkoutPath, sourceRoot, rootDir });
@@ -279,7 +280,7 @@ export function classifyPackageContracts({ fixture, inspection, fixtureReport })
     ...packageSummary.dependencies,
     ...packageSummary.peerDependencies,
     ...packageSummary.optionalDependencies,
-  ]);
+  ]).filter((dependency) => !hostLinkedRuntimeDependencies.has(dependency));
   if (packageSummary.openclaw?.entrypoints.length > 0 && runtimeDependencies.length > 0) {
     suggestions.push({
       fixture: fixture.id,

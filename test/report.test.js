@@ -502,6 +502,46 @@ test("package contract classifier reports install and entrypoint blockers", () =
   );
 });
 
+test("package contract classifier treats openclaw as a host-linked dependency", () => {
+  const result = classifyPackageContracts({
+    fixture: {
+      id: "fixture",
+      path: "plugins/fixture",
+    },
+    inspection: {
+      registrations: ["registerTool"],
+    },
+    fixtureReport: {
+      pluginManifests: [{ version: "1.0.0" }],
+      package: {
+        path: "plugins/fixture/package.json",
+        name: "fixture-plugin",
+        version: "1.0.0",
+        dependencies: ["openclaw"],
+        peerDependencies: [],
+        optionalDependencies: [],
+        openclaw: {
+          compatPluginApi: "^1.0.0",
+          entrypoints: [
+            {
+              kind: "extension",
+              specifier: "dist/index.js",
+              relativePath: "plugins/fixture/dist/index.js",
+              exists: true,
+              requiresBuild: false,
+            },
+          ],
+        },
+      },
+    },
+  });
+
+  assert.equal(
+    result.suggestions.some((finding) => finding.code === "package-dependency-install-required"),
+    false,
+  );
+});
+
 test("target OpenClaw coverage classifier reports missing public surface", () => {
   const result = classifyTargetOpenClawCoverage({
     fixture: { id: "fixture" },

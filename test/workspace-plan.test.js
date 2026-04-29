@@ -22,7 +22,7 @@ test("workspace plan maps blocked entrypoints to opt-in install/build/capture st
         name: "fixture",
         packageManager: "npm@10.0.0",
         scripts: { build: "tsup" },
-        dependencies: { "left-pad": "^1.3.0" },
+        dependencies: { "left-pad": "^1.3.0", openclaw: "^1.0.0" },
       },
       null,
       2,
@@ -60,7 +60,7 @@ test("workspace plan maps blocked entrypoints to opt-in install/build/capture st
   assert.equal(plan.summary.buildStepCount, 1);
   assert.equal(plan.summary.captureStepCount, 2);
   assert.equal(plan.summary.syntheticProbeStepCount, 2);
-  assert.equal(plan.summary.targetOpenClawLinkStepCount, 2);
+  assert.equal(plan.summary.targetOpenClawLinkStepCount, 1);
   assert.equal(plan.summary.tsLoaderEntrypointCount, 1);
   assert.equal(plan.summary.jitiAlternativeCount, 1);
 
@@ -94,7 +94,7 @@ test("workspace plan defaults point at packaged helper wrappers", async (t) => {
         name: "fixture",
         packageManager: "npm@10.0.0",
         scripts: { build: "tsup" },
-        dependencies: { "left-pad": "^1.3.0" },
+        dependencies: { "left-pad": "^1.3.0", openclaw: "^1.0.0" },
       },
       null,
       2,
@@ -226,7 +226,7 @@ function readinessReport() {
           {
             path: "plugins\\fixture\\package.json",
             name: "fixture",
-            dependencies: ["left-pad"],
+            dependencies: ["left-pad", "openclaw"],
             peerDependencies: [],
             optionalDependencies: [],
             openclaw: {

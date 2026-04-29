@@ -218,7 +218,7 @@ async function buildEntrypointPlan({ fixtureId, entrypoint, packageSummary, pack
   const packageManager = detectPackageManager(settings.rootDir, packageDir, packageJson);
   const lockfile = findNearestLockfile(settings.rootDir, packageDir);
   const buildScript = packageJson.scripts?.build;
-  const requiredCapabilities = requiredCapabilitiesFor(entrypoint);
+  const requiredCapabilities = requiredCapabilitiesFor(entrypoint, packageSummary);
   const loaderStrategy = loaderStrategyFor(entrypoint);
   const blockers = [...entrypoint.blockers];
   const workspacePath = posixJoin(settings.workspaceRoot, fixtureId);
@@ -342,7 +342,7 @@ function loaderStrategyFor(entrypoint) {
   };
 }
 
-function requiredCapabilitiesFor(entrypoint) {
+function requiredCapabilitiesFor(entrypoint, packageSummary = {}) {
   const capabilities = new Set();
   for (const blocker of entrypoint.blockers) {
     if (blocker.code === "dependency-install-required") {
@@ -361,12 +361,20 @@ function requiredCapabilitiesFor(entrypoint) {
       capabilities.add("side-effect-sandbox");
     }
   }
-  if (entrypoint.blockers.some((blocker) => /\bopenclaw\b/.test(blocker.evidence ?? ""))) {
+  if (hasHostLinkedOpenClawDependency(packageSummary)) {
     capabilities.add("target-openclaw-link");
   }
   capabilities.add("capture-shim");
   capabilities.add("synthetic-probes");
   return [...capabilities].sort();
+}
+
+function hasHostLinkedOpenClawDependency(packageSummary) {
+  return [
+    ...(packageSummary.dependencies ?? []),
+    ...(packageSummary.peerDependencies ?? []),
+    ...(packageSummary.optionalDependencies ?? []),
+  ].includes("openclaw");
 }
 
 function detectPackageManager(rootDir, packageDir, packageJson) {

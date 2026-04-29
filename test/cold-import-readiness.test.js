@@ -71,6 +71,23 @@ test("cold import readiness preserves combined blocker evidence", () => {
   assert.deepEqual(validateColdImportReadiness(readiness), []);
 });
 
+test("cold import readiness treats openclaw as a host-linked dependency", () => {
+  const readiness = buildColdImportReadiness({
+    report: readinessReport(
+      [{ kind: "extension", specifier: "./index.js", relativePath: "index.js", exists: true }],
+      {
+        dependencies: ["openclaw"],
+      },
+    ),
+  });
+  const entrypoint = readiness.fixtures[0].entrypoints[0];
+
+  assert.equal(entrypoint.status, "ready");
+  assert.deepEqual(entrypoint.blockers, []);
+  assert.equal(readiness.summary.dependencyInstallRequiredCount, 0);
+  assert.deepEqual(validateColdImportReadiness(readiness), []);
+});
+
 test("cold import readiness validation rejects incomplete entries", () => {
   const errors = validateColdImportReadiness({
     fixtures: [
