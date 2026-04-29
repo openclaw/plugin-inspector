@@ -1,6 +1,11 @@
 import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 
 export const syntheticRegistrationExecutionProfiles = {
+  createChatChannelPlugin: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "channel plugin factory metadata is captured before channel runtime execution",
+  },
   defineChannelPluginEntry: {
     mode: "metadata-only",
     callableProperties: [],
@@ -326,6 +331,7 @@ export const defaultSyntheticHookContexts = {
 };
 
 export const defaultSyntheticRegistrationArguments = {
+  createChatChannelPlugin: [{ base: { id: "fixture-channel" }, outbound: { sendText: "function" } }],
   defineChannelPluginEntry: [{ id: "fixture-channel", setup: "function", receive: "function" }],
   definePluginEntry: [{ id: "fixture-plugin", register: "function" }],
   registerChannel: [{ id: "fixture-channel", send: "function", receive: "function" }],

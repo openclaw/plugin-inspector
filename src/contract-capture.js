@@ -7,6 +7,7 @@ import {
 } from "./synthetic-probes.js";
 
 export const defaultRegistrationAssertions = {
+  createChatChannelPlugin: ["channel plugin id is stable", "channel factory metadata is captured"],
   defineChannelPluginEntry: ["channel id is stable", "setup/config schema can be read", "message envelope metadata is preserved"],
   definePluginEntry: ["entrypoint register function is callable", "entrypoint metadata is preserved"],
   registerChannel: ["channel id is stable", "inbound/outbound envelope shape is captured", "sender metadata is preserved"],

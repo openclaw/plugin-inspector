@@ -105,6 +105,7 @@ test("synthetic probe plan blocks unclassified registrars", () => {
 
 test("synthetic probe plan classifies generated kitchen-sink registrars", () => {
   const kitchenSinkRegistrars = [
+    "createChatChannelPlugin",
     "registerAgentHarness",
     "registerAgentToolResultMiddleware",
     "registerAutoEnableProbe",
