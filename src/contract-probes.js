@@ -106,6 +106,20 @@ export const contractProbeRules = {
   },
 };
 
+const openClawOwnedProbeIssueCodes = new Set([
+  "before-tool-call-probe",
+  "channel-contract-probe",
+  "conversation-access-hook",
+  "registration-capture-gap",
+]);
+
+export function compatRecordForIssueCode(code) {
+  if (!openClawOwnedProbeIssueCodes.has(code)) {
+    return undefined;
+  }
+  return contractProbeRules[code]?.id;
+}
+
 export function buildContractProbes({ warnings = [], suggestions = [], fixtures = [] }) {
   const fixtureById = new Map(fixtures.map((fixture) => [fixture.id, fixture]));
   const probes = [];

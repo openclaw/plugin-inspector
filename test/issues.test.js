@@ -47,6 +47,18 @@ test("issue classification separates live breaks from compat and deprecation buc
       expected: { issueClass: "compat-gap", compatStatus: "missing", severity: "P1", live: false },
     },
     {
+      name: "active OpenClaw probe contract stays an inspector gap",
+      finding: {
+        code: "before-tool-call-probe",
+        compatRecord: "hook.before_tool_call.terminal-block-approval",
+      },
+      targetOpenClaw: {
+        compatRecordStatuses: { "hook.before_tool_call.terminal-block-approval": "active" },
+      },
+      metadata: { severity: "P1" },
+      expected: { issueClass: "inspector-gap", compatStatus: "active", severity: "P1", live: false },
+    },
+    {
       name: "unknown untracked hook is P0 live break",
       finding: { code: "unknown-hook-name" },
       targetOpenClaw: { compatRecordStatuses: {} },

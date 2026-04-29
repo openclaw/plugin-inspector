@@ -43,6 +43,7 @@ export {
 } from "./ci-outputs.js";
 export {
   buildContractProbes,
+  compatRecordForIssueCode,
   contractProbeRules,
   probePriority,
 } from "./contract-probes.js";

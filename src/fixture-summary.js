@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { readdir } from "node:fs/promises";
 import path from "node:path";
+import { compatRecordForIssueCode } from "./contract-probes.js";
 import { readJsonFile } from "./json-file.js";
 
 const conversationAccessHooks = new Set(["agent_end", "llm_input", "llm_output"]);
@@ -399,6 +400,7 @@ export function classifyCompatibilityFixture({ fixture, inspection, fixtureRepor
       level: "warning",
       message: "fixture observes raw model or conversation content and needs privacy-boundary contract probes",
       evidence: detailEvidence(conversationHookDetails),
+      compatRecord: compatRecordForIssueCode("conversation-access-hook"),
     });
     decisions.push({
       fixture: fixture.id,
@@ -459,6 +461,7 @@ export function classifyCompatibilityFixture({ fixture, inspection, fixtureRepor
       level: "suggestion",
       message: "future inspector capture API should record lifecycle, route, gateway, command, and interactive registrations",
       evidence: detailEvidence(captureGapRegistrationDetails),
+      compatRecord: compatRecordForIssueCode("registration-capture-gap"),
     });
     decisions.push({
       fixture: fixture.id,
@@ -477,6 +480,7 @@ export function classifyCompatibilityFixture({ fixture, inspection, fixtureRepor
       level: "suggestion",
       message: "add contract probes for before_tool_call terminal, block, and approval semantics",
       evidence: detailEvidence(hookDetails),
+      compatRecord: compatRecordForIssueCode("before-tool-call-probe"),
     });
     decisions.push({
       fixture: fixture.id,
@@ -500,6 +504,7 @@ export function classifyCompatibilityFixture({ fixture, inspection, fixtureRepor
       level: "suggestion",
       message: "add channel envelope, config-schema, and runtime metadata probes",
       evidence: detailEvidence(channelRegistrationDetails),
+      compatRecord: compatRecordForIssueCode("channel-contract-probe"),
     });
     decisions.push({
       fixture: fixture.id,

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildContractProbes, contractProbeRules, probePriority } from "../src/advanced.js";
+import { buildContractProbes, compatRecordForIssueCode, contractProbeRules, probePriority } from "../src/advanced.js";
 
 test("contract probes map issue findings to executable backlog rows", () => {
   const probes = buildContractProbes({
@@ -41,6 +41,8 @@ test("contract probes map issue findings to executable backlog rows", () => {
   });
 
   assert.ok(contractProbeRules["registration-capture-gap"]);
+  assert.equal(compatRecordForIssueCode("registration-capture-gap"), "api.capture.runtime-registrars");
+  assert.equal(compatRecordForIssueCode("package-dependency-install-required"), undefined);
   assert.deepEqual(
     probes.map((probe) => [probe.id, probe.priority, probe.target]),
     [

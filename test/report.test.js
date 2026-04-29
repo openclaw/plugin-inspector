@@ -592,11 +592,29 @@ test("compatibility fixture classifier reports seam and metadata follow-ups", ()
 
   assert.ok(result.warnings.some((finding) => finding.code === "provider-auth-env-vars"));
   assert.ok(result.warnings.some((finding) => finding.code === "channel-env-vars"));
-  assert.ok(result.warnings.some((finding) => finding.code === "conversation-access-hook"));
+  assert.ok(
+    result.warnings.some(
+      (finding) =>
+        finding.code === "conversation-access-hook" &&
+        finding.compatRecord === "hook.llm-observer.privacy-payload",
+    ),
+  );
   assert.ok(result.warnings.some((finding) => finding.code === "legacy-root-sdk-import"));
   assert.ok(result.warnings.some((finding) => finding.code === "package-json-missing"));
-  assert.ok(result.suggestions.some((finding) => finding.code === "registration-capture-gap"));
-  assert.ok(result.suggestions.some((finding) => finding.code === "before-tool-call-probe"));
+  assert.ok(
+    result.suggestions.some(
+      (finding) =>
+        finding.code === "registration-capture-gap" &&
+        finding.compatRecord === "api.capture.runtime-registrars",
+    ),
+  );
+  assert.ok(
+    result.suggestions.some(
+      (finding) =>
+        finding.code === "before-tool-call-probe" &&
+        finding.compatRecord === "hook.before_tool_call.terminal-block-approval",
+    ),
+  );
   assert.ok(result.suggestions.some((finding) => finding.code === "runtime-tool-capture"));
   assert.ok(result.decisions.some((decision) => decision.seam === "conversation-access"));
 });
