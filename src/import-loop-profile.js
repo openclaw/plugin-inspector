@@ -30,6 +30,9 @@ export async function buildImportLoopProfile(options = {}) {
   }
 
   const wallMs = samples.map((sample) => sample.wallMs).sort((left, right) => left - right);
+  const rssSampleCount = samples.reduce((sum, sample) => sum + (sample.rssSampleCount ?? (sample.peakRssMb > 0 ? 1 : 0)), 0);
+  const cpuSampleCount = samples.reduce((sum, sample) => sum + (sample.cpuSampleCount ?? 0), 0);
+  const statSampleCount = samples.reduce((sum, sample) => sum + (sample.statSampleCount ?? 0), 0);
   return {
     generatedAt: options.generatedAt ?? defaultImportLoopProfileOptions.generatedAt,
     mode: options.mode ?? "subprocess-cold-import-loop",
@@ -40,6 +43,9 @@ export async function buildImportLoopProfile(options = {}) {
       p95WallMs: percentile(wallMs, 0.95),
       maxPeakRssMb: Math.max(0, ...samples.map((sample) => sample.peakRssMb)),
       maxCpuMsEstimate: Math.max(0, ...samples.map((sample) => sample.cpuMsEstimate)),
+      statSampleCount,
+      rssSampleCount,
+      cpuSampleCount,
       capturedCount: samples.reduce((sum, sample) => sum + sample.capturedCount, 0),
       failCount: samples.filter((sample) => sample.exitCode !== 0 || sample.status !== "captured").length,
     },
@@ -85,7 +91,7 @@ export function renderImportLoopProfileMarkdown(report, options = {}) {
     "",
     "## Summary",
     "",
-    markdownTable(Object.entries(report.summary).map(([key, value]) => [key, value]), ["Metric", "Value"]),
+    markdownTable(summaryRows(report), ["Metric", "Value"]),
     "",
     "## Samples",
     "",
@@ -95,11 +101,12 @@ export function renderImportLoopProfileMarkdown(report, options = {}) {
         sample.status,
         sample.capturedCount,
         `${sample.wallMs} ms`,
-        `${sample.peakRssMb} MB`,
-        `${sample.cpuMsEstimate} ms`,
+        formatSampledMetric(sample.peakRssMb, sample.rssSampleCount),
+        formatSampledMetric(sample.cpuMsEstimate, sample.cpuSampleCount, "ms"),
+        `${sample.rssSampleCount ?? 0}/${sample.cpuSampleCount ?? 0}`,
         sample.exitCode,
       ]),
-      ["Run", "Status", "Captured", "Wall", "Peak RSS", "CPU Estimate", "Exit"],
+      ["Run", "Status", "Captured", "Wall", "Peak RSS", "CPU Estimate", "RSS/CPU samples", "Exit"],
     ),
   ].join("\n");
 }
@@ -130,8 +137,33 @@ async function runCaptureSample(options) {
     peakRssMb: profile.peakRssMb,
     peakCpuPercent: profile.peakCpuPercent,
     cpuMsEstimate: profile.cpuMsEstimate,
+    statSampleCount: profile.statSampleCount,
+    rssSampleCount: profile.rssSampleCount,
+    cpuSampleCount: profile.cpuSampleCount,
     stderrPreview: profile.stderrPreview,
   };
+}
+
+function summaryRows(report) {
+  return [
+    ["runs", report.summary.runs],
+    ["p50WallMs", report.summary.p50WallMs],
+    ["p95WallMs", report.summary.p95WallMs],
+    ["maxPeakRssMb", formatSampledMetric(report.summary.maxPeakRssMb, report.summary.rssSampleCount)],
+    ["maxCpuMsEstimate", formatSampledMetric(report.summary.maxCpuMsEstimate, report.summary.cpuSampleCount, "ms")],
+    ["statSampleCount", report.summary.statSampleCount ?? 0],
+    ["rssSampleCount", report.summary.rssSampleCount ?? 0],
+    ["cpuSampleCount", report.summary.cpuSampleCount ?? 0],
+    ["capturedCount", report.summary.capturedCount],
+    ["failCount", report.summary.failCount],
+  ];
+}
+
+function formatSampledMetric(value, count, unit = "MB") {
+  if ((count ?? 0) <= 0) {
+    return "n/a";
+  }
+  return `${value} ${unit}`;
 }
 
 function buildCaptureCommand(options) {

@@ -97,6 +97,8 @@ test("ci summary rolls up compatibility, policy, ref diff, and profile findings"
           p95WallMs: 75,
           maxPeakRssMb: 40,
           maxCpuMsEstimate: 30,
+          rssSampleCount: 2,
+          cpuSampleCount: 2,
         },
       },
     },

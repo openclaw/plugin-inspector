@@ -58,6 +58,8 @@ export async function buildCiSummary(options = {}) {
       importLoopP95Ms: reports.importLoop?.summary?.p95WallMs ?? 0,
       importLoopMaxRssMb: reports.importLoop?.summary?.maxPeakRssMb ?? 0,
       importLoopMaxCpuMs: reports.importLoop?.summary?.maxCpuMsEstimate ?? 0,
+      importLoopRssSampleCount: metricSampleCount(reports.importLoop, "rss", "maxPeakRssMb"),
+      importLoopCpuSampleCount: metricSampleCount(reports.importLoop, "cpu", "maxCpuMsEstimate"),
     },
     topIssues: topIssues(reports.compatibility),
     refRegressions: (reports.refDiff?.regressions ?? []).slice(0, 20),
@@ -148,7 +150,7 @@ export function renderCiSummaryMarkdown(summary) {
         ["Jiti loader candidates", summary.summary.loaderJitiCandidates],
         [
           "Import loop",
-          `p50 ${summary.summary.importLoopP50Ms} ms / p95 ${summary.summary.importLoopP95Ms} ms / max RSS ${summary.summary.importLoopMaxRssMb} MB / CPU ${summary.summary.importLoopMaxCpuMs} ms`,
+          `p50 ${summary.summary.importLoopP50Ms} ms / p95 ${summary.summary.importLoopP95Ms} ms / max RSS ${formatSampledMetric(summary.summary.importLoopMaxRssMb, summary.summary.importLoopRssSampleCount)} / CPU ${formatSampledMetric(summary.summary.importLoopMaxCpuMs, summary.summary.importLoopCpuSampleCount, "ms")}`,
         ],
       ],
       ["Metric", "Value"],
@@ -220,4 +222,36 @@ function topIssues(report) {
 
 function markdownTable(rows, headers) {
   return renderPaddedMarkdownTable(rows, headers, { nullValue: "-" });
+}
+
+function metricSampleCount(report, kind, maxMetric) {
+  const summaryKey = kind === "rss" ? "rssSampleCount" : "cpuSampleCount";
+  const summaryCount = report?.summary?.[summaryKey];
+  if (Number.isFinite(summaryCount)) {
+    return summaryCount;
+  }
+  const sampleCount = inferSampleCount(report?.samples, kind);
+  if (sampleCount > 0) {
+    return sampleCount;
+  }
+  return (report?.summary?.[maxMetric] ?? 0) > 0 ? 1 : 0;
+}
+
+function inferSampleCount(samples = [], kind) {
+  if (!Array.isArray(samples)) {
+    return 0;
+  }
+  return samples.reduce((sum, sample) => {
+    if (kind === "rss") {
+      return sum + (sample.rssSampleCount ?? (sample.peakRssMb > 0 ? 1 : 0));
+    }
+    return sum + (sample.cpuSampleCount ?? 0);
+  }, 0);
+}
+
+function formatSampledMetric(value, count, unit = "MB") {
+  if ((count ?? 0) <= 0) {
+    return "n/a";
+  }
+  return `${value} ${unit}`;
 }

@@ -7,8 +7,12 @@ export async function runProfiledProcess(options) {
   let firstRssKb = 0;
   let peakRssKb = 0;
   let peakCpuPercent = 0;
+  let statSampleCount = 0;
+  let rssSampleCount = 0;
+  let cpuSampleCount = 0;
   const cpuSamples = [];
   let pollInFlight = false;
+  const pendingStats = new Set();
 
   const child = spawn(options.command, options.args ?? [], {
     cwd: options.cwd,
@@ -21,27 +25,43 @@ export async function runProfiledProcess(options) {
   child.stderr?.on("data", (chunk) => stderr.push(chunk));
 
   const recordStats = (stats) => {
-    if (stats.rssKb > 0 && firstRssKb === 0) {
+    if (stats.rssAvailable || stats.cpuAvailable) {
+      statSampleCount += 1;
+    }
+    if (stats.rssAvailable) {
+      rssSampleCount += 1;
+    }
+    if (stats.cpuAvailable) {
+      cpuSampleCount += 1;
+    }
+    if (stats.rssAvailable && stats.rssKb > 0 && firstRssKb === 0) {
       firstRssKb = stats.rssKb;
     }
-    peakRssKb = Math.max(peakRssKb, stats.rssKb);
-    peakCpuPercent = Math.max(peakCpuPercent, stats.cpuPercent);
-    if (stats.cpuPercent > 0) {
+    if (stats.rssAvailable) {
+      peakRssKb = Math.max(peakRssKb, stats.rssKb);
+    }
+    if (stats.cpuAvailable) {
+      peakCpuPercent = Math.max(peakCpuPercent, stats.cpuPercent);
       cpuSamples.push(stats.cpuPercent);
     }
   };
 
-  const poll = setInterval(() => {
+  const sampleStats = () => {
     if (pollInFlight) {
       return;
     }
     pollInFlight = true;
-    readProcessStats(child.pid)
+    const pending = readProcessStats(child.pid)
       .then(recordStats)
       .finally(() => {
         pollInFlight = false;
+        pendingStats.delete(pending);
       });
-  }, options.pollMs ?? 100);
+    pendingStats.add(pending);
+  };
+
+  sampleStats();
+  const poll = setInterval(sampleStats, options.pollMs ?? 25);
 
   const exitCode = await new Promise((resolve, reject) => {
     child.on("error", (error) => {
@@ -51,16 +71,10 @@ export async function runProfiledProcess(options) {
     child.on("exit", (code) => resolve(code ?? 1));
   });
   clearInterval(poll);
+  await Promise.allSettled([...pendingStats]);
 
   const finalStats = await readProcessStats(child.pid);
-  if (finalStats.rssKb > 0 && firstRssKb === 0) {
-    firstRssKb = finalStats.rssKb;
-  }
-  peakRssKb = Math.max(peakRssKb, finalStats.rssKb);
-  peakCpuPercent = Math.max(peakCpuPercent, finalStats.cpuPercent);
-  if (finalStats.cpuPercent > 0) {
-    cpuSamples.push(finalStats.cpuPercent);
-  }
+  recordStats(finalStats);
 
   const wallMs = Math.round(performance.now() - start);
   const averageCpuPercent =
@@ -79,6 +93,9 @@ export async function runProfiledProcess(options) {
     peakCpuPercent: Math.round(peakCpuPercent * 10) / 10,
     cpuMsEstimate: Math.round((wallMs * cpuPercentForEstimate) / 100),
     harnessHeapDeltaMb: Math.round((heapUsedMb() - heapStartMb) * 10) / 10,
+    statSampleCount,
+    rssSampleCount,
+    cpuSampleCount,
     exitCode,
     stdoutPreview: previewLines(stdout),
     stderrPreview: previewLines(stderr),
@@ -87,7 +104,7 @@ export async function runProfiledProcess(options) {
 
 async function readProcessStats(pid) {
   if (!pid || process.platform === "win32") {
-    return { rssKb: 0, cpuPercent: 0 };
+    return { rssAvailable: false, rssKb: 0, cpuAvailable: false, cpuPercent: 0 };
   }
   return new Promise((resolve) => {
     const ps = spawn("ps", ["-o", "rss=", "-o", "%cpu=", "-p", String(pid)], {
@@ -95,14 +112,18 @@ async function readProcessStats(pid) {
     });
     const chunks = [];
     ps.stdout.on("data", (chunk) => chunks.push(chunk));
-    ps.on("error", () => resolve({ rssKb: 0, cpuPercent: 0 }));
+    ps.on("error", () => resolve({ rssAvailable: false, rssKb: 0, cpuAvailable: false, cpuPercent: 0 }));
     ps.on("exit", () => {
       const [rssRaw, cpuRaw] = Buffer.concat(chunks).toString("utf8").trim().split(/\s+/);
       const rssKb = Number.parseInt(rssRaw, 10);
       const cpuPercent = Number.parseFloat(cpuRaw);
+      const rssAvailable = Number.isFinite(rssKb);
+      const cpuAvailable = Number.isFinite(cpuPercent);
       resolve({
-        rssKb: Number.isFinite(rssKb) ? rssKb : 0,
-        cpuPercent: Number.isFinite(cpuPercent) ? cpuPercent : 0,
+        rssAvailable,
+        rssKb: rssAvailable ? rssKb : 0,
+        cpuAvailable,
+        cpuPercent: cpuAvailable ? cpuPercent : 0,
       });
     });
   });

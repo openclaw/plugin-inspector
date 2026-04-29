@@ -46,8 +46,8 @@ export async function buildRuntimeProfile(options = {}) {
       os: process.platform,
       arch: process.arch,
       node: process.version,
-      rssSampler: process.platform === "win32" ? "unavailable" : "ps",
-      cpuSampler: process.platform === "win32" ? "unavailable" : "ps-percent",
+      rssSampler: process.platform === "win32" ? "unavailable" : "ps-immediate-25ms",
+      cpuSampler: process.platform === "win32" ? "unavailable" : "ps-percent-immediate-25ms",
     },
     summary: summarizeProfile(commands),
     groups: summarizeCommandGroups(commands),
@@ -65,8 +65,8 @@ export function validateRuntimeProfile(profile) {
       errors.push(`${command.id}: missing wall time`);
     }
   }
-  if (profile.platform?.rssSampler !== "unavailable" && profile.commands.every((command) => command.peakRssMb.max <= 0)) {
-    errors.push("all commands are missing peak RSS");
+  if (profile.platform?.rssSampler !== "unavailable" && profile.commands.every((command) => !hasRssSample(command))) {
+    errors.push("all commands are missing peak RSS samples");
   }
   return errors;
 }
@@ -98,10 +98,17 @@ export function renderRuntimeProfileMarkdown(profile, options = {}) {
       [
         ["Commands", profile.summary.commandCount],
         ["P50 wall time", `${profile.summary.p50WallMs} ms`],
-        ["P95 wall time", `${profile.summary.p95WallMs} ms`],
-        ["Max peak RSS", `${profile.summary.maxPeakRssMb} MB`],
-        ["Max RSS delta", `${profile.summary.maxRssDeltaMb} MB`],
-        ["Max CPU estimate", `${profile.summary.maxCpuMsEstimate} ms`],
+        ["Command P95 wall time", `${profile.summary.p95WallMs} ms`],
+        ["Wall time basis", profile.summary.wallTimeBasis ?? "command-median-p95"],
+        ["Profile samples", profile.summary.sampleCount ?? sampleCount(profile.commands)],
+        ["RSS samples", profile.summary.rssSampleCount ?? rssSampleCount(profile.commands)],
+        ["CPU samples", profile.summary.cpuSampleCount ?? cpuSampleCount(profile.commands)],
+        ["Max peak RSS", formatSampledMetric(profile.summary.maxPeakRssMb, profile.summary.rssSampleCount ?? rssSampleCount(profile.commands))],
+        ["Max RSS delta", formatSampledMetric(profile.summary.maxRssDeltaMb, profile.summary.rssSampleCount ?? rssSampleCount(profile.commands))],
+        [
+          "Max CPU estimate",
+          formatSampledMetric(profile.summary.maxCpuMsEstimate, profile.summary.cpuSampleCount ?? cpuSampleCount(profile.commands), "ms"),
+        ],
         ["Max harness heap delta", `${profile.summary.maxHarnessHeapDeltaMb} MB`],
       ],
       ["Metric", "Value"],
@@ -129,13 +136,14 @@ export function renderRuntimeProfileMarkdown(profile, options = {}) {
         command.label,
         `${command.wallMs.median} ms`,
         `${command.wallMs.max} ms`,
-        `${command.peakRssMb.max} MB`,
-        `${command.rssDeltaMb.max} MB`,
-        `${command.cpuMsEstimate.max} ms`,
+        formatSampledMetric(command.peakRssMb.max, command.rssSampleCount),
+        formatSampledMetric(command.rssDeltaMb.max, command.rssSampleCount),
+        formatSampledMetric(command.cpuMsEstimate.max, command.cpuSampleCount, "ms"),
         `${command.harnessHeapDeltaMb.max} MB`,
+        `${command.rssSampleCount ?? 0}/${command.cpuSampleCount ?? 0}`,
         command.exitCodes.join(", "),
       ]),
-      ["ID", "Label", "Median wall", "Max wall", "Max peak RSS", "Max RSS delta", "CPU estimate", "Heap delta", "Exit codes"],
+      ["ID", "Label", "Median wall", "Max wall", "Max peak RSS", "Max RSS delta", "CPU estimate", "Heap delta", "RSS/CPU samples", "Exit codes"],
     ),
     "",
     "## Category Rollups",
@@ -146,11 +154,12 @@ export function renderRuntimeProfileMarkdown(profile, options = {}) {
         group.commandCount,
         `${group.p50WallMs} ms`,
         `${group.p95WallMs} ms`,
-        `${group.maxPeakRssMb} MB`,
-        `${group.maxCpuMsEstimate} ms`,
+        formatSampledMetric(group.maxPeakRssMb, group.rssSampleCount),
+        formatSampledMetric(group.maxCpuMsEstimate, group.cpuSampleCount, "ms"),
+        `${group.rssSampleCount ?? 0}/${group.cpuSampleCount ?? 0}`,
         group.commands.join(", "),
       ]),
-      ["Category", "Commands", "P50 wall", "P95 wall", "Max peak RSS", "CPU estimate", "Command IDs"],
+      ["Category", "Commands", "P50 wall", "P95 wall", "Max peak RSS", "CPU estimate", "RSS/CPU samples", "Command IDs"],
     ),
   ].join("\n");
 }
@@ -189,8 +198,15 @@ function summarizeProfile(commands) {
   const maxRssDeltaMb = Math.max(0, ...commands.map((command) => command.rssDeltaMb.max));
   const maxCpuMsEstimate = Math.max(0, ...commands.map((command) => command.cpuMsEstimate.max));
   const maxHarnessHeapDeltaMb = Math.max(0, ...commands.map((command) => command.harnessHeapDeltaMb.max));
+  const totalSampleCount = sampleCount(commands);
+  const totalRssSampleCount = rssSampleCount(commands);
+  const totalCpuSampleCount = cpuSampleCount(commands);
   return {
     commandCount: commands.length,
+    sampleCount: totalSampleCount,
+    rssSampleCount: totalRssSampleCount,
+    cpuSampleCount: totalCpuSampleCount,
+    wallTimeBasis: "command-median-p95",
     p50WallMs: percentile(wallTimes, 0.5),
     p95WallMs: percentile(wallTimes, 0.95),
     maxPeakRssMb,
@@ -206,6 +222,12 @@ function summarizeCommand(command, samples) {
   const rssDeltaMb = samples.map((sample) => sample.rssDeltaMb).sort((left, right) => left - right);
   const peakCpuPercent = samples.map((sample) => sample.peakCpuPercent).sort((left, right) => left - right);
   const cpuMsEstimate = samples.map((sample) => sample.cpuMsEstimate).sort((left, right) => left - right);
+  const statSampleCount = samples.reduce((sum, sample) => sum + (sample.statSampleCount ?? 0), 0);
+  const rssSampleTotal = samples.reduce(
+    (sum, sample) => sum + (sample.rssSampleCount ?? (sample.peakRssMb > 0 ? 1 : 0)),
+    0,
+  );
+  const cpuSampleTotal = samples.reduce((sum, sample) => sum + (sample.cpuSampleCount ?? 0), 0);
   const harnessHeapDeltaMb = samples
     .map((sample) => sample.harnessHeapDeltaMb)
     .sort((left, right) => left - right);
@@ -222,6 +244,9 @@ function summarizeCommand(command, samples) {
     peakCpuPercent: summarizeNumbers(peakCpuPercent),
     cpuMsEstimate: summarizeNumbers(cpuMsEstimate),
     harnessHeapDeltaMb: summarizeNumbers(harnessHeapDeltaMb),
+    statSampleCount,
+    rssSampleCount: rssSampleTotal,
+    cpuSampleCount: cpuSampleTotal,
     exitCodes: [...new Set(samples.map((sample) => sample.exitCode))].sort(),
   };
 }
@@ -244,6 +269,8 @@ function summarizeCommandGroups(commands) {
     const cpuMs = categoryCommands
       .flatMap((command) => command.samples.map((sample) => sample.cpuMsEstimate))
       .sort((left, right) => left - right);
+    const groupRssSampleCount = rssSampleCount(categoryCommands);
+    const groupCpuSampleCount = cpuSampleCount(categoryCommands);
     return {
       category,
       commandCount: categoryCommands.length,
@@ -251,9 +278,34 @@ function summarizeCommandGroups(commands) {
       p95WallMs: percentile(wallTimes, 0.95),
       maxPeakRssMb: peakRss.at(-1) ?? 0,
       maxCpuMsEstimate: cpuMs.at(-1) ?? 0,
+      rssSampleCount: groupRssSampleCount,
+      cpuSampleCount: groupCpuSampleCount,
       commands: categoryCommands.map((command) => command.id),
     };
   });
+}
+
+function hasRssSample(command) {
+  return (command.rssSampleCount ?? (command.peakRssMb?.max > 0 ? 1 : 0)) > 0;
+}
+
+function sampleCount(commands) {
+  return commands.reduce((sum, command) => sum + (command.samples?.length ?? 0), 0);
+}
+
+function rssSampleCount(commands) {
+  return commands.reduce((sum, command) => sum + (command.rssSampleCount ?? (command.peakRssMb?.max > 0 ? 1 : 0)), 0);
+}
+
+function cpuSampleCount(commands) {
+  return commands.reduce((sum, command) => sum + (command.cpuSampleCount ?? 0), 0);
+}
+
+function formatSampledMetric(value, count, unit = "MB") {
+  if ((count ?? 0) <= 0) {
+    return "n/a";
+  }
+  return `${value} ${unit}`;
 }
 
 function summarizeNumbers(values) {
