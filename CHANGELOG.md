@@ -5,6 +5,7 @@
 ### Fixed
 
 - Classify `createChatChannelPlugin` as channel factory metadata in synthetic probe plans so channel-core plugins do not fail as unknown registrars.
+- Treat `createChatChannelPlugin` and `defineChannelPluginEntry` as channel registration equivalents when validating fixture expectations.
 
 ## 0.3.4 - 2026-04-29
 

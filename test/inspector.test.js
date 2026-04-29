@@ -65,6 +65,42 @@ test("fixture set inspection reports missing expected seams", async () => {
   assert.match(report.breakages[0].message, /llm_output/);
 });
 
+test("fixture set inspection treats channel factories as channel registration coverage", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-channel-factory-"));
+  await mkdir(path.join(dir, "fixture"), { recursive: true });
+  await writeFile(
+    path.join(dir, "fixture", "index.js"),
+    [
+      'import { createChatChannelPlugin } from "openclaw/plugin-sdk/channel-core";',
+      "",
+      "export const channel = createChatChannelPlugin({ id: 'fixture-channel' });",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const report = await inspectFixtureSet({
+    version: 1,
+    submoduleRoot: ".",
+    rootDir: dir,
+    fixtures: [
+      {
+        id: "fixture",
+        path: "fixture",
+        repo: "https://github.com/openclaw/fixture.git",
+        priority: "high",
+        seams: ["channel"],
+        expect: {
+          registrations: ["registerChannel"],
+        },
+      },
+    ],
+  });
+
+  assert.equal(report.status, "pass");
+  assert.deepEqual(report.breakages, []);
+  assert.deepEqual(report.fixtures[0].registrations, ["createChatChannelPlugin"]);
+});
+
 test("capture entrypoint imports a local fixture and records registrations", async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-capture-"));
   const entrypoint = path.join(dir, "fixture.mjs");

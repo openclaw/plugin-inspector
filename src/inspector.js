@@ -11,6 +11,9 @@ import { readOpenClawTargetSurface } from "./openclaw-target.js";
 import { buildCompatibilityReport, buildReport } from "./report.js";
 
 const execFileAsync = promisify(execFile);
+const registrationEquivalents = new Map([
+  ["registerChannel", new Set(["createChatChannelPlugin", "defineChannelPluginEntry", "registerChannel"])],
+]);
 
 export async function inspectFixtureSet(config, options = {}) {
   const { inspections, failures } = await inspectConfiguredFixtures(config, options);
@@ -58,7 +61,7 @@ async function inspectConfiguredFixtures(config, options = {}) {
       ["manifestContracts", inspection.manifestContracts],
     ]) {
       const expected = fixture.expect?.[key] ?? [];
-      const missing = expected.filter((value) => !observed.includes(value));
+      const missing = expected.filter((value) => !satisfiesExpectedSeam(key, value, observed));
       if (missing.length > 0) {
         failures.push(`${fixture.id}: missing ${key}: ${missing.join(", ")}`);
       }
@@ -66,6 +69,17 @@ async function inspectConfiguredFixtures(config, options = {}) {
   }
 
   return { inspections, failures };
+}
+
+function satisfiesExpectedSeam(key, expected, observed) {
+  if (observed.includes(expected)) {
+    return true;
+  }
+  if (key !== "registrations") {
+    return false;
+  }
+  const equivalents = registrationEquivalents.get(expected);
+  return Boolean(equivalents && observed.some((value) => equivalents.has(value)));
 }
 
 export async function inspectPlugin(fixture, options = {}) {
