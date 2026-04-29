@@ -2,10 +2,16 @@
 
 ## Unreleased
 
+_No unreleased changes._
+
+## 0.3.5 - 2026-04-29
+
 ### Fixed
 
+- Add immediate/faster subprocess RSS and CPU sampling plus explicit sample counts so short import-loop reports do not silently publish fake zero-memory metrics.
 - Classify `createChatChannelPlugin` as channel factory metadata in synthetic probe plans so channel-core plugins do not fail as unknown registrars.
 - Treat `createChatChannelPlugin` and `defineChannelPluginEntry` as channel registration equivalents when validating fixture expectations.
+- Label runtime profile wall-time summaries as command-median p95 and render missing sampled metrics as `n/a`.
 
 ## 0.3.4 - 2026-04-29
 
