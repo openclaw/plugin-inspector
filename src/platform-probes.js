@@ -12,13 +12,11 @@ export function buildPlatformProbes(options = {}) {
   const entrypoints = plan.fixtures.flatMap((fixture) =>
     fixture.entrypoints.map((entrypoint) => summarizeEntrypoint(fixture.id, entrypoint)),
   );
-  const portabilityFindings = plan.fixtures.flatMap((fixture) =>
-    fixture.entrypoints.flatMap((entrypoint) =>
-      entrypoint.steps
-        .map((step) => summarizeStep(fixture.id, entrypoint, step))
-        .filter((finding) => finding.riskCodes.length > 0),
-    ),
+  const stepFindings = plan.fixtures.flatMap((fixture) =>
+    fixture.entrypoints.flatMap((entrypoint) => entrypoint.steps.map((step) => summarizeStep(fixture.id, entrypoint, step, options.stepCoverage))),
   );
+  const portabilityFindings = stepFindings.flatMap((finding) => (finding.residual ? [finding.residual] : []));
+  const coveredPortabilityFindings = stepFindings.flatMap((finding) => (finding.covered ? [finding.covered] : []));
 
   return {
     generatedAt: plan.generatedAt,
@@ -31,6 +29,7 @@ export function buildPlatformProbes(options = {}) {
       jitiAlternativeCount: entrypoints.filter((entrypoint) => entrypoint.loaderAlternatives.includes("jiti")).length,
       lazyImportProbeCount: entrypoints.filter((entrypoint) => entrypoint.capturePlanned && entrypoint.syntheticProbePlanned).length,
       portabilityFindingCount: portabilityFindings.length,
+      coveredPortabilityFindingCount: coveredPortabilityFindings.length,
       windowsRiskStepCount: portabilityFindings.filter((finding) => finding.platforms.includes("windows")).length,
       macosRiskStepCount: portabilityFindings.filter((finding) => finding.platforms.includes("macos")).length,
       linuxRiskStepCount: portabilityFindings.filter((finding) => finding.platforms.includes("linux")).length,
@@ -38,6 +37,7 @@ export function buildPlatformProbes(options = {}) {
     },
     entrypoints,
     portabilityFindings,
+    coveredPortabilityFindings,
     recommendations: buildRecommendations(portabilityFindings, entrypoints),
   };
 }
@@ -112,6 +112,19 @@ export function renderPlatformProbesMarkdown(report, options = {}) {
       ["Fixture", "Step", "Platforms", "Risks", "Mitigation"],
     ),
     "",
+    "## Covered Portability Findings",
+    "",
+    markdownTable(
+      (report.coveredPortabilityFindings ?? []).map((finding) => [
+        finding.fixture,
+        finding.kind,
+        finding.platforms.join(", ") || "-",
+        finding.riskCodes.join(", "),
+        finding.coverage,
+      ]),
+      ["Fixture", "Step", "Platforms", "Covered Risks", "Coverage"],
+    ),
+    "",
     "## Recommendations",
     "",
     markdownTable(
@@ -140,16 +153,48 @@ function summarizeEntrypoint(fixtureId, entrypoint) {
   };
 }
 
-function summarizeStep(fixtureId, entrypoint, step) {
+function summarizeStep(fixtureId, entrypoint, step, stepCoverage) {
   const riskCodes = stepRiskCodes(step);
-  return {
+  const coverage = normalizeStepCoverage(stepCoverage?.({ fixture: fixtureId, entrypoint, step, riskCodes }), riskCodes);
+  const residualRiskCodes = riskCodes.filter((code) => !coverage.riskCodes.includes(code));
+  const common = {
     fixture: fixtureId,
     entrypoint: entrypoint.id,
     kind: step.kind,
-    platforms: platformsForRiskCodes(riskCodes),
-    riskCodes,
     command: step.command,
-    mitigation: mitigationForRiskCodes(riskCodes),
+  };
+  return {
+    residual:
+      residualRiskCodes.length > 0
+        ? {
+            ...common,
+            coveredRiskCodes: coverage.riskCodes,
+            platforms: platformsForRiskCodes(residualRiskCodes),
+            riskCodes: residualRiskCodes,
+            mitigation: mitigationForRiskCodes(residualRiskCodes),
+          }
+        : null,
+    covered:
+      coverage.riskCodes.length > 0
+        ? {
+            ...common,
+            coverage: coverage.reason,
+            platforms: platformsForRiskCodes(coverage.riskCodes),
+            riskCodes: coverage.riskCodes,
+          }
+        : null,
+  };
+}
+
+function normalizeStepCoverage(coverage, riskCodes) {
+  if (!coverage) {
+    return { reason: "", riskCodes: [] };
+  }
+  const requested = coverage === true ? riskCodes : coverage.coveredRiskCodes ?? coverage.handledRiskCodes ?? coverage.riskCodes ?? coverage;
+  const covered = Array.isArray(requested) ? requested : [];
+  return {
+    reason: typeof coverage.reason === "string" && coverage.reason ? coverage.reason : "covered by isolated workspace executor",
+    riskCodes: covered.filter((code) => riskCodes.includes(code)).sort(),
   };
 }
 

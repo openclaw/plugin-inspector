@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Separate executor-covered platform portability findings from residual findings so downstream structured runners can keep reports blocking only on unhandled risks.
 - Sanitize absolute target OpenClaw paths from generated report artifacts and JSON CLI output.
 - Normalize the dependency-install inspector finding title to use isolated-workspace wording.
 

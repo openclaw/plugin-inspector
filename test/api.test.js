@@ -253,6 +253,33 @@ test("public API builds fixture-set workspace and platform plans from config", a
     markdownPath: path.join(outDir, "workspace.md"),
   });
   const platform = await buildFixtureSetPlatformProbes({ plan });
+  const coveredPlan = structuredClone(plan);
+  coveredPlan.fixtures[0].entrypoints = [
+    {
+      id: "cold-import.extension:sample-plugin:index",
+      status: "dependency-install-required",
+      entrypoint: "plugins/sample-plugin/index.js",
+      packageManager: "npm",
+      loaderStrategy: {
+        source: "javascript",
+        primary: "node",
+        alternatives: [],
+        reason: "test",
+      },
+      steps: [
+        {
+          kind: "prepare",
+          command: "mkdir -p .workspaces/fixture && rsync -a plugins/fixture/ .workspaces/fixture/",
+        },
+      ],
+    },
+  ];
+  const coveredPlatform = await buildFixtureSetPlatformProbes({
+    plan: coveredPlan,
+    stepCoverage({ riskCodes }) {
+      return { riskCodes };
+    },
+  });
   const platformPaths = await writeFixtureSetPlatformProbes(platform, {
     jsonPath: path.join(outDir, "platform.json"),
     markdownPath: path.join(outDir, "platform.md"),
@@ -269,6 +296,8 @@ test("public API builds fixture-set workspace and platform plans from config", a
   assert.match(renderFixtureSetWorkspacePlanMarkdown(plan), /## Entrypoint Workspaces/);
   assert.equal(JSON.parse(await readFile(planPaths.jsonPath, "utf8")).summary.fixtureCount, 1);
   assert.equal(platform.summary.fixtureCount, 1);
+  assert.equal(coveredPlatform.summary.portabilityFindingCount, 0);
+  assert.ok(coveredPlatform.summary.coveredPortabilityFindingCount > 0);
   assert.deepEqual(validateFixtureSetPlatformProbes(platform), []);
   assert.match(renderFixtureSetPlatformProbesMarkdown(platform), /## Loader Probes/);
   assert.equal(JSON.parse(await readFile(platformPaths.jsonPath, "utf8")).summary.fixtureCount, 1);
