@@ -6,6 +6,9 @@
 - Do not publish npm packages without explicit owner approval.
 - Preserve stable report field names and finding codes; downstream CI and
   crabpot reports may consume them.
+- Treat a package dependency named `openclaw` as a host-linked workspace input,
+  not an isolated dependency-install blocker. Keep third-party runtime
+  dependencies classified as install/audit blockers.
 - When changing plugin-inspector behavior, CLI/package entrypoints, release
   metadata, or the npm package version, update crabpot's
   `@openclaw/plugin-inspector` pin/docs/smoke path as needed and run the
