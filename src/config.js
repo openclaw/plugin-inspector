@@ -202,13 +202,43 @@ export function packageId(packageName) {
   if (!packageName) {
     return null;
   }
-  return packageName
+  const packageBase = packageName
     .split("/")
     .pop()
-    .replace(/^openclaw-/, "")
-    .replace(/[^a-zA-Z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .toLowerCase();
+    .replace(/^openclaw-/, "");
+  return trimHyphenEdges(collapsePackageIdSeparators(packageBase)).toLowerCase();
+}
+
+function collapsePackageIdSeparators(value) {
+  let result = "";
+  let previousWasHyphen = false;
+  for (const char of value) {
+    if (isAsciiAlphaNumeric(char)) {
+      result += char;
+      previousWasHyphen = false;
+    } else if (!previousWasHyphen) {
+      result += "-";
+      previousWasHyphen = true;
+    }
+  }
+  return result;
+}
+
+function isAsciiAlphaNumeric(char) {
+  const code = char.charCodeAt(0);
+  return (code >= 48 && code <= 57) || (code >= 65 && code <= 90) || (code >= 97 && code <= 122);
+}
+
+function trimHyphenEdges(value) {
+  let start = 0;
+  let end = value.length;
+  while (start < end && value[start] === "-") {
+    start += 1;
+  }
+  while (end > start && value[end - 1] === "-") {
+    end -= 1;
+  }
+  return value.slice(start, end);
 }
 
 export function inferPluginSeams(pluginManifest, packageJson) {

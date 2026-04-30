@@ -95,7 +95,7 @@ export function renderPaddedMarkdownTable(rows, headers, options = {}) {
 }
 
 export function escapeMarkdownTableCell(value) {
-  return value.replace(/\|/g, "\\|").replace(/\n/g, "<br>");
+  return value.replace(/\\/g, "\\\\").replace(/\|/g, "\\|").replace(/\n/g, "<br>");
 }
 
 async function assertFileMatches(filePath, expected) {

@@ -471,9 +471,38 @@ function lineForOffset(text, offset) {
 }
 
 function stripComments(text) {
-  return text
-    .replace(/\/\*[\s\S]*?\*\//g, (comment) => comment.replace(/[^\n]/g, " "))
-    .replace(/\/\/.*$/gm, (comment) => " ".repeat(comment.length));
+  let result = "";
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    const next = text[index + 1];
+    if (char === "/" && next === "*") {
+      result += "  ";
+      index += 2;
+      while (index < text.length && !(text[index] === "*" && text[index + 1] === "/")) {
+        result += blankCommentChar(text[index]);
+        index += 1;
+      }
+      if (index < text.length) {
+        result += "  ";
+        index += 1;
+      }
+    } else if (char === "/" && next === "/") {
+      result += "  ";
+      index += 2;
+      while (index < text.length && text[index] !== "\n" && text[index] !== "\r") {
+        result += " ";
+        index += 1;
+      }
+      index -= 1;
+    } else {
+      result += char;
+    }
+  }
+  return result;
+}
+
+function blankCommentChar(char) {
+  return char === "\n" || char === "\r" ? char : " ";
 }
 
 function sortDetails(details) {

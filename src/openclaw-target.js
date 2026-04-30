@@ -106,10 +106,87 @@ export function openClawTargetPathCandidates(manifest, configuredPath) {
 
 export function parseCompatRecordEntries(source) {
   const entries = [];
-  for (const match of source.matchAll(/\{[\s\S]*?\bcode:\s*["'`]([^"'`]+)["'`][\s\S]*?\bstatus:\s*["'`]([^"'`]+)["'`][\s\S]*?\}/g)) {
-    entries.push({ code: match[1], status: match[2] });
+  let cursor = 0;
+  while (cursor < source.length) {
+    const codeProperty = readStringProperty(source, "code", cursor);
+    if (!codeProperty) {
+      break;
+    }
+
+    const statusProperty = readStringProperty(source, "status", codeProperty.end);
+    if (statusProperty) {
+      entries.push({ code: codeProperty.value, status: statusProperty.value });
+      cursor = statusProperty.end;
+    } else {
+      cursor = codeProperty.end;
+    }
   }
   return dedupeBy(entries, (entry) => entry.code).sort((left, right) => left.code.localeCompare(right.code));
+}
+
+function readStringProperty(source, property, fromIndex) {
+  const propertyIndex = findProperty(source, property, fromIndex);
+  if (propertyIndex === -1) {
+    return null;
+  }
+  const colonIndex = source.indexOf(":", propertyIndex + property.length);
+  if (colonIndex === -1) {
+    return null;
+  }
+  let quoteIndex = colonIndex + 1;
+  while (quoteIndex < source.length && isWhitespace(source[quoteIndex])) {
+    quoteIndex += 1;
+  }
+  if (!isQuote(source[quoteIndex])) {
+    return null;
+  }
+  return readQuotedValue(source, quoteIndex);
+}
+
+function findProperty(source, property, fromIndex) {
+  let index = source.indexOf(property, fromIndex);
+  while (index !== -1) {
+    const previous = index === 0 ? "" : source[index - 1];
+    const next = source[index + property.length] ?? "";
+    if (!isIdentifierChar(previous) && !isIdentifierChar(next)) {
+      return index;
+    }
+    index = source.indexOf(property, index + property.length);
+  }
+  return -1;
+}
+
+function readQuotedValue(source, quoteIndex) {
+  const quote = source[quoteIndex];
+  let value = "";
+  for (let index = quoteIndex + 1; index < source.length; index += 1) {
+    const char = source[index];
+    if (char === "\\") {
+      value += source[index + 1] ?? "";
+      index += 1;
+    } else if (char === quote) {
+      return { value, end: index + 1 };
+    } else {
+      value += char;
+    }
+  }
+  return null;
+}
+
+function isQuote(char) {
+  return char === '"' || char === "'" || char === "`";
+}
+
+function isIdentifierChar(char) {
+  if (char === "_" || char === "$") {
+    return true;
+  }
+  const code = char.charCodeAt(0);
+  return (code >= 48 && code <= 57) || (code >= 65 && code <= 90) || (code >= 97 && code <= 122);
+}
+
+function isWhitespace(char) {
+  return char === " " || char === "\n" || char === "\r" || char === "\t";
 }
 
 export function parsePluginSdkExports(packageJson) {

@@ -136,6 +136,7 @@ test("OpenClaw target parsing helpers stay deterministic", () => {
   );
   assert.deepEqual(
     parseCompatRecordEntries(`
+      ${"{{".repeat(256)}
       { code: "b", status: "supported" }
       { code: "a", status: "deprecated" }
       { code: "b", status: "supported" }

@@ -12,6 +12,7 @@ import {
   classifyCompatRecordCoverage,
   classifyPackageContracts,
   classifyTargetOpenClawCoverage,
+  escapeMarkdownTableCell,
   inspectFixtureSet,
   loadInspectorConfig,
   renderCompatibilityIssuesReport,
@@ -25,6 +26,11 @@ import {
   writeCiOutputArtifacts,
   writeReport,
 } from "../src/advanced.js";
+
+test("markdown table cell escaping preserves literal backslashes", () => {
+  assert.equal(escapeMarkdownTableCell(String.raw`C:\tmp|next
+line`), String.raw`C:\\tmp\|next<br>line`);
+});
 
 test("markdown report includes summary and inventory", async () => {
   const config = await loadInspectorConfig("test/fixtures/inspector.config.json");

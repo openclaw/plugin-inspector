@@ -43,6 +43,18 @@ test("source inspection records hook, registrar, and SDK import evidence", () =>
   ]);
 });
 
+test("source inspection strips long comments before matching registrations", () => {
+  const inspection = inspectSourceText(
+    [`/* ${"a/*".repeat(512)} */`, "api.registerTool({ name: 'weather' });"].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(
+    inspection.registrations.map((registration) => `${registration.name}@${registration.ref}`),
+    ["registerTool@plugins/example/index.ts:2"],
+  );
+});
+
 test("fixture set inspection produces a passing report", async () => {
   const config = await loadInspectorConfig("test/fixtures/inspector.config.json");
   const report = await inspectFixtureSet(config);

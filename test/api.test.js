@@ -3,6 +3,7 @@ import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
+import { packageId } from "../src/config.js";
 import {
   buildCiPolicyReport,
   buildCiSummary,
@@ -84,6 +85,10 @@ import {
   writeRuntimeProfile,
   writeSyntheticProbePlan,
 } from "../src/index.js";
+
+test("package ids collapse separators and trim hyphen edges", () => {
+  assert.equal(packageId("@openclaw/openclaw---Weather_Plugin!!!"), "weather-plugin");
+});
 
 test("public API runs the plugin-root check and writes reports", async () => {
   const pluginRoot = await createPluginRoot();
