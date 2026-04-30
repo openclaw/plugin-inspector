@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-_No unreleased changes._
+### Changed
+
+- Report import-loop RSS and CPU as baseline-adjusted plugin deltas alongside raw subprocess metrics so Crabpot dashboards do not treat harness import cost as plugin runtime cost.
 
 ## 0.3.5 - 2026-04-29
 

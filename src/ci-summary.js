@@ -56,8 +56,9 @@ export async function buildCiSummary(options = {}) {
       loaderJitiCandidates: reports.platform?.summary?.jitiAlternativeCount ?? 0,
       importLoopP50Ms: reports.importLoop?.summary?.p50WallMs ?? 0,
       importLoopP95Ms: reports.importLoop?.summary?.p95WallMs ?? 0,
-      importLoopMaxRssMb: reports.importLoop?.summary?.maxPeakRssMb ?? 0,
-      importLoopMaxCpuMs: reports.importLoop?.summary?.maxCpuMsEstimate ?? 0,
+      importLoopMetricBasis: reports.importLoop?.summary?.maxPluginPeakRssDeltaMb === undefined ? "raw" : "baseline-adjusted",
+      importLoopMaxRssMb: reports.importLoop?.summary?.maxPluginPeakRssDeltaMb ?? reports.importLoop?.summary?.maxPeakRssMb ?? 0,
+      importLoopMaxCpuMs: reports.importLoop?.summary?.maxPluginCpuDeltaMsEstimate ?? reports.importLoop?.summary?.maxCpuMsEstimate ?? 0,
       importLoopRssSampleCount: metricSampleCount(reports.importLoop, "rss", "maxPeakRssMb"),
       importLoopCpuSampleCount: metricSampleCount(reports.importLoop, "cpu", "maxCpuMsEstimate"),
     },
@@ -150,7 +151,7 @@ export function renderCiSummaryMarkdown(summary) {
         ["Jiti loader candidates", summary.summary.loaderJitiCandidates],
         [
           "Import loop",
-          `p50 ${summary.summary.importLoopP50Ms} ms / p95 ${summary.summary.importLoopP95Ms} ms / max RSS ${formatSampledMetric(summary.summary.importLoopMaxRssMb, summary.summary.importLoopRssSampleCount)} / CPU ${formatSampledMetric(summary.summary.importLoopMaxCpuMs, summary.summary.importLoopCpuSampleCount, "ms")}`,
+          importLoopSummaryLabel(summary.summary),
         ],
       ],
       ["Metric", "Value"],
@@ -247,6 +248,11 @@ function inferSampleCount(samples = [], kind) {
     }
     return sum + (sample.cpuSampleCount ?? 0);
   }, 0);
+}
+
+function importLoopSummaryLabel(summary) {
+  const metricLabel = summary.importLoopMetricBasis === "baseline-adjusted" ? "plugin delta" : "raw";
+  return `p50 ${summary.importLoopP50Ms} ms / p95 ${summary.importLoopP95Ms} ms / ${metricLabel} RSS ${formatSampledMetric(summary.importLoopMaxRssMb, summary.importLoopRssSampleCount)} / ${metricLabel} CPU ${formatSampledMetric(summary.importLoopMaxCpuMs, summary.importLoopCpuSampleCount, "ms")}`;
 }
 
 function formatSampledMetric(value, count, unit = "MB") {
