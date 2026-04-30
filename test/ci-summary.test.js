@@ -99,6 +99,9 @@ test("ci summary rolls up compatibility, policy, ref diff, and profile findings"
           maxCpuMsEstimate: 30,
           maxPluginPeakRssDeltaMb: 8,
           maxPluginCpuDeltaMsEstimate: 6,
+          openClawLifecycleCount: 2,
+          p50OpenClawImportMs: 12,
+          p50OpenClawActivationMs: 3,
           rssSampleCount: 2,
           cpuSampleCount: 2,
         },
@@ -114,9 +117,10 @@ test("ci summary rolls up compatibility, policy, ref diff, and profile findings"
   assert.equal(summary.summary.importLoopP50Ms, 50);
   assert.equal(summary.summary.importLoopMetricBasis, "baseline-adjusted");
   assert.equal(summary.summary.importLoopMaxRssMb, 8);
+  assert.equal(summary.summary.importLoopOpenClawImportP50Ms, 12);
   assert.match(renderCiSummaryMarkdown(summary), /Crabpot CI Summary/);
   assert.match(renderCiSummaryMarkdown(summary), /Windows portability risks/);
-  assert.match(renderCiSummaryMarkdown(summary), /p50 50 ms \/ p95 75 ms \/ plugin delta RSS 8 MB \/ plugin delta CPU 6 ms/);
+  assert.match(renderCiSummaryMarkdown(summary), /p50 50 ms \/ p95 75 ms \/ plugin delta RSS 8 MB \/ plugin delta CPU 6 ms \/ OpenClaw import 12 ms \/ activate 3 ms/);
   assert.match(renderCiSummaryMarkdown(summary), /\| P0 issues\s+\| 1\s+\|/);
 });
 

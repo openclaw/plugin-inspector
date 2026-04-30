@@ -57,7 +57,7 @@ test("import loop profile can use a custom capture script and opt-in env", async
       "const [entrypoint,, outputPath] = process.argv.slice(2);",
       "if (process.env.CUSTOM_IMPORT_LOOP !== '1') throw new Error('missing opt-in');",
       "await mkdir(path.dirname(outputPath), { recursive: true });",
-      "await writeFile(outputPath, JSON.stringify({ status: 'captured', entrypoint, captured: [{ kind: 'hook', name: 'before_tool_call' }] }));",
+      "await writeFile(outputPath, JSON.stringify({ status: 'captured', entrypoint, captured: [{ kind: 'hook', name: 'before_tool_call' }], openClawLifecycle: { importMs: 12, activationMs: 3, importPhase: 'full', activationPhase: 'full:register' } }));",
     ].join("\n"),
     "utf8",
   );
@@ -73,6 +73,10 @@ test("import loop profile can use a custom capture script and opt-in env", async
   assert.equal(profile.summary.failCount, 0);
   assert.equal(profile.summary.baselineRuns, 1);
   assert.equal(profile.summary.capturedCount, 1);
+  assert.equal(profile.summary.openClawLifecycleCount, 1);
+  assert.equal(profile.summary.p50OpenClawImportMs, 12);
+  assert.equal(profile.summary.p50OpenClawActivationMs, 3);
+  assert.match(renderImportLoopProfileMarkdown(profile), /OpenClaw Import/);
 });
 
 test("import loop profile validation rejects failed or empty captures", () => {

@@ -56,6 +56,9 @@ export async function buildCiSummary(options = {}) {
       loaderJitiCandidates: reports.platform?.summary?.jitiAlternativeCount ?? 0,
       importLoopP50Ms: reports.importLoop?.summary?.p50WallMs ?? 0,
       importLoopP95Ms: reports.importLoop?.summary?.p95WallMs ?? 0,
+      importLoopOpenClawLifecycleCount: reports.importLoop?.summary?.openClawLifecycleCount ?? 0,
+      importLoopOpenClawImportP50Ms: reports.importLoop?.summary?.p50OpenClawImportMs ?? 0,
+      importLoopOpenClawActivationP50Ms: reports.importLoop?.summary?.p50OpenClawActivationMs ?? 0,
       importLoopMetricBasis: reports.importLoop?.summary?.maxPluginPeakRssDeltaMb === undefined ? "raw" : "baseline-adjusted",
       importLoopMaxRssMb: reports.importLoop?.summary?.maxPluginPeakRssDeltaMb ?? reports.importLoop?.summary?.maxPeakRssMb ?? 0,
       importLoopMaxCpuMs: reports.importLoop?.summary?.maxPluginCpuDeltaMsEstimate ?? reports.importLoop?.summary?.maxCpuMsEstimate ?? 0,
@@ -252,7 +255,11 @@ function inferSampleCount(samples = [], kind) {
 
 function importLoopSummaryLabel(summary) {
   const metricLabel = summary.importLoopMetricBasis === "baseline-adjusted" ? "plugin delta" : "raw";
-  return `p50 ${summary.importLoopP50Ms} ms / p95 ${summary.importLoopP95Ms} ms / ${metricLabel} RSS ${formatSampledMetric(summary.importLoopMaxRssMb, summary.importLoopRssSampleCount)} / ${metricLabel} CPU ${formatSampledMetric(summary.importLoopMaxCpuMs, summary.importLoopCpuSampleCount, "ms")}`;
+  const lifecycle =
+    summary.importLoopOpenClawLifecycleCount > 0
+      ? ` / OpenClaw import ${summary.importLoopOpenClawImportP50Ms} ms / activate ${summary.importLoopOpenClawActivationP50Ms} ms`
+      : "";
+  return `p50 ${summary.importLoopP50Ms} ms / p95 ${summary.importLoopP95Ms} ms / ${metricLabel} RSS ${formatSampledMetric(summary.importLoopMaxRssMb, summary.importLoopRssSampleCount)} / ${metricLabel} CPU ${formatSampledMetric(summary.importLoopMaxCpuMs, summary.importLoopCpuSampleCount, "ms")}${lifecycle}`;
 }
 
 function formatSampledMetric(value, count, unit = "MB") {

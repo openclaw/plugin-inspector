@@ -33,6 +33,8 @@ export async function buildImportLoopProfile(options = {}) {
 
   const wallMs = samples.map((sample) => sample.wallMs).sort((left, right) => left - right);
   const pluginWallDeltaMs = samples.map((sample) => sample.pluginWallDeltaMs).sort((left, right) => left - right);
+  const openClawImportMs = openClawLifecycleMetric(samples, "importMs");
+  const openClawActivationMs = openClawLifecycleMetric(samples, "activationMs");
   const rssSampleCount = samples.reduce((sum, sample) => sum + (sample.rssSampleCount ?? (sample.peakRssMb > 0 ? 1 : 0)), 0);
   const cpuSampleCount = samples.reduce((sum, sample) => sum + (sample.cpuSampleCount ?? 0), 0);
   const statSampleCount = samples.reduce((sum, sample) => sum + (sample.statSampleCount ?? 0), 0);
@@ -49,6 +51,11 @@ export async function buildImportLoopProfile(options = {}) {
       p95WallMs: percentile(wallMs, 0.95),
       p50PluginWallDeltaMs: percentile(pluginWallDeltaMs, 0.5),
       p95PluginWallDeltaMs: percentile(pluginWallDeltaMs, 0.95),
+      openClawLifecycleCount: openClawImportMs.length,
+      p50OpenClawImportMs: percentile(openClawImportMs, 0.5),
+      p95OpenClawImportMs: percentile(openClawImportMs, 0.95),
+      p50OpenClawActivationMs: percentile(openClawActivationMs, 0.5),
+      p95OpenClawActivationMs: percentile(openClawActivationMs, 0.95),
       maxPeakRssMb: Math.max(0, ...samples.map((sample) => sample.peakRssMb)),
       maxCpuMsEstimate: Math.max(0, ...samples.map((sample) => sample.cpuMsEstimate)),
       maxPluginPeakRssDeltaMb: Math.max(0, ...samples.map((sample) => sample.pluginPeakRssDeltaMb)),
@@ -120,6 +127,8 @@ export function renderImportLoopProfileMarkdown(report, options = {}) {
         sample.index,
         sample.status,
         sample.capturedCount,
+        formatOpenClawLifecycleMetric(sample.openClawLifecycle?.importMs),
+        formatOpenClawLifecycleMetric(sample.openClawLifecycle?.activationMs),
         formatOptionalMetric(sample.pluginWallDeltaMs, "ms"),
         formatSampledMetric(sample.pluginPeakRssDeltaMb, sample.rssSampleCount),
         formatSampledMetric(sample.pluginCpuDeltaMsEstimate, sample.cpuSampleCount, "ms"),
@@ -133,6 +142,8 @@ export function renderImportLoopProfileMarkdown(report, options = {}) {
         "Run",
         "Status",
         "Captured",
+        "OpenClaw Import",
+        "OpenClaw Activate",
         "Plugin Wall Delta",
         "Plugin RSS Delta",
         "Plugin CPU Delta",
@@ -258,6 +269,7 @@ async function runCaptureSample(options) {
     exitCode: profile.exitCode,
     status: output?.status ?? "failed",
     capturedCount: output?.captured?.length ?? 0,
+    openClawLifecycle: output?.openClawLifecycle ?? null,
     wallMs: profile.wallMs,
     peakRssMb: profile.peakRssMb,
     peakCpuPercent: profile.peakCpuPercent,
@@ -285,6 +297,15 @@ function summaryRows(report) {
             "maxPluginCpuDeltaMsEstimate",
             formatSampledMetric(report.summary.maxPluginCpuDeltaMsEstimate, report.summary.cpuSampleCount, "ms"),
           ],
+        ]
+      : []),
+    ...((report.summary.openClawLifecycleCount ?? 0) > 0
+      ? [
+          ["openClawLifecycleCount", report.summary.openClawLifecycleCount],
+          ["p50OpenClawImportMs", `${report.summary.p50OpenClawImportMs} ms`],
+          ["p95OpenClawImportMs", `${report.summary.p95OpenClawImportMs} ms`],
+          ["p50OpenClawActivationMs", `${report.summary.p50OpenClawActivationMs} ms`],
+          ["p95OpenClawActivationMs", `${report.summary.p95OpenClawActivationMs} ms`],
         ]
       : []),
     ["maxPeakRssMb", formatSampledMetric(report.summary.maxPeakRssMb, report.summary.rssSampleCount)],
@@ -336,6 +357,17 @@ function formatOptionalMetric(value, unit) {
     return "n/a";
   }
   return `${value} ${unit}`;
+}
+
+function formatOpenClawLifecycleMetric(value) {
+  return Number.isFinite(value) ? `${value} ms` : "n/a";
+}
+
+function openClawLifecycleMetric(samples, field) {
+  return samples
+    .map((sample) => sample.openClawLifecycle?.[field])
+    .filter((value) => Number.isFinite(value))
+    .sort((left, right) => left - right);
 }
 
 function applyBaselineAdjustment(sample, baseline) {

@@ -5,6 +5,7 @@
 ### Changed
 
 - Report import-loop RSS and CPU as baseline-adjusted plugin deltas alongside raw subprocess metrics so Crabpot dashboards do not treat harness import cost as plugin runtime cost.
+- Include optional OpenClaw loader lifecycle timings for import and full activation when a capture runner provides them.
 
 ## 0.3.5 - 2026-04-29
 
