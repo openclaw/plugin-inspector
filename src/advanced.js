@@ -95,6 +95,7 @@ export {
   classifyTargetOpenClawCoverage,
   readPackageSummaries,
   readPluginManifests,
+  readSecurityManifests,
   summarizePackage,
 } from "./fixture-summary.js";
 export {

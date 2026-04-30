@@ -33,7 +33,9 @@ export const knownIssueCodes = new Set([
   "registration-capture-gap",
   "runtime-tool-capture",
   "reserved-sdk-import",
+  "security-manifest-schema-unavailable",
   "sdk-export-missing",
+  "unrecognized-security-manifest",
 ]);
 
 export const issueMetadataByCode = {
@@ -84,6 +86,12 @@ export const issueMetadataByCode = {
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "plugin imports reserved bundled-plugin SDK compatibility subpaths",
+  },
+  "security-manifest-schema-unavailable": {
+    severity: "P3",
+    owner: "plugin",
+    decision: "plugin-upstream-fix",
+    title: "plugin security manifest references an unavailable schema",
   },
   "missing-compat-record": {
     severity: "P1",
@@ -192,6 +200,12 @@ export const issueMetadataByCode = {
     owner: "core",
     decision: "core-compat-adapter",
     title: "fixture calls a registrar missing from target OpenClaw",
+  },
+  "unrecognized-security-manifest": {
+    severity: "P3",
+    owner: "plugin",
+    decision: "plugin-upstream-fix",
+    title: "plugin ships an unsupported security manifest",
   },
 };
 
@@ -318,6 +332,8 @@ function issueClassFor(code, options) {
       "package-openclaw-metadata-missing",
       "package-plugin-api-compat-missing",
       "reserved-sdk-import",
+      "security-manifest-schema-unavailable",
+      "unrecognized-security-manifest",
     ].includes(code)
   ) {
     return "upstream-metadata";

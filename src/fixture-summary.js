@@ -19,9 +19,12 @@ const channelRegistrations = new Set([
   "registerChannel",
 ]);
 const hostLinkedRuntimeDependencies = new Set(["openclaw"]);
+const unsupportedSecurityManifestName = "openclaw.security.json";
+const unavailableSecurityManifestSchema = "https://openclaw.ai/schemas/plugin-security.json";
 
 export async function buildCompatibilityFixtureReport({ fixture, inspection, checkoutPath, sourceRoot, rootDir = process.cwd() }) {
   const pluginManifests = await readPluginManifests({ checkoutPath, sourceRoot, rootDir });
+  const securityManifests = await readSecurityManifests({ checkoutPath, sourceRoot, rootDir });
   const packageSummaries = await readPackageSummaries({ checkoutPath, sourceRoot, rootDir });
   const packageJson = selectPrimaryPackage(packageSummaries);
   const sdkImports = unique((inspection.sdkImports ?? []).map((sdkImport) => sdkImport.specifier));
@@ -41,6 +44,7 @@ export async function buildCompatibilityFixtureReport({ fixture, inspection, che
     manifestFiles: inspection.manifestFiles ?? [],
     sourceFiles: inspection.sourceFiles ?? [],
     pluginManifests,
+    securityManifests,
     package: packageJson,
     packages: packageSummaries,
     sdkImports,
@@ -69,6 +73,46 @@ export async function readPluginManifests({ checkoutPath, sourceRoot, rootDir = 
       channelEnvVars: manifest.channelEnvVars ?? {},
       activation: manifest.activation ?? null,
     });
+  }
+
+  return manifests;
+}
+
+export async function readSecurityManifests({ checkoutPath, sourceRoot, rootDir = process.cwd() }) {
+  const candidates = unique(
+    [
+      path.join(sourceRoot, unsupportedSecurityManifestName),
+      path.join(checkoutPath, unsupportedSecurityManifestName),
+    ].filter(existsSync),
+  );
+  const manifests = [];
+
+  for (const manifestPath of candidates) {
+    const relativePath = path.relative(rootDir, manifestPath);
+    try {
+      const manifest = await readJsonFile(manifestPath);
+      manifests.push({
+        path: relativePath,
+        schema: typeof manifest.$schema === "string" ? manifest.$schema : null,
+        version: typeof manifest.version === "string" ? manifest.version : null,
+        plugin: typeof manifest.plugin === "string" ? manifest.plugin : null,
+        expectedBehaviorCount: Array.isArray(manifest.expectedBehaviors)
+          ? manifest.expectedBehaviors.length
+          : 0,
+        securityNoteCount: Array.isArray(manifest.securityNotes) ? manifest.securityNotes.length : 0,
+        validJson: true,
+      });
+    } catch {
+      manifests.push({
+        path: relativePath,
+        schema: null,
+        version: null,
+        plugin: null,
+        expectedBehaviorCount: 0,
+        securityNoteCount: 0,
+        validJson: false,
+      });
+    }
   }
 
   return manifests;
@@ -351,6 +395,7 @@ export function classifyCompatibilityFixture({ fixture, inspection, fixtureRepor
   suggestions.push(...packageContracts.suggestions);
   logs.push(...packageContracts.logs);
   decisions.push(...packageContracts.decisions);
+  classifySecurityManifestCoverage({ fixture, fixtureReport, warnings, decisions });
 
   for (const pluginManifest of fixtureReport.pluginManifests) {
     const providerAuthKeys = Object.keys(pluginManifest.providerAuthEnvVars ?? {});
@@ -555,6 +600,45 @@ export function classifyCompatibilityFixture({ fixture, inspection, fixtureRepor
   }
 
   return { warnings, suggestions, logs, decisions };
+}
+
+function classifySecurityManifestCoverage({ fixture, fixtureReport, warnings, decisions }) {
+  for (const securityManifest of fixtureReport.securityManifests ?? []) {
+    warnings.push({
+      fixture: fixture.id,
+      code: "unrecognized-security-manifest",
+      level: "warning",
+      message:
+        "openclaw.security.json is not a supported OpenClaw or ClawHub security contract and is ignored by install safety checks",
+      evidence: [securityManifest.path],
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "plugin-upstream-fix",
+      seam: "security-metadata",
+      action:
+        "Remove the advisory security manifest or replace it with a supported, versioned OpenClaw/ClawHub security contract once one exists.",
+      evidence: securityManifest.path,
+    });
+
+    if (securityManifest.schema === unavailableSecurityManifestSchema) {
+      warnings.push({
+        fixture: fixture.id,
+        code: "security-manifest-schema-unavailable",
+        level: "warning",
+        message: "openclaw.security.json references an OpenClaw schema URL that is not currently published",
+        evidence: [`${securityManifest.path}:$schema=${securityManifest.schema}`],
+      });
+      decisions.push({
+        fixture: fixture.id,
+        decision: "plugin-upstream-fix",
+        seam: "security-metadata",
+        action:
+          "Do not rely on the schema URL until OpenClaw publishes and documents a real plugin security metadata schema.",
+        evidence: securityManifest.schema,
+      });
+    }
+  }
 }
 
 function registrationCaptureGapDetails(inspection, targetOpenClaw) {

@@ -392,6 +392,21 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
     `${JSON.stringify({ id: "fixture", name: "Fixture", version: "1.0.0", contracts: { tools: {} } }, null, 2)}\n`,
     "utf8",
   );
+  await writeFile(
+    path.join(fixtureDir, "openclaw.security.json"),
+    `${JSON.stringify(
+      {
+        $schema: "https://openclaw.ai/schemas/plugin-security.json",
+        version: "1.0.0",
+        plugin: "fixture",
+        expectedBehaviors: [{ id: "api-key", description: "requires an API key" }],
+        securityNotes: [{ id: "storage", description: "stores local state" }],
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
   await writeFile(path.join(fixtureDir, "src", "index.js"), "export function register() {}\n", "utf8");
   await writeFile(
     path.join(fixtureDir, "package.json"),
@@ -436,6 +451,15 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
   });
 
   assert.equal(report.pluginManifests[0].id, "fixture");
+  assert.deepEqual(report.securityManifests[0], {
+    path: "plugin/openclaw.security.json",
+    schema: "https://openclaw.ai/schemas/plugin-security.json",
+    version: "1.0.0",
+    plugin: "fixture",
+    expectedBehaviorCount: 1,
+    securityNoteCount: 1,
+    validJson: true,
+  });
   assert.equal(report.package.name, "fixture-plugin");
   assert.equal(report.package.openclaw.compatPluginApi, "^1.0.0");
   assert.deepEqual(report.package.openclaw.entrypoints[0], {
@@ -617,6 +641,17 @@ test("compatibility fixture classifier reports seam and metadata follow-ups", ()
           channelEnvVars: { CHANNEL_ID: "channel id" },
         },
       ],
+      securityManifests: [
+        {
+          path: "plugins/fixture/openclaw.security.json",
+          schema: "https://openclaw.ai/schemas/plugin-security.json",
+          version: "1.0.0",
+          plugin: "fixture",
+          expectedBehaviorCount: 1,
+          securityNoteCount: 1,
+          validJson: true,
+        },
+      ],
       package: null,
     },
     targetOpenClaw: {
@@ -632,6 +667,8 @@ test("compatibility fixture classifier reports seam and metadata follow-ups", ()
 
   assert.ok(result.warnings.some((finding) => finding.code === "provider-auth-env-vars"));
   assert.ok(result.warnings.some((finding) => finding.code === "channel-env-vars"));
+  assert.ok(result.warnings.some((finding) => finding.code === "unrecognized-security-manifest"));
+  assert.ok(result.warnings.some((finding) => finding.code === "security-manifest-schema-unavailable"));
   assert.ok(
     result.warnings.some(
       (finding) =>
@@ -657,6 +694,21 @@ test("compatibility fixture classifier reports seam and metadata follow-ups", ()
   );
   assert.ok(result.suggestions.some((finding) => finding.code === "runtime-tool-capture"));
   assert.ok(result.decisions.some((decision) => decision.seam === "conversation-access"));
+  assert.ok(result.decisions.some((decision) => decision.seam === "security-metadata"));
+
+  const issues = buildIssues({
+    warnings: result.warnings,
+    suggestions: result.suggestions,
+    targetOpenClaw: { status: "ok", compatRecordStatuses: {} },
+  });
+  assert.ok(
+    issues.some(
+      (issue) =>
+        issue.code === "unrecognized-security-manifest" &&
+        issue.issueClass === "upstream-metadata" &&
+        issue.severity === "P3",
+    ),
+  );
 });
 
 test("writeReport writes JSON and Markdown artifacts", async () => {
