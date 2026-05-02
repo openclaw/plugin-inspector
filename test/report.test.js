@@ -421,6 +421,7 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
         name: "fixture-plugin",
         version: "1.0.0",
         type: "module",
+        files: ["src", "openclaw.plugin.json"],
         dependencies: { zod: "^1.0.0" },
         openclaw: {
           extensions: ["src/index.js"],
@@ -481,6 +482,13 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
     validJson: true,
   });
   assert.equal(report.package.name, "fixture-plugin");
+  assert.deepEqual(report.package.npmPack, {
+    advertised: true,
+    private: false,
+    filesMode: "allowlist",
+    files: ["src", "openclaw.plugin.json"],
+    invalidFileSpecs: [],
+  });
   assert.equal(report.package.openclaw.compatPluginApi, "^1.0.0");
   assert.deepEqual(report.package.openclaw.install, {
     clawhubSpec: "clawhub:@openclaw/fixture-plugin",
@@ -644,6 +652,107 @@ test("package contract classifier reports broken install and release metadata", 
   assert.ok(result.warnings.some((finding) => finding.code === "package-install-metadata-incomplete"));
   assert.ok(result.warnings.some((finding) => finding.code === "package-min-host-version-drift"));
   assert.ok(result.decisions.some((decision) => decision.seam === "package-metadata"));
+});
+
+test("package contract classifier reports advertised npm pack blockers", () => {
+  const result = classifyPackageContracts({
+    fixture: {
+      id: "fixture",
+      path: "plugins/fixture",
+    },
+    inspection: {
+      registrations: ["registerTool"],
+    },
+    fixtureReport: {
+      pluginManifests: [{ path: "plugins/fixture/openclaw.plugin.json", version: "1.0.0" }],
+      package: {
+        path: "plugins/fixture/package.json",
+        name: "@openclaw/fixture-plugin",
+        version: "1.0.0",
+        npmPack: {
+          advertised: true,
+          private: true,
+          filesMode: "allowlist",
+          files: ["README.md"],
+          invalidFileSpecs: ["../secrets"],
+        },
+        dependencies: [],
+        peerDependencies: [],
+        optionalDependencies: [],
+        openclaw: {
+          compatPluginApi: "^1.0.0",
+          install: {
+            npmSpec: "@openclaw/fixture-plugin",
+          },
+          release: {
+            publishToNpm: true,
+          },
+          entrypoints: [
+            {
+              kind: "extension",
+              specifier: "src/index.js",
+              relativePath: "plugins/fixture/src/index.js",
+              exists: true,
+              requiresBuild: false,
+            },
+          ],
+        },
+      },
+    },
+  });
+
+  assert.ok(result.warnings.some((finding) => finding.code === "package-npm-pack-unavailable"));
+  assert.ok(result.warnings.some((finding) => finding.code === "package-npm-pack-metadata-missing"));
+  assert.ok(result.warnings.some((finding) => finding.code === "package-npm-pack-entrypoint-missing"));
+  assert.ok(result.decisions.some((decision) => decision.seam === "package-artifact"));
+
+  const globResult = classifyPackageContracts({
+    fixture: {
+      id: "fixture",
+      path: "plugins/fixture",
+    },
+    inspection: {
+      registrations: ["registerTool"],
+    },
+    fixtureReport: {
+      pluginManifests: [{ path: "plugins/fixture/openclaw.plugin.json", version: "1.0.0" }],
+      package: {
+        path: "plugins/fixture/package.json",
+        name: "@openclaw/fixture-plugin",
+        version: "1.0.0",
+        npmPack: {
+          advertised: true,
+          private: false,
+          filesMode: "allowlist",
+          files: ["src/**/*.js", "openclaw.plugin.json"],
+          invalidFileSpecs: [],
+        },
+        dependencies: [],
+        peerDependencies: [],
+        optionalDependencies: [],
+        openclaw: {
+          compatPluginApi: "^1.0.0",
+          install: {
+            npmSpec: "@openclaw/fixture-plugin",
+          },
+          release: {
+            publishToNpm: true,
+          },
+          entrypoints: [
+            {
+              kind: "extension",
+              specifier: "src/index.js",
+              relativePath: "plugins/fixture/src/index.js",
+              exists: true,
+              requiresBuild: false,
+            },
+          ],
+        },
+      },
+    },
+  });
+
+  assert.equal(globResult.warnings.some((finding) => finding.code.startsWith("package-npm-pack-")), false);
 });
 
 test("target OpenClaw coverage classifier reports missing public surface", () => {

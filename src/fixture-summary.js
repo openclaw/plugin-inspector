@@ -167,6 +167,7 @@ export function summarizePackage(packagePath, packageJson, options = {}) {
     version: packageJson.version ?? null,
     type: packageJson.type ?? null,
     main: typeof packageJson.main === "string" ? packageJson.main : null,
+    npmPack: summarizeNpmPack(packageJson, openclaw),
     dependencies: Object.keys(packageJson.dependencies ?? {}).sort(),
     peerDependencies: Object.keys(packageJson.peerDependencies ?? {}).sort(),
     optionalDependencies: Object.keys(packageJson.optionalDependencies ?? {}).sort(),
@@ -283,6 +284,24 @@ export function classifyPackageContracts({ fixture, inspection, fixtureReport })
       seam: "package-metadata",
       action: "Ask the plugin to keep install.minHostVersion aligned with the OpenClaw package surface it targets.",
       evidence: packageSummary.path,
+    });
+  }
+
+  const npmPackIssues = packageNpmPackIssues(packageSummary, fixtureReport);
+  for (const finding of npmPackIssues) {
+    warnings.push({
+      fixture: fixture.id,
+      code: finding.code,
+      level: "warning",
+      message: finding.message,
+      evidence: finding.evidence,
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "plugin-upstream-fix",
+      seam: "package-artifact",
+      action: "Ask the plugin to make its advertised npm install artifact match the published OpenClaw metadata.",
+      evidence: finding.evidence.join(", "),
     });
   }
 
@@ -933,6 +952,17 @@ function summarizeOpenClawRelease(release) {
   };
 }
 
+function summarizeNpmPack(packageJson, openclaw) {
+  const files = arrayValues(packageJson.files).map(normalizePackagePath).filter((item) => item.length > 0);
+  return {
+    advertised: openclaw?.release?.publishToNpm === true || nonEmptyString(openclaw?.install?.npmSpec),
+    private: packageJson.private === true,
+    filesMode: files.length > 0 ? "allowlist" : "implicit",
+    files,
+    invalidFileSpecs: files.filter((item) => invalidPackageFileSpec(item)),
+  };
+}
+
 function packageInstallMetadataIssues(packageSummary) {
   const openclaw = packageSummary.openclaw;
   if (!openclaw) {
@@ -967,6 +997,70 @@ function packageInstallMetadataIssues(packageSummary) {
   return issues;
 }
 
+function packageNpmPackIssues(packageSummary, fixtureReport) {
+  if (!packageSummary.npmPack?.advertised) {
+    return [];
+  }
+
+  const findings = [];
+  const unavailable = [];
+  if (packageSummary.npmPack.private) {
+    unavailable.push("package.json private:true");
+  }
+  if (!nonEmptyString(packageSummary.name)) {
+    unavailable.push("package.json name missing");
+  }
+  if (!nonEmptyString(packageSummary.version)) {
+    unavailable.push("package.json version missing");
+  }
+  unavailable.push(...packageSummary.npmPack.invalidFileSpecs.map((item) => `invalid files entry:${item}`));
+
+  if (unavailable.length > 0) {
+    findings.push({
+      code: "package-npm-pack-unavailable",
+      message: "package advertises npm install or publish metadata but cannot produce a usable npm pack artifact",
+      evidence: unavailable,
+    });
+  }
+
+  const missingMetadata = packageNpmPackMissingMetadata(packageSummary, fixtureReport);
+  if (missingMetadata.length > 0) {
+    findings.push({
+      code: "package-npm-pack-metadata-missing",
+      message: "advertised npm artifact would not include required OpenClaw package metadata",
+      evidence: missingMetadata,
+    });
+  }
+
+  const missingEntrypoints = packageSummary.openclaw?.entrypoints
+    .filter((entrypoint) => !repoPathIncludedInNpmPack(packageSummary, entrypoint.relativePath))
+    .map((entrypoint) => `${entrypoint.kind}:${entrypoint.specifier} -> ${entrypoint.relativePath}`) ?? [];
+  if (missingEntrypoints.length > 0) {
+    findings.push({
+      code: "package-npm-pack-entrypoint-missing",
+      message: "advertised npm artifact would not include declared OpenClaw entrypoints",
+      evidence: missingEntrypoints,
+    });
+  }
+
+  return findings;
+}
+
+function packageNpmPackMissingMetadata(packageSummary, fixtureReport) {
+  const missing = [];
+  if (!repoPathIncludedInNpmPack(packageSummary, packageSummary.path)) {
+    missing.push(packageSummary.path);
+  }
+
+  for (const manifest of fixtureReport.pluginManifests ?? []) {
+    if (repoPathWithinPackage(packageSummary, manifest.path) && !repoPathIncludedInNpmPack(packageSummary, manifest.path)) {
+      missing.push(manifest.path);
+    }
+  }
+
+  return missing;
+}
+
 function packageMinHostVersionDrift(packageSummary) {
   const openclaw = packageSummary.openclaw;
   return (
@@ -974,6 +1068,82 @@ function packageMinHostVersionDrift(packageSummary) {
     nonEmptyString(openclaw?.buildOpenClawVersion) &&
     openclaw.install.minHostVersion !== openclaw.buildOpenClawVersion
   );
+}
+
+function repoPathIncludedInNpmPack(packageSummary, repoPath) {
+  const packageRelativePath = packageRelativeRepoPath(packageSummary, repoPath);
+  if (!packageRelativePath) {
+    return false;
+  }
+  if (npmAlwaysPacksPath(packageRelativePath)) {
+    return true;
+  }
+  if (packageSummary.npmPack?.filesMode !== "allowlist") {
+    return true;
+  }
+  return packageSummary.npmPack.files.some((spec) => packageFileSpecIncludesPath(spec, packageRelativePath));
+}
+
+function repoPathWithinPackage(packageSummary, repoPath) {
+  return packageRelativeRepoPath(packageSummary, repoPath) !== null;
+}
+
+function packageRelativeRepoPath(packageSummary, repoPath) {
+  const packageDir = path.posix.dirname(normalizeRepoPath(packageSummary.path));
+  const normalized = normalizeRepoPath(repoPath);
+  if (packageDir === ".") {
+    return normalized;
+  }
+  if (normalized === packageDir) {
+    return "";
+  }
+  return normalized.startsWith(`${packageDir}/`) ? normalized.slice(packageDir.length + 1) : null;
+}
+
+function npmAlwaysPacksPath(packageRelativePath) {
+  const base = path.posix.basename(packageRelativePath).toLowerCase();
+  return packageRelativePath === "package.json" || /^readme(?:\..*)?$/u.test(base) || /^licen[cs]e(?:\..*)?$/u.test(base);
+}
+
+function packageFileSpecIncludesPath(spec, packageRelativePath) {
+  if (spec === "." || spec === packageRelativePath) {
+    return true;
+  }
+  if (spec.includes("*")) {
+    return globLikeSpecIncludesPath(spec, packageRelativePath);
+  }
+  return packageRelativePath.startsWith(`${spec.replace(/\/$/u, "")}/`);
+}
+
+function globLikeSpecIncludesPath(spec, packageRelativePath) {
+  return globSegmentsIncludePath(spec.split("/"), packageRelativePath.split("/"));
+}
+
+function globSegmentsIncludePath(specSegments, packageSegments) {
+  if (specSegments.length === 0) {
+    return packageSegments.length === 0;
+  }
+  const [head, ...tail] = specSegments;
+  if (head === "**") {
+    return globSegmentsIncludePath(tail, packageSegments) || (packageSegments.length > 0 && globSegmentsIncludePath(specSegments, packageSegments.slice(1)));
+  }
+  if (packageSegments.length === 0) {
+    return false;
+  }
+  return globSegmentIncludesPath(head, packageSegments[0]) && globSegmentsIncludePath(tail, packageSegments.slice(1));
+}
+
+function globSegmentIncludesPath(specSegment, packageSegment) {
+  const escaped = specSegment.replace(/[.+?^${}()|[\]\\]/gu, "\\$&").replaceAll("*", ".*");
+  return new RegExp(`^${escaped}$`, "u").test(packageSegment);
+}
+
+function invalidPackageFileSpec(spec) {
+  return spec.startsWith("/") || spec === ".." || spec.startsWith("../") || spec.includes("/../");
+}
+
+function normalizePackagePath(value) {
+  return normalizeRepoPath(value).replace(/^\.\/+/u, "").replace(/\/$/u, "");
 }
 
 function packageRank(packageSummary) {
@@ -1000,6 +1170,10 @@ function booleanOrNull(value) {
 
 function nonEmptyString(value) {
   return typeof value === "string" && value.trim().length > 0;
+}
+
+function normalizeRepoPath(value) {
+  return String(value ?? "").replaceAll("\\", "/").replace(/^\.\/+/u, "");
 }
 
 function detailEvidence(details, key = "name") {

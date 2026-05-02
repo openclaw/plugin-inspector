@@ -84,6 +84,21 @@ export const contractProbeRules = {
     contract: "Install minimum host version matches the OpenClaw package surface targeted by the plugin.",
     target: "package-loader",
   },
+  "package-npm-pack-entrypoint-missing": {
+    id: "package.npm-pack.entrypoints",
+    contract: "Advertised npm artifacts include every declared OpenClaw package entrypoint.",
+    target: "package-loader",
+  },
+  "package-npm-pack-metadata-missing": {
+    id: "package.npm-pack.metadata",
+    contract: "Advertised npm artifacts include OpenClaw manifest and package metadata.",
+    target: "package-loader",
+  },
+  "package-npm-pack-unavailable": {
+    id: "package.npm-pack.available",
+    contract: "Packages that advertise npm install support can produce an npm pack artifact.",
+    target: "package-loader",
+  },
   "package-openclaw-entry-missing": {
     id: "package.entrypoint.openclaw-metadata",
     contract: "OpenClaw package metadata declares entrypoints for cold import and registration capture.",
