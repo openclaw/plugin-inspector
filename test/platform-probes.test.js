@@ -40,11 +40,11 @@ test("platform probes classify loader and shell portability risks", () => {
                 },
                 {
                   kind: "capture",
-                  command: "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 node --import tsx capture.mjs ./src/index.ts",
+                  command: "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 node capture.mjs ./src/index.ts --mock-sdk",
                 },
                 {
                   kind: "synthetic-probe",
-                  command: "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 node --import tsx synthetic.mjs --entrypoint ./src/index.ts",
+                  command: "PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 node synthetic.mjs --entrypoint ./src/index.ts --mock-sdk",
                 },
               ],
             },
@@ -124,7 +124,7 @@ test("platform probes separate executor-covered portability risks from residual 
   assert.match(renderPlatformProbesMarkdown(report), /Covered Portability Findings/);
 });
 
-test("platform probe validation requires jiti fallback and reflected tsx commands", () => {
+test("platform probe validation requires jiti fallback and reflected TypeScript loader commands", () => {
   const errors = validatePlatformProbes({
     mode: "plan-only",
     targets: ["linux", "macos", "windows", "container"],
@@ -137,11 +137,14 @@ test("platform probe validation requires jiti fallback and reflected tsx command
         id: "cold-import.extension:fixture:index",
         loaderPrimary: "tsx",
         captureUsesTsx: true,
+        captureUsesTypeScriptLoader: true,
         syntheticUsesTsx: false,
+        syntheticUsesMockSdk: false,
+        syntheticUsesTypeScriptLoader: false,
       },
     ],
   });
 
   assert.ok(errors.some((error) => error.includes("Jiti fallback")));
-  assert.ok(errors.some((error) => error.includes("tsx loader strategy")));
+  assert.ok(errors.some((error) => error.includes("TypeScript loader strategy")));
 });

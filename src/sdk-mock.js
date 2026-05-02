@@ -254,9 +254,20 @@ export async function createMockSdkPackage(rootDir, options = {}) {
     )}\n`,
     "utf8",
   );
-  await writeFile(path.join(pluginSdkDir, "index.js"), mockSdkSource(), "utf8");
+  const rootExportNames = new Set([
+    ...mockSdkExportNames,
+    ...(imports.bySpecifier.get("openclaw/plugin-sdk") ?? []),
+  ]);
+  await writeFile(path.join(pluginSdkDir, "index.js"), mockSdkSource(rootExportNames), "utf8");
   for (const [subpath, exportNames] of Object.entries(mockSdkSubpathExports)) {
-    await writeFile(path.join(pluginSdkDir, `${subpath}.js`), mockSdkSubpathSource(exportNames), "utf8");
+    const specifier = `openclaw/plugin-sdk/${subpath}`;
+    await writeFile(
+      path.join(pluginSdkDir, `${subpath}.js`),
+      mockSdkSubpathSource(exportNames, imports.bySpecifier.get(specifier) ?? new Set(), {
+        zod: subpath === "zod",
+      }),
+      "utf8",
+    );
   }
   for (const specifier of imports.openclawSdkSpecifiers) {
     if (specifier === "openclaw/plugin-sdk") {
@@ -428,6 +439,9 @@ export async function resolve(specifier, context, nextResolve) {
     const subpath = specifier.slice("openclaw/plugin-sdk/".length);
     return moduleUrl(path.join(pluginSdkDir, \`\${subpath}.js\`));
   }
+  if (externalMap.has(specifier)) {
+    return moduleUrl(externalMap.get(specifier));
+  }
   try {
     return await nextResolve(specifier, context);
   } catch (error) {
@@ -531,6 +545,12 @@ function genericExportStatement(name) {
   if (["createChatChannelPlugin", "createPlugin", "defineChannelPluginEntry", "definePlugin", "definePluginEntry", "defineSetupPluginEntry"].includes(name)) {
     return name === "definePluginEntry" ? "export { definePluginEntry };" : `export const ${name} = definePluginEntry;`;
   }
+  if (name === "defineBundledChannelEntry") {
+    return "export { defineBundledChannelEntry };";
+  }
+  if (name === "defineBundledChannelSetupEntry") {
+    return "export { defineBundledChannelSetupEntry };";
+  }
   if (/^[A-Z].*Schema$/u.test(name)) {
     return `export const ${name} = createSchema();`;
   }
@@ -547,9 +567,41 @@ function genericMockRuntimeSource(options = {}) {
   }
   return typeof entry === "function" ? { register: entry } : entry;
 }
+
+function defineBundledChannelEntry(entry = {}) {
+  return {
+    ...entry,
+    kind: "bundled-channel-entry",
+    register(api) {
+      if (api?.registrationMode === "cli-metadata") {
+        return entry.registerCliMetadata?.(api);
+      }
+      if (api?.registrationMode !== "tool-discovery") {
+        api?.registerChannel?.({
+          id: entry.id,
+          name: entry.name,
+          description: entry.description,
+          plugin: { id: entry.id, name: entry.name },
+        });
+      }
+      entry.registerCliMetadata?.(api);
+      return entry.registerFull?.(api);
+    },
+  };
+}
+
+function defineBundledChannelSetupEntry(entry = {}) {
+  return {
+    ...entry,
+    kind: "bundled-channel-setup-entry",
+  };
+}
 ` : ""}
 function createMockValue(name) {
   function fn(...args) {
+    if (name === "resolvePreferredOpenClawTmpDir") {
+      return process.env.TMPDIR || "/tmp";
+    }
     if (name.startsWith("normalize")) {
       return typeof args[0] === "string" ? args[0] : "";
     }
@@ -728,7 +780,8 @@ function createTypeNamespace() {
 `;
 }
 
-function mockSdkSource() {
+function mockSdkSource(exportNames = mockSdkExportNames) {
+  const dynamicExportNames = [...exportNames].filter((name) => !mockSdkExportNames.includes(name));
   return `function normalizeEntry(entry) {
   return typeof entry === "function" ? { register: entry } : entry;
 }
@@ -1538,15 +1591,20 @@ export const OPENAI_RESPONSES_STREAM_HOOKS = buildProviderStreamFamilyHooks("ope
 export const OPENROUTER_THINKING_STREAM_HOOKS = buildProviderStreamFamilyHooks("openrouter-thinking");
 export const TOOL_STREAM_DEFAULT_ON_HOOKS = buildProviderStreamFamilyHooks("tool-stream-default");
 export const pluginSdkMock = true;
+${dynamicExportNames.map(genericExportStatement).join("\n")}
 
 export default {
-${mockSdkExportNames.map((name) => `  ${name},`).join("\n")}
+${[...exportNames].map((name) => `  ${name},`).join("\n")}
 };
 `;
 }
 
-function mockSdkSubpathSource(exportNames) {
-  return `${exportNames.map((name) => `export { ${name} } from "./index.js";`).join("\n")}
+function mockSdkSubpathSource(staticExportNames, importedExportNames, options = {}) {
+  const staticNames = new Set(staticExportNames);
+  const dynamicNames = [...importedExportNames].filter((name) => !staticNames.has(name));
+  return `${[...staticNames].map((name) => `export { ${name} } from "./index.js";`).join("\n")}
+${dynamicNames.length > 0 ? genericMockRuntimeSource({ includeSdkRuntime: true, zod: options.zod }) : ""}
+${dynamicNames.map(genericExportStatement).join("\n")}
 export { default } from "./index.js";
 `;
 }

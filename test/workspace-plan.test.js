@@ -23,6 +23,7 @@ test("workspace plan maps blocked entrypoints to opt-in install/build/capture st
         packageManager: "npm@10.0.0",
         scripts: { build: "tsup" },
         dependencies: { "left-pad": "^1.3.0", openclaw: "^1.0.0" },
+        devDependencies: { "@openclaw/plugin-sdk": "workspace:*" },
       },
       null,
       2,
@@ -57,6 +58,7 @@ test("workspace plan maps blocked entrypoints to opt-in install/build/capture st
   assert.equal(plan.summary.artifactStepCount, 2);
   assert.equal(plan.summary.installStepCount, 1);
   assert.equal(plan.summary.auditStepCount, 1);
+  assert.equal(plan.summary.pruneDevWorkspaceDependencyStepCount, 1);
   assert.equal(plan.summary.buildStepCount, 1);
   assert.equal(plan.summary.captureStepCount, 2);
   assert.equal(plan.summary.syntheticProbeStepCount, 2);
@@ -73,7 +75,14 @@ test("workspace plan maps blocked entrypoints to opt-in install/build/capture st
   assert.ok(entrypoint.requiredCapabilities.includes("sdk-alias-compat"));
   assert.ok(entrypoint.requiredCapabilities.includes("ts-loader"));
   assert.ok(entrypoint.steps.some((step) => step.kind === "install" && step.command === "npm install --ignore-scripts"));
-  assert.ok(entrypoint.steps.some((step) => step.kind === "capture" && step.command.includes("node --import tsx capture.mjs")));
+  assert.ok(
+    entrypoint.steps.some(
+      (step) => step.kind === "prune-dev-workspace-deps" && step.command.includes("prune-workspace-dev-deps-cli.js"),
+    ),
+  );
+  assert.ok(entrypoint.steps.some((step) => step.kind === "capture" && step.command.includes("node capture.mjs")));
+  assert.ok(entrypoint.steps.some((step) => step.kind === "capture" && step.command.includes("--mock-sdk")));
+  assert.ok(entrypoint.steps.every((step) => !step.command.includes("--import tsx")));
   assert.ok(entrypoint.steps.some((step) => step.kind === "synthetic-probe" && step.command.includes("synthetic.mjs")));
   const buildEntrypoint = plan.fixtures[0].entrypoints.find((item) => item.packageName === "build-fixture");
   assert.ok(buildEntrypoint);

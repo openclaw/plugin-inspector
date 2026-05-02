@@ -151,6 +151,7 @@ test("capture entrypoint can mock OpenClaw plugin SDK imports", async () => {
       'import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";',
       'import { createChatChannelPlugin } from "openclaw/plugin-sdk/channel-core";',
       'import { defineSingleProviderPluginEntry } from "openclaw/plugin-sdk/provider-entry";',
+      'import { GPT5_BEHAVIOR_CONTRACT } from "openclaw/plugin-sdk/provider-model-shared";',
       'import { buildSecretInputSchema } from "openclaw/plugin-sdk/secret-input";',
       'import { registerPluginHttpRoute, resolveWebhookPath } from "openclaw/plugin-sdk/webhook-ingress";',
       "",
@@ -171,6 +172,7 @@ test("capture entrypoint can mock OpenClaw plugin SDK imports", async () => {
       "",
       "export default definePluginEntry((api) => {",
       "  if (!pluginSdkMock) throw new Error('expected mock SDK');",
+      "  if (!GPT5_BEHAVIOR_CONTRACT) throw new Error('expected dynamic subpath mock export');",
       "  provider.register(api);",
       "  api.registerHttpRoute({ path: resolveWebhookPath('hook'), handler() {} });",
       "  api.registerTool({ name: 'fixture_tool', inputSchema: { type: 'object' }, run() {} });",
@@ -191,4 +193,72 @@ test("capture entrypoint can mock OpenClaw plugin SDK imports", async () => {
     result.captured.map((item) => `${item.kind}:${item.name}`),
     ["registration:registerProvider", "registration:registerHttpRoute", "registration:registerTool"],
   );
+});
+
+test("mock capture prefers discovered bare mocks over installed dependency exports", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-bare-capture-"));
+  await mkdir(path.join(dir, "node_modules/typebox"), { recursive: true });
+  await writeFile(
+    path.join(dir, "node_modules/typebox/package.json"),
+    JSON.stringify({ name: "typebox", version: "0.0.0", type: "module", exports: "./index.js" }, null, 2),
+    "utf8",
+  );
+  await writeFile(path.join(dir, "node_modules/typebox/index.js"), "export const Type = {};\n", "utf8");
+  const entrypoint = path.join(dir, "index.mjs");
+  await writeFile(
+    entrypoint,
+    [
+      "import path from 'node:path';",
+      'import { Static, Type } from "typebox";',
+      'import { resolvePreferredOpenClawTmpDir } from "fixture-api";',
+      "export function register(api) {",
+      "  if (!Static || !Type) throw new Error('expected mocked typebox exports');",
+      "  path.join(resolvePreferredOpenClawTmpDir(), 'fixture');",
+      "  api.registerTool({ name: 'fixture_tool', inputSchema: Type.Object({}), run() {} });",
+      "}",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = await captureEntrypoint("index.mjs", {
+    cwd: dir,
+    pluginRoot: dir,
+    mockSdk: true,
+  });
+
+  assert.equal(result.status, "captured");
+  assert.deepEqual(result.captured.map((item) => `${item.kind}:${item.name}`), ["registration:registerTool"]);
+});
+
+test("mock capture expands bundled channel entry registration shells", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-bundled-channel-capture-"));
+  const entrypoint = path.join(dir, "index.mjs");
+  await writeFile(
+    entrypoint,
+    [
+      'import { defineBundledChannelEntry } from "openclaw/plugin-sdk/channel-entry-contract";',
+      "export default defineBundledChannelEntry({",
+      "  id: 'fixture-channel',",
+      "  name: 'Fixture Channel',",
+      "  description: 'Fixture channel',",
+      "  plugin: { specifier: './channel.js', exportName: 'fixtureChannel' },",
+      "  registerFull(api) {",
+      "    api.registerTool({ name: 'fixture_tool', inputSchema: { type: 'object' }, run() {} });",
+      "  },",
+      "});",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = await captureEntrypoint("index.mjs", {
+    cwd: dir,
+    pluginRoot: dir,
+    mockSdk: true,
+  });
+
+  assert.equal(result.status, "captured");
+  assert.deepEqual(result.captured.map((item) => `${item.kind}:${item.name}`), [
+    "registration:registerChannel",
+    "registration:registerTool",
+  ]);
 });

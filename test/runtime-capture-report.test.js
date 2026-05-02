@@ -106,14 +106,14 @@ test("runtime capture records conversation binding resolved callbacks", async ()
   );
 });
 
-test("runtime capture report classifies missing mocked SDK exports", async () => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-capture-missing-export-"));
+test("runtime capture report synthesizes newly imported mocked SDK exports", async () => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-capture-dynamic-export-"));
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   await writeFile(
     path.join(rootDir, "package.json"),
     `${JSON.stringify(
       {
-        name: "openclaw-missing-sdk-export",
+        name: "openclaw-dynamic-sdk-export",
         version: "1.0.0",
         type: "module",
         openclaw: {
@@ -131,9 +131,10 @@ test("runtime capture report classifies missing mocked SDK exports", async () =>
     [
       'import { definitelyMissing } from "openclaw/plugin-sdk/plugin-entry";',
       "",
-      "export default definitelyMissing({",
-      "  register() {},",
-      "});",
+      "export function register(api) {",
+      "  if (!definitelyMissing) throw new Error('expected dynamic mock export');",
+      "  api.registerTool({ name: 'fixture_tool', inputSchema: { type: 'object' }, run() {} });",
+      "}",
     ].join("\n"),
     "utf8",
   );
@@ -142,17 +143,18 @@ test("runtime capture report classifies missing mocked SDK exports", async () =>
   const compatibilityReport = await inspectCompatibilityFixtureSet(config, { openclawPath: false });
   const captureReport = await buildRuntimeCaptureReport({ report: compatibilityReport, rootDir });
 
-  assert.equal(captureReport.summary.failedCount, 1);
-  assert.equal(captureReport.results[0].status, "error");
-  assert.equal(captureReport.results[0].failureClass, "missing-sdk-export");
-  assert.equal(captureReport.results[0].missingExport, "definitelyMissing");
+  assert.equal(captureReport.summary.failedCount, 0);
+  assert.equal(captureReport.results[0].status, "captured");
+  assert.deepEqual(captureReport.results[0].captured.map((entry) => `${entry.kind}:${entry.name}`), [
+    "registration:registerTool",
+  ]);
 
-  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-capture-missing-export-out-"));
+  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-capture-dynamic-export-out-"));
   await writeRuntimeCaptureReport(captureReport, {
     jsonPath: path.join(outDir, "capture.json"),
     markdownPath: path.join(outDir, "capture.md"),
   });
-  assert.match(await readFile(path.join(outDir, "capture.md"), "utf8"), /missing-sdk-export/);
+  assert.match(await readFile(path.join(outDir, "capture.md"), "utf8"), /registerTool/);
 });
 
 test("runtime capture report classifies registration execution failures", async () => {

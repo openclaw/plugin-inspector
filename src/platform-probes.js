@@ -55,8 +55,11 @@ export function validatePlatformProbes(report, options = {}) {
     errors.push("all TypeScript loader entrypoints must track a Jiti fallback candidate");
   }
   for (const entrypoint of report.entrypoints) {
-    if (entrypoint.loaderPrimary === "tsx" && (!entrypoint.captureUsesTsx || !entrypoint.syntheticUsesTsx)) {
-      errors.push(`${entrypoint.id}: tsx loader strategy is not reflected in capture and synthetic commands`);
+    if (
+      entrypoint.loaderPrimary === "tsx" &&
+      (!entrypoint.captureUsesTypeScriptLoader || !entrypoint.syntheticUsesTypeScriptLoader)
+    ) {
+      errors.push(`${entrypoint.id}: TypeScript loader strategy is not reflected in capture and synthetic commands`);
     }
   }
   return errors;
@@ -94,9 +97,21 @@ export function renderPlatformProbesMarkdown(report, options = {}) {
         entrypoint.loaderAlternatives.join(", ") || "-",
         entrypoint.captureUsesTsx ? "yes" : "no",
         entrypoint.syntheticUsesTsx ? "yes" : "no",
+        entrypoint.captureUsesMockSdk ? "yes" : "no",
+        entrypoint.syntheticUsesMockSdk ? "yes" : "no",
         entrypoint.entrypoint,
       ]),
-      ["Fixture", "Status", "Primary", "Alternatives", "Capture TSX", "Synthetic TSX", "Entrypoint"],
+      [
+        "Fixture",
+        "Status",
+        "Primary",
+        "Alternatives",
+        "Capture TSX",
+        "Synthetic TSX",
+        "Capture Mock SDK",
+        "Synthetic Mock SDK",
+        "Entrypoint",
+      ],
     ),
     "",
     "## Portability Findings",
@@ -137,6 +152,10 @@ export function renderPlatformProbesMarkdown(report, options = {}) {
 function summarizeEntrypoint(fixtureId, entrypoint) {
   const captureStep = entrypoint.steps.find((step) => step.kind === "capture");
   const syntheticStep = entrypoint.steps.find((step) => step.kind === "synthetic-probe");
+  const captureUsesTsx = Boolean(captureStep?.command.includes("--import tsx"));
+  const syntheticUsesTsx = Boolean(syntheticStep?.command.includes("--import tsx"));
+  const captureUsesMockSdk = Boolean(captureStep?.command.includes("--mock-sdk"));
+  const syntheticUsesMockSdk = Boolean(syntheticStep?.command.includes("--mock-sdk"));
   return {
     fixture: fixtureId,
     id: entrypoint.id,
@@ -148,8 +167,12 @@ function summarizeEntrypoint(fixtureId, entrypoint) {
     loaderAlternatives: entrypoint.loaderStrategy.alternatives,
     capturePlanned: Boolean(captureStep),
     syntheticProbePlanned: Boolean(syntheticStep),
-    captureUsesTsx: Boolean(captureStep?.command.includes("--import tsx")),
-    syntheticUsesTsx: Boolean(syntheticStep?.command.includes("--import tsx")),
+    captureUsesTsx,
+    syntheticUsesTsx,
+    captureUsesMockSdk,
+    syntheticUsesMockSdk,
+    captureUsesTypeScriptLoader: captureUsesTsx || captureUsesMockSdk,
+    syntheticUsesTypeScriptLoader: syntheticUsesTsx || syntheticUsesMockSdk,
   };
 }
 
@@ -260,7 +283,7 @@ function buildRecommendations(portabilityFindings, entrypoints) {
   if (entrypoints.some((entrypoint) => entrypoint.loaderPrimary === "tsx")) {
     recommendations.push({
       area: "loader",
-      action: "keep tsx as the source-entrypoint smoke path, add a Jiti execution lane before treating TS plugin source compatibility as covered",
+      action: "keep mock-SDK TypeScript capture green, add a real host-loader/Jiti lane before treating TS plugin source compatibility as covered",
     });
   }
   if (portabilityFindings.some((finding) => finding.riskCodes.includes("rsync-required"))) {

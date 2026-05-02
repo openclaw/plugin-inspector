@@ -71,6 +71,7 @@ export async function buildWorkspacePlan(options = {}) {
       installStepCount: allSteps.filter((step) => step.kind === "install").length,
       auditStepCount: allSteps.filter((step) => step.kind === "audit").length,
       buildStepCount: allSteps.filter((step) => step.kind === "build").length,
+      pruneDevWorkspaceDependencyStepCount: allSteps.filter((step) => step.kind === "prune-dev-workspace-deps").length,
       artifactStepCount: allSteps.filter((step) => step.kind === "prepare-artifacts").length,
       captureStepCount: allSteps.filter((step) => step.kind === "capture").length,
       syntheticProbeStepCount: allSteps.filter((step) => step.kind === "synthetic-probe").length,
@@ -179,6 +180,7 @@ export function renderWorkspacePlanMarkdown(plan, options = {}) {
         ["Artifact dirs", plan.summary.artifactStepCount],
         ["Install steps", plan.summary.installStepCount],
         ["Audit steps", plan.summary.auditStepCount],
+        ["Prune dev workspace dependency steps", plan.summary.pruneDevWorkspaceDependencyStepCount],
         ["Build steps", plan.summary.buildStepCount],
         ["Capture steps", plan.summary.captureStepCount],
         ["Synthetic probe steps", plan.summary.syntheticProbeStepCount],
@@ -248,6 +250,14 @@ async function buildEntrypointPlan({ fixtureId, entrypoint, packageSummary, pack
   }
 
   if (requiredCapabilities.includes("dependency-install")) {
+    if (hasWorkspaceProtocolDevDependencies(packageJson)) {
+      steps.push({
+        kind: "prune-dev-workspace-deps",
+        command: `node ${helperScript(settings, workspacePath, settings.pruneWorkspaceDevDepsScript, "prune-workspace-dev-deps-cli.js")}`,
+        cwd: workspacePath,
+        reason: "remove workspace: devDependencies from the isolated runtime install; the mock SDK supplies OpenClaw host imports",
+      });
+    }
     steps.push({
       kind: "install",
       command: installCommand(packageManager),
@@ -319,6 +329,7 @@ function workspaceSettings(options) {
     resultsRoot: repoRelative(options.resultsRoot ?? defaultWorkspacePlanOptions.resultsRoot),
     rootDir: path.resolve(options.rootDir ?? process.cwd()),
     syntheticProbeScript: options.syntheticProbeScript ?? defaultWorkspacePlanOptions.syntheticProbeScript,
+    pruneWorkspaceDevDepsScript: options.pruneWorkspaceDevDepsScript,
     workspaceRoot: repoRelative(options.workspaceRoot ?? defaultWorkspacePlanOptions.workspaceRoot),
   };
 }
@@ -375,6 +386,12 @@ function hasHostLinkedOpenClawDependency(packageSummary) {
     ...(packageSummary.peerDependencies ?? []),
     ...(packageSummary.optionalDependencies ?? []),
   ].includes("openclaw");
+}
+
+function hasWorkspaceProtocolDevDependencies(packageJson) {
+  return Object.values(packageJson.devDependencies ?? {}).some(
+    (value) => typeof value === "string" && value.startsWith("workspace:"),
+  );
 }
 
 function detectPackageManager(rootDir, packageDir, packageJson) {
@@ -458,15 +475,13 @@ function runCommand(packageManager, script) {
 }
 
 function captureCommand(settings, fixtureId, entrypoint, workspacePath) {
-  const loader = entrypoint.blockers.some((blocker) => blocker.code === "ts-loader-required") ? " --import tsx" : "";
   const script = helperScript(settings, workspacePath, settings.captureScript, "capture-cli.js");
-  return `${settings.optInEnv} node${loader} ${script} ${entrypoint.specifier} --mock-sdk --output ${workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "capture")}`;
+  return `${settings.optInEnv} node ${script} ${entrypoint.specifier} --mock-sdk --output ${workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "capture")}`;
 }
 
 function syntheticProbeCommand(settings, fixtureId, entrypoint, workspacePath) {
-  const loader = entrypoint.blockers.some((blocker) => blocker.code === "ts-loader-required") ? " --import tsx" : "";
   const script = helperScript(settings, workspacePath, settings.syntheticProbeScript, "synthetic-probes-cli.js");
-  return `${settings.optInEnv} node${loader} ${script} --entrypoint ${entrypoint.specifier} --mock-sdk --output ${workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "synthetic")}`;
+  return `${settings.optInEnv} node ${script} --entrypoint ${entrypoint.specifier} --mock-sdk --output ${workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "synthetic")}`;
 }
 
 function helperScript(settings, workspacePath, configuredScript, helperFileName) {
