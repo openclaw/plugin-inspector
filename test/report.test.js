@@ -538,7 +538,7 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
             clawhubSpec: "clawhub:@openclaw/fixture-plugin",
             npmSpec: "@openclaw/fixture-plugin",
             defaultChoice: "clawhub",
-            minHostVersion: "2026.5.2",
+            minHostVersion: ">=2026.5.2",
           },
           release: {
             publishToClawHub: true,
@@ -601,7 +601,7 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
     clawhubSpec: "clawhub:@openclaw/fixture-plugin",
     npmSpec: "@openclaw/fixture-plugin",
     defaultChoice: "clawhub",
-    minHostVersion: "2026.5.2",
+    minHostVersion: ">=2026.5.2",
   });
   assert.deepEqual(report.package.openclaw.release, {
     publishToClawHub: true,
@@ -737,7 +737,7 @@ test("package contract classifier reports broken install and release metadata", 
             clawhubSpec: null,
             npmSpec: "fixture-plugin",
             defaultChoice: "clawhub",
-            minHostVersion: "2026.5.1",
+            minHostVersion: ">=2026.5.1",
           },
           release: {
             publishToClawHub: true,

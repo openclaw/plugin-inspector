@@ -290,7 +290,7 @@ export function classifyPackageContracts({ fixture, inspection, fixtureReport })
       fixture: fixture.id,
       code: "package-min-host-version-drift",
       level: "warning",
-      message: "package openclaw.install.minHostVersion does not match the target OpenClaw build version",
+      message: "package openclaw.install.minHostVersion is not a semver floor for the target OpenClaw build version",
       evidence: [
         `minHostVersion:${packageSummary.openclaw.install.minHostVersion}`,
         `buildOpenClawVersion:${packageSummary.openclaw.buildOpenClawVersion}`,
@@ -300,7 +300,7 @@ export function classifyPackageContracts({ fixture, inspection, fixtureReport })
       fixture: fixture.id,
       decision: "plugin-upstream-fix",
       seam: "package-metadata",
-      action: "Ask the plugin to keep install.minHostVersion aligned with the OpenClaw package surface it targets.",
+      action: "Ask the plugin to publish install.minHostVersion as a semver floor for the OpenClaw package surface it targets.",
       evidence: packageSummary.path,
     });
   }
@@ -1090,11 +1090,15 @@ function packageNpmPackMissingMetadata(packageSummary, fixtureReport) {
 
 function packageMinHostVersionDrift(packageSummary) {
   const openclaw = packageSummary.openclaw;
-  return (
-    nonEmptyString(openclaw?.install?.minHostVersion) &&
-    nonEmptyString(openclaw?.buildOpenClawVersion) &&
-    openclaw.install.minHostVersion !== openclaw.buildOpenClawVersion
-  );
+  if (!nonEmptyString(openclaw?.install?.minHostVersion) || !nonEmptyString(openclaw?.buildOpenClawVersion)) {
+    return false;
+  }
+  return parseMinHostVersionFloor(openclaw.install.minHostVersion) !== openclaw.buildOpenClawVersion;
+}
+
+function parseMinHostVersionFloor(value) {
+  const match = /^>=([0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?)$/.exec(value);
+  return match?.[1] ?? null;
 }
 
 function repoPathIncludedInNpmPack(packageSummary, repoPath) {
