@@ -26,6 +26,11 @@ export const syntheticRegistrationExecutionProfiles = {
     callableProperties: [],
     reason: "agent harness factories are captured as registration metadata; agent runtime execution remains isolated opt-in",
   },
+  registerAgentEventSubscription: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "agent event subscriptions are captured as registration metadata before agent event dispatch",
+  },
   registerAgentToolResultMiddleware: {
     mode: "metadata-only",
     callableProperties: [],
@@ -68,6 +73,11 @@ export const syntheticRegistrationExecutionProfiles = {
     mode: "metadata-only",
     callableProperties: [],
     reason: "context engine factories are captured as registration metadata; engine startup remains isolated opt-in",
+  },
+  registerControlUiDescriptor: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "control UI descriptors are captured as registration metadata before UI composition",
   },
   registerDetachedTaskRuntime: {
     mode: "metadata-only",
@@ -156,6 +166,11 @@ export const syntheticRegistrationExecutionProfiles = {
     callableProperties: [],
     reason: "node host commands are captured as registration metadata before host process execution",
   },
+  registerNodeInvokePolicy: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "node invoke policies are captured as registration metadata before host authorization checks",
+  },
   registerProvider: {
     mode: "metadata-only",
     callableProperties: [],
@@ -176,6 +191,11 @@ export const syntheticRegistrationExecutionProfiles = {
     callableProperties: [],
     reason: "reload handlers are captured as registration metadata before runtime reload execution",
   },
+  registerRuntimeLifecycle: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "runtime lifecycle handlers are captured as registration metadata before lifecycle dispatch",
+  },
   registerSecurityAuditCollector: {
     mode: "metadata-only",
     callableProperties: [],
@@ -186,6 +206,16 @@ export const syntheticRegistrationExecutionProfiles = {
     callableProperties: ["start", "stop", "dispose"],
     option: "includeLifecycle",
   },
+  registerSessionExtension: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "session extensions are captured as registration metadata before session runtime execution",
+  },
+  registerSessionSchedulerJob: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "session scheduler jobs are captured as registration metadata before scheduler execution",
+  },
   registerSpeechProvider: {
     mode: "provider-opt-in",
     callableProperties: ["speak", "synthesize", "tts"],
@@ -194,6 +224,11 @@ export const syntheticRegistrationExecutionProfiles = {
   registerTool: {
     mode: "direct",
     callableProperties: ["run", "handler", "execute"],
+  },
+  registerToolMetadata: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "tool metadata descriptors are captured as registration metadata before tool runtime execution",
   },
   registerTextTransforms: {
     mode: "metadata-only",
@@ -204,6 +239,11 @@ export const syntheticRegistrationExecutionProfiles = {
     mode: "metadata-only",
     callableProperties: [],
     reason: "video generation providers are captured as registration metadata before provider runtime execution",
+  },
+  registerTrustedToolPolicy: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "trusted tool policies are captured as registration metadata before trust-policy enforcement",
   },
   registerWebFetchProvider: {
     mode: "metadata-only",
