@@ -74,6 +74,16 @@ export const contractProbeRules = {
     contract: "OpenClaw package entrypoints resolve to files in the published or built plugin package.",
     target: "package-loader",
   },
+  "package-install-metadata-incomplete": {
+    id: "package.metadata.install-release",
+    contract: "Release publishing metadata declares canonical ClawHub and npm install specs.",
+    target: "package-loader",
+  },
+  "package-min-host-version-drift": {
+    id: "package.metadata.min-host-version",
+    contract: "Install minimum host version matches the OpenClaw package surface targeted by the plugin.",
+    target: "package-loader",
+  },
   "package-openclaw-entry-missing": {
     id: "package.entrypoint.openclaw-metadata",
     contract: "OpenClaw package metadata declares entrypoints for cold import and registration capture.",

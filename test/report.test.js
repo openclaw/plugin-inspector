@@ -425,6 +425,20 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
         openclaw: {
           extensions: ["src/index.js"],
           compat: { pluginApi: "^1.0.0" },
+          build: {
+            openclawVersion: "2026.5.2",
+            pluginSdkVersion: "2026.5.2",
+          },
+          install: {
+            clawhubSpec: "clawhub:@openclaw/fixture-plugin",
+            npmSpec: "@openclaw/fixture-plugin",
+            defaultChoice: "clawhub",
+            minHostVersion: "2026.5.2",
+          },
+          release: {
+            publishToClawHub: true,
+            publishToNpm: true,
+          },
         },
       },
       null,
@@ -468,6 +482,16 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
   });
   assert.equal(report.package.name, "fixture-plugin");
   assert.equal(report.package.openclaw.compatPluginApi, "^1.0.0");
+  assert.deepEqual(report.package.openclaw.install, {
+    clawhubSpec: "clawhub:@openclaw/fixture-plugin",
+    npmSpec: "@openclaw/fixture-plugin",
+    defaultChoice: "clawhub",
+    minHostVersion: "2026.5.2",
+  });
+  assert.deepEqual(report.package.openclaw.release, {
+    publishToClawHub: true,
+    publishToNpm: true,
+  });
   assert.deepEqual(report.package.openclaw.entrypoints[0], {
     kind: "extension",
     specifier: "src/index.js",
@@ -570,6 +594,56 @@ test("package contract classifier treats openclaw as a host-linked dependency", 
     result.suggestions.some((finding) => finding.code === "package-dependency-install-required"),
     false,
   );
+});
+
+test("package contract classifier reports broken install and release metadata", () => {
+  const result = classifyPackageContracts({
+    fixture: {
+      id: "fixture",
+      path: "plugins/fixture",
+    },
+    inspection: {
+      registrations: ["registerTool"],
+    },
+    fixtureReport: {
+      pluginManifests: [{ version: "1.0.0" }],
+      package: {
+        path: "plugins/fixture/package.json",
+        name: "@openclaw/fixture-plugin",
+        version: "1.0.0",
+        dependencies: [],
+        peerDependencies: [],
+        optionalDependencies: [],
+        openclaw: {
+          compatPluginApi: "^1.0.0",
+          buildOpenClawVersion: "2026.5.2",
+          install: {
+            clawhubSpec: null,
+            npmSpec: "fixture-plugin",
+            defaultChoice: "clawhub",
+            minHostVersion: "2026.5.1",
+          },
+          release: {
+            publishToClawHub: true,
+            publishToNpm: true,
+          },
+          entrypoints: [
+            {
+              kind: "extension",
+              specifier: "dist/index.js",
+              relativePath: "plugins/fixture/dist/index.js",
+              exists: true,
+              requiresBuild: false,
+            },
+          ],
+        },
+      },
+    },
+  });
+
+  assert.ok(result.warnings.some((finding) => finding.code === "package-install-metadata-incomplete"));
+  assert.ok(result.warnings.some((finding) => finding.code === "package-min-host-version-drift"));
+  assert.ok(result.decisions.some((decision) => decision.seam === "package-metadata"));
 });
 
 test("target OpenClaw coverage classifier reports missing public surface", () => {

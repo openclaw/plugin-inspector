@@ -152,6 +152,8 @@ export function summarizePackage(packagePath, packageJson, options = {}) {
           typeof packageJson.openclaw.build?.pluginSdkVersion === "string"
             ? packageJson.openclaw.build.pluginSdkVersion
             : null,
+        install: summarizeOpenClawInstall(packageJson.openclaw.install),
+        release: summarizeOpenClawRelease(packageJson.openclaw.release),
       }
     : null;
 
@@ -242,6 +244,44 @@ export function classifyPackageContracts({ fixture, inspection, fixtureReport })
       decision: "plugin-upstream-fix",
       seam: "package-metadata",
       action: "Ask the plugin to declare the plugin API range it was built against.",
+      evidence: packageSummary.path,
+    });
+  }
+
+  const installMetadataIssues = packageInstallMetadataIssues(packageSummary);
+  if (installMetadataIssues.length > 0) {
+    warnings.push({
+      fixture: fixture.id,
+      code: "package-install-metadata-incomplete",
+      level: "warning",
+      message: "package OpenClaw install metadata does not match advertised release targets",
+      evidence: installMetadataIssues,
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "plugin-upstream-fix",
+      seam: "package-metadata",
+      action: "Ask the plugin to align openclaw.install metadata with openclaw.release publishing targets.",
+      evidence: installMetadataIssues.join(", "),
+    });
+  }
+
+  if (packageMinHostVersionDrift(packageSummary)) {
+    warnings.push({
+      fixture: fixture.id,
+      code: "package-min-host-version-drift",
+      level: "warning",
+      message: "package openclaw.install.minHostVersion does not match the target OpenClaw build version",
+      evidence: [
+        `minHostVersion:${packageSummary.openclaw.install.minHostVersion}`,
+        `buildOpenClawVersion:${packageSummary.openclaw.buildOpenClawVersion}`,
+      ],
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "plugin-upstream-fix",
+      seam: "package-metadata",
+      action: "Ask the plugin to keep install.minHostVersion aligned with the OpenClaw package surface it targets.",
       evidence: packageSummary.path,
     });
   }
@@ -871,6 +911,71 @@ function selectPrimaryPackage(packages) {
   return packages[0] ?? null;
 }
 
+function summarizeOpenClawInstall(install) {
+  if (!install || typeof install !== "object") {
+    return null;
+  }
+  return {
+    clawhubSpec: stringOrNull(install.clawhubSpec),
+    npmSpec: stringOrNull(install.npmSpec),
+    defaultChoice: stringOrNull(install.defaultChoice),
+    minHostVersion: stringOrNull(install.minHostVersion),
+  };
+}
+
+function summarizeOpenClawRelease(release) {
+  if (!release || typeof release !== "object") {
+    return null;
+  }
+  return {
+    publishToClawHub: booleanOrNull(release.publishToClawHub),
+    publishToNpm: booleanOrNull(release.publishToNpm),
+  };
+}
+
+function packageInstallMetadataIssues(packageSummary) {
+  const openclaw = packageSummary.openclaw;
+  if (!openclaw) {
+    return [];
+  }
+
+  const issues = [];
+  const install = openclaw.install;
+  const release = openclaw.release;
+  const publishToClawHub = release?.publishToClawHub === true;
+  const publishToNpm = release?.publishToNpm === true;
+
+  if (publishToClawHub && !nonEmptyString(install?.clawhubSpec)) {
+    issues.push("openclaw.release.publishToClawHub requires openclaw.install.clawhubSpec");
+  }
+  if (publishToNpm && !nonEmptyString(install?.npmSpec)) {
+    issues.push("openclaw.release.publishToNpm requires openclaw.install.npmSpec");
+  }
+  if (publishToNpm && nonEmptyString(install?.npmSpec) && nonEmptyString(packageSummary.name) && install.npmSpec !== packageSummary.name) {
+    issues.push(`openclaw.install.npmSpec:${install.npmSpec} does not match package name:${packageSummary.name}`);
+  }
+  if (nonEmptyString(install?.defaultChoice) && !["clawhub", "npm"].includes(install.defaultChoice)) {
+    issues.push(`openclaw.install.defaultChoice:${install.defaultChoice} must be clawhub or npm`);
+  }
+  if (install?.defaultChoice === "clawhub" && !nonEmptyString(install.clawhubSpec)) {
+    issues.push("openclaw.install.defaultChoice clawhub requires openclaw.install.clawhubSpec");
+  }
+  if (install?.defaultChoice === "npm" && !nonEmptyString(install.npmSpec)) {
+    issues.push("openclaw.install.defaultChoice npm requires openclaw.install.npmSpec");
+  }
+
+  return issues;
+}
+
+function packageMinHostVersionDrift(packageSummary) {
+  const openclaw = packageSummary.openclaw;
+  return (
+    nonEmptyString(openclaw?.install?.minHostVersion) &&
+    nonEmptyString(openclaw?.buildOpenClawVersion) &&
+    openclaw.install.minHostVersion !== openclaw.buildOpenClawVersion
+  );
+}
+
 function packageRank(packageSummary) {
   if (packageSummary.openclaw?.entrypoints.length > 0) {
     return 0;
@@ -883,6 +988,18 @@ function packageRank(packageSummary) {
 
 function arrayValues(value) {
   return Array.isArray(value) ? value.filter((item) => typeof item === "string") : [];
+}
+
+function stringOrNull(value) {
+  return typeof value === "string" ? value : null;
+}
+
+function booleanOrNull(value) {
+  return typeof value === "boolean" ? value : null;
+}
+
+function nonEmptyString(value) {
+  return typeof value === "string" && value.trim().length > 0;
 }
 
 function detailEvidence(details, key = "name") {
