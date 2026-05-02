@@ -544,6 +544,9 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
             publishToClawHub: true,
             publishToNpm: true,
           },
+          bundle: {
+            includeInCore: false,
+          },
         },
       },
       null,
@@ -604,6 +607,7 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
     publishToClawHub: true,
     publishToNpm: true,
   });
+  assert.deepEqual(report.package.openclaw.unsupportedMetadata, ["openclaw.bundle"]);
   assert.deepEqual(report.package.openclaw.entrypoints[0], {
     kind: "extension",
     specifier: "src/index.js",
@@ -739,6 +743,7 @@ test("package contract classifier reports broken install and release metadata", 
             publishToClawHub: true,
             publishToNpm: true,
           },
+          unsupportedMetadata: ["openclaw.bundle"],
           entrypoints: [
             {
               kind: "extension",
@@ -755,6 +760,7 @@ test("package contract classifier reports broken install and release metadata", 
 
   assert.ok(result.warnings.some((finding) => finding.code === "package-install-metadata-incomplete"));
   assert.ok(result.warnings.some((finding) => finding.code === "package-min-host-version-drift"));
+  assert.ok(result.warnings.some((finding) => finding.code === "package-openclaw-unsupported-metadata"));
   assert.ok(result.decisions.some((decision) => decision.seam === "package-metadata"));
 });
 

@@ -32,6 +32,7 @@ export const knownIssueCodes = new Set([
   "package-npm-pack-unavailable",
   "package-openclaw-entry-missing",
   "package-openclaw-metadata-missing",
+  "package-openclaw-unsupported-metadata",
   "package-plugin-api-compat-missing",
   "package-typescript-source-entrypoint",
   "provider-auth-env-vars",
@@ -193,6 +194,12 @@ export const issueMetadataByCode = {
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "OpenClaw package metadata is missing",
+  },
+  "package-openclaw-unsupported-metadata": {
+    severity: "P2",
+    owner: "plugin",
+    decision: "plugin-upstream-fix",
+    title: "package declares unsupported OpenClaw metadata",
   },
   "package-plugin-api-compat-missing": {
     severity: "P2",
@@ -370,6 +377,7 @@ function issueClassFor(code, options) {
       "package-npm-pack-unavailable",
       "package-openclaw-entry-missing",
       "package-openclaw-metadata-missing",
+      "package-openclaw-unsupported-metadata",
       "package-plugin-api-compat-missing",
       "package-install-metadata-incomplete",
       "reserved-sdk-import",

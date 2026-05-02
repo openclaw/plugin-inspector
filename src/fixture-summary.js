@@ -154,6 +154,7 @@ export function summarizePackage(packagePath, packageJson, options = {}) {
             : null,
         install: summarizeOpenClawInstall(packageJson.openclaw.install),
         release: summarizeOpenClawRelease(packageJson.openclaw.release),
+        unsupportedMetadata: unsupportedOpenClawPackageMetadata(packageJson.openclaw),
       }
     : null;
 
@@ -246,6 +247,23 @@ export function classifyPackageContracts({ fixture, inspection, fixtureReport })
       seam: "package-metadata",
       action: "Ask the plugin to declare the plugin API range it was built against.",
       evidence: packageSummary.path,
+    });
+  }
+
+  if ((packageSummary.openclaw?.unsupportedMetadata ?? []).length > 0) {
+    warnings.push({
+      fixture: fixture.id,
+      code: "package-openclaw-unsupported-metadata",
+      level: "warning",
+      message: "package declares unsupported OpenClaw metadata",
+      evidence: packageSummary.openclaw.unsupportedMetadata,
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "plugin-upstream-fix",
+      seam: "package-metadata",
+      action: "Remove unsupported OpenClaw metadata; native plugins use openclaw.plugin.json plus supported package openclaw fields.",
+      evidence: packageSummary.openclaw.unsupportedMetadata.join(", "),
     });
   }
 
@@ -950,6 +968,15 @@ function summarizeOpenClawRelease(release) {
     publishToClawHub: booleanOrNull(release.publishToClawHub),
     publishToNpm: booleanOrNull(release.publishToNpm),
   };
+}
+
+function unsupportedOpenClawPackageMetadata(openclaw) {
+  if (!openclaw || typeof openclaw !== "object") {
+    return [];
+  }
+  return Object.keys(openclaw)
+    .filter((key) => key === "bundle")
+    .map((key) => `openclaw.${key}`);
 }
 
 function summarizeNpmPack(packageJson, openclaw) {
