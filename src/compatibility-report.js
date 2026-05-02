@@ -26,13 +26,20 @@ export function renderCompatibilityMarkdownReport(report, options = {}) {
         ["Warnings", report.summary.warningCount],
         ["Compatibility suggestions", report.summary.suggestionCount],
         ["Issue findings", report.summary.issueCount],
+        ["Open issue findings", report.summary.openIssueCount ?? report.summary.issueCount],
+        ["Runtime-covered findings", report.summary.runtimeCoveredIssueCount ?? 0],
+        ["Runtime-partial findings", report.summary.runtimePartiallyCoveredIssueCount ?? 0],
         ["P0 issues", report.summary.p0IssueCount],
         ["P1 issues", report.summary.p1IssueCount],
+        ["Open P0 issues", report.summary.openP0IssueCount ?? report.summary.p0IssueCount],
+        ["Open P1 issues", report.summary.openP1IssueCount ?? report.summary.p1IssueCount],
         ["Live issues", report.summary.liveIssueCount],
         ["Live P0 issues", report.summary.liveP0IssueCount],
         ["Compat gaps", report.summary.compatGapCount],
         ["Deprecation warnings", report.summary.deprecationWarningCount],
         ["Inspector gaps", report.summary.inspectorGapCount],
+        ["Open inspector gaps", report.summary.openInspectorGapCount ?? report.summary.inspectorGapCount],
+        ["Runtime coverage artifacts", report.summary.runtimeCoverageArtifactCount ?? 0],
         ["Upstream metadata", report.summary.upstreamIssueCount],
         ["Contract probes", report.summary.contractProbeCount],
         ["Decision rows", report.summary.decisionCount],
@@ -65,7 +72,11 @@ export function renderCompatibilityMarkdownReport(report, options = {}) {
     "",
     "## Inspector Proof Gaps",
     "",
-    issuesTable(report.issues.filter((issue) => issue.issueClass === "inspector-gap"), options),
+    issuesTable(report.issues.filter((issue) => issue.issueClass === "inspector-gap" && issue.status !== "runtime-covered"), options),
+    "",
+    "## Runtime-Covered Inspector Gaps",
+    "",
+    issuesTable(report.issues.filter((issue) => issue.issueClass === "inspector-gap" && issue.status === "runtime-covered"), options),
     "",
     "## Upstream Metadata Issues",
     "",
@@ -141,13 +152,20 @@ export function renderCompatibilityIssuesReport(report, options = {}) {
     markdownTable(
       [
         ["Issue findings", report.summary.issueCount],
+        ["Open issue findings", report.summary.openIssueCount ?? report.summary.issueCount],
+        ["Runtime-covered findings", report.summary.runtimeCoveredIssueCount ?? 0],
+        ["Runtime-partial findings", report.summary.runtimePartiallyCoveredIssueCount ?? 0],
         [severityLabel("P0", options), report.summary.p0IssueCount],
         [severityLabel("P1", options), report.summary.p1IssueCount],
+        [`Open ${severityLabel("P0", options)}`, report.summary.openP0IssueCount ?? report.summary.p0IssueCount],
+        [`Open ${severityLabel("P1", options)}`, report.summary.openP1IssueCount ?? report.summary.p1IssueCount],
         ["Live issues", report.summary.liveIssueCount],
         ["Live P0 issues", report.summary.liveP0IssueCount],
         ["Compat gaps", report.summary.compatGapCount],
         ["Deprecation warnings", report.summary.deprecationWarningCount],
         ["Inspector gaps", report.summary.inspectorGapCount],
+        ["Open inspector gaps", report.summary.openInspectorGapCount ?? report.summary.inspectorGapCount],
+        ["Runtime coverage artifacts", report.summary.runtimeCoverageArtifactCount ?? 0],
         ["Upstream metadata", report.summary.upstreamIssueCount],
         ["Contract probes", report.summary.contractProbeCount],
       ],
@@ -179,7 +197,11 @@ export function renderCompatibilityIssuesReport(report, options = {}) {
     "",
     "## Inspector Proof Gaps",
     "",
-    issuesTable(report.issues.filter((issue) => issue.issueClass === "inspector-gap"), options),
+    issuesTable(report.issues.filter((issue) => issue.issueClass === "inspector-gap" && issue.status !== "runtime-covered"), options),
+    "",
+    "## Runtime-Covered Inspector Gaps",
+    "",
+    issuesTable(report.issues.filter((issue) => issue.issueClass === "inspector-gap" && issue.status === "runtime-covered"), options),
     "",
     "## Upstream Metadata Issues",
     "",
@@ -228,6 +250,7 @@ function issueBlock(issue, options) {
     `  - state: ${issueState(issue)}`,
     "  - evidence:",
     ...evidenceList(issue.evidence, options).map((item) => `    - ${item}`),
+    ...runtimeCoverageList(issue, options),
   ].join("\n");
 }
 
@@ -235,6 +258,7 @@ function issueState(issue) {
   const flags = [
     issue.status,
     `compat:${issue.compatStatus ?? "none"}`,
+    issue.runtimeCoverage?.status ? `runtime:${issue.runtimeCoverage.status}` : null,
     issue.live ? "live" : null,
     issue.deprecated ? "deprecated" : null,
   ].filter(Boolean);
@@ -266,7 +290,7 @@ function triageOverview(report) {
         "inspector-gap",
         report.summary.inspectorGapCount,
         "-",
-        "Plugin Inspector needs stronger capture/probe evidence before making contract judgments.",
+        "Plugin Inspector needs stronger capture/probe evidence before making contract judgments. Runtime-covered rows are proof-backed and not open report work.",
       ],
       [
         "upstream-metadata",
@@ -356,4 +380,16 @@ function evidenceList(evidence, options) {
   }
   const formatEvidence = options.formatEvidence ?? ((item) => item);
   return items.map((item) => formatEvidence(item));
+}
+
+function runtimeCoverageList(issue, options) {
+  const runtimeCoverage = issue.runtimeCoverage;
+  if (!runtimeCoverage) {
+    return [];
+  }
+  return [
+    "  - runtime coverage:",
+    ...evidenceList(runtimeCoverage.captured, options).map((item) => `    - captured ${item}`),
+    ...evidenceList(runtimeCoverage.artifacts, options).map((item) => `    - ${item}`),
+  ];
 }

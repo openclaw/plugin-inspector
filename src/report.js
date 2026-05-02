@@ -5,6 +5,7 @@ import { buildContractProbes } from "./contract-probes.js";
 import { classifyCompatibilityFixture } from "./fixture-summary.js";
 import { buildIssues, summarizeIssueClasses } from "./issues.js";
 import { sanitizeReportArtifact } from "./report-sanitizer.js";
+import { applyRuntimeExecutionCoverage } from "./runtime-reconciliation.js";
 
 export function buildReport({ config, inspections, failures = [], generatedAt = "deterministic" }) {
   const inspectionById = new Map(inspections.map((inspection) => [inspection.id, inspection]));
@@ -140,6 +141,10 @@ export async function buildCompatibilityReport(options = {}) {
     decisions,
   });
 
+  const runtimeCoverage = applyRuntimeExecutionCoverage({
+    findings: [...warnings, ...suggestions],
+    executionResults: options.executionResults,
+  });
   const issues = buildIssues({
     breakages,
     warnings,
@@ -149,6 +154,8 @@ export async function buildCompatibilityReport(options = {}) {
   });
   const contractProbes = buildContractProbes({ warnings, suggestions, fixtures: fixtureReports });
   const issueSummary = summarizeIssueClasses(issues);
+  const openIssues = issues.filter((issue) => issue.status !== "runtime-covered");
+  const openIssueSummary = summarizeIssueClasses(openIssues);
 
   return {
     generatedAt: options.generatedAt ?? "deterministic",
@@ -163,8 +170,11 @@ export async function buildCompatibilityReport(options = {}) {
       decisionCount: decisions.length,
       logCount: logs.length,
       issueCount: issues.length,
+      openIssueCount: openIssues.length,
       p0IssueCount: issues.filter((issue) => issue.severity === "P0").length,
       p1IssueCount: issues.filter((issue) => issue.severity === "P1").length,
+      openP0IssueCount: openIssues.filter((issue) => issue.severity === "P0").length,
+      openP1IssueCount: openIssues.filter((issue) => issue.severity === "P1").length,
       liveIssueCount: issueSummary["live-issue"],
       liveP0IssueCount: issues.filter((issue) => issue.issueClass === "live-issue" && issue.severity === "P0").length,
       compatGapCount: issueSummary["compat-gap"],
@@ -172,6 +182,10 @@ export async function buildCompatibilityReport(options = {}) {
       inspectorGapCount: issueSummary["inspector-gap"],
       upstreamIssueCount: issueSummary["upstream-metadata"],
       fixtureRegressionCount: issueSummary["fixture-regression"],
+      openInspectorGapCount: openIssueSummary["inspector-gap"],
+      runtimeCoveredIssueCount: runtimeCoverage.coveredFindingCount,
+      runtimePartiallyCoveredIssueCount: runtimeCoverage.partiallyCoveredFindingCount,
+      runtimeCoverageArtifactCount: runtimeCoverage.coverage.artifactCount,
       contractProbeCount: contractProbes.length,
     },
     fixtures: fixtureReports,
@@ -308,7 +322,11 @@ function topTextFindings(report, limit) {
   return [
     ...(report.breakages ?? []).map((finding) => formatTextFinding(finding, "breakage")),
     ...(report.issues ?? [])
-      .filter((issue) => issue.status === "blocking" || issue.severity === "P0" || issue.severity === "P1")
+      .filter(
+        (issue) =>
+          issue.status !== "runtime-covered" &&
+          (issue.status === "blocking" || issue.severity === "P0" || issue.severity === "P1"),
+      )
       .map((issue) => formatTextFinding(issue, issue.severity ?? "issue")),
     ...(report.warnings ?? []).map((finding) => formatTextFinding(finding, "warning")),
   ].slice(0, limit);

@@ -13,6 +13,7 @@ import * as profileDiffApi from "./profile-diff.js";
 import * as refDiffApi from "./ref-diff.js";
 import * as reportApi from "./report.js";
 import * as runtimeProfileApi from "./runtime-profile.js";
+import * as runtimeReconciliationApi from "./runtime-reconciliation.js";
 import * as syntheticProbeSuiteApi from "./synthetic-probe-suite.js";
 import * as syntheticProbesApi from "./synthetic-probes.js";
 
@@ -111,6 +112,8 @@ export const runtime = Object.freeze({
   writeImportLoopProfile: importLoopProfileApi.writeImportLoopProfile,
   renderImportLoopProfile: importLoopProfileApi.renderImportLoopProfileMarkdown,
   validateImportLoopProfile: importLoopProfileApi.validateImportLoopProfile,
+  applyExecutionCoverage: runtimeReconciliationApi.applyRuntimeExecutionCoverage,
+  buildExecutionCoverage: runtimeReconciliationApi.buildRuntimeExecutionCoverage,
 });
 
 export const synthetic = Object.freeze({
@@ -227,6 +230,10 @@ export {
   validateRuntimeProfile,
   writeRuntimeProfile,
 } from "./runtime-profile.js";
+export {
+  applyRuntimeExecutionCoverage,
+  buildRuntimeExecutionCoverage,
+} from "./runtime-reconciliation.js";
 export { buildSyntheticProbePlanFromReport } from "./synthetic-probe-suite.js";
 export {
   buildSyntheticProbePlan,

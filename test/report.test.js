@@ -370,6 +370,110 @@ test("compatibility report assembly classifies fixtures, issues, probes, and com
   assert.ok(report.decisions.some((decision) => decision.seam === "compat-registry"));
 });
 
+test("compatibility report marks inspector gaps covered by runtime execution artifacts", async () => {
+  const report = await buildCompatibilityReport({
+    generatedAt: "test",
+    fixtures: [
+      {
+        id: "fixture",
+        name: "Fixture",
+        path: "plugins/fixture",
+        priority: "high",
+        seams: ["native-tool"],
+        why: "covers runtime-only seams",
+      },
+    ],
+    inspections: [
+      {
+        id: "fixture",
+        status: "ok",
+        hooks: ["llm_input"],
+        hookDetails: [{ name: "llm_input", ref: "plugins/fixture/src/index.ts:1" }],
+        registrations: ["registerTool", "registerService", "registerCommand"],
+        registrationDetails: [
+          { name: "registerTool", ref: "plugins/fixture/src/index.ts:2" },
+          { name: "registerService", ref: "plugins/fixture/src/index.ts:3" },
+          { name: "registerCommand", ref: "plugins/fixture/src/index.ts:4" },
+        ],
+        manifestContracts: [],
+        manifestFiles: [],
+        sdkImports: [],
+        sourceFiles: ["plugins/fixture/src/index.ts"],
+      },
+    ],
+    targetOpenClaw: {
+      status: "ok",
+      compatRecords: [],
+      compatRecordStatuses: {},
+      hookNames: ["llm_input"],
+      apiRegistrars: ["registerTool", "registerService", "registerCommand"],
+      capturedRegistrars: [],
+      sdkExports: [],
+      manifestFields: ["id"],
+      manifestContractFields: [],
+    },
+    executionResults: {
+      artifacts: [
+        {
+          fixture: "fixture",
+          kind: "capture",
+          status: "pass",
+          artifactPath: ".crabpot/results/fixture/index.capture.json",
+          captured: [
+            "hook:llm_input",
+            "registration:registerTool",
+            "registration:registerService",
+            "registration:registerCommand",
+          ],
+        },
+      ],
+    },
+    buildFixtureReport: ({ fixture, inspection }) => ({
+      id: fixture.id,
+      name: fixture.name,
+      priority: fixture.priority,
+      seams: fixture.seams,
+      why: fixture.why,
+      status: inspection.status,
+      hooks: inspection.hooks,
+      hookDetails: inspection.hookDetails,
+      registrations: inspection.registrations,
+      registrationDetails: inspection.registrationDetails,
+      manifestContracts: inspection.manifestContracts,
+      manifestFiles: [],
+      sourceFiles: inspection.sourceFiles,
+      pluginManifests: [],
+      package: null,
+      packages: [],
+      sdkImports: [],
+      sdkImportDetails: [],
+    }),
+  });
+
+  const coveredCodes = report.issues
+    .filter((issue) => issue.status === "runtime-covered")
+    .map((issue) => issue.code)
+    .sort();
+  assert.deepEqual(coveredCodes, [
+    "conversation-access-hook",
+    "registration-capture-gap",
+    "runtime-tool-capture",
+  ]);
+  assert.equal(report.summary.runtimeCoveredIssueCount, 3);
+  assert.equal(report.summary.openInspectorGapCount, 0);
+  assert.equal(report.summary.runtimeCoverageArtifactCount, 1);
+
+  const registrationIssue = report.issues.find((issue) => issue.code === "registration-capture-gap");
+  assert.deepEqual(registrationIssue.runtimeCoverage.captured, [
+    "registration:registerService",
+    "registration:registerCommand",
+  ]);
+
+  const markdown = renderCompatibilityIssuesReport(report);
+  assert.match(markdown, /## Runtime-Covered Inspector Gaps/);
+  assert.match(markdown, /state: runtime-covered .* runtime:covered/);
+});
+
 test("compat record coverage logs unavailable targets", () => {
   const logs = [];
   classifyCompatRecordCoverage({

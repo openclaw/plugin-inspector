@@ -185,6 +185,10 @@ export {
   writeRuntimeProfile,
 } from "./runtime-profile.js";
 export {
+  applyRuntimeExecutionCoverage,
+  buildRuntimeExecutionCoverage,
+} from "./runtime-reconciliation.js";
+export {
   buildRuntimeCaptureReport,
   renderRuntimeCaptureMarkdown,
   writeRuntimeCaptureReport,

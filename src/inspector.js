@@ -35,6 +35,7 @@ export async function inspectCompatibilityFixtureSet(config, options = {}) {
     inspections,
     failures,
     generatedAt: options.generatedAt,
+    executionResults: options.executionResults,
     targetOpenClaw,
     buildFixtureReport: ({ fixture, inspection }) =>
       buildCompatibilityFixtureReport({

@@ -45,6 +45,7 @@ export async function inspectPluginRoot(options = {}) {
   return inspectCompatibilityFixtureSet(config, {
     generatedAt: options.generatedAt,
     openclawPath: options.openclawPath,
+    executionResults: options.executionResults,
     targetOpenClaw: options.targetOpenClaw,
   });
 }
@@ -59,6 +60,7 @@ export async function inspectCompatibilityFixtureSetConfig(options = {}) {
   return inspectCompatibilityFixtureSet(config, {
     generatedAt: options.generatedAt,
     openclawPath: options.openclawPath,
+    executionResults: options.executionResults,
     targetOpenClaw: options.targetOpenClaw,
   });
 }
@@ -112,6 +114,7 @@ export async function buildFixtureSetColdImportReadiness(options = {}) {
     (await inspectCompatibilityFixtureSet(config, {
       generatedAt: options.generatedAt,
       openclawPath: options.openclawPath,
+      executionResults: options.executionResults,
       targetOpenClaw: options.targetOpenClaw,
     }));
 
@@ -143,6 +146,7 @@ export async function buildFixtureSetWorkspacePlan(options = {}) {
     (await inspectCompatibilityFixtureSet(config, {
       generatedAt: options.generatedAt,
       openclawPath: options.openclawPath,
+      executionResults: options.executionResults,
       targetOpenClaw: options.targetOpenClaw,
     }));
   const rootDir = options.rootDir ?? config?.rootDir ?? options.cwd;

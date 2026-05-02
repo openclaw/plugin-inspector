@@ -261,7 +261,7 @@ export function buildIssues({ breakages = [], warnings = [], suggestions = [], t
       owner: finding.owner,
       code: finding.code,
       decision: finding.decision,
-      status: finding.severity === "P0" || finding.level === "breakage" ? "blocking" : "open",
+      status: finding.status ?? (finding.severity === "P0" || finding.level === "breakage" ? "blocking" : "open"),
       issueClass: finding.issueClass,
       live: finding.live,
       deprecated: finding.deprecated,
@@ -269,6 +269,7 @@ export function buildIssues({ breakages = [], warnings = [], suggestions = [], t
       title: issueTitle(finding),
       evidence: finding.evidence ?? [],
       compatRecord: finding.compatRecord ?? null,
+      runtimeCoverage: finding.runtimeCoverage ?? null,
     }));
 }
 
