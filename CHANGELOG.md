@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.10 - 2026-05-03
+
+### Fixed
+
+- Accept valid mocked capture output when plugin code leaves `process.exitCode` dirty.
+
 ## 0.3.9 - 2026-05-03
 
 ### Fixed
