@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.9 - 2026-05-03
+
+### Fixed
+
+- Follow bundled channel `loadBundledEntryExportSync` registration exports during mocked runtime capture.
+
 ## 0.3.8 - 2026-05-03
 
 ### Fixed

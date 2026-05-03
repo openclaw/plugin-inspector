@@ -551,6 +551,9 @@ function genericExportStatement(name) {
   if (name === "defineBundledChannelSetupEntry") {
     return "export { defineBundledChannelSetupEntry };";
   }
+  if (name === "loadBundledEntryExportSync") {
+    return "export { loadBundledEntryExportSync };";
+  }
   if (/^[A-Z].*Schema$/u.test(name)) {
     return `export const ${name} = createSchema();`;
   }
@@ -558,7 +561,13 @@ function genericExportStatement(name) {
 }
 
 function genericMockRuntimeSource(options = {}) {
-  return `${options.includeSdkRuntime ? `function definePluginEntry(entry) {
+  return `${options.includeSdkRuntime ? `import { existsSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
+
+const pendingBundledEntryLoads = new Set();
+
+function definePluginEntry(entry) {
   if (entry && typeof entry === "object" && typeof entry.register === "function") {
     return entry;
   }
@@ -572,7 +581,7 @@ function defineBundledChannelEntry(entry = {}) {
   return {
     ...entry,
     kind: "bundled-channel-entry",
-    register(api) {
+    async register(api) {
       if (api?.registrationMode === "cli-metadata") {
         return entry.registerCliMetadata?.(api);
       }
@@ -585,7 +594,12 @@ function defineBundledChannelEntry(entry = {}) {
         });
       }
       entry.registerCliMetadata?.(api);
-      return entry.registerFull?.(api);
+      const result = entry.registerFull?.(api);
+      if (result && typeof result.then === "function") {
+        await result;
+      }
+      await drainBundledEntryLoads();
+      return result;
     },
   };
 }
@@ -595,6 +609,46 @@ function defineBundledChannelSetupEntry(entry = {}) {
     ...entry,
     kind: "bundled-channel-setup-entry",
   };
+}
+
+function loadBundledEntryExportSync(importMetaUrl, options = {}) {
+  return (...args) => {
+    const promise = import(resolveBundledEntryUrl(importMetaUrl, options.specifier)).then((module) => {
+      const loaded = module[options.exportName] ?? module.default;
+      return typeof loaded === "function" ? loaded(...args) : loaded;
+    });
+    pendingBundledEntryLoads.add(promise);
+    promise.finally(() => pendingBundledEntryLoads.delete(promise));
+    return promise;
+  };
+}
+
+async function drainBundledEntryLoads() {
+  while (pendingBundledEntryLoads.size > 0) {
+    await Promise.all([...pendingBundledEntryLoads]);
+  }
+}
+
+function resolveBundledEntryUrl(importMetaUrl, specifier) {
+  const basePath = fileURLToPath(importMetaUrl);
+  const target = specifier ? path.resolve(path.dirname(basePath), specifier) : basePath;
+  const resolved = resolveExistingSourcePath(target);
+  return pathToFileURL(resolved).href;
+}
+
+function resolveExistingSourcePath(target) {
+  if (existsSync(target)) {
+    return target;
+  }
+  const parsed = path.parse(target);
+  const withoutJsExtension = [".js", ".mjs", ".cjs"].includes(parsed.ext) ? path.join(parsed.dir, parsed.name) : null;
+  const candidates = [
+    ...(withoutJsExtension ? [\`\${withoutJsExtension}.ts\`, \`\${withoutJsExtension}.mts\`, \`\${withoutJsExtension}.cts\`] : []),
+    \`\${target}.js\`,
+    \`\${target}.mjs\`,
+    \`\${target}.ts\`,
+  ];
+  return candidates.find((candidate) => existsSync(candidate)) ?? target;
 }
 ` : ""}
 function createMockValue(name) {
@@ -1122,16 +1176,36 @@ export function normalizeSecretInputString(value) {
   return String(value ?? "").trim();
 }
 
+function createSimpleSchema(defaultValue) {
+  return {
+    parse(value) {
+      return value === undefined ? defaultValue : value;
+    },
+    default(value) {
+      return createSimpleSchema(value);
+    },
+    optional() {
+      return this;
+    },
+    nullable() {
+      return this;
+    },
+    nullish() {
+      return this;
+    },
+  };
+}
+
 export function buildSecretInputSchema() {
-  return { type: "string" };
+  return createSimpleSchema();
 }
 
 export function buildOptionalSecretInputSchema() {
-  return { anyOf: [buildSecretInputSchema(), { type: "undefined" }] };
+  return createSimpleSchema();
 }
 
 export function buildSecretInputArraySchema() {
-  return { type: "array", items: buildSecretInputSchema() };
+  return createSimpleSchema([]);
 }
 
 export function registerPluginHttpRoute(options = {}) {

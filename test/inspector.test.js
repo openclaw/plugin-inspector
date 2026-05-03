@@ -264,3 +264,56 @@ test("mock capture expands bundled channel entry registration shells", async () 
     "registration:registerTool",
   ]);
 });
+
+test("mock capture follows bundled channel linked registerFull exports", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-bundled-channel-linked-capture-"));
+  await writeFile(
+    path.join(dir, "index.ts"),
+    [
+      'import { defineBundledChannelEntry, loadBundledEntryExportSync } from "openclaw/plugin-sdk/channel-entry-contract";',
+      "",
+      "function registerFull(api) {",
+      "  const register = loadBundledEntryExportSync(import.meta.url, {",
+      "    specifier: './api.js',",
+      "    exportName: 'registerFixtureFull',",
+      "  });",
+      "  register(api);",
+      "}",
+      "",
+      "export default defineBundledChannelEntry({",
+      "  id: 'fixture-channel',",
+      "  name: 'Fixture Channel',",
+      "  description: 'Fixture channel',",
+      "  plugin: { specifier: './channel-plugin-api.js', exportName: 'fixtureChannel' },",
+      "  registerFull,",
+      "});",
+    ].join("\n"),
+    "utf8",
+  );
+  await writeFile(
+    path.join(dir, "api.ts"),
+    [
+      'import { buildSecretInputSchema } from "openclaw/plugin-sdk/secret-input";',
+      "",
+      "const schema = buildSecretInputSchema().optional();",
+      "",
+      "export function registerFixtureFull(api) {",
+      "  schema.parse(undefined);",
+      "  api.registerCommand({ name: 'fixture.command', run() {} });",
+      "}",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = await captureEntrypoint("index.ts", {
+    cwd: dir,
+    pluginRoot: dir,
+    mockSdk: true,
+  });
+
+  assert.equal(result.status, "captured");
+  assert.deepEqual(result.captured.map((item) => `${item.kind}:${item.name}`), [
+    "registration:registerChannel",
+    "registration:registerCommand",
+  ]);
+});
