@@ -11,6 +11,11 @@ export const syntheticRegistrationExecutionProfiles = {
     callableProperties: [],
     reason: "entry wrapper metadata is captured before channel runtime execution",
   },
+  defineBundledChannelEntry: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "bundled channel entry metadata is captured before channel runtime execution",
+  },
   definePluginEntry: {
     mode: "metadata-only",
     callableProperties: [],

@@ -84,8 +84,10 @@ test("fixture set inspection treats channel factories as channel registration co
     path.join(dir, "fixture", "index.js"),
     [
       'import { createChatChannelPlugin } from "openclaw/plugin-sdk/channel-core";',
+      'import { defineBundledChannelEntry } from "openclaw/plugin-sdk/channel-entry-contract";',
       "",
       "export const channel = createChatChannelPlugin({ id: 'fixture-channel' });",
+      "export default defineBundledChannelEntry({ id: 'bundled-channel' });",
     ].join("\n"),
     "utf8",
   );
@@ -110,7 +112,7 @@ test("fixture set inspection treats channel factories as channel registration co
 
   assert.equal(report.status, "pass");
   assert.deepEqual(report.breakages, []);
-  assert.deepEqual(report.fixtures[0].registrations, ["createChatChannelPlugin"]);
+  assert.deepEqual(report.fixtures[0].registrations, ["createChatChannelPlugin", "defineBundledChannelEntry"]);
 });
 
 test("capture entrypoint imports a local fixture and records registrations", async () => {

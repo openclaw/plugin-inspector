@@ -63,6 +63,41 @@ test("ci policy allows known blocked probes but fails unknown blockers", () => {
   assert.match(renderCiPolicyMarkdown(report), /Plugin Inspector CI Policy/);
 });
 
+test("ci policy supports wildcard seam rules for generated surface blockers", () => {
+  const report = buildCiPolicyReport({
+    policy: {
+      ...policy,
+      allowedBlocked: [
+        ...policy.allowedBlocked,
+        {
+          id: "generated-surface-runtime-gap",
+          seam: "*",
+          reasonIncludes: "generated surface has no callable runtime",
+          decision: "allowed-blocked",
+          until: "generated surface runtime harness lands",
+        },
+      ],
+    },
+    compatibilityReport: compatibilityReport(),
+    executionResults: executionResults([
+      {
+        seam: "before_tool_call",
+        reason: "generated surface has no callable runtime",
+      },
+      {
+        seam: "registerCommand",
+        reason: "generated surface has no callable runtime",
+      },
+    ]),
+  });
+
+  assert.equal(report.status, "pass");
+  assert.deepEqual(
+    report.checks.filter((check) => check.id.startsWith("execution-results.blocked.")).map((check) => check.action),
+    ["warn", "warn"],
+  );
+});
+
 test("ci policy fails ref diff hard regressions", () => {
   const report = buildCiPolicyReport({
     policy,

@@ -12,7 +12,7 @@ import { buildCompatibilityReport, buildReport } from "./report.js";
 
 const execFileAsync = promisify(execFile);
 const registrationEquivalents = new Map([
-  ["registerChannel", new Set(["createChatChannelPlugin", "defineChannelPluginEntry", "registerChannel"])],
+  ["registerChannel", new Set(["createChatChannelPlugin", "defineBundledChannelEntry", "defineChannelPluginEntry", "registerChannel"])],
 ]);
 
 export async function inspectFixtureSet(config, options = {}) {
@@ -147,6 +147,7 @@ export function inspectSourceText(text, filePath = "source.js") {
   const hooks = collectDetailedMatches(searchableText, /\bapi\.on\(\s*["'`]([^"'`]+)["'`]/g, filePath, "name");
   const registrations = [
     ...collectDetailedMatches(searchableText, /\bapi\.(register[A-Za-z0-9]+)\s*\(/g, filePath, "name"),
+    ...collectDetailedMatches(searchableText, /\b(defineBundledChannelEntry)\s*\(/g, filePath, "name"),
     ...collectDetailedMatches(searchableText, /\b(defineChannelPluginEntry)\s*\(/g, filePath, "name"),
     ...collectDetailedMatches(searchableText, /\b(createChatChannelPlugin)\s*\(/g, filePath, "name"),
     ...collectDetailedMatches(searchableText, /\b(definePluginEntry)\s*\(/g, filePath, "name"),

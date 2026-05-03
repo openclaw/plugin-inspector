@@ -241,7 +241,9 @@ function executionChecks(executionResults, policy, options) {
 }
 
 function findPolicyMatch(rules, item) {
-  return rules.find((rule) => item.seam === rule.seam && item.reason?.includes(rule.reasonIncludes));
+  return rules.find(
+    (rule) => (rule.seam === "*" || item.seam === rule.seam) && item.reason?.includes(rule.reasonIncludes),
+  );
 }
 
 function failedExecutionEvidence(executionResults) {

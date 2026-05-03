@@ -111,6 +111,7 @@ test("synthetic probe plan classifies generated kitchen-sink registrars", () => 
     "registerAgentToolResultMiddleware",
     "registerAutoEnableProbe",
     "registerChannel",
+    "defineBundledChannelEntry",
     "registerCli",
     "registerCliBackend",
     "registerCodexAppServerExtensionFactory",
