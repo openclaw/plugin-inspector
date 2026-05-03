@@ -197,6 +197,35 @@ test("capture entrypoint can mock OpenClaw plugin SDK imports", async () => {
   );
 });
 
+test("mock capture accepts valid output when plugin code dirties process exit code", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-exit-code-"));
+  const entrypoint = path.join(dir, "index.mjs");
+  await writeFile(
+    entrypoint,
+    [
+      'import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";',
+      "process.exitCode = 1;",
+      "export default definePluginEntry({",
+      "  register(api) {",
+      "    api.registerProvider({ id: 'fixture-provider' });",
+      "  },",
+      "});",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = await captureEntrypoint("index.mjs", {
+    cwd: dir,
+    pluginRoot: dir,
+    mockSdk: true,
+  });
+
+  assert.equal(result.status, "captured");
+  assert.deepEqual(result.captured.map((item) => `${item.kind}:${item.name}`), [
+    "registration:registerProvider",
+  ]);
+});
+
 test("mock capture prefers discovered bare mocks over installed dependency exports", async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-bare-capture-"));
   await mkdir(path.join(dir, "node_modules/typebox"), { recursive: true });

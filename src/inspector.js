@@ -234,8 +234,32 @@ export async function captureEntrypointWithMockSdk(entrypoint, options = {}) {
     );
     return JSON.parse(stdout);
   } catch (error) {
+    const captured = parseCaptureResultFromStdout(error?.stdout);
+    if (captured) {
+      return captured;
+    }
     throw classifyMockSdkCaptureError(error);
   }
+}
+
+function parseCaptureResultFromStdout(stdout) {
+  if (!stdout) {
+    return null;
+  }
+  try {
+    const parsed = JSON.parse(stdout);
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      typeof parsed.status === "string" &&
+      Array.isArray(parsed.captured)
+    ) {
+      return parsed;
+    }
+  } catch {
+    return null;
+  }
+  return null;
 }
 
 export function classifyMockSdkCaptureError(error) {
