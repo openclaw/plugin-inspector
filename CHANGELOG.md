@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.8 - 2026-05-03
+
+### Fixed
+
+- Synthesize manifest config for isolated runtime capture so configured hooks can be observed without credentials.
+
 ## 0.3.7 - 2026-05-03
 
 ### Changed

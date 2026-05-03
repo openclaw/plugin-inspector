@@ -5,6 +5,7 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { promisify } from "node:util";
 import { createCaptureApi } from "./capture-api.js";
+import { captureApiOptionsForPlugin } from "./capture-config.js";
 import { fixtureCheckoutPath, fixtureSourceRoot } from "./config.js";
 import { buildCompatibilityFixtureReport } from "./fixture-summary.js";
 import { readOpenClawTargetSurface } from "./openclaw-target.js";
@@ -188,7 +189,12 @@ export async function captureEntrypoint(entrypoint, options = {}) {
     };
   }
 
-  const api = createCaptureApi(options.apiOptions);
+  const apiOptions = await captureApiOptionsForPlugin(options.apiOptions, {
+    pluginRoot: options.pluginRoot
+      ? path.resolve(options.cwd ?? process.cwd(), options.pluginRoot)
+      : path.dirname(resolvedEntrypoint),
+  });
+  const api = createCaptureApi(apiOptions);
   try {
     await register(api);
   } catch (error) {
@@ -199,7 +205,7 @@ export async function captureEntrypoint(entrypoint, options = {}) {
     entrypoint: resolvedEntrypoint,
     captured: api.getCapturedContracts(),
   };
-  if (options.apiOptions?.retainHandlers === true) {
+  if (apiOptions?.retainHandlers === true) {
     result.retained = api.getRetainedContracts();
   }
   return result;

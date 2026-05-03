@@ -77,6 +77,7 @@ test("capture API accepts custom registrar return profiles", () => {
 
 test("capture API exposes mock context helpers", async () => {
   const api = createCaptureApi({
+    resolvePath: (value) => `/fixture/${value}`,
     secretValues: {
       token: "redacted",
     },
@@ -90,6 +91,7 @@ test("capture API exposes mock context helpers", async () => {
   assert.deepEqual(await api.store.list(), ["key"]);
   assert.equal(api.agent.id, "plugin-inspector-agent");
   assert.equal(api.paths.dataDir, ".plugin-inspector/data");
+  assert.equal(api.resolvePath("state"), "/fixture/state");
 });
 
 test("capture API can retain handlers for probes", () => {

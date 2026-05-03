@@ -5,6 +5,7 @@ import path from "node:path";
 import { test } from "node:test";
 import {
   buildRuntimeCaptureReport,
+  captureEntrypoint,
   inspectCompatibilityFixtureSet,
   loadPluginRootConfig,
   writeRuntimeCaptureReport,
@@ -272,6 +273,83 @@ test("runtime capture supports TypeScript entrypoints, SDK subpaths, external mo
   assert.equal(captureReport.summary.hookCount, 1);
   assert.match(captureReport.results[0].processOutput.stdout, /plugin startup noise/);
   assert.match(captureReport.results[0].processOutput.stdout, /late plugin noise/);
+});
+
+test("runtime capture synthesizes manifest config before plugin registration", async () => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-config-"));
+  await mkdir(path.join(rootDir, "src"), { recursive: true });
+  await writeFile(
+    path.join(rootDir, "package.json"),
+    `${JSON.stringify(
+      {
+        name: "openclaw-configured-memory",
+        version: "1.0.0",
+        type: "module",
+        openclaw: {
+          extensions: ["src/index.ts"],
+          compat: { pluginApi: "^1.0.0" },
+        },
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(rootDir, "openclaw.plugin.json"),
+    `${JSON.stringify(
+      {
+        id: "configured-memory",
+        configSchema: {
+          type: "object",
+          properties: {
+            embedding: {
+              type: "object",
+              minProperties: 1,
+              properties: {
+                provider: { type: "string" },
+                model: { type: "string" },
+              },
+            },
+            autoCapture: { type: "boolean" },
+            autoRecall: { type: "boolean" },
+          },
+          required: ["embedding"],
+        },
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(rootDir, "src", "index.ts"),
+    [
+      'import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";',
+      "export default definePluginEntry({",
+      "  register(api) {",
+      "    if (!api.pluginConfig?.embedding) {",
+      "      api.registerService({ id: 'configured-memory-disabled', start() {} });",
+      "      return;",
+      "    }",
+      "    api.on('agent_end', () => undefined);",
+      "  },",
+      "});",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = await captureEntrypoint("src/index.ts", {
+    cwd: rootDir,
+    pluginRoot: rootDir,
+    mockSdk: true,
+  });
+
+  assert.equal(result.status, "captured");
+  assert.deepEqual(
+    result.captured.map((item) => `${item.kind}:${item.name}`),
+    ["hook:agent_end"],
+  );
 });
 
 test("runtime capture supports namespace imports from mocked externals", async () => {

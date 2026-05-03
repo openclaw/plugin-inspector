@@ -6,6 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { createCaptureApi } from "./capture-api.js";
+import { captureApiOptionsForPlugin } from "./capture-config.js";
 import { createMockSdkPackage } from "./sdk-mock.js";
 
 const options = JSON.parse(process.argv[2] ?? "{}");
@@ -30,7 +31,7 @@ async function run(options) {
   cleanupTempDirOnExit(workspace);
   const { loaderPath } = await createMockSdkPackage(workspace, { pluginRoot });
   register(pathToFileURL(loaderPath));
-  return await captureLinkedEntrypoint(entrypoint, options);
+  return await captureLinkedEntrypoint(entrypoint, { ...options, pluginRoot });
 }
 
 function cleanupTempDirOnExit(dir) {
@@ -65,7 +66,10 @@ async function captureLinkedEntrypoint(entrypoint, options) {
     );
   }
 
-  const api = createCaptureApi(options.apiOptions);
+  const apiOptions = await captureApiOptionsForPlugin(options.apiOptions, {
+    pluginRoot: options.pluginRoot,
+  });
+  const api = createCaptureApi(apiOptions);
   try {
     await register(api);
   } catch (error) {
@@ -80,7 +84,7 @@ async function captureLinkedEntrypoint(entrypoint, options) {
     mockSdk: true,
     captured: api.getCapturedContracts(),
   };
-  if (options.apiOptions?.retainHandlers === true) {
+  if (apiOptions?.retainHandlers === true) {
     result.retained = api.getRetainedContracts();
   }
   return withProcessOutput(result, outputCapture);

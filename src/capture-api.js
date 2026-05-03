@@ -148,6 +148,7 @@ export function createCaptureContext(options = {}) {
     config: options.config ?? {},
     logger: options.logger ?? console,
     pluginConfig: options.pluginConfig ?? {},
+    resolvePath: options.resolvePath ?? ((value) => value),
     runtime: options.runtime ?? createRuntimeContext(options),
     secrets: options.secrets ?? createSecretContext(options),
     store: options.store ?? createStoreContext(options),
