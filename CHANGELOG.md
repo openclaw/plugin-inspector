@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.7 - 2026-05-03
+
+### Changed
+
+- Downgrade `registration-capture-gap` to advisory severity so missing capture evidence no longer reports as a P1 plugin contract risk.
+
 ## 0.3.6 - 2026-05-03
 
 ### Changed

@@ -26,7 +26,7 @@ test("contract coverage fails missing evidence and P1 probe gaps", () => {
         fixture: "fixture",
         severity: "P1",
         issueClass: "inspector-gap",
-        code: "registration-capture-gap",
+        code: "conversation-access-hook",
         evidence: [],
       },
     ],

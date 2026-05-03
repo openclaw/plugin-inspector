@@ -220,10 +220,10 @@ export const issueMetadataByCode = {
     title: "providerAuthEnvVars legacy manifest metadata must stay covered",
   },
   "registration-capture-gap": {
-    severity: "P1",
+    severity: "P2",
     owner: "inspector",
     decision: "inspector-follow-up",
-    title: "runtime registrations need capture before contract judgment",
+    title: "runtime registrations need capture evidence before final contract judgment",
   },
   "runtime-tool-capture": {
     severity: "P2",

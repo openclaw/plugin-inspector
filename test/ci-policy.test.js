@@ -162,7 +162,7 @@ test("ci policy surfaces P0 live issues without blocking default lanes", () => {
           code: "legacy-before-agent-start",
         },
         {
-          severity: "P1",
+          severity: "P2",
           issueClass: "inspector-gap",
           fixture: "wecom",
           code: "registration-capture-gap",
@@ -260,7 +260,7 @@ test("ci policy writer emits JSON and Markdown artifacts", async () => {
 function compatibilityReport(overrides = {}) {
   const issues = overrides.issues ?? [
     {
-      severity: "P1",
+      severity: "P2",
       issueClass: "inspector-gap",
       fixture: "fixture",
       code: "registration-capture-gap",

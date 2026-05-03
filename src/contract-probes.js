@@ -175,7 +175,6 @@ export function probePriority(code, fixturePriority) {
       "before-tool-call-probe",
       "conversation-access-hook",
       "missing-compat-record",
-      "registration-capture-gap",
       "sdk-export-missing",
     ].includes(code)
   ) {

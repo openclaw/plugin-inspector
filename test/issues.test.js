@@ -113,8 +113,8 @@ test("issue builder applies metadata and class summaries", () => {
     issues.map((issue) => [issue.fixture, issue.code, issue.severity, issue.issueClass, issue.status]),
     [
       ["codex-app-server", "sdk-export-missing", "P0", "live-issue", "blocking"],
-      ["wecom", "registration-capture-gap", "P1", "inspector-gap", "open"],
       ["agentchat", "manifest-unknown-fields", "P2", "upstream-metadata", "open"],
+      ["wecom", "registration-capture-gap", "P2", "inspector-gap", "open"],
     ],
   );
   assert.deepEqual(summarizeIssueClasses(issues), {
