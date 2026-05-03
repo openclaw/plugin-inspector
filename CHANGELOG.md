@@ -2,10 +2,18 @@
 
 ## Unreleased
 
+## 0.3.6 - 2026-05-03
+
 ### Changed
 
 - Report import-loop RSS and CPU as baseline-adjusted plugin deltas alongside raw subprocess metrics so Crabpot dashboards do not treat harness import cost as plugin runtime cost.
 - Include optional OpenClaw loader lifecycle timings for import and full activation when a capture runner provides them.
+
+### Fixed
+
+- Accept plugin install minimum-host floors as supported package metadata.
+- Flag unsupported legacy OpenClaw bundle metadata and advertised npm pack blockers.
+- Reconcile runtime capture evidence and harden mocked capture paths for downstream fixture reports.
 
 ## 0.3.5 - 2026-04-29
 
