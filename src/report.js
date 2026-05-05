@@ -225,6 +225,10 @@ export function classifyCompatRecordCoverage({ targetOpenClaw, findings, suggest
       continue;
     }
 
+    if (finding.code === "sdk-export-missing") {
+      continue;
+    }
+
     suggestions.push({
       fixture: finding.fixture,
       code: "missing-compat-record",

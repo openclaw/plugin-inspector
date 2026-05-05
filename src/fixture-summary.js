@@ -340,9 +340,12 @@ export function classifyPackageContracts({ fixture, inspection, fixtureReport })
     });
   }
 
-  const missingEntrypoints = packageSummary.openclaw?.entrypoints.filter((entrypoint) => !entrypoint.exists) ?? [];
+  const entrypoints = packageSummary.openclaw?.entrypoints ?? [];
+  const missingEntrypoints = entrypoints.filter((entrypoint) => !entrypoint.exists);
   const buildEntrypoints = missingEntrypoints.filter((entrypoint) => entrypoint.requiresBuild);
-  const plainMissingEntrypoints = missingEntrypoints.filter((entrypoint) => !entrypoint.requiresBuild);
+  const plainMissingEntrypoints = missingEntrypoints.filter(
+    (entrypoint) => !entrypoint.requiresBuild && !hasUsablePackageRuntimeEntrypoint(entrypoint, packageSummary, entrypoints),
+  );
 
   if (buildEntrypoints.length > 0) {
     suggestions.push({
@@ -918,6 +921,46 @@ function collectOpenClawEntrypoints(packageDir, openclaw, options) {
       requiresBuild: /(^|\/)dist\//.test(entrypoint.specifier) || /(^|\/)build\//.test(entrypoint.specifier),
     };
   });
+}
+
+function hasUsablePackageRuntimeEntrypoint(entrypoint, packageSummary, entrypoints) {
+  if (!isSourceEntrypoint(entrypoint.specifier)) {
+    return false;
+  }
+
+  const runtimeBuildSpecifier = runtimeBuildSpecifierFor(entrypoint.specifier);
+  if (
+    entrypoints.some(
+      (candidate) =>
+        candidate.exists &&
+        candidate.requiresBuild &&
+        normalizeEntrypointSpecifier(candidate.specifier) === normalizeEntrypointSpecifier(runtimeBuildSpecifier),
+    )
+  ) {
+    return true;
+  }
+
+  if (entrypoint.kind === "extension" && entrypoints.some((candidate) => candidate.kind === "runtimeExtension" && candidate.exists)) {
+    return true;
+  }
+
+  const packageDir = path.dirname(packageSummary.path);
+  return existsSync(path.resolve(packageDir, runtimeBuildSpecifier));
+}
+
+function isSourceEntrypoint(specifier) {
+  return /\.(?:ts|tsx)$/.test(specifier);
+}
+
+function runtimeBuildSpecifierFor(specifier) {
+  const normalized = normalizeEntrypointSpecifier(specifier);
+  const basename = path.posix.basename(normalized).replace(/\.(?:ts|tsx)$/, ".js");
+  return `./dist/${basename}`;
+}
+
+function normalizeEntrypointSpecifier(specifier) {
+  const normalized = specifier.replaceAll("\\", "/");
+  return normalized.startsWith("./") ? normalized : `./${normalized}`;
 }
 
 async function findPackageFiles(root, options, depth = 0) {
