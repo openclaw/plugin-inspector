@@ -157,10 +157,15 @@ function requireCompatRecordReconciliation(report, errors) {
       .filter((finding) => finding.code === "missing-compat-record")
       .map((finding) => `${finding.fixture}:${finding.compatRecord}`),
   );
+  const compatGapRecords = new Set(
+    report.issues
+      .filter((issue) => issue.issueClass === "compat-gap" && issue.compatRecord)
+      .map((issue) => `${issue.fixture}:${issue.compatRecord}`),
+  );
 
   for (const finding of [...report.warnings, ...report.suggestions].filter((item) => item.compatRecord)) {
     const key = `${finding.fixture}:${finding.compatRecord}`;
-    if (!presentRecords.has(key) && !missingRecords.has(key)) {
+    if (!presentRecords.has(key) && !missingRecords.has(key) && !compatGapRecords.has(key)) {
       errors.push(`${finding.fixture}: compat record ${finding.compatRecord} was not reconciled`);
     }
   }
