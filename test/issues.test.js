@@ -19,18 +19,18 @@ test("issue ids are stable fingerprints", () => {
 test("issue classification separates live breaks from compat and deprecation buckets", () => {
   const cases = [
     {
-      name: "untracked SDK alias is a blocking live issue",
+      name: "untracked SDK alias is a compat gap",
       finding: { code: "sdk-export-missing", compatRecord: "plugin-sdk-export-aliases" },
       targetOpenClaw: { compatRecordStatuses: {} },
       metadata: { severity: "P1" },
-      expected: { issueClass: "live-issue", compatStatus: "untracked", severity: "P0", live: true },
+      expected: { issueClass: "compat-gap", compatStatus: "untracked", severity: "P1", live: false },
     },
     {
-      name: "active SDK alias compat avoids false P0 escalation",
+      name: "active SDK alias compat stays a compat row",
       finding: { code: "sdk-export-missing", compatRecord: "plugin-sdk-export-aliases" },
       targetOpenClaw: { compatRecordStatuses: { "plugin-sdk-export-aliases": "active" } },
       metadata: { severity: "P1" },
-      expected: { issueClass: "live-issue", compatStatus: "active", severity: "P1", live: true },
+      expected: { issueClass: "compat-gap", compatStatus: "active", severity: "P1", live: false },
     },
     {
       name: "deprecated compat remains warning-class even when used",
@@ -112,17 +112,17 @@ test("issue builder applies metadata and class summaries", () => {
   assert.deepEqual(
     issues.map((issue) => [issue.fixture, issue.code, issue.severity, issue.issueClass, issue.status]),
     [
-      ["codex-app-server", "sdk-export-missing", "P0", "live-issue", "blocking"],
+      ["codex-app-server", "sdk-export-missing", "P1", "compat-gap", "open"],
       ["agentchat", "manifest-unknown-fields", "P2", "upstream-metadata", "open"],
       ["wecom", "registration-capture-gap", "P2", "inspector-gap", "open"],
     ],
   );
   assert.deepEqual(summarizeIssueClasses(issues), {
-    "compat-gap": 0,
+    "compat-gap": 1,
     "deprecation-warning": 0,
     "fixture-regression": 0,
     "inspector-gap": 1,
-    "live-issue": 1,
+    "live-issue": 0,
     "upstream-metadata": 1,
   });
 });

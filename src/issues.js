@@ -342,7 +342,10 @@ export function summarizeIssueClasses(issues) {
 }
 
 function issueClassFor(code, options) {
-  if (["unknown-hook-name", "unknown-registration-name", "package-entrypoint-missing", "sdk-export-missing"].includes(code)) {
+  if (code === "sdk-export-missing" && options.compatRecord) {
+    return "compat-gap";
+  }
+  if (["unknown-hook-name", "unknown-registration-name", "package-entrypoint-missing"].includes(code)) {
     return "live-issue";
   }
   if (code === "missing-compat-record") {
@@ -397,7 +400,7 @@ function severityForClass(code, defaultSeverity, options) {
   if (
     options.issueClass === "live-issue" &&
     ["none", "untracked"].includes(options.compatStatus) &&
-    ["unknown-hook-name", "unknown-registration-name", "package-entrypoint-missing", "sdk-export-missing"].includes(code)
+    ["unknown-hook-name", "unknown-registration-name", "package-entrypoint-missing"].includes(code)
   ) {
     return "P0";
   }

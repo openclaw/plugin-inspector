@@ -865,6 +865,57 @@ test("package contract classifier reports advertised npm pack blockers", () => {
   assert.equal(globResult.warnings.some((finding) => finding.code.startsWith("package-npm-pack-")), false);
 });
 
+test("package contract classifier accepts built runtime entries for source package metadata", () => {
+  const result = classifyPackageContracts({
+    fixture: {
+      id: "fixture",
+      path: "plugins/fixture",
+    },
+    inspection: {
+      registrations: ["registerTool"],
+    },
+    fixtureReport: {
+      pluginManifests: [{ path: "plugins/fixture/openclaw.plugin.json", version: "1.0.0" }],
+      package: {
+        path: "plugins/fixture/package.json",
+        name: "@openclaw/fixture-plugin",
+        version: "1.0.0",
+        dependencies: [],
+        peerDependencies: ["openclaw"],
+        optionalDependencies: [],
+        openclaw: {
+          compatPluginApi: "^1.0.0",
+          install: {
+            npmSpec: "@openclaw/fixture-plugin",
+          },
+          release: {
+            publishToNpm: true,
+          },
+          entrypoints: [
+            {
+              kind: "extension",
+              specifier: "./index.ts",
+              relativePath: "plugins/fixture/index.ts",
+              exists: false,
+              requiresBuild: false,
+            },
+            {
+              kind: "runtimeExtension",
+              specifier: "./dist/index.js",
+              relativePath: "plugins/fixture/dist/index.js",
+              exists: true,
+              requiresBuild: true,
+            },
+          ],
+        },
+      },
+    },
+  });
+
+  assert.equal(result.warnings.some((finding) => finding.code === "package-entrypoint-missing"), false);
+  assert.equal(result.decisions.some((decision) => decision.seam === "package-entrypoint"), false);
+});
+
 test("target OpenClaw coverage classifier reports missing public surface", () => {
   const result = classifyTargetOpenClawCoverage({
     fixture: { id: "fixture" },

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Stop classifying package source entrypoints as missing when the published package provides built runtime entrypoints, and collapse SDK alias findings into a single compat-gap row.
+
 ## 0.3.10 - 2026-05-03
 
 ### Fixed
