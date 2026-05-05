@@ -165,4 +165,20 @@ test("contract coverage requires compat record reconciliation evidence", () => {
     compatRecord: "fixture.provider-auth-env-vars",
   });
   assert.deepEqual(validateContractCoverage(report), []);
+
+  report.logs = [];
+  report.issues.push({
+    id: "PLUGIN-COMPAT",
+    fixture: "fixture",
+    severity: "P1",
+    issueClass: "compat-gap",
+    code: "provider-auth-env-vars",
+    evidence: ["fixture"],
+    compatRecord: "fixture.provider-auth-env-vars",
+  });
+  report.contractProbes.push({
+    fixture: "fixture",
+    id: "compat.provider-auth-env-vars:fixture",
+  });
+  assert.deepEqual(validateContractCoverage(report), []);
 });
