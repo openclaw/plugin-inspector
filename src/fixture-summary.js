@@ -1102,8 +1102,13 @@ function packageNpmPackIssues(packageSummary, fixtureReport) {
     });
   }
 
-  const missingEntrypoints = packageSummary.openclaw?.entrypoints
-    .filter((entrypoint) => !repoPathIncludedInNpmPack(packageSummary, entrypoint.relativePath))
+  const entrypoints = packageSummary.openclaw?.entrypoints ?? [];
+  const missingEntrypoints = entrypoints
+    .filter(
+      (entrypoint) =>
+        !repoPathIncludedInNpmPack(packageSummary, entrypoint.relativePath) &&
+        !hasPackagedRuntimeEntrypoint(entrypoint, packageSummary, entrypoints),
+    )
     .map((entrypoint) => `${entrypoint.kind}:${entrypoint.specifier} -> ${entrypoint.relativePath}`) ?? [];
   if (missingEntrypoints.length > 0) {
     findings.push({
@@ -1129,6 +1134,35 @@ function packageNpmPackMissingMetadata(packageSummary, fixtureReport) {
   }
 
   return missing;
+}
+
+function hasPackagedRuntimeEntrypoint(entrypoint, packageSummary, entrypoints) {
+  if (!isSourceEntrypoint(entrypoint.specifier)) {
+    return false;
+  }
+
+  const runtimeBuildSpecifier = runtimeBuildSpecifierFor(entrypoint.specifier);
+  const matchingRuntimeEntrypoint = entrypoints.find(
+    (candidate) =>
+      candidate.requiresBuild &&
+      normalizeEntrypointSpecifier(candidate.specifier) === normalizeEntrypointSpecifier(runtimeBuildSpecifier),
+  );
+  if (matchingRuntimeEntrypoint && repoPathIncludedInNpmPack(packageSummary, matchingRuntimeEntrypoint.relativePath)) {
+    return true;
+  }
+
+  if (
+    entrypoint.kind === "extension" &&
+    entrypoints.some(
+      (candidate) => candidate.kind === "runtimeExtension" && repoPathIncludedInNpmPack(packageSummary, candidate.relativePath),
+    )
+  ) {
+    return true;
+  }
+
+  const packageDir = path.posix.dirname(normalizeRepoPath(packageSummary.path));
+  const runtimeBuildPath = path.posix.join(packageDir === "." ? "" : packageDir, normalizeEntrypointSpecifier(runtimeBuildSpecifier));
+  return repoPathIncludedInNpmPack(packageSummary, runtimeBuildPath);
 }
 
 function packageMinHostVersionDrift(packageSummary) {

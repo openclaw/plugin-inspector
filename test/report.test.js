@@ -880,6 +880,13 @@ test("package contract classifier accepts built runtime entries for source packa
         path: "plugins/fixture/package.json",
         name: "@openclaw/fixture-plugin",
         version: "1.0.0",
+        npmPack: {
+          advertised: true,
+          private: false,
+          filesMode: "allowlist",
+          files: ["dist/**", "openclaw.plugin.json"],
+          invalidFileSpecs: [],
+        },
         dependencies: [],
         peerDependencies: ["openclaw"],
         optionalDependencies: [],
@@ -906,6 +913,20 @@ test("package contract classifier accepts built runtime entries for source packa
               exists: true,
               requiresBuild: true,
             },
+            {
+              kind: "setupEntry",
+              specifier: "./setup-entry.ts",
+              relativePath: "plugins/fixture/setup-entry.ts",
+              exists: false,
+              requiresBuild: false,
+            },
+            {
+              kind: "runtimeExtension",
+              specifier: "./dist/setup-entry.js",
+              relativePath: "plugins/fixture/dist/setup-entry.js",
+              exists: true,
+              requiresBuild: true,
+            },
           ],
         },
       },
@@ -913,6 +934,7 @@ test("package contract classifier accepts built runtime entries for source packa
   });
 
   assert.equal(result.warnings.some((finding) => finding.code === "package-entrypoint-missing"), false);
+  assert.equal(result.warnings.some((finding) => finding.code === "package-npm-pack-entrypoint-missing"), false);
   assert.equal(result.decisions.some((decision) => decision.seam === "package-entrypoint"), false);
 });
 
