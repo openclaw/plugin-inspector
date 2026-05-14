@@ -28,7 +28,7 @@ export function applyRuntimeExecutionCoverage({ findings = [], executionResults 
 export function buildRuntimeExecutionCoverage(executionResults) {
   const fixtures = new Map();
   for (const artifact of executionResults?.artifacts ?? []) {
-    if (artifact.kind !== "capture") {
+    if (!["capture", "synthetic"].includes(artifact.kind)) {
       continue;
     }
 
@@ -83,6 +83,9 @@ function expectedRuntimeCaptureKeys(finding) {
   }
   if (finding.code === "conversation-access-hook") {
     return names.map((name) => `hook:${name}`);
+  }
+  if (finding.code === "before-tool-call-probe") {
+    return ["hook:before_tool_call"];
   }
   return [];
 }
