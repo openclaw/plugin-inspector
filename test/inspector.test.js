@@ -197,6 +197,58 @@ test("capture entrypoint can mock OpenClaw plugin SDK imports", async () => {
   );
 });
 
+test("mock capture ignores type-only root SDK imports", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-sdk-type-import-"));
+  const entrypoint = path.join(dir, "index.ts");
+  await writeFile(
+    entrypoint,
+    [
+      'import type { OpenClawPluginApi } from "openclaw/plugin-sdk";',
+      'import { definePluginEntry } from "openclaw/plugin-sdk";',
+      "",
+      "export default definePluginEntry((api: OpenClawPluginApi) => {",
+      "  api.on('before_tool_call', () => undefined);",
+      "});",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = await captureEntrypoint("index.ts", {
+    cwd: dir,
+    pluginRoot: dir,
+    mockSdk: true,
+  });
+
+  assert.equal(result.status, "captured");
+  assert.deepEqual(result.captured.map((item) => `${item.kind}:${item.name}`), ["hook:before_tool_call"]);
+});
+
+test("mock capture supports unknown runtime root SDK exports", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-sdk-dynamic-root-"));
+  const entrypoint = path.join(dir, "index.mjs");
+  await writeFile(
+    entrypoint,
+    [
+      'import { definePluginEntry, futureRuntimeHelper } from "openclaw/plugin-sdk";',
+      "",
+      "futureRuntimeHelper.normalizeFixture?.('fixture');",
+      "export default definePluginEntry((api) => {",
+      "  api.registerTool({ name: 'fixture_tool', run() {} });",
+      "});",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = await captureEntrypoint("index.mjs", {
+    cwd: dir,
+    pluginRoot: dir,
+    mockSdk: true,
+  });
+
+  assert.equal(result.status, "captured");
+  assert.deepEqual(result.captured.map((item) => `${item.kind}:${item.name}`), ["registration:registerTool"]);
+});
+
 test("mock capture accepts valid output when plugin code dirties process exit code", async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-exit-code-"));
   const entrypoint = path.join(dir, "index.mjs");

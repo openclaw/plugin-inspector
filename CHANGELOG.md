@@ -7,6 +7,10 @@
 - Stop classifying package source entrypoints as missing when the published package provides built runtime entrypoints, and collapse SDK alias findings into a single compat-gap row.
 - Treat compat-gap issues as reconciled contract coverage for their own compatibility record.
 - Count passed synthetic hook probes as runtime coverage so conversation-access and `before_tool_call` inspector gaps close when probe artifacts prove them.
+- Keep mock-SDK synthetic probes in-process so retained hook and registration handlers remain callable, and harden dynamic root SDK mock exports.
+- Synthesize nested manifest config samples for optional object settings with required inner shape.
+- Populate message and agent lifecycle synthetic hook payloads with the fields telemetry plugins commonly read.
+- Resolve plugin manifests from parent directories when runtime capture starts from built `dist` entrypoints.
 
 ## 0.3.10 - 2026-05-03
 

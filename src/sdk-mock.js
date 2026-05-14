@@ -377,6 +377,9 @@ function parseModuleImports(text) {
   ];
   for (const pattern of patterns) {
     for (const match of text.matchAll(pattern)) {
+      if (isTypeOnlyImportOrExport(match[0], match[1] ?? "")) {
+        continue;
+      }
       const specifier = match[2];
       if (specifier) {
         entries.push({ specifier, names: parseNamedImports(match[1] ?? "") });
@@ -387,6 +390,10 @@ function parseModuleImports(text) {
     entries.push({ specifier: match[1], names: new Set() });
   }
   return entries;
+}
+
+function isTypeOnlyImportOrExport(statement, clause) {
+  return /^\s*import\s+type\b/u.test(statement) || /^\s*export\s+type\b/u.test(statement) || /^\s*type\b/u.test(clause);
 }
 
 function parseNamedImports(clause) {
@@ -1665,11 +1672,53 @@ export const OPENAI_RESPONSES_STREAM_HOOKS = buildProviderStreamFamilyHooks("ope
 export const OPENROUTER_THINKING_STREAM_HOOKS = buildProviderStreamFamilyHooks("openrouter-thinking");
 export const TOOL_STREAM_DEFAULT_ON_HOOKS = buildProviderStreamFamilyHooks("tool-stream-default");
 export const pluginSdkMock = true;
+${dynamicExportNames.length > 0 ? mockValueRuntimeSource() : ""}
 ${dynamicExportNames.map(genericExportStatement).join("\n")}
 
 export default {
 ${[...exportNames].map((name) => `  ${name},`).join("\n")}
 };
+  `;
+}
+
+function mockValueRuntimeSource() {
+  return `function createMockValue(name) {
+  function fn(...args) {
+    if (name === "resolvePreferredOpenClawTmpDir") {
+      return process.env.TMPDIR || "/tmp";
+    }
+    if (name.startsWith("normalize")) {
+      return typeof args[0] === "string" ? args[0] : "";
+    }
+    if (name === "jsonResult") {
+      return { type: "json", value: args[0] };
+    }
+    if (name === "readStringParam") {
+      return typeof args[0] === "string" ? args[0] : "";
+    }
+    return createMockValue(name);
+  }
+  return new Proxy(fn, {
+    get(_target, property) {
+      if (property === "then") {
+        return undefined;
+      }
+      if (property === Symbol.toPrimitive) {
+        return () => name;
+      }
+      if (property === "toString") {
+        return () => name;
+      }
+      if (property === "valueOf") {
+        return () => name;
+      }
+      return createMockValue(\`\${name}.\${String(property)}\`);
+    },
+    construct() {
+      return createMockValue(name);
+    },
+  });
+}
 `;
 }
 

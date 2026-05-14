@@ -17,7 +17,10 @@ export async function captureApiOptionsForPlugin(apiOptions = {}, options = {}) 
 }
 
 async function readSamplePluginConfig(pluginRoot) {
-  const manifestPath = path.join(pluginRoot, "openclaw.plugin.json");
+  const manifestPath = await findNearestManifestPath(pluginRoot);
+  if (!manifestPath) {
+    return undefined;
+  }
   let manifest;
   try {
     manifest = JSON.parse(await readFile(manifestPath, "utf8"));
@@ -27,6 +30,23 @@ async function readSamplePluginConfig(pluginRoot) {
 
   const sample = sampleJsonSchema(manifest.configSchema, { key: "config" });
   return isPlainObject(sample) && Object.keys(sample).length > 0 ? sample : undefined;
+}
+
+async function findNearestManifestPath(pluginRoot) {
+  let current = path.resolve(pluginRoot);
+  while (true) {
+    const manifestPath = path.join(current, "openclaw.plugin.json");
+    try {
+      await readFile(manifestPath, "utf8");
+      return manifestPath;
+    } catch {}
+
+    const parent = path.dirname(current);
+    if (parent === current) {
+      return null;
+    }
+    current = parent;
+  }
 }
 
 function sampleJsonSchema(schema, context = {}) {
@@ -83,6 +103,16 @@ function sampleObjectSchema(schema) {
     }
   }
 
+  if (!hasNonBooleanSample(output, properties)) {
+    const key = preferredNestedConfigKey(properties);
+    if (key) {
+      const value = sampleJsonSchema(properties[key], { key });
+      if (value !== undefined) {
+        output[key] = value;
+      }
+    }
+  }
+
   if (Object.keys(output).length === 0 && Number(schema.minProperties ?? 0) > 0) {
     const key = preferredSamplePropertyKey(properties);
     if (key) {
@@ -94,6 +124,24 @@ function sampleObjectSchema(schema) {
   }
 
   return output;
+}
+
+function hasNonBooleanSample(output, properties) {
+  return Object.keys(output).some((key) => properties[key]?.type !== "boolean");
+}
+
+function preferredNestedConfigKey(properties) {
+  for (const key of ["embedding", "credentials", "auth", "provider", ...Object.keys(properties)]) {
+    const schema = properties[key];
+    if (!isPlainObject(schema)) {
+      continue;
+    }
+    const required = Array.isArray(schema.required) ? schema.required : [];
+    if ((schema.type === "object" || schema.properties) && (Number(schema.minProperties ?? 0) > 0 || required.length > 0)) {
+      return key;
+    }
+  }
+  return null;
 }
 
 function preferredSamplePropertyKey(properties) {

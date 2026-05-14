@@ -50,6 +50,7 @@ import {
   reports,
   runtime,
   runCapturedSyntheticProbes,
+  runEntrypointSyntheticProbes,
   runFixtureSetColdImportReadiness,
   runFixtureSetPlatformProbes,
   runFixtureSetReport,
@@ -126,6 +127,7 @@ test("public API exposes grouped facades for common workflows", () => {
   assert.equal(runtime.buildRefDiff, buildRefDiff);
   assert.equal(synthetic.buildPlanFromReport, buildSyntheticProbePlanFromReport);
   assert.equal(synthetic.runCaptured, runCapturedSyntheticProbes);
+  assert.equal(synthetic.runEntrypoint, runEntrypointSyntheticProbes);
 });
 
 test("public API reads plugin config from package.json", async () => {
@@ -594,6 +596,7 @@ test("public API exposes synthetic probe helpers", async () => {
   });
 
   assert.equal(typeof runCapturedSyntheticProbes, "function");
+  assert.equal(typeof runEntrypointSyntheticProbes, "function");
   assert.deepEqual(validateSyntheticProbePlan(plan), []);
   assert.match(renderSyntheticProbeMarkdown(plan), /registerTool/);
   assert.equal(JSON.parse(await readFile(paths.jsonPath, "utf8")).summary.probeCount, 2);

@@ -1,12 +1,5 @@
 #!/usr/bin/env node
-import { rmSync } from "node:fs";
-import { mkdtemp } from "node:fs/promises";
-import { register } from "node:module";
-import os from "node:os";
-import path from "node:path";
-import { pathToFileURL } from "node:url";
-import { captureEntrypoint, runCapturedSyntheticProbes, writeArtifacts } from "./advanced.js";
-import { createMockSdkPackage } from "./sdk-mock.js";
+import { runEntrypointSyntheticProbes, writeArtifacts } from "./advanced.js";
 
 const args = process.argv.slice(2);
 
@@ -33,12 +26,10 @@ async function run(commandArgs) {
     throw new Error("synthetic probes import plugin code; rerun with PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1 in an isolated workspace");
   }
 
-  const capture = await captureForSyntheticProbes(entrypoint, {
+  const results = await runEntrypointSyntheticProbes(entrypoint, {
     mockSdk,
     pluginRoot,
     apiOptions: { retainHandlers: true },
-  });
-  const results = await runCapturedSyntheticProbes(capture, {
     includeLifecycle,
     includeChannelRuntime,
     includeProviderCapabilities,
@@ -50,30 +41,6 @@ async function run(commandArgs) {
   } else {
     process.stdout.write(json);
   }
-}
-
-async function captureForSyntheticProbes(entrypoint, options) {
-  if (options.mockSdk !== true) {
-    return captureEntrypoint(entrypoint, options);
-  }
-
-  const resolvedEntrypoint = path.resolve(process.cwd(), entrypoint);
-  const pluginRoot = path.resolve(process.cwd(), options.pluginRoot ?? path.dirname(resolvedEntrypoint));
-  const workspace = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-synthetic-mock-sdk-"));
-  cleanupTempDirOnExit(workspace);
-  const { loaderPath } = await createMockSdkPackage(workspace, { pluginRoot });
-  register(pathToFileURL(loaderPath));
-  return captureEntrypoint(entrypoint, {
-    ...options,
-    mockSdk: false,
-    pluginRoot,
-  });
-}
-
-function cleanupTempDirOnExit(dir) {
-  process.once("exit", () => {
-    rmSync(dir, { force: true, recursive: true });
-  });
 }
 
 function readFlag(commandArgs, name) {
