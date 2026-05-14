@@ -95,6 +95,8 @@ test("execution results summarize capture, synthetic, audit, and profile artifac
   assert.equal(report.summary.capturedRegistrationCount, 1);
   assert.equal(report.summary.passCount, 1);
   assert.equal(report.summary.blockedCount, 1);
+  assert.deepEqual(report.artifacts.find((artifact) => artifact.kind === "synthetic").captured, ["hook:before_tool_call"]);
+  assert.equal(report.artifacts.find((artifact) => artifact.kind === "synthetic").passed[0].seam, "before_tool_call");
   assert.equal(report.artifacts.find((artifact) => artifact.kind === "synthetic").blocked[0].seam, "registerChannel");
   assert.equal(report.artifacts.find((artifact) => artifact.kind === "audit").findingCount, 6);
   assert.match(markdown, /# Fixture Execution Results/);

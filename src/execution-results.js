@@ -204,6 +204,7 @@ function summarizeArtifact({ artifactPath, parsed, rootDir }) {
         : "capture";
   const fixture = normalizedArtifactPath.split("/").at(-2) ?? "unknown";
   if (kind === "synthetic") {
+    const passed = (parsed.results ?? []).filter((result) => result.status === "pass");
     return {
       artifactPath: normalizedArtifactPath,
       fixture,
@@ -211,6 +212,8 @@ function summarizeArtifact({ artifactPath, parsed, rootDir }) {
       entrypoint: scrubPath(parsed.entrypoint, { rootDir }),
       status: parsed.status,
       summary: parsed.summary,
+      captured: passed.map(syntheticRuntimeCaptureKey).filter(Boolean),
+      passed,
       failures: (parsed.results ?? []).filter((result) => result.status === "fail"),
       blocked: (parsed.results ?? []).filter((result) => result.status === "blocked"),
     };
@@ -259,6 +262,13 @@ function summarizeArtifactResult(artifact) {
     return `${artifact.summary.passCount} pass / ${artifact.summary.failCount} fail / ${artifact.summary.blockedCount} blocked`;
   }
   return `${artifact.capturedCount} captured`;
+}
+
+function syntheticRuntimeCaptureKey(result) {
+  if (!result.kind || !result.seam) {
+    return null;
+  }
+  return `${result.kind}:${result.seam}`;
 }
 
 function auditFindingCount(parsed) {

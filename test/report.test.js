@@ -387,8 +387,11 @@ test("compatibility report marks inspector gaps covered by runtime execution art
       {
         id: "fixture",
         status: "ok",
-        hooks: ["llm_input"],
-        hookDetails: [{ name: "llm_input", ref: "plugins/fixture/src/index.ts:1" }],
+        hooks: ["llm_input", "before_tool_call"],
+        hookDetails: [
+          { name: "llm_input", ref: "plugins/fixture/src/index.ts:1" },
+          { name: "before_tool_call", ref: "plugins/fixture/src/index.ts:5" },
+        ],
         registrations: ["registerTool", "registerService", "registerCommand"],
         registrationDetails: [
           { name: "registerTool", ref: "plugins/fixture/src/index.ts:2" },
@@ -405,7 +408,7 @@ test("compatibility report marks inspector gaps covered by runtime execution art
       status: "ok",
       compatRecords: [],
       compatRecordStatuses: {},
-      hookNames: ["llm_input"],
+      hookNames: ["llm_input", "before_tool_call"],
       apiRegistrars: ["registerTool", "registerService", "registerCommand"],
       capturedRegistrars: [],
       sdkExports: [],
@@ -425,6 +428,13 @@ test("compatibility report marks inspector gaps covered by runtime execution art
             "registration:registerService",
             "registration:registerCommand",
           ],
+        },
+        {
+          fixture: "fixture",
+          kind: "synthetic",
+          status: "pass",
+          artifactPath: ".crabpot/results/fixture/index.synthetic.json",
+          captured: ["hook:before_tool_call"],
         },
       ],
     },
@@ -455,13 +465,14 @@ test("compatibility report marks inspector gaps covered by runtime execution art
     .map((issue) => issue.code)
     .sort();
   assert.deepEqual(coveredCodes, [
+    "before-tool-call-probe",
     "conversation-access-hook",
     "registration-capture-gap",
     "runtime-tool-capture",
   ]);
-  assert.equal(report.summary.runtimeCoveredIssueCount, 3);
+  assert.equal(report.summary.runtimeCoveredIssueCount, 4);
   assert.equal(report.summary.openInspectorGapCount, 0);
-  assert.equal(report.summary.runtimeCoverageArtifactCount, 1);
+  assert.equal(report.summary.runtimeCoverageArtifactCount, 2);
 
   const registrationIssue = report.issues.find((issue) => issue.code === "registration-capture-gap");
   assert.deepEqual(registrationIssue.runtimeCoverage.captured, [
