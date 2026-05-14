@@ -194,6 +194,7 @@ export {
   writeRuntimeCaptureReport,
 } from "./runtime-capture-report.js";
 export { createMockSdkPackage } from "./sdk-mock.js";
+export { runEntrypointSyntheticProbes } from "./synthetic-entrypoint.js";
 export {
   buildSyntheticProbePlan,
   defaultSyntheticHookContexts,

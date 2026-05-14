@@ -314,7 +314,6 @@ test("runtime capture synthesizes manifest config before plugin registration", a
             autoCapture: { type: "boolean" },
             autoRecall: { type: "boolean" },
           },
-          required: ["embedding"],
         },
       },
       null,
@@ -341,7 +340,6 @@ test("runtime capture synthesizes manifest config before plugin registration", a
 
   const result = await captureEntrypoint("src/index.ts", {
     cwd: rootDir,
-    pluginRoot: rootDir,
     mockSdk: true,
   });
 

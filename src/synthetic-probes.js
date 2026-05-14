@@ -267,12 +267,17 @@ export const defaultSyntheticHookEvents = {
     runId: "run-fixture",
     agentId: "agent-fixture",
     conversationId: "conversation-fixture",
+    success: true,
+    durationMs: 1,
+    error: null,
+    messages: [{ role: "assistant", content: "[redacted fixture output]" }],
     status: "completed",
     transcript: [{ role: "assistant", content: "[redacted fixture output]" }],
   },
   before_agent_start: {
     agentId: "agent-fixture",
     runId: "run-fixture",
+    prompt: "fixture prompt",
     config: { source: "plugin-inspector" },
   },
   before_prompt_build: {
@@ -302,6 +307,18 @@ export const defaultSyntheticHookEvents = {
     agentId: "agent-fixture",
     model: "gpt-5.4",
     output: { role: "assistant", content: "[redacted fixture output]" },
+  },
+  message_received: {
+    from: "fixture-user",
+    content: "fixture inbound message",
+    messageId: "message-fixture",
+  },
+  message_sent: {
+    to: "fixture-user",
+    content: "fixture outbound message",
+    success: true,
+    error: null,
+    messageId: "message-fixture-reply",
   },
   subagent_delivery_target: {
     childSessionKey: "child-session",
@@ -360,6 +377,18 @@ export const defaultSyntheticHookContexts = {
     runId: "run-fixture",
     agentId: "agent-fixture",
     sessionId: "session-fixture",
+  },
+  message_received: {
+    runId: "run-fixture",
+    agentId: "agent-fixture",
+    sessionId: "session-fixture",
+    channelId: "fixture-channel",
+  },
+  message_sent: {
+    runId: "run-fixture",
+    agentId: "agent-fixture",
+    sessionId: "session-fixture",
+    channelId: "fixture-channel",
   },
   subagent_delivery_target: {
     runId: "run-fixture",

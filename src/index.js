@@ -14,6 +14,7 @@ import * as refDiffApi from "./ref-diff.js";
 import * as reportApi from "./report.js";
 import * as runtimeProfileApi from "./runtime-profile.js";
 import * as runtimeReconciliationApi from "./runtime-reconciliation.js";
+import * as syntheticEntrypointApi from "./synthetic-entrypoint.js";
 import * as syntheticProbeSuiteApi from "./synthetic-probe-suite.js";
 import * as syntheticProbesApi from "./synthetic-probes.js";
 
@@ -123,6 +124,7 @@ export const synthetic = Object.freeze({
   renderPlan: syntheticProbesApi.renderSyntheticProbeMarkdown,
   validatePlan: syntheticProbesApi.validateSyntheticProbePlan,
   runCaptured: syntheticProbesApi.runCapturedSyntheticProbes,
+  runEntrypoint: syntheticEntrypointApi.runEntrypointSyntheticProbes,
   registrationExecutionProfiles: syntheticProbesApi.syntheticRegistrationExecutionProfiles,
   defaultHookEvents: syntheticProbesApi.defaultSyntheticHookEvents,
   defaultHookContexts: syntheticProbesApi.defaultSyntheticHookContexts,
@@ -234,6 +236,7 @@ export {
   applyRuntimeExecutionCoverage,
   buildRuntimeExecutionCoverage,
 } from "./runtime-reconciliation.js";
+export { runEntrypointSyntheticProbes } from "./synthetic-entrypoint.js";
 export { buildSyntheticProbePlanFromReport } from "./synthetic-probe-suite.js";
 export {
   buildSyntheticProbePlan,

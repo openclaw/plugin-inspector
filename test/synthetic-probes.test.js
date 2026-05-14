@@ -6,8 +6,11 @@ import { test } from "node:test";
 import {
   buildSyntheticProbePlan,
   captureEntrypoint,
+  defaultSyntheticHookContexts,
+  defaultSyntheticHookEvents,
   renderSyntheticProbeMarkdown,
   runCapturedSyntheticProbes,
+  runEntrypointSyntheticProbes,
   validateSyntheticProbePlan,
 } from "../src/advanced.js";
 import { buildSyntheticProbePlanFromReport } from "../src/synthetic-probe-suite.js";
@@ -182,6 +185,13 @@ test("synthetic probe plan classifies generated kitchen-sink registrars", () => 
   assert.deepEqual(validateSyntheticProbePlan(plan), []);
 });
 
+test("default hook payloads cover message and agent lifecycle readers", () => {
+  assert.equal(typeof defaultSyntheticHookEvents.before_agent_start.prompt, "string");
+  assert.equal(typeof defaultSyntheticHookEvents.message_received.content, "string");
+  assert.equal(defaultSyntheticHookEvents.agent_end.success, true);
+  assert.equal(defaultSyntheticHookContexts.message_sent.channelId, "fixture-channel");
+});
+
 test("synthetic probes invoke retained hook and tool handlers", async () => {
   const capture = await captureLocalFixture([
     "export function register(api) {",
@@ -320,6 +330,37 @@ test("mock SDK capture preserves retained registration metadata across subproces
   assert.equal(capture.retained.length, 1);
   assert.equal(result.summary.blockedCount, 1);
   assert.match(result.results[0].reason, /no supported callable probe/);
+});
+
+test("mock SDK entrypoint synthetic probes execute retained handlers in-process", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-mock-sdk-entrypoint-"));
+  const entrypoint = path.join(dir, "fixture.ts");
+  await writeFile(
+    entrypoint,
+    [
+      'import type { OpenClawPluginApi } from "openclaw/plugin-sdk";',
+      'import { definePluginEntry } from "openclaw/plugin-sdk";',
+      "",
+      "export default definePluginEntry((api: OpenClawPluginApi) => {",
+      "  api.on('before_tool_call', (event) => ({ seen: event.toolName }));",
+      "  api.registerTool({ name: 'fixture_tool', run(params) { return { sawParams: typeof params === 'object' }; } });",
+      "});",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = await runEntrypointSyntheticProbes("fixture.ts", {
+    cwd: dir,
+    pluginRoot: dir,
+    mockSdk: true,
+  });
+
+  assert.equal(result.summary.failCount, 0);
+  assert.equal(result.summary.blockedCount, 0);
+  assert.deepEqual(
+    result.results.map((item) => `${item.status}:${item.kind}:${item.label}`),
+    ["pass:hook:before_tool_call", "pass:registration:registerTool.run"],
+  );
 });
 
 async function captureLocalFixture(lines) {
