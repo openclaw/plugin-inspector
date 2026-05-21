@@ -14,6 +14,7 @@ export const knownIssueCodes = new Set([
   "conversation-access-hook",
   "legacy-before-agent-start",
   "legacy-root-sdk-import",
+  "manifest-name-missing",
   "manifest-unknown-contracts",
   "manifest-unknown-fields",
   "missing-expected-seam",
@@ -110,6 +111,12 @@ export const issueMetadataByCode = {
     owner: "inspector",
     decision: "inspector-follow-up",
     title: "fixture no longer exposes an expected seam",
+  },
+  "manifest-name-missing": {
+    severity: "P2",
+    owner: "plugin",
+    decision: "plugin-upstream-fix",
+    title: "manifest display name is missing",
   },
   "manifest-unknown-contracts": {
     severity: "P1",
@@ -372,6 +379,7 @@ function issueClassFor(code, options) {
     [
       "manifest-unknown-contracts",
       "manifest-unknown-fields",
+      "manifest-name-missing",
       "package-json-missing",
       "package-manifest-version-drift",
       "package-min-host-version-drift",

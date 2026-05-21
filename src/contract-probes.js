@@ -114,6 +114,11 @@ export const contractProbeRules = {
     contract: "Package and OpenClaw manifest versions stay aligned for release compatibility reporting.",
     target: "package-loader",
   },
+  "manifest-name-missing": {
+    id: "manifest.metadata.name",
+    contract: "OpenClaw plugin manifests declare a human-readable display name for registry and tooling metadata.",
+    target: "manifest-loader",
+  },
   "package-plugin-api-compat-missing": {
     id: "package.compat.plugin-api-range",
     contract: "Package metadata declares the OpenClaw plugin API range used by the plugin.",
