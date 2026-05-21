@@ -639,7 +639,13 @@ test("package contract classifier reports install and entrypoint blockers", () =
       registrations: ["registerTool"],
     },
     fixtureReport: {
-      pluginManifests: [{ version: "2.0.0" }],
+      pluginManifests: [
+        {
+          path: "plugins/fixture/openclaw.plugin.json",
+          name: null,
+          version: "2.0.0",
+        },
+      ],
       package: {
         path: "plugins/fixture/package.json",
         name: "fixture-plugin",
@@ -664,6 +670,7 @@ test("package contract classifier reports install and entrypoint blockers", () =
   });
 
   assert.ok(result.logs.some((finding) => finding.code === "package-metadata"));
+  assert.ok(result.warnings.some((finding) => finding.code === "manifest-name-missing"));
   assert.ok(result.warnings.some((finding) => finding.code === "package-manifest-version-drift"));
   assert.ok(result.warnings.some((finding) => finding.code === "package-plugin-api-compat-missing"));
   assert.ok(result.suggestions.some((finding) => finding.code === "package-build-artifact-entrypoint"));

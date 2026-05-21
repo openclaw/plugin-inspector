@@ -233,6 +233,26 @@ export function classifyPackageContracts({ fixture, inspection, fixtureReport })
     });
   }
 
+  const missingManifestNames = fixtureReport.pluginManifests.filter(
+    (manifest) => typeof manifest.name !== "string" || manifest.name.trim().length === 0,
+  );
+  if (missingManifestNames.length > 0) {
+    warnings.push({
+      fixture: fixture.id,
+      code: "manifest-name-missing",
+      level: "warning",
+      message: "openclaw.plugin.json does not declare a display name",
+      evidence: missingManifestNames.map((manifest) => manifest.path ?? "openclaw.plugin.json"),
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "plugin-upstream-fix",
+      seam: "manifest-metadata",
+      action: "Ask the plugin to declare openclaw.plugin.json name so registries and tools can derive a human-readable title.",
+      evidence: missingManifestNames.map((manifest) => manifest.path ?? "openclaw.plugin.json").join(", "),
+    });
+  }
+
   if (packageSummary.openclaw && !packageSummary.openclaw.compatPluginApi) {
     warnings.push({
       fixture: fixture.id,
