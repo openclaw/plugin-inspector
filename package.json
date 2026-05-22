@@ -56,7 +56,13 @@
     "release:readiness": "npm run release:local && npm run release:crabpot",
     "release:local": "npm run check",
     "release:notes": "node scripts/release-notes.mjs --unreleased",
-    "test": "node --test test/*.test.js"
+    "test": "node --test test/*.test.js",
+    "check:changed": "npm run check",
+    "test:changed": "npm test",
+    "crabbox:hydrate": "crabbox actions hydrate",
+    "crabbox:run": "crabbox run",
+    "crabbox:stop": "crabbox stop",
+    "crabbox:warmup": "crabbox warmup"
   },
   "keywords": [
     "openclaw",
