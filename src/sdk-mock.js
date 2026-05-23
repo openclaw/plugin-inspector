@@ -466,9 +466,20 @@ export async function resolve(specifier, context, nextResolve) {
 export async function load(url, context, nextLoad) {
   if (url.startsWith("file:") && /\\.[cm]?ts$/u.test(fileURLToPath(url))) {
     const rawSource = await readFile(fileURLToPath(url), "utf8");
-    return { format: "module", source: stripTypeScriptTypes(rawSource, { mode: "transform" }), shortCircuit: true };
+    return { format: "module", source: stripPluginTypeScript(rawSource), shortCircuit: true };
   }
   return nextLoad(url, context);
+}
+
+function stripPluginTypeScript(source) {
+  try {
+    return stripTypeScriptTypes(source, { mode: "transform" });
+  } catch (error) {
+    if (error?.code !== "ERR_INVALID_ARG_VALUE") {
+      throw error;
+    }
+    return stripTypeScriptTypes(source, { mode: "strip" });
+  }
 }
 
 function moduleUrl(filePath) {

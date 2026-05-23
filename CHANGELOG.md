@@ -12,6 +12,7 @@
 - Populate message and agent lifecycle synthetic hook payloads with the fields telemetry plugins commonly read.
 - Resolve plugin manifests from parent directories when runtime capture starts from built `dist` entrypoints.
 - Capture CLIs no longer treat `--output`, `--plugin-root`, or `--sdk` flag values as the positional entrypoint. Thanks @KrasimirKralev.
+- Mock-SDK TypeScript capture now falls back to Node's strip-only parser on Node 26.
 
 ## 0.3.10 - 2026-05-03
 
