@@ -56,3 +56,66 @@ test("capture and synthetic helper CLIs default to the mocked SDK", async () => 
   assert.equal(synthetic.summary.blockedCount, 0);
   assert.ok(synthetic.summary.passCount >= 1);
 });
+
+test("capture CLIs ignore values consumed by flags when finding entrypoint", async () => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-capture-cli-args-"));
+  await mkdir(path.join(rootDir, "src"), { recursive: true });
+
+  const pluginSource = [
+    'import { definePluginEntry } from "openclaw/plugin-sdk";',
+    "export default definePluginEntry((api) => api.registerTool({",
+    '  name: "fixture-tool",',
+    '  description: "fixture",',
+    '  run: async () => ({ ok: true }),',
+    "}));",
+    "",
+  ].join("\n");
+  await writeFile(
+    path.join(rootDir, "package.json"),
+    `${JSON.stringify({ name: "fixture", type: "module" }, null, 2)}\n`,
+    "utf8",
+  );
+  await writeFile(path.join(rootDir, "src", "index.js"), pluginSource, "utf8");
+
+  const captureCli = path.resolve("src/capture-cli.js");
+  const mainCli = path.resolve("src/cli.js");
+  const helperOut = path.join(rootDir, "helper-capture.json");
+  const mainOut = path.join(rootDir, "main-capture.json");
+  const env = { ...process.env, PLUGIN_INSPECTOR_EXECUTE_ISOLATED: "1" };
+
+  await execFileAsync(process.execPath, [captureCli, "--output", helperOut, "--plugin-root", rootDir, "./src/index.js"], {
+    cwd: rootDir,
+    env,
+  });
+  await execFileAsync(
+    process.execPath,
+    [mainCli, "capture", "--output", mainOut, "--plugin-root", rootDir, "--mock-sdk", "--allow-execute", "./src/index.js"],
+    {
+      cwd: rootDir,
+      env,
+    },
+  );
+
+  assert.equal(JSON.parse(await readFile(helperOut, "utf8")).status, "captured");
+  assert.equal(JSON.parse(await readFile(mainOut, "utf8")).status, "captured");
+});
+
+test("capture CLI does not overwrite an output path when positional entrypoint is missing", async () => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-capture-cli-missing-"));
+  await mkdir(path.join(rootDir, "src"), { recursive: true });
+  const entrypointPath = path.join(rootDir, "src", "index.js");
+  const originalSource = "export const untouched = true;\n";
+  await writeFile(entrypointPath, originalSource, "utf8");
+
+  const captureCli = path.resolve("src/capture-cli.js");
+  const env = { ...process.env, PLUGIN_INSPECTOR_EXECUTE_ISOLATED: "1" };
+
+  await assert.rejects(
+    execFileAsync(process.execPath, [captureCli, "--output", "./src/index.js"], {
+      cwd: rootDir,
+      env,
+    }),
+    /capture requires an entrypoint path/,
+  );
+  assert.equal(await readFile(entrypointPath, "utf8"), originalSource);
+});

@@ -11,7 +11,7 @@ try {
 }
 
 async function run(commandArgs) {
-  const entrypoint = commandArgs.find((arg) => !arg.startsWith("-"));
+  const entrypoint = findEntrypoint(commandArgs);
   const outputPath = readFlag(commandArgs, "--output");
   const pluginRoot = readFlag(commandArgs, "--plugin-root");
   const mockSdk = readMockSdkFlag(commandArgs) ?? true;
@@ -38,6 +38,17 @@ function readFlag(commandArgs, name) {
     return null;
   }
   return commandArgs[index + 1] ?? null;
+}
+
+function findEntrypoint(commandArgs) {
+  const flagsWithValues = new Set(["--output", "--plugin-root", "--sdk"]);
+  const consumedIndexes = new Set();
+  for (const [index, arg] of commandArgs.entries()) {
+    if (flagsWithValues.has(arg)) {
+      consumedIndexes.add(index + 1);
+    }
+  }
+  return commandArgs.find((arg, index) => !arg.startsWith("-") && !consumedIndexes.has(index)) ?? null;
 }
 
 function readMockSdkFlag(commandArgs) {

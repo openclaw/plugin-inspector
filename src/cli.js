@@ -223,7 +223,7 @@ async function runCiCompatibilityReport({ allowExecution, capture, configPath, m
 }
 
 async function runCapture(commandArgs) {
-  const entrypoint = commandArgs.find((arg) => !arg.startsWith("-"));
+  const entrypoint = findCaptureEntrypoint(commandArgs);
   const outputPath = readFlag(commandArgs, "--output");
   const pluginRoot = readFlag(commandArgs, "--plugin-root");
   const mockSdk = readMockSdkFlag(commandArgs) ?? commandArgs.includes("--mock-sdk");
@@ -250,6 +250,17 @@ function readFlag(commandArgs, name) {
     return null;
   }
   return commandArgs[index + 1] ?? null;
+}
+
+function findCaptureEntrypoint(commandArgs) {
+  const flagsWithValues = new Set(["--output", "--plugin-root", "--sdk"]);
+  const consumedIndexes = new Set();
+  for (const [index, arg] of commandArgs.entries()) {
+    if (flagsWithValues.has(arg)) {
+      consumedIndexes.add(index + 1);
+    }
+  }
+  return commandArgs.find((arg, index) => !arg.startsWith("-") && !consumedIndexes.has(index)) ?? null;
 }
 
 function readOptionalPathFlag(commandArgs, name, defaultPath) {
