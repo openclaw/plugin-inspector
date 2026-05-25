@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.3.11 - 2026-05-26
+
 ### Fixed
 
+- Classify the latest generated kitchen-sink registrars for meeting notes, node CLI features, hosted media, model catalogs, embedding providers, and session actions.
 - Stop classifying package source entrypoints as missing when the published package provides built runtime entrypoints, and collapse SDK alias findings into a single compat-gap row.
 - Treat compat-gap issues as reconciled contract coverage for their own compatibility record.
 - Count passed synthetic hook probes as runtime coverage so conversation-access and `before_tool_call` inspector gaps close when probe artifacts prove them.

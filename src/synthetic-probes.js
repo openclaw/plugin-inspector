@@ -89,6 +89,11 @@ export const syntheticRegistrationExecutionProfiles = {
     callableProperties: [],
     reason: "detached task runtimes are captured as registration metadata before async task execution",
   },
+  registerEmbeddingProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "embedding providers are captured as registration metadata before provider runtime execution",
+  },
   registerGatewayDiscoveryService: {
     mode: "metadata-only",
     callableProperties: [],
@@ -116,10 +121,20 @@ export const syntheticRegistrationExecutionProfiles = {
     callableProperties: [],
     reason: "image generation providers are captured as registration metadata before provider runtime execution",
   },
+  registerHostedMediaResolver: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "hosted media resolvers are captured as registration metadata before media URL resolution",
+  },
   registerMemoryPromptSection: {
     mode: "metadata-only",
     callableProperties: [],
     reason: "memory prompt section renderers are captured as metadata before prompt-runtime execution",
+  },
+  registerMeetingNotesSourceProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "meeting notes source providers are captured as registration metadata before source discovery",
   },
   registerMediaUnderstandingProvider: {
     mode: "metadata-only",
@@ -161,10 +176,20 @@ export const syntheticRegistrationExecutionProfiles = {
     callableProperties: [],
     reason: "migration providers are captured as registration metadata before migration runtime execution",
   },
+  registerModelCatalogProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "model catalog providers are captured as registration metadata before catalog runtime execution",
+  },
   registerMusicGenerationProvider: {
     mode: "metadata-only",
     callableProperties: [],
     reason: "music generation providers are captured as registration metadata before provider runtime execution",
+  },
+  registerNodeCliFeature: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "node CLI features are captured as registration metadata before host CLI integration",
   },
   registerNodeHostCommand: {
     mode: "metadata-only",
@@ -205,6 +230,11 @@ export const syntheticRegistrationExecutionProfiles = {
     mode: "metadata-only",
     callableProperties: [],
     reason: "security audit collectors are captured as registration metadata before filesystem or policy scans",
+  },
+  registerSessionAction: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "session actions are captured as registration metadata before session runtime execution",
   },
   registerService: {
     mode: "lifecycle-opt-in",
