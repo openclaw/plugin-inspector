@@ -402,6 +402,40 @@ test("mock SDK agent runtime path helpers return concrete paths", async () => {
   assert.deepEqual(result.results[0].output, { type: "object", keys: ["agentDir"] });
 });
 
+test("mock SDK windows spawn helpers return concrete invocations", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-windows-spawn-"));
+  const entrypoint = path.join(dir, "fixture.mjs");
+  await writeFile(
+    entrypoint,
+    [
+      'import { definePluginEntry } from "openclaw/plugin-sdk";',
+      'import { materializeWindowsSpawnProgram, resolveWindowsSpawnProgram } from "openclaw/plugin-sdk/windows-spawn";',
+      "",
+      "export default definePluginEntry((api) => {",
+      "  api.registerCommand({",
+      "    name: 'fixture-command',",
+      "    handler() {",
+      "      const program = resolveWindowsSpawnProgram({ command: 'codex', packageName: '@openai/codex' });",
+      "      const invocation = materializeWindowsSpawnProgram(program, ['app-server']);",
+      "      return { command: invocation.command, argv: invocation.argv };",
+      "    },",
+      "  });",
+      "});",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = await runEntrypointSyntheticProbes("fixture.mjs", {
+    cwd: dir,
+    pluginRoot: dir,
+    mockSdk: true,
+  });
+
+  assert.equal(result.summary.failCount, 0);
+  assert.equal(result.summary.blockedCount, 0);
+  assert.deepEqual(result.results[0].output, { type: "object", keys: ["argv", "command"] });
+});
+
 async function captureLocalFixture(lines) {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-"));
   const entrypoint = path.join(dir, "fixture.mjs");
