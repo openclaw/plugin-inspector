@@ -408,6 +408,7 @@ test("mock SDK windows spawn helpers return concrete invocations", async () => {
   await writeFile(
     entrypoint,
     [
+      'import { spawnSync } from "node:child_process";',
       'import { definePluginEntry } from "openclaw/plugin-sdk";',
       'import { materializeWindowsSpawnProgram, resolveWindowsSpawnProgram } from "openclaw/plugin-sdk/windows-spawn";',
       "",
@@ -417,7 +418,14 @@ test("mock SDK windows spawn helpers return concrete invocations", async () => {
       "    handler() {",
       "      const program = resolveWindowsSpawnProgram({ command: 'codex', packageName: '@openai/codex' });",
       "      const invocation = materializeWindowsSpawnProgram(program, ['app-server']);",
-      "      return { command: invocation.command, argv: invocation.argv };",
+      "      const child = spawnSync(invocation.command, invocation.argv, {",
+      "        input: JSON.stringify({ id: 1, method: 'initialize' }) + '\\n',",
+      "        encoding: 'utf8',",
+      "        timeout: 1000,",
+      "      });",
+      "      if (child.error) throw child.error;",
+      "      if (child.status !== 0) throw new Error(child.stderr || `mock exited ${child.status}`);",
+      "      return JSON.parse(child.stdout).result;",
       "    },",
       "  });",
       "});",
@@ -433,7 +441,7 @@ test("mock SDK windows spawn helpers return concrete invocations", async () => {
 
   assert.equal(result.summary.failCount, 0);
   assert.equal(result.summary.blockedCount, 0);
-  assert.deepEqual(result.results[0].output, { type: "object", keys: ["argv", "command"] });
+  assert.deepEqual(result.results[0].output, { type: "object", keys: ["userAgent"] });
 });
 
 async function captureLocalFixture(lines) {
