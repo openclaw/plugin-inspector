@@ -377,13 +377,13 @@ test("mock SDK agent runtime path helpers return concrete paths", async () => {
     [
       'import path from "node:path";',
       'import { definePluginEntry } from "openclaw/plugin-sdk";',
-      'import { resolveDefaultAgentDir } from "openclaw/plugin-sdk/agent-runtime";',
+      'import { resolveAuthProfileOrder, resolveDefaultAgentDir } from "openclaw/plugin-sdk/agent-runtime";',
       "",
       "export default definePluginEntry((api) => {",
       "  api.registerCommand({",
       "    name: 'fixture-command',",
       "    handler() {",
-      "      return { agentDir: path.resolve(resolveDefaultAgentDir({})) };",
+      "      return { agentDir: path.resolve(resolveDefaultAgentDir({})), authProfiles: resolveAuthProfileOrder({}).length };",
       "    },",
       "  });",
       "});",
@@ -399,7 +399,7 @@ test("mock SDK agent runtime path helpers return concrete paths", async () => {
 
   assert.equal(result.summary.failCount, 0);
   assert.equal(result.summary.blockedCount, 0);
-  assert.deepEqual(result.results[0].output, { type: "object", keys: ["agentDir"] });
+  assert.deepEqual(result.results[0].output, { type: "object", keys: ["agentDir", "authProfiles"] });
 });
 
 test("mock SDK windows spawn helpers return concrete invocations", async () => {

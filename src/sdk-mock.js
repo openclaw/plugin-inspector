@@ -680,6 +680,9 @@ function createMockValue(name) {
     if (name === "resolveUserPath") {
       return typeof args[0] === "string" ? args[0] : mockAgentDir();
     }
+    if (name === "resolveAuthProfileOrder") {
+      return [];
+    }
     if (name === "resolveWindowsSpawnProgram") {
       return mockWindowsSpawnProgram(args[0]);
     }
