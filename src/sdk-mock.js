@@ -760,7 +760,7 @@ function mockCodexAppServerScript() {
   return [
     "const readline = require('node:readline');",
     "const rl = readline.createInterface({ input: process.stdin });",
-    "function write(id, result) { process.stdout.write(JSON.stringify({ id, result }) + '\\n'); }",
+    "function write(id, result) { process.stdout.write(JSON.stringify({ id, result }) + String.fromCharCode(10)); }",
     "rl.on('line', (line) => {",
     "  let message;",
     "  try { message = JSON.parse(line); } catch { return; }",
@@ -784,7 +784,7 @@ function mockCodexAppServerScript() {
     "      write(message.id, null);",
     "      break;",
     "    default:",
-    "      process.stdout.write(JSON.stringify({ id: message.id, error: { code: -32601, message: 'mock method not implemented' } }) + '\\n');",
+    "      process.stdout.write(JSON.stringify({ id: message.id, error: { code: -32601, message: 'mock method not implemented' } }) + String.fromCharCode(10));",
     "  }",
     "});",
   ].join("\\n");
