@@ -671,6 +671,15 @@ function resolveExistingSourcePath(target) {
 ` : ""}
 function createMockValue(name) {
   function fn(...args) {
+    if (name === "resolveDefaultAgentDir") {
+      return mockAgentDir();
+    }
+    if (name === "resolveAgentDir") {
+      return mockAgentDir(args[1]);
+    }
+    if (name === "resolveUserPath") {
+      return typeof args[0] === "string" ? args[0] : mockAgentDir();
+    }
     if (name === "resolvePreferredOpenClawTmpDir") {
       return process.env.TMPDIR || "/tmp";
     }
@@ -705,6 +714,12 @@ function createMockValue(name) {
       return createMockValue(name);
     },
   });
+}
+
+function mockAgentDir(agentId = "main") {
+  const base = process.env.TMPDIR || process.env.TEMP || process.env.TMP || "/tmp";
+  const safeAgentId = String(agentId || "main").replace(/[^a-zA-Z0-9._-]/g, "-");
+  return base.replace(/[\\/]+$/, "") + "/plugin-inspector-openclaw/agents/" + safeAgentId + "/agent";
 }
 
 function createZNamespace() {

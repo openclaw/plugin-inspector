@@ -369,6 +369,39 @@ test("mock SDK entrypoint synthetic probes execute retained handlers in-process"
   );
 });
 
+test("mock SDK agent runtime path helpers return concrete paths", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-agent-dir-"));
+  const entrypoint = path.join(dir, "fixture.mjs");
+  await writeFile(
+    entrypoint,
+    [
+      'import path from "node:path";',
+      'import { definePluginEntry } from "openclaw/plugin-sdk";',
+      'import { resolveDefaultAgentDir } from "openclaw/plugin-sdk/agent-runtime";',
+      "",
+      "export default definePluginEntry((api) => {",
+      "  api.registerCommand({",
+      "    name: 'fixture-command',",
+      "    handler() {",
+      "      return { agentDir: path.resolve(resolveDefaultAgentDir({})) };",
+      "    },",
+      "  });",
+      "});",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = await runEntrypointSyntheticProbes("fixture.mjs", {
+    cwd: dir,
+    pluginRoot: dir,
+    mockSdk: true,
+  });
+
+  assert.equal(result.summary.failCount, 0);
+  assert.equal(result.summary.blockedCount, 0);
+  assert.deepEqual(result.results[0].output, { type: "object", keys: ["agentDir"] });
+});
+
 async function captureLocalFixture(lines) {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-"));
   const entrypoint = path.join(dir, "fixture.mjs");
