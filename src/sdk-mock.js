@@ -742,7 +742,7 @@ function mockWindowsSpawnInvocation(program = {}, argv = []) {
   if (program.packageName === "@openai/codex") {
     return {
       command: process.execPath,
-      argv: ["-e", "setInterval(() => {}, 1000)"],
+      argv: ["-e", mockCodexAppServerScript()],
       resolution: program.resolution ?? "mock",
       windowsHide: true,
     };
@@ -754,6 +754,40 @@ function mockWindowsSpawnInvocation(program = {}, argv = []) {
     shell: program.shell,
     windowsHide: program.windowsHide,
   };
+}
+
+function mockCodexAppServerScript() {
+  return [
+    "const readline = require('node:readline');",
+    "const rl = readline.createInterface({ input: process.stdin });",
+    "function write(id, result) { process.stdout.write(JSON.stringify({ id, result }) + '\\n'); }",
+    "rl.on('line', (line) => {",
+    "  let message;",
+    "  try { message = JSON.parse(line); } catch { return; }",
+    "  if (message.id === undefined || message.id === null) return;",
+    "  switch (message.method) {",
+    "    case 'initialize':",
+    "      write(message.id, { userAgent: 'openclaw/999.0.0 (plugin-inspector mock)' });",
+    "      break;",
+    "    case 'model/list':",
+    "      write(message.id, { data: [] });",
+    "      break;",
+    "    case 'thread/list':",
+    "    case 'mcpServerStatus/list':",
+    "    case 'skills/list':",
+    "      write(message.id, { data: [] });",
+    "      break;",
+    "    case 'account/read':",
+    "      write(message.id, null);",
+    "      break;",
+    "    case 'account/rateLimits/read':",
+    "      write(message.id, null);",
+    "      break;",
+    "    default:",
+    "      process.stdout.write(JSON.stringify({ id: message.id, error: { code: -32601, message: 'mock method not implemented' } }) + '\\n');",
+    "  }",
+    "});",
+  ].join("\\n");
 }
 
 function createZNamespace() {
