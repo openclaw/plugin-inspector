@@ -763,6 +763,11 @@ function mockCodexAppServerScript() {
   return [
     "const readline = require('node:readline');",
     "const rl = readline.createInterface({ input: process.stdin });",
+    "let idleTimer;",
+    "function scheduleIdleExit() {",
+    "  if (idleTimer) clearTimeout(idleTimer);",
+    "  idleTimer = setTimeout(() => process.exit(0), 1000);",
+    "}",
     "function write(id, result) { process.stdout.write(JSON.stringify({ id, result }) + String.fromCharCode(10)); }",
     "rl.on('line', (line) => {",
     "  let message;",
@@ -789,6 +794,7 @@ function mockCodexAppServerScript() {
     "    default:",
     "      process.stdout.write(JSON.stringify({ id: message.id, error: { code: -32601, message: 'mock method not implemented' } }) + String.fromCharCode(10));",
     "  }",
+    "  scheduleIdleExit();",
     "});",
   ].join("\\n");
 }
