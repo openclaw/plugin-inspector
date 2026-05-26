@@ -680,6 +680,12 @@ function createMockValue(name) {
     if (name === "resolveUserPath") {
       return typeof args[0] === "string" ? args[0] : mockAgentDir();
     }
+    if (name === "resolveWindowsSpawnProgram") {
+      return mockWindowsSpawnProgram(args[0]);
+    }
+    if (name === "materializeWindowsSpawnProgram") {
+      return mockWindowsSpawnInvocation(args[0], args[1]);
+    }
     if (name === "resolvePreferredOpenClawTmpDir") {
       return process.env.TMPDIR || "/tmp";
     }
@@ -720,6 +726,34 @@ function mockAgentDir(agentId = "main") {
   const base = process.env.TMPDIR || process.env.TEMP || process.env.TMP || "/tmp";
   const safeAgentId = String(agentId || "main").replace(/[^a-zA-Z0-9._-]/g, "-");
   return base.replace(/[\\/]+$/, "") + "/plugin-inspector-openclaw/agents/" + safeAgentId + "/agent";
+}
+
+function mockWindowsSpawnProgram(params = {}) {
+  return {
+    command: typeof params.command === "string" && params.command.trim() ? params.command : process.execPath,
+    leadingArgv: [],
+    resolution: "mock",
+    packageName: typeof params.packageName === "string" ? params.packageName : undefined,
+  };
+}
+
+function mockWindowsSpawnInvocation(program = {}, argv = []) {
+  const command = typeof program.command === "string" && program.command.trim() ? program.command : process.execPath;
+  if (program.packageName === "@openai/codex") {
+    return {
+      command: process.execPath,
+      argv: ["-e", "process.exit(1)"],
+      resolution: program.resolution ?? "mock",
+      windowsHide: true,
+    };
+  }
+  return {
+    command,
+    argv: [...(Array.isArray(program.leadingArgv) ? program.leadingArgv : []), ...(Array.isArray(argv) ? argv : [])],
+    resolution: program.resolution ?? "mock",
+    shell: program.shell,
+    windowsHide: program.windowsHide,
+  };
 }
 
 function createZNamespace() {
