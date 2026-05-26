@@ -742,7 +742,7 @@ function mockWindowsSpawnInvocation(program = {}, argv = []) {
   if (program.packageName === "@openai/codex") {
     return {
       command: process.execPath,
-      argv: ["-e", "process.exit(1)"],
+      argv: ["-e", "setInterval(() => {}, 1000)"],
       resolution: program.resolution ?? "mock",
       windowsHide: true,
     };
