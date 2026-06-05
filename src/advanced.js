@@ -124,6 +124,10 @@ export {
   inspectSourceText,
 } from "./inspector.js";
 export {
+  inspectSdkDeprecations,
+  pluginSdkDeprecationRules,
+} from "./sdk-deprecation-rules.js";
+export {
   defaultPluginRootConfigFiles,
   fixtureCheckoutPath,
   fixtureSourceRoot,

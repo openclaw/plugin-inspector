@@ -26,6 +26,7 @@ export function buildReport({ config, inspections, failures = [], generatedAt = 
       registrations: inspection.registrations,
       manifestContracts: inspection.manifestContracts,
       sdkImports: inspection.sdkImports,
+      sdkDeprecations: inspection.sdkDeprecations,
       sourceFiles: inspection.sourceFiles,
       manifestFiles: inspection.manifestFiles,
       packageFiles: inspection.packageFiles,
@@ -462,6 +463,7 @@ function defaultCompatibilityFixtureReport({ fixture, inspection }) {
     packages: [],
     sdkImports: inspection.sdkImports.map((sdkImport) => sdkImport.specifier).filter(Boolean),
     sdkImportDetails: inspection.sdkImports,
+    sdkDeprecations: inspection.sdkDeprecations,
   };
 }
 
@@ -480,6 +482,7 @@ function normalizeInspection(inspection, fixture) {
     packageErrors: [],
     packageEntrypoints: [],
     sdkImports: [],
+    sdkDeprecations: [],
     sourceFiles: [],
     ...inspection,
   };

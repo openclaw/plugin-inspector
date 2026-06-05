@@ -55,6 +55,60 @@ test("source inspection strips long comments before matching registrations", () 
   );
 });
 
+test("source inspection records SDK session transcript deprecation evidence", () => {
+  const inspection = inspectSourceText(
+    [
+      'import { runEmbeddedAgent } from "openclaw/plugin-sdk/agent-harness-runtime";',
+      'import { onSessionTranscriptUpdate } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";',
+      'import type { MemorySearchManager, SessionTranscriptUpdate } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";',
+      "",
+      "declare const memory: MemorySearchManager;",
+      "",
+      "runEmbeddedAgent({",
+      '  sessionFile: "/tmp/session.jsonl",',
+      '  sessionId: "session-1",',
+      "});",
+      "",
+      "memory.sync?.({",
+      '  sessionFiles: ["/tmp/session.jsonl"],',
+      '  reason: "fixture",',
+      "});",
+      "",
+      "onSessionTranscriptUpdate((update: SessionTranscriptUpdate) => {",
+      "  return update.sessionFile;",
+      "});",
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(
+    inspection.sdkDeprecations.map((finding) => `${finding.surface}:${finding.property}@${finding.ref}`),
+    [
+      "runEmbeddedAgent options:sessionFile@plugins/example/index.ts:8",
+      "MemorySearchManager.sync options:sessionFiles@plugins/example/index.ts:13",
+      "SessionTranscriptUpdate field:sessionFile@plugins/example/index.ts:18",
+    ],
+  );
+});
+
+test("source inspection does not warn on unrelated SDK imports or local sessionFile objects", () => {
+  const inspection = inspectSourceText(
+    [
+      'import { definePluginEntry } from "openclaw/plugin-sdk";',
+      "",
+      "const localState = {",
+      '  sessionFile: "/tmp/local.jsonl",',
+      "};",
+      "",
+      "export default definePluginEntry({ register() {} });",
+      "console.log(localState.sessionFile);",
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(inspection.sdkDeprecations, []);
+});
+
 test("fixture set inspection produces a passing report", async () => {
   const config = await loadInspectorConfig("test/fixtures/inspector.config.json");
   const report = await inspectFixtureSet(config);

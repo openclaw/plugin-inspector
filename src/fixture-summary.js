@@ -49,6 +49,7 @@ export async function buildCompatibilityFixtureReport({ fixture, inspection, che
     packages: packageSummaries,
     sdkImports,
     sdkImportDetails: inspection.sdkImports ?? [],
+    sdkDeprecations: inspection.sdkDeprecations ?? [],
   };
 }
 
@@ -496,6 +497,7 @@ export function classifyCompatibilityFixture({ fixture, inspection, fixtureRepor
   logs.push(...packageContracts.logs);
   decisions.push(...packageContracts.decisions);
   classifySecurityManifestCoverage({ fixture, fixtureReport, warnings, decisions });
+  classifySdkDeprecationUsage({ fixture, inspection, fixtureReport, warnings, decisions });
 
   for (const pluginManifest of fixtureReport.pluginManifests) {
     const providerAuthKeys = Object.keys(pluginManifest.providerAuthEnvVars ?? {});
@@ -700,6 +702,26 @@ export function classifyCompatibilityFixture({ fixture, inspection, fixtureRepor
   }
 
   return { warnings, suggestions, logs, decisions };
+}
+
+function classifySdkDeprecationUsage({ fixture, inspection, fixtureReport, warnings, decisions }) {
+  const deprecations = inspection.sdkDeprecations ?? fixtureReport.sdkDeprecations ?? [];
+  for (const deprecation of deprecations) {
+    warnings.push({
+      fixture: fixture.id,
+      code: deprecation.code,
+      level: "warning",
+      message: deprecation.message,
+      evidence: [`${deprecation.property} @ ${deprecation.ref}`],
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "plugin-upstream-fix",
+      seam: "sdk-deprecation",
+      action: `Migrate ${deprecation.surface}.${deprecation.property} to ${deprecation.replacement} before the SQLite storage flip.`,
+      evidence: deprecation.ref,
+    });
+  }
 }
 
 function classifySecurityManifestCoverage({ fixture, fixtureReport, warnings, decisions }) {

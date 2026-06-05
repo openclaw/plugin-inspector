@@ -1101,6 +1101,59 @@ test("compatibility fixture classifier reports seam and metadata follow-ups", ()
   );
 });
 
+test("compatibility fixture classifier reports SDK deprecation notices", () => {
+  const result = classifyCompatibilityFixture({
+    fixture: { id: "fixture", path: "plugins/fixture" },
+    inspection: {
+      status: "ok",
+      hooks: [],
+      hookDetails: [],
+      registrations: [],
+      registrationDetails: [],
+      manifestContracts: [],
+      sdkDeprecations: [
+        {
+          code: "sdk-session-transcript-file-identity",
+          surface: "runEmbeddedAgent options",
+          property: "sessionFile",
+          ref: "plugins/fixture/src/index.ts:7",
+          replacement: "storage-neutral agent/session identity options",
+          message:
+            "runEmbeddedAgent options.sessionFile is supported only during the pre-SQLite deprecation window; use storage-neutral agent/session identity options.",
+        },
+      ],
+    },
+    fixtureReport: {
+      sdkImports: [],
+      sdkImportDetails: [],
+      pluginManifests: [],
+      securityManifests: [],
+      package: {
+        path: "plugins/fixture/package.json",
+        dependencies: [],
+        peerDependencies: [],
+        optionalDependencies: [],
+        openclaw: {
+          compatPluginApi: "^1.0.0",
+          entrypoints: [],
+        },
+      },
+    },
+    targetOpenClaw: {
+      status: "not-configured",
+    },
+  });
+
+  const warning = result.warnings.find((finding) => finding.code === "sdk-session-transcript-file-identity");
+  assert.deepEqual(warning.evidence, ["sessionFile @ plugins/fixture/src/index.ts:7"]);
+  assert.ok(result.decisions.some((decision) => decision.seam === "sdk-deprecation"));
+
+  const issues = buildIssues({ warnings: result.warnings, targetOpenClaw: { status: "not-configured" } });
+  const issue = issues.find((finding) => finding.code === "sdk-session-transcript-file-identity");
+  assert.equal(issue.issueClass, "deprecation-warning");
+  assert.match(issue.title, /pre-SQLite deprecation window/);
+});
+
 test("writeReport writes JSON and Markdown artifacts", async () => {
   const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-report-"));
   const config = await loadInspectorConfig("test/fixtures/inspector.config.json");

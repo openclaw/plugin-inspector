@@ -42,6 +42,7 @@ export const knownIssueCodes = new Set([
   "reserved-sdk-import",
   "security-manifest-schema-unavailable",
   "sdk-export-missing",
+  "sdk-session-transcript-file-identity",
   "unrecognized-security-manifest",
 ]);
 
@@ -87,6 +88,11 @@ export const issueMetadataByCode = {
     owner: "core",
     decision: "core-compat-adapter",
     title: "plugin SDK import aliases are missing from target package exports",
+  },
+  "sdk-session-transcript-file-identity": {
+    severity: "P2",
+    owner: "plugin",
+    decision: "plugin-upstream-fix",
   },
   "reserved-sdk-import": {
     severity: "P1",
@@ -358,7 +364,16 @@ function issueClassFor(code, options) {
   if (code === "missing-compat-record") {
     return "compat-gap";
   }
-  if (options.deprecated || ["channel-env-vars", "legacy-before-agent-start", "legacy-root-sdk-import", "provider-auth-env-vars"].includes(code)) {
+  if (
+    options.deprecated ||
+    [
+      "channel-env-vars",
+      "legacy-before-agent-start",
+      "legacy-root-sdk-import",
+      "provider-auth-env-vars",
+      "sdk-session-transcript-file-identity",
+    ].includes(code)
+  ) {
     return "deprecation-warning";
   }
   if (
