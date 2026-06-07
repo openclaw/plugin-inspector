@@ -411,9 +411,65 @@ function propertyMatches(text, propertyName) {
   const regex = new RegExp(`(^|[,{]\\s*)(?:["'\`]${escapeRegex(propertyName)}["'\`]|${escapeRegex(propertyName)})\\s*(?=[:,])`, "gm");
   for (const match of text.matchAll(regex)) {
     const propertyOffset = (match.index ?? 0) + match[0].lastIndexOf(propertyName);
-    matches.push({ offset: propertyOffset });
+    if (isTopLevelObjectProperty(text, propertyOffset)) {
+      matches.push({ offset: propertyOffset });
+    }
   }
   return matches;
+}
+
+function isTopLevelObjectProperty(text, propertyOffset) {
+  let objectDepth = 0;
+  let objectStart = -1;
+  let quote = null;
+  let escaped = false;
+
+  for (let index = 0; index < propertyOffset; index += 1) {
+    const char = text[index];
+    if (quote) {
+      if (escaped) {
+        escaped = false;
+      } else if (char === "\\") {
+        escaped = true;
+      } else if (char === quote) {
+        quote = null;
+      }
+      continue;
+    }
+
+    if (char === '"' || char === "'" || char === "`") {
+      quote = char;
+      continue;
+    }
+    if (char === "{") {
+      objectDepth += 1;
+      if (objectDepth === 1) {
+        objectStart = index;
+      }
+    } else if (char === "}") {
+      objectDepth = Math.max(0, objectDepth - 1);
+    }
+  }
+
+  return objectDepth === 1 && isDirectArgumentObject(text, objectStart);
+}
+
+function isDirectArgumentObject(text, objectStart) {
+  if (objectStart < 0) {
+    return false;
+  }
+
+  let index = objectStart - 1;
+  while (index >= 0 && /\s/.test(text[index])) {
+    index -= 1;
+  }
+  while (text[index] === "(") {
+    index -= 1;
+    while (index >= 0 && /\s/.test(text[index])) {
+      index -= 1;
+    }
+  }
+  return index < 0 || text[index] === ",";
 }
 
 function uniqueFindings(findings) {

@@ -109,6 +109,84 @@ test("source inspection does not warn on unrelated SDK imports or local sessionF
   assert.deepEqual(inspection.sdkDeprecations, []);
 });
 
+test("source inspection ignores nested local sessionFile properties inside SDK options", () => {
+  const inspection = inspectSourceText(
+    [
+      'import { runEmbeddedAgent } from "openclaw/plugin-sdk/agent-harness-runtime";',
+      "",
+      "runEmbeddedAgent({",
+      "  metadata: {",
+      '    sessionFile: "/tmp/not-an-sdk-option.jsonl",',
+      "  },",
+      '  sessionId: "session-1",',
+      "});",
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(inspection.sdkDeprecations, []);
+});
+
+test("source inspection supports deprecated SDK option keys in later object arguments", () => {
+  const inspection = inspectSourceText(
+    [
+      'import { runEmbeddedAgent } from "openclaw/plugin-sdk/agent-harness-runtime";',
+      "",
+      "runEmbeddedAgent(context, {",
+      '  sessionFile: "/tmp/session.jsonl",',
+      "});",
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(
+    inspection.sdkDeprecations.map((finding) => `${finding.surface}:${finding.property}@${finding.ref}`),
+    ["runEmbeddedAgent options:sessionFile@plugins/example/index.ts:4"],
+  );
+});
+
+test("source inspection supports parenthesized SDK option object literals", () => {
+  const inspection = inspectSourceText(
+    [
+      'import { runEmbeddedAgent } from "openclaw/plugin-sdk/agent-harness-runtime";',
+      "",
+      "runEmbeddedAgent(context, ({",
+      '  sessionFile: "/tmp/session.jsonl",',
+      "}));",
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(
+    inspection.sdkDeprecations.map((finding) => `${finding.surface}:${finding.property}@${finding.ref}`),
+    ["runEmbeddedAgent options:sessionFile@plugins/example/index.ts:4"],
+  );
+});
+
+test("source inspection supports aliased and namespace SDK deprecation usage", () => {
+  const inspection = inspectSourceText(
+    [
+      'import * as harness from "openclaw/plugin-sdk/agent-harness-runtime";',
+      'import { onSessionTranscriptUpdate as onTranscript } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";',
+      "",
+      "harness.runEmbeddedAgent({",
+      '  sessionFile: "/tmp/session.jsonl",',
+      "});",
+      "",
+      "onTranscript(({ sessionFile }) => sessionFile);",
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(
+    inspection.sdkDeprecations.map((finding) => `${finding.surface}:${finding.property}@${finding.ref}`),
+    [
+      "runEmbeddedAgent options:sessionFile@plugins/example/index.ts:5",
+      "SessionTranscriptUpdate field:sessionFile@plugins/example/index.ts:8",
+    ],
+  );
+});
+
 test("fixture set inspection produces a passing report", async () => {
   const config = await loadInspectorConfig("test/fixtures/inspector.config.json");
   const report = await inspectFixtureSet(config);
