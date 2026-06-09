@@ -281,6 +281,7 @@ test("compatibility report artifacts sanitize absolute OpenClaw target paths", a
 test("compatibility report assembly classifies fixtures, issues, probes, and compat records", async () => {
   const report = await buildCompatibilityReport({
     generatedAt: "test",
+    includeInspectorGaps: true,
     fixtures: [
       {
         id: "fixture",
@@ -370,8 +371,80 @@ test("compatibility report assembly classifies fixtures, issues, probes, and com
   assert.ok(report.decisions.some((decision) => decision.seam === "compat-registry"));
 });
 
+test("compatibility report hides inspector gaps unless requested", async () => {
+  const options = {
+    generatedAt: "test",
+    fixtures: [
+      {
+        id: "fixture",
+        name: "Fixture",
+        path: "plugins/fixture",
+        priority: "high",
+        seams: ["native-tool"],
+        why: "covers runtime-only tools",
+      },
+    ],
+    inspections: [
+      {
+        id: "fixture",
+        status: "ok",
+        hooks: [],
+        hookDetails: [],
+        registrations: ["registerTool"],
+        registrationDetails: [{ name: "registerTool", ref: "plugins/fixture/src/index.ts:2" }],
+        manifestContracts: [],
+        manifestFiles: [],
+        sdkImports: [],
+        sourceFiles: ["plugins/fixture/src/index.ts"],
+      },
+    ],
+    targetOpenClaw: {
+      status: "ok",
+      compatRecords: [],
+      compatRecordStatuses: {},
+      hookNames: [],
+      apiRegistrars: ["registerTool"],
+      capturedRegistrars: [],
+      sdkExports: [],
+      manifestFields: ["id"],
+      manifestContractFields: [],
+    },
+    buildFixtureReport: ({ fixture, inspection }) => ({
+      id: fixture.id,
+      name: fixture.name,
+      priority: fixture.priority,
+      seams: fixture.seams,
+      why: fixture.why,
+      status: inspection.status,
+      hooks: inspection.hooks,
+      hookDetails: inspection.hookDetails,
+      registrations: inspection.registrations,
+      registrationDetails: inspection.registrationDetails,
+      manifestContracts: inspection.manifestContracts,
+      manifestFiles: [],
+      sourceFiles: inspection.sourceFiles,
+      pluginManifests: [],
+      package: null,
+      packages: [],
+      sdkImports: [],
+      sdkImportDetails: [],
+    }),
+  };
+
+  const defaultReport = await buildCompatibilityReport(options);
+  const internalReport = await buildCompatibilityReport({ ...options, includeInspectorGaps: true });
+
+  assert.equal(defaultReport.suggestions.some((finding) => finding.code === "runtime-tool-capture"), false);
+  assert.equal(defaultReport.issues.some((issue) => issue.issueClass === "inspector-gap"), false);
+  assert.equal(defaultReport.summary.inspectorGapCount, 0);
+  assert.ok(internalReport.suggestions.some((finding) => finding.code === "runtime-tool-capture"));
+  assert.ok(internalReport.issues.some((issue) => issue.issueClass === "inspector-gap"));
+  assert.equal(internalReport.summary.inspectorGapCount, 1);
+});
+
 test("compatibility report marks inspector gaps covered by runtime execution artifacts", async () => {
   const report = await buildCompatibilityReport({
+    includeInspectorGaps: true,
     generatedAt: "test",
     fixtures: [
       {

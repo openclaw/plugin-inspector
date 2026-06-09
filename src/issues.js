@@ -333,6 +333,10 @@ export function classifyIssueFinding(finding, targetOpenClaw, metadata = {}) {
   };
 }
 
+export function isInspectorGapFinding(finding, targetOpenClaw) {
+  return issueMetadata(finding, targetOpenClaw).issueClass === "inspector-gap";
+}
+
 export function summarizeIssueClasses(issues) {
   const summary = {
     "compat-gap": 0,

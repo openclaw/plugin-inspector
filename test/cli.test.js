@@ -149,6 +149,39 @@ test("check command can enable runtime capture from plugin config", async () => 
   assert.equal(capture.summary.registrationCount, 1);
 });
 
+test("check command hides inspector gaps unless requested", async () => {
+  const rootDir = await createCliPluginRoot("plugin-inspector-cli-inspector-gaps-");
+  await writeFile(
+    path.join(rootDir, "openclaw.plugin.json"),
+    `${JSON.stringify({ id: "weather", name: "Weather", version: "1.0.0" }, null, 2)}\n`,
+    "utf8",
+  );
+  const cliPath = path.resolve("src/cli.js");
+
+  await execFileAsync(process.execPath, [cliPath, "check", "--out", "reports", "--no-openclaw"], {
+    cwd: rootDir,
+  });
+  const defaultReport = JSON.parse(
+    await readFile(path.join(rootDir, "reports", "plugin-inspector-report.json"), "utf8"),
+  );
+
+  await execFileAsync(
+    process.execPath,
+    [cliPath, "check", "--out", "internal-reports", "--no-openclaw", "--include-inspector-gaps"],
+    {
+      cwd: rootDir,
+    },
+  );
+  const internalReport = JSON.parse(
+    await readFile(path.join(rootDir, "internal-reports", "plugin-inspector-report.json"), "utf8"),
+  );
+
+  assert.equal(defaultReport.suggestions.some((finding) => finding.code === "runtime-tool-capture"), false);
+  assert.equal(defaultReport.issues.some((issue) => issue.issueClass === "inspector-gap"), false);
+  assert.ok(internalReport.suggestions.some((finding) => finding.code === "runtime-tool-capture"));
+  assert.ok(internalReport.issues.some((issue) => issue.issueClass === "inspector-gap"));
+});
+
 test("config command prints resolved plugin root config", async () => {
   const rootDir = await createCliPluginRoot("plugin-inspector-cli-config-print-");
   const cliPath = path.resolve("src/cli.js");
