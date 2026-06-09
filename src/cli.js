@@ -3,6 +3,7 @@ import path from "node:path";
 import {
   loadPluginConfig,
   renderTextSummary,
+  runBatchAnalysis,
   sanitizeReportArtifact,
   runPluginCheck,
 } from "./index.js";
@@ -43,6 +44,8 @@ try {
     }
   } else if (command === "ci") {
     await runCi(commandArgs);
+  } else if (command === "batch") {
+    await runBatch(commandArgs);
   } else if (command === "capture") {
     await runCapture(commandArgs);
   } else {
@@ -51,6 +54,36 @@ try {
 } catch (error) {
   console.error(error.message);
   process.exitCode = 1;
+}
+
+async function runBatch(commandArgs) {
+  const inputDir = readFirstPositional(commandArgs, new Set(["--out", "--openclaw", "--concurrency"]));
+  const outDir = readFlag(commandArgs, "--out") ?? "reports";
+  const openclawPath = commandArgs.includes("--no-openclaw") ? false : readFlag(commandArgs, "--openclaw");
+  const concurrency = Number(readFlag(commandArgs, "--concurrency") ?? "4");
+  const json = commandArgs.includes("--json");
+  const check = commandArgs.includes("--check");
+  const keepPluginReports = commandArgs.includes("--keep-plugin-reports");
+  if (!inputDir) {
+    throw new Error("batch requires a folder of plugin roots");
+  }
+  const { report, paths } = await runBatchAnalysis({
+    rootDir: inputDir,
+    outDir,
+    openclawPath,
+    concurrency,
+    keepPluginReports,
+  });
+
+  if (json) {
+    console.log(JSON.stringify(report, null, 2));
+  } else {
+    console.log(renderBatchTextSummary(report, paths));
+  }
+
+  if (check && report.summary.pluginsWithErrors > 0) {
+    throw new Error(`plugin-inspector batch found ${report.summary.pluginsWithErrors} plugin(s) with errors`);
+  }
 }
 
 async function runConfig(commandArgs) {
@@ -326,6 +359,34 @@ function renderCiTextSummary(summary) {
   ].join("\n");
 }
 
+function renderBatchTextSummary(report, paths) {
+  const lines = [
+    "Plugin Inspector Batch",
+    `Plugins: ${report.summary.pluginCount}`,
+    `Plugins with errors: ${report.summary.pluginsWithErrors}`,
+    `Plugins with warnings: ${report.summary.pluginsWithWarnings}`,
+    `Finding codes: ${report.summary.findingCodeCount}`,
+    "",
+    "Reports:",
+    `- JSON: ${paths.jsonPath}`,
+    `- Markdown: ${paths.markdownPath}`,
+  ];
+  const topFinding = report.findingFrequency[0];
+  if (topFinding) {
+    lines.push("", `Top finding: ${topFinding.code} (${topFinding.plugins} plugin(s))`);
+  }
+  return lines.join("\n");
+}
+
+function readFirstPositional(args, valueFlags = new Set()) {
+  for (let index = 0; index < args.length; index += 1) {
+    const arg = args[index];
+    if (!arg.startsWith("-")) return arg;
+    if (valueFlags.has(arg)) index += 1;
+  }
+  return undefined;
+}
+
 function initCommandSummary(result) {
   return {
     dryRun: result.dryRun,
@@ -357,6 +418,7 @@ Usage:
   plugin-inspector config [--plugin-root <path>] [--config <path>] [--json]
   plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--scripts] [--package-manager npm|pnpm|yarn|bun] [--dry-run] [--json] [--force]
   plugin-inspector report --config <path> [--out <dir>] [--check] [--json]
+  plugin-inspector batch <folder> [--out <dir>] [--openclaw <path>] [--no-openclaw] [--concurrency <n>] [--keep-plugin-reports] [--check] [--json]
   plugin-inspector inspect [--plugin-root <path>] [--config <path>] [--out <dir>] [--check] [--json] [--sarif [path]] [--junit [path]] [--allow-execute]
   plugin-inspector ci [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--json] [--no-sarif] [--no-junit]
   plugin-inspector capture <entrypoint> [--mock-sdk|--real-sdk] [--allow-execute] [--plugin-root <path>] [--output <path>]
