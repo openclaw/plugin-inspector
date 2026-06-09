@@ -300,6 +300,87 @@ test("init command can print a JSON summary", async () => {
   ]);
 });
 
+test("batch command scans plugin roots and writes aggregate impact reports", async () => {
+  const corpusDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-cli-batch-corpus-"));
+  const goodRoot = await createCliPluginRoot("plugin-inspector-cli-batch-good-");
+  const brokenRoot = await createCliPluginRoot("plugin-inspector-cli-batch-broken-");
+  await mkdir(path.join(corpusDir, "plugins"), { recursive: true });
+  await copyPluginRoot(goodRoot, path.join(corpusDir, "plugins", "good-plugin"));
+  await copyPluginRoot(brokenRoot, path.join(corpusDir, "plugins", "broken-plugin"));
+  await writeFile(
+    path.join(corpusDir, "plugins", "broken-plugin", "plugin-inspector.config.json"),
+    `${JSON.stringify(
+      {
+        version: 1,
+        plugin: {
+          id: "broken-plugin",
+          priority: "high",
+          sourceRoot: "src",
+          expect: { registrations: ["registerMissingTool"] },
+        },
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  const cliPath = path.resolve("src/cli.js");
+
+  const { stdout } = await execFileAsync(process.execPath, [
+    cliPath,
+    "batch",
+    corpusDir,
+    "--out",
+    "batch-reports",
+    "--no-openclaw",
+    "--json",
+  ]);
+  const jsonPath = path.join(corpusDir, "batch-reports", "plugin-inspector-batch-report.json");
+  const markdownPath = path.join(corpusDir, "batch-reports", "plugin-inspector-batch-report.md");
+  const stdoutReport = JSON.parse(stdout);
+  const artifactReport = JSON.parse(await readFile(jsonPath, "utf8"));
+  const markdown = await readFile(markdownPath, "utf8");
+
+  assert.equal(stdoutReport.summary.pluginCount, 2);
+  assert.equal(artifactReport.summary.pluginCount, 2);
+  assert.equal(artifactReport.summary.pluginsWithErrors, 1);
+  const missingSeam = artifactReport.findingFrequency.find(
+    (finding) => finding.code === "missing-expected-seam",
+  );
+  assert.equal(missingSeam.plugins, 1);
+  assert.deepEqual(
+    artifactReport.plugins.map((plugin) => plugin.packageName).sort(),
+    ["@example/openclaw-weather", "@example/openclaw-weather"],
+  );
+  assert.match(markdown, /# Plugin Inspector Batch Report/);
+  assert.match(markdown, /missing-expected-seam/);
+  await assert.rejects(
+    () =>
+      execFileAsync(process.execPath, [
+        cliPath,
+        "batch",
+        "--out",
+        "check-reports",
+        "--no-openclaw",
+        "--check",
+        corpusDir,
+      ]),
+    (error) => {
+      assert.match(error.stderr, /plugin-inspector batch found 1 plugin\(s\) with errors/);
+      return true;
+    },
+  );
+});
+
+test("clawhub batch analysis skill documents export plus batch workflow", async () => {
+  const skill = await readFile(path.resolve(".agents/skills/clawhub-batch-analysis/SKILL.md"), "utf8");
+
+  assert.match(skill, /^name: clawhub-batch-analysis/m);
+  assert.match(skill, /\/api\/v1\/plugins\/export/);
+  assert.match(skill, /plugin-inspector batch/);
+  assert.match(skill, /finding frequency/i);
+});
+
 async function createCliPluginRoot(prefix) {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), prefix));
   await mkdir(path.join(rootDir, "src"), { recursive: true });
@@ -336,6 +417,18 @@ async function createCliPluginRoot(prefix) {
     "utf8",
   );
   return rootDir;
+}
+
+async function copyPluginRoot(sourceDir, targetDir) {
+  await mkdir(path.join(targetDir, "src"), { recursive: true });
+  for (const file of ["package.json", "openclaw.plugin.json", "plugin-inspector.config.json"]) {
+    await writeFile(path.join(targetDir, file), await readFile(path.join(sourceDir, file), "utf8"), "utf8");
+  }
+  await writeFile(
+    path.join(targetDir, "src", "index.js"),
+    await readFile(path.join(sourceDir, "src", "index.js"), "utf8"),
+    "utf8",
+  );
 }
 
 async function createTargetOpenClaw(rootDir) {

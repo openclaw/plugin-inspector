@@ -170,6 +170,7 @@ Copy-ready examples live in:
 | `plugin-inspector config` | Print resolved plugin-root config as text or JSON. |
 | `plugin-inspector init` | Write starter config, scripts, and optional GitHub Actions workflow. |
 | `plugin-inspector report` | Run a fixture-suite config with many plugins. |
+| `plugin-inspector batch` | Discover plugin roots under a folder and write one aggregate impact report. |
 | `plugin-inspector capture` | Runtime-capture one entrypoint directly. |
 
 Common options:
@@ -404,6 +405,7 @@ Stable grouped facades:
 | `reports` | Render/write reports and classify issue findings. |
 | `contracts` | Build, render, validate, and write contract captures and coverage. |
 | `ci` | Build summaries, policy reports, execution results, SARIF, and JUnit outputs. |
+| `batch` | Discover plugin roots and aggregate compatibility findings across a corpus. |
 | `runtime` | Build runtime profiles, profile diffs, ref diffs, and import-loop profiles. |
 | `synthetic` | Build and run synthetic probe plans. |
 

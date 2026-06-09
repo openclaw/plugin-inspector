@@ -17,6 +17,7 @@ import * as runtimeReconciliationApi from "./runtime-reconciliation.js";
 import * as syntheticEntrypointApi from "./synthetic-entrypoint.js";
 import * as syntheticProbeSuiteApi from "./synthetic-probe-suite.js";
 import * as syntheticProbesApi from "./synthetic-probes.js";
+import * as batchApi from "./batch.js";
 
 export const pluginRoot = Object.freeze({
   loadConfig: pluginApi.loadPluginConfig,
@@ -24,6 +25,12 @@ export const pluginRoot = Object.freeze({
   runCheck: pluginApi.runPluginCheck,
   captureEntrypoint: pluginApi.capturePluginEntrypoint,
   setup: pluginApi.setupPluginInspector,
+});
+
+export const batch = Object.freeze({
+  discoverPluginRoots: batchApi.discoverPluginRoots,
+  run: batchApi.runBatchAnalysis,
+  writeReport: batchApi.writeBatchReport,
 });
 
 export const fixtureSuites = Object.freeze({
@@ -131,6 +138,11 @@ export const synthetic = Object.freeze({
   defaultRegistrationArguments: syntheticProbesApi.defaultSyntheticRegistrationArguments,
 });
 
+export {
+  discoverPluginRoots,
+  runBatchAnalysis,
+  writeBatchReport,
+} from "./batch.js";
 export {
   capturePluginEntrypoint,
   buildFixtureSetColdImportReadiness,
