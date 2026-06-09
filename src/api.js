@@ -44,6 +44,7 @@ export async function inspectPluginRoot(options = {}) {
   const config = await loadPluginConfig(options);
   return inspectCompatibilityFixtureSet(config, {
     generatedAt: options.generatedAt,
+    includeInspectorGaps: options.includeInspectorGaps,
     openclawPath: options.openclawPath,
     executionResults: options.executionResults,
     targetOpenClaw: options.targetOpenClaw,
@@ -59,6 +60,7 @@ export async function inspectCompatibilityFixtureSetConfig(options = {}) {
   const config = await loadFixtureSetConfig(options);
   return inspectCompatibilityFixtureSet(config, {
     generatedAt: options.generatedAt,
+    includeInspectorGaps: options.includeInspectorGaps,
     openclawPath: options.openclawPath,
     executionResults: options.executionResults,
     targetOpenClaw: options.targetOpenClaw,
@@ -113,6 +115,7 @@ export async function buildFixtureSetColdImportReadiness(options = {}) {
     options.report ??
     (await inspectCompatibilityFixtureSet(config, {
       generatedAt: options.generatedAt,
+      includeInspectorGaps: options.includeInspectorGaps,
       openclawPath: options.openclawPath,
       executionResults: options.executionResults,
       targetOpenClaw: options.targetOpenClaw,
@@ -145,6 +148,7 @@ export async function buildFixtureSetWorkspacePlan(options = {}) {
     options.report ??
     (await inspectCompatibilityFixtureSet(config, {
       generatedAt: options.generatedAt,
+      includeInspectorGaps: options.includeInspectorGaps,
       openclawPath: options.openclawPath,
       executionResults: options.executionResults,
       targetOpenClaw: options.targetOpenClaw,

@@ -110,6 +110,7 @@ async function inspectBatchPlugin(pluginRoot, options) {
       allowExecution: options.allowExecution,
       capture: options.capture,
       configPath: options.configPath,
+      includeInspectorGaps: options.includeInspectorGaps,
       mockSdk: options.mockSdk,
       openclawPath: options.openclawPath,
       outDir: options.outDir,

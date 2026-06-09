@@ -3,7 +3,7 @@ import { renderMarkdownTable, writeArtifacts, writeJsonMarkdownArtifacts } from 
 import { renderCompatibilityIssuesReport, renderCompatibilityMarkdownReport } from "./compatibility-report.js";
 import { buildContractProbes } from "./contract-probes.js";
 import { classifyCompatibilityFixture } from "./fixture-summary.js";
-import { buildIssues, summarizeIssueClasses } from "./issues.js";
+import { buildIssues, isInspectorGapFinding, summarizeIssueClasses } from "./issues.js";
 import { sanitizeReportArtifact } from "./report-sanitizer.js";
 import { applyRuntimeExecutionCoverage } from "./runtime-reconciliation.js";
 
@@ -141,18 +141,24 @@ export async function buildCompatibilityReport(options = {}) {
     decisions,
   });
 
+  const visibleWarnings = filterVisibleFindings(warnings, targetOpenClaw, options);
+  const visibleSuggestions = filterVisibleFindings(suggestions, targetOpenClaw, options);
   const runtimeCoverage = applyRuntimeExecutionCoverage({
-    findings: [...warnings, ...suggestions],
+    findings: [...visibleWarnings, ...visibleSuggestions],
     executionResults: options.executionResults,
   });
   const issues = buildIssues({
     breakages,
-    warnings,
-    suggestions,
+    warnings: visibleWarnings,
+    suggestions: visibleSuggestions,
     targetOpenClaw,
     idPrefix: options.issueIdPrefix,
   });
-  const contractProbes = buildContractProbes({ warnings, suggestions, fixtures: fixtureReports });
+  const contractProbes = buildContractProbes({
+    warnings: visibleWarnings,
+    suggestions: visibleSuggestions,
+    fixtures: fixtureReports,
+  });
   const issueSummary = summarizeIssueClasses(issues);
   const openIssues = issues.filter((issue) => issue.status !== "runtime-covered");
   const openIssueSummary = summarizeIssueClasses(openIssues);
@@ -165,8 +171,8 @@ export async function buildCompatibilityReport(options = {}) {
       fixtureCount: fixtureReports.length,
       highPriorityFixtures: fixtureReports.filter((fixture) => fixture.priority === "high").length,
       breakageCount: breakages.length,
-      warningCount: warnings.length,
-      suggestionCount: suggestions.length,
+      warningCount: visibleWarnings.length,
+      suggestionCount: visibleSuggestions.length,
       decisionCount: decisions.length,
       logCount: logs.length,
       issueCount: issues.length,
@@ -190,13 +196,20 @@ export async function buildCompatibilityReport(options = {}) {
     },
     fixtures: fixtureReports,
     breakages,
-    warnings,
-    suggestions,
+    warnings: visibleWarnings,
+    suggestions: visibleSuggestions,
     issues,
     contractProbes,
     logs,
     decisions,
   };
+}
+
+function filterVisibleFindings(findings, targetOpenClaw, options) {
+  if (options.includeInspectorGaps === true) {
+    return findings;
+  }
+  return findings.filter((finding) => !isInspectorGapFinding(finding, targetOpenClaw));
 }
 
 export function classifyCompatRecordCoverage({ targetOpenClaw, findings, suggestions, logs, decisions }) {

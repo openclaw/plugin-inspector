@@ -187,6 +187,7 @@ Common options:
 | `--mock-sdk` / `--sdk mock` | Use generated SDK and external-package mocks for runtime capture. |
 | `--real-sdk` / `--sdk real` | Use installed real SDK dependencies instead of mocks. |
 | `--allow-execute` | Permit commands that import plugin code. |
+| `--include-inspector-gaps` | Include maintainer-facing scanner coverage gaps in `check`, `ci`, and `batch` output. |
 | `--json` | Print machine-readable JSON to stdout. |
 | `--sarif [path]` | Write SARIF from `check` or `inspect`; `ci` enables this by default. |
 | `--junit [path]` | Write JUnit XML from `check` or `inspect`; `ci` enables this by default. |
@@ -306,8 +307,9 @@ Important report sections:
 | `logs` | Informational inventory and coverage rows. |
 | `decisions` | Maintainer-facing follow-up or compatibility-policy decisions. |
 
-Issue classes currently flow through the reports as live issues, compat gaps,
-deprecation warnings, inspector gaps, upstream metadata, and fixture regressions.
+Author-facing `check`, `ci`, and `batch` output hides inspector gaps by default
+because they are scanner coverage backlog, not plugin-author fixes. Pass
+`--include-inspector-gaps` for Crabpot-style maintainer coverage reports.
 
 ## CI Policy And Shared Reporting Primitives
 
