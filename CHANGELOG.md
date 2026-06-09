@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.12 - 2026-06-09
+
 ### Changed
 
 - Hide maintainer-facing `inspector-gap` findings from author-facing `check`, `ci`, and `batch` output by default, with `--include-inspector-gaps` for internal coverage reports.
