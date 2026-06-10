@@ -108,9 +108,9 @@ async function inspectBatchPlugin(pluginRoot, options) {
   try {
     const { report } = await runPluginCheck({
       allowExecution: options.allowExecution,
+      authorFacing: options.authorFacing,
       capture: options.capture,
       configPath: options.configPath,
-      includeInspectorGaps: options.includeInspectorGaps,
       mockSdk: options.mockSdk,
       openclawPath: options.openclawPath,
       outDir: options.outDir,
@@ -148,17 +148,20 @@ async function inspectBatchPlugin(pluginRoot, options) {
 }
 
 function normalizeReportFindings(report) {
-  return [
-    ...(report.breakages ?? []).map((finding) => normalizeFinding(finding, "error")),
-    ...(report.issues ?? []).map((finding) =>
-      normalizeFinding(
-        finding,
-        finding.status === "blocking" || finding.severity === "P0" ? "error" : "warning",
-      ),
+  const issueFindings = (report.issues ?? []).map((finding) =>
+    normalizeFinding(
+      finding,
+      finding.status === "blocking" || finding.severity === "P0" ? "error" : "warning",
     ),
+  );
+  const issueKeys = new Set(issueFindings.map(findingKey));
+  const rawFindings = [
+    ...(report.breakages ?? []).map((finding) => normalizeFinding(finding, "error")),
     ...(report.warnings ?? []).map((finding) => normalizeFinding(finding, "warning")),
     ...(report.suggestions ?? []).map((finding) => normalizeFinding(finding, "warning")),
-  ];
+  ].filter((finding) => !issueKeys.has(findingKey(finding)));
+
+  return [...issueFindings, ...rawFindings];
 }
 
 function normalizeFinding(finding, kind) {
@@ -169,7 +172,16 @@ function normalizeFinding(finding, kind) {
     issueClass: finding.issueClass,
     message: finding.message ?? finding.title ?? "See plugin report.",
     evidence: finding.evidence,
+    ...(finding.authorRemediation ? { authorRemediation: finding.authorRemediation } : {}),
   };
+}
+
+function findingKey(finding) {
+  return [
+    finding.fixture ?? "",
+    finding.code ?? "",
+    ...(Array.isArray(finding.evidence) ? finding.evidence : []),
+  ].join("\n");
 }
 
 function findingFrequencyRows(entries) {

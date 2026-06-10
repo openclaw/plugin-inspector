@@ -193,6 +193,58 @@ test("compatibility report renderer supports issue metadata and evidence links",
   assert.match(issues, /\[linked\]\(plugins\/sample\/src\/index\.ts:1\)/);
 });
 
+test("compatibility issue renderer includes author remediation guidance", () => {
+  const issues = buildIssues({
+    warnings: [
+      {
+        fixture: "sample-plugin",
+        code: "package-plugin-api-compat-missing",
+        level: "warning",
+        message: "plugin API compatibility range is missing",
+        evidence: ["package.json:openclaw.compat.pluginApi"],
+      },
+    ],
+    targetOpenClaw: { compatRecordStatuses: {} },
+  });
+  const markdown = renderCompatibilityIssuesReport({
+    generatedAt: "test",
+    status: "pass",
+    targetOpenClaw: { status: "ok", compatRecordStatuses: {} },
+    summary: {
+      fixtureCount: 1,
+      highPriorityFixtures: 0,
+      breakageCount: 0,
+      warningCount: 1,
+      suggestionCount: 0,
+      decisionCount: 0,
+      issueCount: 1,
+      p0IssueCount: 0,
+      p1IssueCount: 0,
+      liveIssueCount: 0,
+      liveP0IssueCount: 0,
+      compatGapCount: 0,
+      deprecationWarningCount: 0,
+      inspectorGapCount: 0,
+      upstreamIssueCount: 1,
+      fixtureRegressionCount: 0,
+      contractProbeCount: 0,
+    },
+    fixtures: [],
+    breakages: [],
+    warnings: [],
+    suggestions: [],
+    issues,
+    contractProbes: [],
+    logs: [],
+    decisions: [],
+  });
+
+  assert.match(markdown, /author remediation:/);
+  assert.match(markdown, /Declare the OpenClaw plugin API range/);
+  assert.match(markdown, /https:\/\/docs\.openclaw\.ai\/clawhub\/plugin-validation-fixes#package-plugin-api-compat-missing/);
+  assert.doesNotMatch(markdown, /example:/);
+});
+
 test("compatibility report artifacts sanitize absolute OpenClaw target paths", async () => {
   const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sanitized-report-"));
   const absoluteOpenClawPath = path.join(outDir, "openclaw");
@@ -281,7 +333,6 @@ test("compatibility report artifacts sanitize absolute OpenClaw target paths", a
 test("compatibility report assembly classifies fixtures, issues, probes, and compat records", async () => {
   const report = await buildCompatibilityReport({
     generatedAt: "test",
-    includeInspectorGaps: true,
     fixtures: [
       {
         id: "fixture",
@@ -371,7 +422,7 @@ test("compatibility report assembly classifies fixtures, issues, probes, and com
   assert.ok(report.decisions.some((decision) => decision.seam === "compat-registry"));
 });
 
-test("compatibility report hides inspector gaps unless requested", async () => {
+test("compatibility report includes internal findings by default and filters author-facing output", async () => {
   const options = {
     generatedAt: "test",
     fixtures: [
@@ -423,8 +474,18 @@ test("compatibility report hides inspector gaps unless requested", async () => {
       manifestContracts: inspection.manifestContracts,
       manifestFiles: [],
       sourceFiles: inspection.sourceFiles,
-      pluginManifests: [],
-      package: null,
+      pluginManifests: [
+        { path: "openclaw.plugin.json", id: "fixture", version: "1.0.0", keys: ["id", "version"], contracts: [] },
+      ],
+      package: {
+        path: "package.json",
+        name: "fixture",
+        version: "1.0.0",
+        dependencies: [],
+        peerDependencies: [],
+        optionalDependencies: [],
+        openclaw: { compatPluginApi: "^1.0.0", entrypoints: [], unsupportedMetadata: [] },
+      },
       packages: [],
       sdkImports: [],
       sdkImportDetails: [],
@@ -432,19 +493,20 @@ test("compatibility report hides inspector gaps unless requested", async () => {
   };
 
   const defaultReport = await buildCompatibilityReport(options);
-  const internalReport = await buildCompatibilityReport({ ...options, includeInspectorGaps: true });
+  const authorReport = await buildCompatibilityReport({ ...options, authorFacing: true });
 
-  assert.equal(defaultReport.suggestions.some((finding) => finding.code === "runtime-tool-capture"), false);
-  assert.equal(defaultReport.issues.some((issue) => issue.issueClass === "inspector-gap"), false);
-  assert.equal(defaultReport.summary.inspectorGapCount, 0);
-  assert.ok(internalReport.suggestions.some((finding) => finding.code === "runtime-tool-capture"));
-  assert.ok(internalReport.issues.some((issue) => issue.issueClass === "inspector-gap"));
-  assert.equal(internalReport.summary.inspectorGapCount, 1);
+  assert.ok(defaultReport.suggestions.some((finding) => finding.code === "runtime-tool-capture"));
+  assert.ok(defaultReport.issues.some((issue) => issue.issueClass === "inspector-gap"));
+  assert.equal(defaultReport.summary.inspectorGapCount, 1);
+  assert.equal(authorReport.suggestions.some((finding) => finding.code === "runtime-tool-capture"), false);
+  assert.equal(authorReport.issues.some((issue) => issue.issueClass === "inspector-gap"), false);
+  assert.equal(authorReport.summary.inspectorGapCount, 0);
+  assert.ok(authorReport.warnings.some((finding) => finding.code === "manifest-name-missing"));
+  assert.ok(authorReport.issues.every((issue) => issue.authorRemediation));
 });
 
 test("compatibility report marks inspector gaps covered by runtime execution artifacts", async () => {
   const report = await buildCompatibilityReport({
-    includeInspectorGaps: true,
     generatedAt: "test",
     fixtures: [
       {
