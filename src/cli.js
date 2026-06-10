@@ -64,6 +64,7 @@ async function runBatch(commandArgs) {
   const json = commandArgs.includes("--json");
   const check = commandArgs.includes("--check");
   const keepPluginReports = commandArgs.includes("--keep-plugin-reports");
+  const authorFacing = readAuthorFacingFlag(commandArgs);
   if (!inputDir) {
     throw new Error("batch requires a folder of plugin roots");
   }
@@ -72,6 +73,7 @@ async function runBatch(commandArgs) {
     outDir,
     openclawPath,
     concurrency,
+    authorFacing,
     keepPluginReports,
   });
 
@@ -108,8 +110,10 @@ async function runCheck(commandArgs) {
   const mockSdk = readMockSdkFlag(commandArgs);
   const allowExecution = readAllowExecutionFlag(commandArgs);
   const ciOutputs = readCiOutputFlags(commandArgs);
+  const authorFacing = readAuthorFacingFlag(commandArgs);
   const { report, paths } = await runPluginCheck({
     allowExecution,
+    authorFacing,
     capture,
     configPath,
     mockSdk,
@@ -164,12 +168,18 @@ async function runInit(commandArgs) {
 async function runReport(command, commandArgs) {
   const configPath = readFlag(commandArgs, "--config");
   const outDir = readFlag(commandArgs, "--out") ?? "reports";
+  const openclawPath = commandArgs.includes("--no-openclaw") ? false : readFlag(commandArgs, "--openclaw");
   const check = commandArgs.includes("--check") || command === "ci";
   const json = commandArgs.includes("--json");
   const ciOutputs = readCiOutputFlags(commandArgs);
+  const authorFacing = readAuthorFacingFlag(commandArgs);
   const config = await loadInspectorConfig(configPath);
-  const report = await inspectFixtureSet(config);
-  const paths = await writeReport(report, { outDir });
+  const report = authorFacing
+    ? await inspectCompatibilityFixtureSet(config, { authorFacing, openclawPath })
+    : await inspectFixtureSet(config);
+  const paths = authorFacing
+    ? await writeCompatibilityReport(report, { cwd: config.rootDir, outDir })
+    : await writeReport(report, { outDir });
   await writeCiOutputArtifacts(report, {
     ...ciOutputs,
     cwd: path.dirname(paths.jsonPath),
@@ -197,8 +207,10 @@ async function runCi(commandArgs) {
   const mockSdk = readMockSdkFlag(commandArgs);
   const allowExecution = readAllowExecutionFlag(commandArgs);
   const ciOutputs = readCiOutputFlags(commandArgs, { defaultEnabled: true });
+  const authorFacing = readAuthorFacingFlag(commandArgs);
   const { report, reportDir } = await runCiCompatibilityReport({
     allowExecution,
+    authorFacing,
     capture,
     configPath,
     mockSdk,
@@ -237,10 +249,19 @@ async function runCi(commandArgs) {
   }
 }
 
-async function runCiCompatibilityReport({ allowExecution, capture, configPath, mockSdk, openclawPath, outDir, pluginRoot }) {
+async function runCiCompatibilityReport({
+  allowExecution,
+  authorFacing,
+  capture,
+  configPath,
+  mockSdk,
+  openclawPath,
+  outDir,
+  pluginRoot,
+}) {
   if (configPath) {
     const config = await loadInspectorConfig(configPath, { cwd: pluginRoot });
-    const report = await inspectCompatibilityFixtureSet(config, { openclawPath });
+    const report = await inspectCompatibilityFixtureSet(config, { authorFacing, openclawPath });
     await writeCompatibilityReport(report, { cwd: config.rootDir, outDir });
     return {
       report,
@@ -248,7 +269,15 @@ async function runCiCompatibilityReport({ allowExecution, capture, configPath, m
     };
   }
 
-  const { report } = await runPluginCheck({ allowExecution, capture, mockSdk, openclawPath, outDir, pluginRoot });
+  const { report } = await runPluginCheck({
+    allowExecution,
+    authorFacing,
+    capture,
+    mockSdk,
+    openclawPath,
+    outDir,
+    pluginRoot,
+  });
   return {
     report,
     reportDir: path.resolve(pluginRoot ?? process.cwd(), outDir),
@@ -350,6 +379,15 @@ function readAllowExecutionFlag(commandArgs) {
   return commandArgs.includes("--allow-execute");
 }
 
+function readAuthorFacingFlag(commandArgs) {
+  if (commandArgs.includes("--include-inspector-gaps")) {
+    throw new Error(
+      "--include-inspector-gaps has been replaced by --author-facing; default output now includes internal findings.",
+    );
+  }
+  return commandArgs.includes("--author-facing");
+}
+
 function renderCiTextSummary(summary) {
   return [
     `Status: ${summary.status.toUpperCase()}`,
@@ -414,17 +452,18 @@ function printHelp() {
 
 Usage:
   plugin-inspector
-  plugin-inspector check [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--json]
+  plugin-inspector check [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--author-facing] [--json]
   plugin-inspector config [--plugin-root <path>] [--config <path>] [--json]
   plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--scripts] [--package-manager npm|pnpm|yarn|bun] [--dry-run] [--json] [--force]
-  plugin-inspector report --config <path> [--out <dir>] [--check] [--json]
-  plugin-inspector batch <folder> [--out <dir>] [--openclaw <path>] [--no-openclaw] [--concurrency <n>] [--keep-plugin-reports] [--check] [--json]
-  plugin-inspector inspect [--plugin-root <path>] [--config <path>] [--out <dir>] [--check] [--json] [--sarif [path]] [--junit [path]] [--allow-execute]
-  plugin-inspector ci [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--json] [--no-sarif] [--no-junit]
+  plugin-inspector report --config <path> [--out <dir>] [--openclaw <path>] [--no-openclaw] [--author-facing] [--check] [--json]
+  plugin-inspector batch <folder> [--out <dir>] [--openclaw <path>] [--no-openclaw] [--concurrency <n>] [--keep-plugin-reports] [--author-facing] [--check] [--json]
+  plugin-inspector inspect [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--author-facing] [--check] [--json] [--sarif [path]] [--junit [path]] [--allow-execute]
+  plugin-inspector ci [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--author-facing] [--json] [--no-sarif] [--no-junit]
   plugin-inspector capture <entrypoint> [--mock-sdk|--real-sdk] [--allow-execute] [--plugin-root <path>] [--output <path>]
 
 Default check runs from the current plugin root and writes reports/ unless --out is set.
 CI writes SARIF and JUnit artifacts by default; check/inspect can write them with --sarif and --junit.
 Runtime capture is opt-in because it imports plugin code; use --runtime with --allow-execute or PLUGIN_INSPECTOR_EXECUTE_ISOLATED=1.
+Default output includes author-facing and internal findings; pass --author-facing to show only findings with author remediation docs.
 `);
 }

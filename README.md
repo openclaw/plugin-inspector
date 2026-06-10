@@ -187,6 +187,7 @@ Common options:
 | `--mock-sdk` / `--sdk mock` | Use generated SDK and external-package mocks for runtime capture. |
 | `--real-sdk` / `--sdk real` | Use installed real SDK dependencies instead of mocks. |
 | `--allow-execute` | Permit commands that import plugin code. |
+| `--author-facing` | Limit `check`, `ci`, and `batch` reports to findings with `authorRemediation` guidance. |
 | `--json` | Print machine-readable JSON to stdout. |
 | `--sarif [path]` | Write SARIF from `check` or `inspect`; `ci` enables this by default. |
 | `--junit [path]` | Write JUnit XML from `check` or `inspect`; `ci` enables this by default. |
@@ -306,8 +307,10 @@ Important report sections:
 | `logs` | Informational inventory and coverage rows. |
 | `decisions` | Maintainer-facing follow-up or compatibility-policy decisions. |
 
-Issue classes currently flow through the reports as live issues, compat gaps,
-deprecation warnings, inspector gaps, upstream metadata, and fixture regressions.
+Default `check`, `ci`, and `batch` reports include both author-facing and
+internal findings. Pass `--author-facing` when producing plugin-author output;
+that filtered view includes only findings with `authorRemediation.summary` and
+`authorRemediation.docsUrl`.
 
 ## CI Policy And Shared Reporting Primitives
 

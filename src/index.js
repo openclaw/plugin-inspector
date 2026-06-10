@@ -217,7 +217,7 @@ export {
   validateImportLoopProfile,
   writeImportLoopProfile,
 } from "./import-loop-profile.js";
-export { classifyIssueFinding, issueId, knownIssueCodes } from "./issues.js";
+export { classifyIssueFinding, issueId, isAuthorFacingFinding, knownIssueCodes } from "./issues.js";
 export { inspectFixtureSet, inspectPlugin, inspectSourceText } from "./inspector.js";
 export { openClawTargetPathCandidates, readOpenClawTargetSurface } from "./openclaw-target.js";
 export {

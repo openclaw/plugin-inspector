@@ -45,6 +45,12 @@ export const knownIssueCodes = new Set([
   "unrecognized-security-manifest",
 ]);
 
+const authorRemediationDocsUrl = (code) => `https://docs.openclaw.ai/clawhub/plugin-validation-fixes#${code}`;
+
+const authorRemediation = (summary) => ({ summary });
+
+const migrationRemediation = authorRemediation;
+
 export const issueMetadataByCode = {
   "before-tool-call-probe": {
     severity: "P1",
@@ -63,6 +69,13 @@ export const issueMetadataByCode = {
     owner: "core",
     decision: "core-compat-adapter",
     title: "channelEnvVars legacy manifest metadata must stay covered",
+    authorRemediation: migrationRemediation(
+      "Move legacy channel environment variable metadata into the current setup/config metadata while keeping the old field until your supported OpenClaw range no longer needs it.",
+      [
+        "Mirror each channel environment variable into the current setup or provider configuration metadata.",
+        "Keep channelEnvVars only as backwards compatibility for older OpenClaw versions you still support.",
+      ],
+    ),
   },
   "conversation-access-hook": {
     severity: "P1",
@@ -75,12 +88,27 @@ export const issueMetadataByCode = {
     owner: "core",
     decision: "core-compat-adapter",
     title: "legacy before_agent_start hook compatibility is still used",
+    authorRemediation: migrationRemediation(
+      "Replace the legacy before_agent_start hook with the current prompt/model hooks.",
+      [
+        "Move model-selection work to before_model_resolve when possible.",
+        "Move prompt mutation work to before_prompt_build.",
+        "Keep before_agent_start only if your declared compatibility range still includes OpenClaw versions that require it.",
+      ],
+    ),
   },
   "legacy-root-sdk-import": {
     severity: "P2",
     owner: "core",
     decision: "core-compat-adapter",
     title: "root plugin SDK barrel is still used by fixtures",
+    authorRemediation: migrationRemediation(
+      "Prefer focused public plugin SDK subpath imports instead of the legacy root barrel.",
+      [
+        "Replace imports from openclaw/plugin-sdk with the documented subpath for the API you use.",
+        "Keep the root import only while supporting older OpenClaw versions that do not expose the subpath.",
+      ],
+    ),
   },
   "sdk-export-missing": {
     severity: "P1",
@@ -93,12 +121,26 @@ export const issueMetadataByCode = {
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "plugin imports reserved bundled-plugin SDK compatibility subpaths",
+    authorRemediation: authorRemediation(
+      "Stop importing reserved bundled-plugin SDK compatibility paths.",
+      [
+        "Replace reserved OpenClaw internal SDK imports with documented public openclaw/plugin-sdk subpaths.",
+        "If no public API exists for the behavior, vendor a plugin-local helper or request a public OpenClaw API.",
+      ],
+    ),
   },
   "security-manifest-schema-unavailable": {
     severity: "P3",
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "plugin security manifest references an unavailable schema",
+    authorRemediation: authorRemediation(
+      "Remove or update the unsupported security manifest schema reference.",
+      [
+        "Delete the schema URL from openclaw.security.json if it is advisory-only.",
+        "Use a documented versioned schema once OpenClaw publishes one.",
+      ],
+    ),
   },
   "missing-compat-record": {
     severity: "P1",
@@ -117,18 +159,37 @@ export const issueMetadataByCode = {
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "manifest display name is missing",
+    authorRemediation: authorRemediation(
+      "Add a display name to the plugin manifest.",
+      ["Set a non-empty name field in openclaw.plugin.json."],
+      '{\n  "name": "My Plugin"\n}',
+    ),
   },
   "manifest-unknown-contracts": {
     severity: "P1",
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "manifest declares unsupported contract keys",
+    authorRemediation: authorRemediation(
+      "Remove unsupported manifest contract keys or move them to a documented OpenClaw contract field.",
+      [
+        "Compare the contracts object to the OpenClaw manifest fields supported by your target version.",
+        "Delete custom contract keys unless OpenClaw has a versioned schema for them.",
+      ],
+    ),
   },
   "manifest-unknown-fields": {
     severity: "P2",
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "manifest uses unsupported top-level fields",
+    authorRemediation: authorRemediation(
+      "Move unsupported top-level manifest fields into supported package metadata or remove them.",
+      [
+        "Keep openclaw.plugin.json limited to fields supported by the target OpenClaw manifest schema.",
+        "Move package-level metadata into package.json openclaw metadata when that field is supported.",
+      ],
+    ),
   },
   "package-build-artifact-entrypoint": {
     severity: "P2",
@@ -147,72 +208,159 @@ export const issueMetadataByCode = {
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "OpenClaw package entrypoint is missing",
+    authorRemediation: authorRemediation(
+      "Publish the entrypoint declared in OpenClaw package metadata or update the metadata to point at an existing file.",
+      [
+        "Check package.json openclaw.extensions and openclaw.runtimeExtensions.",
+        "Ensure the referenced file exists in the published artifact, usually under dist/ after build.",
+      ],
+    ),
   },
   "package-install-metadata-incomplete": {
     severity: "P2",
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "OpenClaw package install metadata is incomplete",
+    authorRemediation: authorRemediation(
+      "Complete the OpenClaw install metadata so ClawHub can identify the install target.",
+      [
+        "Fill package.json openclaw.install with the supported release target.",
+        "Align clawhubSpec, npmSpec, and defaultChoice with the package you publish.",
+      ],
+    ),
   },
   "package-json-missing": {
     severity: "P2",
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "package metadata is missing",
+    authorRemediation: authorRemediation(
+      "Add a package.json to the plugin package.",
+      [
+        "Include the package name and version.",
+        "Add an openclaw metadata block describing extensions, compatibility, and install details.",
+      ],
+    ),
   },
   "package-manifest-version-drift": {
     severity: "P2",
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "package and manifest versions drift",
+    authorRemediation: authorRemediation(
+      "Align the plugin version declared in package.json and openclaw.plugin.json.",
+      [
+        "Use the same version in both files, or remove stale manifest version metadata if package.json is authoritative.",
+        "Republish with a new package version after changing published metadata.",
+      ],
+    ),
   },
   "package-min-host-version-drift": {
     severity: "P2",
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "OpenClaw package minimum host version drifts from build target",
+    authorRemediation: authorRemediation(
+      "Set the package minimum host version to the OpenClaw version range the plugin was built and tested against.",
+      [
+        "Update package.json openclaw.install.minHostVersion or compatibility metadata.",
+        "Keep it semver-compatible with the target OpenClaw build version.",
+      ],
+    ),
   },
   "package-npm-pack-entrypoint-missing": {
     severity: "P1",
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "advertised npm artifact is missing OpenClaw entrypoints",
+    authorRemediation: authorRemediation(
+      "Include the declared OpenClaw entrypoints in the npm-packed artifact.",
+      [
+        "Run npm pack locally and inspect the tarball contents.",
+        "Update package.json files so dist files and manifests are included.",
+        "Build before packing if the entrypoint is generated.",
+      ],
+    ),
   },
   "package-npm-pack-metadata-missing": {
     severity: "P2",
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "advertised npm artifact is missing OpenClaw metadata",
+    authorRemediation: authorRemediation(
+      "Include OpenClaw metadata files in the npm-packed artifact.",
+      [
+        "Run npm pack locally and inspect package.json and OpenClaw manifest files.",
+        "Update package.json files so required metadata is not excluded.",
+      ],
+    ),
   },
   "package-npm-pack-unavailable": {
     severity: "P1",
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "advertised npm artifact cannot be packed",
+    authorRemediation: authorRemediation(
+      "Make the package packable before publishing it through ClawHub.",
+      [
+        "Remove private:true if this package is intended to publish.",
+        "Ensure package.json has a valid name and version.",
+        "Fix package scripts or files entries that make npm pack fail.",
+      ],
+    ),
   },
   "package-openclaw-entry-missing": {
     severity: "P2",
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "OpenClaw package entrypoint metadata is missing",
+    authorRemediation: authorRemediation(
+      "Declare the plugin runtime entrypoint in package.json OpenClaw metadata.",
+      [
+        "Add openclaw.extensions for extension entrypoints.",
+        "Add openclaw.runtimeExtensions when the plugin has runtime-side code.",
+      ],
+    ),
   },
   "package-openclaw-metadata-missing": {
     severity: "P2",
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "OpenClaw package metadata is missing",
+    authorRemediation: authorRemediation(
+      "Add the package.json openclaw metadata block.",
+      [
+        "Describe extension entrypoints, plugin API compatibility, and install metadata.",
+        "Keep package metadata in sync with openclaw.plugin.json when both files are present.",
+      ],
+    ),
   },
   "package-openclaw-unsupported-metadata": {
     severity: "P2",
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "package declares unsupported OpenClaw metadata",
+    authorRemediation: authorRemediation(
+      "Remove unsupported OpenClaw package metadata fields.",
+      [
+        "Delete openclaw.bundle and other fields not accepted by the current package schema.",
+        "Move bundle-specific data to documented manifest fields when available.",
+      ],
+    ),
   },
   "package-plugin-api-compat-missing": {
     severity: "P2",
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "plugin API compatibility range is missing",
+    authorRemediation: authorRemediation(
+      "Declare the OpenClaw plugin API range this package supports.",
+      [
+        "Add package.json `openclaw.compat.pluginApi` with the OpenClaw plugin API range you tested.",
+        "If known, include the OpenClaw build/version used to produce the package metadata.",
+      ],
+      '"openclaw": {\n  "compat": {\n    "pluginApi": ">=0.1.0"\n  }\n}',
+    ),
   },
   "package-typescript-source-entrypoint": {
     severity: "P2",
@@ -225,6 +373,13 @@ export const issueMetadataByCode = {
     owner: "core",
     decision: "core-compat-adapter",
     title: "providerAuthEnvVars legacy manifest metadata must stay covered",
+    authorRemediation: migrationRemediation(
+      "Move legacy provider authentication environment variables into current provider setup metadata.",
+      [
+        "Mirror providerAuthEnvVars into setup.providers[].envVars or the current provider-choice metadata.",
+        "Keep the legacy field only while supporting older OpenClaw versions that still read it.",
+      ],
+    ),
   },
   "registration-capture-gap": {
     severity: "P2",
@@ -255,6 +410,13 @@ export const issueMetadataByCode = {
     owner: "plugin",
     decision: "plugin-upstream-fix",
     title: "plugin ships an unsupported security manifest",
+    authorRemediation: authorRemediation(
+      "Remove unsupported security manifest files until OpenClaw documents a versioned security manifest schema.",
+      [
+        "Delete openclaw.security.json if it is advisory-only and not consumed by OpenClaw.",
+        "Reintroduce it only when the schema and ClawHub behavior are documented.",
+      ],
+    ),
   },
 };
 
@@ -284,6 +446,14 @@ export function buildIssues({ breakages = [], warnings = [], suggestions = [], t
       evidence: finding.evidence ?? [],
       compatRecord: finding.compatRecord ?? null,
       runtimeCoverage: finding.runtimeCoverage ?? null,
+      ...(finding.authorRemediation
+        ? {
+            authorRemediation: {
+              summary: finding.authorRemediation.summary,
+              docsUrl: authorRemediationDocsUrl(finding.code),
+            },
+          }
+        : {}),
     }));
 }
 
@@ -305,9 +475,18 @@ export function issueMetadata(finding, targetOpenClaw) {
     decision: "inspector-follow-up",
     title: finding.message,
   };
+  const authorMetadata = metadata.authorRemediation
+    ? {
+        authorRemediation: {
+          summary: metadata.authorRemediation.summary,
+          docsUrl: authorRemediationDocsUrl(finding.code),
+        },
+      }
+    : {};
   return {
     ...finding,
     ...metadata,
+    ...authorMetadata,
     ...classifyIssueFinding(finding, targetOpenClaw, metadata),
   };
 }
@@ -331,6 +510,14 @@ export function classifyIssueFinding(finding, targetOpenClaw, metadata = {}) {
     live,
     severity,
   };
+}
+
+export function isInspectorGapFinding(finding, targetOpenClaw) {
+  return issueMetadata(finding, targetOpenClaw).issueClass === "inspector-gap";
+}
+
+export function isAuthorFacingFinding(finding, targetOpenClaw) {
+  return Boolean(issueMetadata(finding, targetOpenClaw).authorRemediation);
 }
 
 export function summarizeIssueClasses(issues) {

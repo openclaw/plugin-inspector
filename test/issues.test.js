@@ -1,6 +1,38 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildIssues, classifyIssueFinding, issueId, knownIssueCodes, summarizeIssueClasses } from "../src/advanced.js";
+import {
+  buildIssues,
+  classifyIssueFinding,
+  issueId,
+  issueMetadataByCode,
+  knownIssueCodes,
+  summarizeIssueClasses,
+} from "../src/advanced.js";
+
+const authorFacingKnownIssueCodes = new Set([
+  "channel-env-vars",
+  "legacy-before-agent-start",
+  "legacy-root-sdk-import",
+  "manifest-name-missing",
+  "manifest-unknown-contracts",
+  "manifest-unknown-fields",
+  "package-entrypoint-missing",
+  "package-install-metadata-incomplete",
+  "package-json-missing",
+  "package-manifest-version-drift",
+  "package-min-host-version-drift",
+  "package-npm-pack-entrypoint-missing",
+  "package-npm-pack-metadata-missing",
+  "package-npm-pack-unavailable",
+  "package-openclaw-entry-missing",
+  "package-openclaw-metadata-missing",
+  "package-openclaw-unsupported-metadata",
+  "package-plugin-api-compat-missing",
+  "provider-auth-env-vars",
+  "reserved-sdk-import",
+  "security-manifest-schema-unavailable",
+  "unrecognized-security-manifest",
+]);
 
 test("issue ids are stable fingerprints", () => {
   const finding = {
@@ -125,6 +157,47 @@ test("issue builder applies metadata and class summaries", () => {
     "live-issue": 0,
     "upstream-metadata": 1,
   });
+});
+
+test("known author-facing issue codes include author remediation guidance", () => {
+  const issues = buildIssues({
+    warnings: [...knownIssueCodes].map((code) => ({
+      fixture: "sample-plugin",
+      code,
+      level: "warning",
+      message: `${code} message`,
+      evidence: [`fixtures/sample-plugin:${code}`],
+    })),
+    targetOpenClaw: { compatRecordStatuses: {} },
+  });
+
+  assert.equal(issues.length, knownIssueCodes.size);
+  for (const issue of issues) {
+    assert.equal(issue.remediation, undefined, `${issue.code} should not expose legacy remediation`);
+    const metadata = issueMetadataByCode[issue.code];
+    if (!authorFacingKnownIssueCodes.has(issue.code)) {
+      assert.equal(issue.authorRemediation, undefined, `${issue.code} should stay internal-only`);
+      assert.equal(metadata.authorRemediation, undefined, `${issue.code} metadata should stay internal-only`);
+      continue;
+    }
+
+    assert.equal(typeof issue.authorRemediation?.summary, "string", `${issue.code} author remediation summary`);
+    assert.ok(issue.authorRemediation.summary.length > 0, `${issue.code} author remediation summary text`);
+    assert.equal(typeof issue.authorRemediation.docsUrl, "string", `${issue.code} author remediation docs URL`);
+    assert.notEqual(
+      issue.authorRemediation,
+      metadata.authorRemediation,
+      `${issue.code} should not expose shared metadata remediation object`,
+    );
+    assert.equal(
+      issue.authorRemediation.docsUrl,
+      `https://docs.openclaw.ai/clawhub/plugin-validation-fixes#${issue.code}`,
+      `${issue.code} docs URL`,
+    );
+    assert.equal(Object.hasOwn(issue.authorRemediation, "steps"), false, `${issue.code} should not expose steps`);
+    assert.equal(Object.hasOwn(issue.authorRemediation, "example"), false, `${issue.code} should not expose examples`);
+    assert.equal(Object.hasOwn(issue.authorRemediation, "audience"), false, `${issue.code} should not expose audience`);
+  }
 });
 
 function pick(value, keys) {

@@ -250,8 +250,21 @@ function issueBlock(issue, options) {
     `  - state: ${issueState(issue)}`,
     "  - evidence:",
     ...evidenceList(issue.evidence, options).map((item) => `    - ${item}`),
+    ...remediationList(issue),
     ...runtimeCoverageList(issue, options),
   ].join("\n");
+}
+
+function remediationList(issue) {
+  const remediation = issue.authorRemediation;
+  if (!remediation?.summary) {
+    return [];
+  }
+  return [
+    "  - author remediation:",
+    `    - ${remediation.summary}`,
+    `    - docs: ${remediation.docsUrl}`,
+  ];
 }
 
 function issueState(issue) {

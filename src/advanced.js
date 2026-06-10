@@ -77,6 +77,7 @@ export {
   classifyIssueFinding,
   deprecatedCompatRecords,
   issueId,
+  isAuthorFacingFinding,
   issueMetadata,
   issueMetadataByCode,
   knownIssueCodes,

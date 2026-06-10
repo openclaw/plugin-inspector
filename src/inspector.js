@@ -35,6 +35,7 @@ export async function inspectCompatibilityFixtureSet(config, options = {}) {
     config,
     inspections,
     failures,
+    authorFacing: options.authorFacing,
     generatedAt: options.generatedAt,
     executionResults: options.executionResults,
     targetOpenClaw,

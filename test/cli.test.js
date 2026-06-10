@@ -130,6 +130,50 @@ test("inspect command runs from a plugin root and can write CI outputs", async (
   assert.match(junit, /<testsuite name="plugin-inspector"/);
 });
 
+test("inspect command with config applies author-facing filtering", async () => {
+  const rootDir = await createFixtureSetRoot("plugin-inspector-cli-inspect-config-author-");
+  const cliPath = path.resolve("src/cli.js");
+
+  await execFileAsync(process.execPath, [
+    cliPath,
+    "inspect",
+    "--config",
+    path.join(rootDir, "plugin-inspector.config.json"),
+    "--out",
+    "reports",
+    "--no-openclaw",
+    "--author-facing",
+  ]);
+  const report = JSON.parse(await readFile(path.join(rootDir, "reports", "plugin-inspector-report.json"), "utf8"));
+
+  assert.equal(report.issues.some((issue) => issue.code === "runtime-tool-capture"), false);
+  assert.equal(report.summary.inspectorGapCount, 0);
+  assert.ok(report.issues.some((issue) => issue.code === "legacy-root-sdk-import"));
+  assert.ok(report.issues.every((issue) => issue.authorRemediation?.docsUrl));
+});
+
+test("report command with config rejects the legacy inspector-gap flag", async () => {
+  const rootDir = await createFixtureSetRoot("plugin-inspector-cli-report-config-legacy-");
+  const cliPath = path.resolve("src/cli.js");
+
+  await assert.rejects(
+    () =>
+      execFileAsync(process.execPath, [
+        cliPath,
+        "report",
+        "--config",
+        path.join(rootDir, "plugin-inspector.config.json"),
+        "--out",
+        "reports",
+        "--include-inspector-gaps",
+      ]),
+    (error) => {
+      assert.match(error.stderr, /--include-inspector-gaps has been replaced by --author-facing/);
+      return true;
+    },
+  );
+});
+
 test("check command can enable runtime capture from plugin config", async () => {
   const rootDir = await createCliPluginRoot("plugin-inspector-cli-config-runtime-");
   await writeFile(
@@ -147,6 +191,50 @@ test("check command can enable runtime capture from plugin config", async () => 
     await readFile(path.join(rootDir, "reports", "plugin-inspector-runtime-capture.json"), "utf8"),
   );
   assert.equal(capture.summary.registrationCount, 1);
+});
+
+test("check command filters author-facing output and rejects the legacy inspector-gap flag", async () => {
+  const rootDir = await createCliPluginRoot("plugin-inspector-cli-inspector-gaps-");
+  await writeFile(
+    path.join(rootDir, "openclaw.plugin.json"),
+    `${JSON.stringify({ id: "weather", name: "Weather", version: "1.0.0" }, null, 2)}\n`,
+    "utf8",
+  );
+  const cliPath = path.resolve("src/cli.js");
+
+  await execFileAsync(process.execPath, [cliPath, "check", "--out", "reports", "--no-openclaw"], {
+    cwd: rootDir,
+  });
+  const defaultReport = JSON.parse(
+    await readFile(path.join(rootDir, "reports", "plugin-inspector-report.json"), "utf8"),
+  );
+
+  await execFileAsync(process.execPath, [cliPath, "check", "--out", "author-reports", "--no-openclaw", "--author-facing"], {
+    cwd: rootDir,
+  });
+  const authorReport = JSON.parse(
+    await readFile(path.join(rootDir, "author-reports", "plugin-inspector-report.json"), "utf8"),
+  );
+
+  assert.ok(defaultReport.suggestions.some((finding) => finding.code === "runtime-tool-capture"));
+  assert.ok(defaultReport.issues.some((issue) => issue.issueClass === "inspector-gap"));
+  assert.equal(authorReport.suggestions.some((finding) => finding.code === "runtime-tool-capture"), false);
+  assert.equal(authorReport.issues.some((issue) => issue.issueClass === "inspector-gap"), false);
+  assert.ok(authorReport.issues.some((issue) => issue.code === "legacy-root-sdk-import"));
+  assert.ok(authorReport.issues.every((issue) => issue.authorRemediation?.docsUrl));
+
+  await assert.rejects(
+    () =>
+      execFileAsync(
+        process.execPath,
+        [cliPath, "check", "--out", "legacy-reports", "--no-openclaw", "--include-inspector-gaps"],
+        { cwd: rootDir },
+      ),
+    (error) => {
+      assert.match(error.stderr, /--include-inspector-gaps has been replaced by --author-facing/);
+      return true;
+    },
+  );
 });
 
 test("config command prints resolved plugin root config", async () => {
@@ -200,6 +288,47 @@ test("ci command writes CI summary artifacts", async () => {
   assert.match(markdown, /# Plugin Inspector CI Summary/);
   assert.equal(sarif.runs[0].tool.driver.name, "plugin-inspector");
   assert.match(junit, /failures="0"/);
+});
+
+test("ci command applies author-facing filtering to report, summary, and CI artifacts", async () => {
+  const rootDir = await createCliPluginRoot("plugin-inspector-cli-ci-author-facing-");
+  await writeFile(
+    path.join(rootDir, "openclaw.plugin.json"),
+    `${JSON.stringify({ id: "weather", name: "Weather", version: "1.0.0" }, null, 2)}\n`,
+    "utf8",
+  );
+  const cliPath = path.resolve("src/cli.js");
+
+  const { stdout } = await execFileAsync(
+    process.execPath,
+    [
+      cliPath,
+      "ci",
+      "--config",
+      path.join(rootDir, "plugin-inspector.config.json"),
+      "--out",
+      "reports",
+      "--no-openclaw",
+      "--author-facing",
+    ],
+    {
+      cwd: rootDir,
+    },
+  );
+
+  const report = JSON.parse(await readFile(path.join(rootDir, "reports", "plugin-inspector-report.json"), "utf8"));
+  const summary = JSON.parse(
+    await readFile(path.join(rootDir, "reports", "plugin-inspector-ci-summary.json"), "utf8"),
+  );
+  const sarif = JSON.parse(await readFile(path.join(rootDir, "reports", "plugin-inspector.sarif"), "utf8"));
+  const junit = await readFile(path.join(rootDir, "reports", "plugin-inspector.junit.xml"), "utf8");
+
+  assert.match(stdout, /Status: PASS/);
+  assert.equal(report.issues.some((issue) => issue.code === "runtime-tool-capture"), false);
+  assert.equal(summary.summary.inspectorGaps, 0);
+  assert.equal(summary.summary.issues, report.summary.issueCount);
+  assert.equal(sarif.runs[0].results.some((result) => result.ruleId === "runtime-tool-capture"), false);
+  assert.doesNotMatch(junit, /runtime-tool-capture/);
 });
 
 test("init command writes plugin config and CI workflow", async () => {
@@ -372,6 +501,39 @@ test("batch command scans plugin roots and writes aggregate impact reports", asy
   );
 });
 
+test("batch command applies author-facing filtering to aggregate summaries", async () => {
+  const corpusDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-cli-batch-author-facing-"));
+  const pluginRoot = await createCliPluginRoot("plugin-inspector-cli-batch-author-plugin-");
+  await mkdir(path.join(corpusDir, "plugins"), { recursive: true });
+  await copyPluginRoot(pluginRoot, path.join(corpusDir, "plugins", "weather"));
+  await writeFile(
+    path.join(corpusDir, "plugins", "weather", "openclaw.plugin.json"),
+    `${JSON.stringify({ id: "weather", name: "Weather", version: "1.0.0" }, null, 2)}\n`,
+    "utf8",
+  );
+  const cliPath = path.resolve("src/cli.js");
+
+  const { stdout } = await execFileAsync(process.execPath, [
+    cliPath,
+    "batch",
+    corpusDir,
+    "--out",
+    "batch-reports",
+    "--no-openclaw",
+    "--author-facing",
+    "--json",
+  ]);
+  const stdoutReport = JSON.parse(stdout);
+
+  assert.equal(stdoutReport.findingFrequency.some((finding) => finding.code === "runtime-tool-capture"), false);
+  assert.ok(stdoutReport.findingFrequency.some((finding) => finding.code === "legacy-root-sdk-import"));
+  assert.ok(
+    stdoutReport.plugins.every((plugin) =>
+      plugin.findings.every((finding) => finding.authorRemediation?.docsUrl),
+    ),
+  );
+});
+
 test("clawhub batch analysis skill documents export plus batch workflow", async () => {
   const skill = await readFile(path.resolve(".agents/skills/clawhub-batch-analysis/SKILL.md"), "utf8");
 
@@ -429,6 +591,61 @@ async function copyPluginRoot(sourceDir, targetDir) {
     await readFile(path.join(sourceDir, "src", "index.js"), "utf8"),
     "utf8",
   );
+}
+
+async function createFixtureSetRoot(prefix) {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), prefix));
+  const fixtureDir = path.join(rootDir, "fixture");
+  await mkdir(path.join(fixtureDir, "src"), { recursive: true });
+  await writeFile(
+    path.join(rootDir, "plugin-inspector.config.json"),
+    `${JSON.stringify(
+      {
+        version: 1,
+        submoduleRoot: ".",
+        fixtures: [
+          {
+            id: "fixture",
+            path: "fixture",
+            priority: "high",
+            seams: ["native-tool"],
+            expect: { registrations: ["definePluginEntry", "registerTool"] },
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(fixtureDir, "package.json"),
+    `${JSON.stringify(
+      {
+        name: "@example/openclaw-weather",
+        version: "1.0.0",
+        type: "module",
+        openclaw: {
+          extensions: ["src/index.js"],
+          compat: { pluginApi: "^1.0.0" },
+        },
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(fixtureDir, "openclaw.plugin.json"),
+    `${JSON.stringify({ id: "weather", name: "Weather", version: "1.0.0" }, null, 2)}\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(fixtureDir, "src", "index.js"),
+    'import { definePluginEntry } from "openclaw/plugin-sdk";\nexport default definePluginEntry((api) => api.registerTool({ name: "weather" }));\n',
+    "utf8",
+  );
+  return rootDir;
 }
 
 async function createTargetOpenClaw(rootDir) {

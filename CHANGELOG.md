@@ -2,6 +2,20 @@
 
 ## Unreleased
 
+## 0.3.13 - 2026-06-09
+
+### Changed
+
+- Add `authorRemediation.summary` and `authorRemediation.docsUrl` guidance to author-facing compatibility issues and Markdown reports.
+- Add `--author-facing` for `check`, `ci`, and `batch` reports while keeping default output complete for internal coverage findings.
+- Replace the recent `--include-inspector-gaps` option with a clear error pointing to `--author-facing`.
+
+## 0.3.12 - 2026-06-09
+
+### Changed
+
+- Hide maintainer-facing `inspector-gap` findings from author-facing `check`, `ci`, and `batch` output by default, with `--include-inspector-gaps` for internal coverage reports.
+
 ## 0.3.11 - 2026-05-26
 
 ### Fixed
