@@ -31,6 +31,7 @@ const authorFacingKnownIssueCodes = new Set([
   "provider-auth-env-vars",
   "reserved-sdk-import",
   "security-manifest-schema-unavailable",
+  "sdk-load-session-store",
   "unrecognized-security-manifest",
 ]);
 
@@ -141,6 +142,7 @@ test("issue builder applies metadata and class summaries", () => {
 
   assert.ok(knownIssueCodes.has("sdk-export-missing"));
   assert.ok(knownIssueCodes.has("reserved-sdk-import"));
+  assert.ok(knownIssueCodes.has("sdk-load-session-store"));
   assert.deepEqual(
     issues.map((issue) => [issue.fixture, issue.code, issue.severity, issue.issueClass, issue.status]),
     [

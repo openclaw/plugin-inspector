@@ -55,6 +55,68 @@ test("source inspection strips long comments before matching registrations", () 
   );
 });
 
+test("source inspection records deprecated whole-store session helper usage", () => {
+  const inspection = inspectSourceText(
+    [
+      'import { loadSessionStore } from "openclaw/plugin-sdk/session-store-runtime";',
+      'import { loadSessionStore as loadStore } from "openclaw/plugin-sdk/config-runtime";',
+      'import * as sessionStoreRuntime from "openclaw/plugin-sdk/session-store-runtime";',
+      "",
+      'export { loadSessionStore as legacyLoadSessionStore } from "openclaw/plugin-sdk/session-store-runtime";',
+      "sessionStoreRuntime.loadSessionStore('/tmp/sessions.json');",
+      "api.runtime.agent.session.loadSessionStore('/tmp/sessions.json');",
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(
+    inspection.sdkDeprecations.map((finding) => `${finding.surface}@${finding.ref}`),
+    [
+      "openclaw/plugin-sdk/session-store-runtime import@plugins/example/index.ts:1",
+      "openclaw/plugin-sdk/config-runtime import@plugins/example/index.ts:2",
+      "openclaw/plugin-sdk/session-store-runtime re-export@plugins/example/index.ts:5",
+      "openclaw/plugin-sdk/session-store-runtime namespace access@plugins/example/index.ts:6",
+      "api.runtime.agent.session@plugins/example/index.ts:7",
+    ],
+  );
+});
+
+test("source inspection ignores unrelated loadSessionStore helpers", () => {
+  const inspection = inspectSourceText(
+    [
+      'import { loadSessionStore } from "./local-session-store.js";',
+      "const helpers = {",
+      "  loadSessionStore() {",
+      "    return new Map();",
+      "  },",
+      "};",
+      "helpers.loadSessionStore();",
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(inspection.sdkDeprecations, []);
+});
+
+test("source inspection records CommonJS whole-store session helper usage", () => {
+  const inspection = inspectSourceText(
+    [
+      'const { loadSessionStore: readSessionStore } = require("openclaw/plugin-sdk/session-store-runtime");',
+      'const sessionStoreRuntime = require("openclaw/plugin-sdk/config-runtime");',
+      "sessionStoreRuntime.loadSessionStore('/tmp/sessions.json');",
+    ].join("\n"),
+    "plugins/example/index.cjs",
+  );
+
+  assert.deepEqual(
+    inspection.sdkDeprecations.map((finding) => `${finding.surface}@${finding.ref}`),
+    [
+      "openclaw/plugin-sdk/session-store-runtime require@plugins/example/index.cjs:1",
+      "openclaw/plugin-sdk/config-runtime require namespace access@plugins/example/index.cjs:3",
+    ],
+  );
+});
+
 test("fixture set inspection produces a passing report", async () => {
   const config = await loadInspectorConfig("test/fixtures/inspector.config.json");
   const report = await inspectFixtureSet(config);
