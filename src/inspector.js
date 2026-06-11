@@ -10,6 +10,7 @@ import { fixtureCheckoutPath, fixtureSourceRoot } from "./config.js";
 import { buildCompatibilityFixtureReport } from "./fixture-summary.js";
 import { readOpenClawTargetSurface } from "./openclaw-target.js";
 import { buildCompatibilityReport, buildReport } from "./report.js";
+import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
 
 const execFileAsync = promisify(execFile);
 const registrationEquivalents = new Map([
@@ -104,6 +105,7 @@ export async function inspectPlugin(fixture, options = {}) {
   const hookDetails = [];
   const registrationDetails = [];
   const sdkImportDetails = [];
+  const sdkDeprecationDetails = [];
 
   for (const filePath of files) {
     const text = await readFile(filePath, "utf8");
@@ -120,6 +122,9 @@ export async function inspectPlugin(fixture, options = {}) {
     }
     for (const sdkImport of sourceInspection.sdkImports) {
       sdkImportDetails.push(sdkImport);
+    }
+    for (const sdkDeprecation of sourceInspection.sdkDeprecations) {
+      sdkDeprecationDetails.push(sdkDeprecation);
     }
   }
 
@@ -140,6 +145,7 @@ export async function inspectPlugin(fixture, options = {}) {
     packageErrors: packageInspection.errors,
     packageEntrypoints: packageInspection.entrypoints,
     sdkImports: uniqueDetails(sdkImportDetails),
+    sdkDeprecations: uniqueSdkDeprecations(sdkDeprecationDetails),
     sourceFiles: files.map((filePath) => path.relative(config.rootDir ?? process.cwd(), filePath)).sort(),
   };
 }
@@ -160,11 +166,13 @@ export function inspectSourceText(text, filePath = "source.js") {
     filePath,
     "specifier",
   );
+  const sdkDeprecations = inspectSdkDeprecations(searchableText, filePath);
 
   return {
     hooks,
     registrations,
     sdkImports,
+    sdkDeprecations,
   };
 }
 
@@ -353,6 +361,7 @@ function emptyInspection(fixture, status) {
     packageErrors: [],
     packageEntrypoints: [],
     sdkImports: [],
+    sdkDeprecations: [],
     sourceFiles: [],
   };
 }
@@ -551,6 +560,14 @@ function uniqueDetails(details) {
   for (const detail of sortDetails(details)) {
     const key = `${detail.name ?? detail.specifier}:${detail.ref}`;
     byKey.set(key, detail);
+  }
+  return [...byKey.values()];
+}
+
+function uniqueSdkDeprecations(details) {
+  const byKey = new Map();
+  for (const detail of [...details].sort((left, right) => left.ref.localeCompare(right.ref))) {
+    byKey.set(`${detail.code}:${detail.surface}:${detail.ref}`, detail);
   }
   return [...byKey.values()];
 }

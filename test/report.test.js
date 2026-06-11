@@ -1236,6 +1236,91 @@ test("compatibility fixture classifier reports seam and metadata follow-ups", ()
   );
 });
 
+test("compatibility fixture classifier groups deprecated whole-store session helper usage", () => {
+  const result = classifyCompatibilityFixture({
+    fixture: { id: "fixture", path: "plugins/fixture" },
+    inspection: {
+      status: "ok",
+      hooks: [],
+      hookDetails: [],
+      registrations: [],
+      registrationDetails: [],
+      manifestContracts: [],
+      sdkDeprecations: [
+        {
+          code: "sdk-load-session-store",
+          surface: "openclaw/plugin-sdk/session-store-runtime import",
+          ref: "plugins/fixture/src/index.ts:3",
+          replacement:
+            "getSessionEntry(...) / listSessionEntries(...) for reads and patchSessionEntry(...) / upsertSessionEntry(...) for writes",
+          message:
+            "loadSessionStore keeps the legacy whole-store session shape; use getSessionEntry(...) / listSessionEntries(...) for reads and patchSessionEntry(...) / upsertSessionEntry(...) for writes.",
+        },
+        {
+          code: "sdk-load-session-store",
+          surface: "api.runtime.agent.session",
+          ref: "plugins/fixture/src/index.ts:14",
+          replacement:
+            "getSessionEntry(...) / listSessionEntries(...) for reads and patchSessionEntry(...) / upsertSessionEntry(...) for writes",
+          message:
+            "loadSessionStore keeps the legacy whole-store session shape; use getSessionEntry(...) / listSessionEntries(...) for reads and patchSessionEntry(...) / upsertSessionEntry(...) for writes.",
+        },
+      ],
+    },
+    fixtureReport: {
+      sdkImports: [],
+      sdkImportDetails: [],
+      sdkDeprecations: [
+        {
+          code: "sdk-load-session-store",
+          surface: "openclaw/plugin-sdk/session-store-runtime import",
+          ref: "plugins/fixture/src/index.ts:3",
+          replacement:
+            "getSessionEntry(...) / listSessionEntries(...) for reads and patchSessionEntry(...) / upsertSessionEntry(...) for writes",
+          message:
+            "loadSessionStore keeps the legacy whole-store session shape; use getSessionEntry(...) / listSessionEntries(...) for reads and patchSessionEntry(...) / upsertSessionEntry(...) for writes.",
+        },
+        {
+          code: "sdk-load-session-store",
+          surface: "api.runtime.agent.session",
+          ref: "plugins/fixture/src/index.ts:14",
+          replacement:
+            "getSessionEntry(...) / listSessionEntries(...) for reads and patchSessionEntry(...) / upsertSessionEntry(...) for writes",
+          message:
+            "loadSessionStore keeps the legacy whole-store session shape; use getSessionEntry(...) / listSessionEntries(...) for reads and patchSessionEntry(...) / upsertSessionEntry(...) for writes.",
+        },
+      ],
+      pluginManifests: [],
+      securityManifests: [],
+      package: {
+        path: "plugins/fixture/package.json",
+        dependencies: [],
+        peerDependencies: [],
+        optionalDependencies: [],
+        openclaw: {
+          compatPluginApi: "^1.0.0",
+          entrypoints: [],
+        },
+      },
+    },
+    targetOpenClaw: {
+      status: "not-configured",
+    },
+  });
+
+  const warning = result.warnings.find((finding) => finding.code === "sdk-load-session-store");
+  assert.deepEqual(warning.evidence, [
+    "openclaw/plugin-sdk/session-store-runtime import @ plugins/fixture/src/index.ts:3",
+    "api.runtime.agent.session @ plugins/fixture/src/index.ts:14",
+  ]);
+  assert.ok(result.decisions.some((decision) => decision.seam === "session-store"));
+
+  const issues = buildIssues({ warnings: result.warnings, targetOpenClaw: { status: "not-configured" } });
+  const issue = issues.find((finding) => finding.code === "sdk-load-session-store");
+  assert.equal(issue.issueClass, "deprecation-warning");
+  assert.match(issue.title, /whole-store session helper/);
+});
+
 test("writeReport writes JSON and Markdown artifacts", async () => {
   const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-report-"));
   const config = await loadInspectorConfig("test/fixtures/inspector.config.json");

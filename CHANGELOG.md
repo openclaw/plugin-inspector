@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Flag deprecated `loadSessionStore(...)` whole-store session helper usage as an author-facing deprecation warning while keeping speculative transcript-identity migration rules out of default inspection. Thanks @jalehman.
+
 ## 0.3.13 - 2026-06-09
 
 ### Changed

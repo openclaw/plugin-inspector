@@ -41,6 +41,7 @@ export const knownIssueCodes = new Set([
   "runtime-tool-capture",
   "reserved-sdk-import",
   "security-manifest-schema-unavailable",
+  "sdk-load-session-store",
   "sdk-export-missing",
   "unrecognized-security-manifest",
 ]);
@@ -107,6 +108,19 @@ export const issueMetadataByCode = {
       [
         "Replace imports from openclaw/plugin-sdk with the documented subpath for the API you use.",
         "Keep the root import only while supporting older OpenClaw versions that do not expose the subpath.",
+      ],
+    ),
+  },
+  "sdk-load-session-store": {
+    severity: "P2",
+    owner: "core",
+    decision: "core-compat-adapter",
+    title: "deprecated whole-store session helper is still used",
+    authorRemediation: migrationRemediation(
+      "Replace deprecated loadSessionStore whole-store access with row-scoped session helpers.",
+      [
+        "Use getSessionEntry(...) or listSessionEntries(...) for reads instead of cloning the whole session store.",
+        "Use patchSessionEntry(...) or upsertSessionEntry(...) for writes instead of mutating and saving a whole-store object.",
       ],
     ),
   },
@@ -545,7 +559,16 @@ function issueClassFor(code, options) {
   if (code === "missing-compat-record") {
     return "compat-gap";
   }
-  if (options.deprecated || ["channel-env-vars", "legacy-before-agent-start", "legacy-root-sdk-import", "provider-auth-env-vars"].includes(code)) {
+  if (
+    options.deprecated ||
+    [
+      "channel-env-vars",
+      "legacy-before-agent-start",
+      "legacy-root-sdk-import",
+      "provider-auth-env-vars",
+      "sdk-load-session-store",
+    ].includes(code)
+  ) {
     return "deprecation-warning";
   }
   if (

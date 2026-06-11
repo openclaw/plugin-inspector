@@ -49,6 +49,7 @@ export async function buildCompatibilityFixtureReport({ fixture, inspection, che
     packages: packageSummaries,
     sdkImports,
     sdkImportDetails: inspection.sdkImports ?? [],
+    sdkDeprecations: inspection.sdkDeprecations ?? [],
   };
 }
 
@@ -496,6 +497,7 @@ export function classifyCompatibilityFixture({ fixture, inspection, fixtureRepor
   logs.push(...packageContracts.logs);
   decisions.push(...packageContracts.decisions);
   classifySecurityManifestCoverage({ fixture, fixtureReport, warnings, decisions });
+  classifySdkDeprecations({ fixture, inspection, fixtureReport, warnings, decisions });
 
   for (const pluginManifest of fixtureReport.pluginManifests) {
     const providerAuthKeys = Object.keys(pluginManifest.providerAuthEnvVars ?? {});
@@ -700,6 +702,34 @@ export function classifyCompatibilityFixture({ fixture, inspection, fixtureRepor
   }
 
   return { warnings, suggestions, logs, decisions };
+}
+
+function classifySdkDeprecations({ fixture, inspection, fixtureReport, warnings, decisions }) {
+  const grouped = new Map();
+  for (const finding of fixtureReport.sdkDeprecations ?? inspection.sdkDeprecations ?? []) {
+    const existing = grouped.get(finding.code) ?? [];
+    existing.push(finding);
+    grouped.set(finding.code, existing);
+  }
+
+  for (const [code, findings] of grouped) {
+    const first = findings[0];
+    warnings.push({
+      fixture: fixture.id,
+      code,
+      level: "warning",
+      message: first.message,
+      evidence: findings.map((finding) => `${finding.surface} @ ${finding.ref}`),
+    });
+    decisions.push({
+      fixture: fixture.id,
+      decision: "core-compat-adapter",
+      seam: "session-store",
+      action:
+        "Keep loadSessionStore compatibility active while plugin authors migrate to row-scoped session helpers.",
+      evidence: findings.map((finding) => finding.ref).join(", "),
+    });
+  }
 }
 
 function classifySecurityManifestCoverage({ fixture, fixtureReport, warnings, decisions }) {

@@ -299,7 +299,7 @@ Important report sections:
 | `status` | `pass` unless hard breakages exist. |
 | `summary` | Counts for fixtures, breakages, warnings, suggestions, issues, issue classes, and contract probes. |
 | `targetOpenClaw` | Status and public compatibility data read from the optional OpenClaw checkout. |
-| `fixtures` | Per-plugin metadata, hooks, registrations, manifest contracts, package data, and SDK imports. |
+| `fixtures` | Per-plugin metadata, hooks, registrations, manifest contracts, package data, SDK imports, and SDK deprecation evidence. |
 | `breakages` | Blocking compatibility failures. |
 | `warnings` / `suggestions` | Non-blocking compatibility findings. |
 | `issues` | Normalized issue rows with severity and class. |
@@ -311,6 +311,9 @@ Default `check`, `ci`, and `batch` reports include both author-facing and
 internal findings. Pass `--author-facing` when producing plugin-author output;
 that filtered view includes only findings with `authorRemediation.summary` and
 `authorRemediation.docsUrl`.
+Current author-facing deprecation warnings include deprecated SDK helpers such
+as `loadSessionStore(...)` when a plugin still depends on the legacy whole-store
+session shape.
 
 ## CI Policy And Shared Reporting Primitives
 
