@@ -117,6 +117,50 @@ test("source inspection records CommonJS whole-store session helper usage", () =
   );
 });
 
+test("source inspection records parenthesized whole-store session helper usage", () => {
+  const inspection = inspectSourceText(
+    [
+      'import * as sessionStoreRuntime from "openclaw/plugin-sdk/session-store-runtime";',
+      "",
+      "(sessionStoreRuntime).loadSessionStore?.('/tmp/sessions.json');",
+      "((api.runtime.agent.session)).loadSessionStore('/tmp/sessions.json');",
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(
+    inspection.sdkDeprecations.map((finding) => `${finding.surface}@${finding.ref}`),
+    [
+      "openclaw/plugin-sdk/session-store-runtime namespace access@plugins/example/index.ts:3",
+      "api.runtime.agent.session@plugins/example/index.ts:4",
+    ],
+  );
+});
+
+test("source inspection records optional-chained whole-store session helper usage", () => {
+  const inspection = inspectSourceText(
+    [
+      'import * as sdk from "openclaw/plugin-sdk/session-store-runtime";',
+      "",
+      "sdk?.loadSessionStore('/tmp/sessions.json');",
+      "sdk.loadSessionStore?.('/tmp/sessions.json');",
+      "api.runtime.agent.session?.loadSessionStore('/tmp/sessions.json');",
+      "api?.runtime?.agent?.session?.loadSessionStore('/tmp/sessions.json');",
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(
+    inspection.sdkDeprecations.map((finding) => `${finding.surface}@${finding.ref}`),
+    [
+      "openclaw/plugin-sdk/session-store-runtime namespace access@plugins/example/index.ts:3",
+      "openclaw/plugin-sdk/session-store-runtime namespace access@plugins/example/index.ts:4",
+      "api.runtime.agent.session@plugins/example/index.ts:5",
+      "api.runtime.agent.session@plugins/example/index.ts:6",
+    ],
+  );
+});
+
 test("fixture set inspection produces a passing report", async () => {
   const config = await loadInspectorConfig("test/fixtures/inspector.config.json");
   const report = await inspectFixtureSet(config);
