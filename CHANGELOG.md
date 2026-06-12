@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.15 - 2026-06-12
+
+### Fixed
+
+- Detect deprecated `loadSessionStore(...)` usage when plugin code calls it through a runtime session API alias.
+
 ## 0.3.14 - 2026-06-11
 
 ### Changed

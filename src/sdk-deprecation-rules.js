@@ -35,6 +35,7 @@ function collectLoadSessionStoreDeprecations(findings, context) {
   collectNamespaceUsageDeprecations(findings, context);
   collectNamespaceRequireDeprecations(findings, context);
   collectRuntimeUsageDeprecations(findings, context);
+  collectRuntimeAliasUsageDeprecations(findings, context);
 }
 
 function collectNamedImportDeprecations(findings, context) {
@@ -296,6 +297,172 @@ function collectRuntimeUsageDeprecations(findings, context) {
     receiverMatcher: isRuntimeSessionReceiver,
     surface: "api.runtime.agent.session",
   });
+}
+
+function collectRuntimeAliasUsageDeprecations(findings, context) {
+  const aliases = collectRuntimeSessionAliases(context.text);
+  if (aliases.size === 0) {
+    return;
+  }
+  collectMemberCallDeprecations(findings, context, {
+    receiverMatcher: (receiver) => aliases.has(receiver),
+    surface: "api.runtime.agent.session alias",
+  });
+}
+
+function collectRuntimeSessionAliases(text) {
+  const aliases = new Set();
+  const factories = collectRuntimeSessionFactoryNames(text);
+  collectDirectRuntimeSessionAliases(text, aliases);
+  collectFactoryCallRuntimeSessionAliases(text, aliases, factories);
+  return aliases;
+}
+
+function collectRuntimeSessionFactoryNames(text) {
+  const factories = new Set();
+  for (const fn of findNamedFunctionBodies(text)) {
+    const aliases = new Set();
+    collectDirectRuntimeSessionAliases(fn.body, aliases);
+    if (aliases.size === 0) {
+      continue;
+    }
+    const returnRegex = /\breturn\s+([A-Za-z_$][\w$]*)\b/g;
+    for (const match of fn.body.matchAll(returnRegex)) {
+      if (aliases.has(match[1])) {
+        factories.add(fn.name);
+      }
+    }
+  }
+  return factories;
+}
+
+function findNamedFunctionBodies(text) {
+  const functions = [];
+  let searchStart = 0;
+  while (searchStart < text.length) {
+    const keywordOffset = text.indexOf("function", searchStart);
+    if (keywordOffset === -1) {
+      break;
+    }
+    searchStart = keywordOffset + "function".length;
+    if (!isIdentifierBoundary(text, keywordOffset - 1) || !isIdentifierBoundary(text, searchStart)) {
+      continue;
+    }
+    let cursor = skipWhitespaceForward(text, searchStart);
+    const name = readIdentifierAt(text, cursor);
+    if (!name) {
+      continue;
+    }
+    cursor = skipWhitespaceForward(text, name.end);
+    if (text[cursor] !== "(") {
+      continue;
+    }
+    const paramsEnd = findMatchingDelimiter(text, cursor, "(", ")");
+    if (paramsEnd === -1) {
+      continue;
+    }
+    cursor = skipWhitespaceForward(text, paramsEnd + 1);
+    while (cursor < text.length && text[cursor] !== "{") {
+      cursor += 1;
+    }
+    if (text[cursor] !== "{") {
+      break;
+    }
+    const bodyStart = cursor + 1;
+    const bodyEnd = findMatchingBrace(text, cursor);
+    if (bodyEnd === -1) {
+      continue;
+    }
+    functions.push({
+      name: name.value,
+      body: text.slice(bodyStart, bodyEnd),
+    });
+    searchStart = bodyEnd + 1;
+  }
+  return functions;
+}
+
+function readIdentifierAt(text, startOffset) {
+  const first = text[startOffset];
+  if (!/[A-Za-z_$]/.test(first)) {
+    return null;
+  }
+  let end = startOffset + 1;
+  while (end < text.length && /[A-Za-z0-9_$]/.test(text[end])) {
+    end += 1;
+  }
+  return {
+    value: text.slice(startOffset, end),
+    end,
+  };
+}
+
+function findMatchingDelimiter(text, openOffset, openChar, closeChar) {
+  let depth = 0;
+  for (let index = openOffset; index < text.length; index += 1) {
+    const char = text[index];
+    if (char === openChar) {
+      depth += 1;
+    } else if (char === closeChar) {
+      depth -= 1;
+      if (depth === 0) {
+        return index;
+      }
+    }
+  }
+  return -1;
+}
+
+function findMatchingBrace(text, openOffset) {
+  return findMatchingDelimiter(text, openOffset, "{", "}");
+}
+
+function collectDirectRuntimeSessionAliases(text, aliases) {
+  const runtimeAliases = collectRuntimeObjectAliases(text);
+  const declarationRegex = /\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*([^;\n]+)/g;
+  for (const match of text.matchAll(declarationRegex)) {
+    const local = match[1];
+    const initializer = normalizeReceiverExpression(match[2]);
+    if (isRuntimeSessionExpression(initializer, runtimeAliases)) {
+      aliases.add(local);
+    }
+  }
+}
+
+function collectRuntimeObjectAliases(text) {
+  const aliases = new Set();
+  const declarationRegex = /\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*(?:\([^)]*\)\s*)?(?:[A-Za-z_$][\w$]*|this)\.runtime\b/g;
+  for (const match of text.matchAll(declarationRegex)) {
+    aliases.add(match[1]);
+  }
+  return aliases;
+}
+
+function isRuntimeSessionExpression(expression, runtimeAliases) {
+  for (const part of expression.split("??")) {
+    const candidate = part.trim();
+    if (isRuntimeSessionReceiver(candidate)) {
+      return true;
+    }
+    for (const alias of runtimeAliases) {
+      if (candidate === `${alias}.agent.session` || candidate === `${alias}.channel.session`) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function collectFactoryCallRuntimeSessionAliases(text, aliases, factories) {
+  if (factories.size === 0) {
+    return;
+  }
+  const declarationRegex = /\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*([A-Za-z_$][\w$]*)\s*\(/g;
+  for (const match of text.matchAll(declarationRegex)) {
+    if (factories.has(match[2])) {
+      aliases.add(match[1]);
+    }
+  }
 }
 
 function parseNamedBindings(rawBindings, options = {}) {
