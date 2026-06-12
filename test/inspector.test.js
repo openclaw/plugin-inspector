@@ -161,6 +161,33 @@ test("source inspection records optional-chained whole-store session helper usag
   );
 });
 
+test("source inspection records whole-store session helper usage through runtime session aliases", () => {
+  const inspection = inspectSourceText(
+    [
+      "function getRuntimeAgentSessionApi(api) {",
+      "  const runtime = api.runtime;",
+      "  const runtimeSessionApi = runtime.agent?.session ?? runtime.channel?.session;",
+      "  return runtimeSessionApi;",
+      "}",
+      "",
+      "export function register(api) {",
+      "  const sessionApi = getRuntimeAgentSessionApi(api);",
+      "  if (!sessionApi) {",
+      "    return;",
+      "  }",
+      "  const store = sessionApi.loadSessionStore('/tmp/sessions.json');",
+      "  return store;",
+      "}",
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(
+    inspection.sdkDeprecations.map((finding) => `${finding.surface}@${finding.ref}`),
+    ["api.runtime.agent.session alias@plugins/example/index.ts:12"],
+  );
+});
+
 test("fixture set inspection produces a passing report", async () => {
   const config = await loadInspectorConfig("test/fixtures/inspector.config.json");
   const report = await inspectFixtureSet(config);
