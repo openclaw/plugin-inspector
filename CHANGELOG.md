@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Mock the Lark SDK HTTP interceptor surface during runtime capture so Feishu plugin bundles load successfully.
+
 ## 0.3.15 - 2026-06-12
 
 ### Fixed
