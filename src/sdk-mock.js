@@ -530,11 +530,60 @@ export default ${options.zod ? "createZNamespace()" : 'createMockValue("default"
 }
 
 function externalMockModuleSource(specifier, exportNames) {
+  if (specifier === "@larksuiteoapi/node-sdk") {
+    return larkSdkMockModuleSource(exportNames);
+  }
   const names = new Set([...exportNames].filter(isValidExportName));
   if (specifier === "zod") {
     addZodExports(names);
   }
   return dynamicMockModuleSource(names, { zod: specifier === "zod" });
+}
+
+function larkSdkMockModuleSource(exportNames) {
+  const larkExports = new Set([
+    "AppType",
+    "Client",
+    "Domain",
+    "EventDispatcher",
+    "LoggerLevel",
+    "WSClient",
+    ...exportNames,
+  ]);
+  larkExports.delete("defaultHttpInstance");
+  return `${genericMockRuntimeSource()}
+const requestInterceptors = {
+  handlers: [],
+  use(handler) {
+    this.handlers.push(handler);
+    return this.handlers.length - 1;
+  },
+};
+
+export const defaultHttpInstance = {
+  interceptors: {
+    request: requestInterceptors,
+    response: {
+      handlers: [],
+      use(handler) {
+        this.handlers.push(handler);
+        return this.handlers.length - 1;
+      },
+    },
+  },
+  request: createMockValue("defaultHttpInstance.request"),
+  get: createMockValue("defaultHttpInstance.get"),
+  post: createMockValue("defaultHttpInstance.post"),
+  put: createMockValue("defaultHttpInstance.put"),
+  patch: createMockValue("defaultHttpInstance.patch"),
+  delete: createMockValue("defaultHttpInstance.delete"),
+  head: createMockValue("defaultHttpInstance.head"),
+  options: createMockValue("defaultHttpInstance.options"),
+};
+${[...larkExports].filter(isValidExportName).map(genericExportStatement).join("\n")}
+
+export default createMockValue("default");
+`;
 }
 
 function addZodExports(names) {

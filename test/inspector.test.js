@@ -330,6 +330,41 @@ test("capture entrypoint can mock OpenClaw plugin SDK imports", async () => {
   );
 });
 
+test("mock capture supports the Lark SDK namespace import used by Feishu", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-sdk-lark-"));
+  const entrypoint = path.join(dir, "index.mjs");
+  await writeFile(
+    entrypoint,
+    [
+      'import * as Lark from "@larksuiteoapi/node-sdk";',
+      'import { generateChallenge } from "@larksuiteoapi/node-sdk";',
+      "",
+      "const inst = Lark.defaultHttpInstance;",
+      "inst.interceptors.request.handlers = [];",
+      "inst.interceptors.request.use((request) => request);",
+      "if (inst.interceptors.request.handlers.length !== 1) throw new Error('expected request interceptor');",
+      "if (!Lark.Client || !Lark.WSClient || !Lark.EventDispatcher) throw new Error('expected Lark SDK exports');",
+      "generateChallenge('fixture');",
+      "",
+      "export default {",
+      "  register(api) {",
+      "    api.registerTool({ name: 'lark_fixture_tool', run() {} });",
+      "  },",
+      "};",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const result = await captureEntrypoint("index.mjs", {
+    cwd: dir,
+    pluginRoot: dir,
+    mockSdk: true,
+  });
+
+  assert.equal(result.status, "captured");
+  assert.deepEqual(result.captured.map((item) => `${item.kind}:${item.name}`), ["registration:registerTool"]);
+});
+
 test("mock capture ignores type-only root SDK imports", async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-sdk-type-import-"));
   const entrypoint = path.join(dir, "index.ts");
