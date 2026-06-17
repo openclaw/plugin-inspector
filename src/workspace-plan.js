@@ -361,6 +361,7 @@ function requiredCapabilitiesFor(entrypoint, packageSummary = {}) {
     }
     if (blocker.code === "build-required") {
       capabilities.add("build");
+      capabilities.add("dependency-install");
     }
     if (blocker.code === "ts-loader-required") {
       capabilities.add("ts-loader");
