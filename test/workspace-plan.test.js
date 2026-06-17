@@ -56,8 +56,8 @@ test("workspace plan maps blocked entrypoints to opt-in install/build/capture st
   assert.equal(plan.optIn.env, "TEST_EXEC=1");
   assert.equal(plan.summary.entrypointCount, 2);
   assert.equal(plan.summary.artifactStepCount, 2);
-  assert.equal(plan.summary.installStepCount, 1);
-  assert.equal(plan.summary.auditStepCount, 1);
+  assert.equal(plan.summary.installStepCount, 2);
+  assert.equal(plan.summary.auditStepCount, 2);
   assert.equal(plan.summary.pruneDevWorkspaceDependencyStepCount, 1);
   assert.equal(plan.summary.buildStepCount, 1);
   assert.equal(plan.summary.captureStepCount, 2);
@@ -87,6 +87,9 @@ test("workspace plan maps blocked entrypoints to opt-in install/build/capture st
   const buildEntrypoint = plan.fixtures[0].entrypoints.find((item) => item.packageName === "build-fixture");
   assert.ok(buildEntrypoint);
   assert.ok(buildEntrypoint.requiredCapabilities.includes("build"));
+  assert.ok(buildEntrypoint.requiredCapabilities.includes("dependency-install"));
+  assert.ok(buildEntrypoint.steps.some((step) => step.kind === "install" && step.command === "npm install --ignore-scripts"));
+  assert.ok(buildEntrypoint.steps.some((step) => step.kind === "audit" && step.command.includes("npm audit --json")));
   assert.ok(buildEntrypoint.steps.some((step) => step.kind === "build" && step.command === "npm run build"));
   assert.match(renderWorkspacePlanMarkdown(plan), /Entrypoint Workspaces/);
 });
