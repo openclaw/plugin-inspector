@@ -151,7 +151,7 @@ export function createCaptureContext(options = {}) {
     resolvePath: options.resolvePath ?? ((value) => value),
     runtime: options.runtime ?? createRuntimeContext(options),
     secrets: options.secrets ?? createSecretContext(options),
-    store: options.store ?? createStoreContext(options),
+    store: options.store ?? createStoreContext(),
     paths: options.paths ?? {
       cacheDir: ".plugin-inspector/cache",
       configDir: ".plugin-inspector/config",

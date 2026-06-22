@@ -48,7 +48,7 @@ export const knownIssueCodes = new Set([
 
 const authorRemediationDocsUrl = (code) => `https://docs.openclaw.ai/clawhub/plugin-validation-fixes#${code}`;
 
-const authorRemediation = (summary) => ({ summary });
+const authorRemediation = (summary, ..._details) => ({ summary });
 
 const migrationRemediation = authorRemediation;
 
@@ -462,10 +462,7 @@ export function buildIssues({ breakages = [], warnings = [], suggestions = [], t
       runtimeCoverage: finding.runtimeCoverage ?? null,
       ...(finding.authorRemediation
         ? {
-            authorRemediation: {
-              summary: finding.authorRemediation.summary,
-              docsUrl: authorRemediationDocsUrl(finding.code),
-            },
+            authorRemediation: withAuthorRemediationDocs(finding.code, finding.authorRemediation),
           }
         : {}),
     }));
@@ -491,10 +488,7 @@ export function issueMetadata(finding, targetOpenClaw) {
   };
   const authorMetadata = metadata.authorRemediation
     ? {
-        authorRemediation: {
-          summary: metadata.authorRemediation.summary,
-          docsUrl: authorRemediationDocsUrl(finding.code),
-        },
+        authorRemediation: withAuthorRemediationDocs(finding.code, metadata.authorRemediation),
       }
     : {};
   return {
@@ -502,6 +496,13 @@ export function issueMetadata(finding, targetOpenClaw) {
     ...metadata,
     ...authorMetadata,
     ...classifyIssueFinding(finding, targetOpenClaw, metadata),
+  };
+}
+
+function withAuthorRemediationDocs(code, remediation) {
+  return {
+    ...remediation,
+    docsUrl: authorRemediationDocsUrl(code),
   };
 }
 
