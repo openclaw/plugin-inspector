@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -14,7 +13,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     packageName: packageJson.name,
     packageVersion: packageJson.version,
     changelogText,
-    releaseRef: options.releaseRef ?? gitHead(root),
+    releaseRef: options.releaseRef,
     releaseDate: options.date,
     nextVersion: options.version,
   });
@@ -34,7 +33,7 @@ export function buildReleasePlan({
   packageName = "@openclaw/plugin-inspector",
   packageVersion,
   changelogText,
-  releaseRef,
+  releaseRef = "REPLACE_WITH_RELEASE_COMMIT_SHA",
   releaseDate = today(),
   nextVersion,
 }) {
@@ -126,14 +125,6 @@ function parseVersion(version) {
 
 function today() {
   return new Date().toISOString().slice(0, 10);
-}
-
-function gitHead(root) {
-  return execFileSync("git", ["rev-parse", "HEAD"], {
-    cwd: root,
-    encoding: "utf8",
-    stdio: ["ignore", "pipe", "ignore"],
-  }).trim();
 }
 
 function parseArgs(argv) {

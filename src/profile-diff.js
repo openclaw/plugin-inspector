@@ -194,10 +194,14 @@ function registrySurfaceChecks(baseline, current) {
     action: "pass",
     metric,
     message: "registry surface delta is tracked as context",
-    baseline: baseline.targetOpenClaw[metric],
-    current: current.targetOpenClaw[metric],
-    delta: current.targetOpenClaw[metric] - baseline.targetOpenClaw[metric],
+    baseline: registrySurfaceCount(baseline.targetOpenClaw[metric]),
+    current: registrySurfaceCount(current.targetOpenClaw[metric]),
+    delta: registrySurfaceCount(current.targetOpenClaw[metric]) - registrySurfaceCount(baseline.targetOpenClaw[metric]),
   }));
+}
+
+function registrySurfaceCount(value) {
+  return Array.isArray(value) ? value.length : Number(value ?? 0);
 }
 
 function commandWall(profile, commandId) {

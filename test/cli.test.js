@@ -130,6 +130,53 @@ test("inspect command runs from a plugin root and can write CI outputs", async (
   assert.match(junit, /<testsuite name="plugin-inspector"/);
 });
 
+test("inspect command only fails plugin-root findings when check mode is requested", async () => {
+  const rootDir = await createCliPluginRoot("plugin-inspector-cli-inspect-non-check-");
+  await writeFile(
+    path.join(rootDir, "plugin-inspector.config.json"),
+    `${JSON.stringify(
+      { version: 1, plugin: { id: "weather", priority: "high", sourceRoot: "src", expect: { registrations: ["missingTool"] } } },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  const cliPath = path.resolve("src/cli.js");
+
+  const { stdout } = await execFileAsync(
+    process.execPath,
+    [cliPath, "inspect", "--out", "reports", "--no-openclaw"],
+    { cwd: rootDir },
+  );
+
+  assert.match(stdout, /Status: FAIL/);
+  await assert.rejects(
+    () => execFileAsync(process.execPath, [cliPath, "inspect", "--out", "check-reports", "--no-openclaw", "--check"], { cwd: rootDir }),
+    (error) => {
+      assert.match(error.stderr, /plugin-inspector found 1 breakages/);
+      return true;
+    },
+  );
+});
+
+test("capture command defaults to the mock SDK", async () => {
+  const rootDir = await createCliPluginRoot("plugin-inspector-cli-capture-mock-default-");
+  const cliPath = path.resolve("src/cli.js");
+
+  const { stdout } = await execFileAsync(
+    process.execPath,
+    [cliPath, "capture", "src/index.js", "--allow-execute"],
+    {
+      cwd: rootDir,
+      env: { ...process.env, PLUGIN_INSPECTOR_EXECUTE_ISOLATED: "1" },
+    },
+  );
+  const capture = JSON.parse(stdout);
+
+  assert.equal(capture.mockSdk, true);
+  assert.equal(capture.captured.some((item) => item.kind === "registration" && item.name === "registerTool"), true);
+});
+
 test("inspect command with config applies author-facing filtering", async () => {
   const rootDir = await createFixtureSetRoot("plugin-inspector-cli-inspect-config-author-");
   const cliPath = path.resolve("src/cli.js");

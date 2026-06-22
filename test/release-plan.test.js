@@ -44,6 +44,17 @@ test("release plan rejects non-advancing versions", () => {
   assert.equal(plan.checks.find((check) => check.id === "version-advance").status, "fail");
 });
 
+test("release plan leaves the Crabpot source ref explicit when no ref is provided", () => {
+  const plan = buildReleasePlan({
+    packageVersion: "0.3.0",
+    changelogText: changelog,
+    releaseDate: "2026-04-28",
+  });
+
+  assert.equal(plan.crabpotSourceRef, "REPLACE_WITH_RELEASE_COMMIT_SHA");
+  assert.ok(plan.steps.some((step) => step.includes("REPLACE_WITH_RELEASE_COMMIT_SHA")));
+});
+
 test("release plan requires unreleased changelog bullets", () => {
   const plan = buildReleasePlan({
     packageVersion: "0.3.0",

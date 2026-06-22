@@ -229,13 +229,13 @@ async function buildEntrypointPlan({ fixtureId, entrypoint, packageSummary, pack
 
   steps.push({
     kind: "prepare",
-    command: `mkdir -p ${workspacePath} && rsync -a --delete ${packageDir}/ ${workspacePath}/`,
+    command: `mkdir -p ${shellQuote(workspacePath)} && rsync -a --delete ${shellQuote(`${packageDir}/`)} ${shellQuote(`${workspacePath}/`)}`,
     cwd: repoRelative("."),
     reason: "copy fixture package into an isolated mutable workspace",
   });
   steps.push({
     kind: "prepare-artifacts",
-    command: `mkdir -p ${resultPath}`,
+    command: `mkdir -p ${shellQuote(resultPath)}`,
     cwd: repoRelative("."),
     reason: "create a stable result directory for capture and synthetic probe artifacts",
   });
@@ -243,7 +243,7 @@ async function buildEntrypointPlan({ fixtureId, entrypoint, packageSummary, pack
   if (requiredCapabilities.includes("target-openclaw-link")) {
     steps.push({
       kind: "link-openclaw",
-      command: `${packageManager} pkg set dependencies.openclaw="file:${targetOpenClawWorkspacePath(settings, fixtureId, targetOpenClawPath)}"`,
+      command: `${shellQuote(packageManager)} pkg set ${shellQuote(`dependencies.openclaw=file:${targetOpenClawWorkspacePath(settings, fixtureId, targetOpenClawPath)}`)}`,
       cwd: workspacePath,
       reason: "link the plugin's openclaw peer dependency to the target checkout under test",
     });
@@ -253,7 +253,7 @@ async function buildEntrypointPlan({ fixtureId, entrypoint, packageSummary, pack
     if (hasWorkspaceProtocolDevDependencies(packageJson)) {
       steps.push({
         kind: "prune-dev-workspace-deps",
-        command: `node ${helperScript(settings, workspacePath, settings.pruneWorkspaceDevDepsScript, "prune-workspace-dev-deps-cli.js")}`,
+        command: `node ${shellQuote(helperScript(settings, workspacePath, settings.pruneWorkspaceDevDepsScript, "prune-workspace-dev-deps-cli.js"))}`,
         cwd: workspacePath,
         reason: "remove workspace: devDependencies from the isolated runtime install; the mock SDK supplies OpenClaw host imports",
       });
@@ -454,35 +454,35 @@ function installCommand(packageManager) {
 function auditCommand(settings, packageManager, fixtureId, workspacePath) {
   const output = workspaceRelativeArtifactPath(settings, fixtureId, workspacePath, "package-audit.json");
   if (packageManager === "npm") {
-    return `npm audit --json > ${output} || true`;
+    return `npm audit --json > ${shellQuote(output)} || true`;
   }
   if (packageManager === "pnpm") {
-    return `pnpm audit --json > ${output} || true`;
+    return `pnpm audit --json > ${shellQuote(output)} || true`;
   }
   if (packageManager === "yarn") {
-    return `yarn npm audit --json > ${output} || true`;
+    return `yarn npm audit --json > ${shellQuote(output)} || true`;
   }
   if (packageManager === "bun") {
-    return `bun audit --json > ${output} || true`;
+    return `bun audit --json > ${shellQuote(output)} || true`;
   }
-  return `${packageManager} audit --json > ${output} || true`;
+  return `${shellQuote(packageManager)} audit --json > ${shellQuote(output)} || true`;
 }
 
 function runCommand(packageManager, script) {
   if (packageManager === "npm") {
-    return `npm run ${script}`;
+    return `npm run ${shellQuote(script)}`;
   }
-  return `${packageManager} run ${script}`;
+  return `${shellQuote(packageManager)} run ${shellQuote(script)}`;
 }
 
 function captureCommand(settings, fixtureId, entrypoint, workspacePath) {
   const script = helperScript(settings, workspacePath, settings.captureScript, "capture-cli.js");
-  return `${settings.optInEnv} node ${script} ${entrypoint.specifier} --mock-sdk --output ${workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "capture")}`;
+  return `${settings.optInEnv} node ${shellQuote(script)} ${shellQuote(entrypoint.specifier)} --mock-sdk --output ${shellQuote(workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "capture"))}`;
 }
 
 function syntheticProbeCommand(settings, fixtureId, entrypoint, workspacePath) {
   const script = helperScript(settings, workspacePath, settings.syntheticProbeScript, "synthetic-probes-cli.js");
-  return `${settings.optInEnv} node ${script} --entrypoint ${entrypoint.specifier} --mock-sdk --output ${workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "synthetic")}`;
+  return `${settings.optInEnv} node ${shellQuote(script)} --entrypoint ${shellQuote(entrypoint.specifier)} --mock-sdk --output ${shellQuote(workspaceArtifactPath(settings, fixtureId, entrypoint, workspacePath, "synthetic"))}`;
 }
 
 function helperScript(settings, workspacePath, configuredScript, helperFileName) {
@@ -525,6 +525,14 @@ function workspaceRelativeArtifactPath(settings, fixtureId, workspacePath, fileN
 
 function auditArtifactPath(settings, fixtureId) {
   return posixJoin(settings.resultsRoot, fixtureId, "package-audit.json");
+}
+
+function shellQuote(value) {
+  const text = String(value);
+  if (/^[A-Za-z0-9_./:=@%+-]+$/u.test(text)) {
+    return text;
+  }
+  return `'${text.replaceAll("'", "'\\''")}'`;
 }
 
 function markdownTable(rows, headers) {

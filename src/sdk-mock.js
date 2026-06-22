@@ -273,7 +273,10 @@ export async function createMockSdkPackage(rootDir, options = {}) {
     if (specifier === "openclaw/plugin-sdk") {
       continue;
     }
-    const relative = specifier.slice("openclaw/plugin-sdk/".length);
+    const relative = safePluginSdkSubpath(specifier.slice("openclaw/plugin-sdk/".length));
+    if (!relative) {
+      continue;
+    }
     if (mockSdkSubpathExports[relative]) {
       continue;
     }
@@ -443,7 +446,12 @@ export async function resolve(specifier, context, nextResolve) {
     return moduleUrl(path.join(pluginSdkDir, "index.js"));
   }
   if (specifier.startsWith("openclaw/plugin-sdk/")) {
-    const subpath = specifier.slice("openclaw/plugin-sdk/".length);
+    const subpath = safePluginSdkSubpath(specifier.slice("openclaw/plugin-sdk/".length));
+    if (!subpath) {
+      throw Object.assign(new Error(\`invalid OpenClaw plugin SDK subpath: \${specifier}\`), {
+        code: "ERR_INVALID_MODULE_SPECIFIER",
+      });
+    }
     return moduleUrl(path.join(pluginSdkDir, \`\${subpath}.js\`));
   }
   if (externalMap.has(specifier)) {
@@ -514,7 +522,23 @@ function isMockableBareSpecifier(specifier) {
     !specifier.startsWith("data:") &&
     !specifier.startsWith("file:");
 }
+
+function safePluginSdkSubpath(value) {
+  const normalized = path.posix.normalize(String(value).replaceAll("\\\\", "/"));
+  if (!normalized || normalized === "." || normalized === ".." || normalized.startsWith("../") || normalized.startsWith("/")) {
+    return null;
+  }
+  return normalized;
+}
 `;
+}
+
+function safePluginSdkSubpath(value) {
+  const normalized = path.posix.normalize(String(value).replaceAll("\\", "/"));
+  if (!normalized || normalized === "." || normalized === ".." || normalized.startsWith("../") || normalized.startsWith("/")) {
+    return null;
+  }
+  return normalized;
 }
 
 function dynamicMockModuleSource(exportNames, options = {}) {

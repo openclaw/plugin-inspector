@@ -38,7 +38,7 @@ try {
     await runConfig(commandArgs);
   } else if (command === "inspect" || command === "report") {
     if (command === "inspect" && !commandArgs.includes("--config")) {
-      await runCheck(commandArgs);
+      await runCheck(commandArgs, { check: commandArgs.includes("--check") });
     } else {
       await runReport(command, commandArgs);
     }
@@ -100,7 +100,7 @@ async function runConfig(commandArgs) {
   }
 }
 
-async function runCheck(commandArgs) {
+async function runCheck(commandArgs, options = {}) {
   const configPath = readFlag(commandArgs, "--config");
   const pluginRoot = readFlag(commandArgs, "--plugin-root") ?? readFlag(commandArgs, "--root");
   const outDir = readFlag(commandArgs, "--out") ?? "reports";
@@ -133,7 +133,7 @@ async function runCheck(commandArgs) {
     console.log(renderTextSummary(report, { artifacts: paths }));
   }
 
-  if (report.status !== "pass") {
+  if ((options.check ?? true) && report.status !== "pass") {
     throw new Error(`plugin-inspector found ${report.summary.breakageCount} breakages`);
   }
 }
@@ -288,7 +288,7 @@ async function runCapture(commandArgs) {
   const entrypoint = findCaptureEntrypoint(commandArgs);
   const outputPath = readFlag(commandArgs, "--output");
   const pluginRoot = readFlag(commandArgs, "--plugin-root");
-  const mockSdk = readMockSdkFlag(commandArgs) ?? commandArgs.includes("--mock-sdk");
+  const mockSdk = readMockSdkFlag(commandArgs) ?? true;
   const allowExecution = readAllowExecutionFlag(commandArgs);
   if (!entrypoint) {
     throw new Error("capture requires an entrypoint path");

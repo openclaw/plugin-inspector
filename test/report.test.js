@@ -26,6 +26,7 @@ import {
   writeCiOutputArtifacts,
   writeReport,
 } from "../src/advanced.js";
+import { buildReport } from "../src/report.js";
 
 test("markdown table cell escaping preserves literal backslashes", () => {
   assert.equal(escapeMarkdownTableCell(String.raw`C:\tmp|next
@@ -39,6 +40,24 @@ test("markdown report includes summary and inventory", async () => {
 
   assert.match(markdown, /# OpenClaw Plugin Inspector Report/);
   assert.match(markdown, /\| sample-plugin \| high \| native-tool \| before_tool_call \| definePluginEntry, registerTool \| tools \|/);
+});
+
+test("fixture reports include empty sdk deprecation inventory", () => {
+  const report = buildReport({
+    config: {
+      fixtures: [
+        {
+          id: "missing-fixture",
+          path: "fixtures/missing",
+          priority: "high",
+          seams: ["sdk"],
+        },
+      ],
+    },
+    inspections: [],
+  });
+
+  assert.deepEqual(report.fixtures[0].sdkDeprecations, []);
 });
 
 test("text summary includes artifact paths and top blocking findings", () => {

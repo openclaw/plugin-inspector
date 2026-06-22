@@ -143,6 +143,60 @@ test("workspace plan defaults point at packaged helper wrappers", async (t) => {
   assert.match(syntheticHelper, /src[\\/]synthetic-probes-cli\.js$/);
 });
 
+test("workspace plan shell-quotes fixture-controlled command values", async (t) => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-workspace-quote-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+
+  await mkdir(path.join(rootDir, "plugins/fixture"), { recursive: true });
+  await writeFile(
+    path.join(rootDir, "plugins/fixture/package.json"),
+    JSON.stringify(
+      {
+        name: "fixture",
+        packageManager: "npm@10.0.0",
+        dependencies: { "left-pad": "^1.3.0" },
+      },
+      null,
+      2,
+    ),
+    "utf8",
+  );
+  const report = readinessReport();
+  report.fixtures[0].packages = [
+    {
+      path: "plugins/fixture/package.json",
+      name: "fixture",
+      dependencies: ["left-pad"],
+      peerDependencies: [],
+      optionalDependencies: [],
+      openclaw: {
+        entrypoints: [
+          {
+            kind: "extension",
+            specifier: "./src/weird name'; echo nope.js",
+            relativePath: "plugins/fixture/src/index.js",
+            exists: true,
+          },
+        ],
+      },
+    },
+  ];
+
+  const readiness = buildColdImportReadiness({ report, rootDir });
+  const plan = await buildWorkspacePlan({
+    report,
+    readiness,
+    rootDir,
+    captureScript: "capture script.mjs",
+    syntheticProbeScript: "synthetic probe.mjs",
+  });
+  const commands = plan.fixtures[0].entrypoints[0].steps.map((step) => step.command).join("\n");
+
+  assert.match(commands, /'capture script\.mjs'/);
+  assert.match(commands, /'synthetic probe\.mjs'/);
+  assert.ok(commands.includes("'./src/weird name'\\''; echo nope.js'"));
+});
+
 test("workspace plan validation keeps execution opt-in and explicit", () => {
   const plan = {
     mode: "execute",

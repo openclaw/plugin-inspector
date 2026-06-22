@@ -450,6 +450,7 @@ function emptyFixtureReport(fixture) {
     registrations: [],
     manifestContracts: [],
     sdkImports: [],
+    sdkDeprecations: [],
     sourceFiles: [],
     manifestFiles: [],
     packageFiles: [],

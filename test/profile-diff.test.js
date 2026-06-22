@@ -71,6 +71,35 @@ test("profile diff threshold boundaries are inclusive", async () => {
   assert.deepEqual(validateProfileDiff(diff), []);
 });
 
+test("profile diff counts array-valued registry surfaces", async () => {
+  const diff = await buildProfileDiff({
+    baseline: profile({
+      p95WallMs: 100,
+      maxPeakRssMb: 100,
+      nodeBootMs: 50,
+      runs: 3,
+      targetOpenClaw: { compatRecords: ["one"], sdkExports: ["sdk"] },
+    }),
+    current: profile({
+      p95WallMs: 100,
+      maxPeakRssMb: 100,
+      nodeBootMs: 50,
+      runs: 3,
+      targetOpenClaw: { compatRecords: ["one", "two"], sdkExports: ["sdk", "core", "testing"] },
+    }),
+    policy,
+  });
+
+  const compatRecords = diff.checks.find((check) => check.id === "registry.compatRecords");
+  const sdkExports = diff.checks.find((check) => check.id === "registry.sdkExports");
+  assert.equal(compatRecords.baseline, 1);
+  assert.equal(compatRecords.current, 2);
+  assert.equal(compatRecords.delta, 1);
+  assert.equal(sdkExports.baseline, 1);
+  assert.equal(sdkExports.current, 3);
+  assert.equal(sdkExports.delta, 2);
+});
+
 test("profile diff warns but does not fail when baseline is missing", async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-profile-baseline-"));
   const diff = await buildProfileDiff({
@@ -86,7 +115,7 @@ test("profile diff warns but does not fail when baseline is missing", async () =
   assert.deepEqual(validateProfileDiff(diff), []);
 });
 
-function profile({ p95WallMs, maxPeakRssMb, nodeBootMs, runs }) {
+function profile({ p95WallMs, maxPeakRssMb, nodeBootMs, runs, targetOpenClaw = {} }) {
   return {
     runs,
     summary: {
@@ -103,6 +132,7 @@ function profile({ p95WallMs, maxPeakRssMb, nodeBootMs, runs }) {
       sdkExports: 5,
       manifestFields: 6,
       manifestContractFields: 7,
+      ...targetOpenClaw,
     },
     fixtureInventory: {
       fixtures: 1,
