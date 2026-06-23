@@ -2,8 +2,11 @@
 
 ## Unreleased
 
+## 0.3.16 - 2026-06-23
+
 ### Fixed
 
+- Write `package.json` updates atomically for `init --scripts` and `prune-workspace-dev-deps`, including symlink-preserving target rewrites and temp-file cleanup on staging failures. Thanks @KrasimirKralev.
 - Mock the Lark SDK HTTP interceptor surface during runtime capture so Feishu plugin bundles load successfully.
 
 ## 0.3.15 - 2026-06-12
