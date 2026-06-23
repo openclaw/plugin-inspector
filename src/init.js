@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { inferPluginSeams, packageId } from "./config.js";
+import { writeJsonFileAtomic } from "./json-file.js";
 
 export const defaultInitConfigPath = "plugin-inspector.config.json";
 export const defaultInitWorkflowPath = ".github/workflows/plugin-inspector.yml";
@@ -59,7 +60,7 @@ export async function writePluginInspectorInit(options = {}) {
       ...defaultInitPackageScripts,
     };
     if (!dryRun) {
-      await writeFile(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`, "utf8");
+      await writeJsonFileAtomic(packageJsonPath, packageJson);
     }
     written.push(packageJsonPath);
   }

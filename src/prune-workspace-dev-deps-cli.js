@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-import { readFile, writeFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
+import { writeJsonFileAtomic } from "./json-file.js";
 import path from "node:path";
 
 const packageJsonPath = path.resolve(process.cwd(), "package.json");
@@ -19,5 +20,5 @@ if (packageJson.devDependencies && Object.keys(packageJson.devDependencies).leng
 }
 
 if (changed) {
-  await writeFile(packageJsonPath, `${JSON.stringify(packageJson, null, 2)}\n`, "utf8");
+  await writeJsonFileAtomic(packageJsonPath, packageJson);
 }
