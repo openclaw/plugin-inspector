@@ -72,11 +72,57 @@ test("source inspection records deprecated whole-store session helper usage", ()
   assert.deepEqual(
     inspection.sdkDeprecations.map((finding) => `${finding.surface}@${finding.ref}`),
     [
-      "openclaw/plugin-sdk/session-store-runtime import@plugins/example/index.ts:1",
-      "openclaw/plugin-sdk/config-runtime import@plugins/example/index.ts:2",
-      "openclaw/plugin-sdk/session-store-runtime re-export@plugins/example/index.ts:5",
-      "openclaw/plugin-sdk/session-store-runtime namespace access@plugins/example/index.ts:6",
-      "api.runtime.agent.session@plugins/example/index.ts:7",
+      "openclaw/plugin-sdk/session-store-runtime loadSessionStore import@plugins/example/index.ts:1",
+      "openclaw/plugin-sdk/config-runtime loadSessionStore import@plugins/example/index.ts:2",
+      "openclaw/plugin-sdk/session-store-runtime loadSessionStore re-export@plugins/example/index.ts:5",
+      "openclaw/plugin-sdk/session-store-runtime namespace access loadSessionStore@plugins/example/index.ts:6",
+      "api.runtime.agent.session loadSessionStore@plugins/example/index.ts:7",
+    ],
+  );
+});
+
+test("source inspection records deprecated session SDK helper coverage", () => {
+  const inspection = inspectSourceText(
+    [
+      'import { loadSessionStore, saveSessionStore, updateSessionStore } from "openclaw/plugin-sdk/session-store-runtime";',
+      'import { resolveSessionFilePath, resolveAndPersistSessionFile } from "openclaw/plugin-sdk/session-store-runtime";',
+      'import { resolveSessionTranscriptLegacyFileTarget } from "openclaw/plugin-sdk/session-transcript-runtime";',
+      'import { appendSessionTranscriptMessage, emitSessionTranscriptUpdate } from "openclaw/plugin-sdk/agent-harness-runtime";',
+      'import { loadSessionStore as loadMattermostSessionStore } from "openclaw/plugin-sdk/mattermost";',
+      "",
+      "api.runtime.agent.session.saveSessionStore('/tmp/sessions.json', {});",
+      "api.runtime.agent.session.updateSessionStore('/tmp/sessions.json', (store) => store);",
+      "api.runtime.agent.session.resolveSessionFilePath('session-id', {});",
+      "api.runtime.agent.session.resolveAndPersistSessionFile({});",
+      "params.api.runtime.agent.session.loadSessionStore('/tmp/sessions.json');",
+      "runtime.agent.session.resolveSessionFilePath('session-id', {});",
+      "agentRuntime.session.resolveSessionFilePath('session-id', {});",
+      'const transcriptRuntime = await import("openclaw/plugin-sdk/session-transcript-runtime");',
+      "await transcriptRuntime.resolveSessionTranscriptLegacyFileTarget({ sessionId: 'abc' });",
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(
+    inspection.sdkDeprecations.map((finding) => `${finding.code}:${finding.symbol}@${finding.ref}`),
+    [
+      "sdk-load-session-store:loadSessionStore@plugins/example/index.ts:1",
+      "sdk-session-store-write:saveSessionStore@plugins/example/index.ts:1",
+      "sdk-session-store-write:updateSessionStore@plugins/example/index.ts:1",
+      "sdk-session-file-helper:resolveSessionFilePath@plugins/example/index.ts:2",
+      "sdk-session-file-helper:resolveAndPersistSessionFile@plugins/example/index.ts:2",
+      "sdk-session-transcript-file-target:resolveSessionTranscriptLegacyFileTarget@plugins/example/index.ts:3",
+      "sdk-session-transcript-low-level:appendSessionTranscriptMessage@plugins/example/index.ts:4",
+      "sdk-session-transcript-low-level:emitSessionTranscriptUpdate@plugins/example/index.ts:4",
+      "sdk-load-session-store:loadSessionStore@plugins/example/index.ts:5",
+      "sdk-session-store-write:saveSessionStore@plugins/example/index.ts:7",
+      "sdk-session-store-write:updateSessionStore@plugins/example/index.ts:8",
+      "sdk-session-file-helper:resolveSessionFilePath@plugins/example/index.ts:9",
+      "sdk-session-file-helper:resolveAndPersistSessionFile@plugins/example/index.ts:10",
+      "sdk-load-session-store:loadSessionStore@plugins/example/index.ts:11",
+      "sdk-session-file-helper:resolveSessionFilePath@plugins/example/index.ts:12",
+      "sdk-session-file-helper:resolveSessionFilePath@plugins/example/index.ts:13",
+      "sdk-session-transcript-file-target:resolveSessionTranscriptLegacyFileTarget@plugins/example/index.ts:15",
     ],
   );
 });
@@ -111,8 +157,8 @@ test("source inspection records CommonJS whole-store session helper usage", () =
   assert.deepEqual(
     inspection.sdkDeprecations.map((finding) => `${finding.surface}@${finding.ref}`),
     [
-      "openclaw/plugin-sdk/session-store-runtime require@plugins/example/index.cjs:1",
-      "openclaw/plugin-sdk/config-runtime require namespace access@plugins/example/index.cjs:3",
+      "openclaw/plugin-sdk/session-store-runtime loadSessionStore require@plugins/example/index.cjs:1",
+      "openclaw/plugin-sdk/config-runtime require namespace access loadSessionStore@plugins/example/index.cjs:3",
     ],
   );
 });
@@ -131,8 +177,8 @@ test("source inspection records parenthesized whole-store session helper usage",
   assert.deepEqual(
     inspection.sdkDeprecations.map((finding) => `${finding.surface}@${finding.ref}`),
     [
-      "openclaw/plugin-sdk/session-store-runtime namespace access@plugins/example/index.ts:3",
-      "api.runtime.agent.session@plugins/example/index.ts:4",
+      "openclaw/plugin-sdk/session-store-runtime namespace access loadSessionStore@plugins/example/index.ts:3",
+      "api.runtime.agent.session loadSessionStore@plugins/example/index.ts:4",
     ],
   );
 });
@@ -153,10 +199,10 @@ test("source inspection records optional-chained whole-store session helper usag
   assert.deepEqual(
     inspection.sdkDeprecations.map((finding) => `${finding.surface}@${finding.ref}`),
     [
-      "openclaw/plugin-sdk/session-store-runtime namespace access@plugins/example/index.ts:3",
-      "openclaw/plugin-sdk/session-store-runtime namespace access@plugins/example/index.ts:4",
-      "api.runtime.agent.session@plugins/example/index.ts:5",
-      "api.runtime.agent.session@plugins/example/index.ts:6",
+      "openclaw/plugin-sdk/session-store-runtime namespace access loadSessionStore@plugins/example/index.ts:3",
+      "openclaw/plugin-sdk/session-store-runtime namespace access loadSessionStore@plugins/example/index.ts:4",
+      "api.runtime.agent.session loadSessionStore@plugins/example/index.ts:5",
+      "api.runtime.agent.session loadSessionStore@plugins/example/index.ts:6",
     ],
   );
 });
@@ -184,7 +230,72 @@ test("source inspection records whole-store session helper usage through runtime
 
   assert.deepEqual(
     inspection.sdkDeprecations.map((finding) => `${finding.surface}@${finding.ref}`),
-    ["api.runtime.agent.session alias@plugins/example/index.ts:12"],
+    ["api.runtime.agent.session alias loadSessionStore@plugins/example/index.ts:12"],
+  );
+});
+
+test("package fixture inspection scans packaged runtime extension entrypoints", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-package-runtime-"));
+  await mkdir(path.join(dir, "fixture", ".crabpot-package", "dist"), { recursive: true });
+  await writeFile(
+    path.join(dir, "fixture", ".crabpot-package", "package.json"),
+    JSON.stringify({
+      name: "@example/runtime-only",
+      version: "1.0.0",
+      openclaw: {
+        runtimeExtensions: ["./dist/runtime.js"],
+      },
+    }),
+    "utf8",
+  );
+  await writeFile(
+    path.join(dir, "fixture", ".crabpot-package", "dist", "runtime.js"),
+    [
+      'import { updateSessionStore } from "openclaw/plugin-sdk/session-store-runtime";',
+      'import "./runtime-chunk.js";',
+      "export function register(api) {",
+      "  return api.runtime.agent.session.updateSessionStore('/tmp/sessions.json', (store) => store);",
+      "}",
+    ].join("\n"),
+    "utf8",
+  );
+  await writeFile(
+    path.join(dir, "fixture", ".crabpot-package", "dist", "runtime-chunk.js"),
+    [
+      'import { saveSessionStore } from "openclaw/plugin-sdk/session-store-runtime";',
+      "export async function saveLegacyStore(storePath, store) {",
+      "  await saveSessionStore(storePath, store);",
+      "}",
+    ].join("\n"),
+    "utf8",
+  );
+
+  const report = await inspectFixtureSet({
+    version: 1,
+    submoduleRoot: ".",
+    fixtures: [
+      {
+        id: "runtime-only",
+        path: "fixture",
+        package: { name: "@example/runtime-only" },
+        priority: "high",
+        seams: ["plugin-runtime"],
+      },
+    ],
+    rootDir: dir,
+  });
+
+  assert.deepEqual(report.fixtures[0].sourceFiles, [
+    "fixture/.crabpot-package/dist/runtime-chunk.js",
+    "fixture/.crabpot-package/dist/runtime.js",
+  ]);
+  assert.deepEqual(
+    report.fixtures[0].sdkDeprecations.map((finding) => `${finding.code}:${finding.symbol}@${finding.ref}`),
+    [
+      "sdk-session-store-write:saveSessionStore@fixture/.crabpot-package/dist/runtime-chunk.js:1",
+      "sdk-session-store-write:updateSessionStore@fixture/.crabpot-package/dist/runtime.js:1",
+      "sdk-session-store-write:updateSessionStore@fixture/.crabpot-package/dist/runtime.js:4",
+    ],
   );
 });
 
