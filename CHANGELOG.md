@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.17 - 2026-06-29
+
 ### Fixed
 
 - Detect deprecated session SDK read/write, file-path, and transcript helpers across source files, packaged `dist`/`build` artifacts, runtime session APIs, and dynamic SDK imports.
