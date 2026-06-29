@@ -42,6 +42,10 @@ export const knownIssueCodes = new Set([
   "reserved-sdk-import",
   "security-manifest-schema-unavailable",
   "sdk-load-session-store",
+  "sdk-session-file-helper",
+  "sdk-session-store-write",
+  "sdk-session-transcript-file-target",
+  "sdk-session-transcript-low-level",
   "sdk-export-missing",
   "unrecognized-security-manifest",
 ]);
@@ -121,6 +125,58 @@ export const issueMetadataByCode = {
       [
         "Use getSessionEntry(...) or listSessionEntries(...) for reads instead of cloning the whole session store.",
         "Use patchSessionEntry(...) or upsertSessionEntry(...) for writes instead of mutating and saving a whole-store object.",
+      ],
+    ),
+  },
+  "sdk-session-store-write": {
+    severity: "P2",
+    owner: "core",
+    decision: "core-compat-adapter",
+    title: "deprecated whole-store session write helper is still used",
+    authorRemediation: migrationRemediation(
+      "Replace deprecated whole-store session writes with row-scoped session helpers.",
+      [
+        "Use patchSessionEntry(...) when updating fields on an existing session entry.",
+        "Use upsertSessionEntry(...) when replacing or creating a session entry.",
+      ],
+    ),
+  },
+  "sdk-session-file-helper": {
+    severity: "P2",
+    owner: "core",
+    decision: "core-compat-adapter",
+    title: "deprecated session file-path helper is still used",
+    authorRemediation: migrationRemediation(
+      "Replace deprecated session file-path helpers with session entry and transcript identity APIs.",
+      [
+        "Use getSessionEntry(...) to read session metadata by agent/session identity.",
+        "Use patchSessionEntry(...) or upsertSessionEntry(...) to persist session metadata.",
+      ],
+    ),
+  },
+  "sdk-session-transcript-file-target": {
+    severity: "P2",
+    owner: "core",
+    decision: "core-compat-adapter",
+    title: "deprecated transcript file target helper is still used",
+    authorRemediation: migrationRemediation(
+      "Replace legacy transcript file targets with public transcript identity or target helpers.",
+      [
+        "Use resolveSessionTranscriptIdentity(...) when you only need public session identity.",
+        "Use resolveSessionTranscriptTarget(...) when you need a structured transcript operation target.",
+      ],
+    ),
+  },
+  "sdk-session-transcript-low-level": {
+    severity: "P2",
+    owner: "core",
+    decision: "core-compat-adapter",
+    title: "deprecated low-level transcript helper is still used",
+    authorRemediation: migrationRemediation(
+      "Replace low-level transcript writes with the structured transcript runtime helpers.",
+      [
+        "Use appendSessionTranscriptMessageByIdentity(...) for transcript appends.",
+        "Use publishSessionTranscriptUpdateByIdentity(...) for transcript update notifications.",
       ],
     ),
   },
@@ -568,6 +624,10 @@ function issueClassFor(code, options) {
       "legacy-root-sdk-import",
       "provider-auth-env-vars",
       "sdk-load-session-store",
+      "sdk-session-file-helper",
+      "sdk-session-store-write",
+      "sdk-session-transcript-file-target",
+      "sdk-session-transcript-low-level",
     ].includes(code)
   ) {
     return "deprecation-warning";

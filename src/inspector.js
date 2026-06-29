@@ -95,10 +95,17 @@ export async function inspectPlugin(fixture, options = {}) {
     return emptyInspection(fixture, "missing");
   }
 
-  const files = await listSourceFiles(sourceRoot, { includeDist: Boolean(fixture.package) });
+  const packageInspection = await readPackageMetadata(config, checkoutPath, sourceRoot);
+  const includeBuildArtifacts = shouldScanBuildArtifacts(fixture, packageInspection);
+  const files = await listSourceFiles(sourceRoot, {
+    includeBuild: includeBuildArtifacts,
+    includeDist: includeBuildArtifacts,
+  });
   if (sourceRoot !== checkoutPath) {
     files.push(...(await listSourceFiles(checkoutPath, { shallowRootOnly: true })));
   }
+  files.push(...packageInspection.entrypointFiles);
+  const sourceFiles = uniquePaths(files);
 
   const hooks = new Set();
   const registrations = new Set();
@@ -107,7 +114,7 @@ export async function inspectPlugin(fixture, options = {}) {
   const sdkImportDetails = [];
   const sdkDeprecationDetails = [];
 
-  for (const filePath of files) {
+  for (const filePath of sourceFiles) {
     const text = await readFile(filePath, "utf8");
     const relativePath = path.relative(config.rootDir ?? process.cwd(), filePath);
     const sourceInspection = inspectSourceText(text, relativePath);
@@ -129,8 +136,6 @@ export async function inspectPlugin(fixture, options = {}) {
   }
 
   const manifestInspection = await readManifestContracts(config, checkoutPath, sourceRoot);
-  const packageInspection = await readPackageMetadata(config, checkoutPath, sourceRoot);
-
   return {
     id: fixture.id,
     status: "ok",
@@ -146,7 +151,7 @@ export async function inspectPlugin(fixture, options = {}) {
     packageEntrypoints: packageInspection.entrypoints,
     sdkImports: uniqueDetails(sdkImportDetails),
     sdkDeprecations: uniqueSdkDeprecations(sdkDeprecationDetails),
-    sourceFiles: files.map((filePath) => path.relative(config.rootDir ?? process.cwd(), filePath)).sort(),
+    sourceFiles: sourceFiles.map((filePath) => path.relative(config.rootDir ?? process.cwd(), filePath)).sort(),
   };
 }
 
@@ -418,18 +423,23 @@ async function readPackageMetadata(config, checkoutPath, sourceRoot) {
   const files = [];
   const errors = [];
   const entrypoints = new Set();
+  const entrypointFiles = new Set();
 
   for (const packageFile of packageFiles) {
     const relativePath = path.relative(config.rootDir ?? process.cwd(), packageFile);
     files.push(relativePath);
     try {
       const packageJson = JSON.parse(await readFile(packageFile, "utf8"));
-      collectEntrypoint(entrypoints, packageJson.main);
-      collectEntrypoint(entrypoints, packageJson.module);
-      collectEntrypoint(entrypoints, packageJson.openclaw?.entry);
-      collectEntrypoint(entrypoints, packageJson.openclaw?.entrypoint);
-      collectEntrypoint(entrypoints, packageJson.exports?.["."]?.import);
-      collectEntrypoint(entrypoints, packageJson.exports?.["."]?.default);
+      const packageDir = path.dirname(packageFile);
+      collectEntrypoint(entrypoints, entrypointFiles, packageDir, packageJson.main);
+      collectEntrypoint(entrypoints, entrypointFiles, packageDir, packageJson.module);
+      collectEntrypoint(entrypoints, entrypointFiles, packageDir, packageJson.openclaw?.entry);
+      collectEntrypoint(entrypoints, entrypointFiles, packageDir, packageJson.openclaw?.entrypoint);
+      collectEntrypoint(entrypoints, entrypointFiles, packageDir, packageJson.openclaw?.setupEntry);
+      collectEntrypoint(entrypoints, entrypointFiles, packageDir, packageJson.exports?.["."]?.import);
+      collectEntrypoint(entrypoints, entrypointFiles, packageDir, packageJson.exports?.["."]?.default);
+      collectEntrypoints(entrypoints, entrypointFiles, packageDir, packageJson.openclaw?.extensions);
+      collectEntrypoints(entrypoints, entrypointFiles, packageDir, packageJson.openclaw?.runtimeExtensions);
     } catch {
       errors.push(`${relativePath}: invalid JSON`);
     }
@@ -439,13 +449,58 @@ async function readPackageMetadata(config, checkoutPath, sourceRoot) {
     files: files.sort(),
     errors,
     entrypoints: [...entrypoints].sort(),
+    entrypointFiles: [...entrypointFiles].sort(),
   };
 }
 
-function collectEntrypoint(entrypoints, value) {
+function collectEntrypoints(entrypoints, entrypointFiles, packageDir, values) {
+  if (!Array.isArray(values)) {
+    return;
+  }
+  for (const value of values) {
+    collectEntrypoint(entrypoints, entrypointFiles, packageDir, value);
+  }
+}
+
+function collectEntrypoint(entrypoints, entrypointFiles, packageDir, value) {
   if (typeof value === "string" && value.length > 0) {
     entrypoints.add(value);
+    for (const candidate of entrypointCandidates(packageDir, value)) {
+      if (existsSync(candidate) && isSourceFile(path.basename(candidate), candidate.split(path.sep).join("/"))) {
+        entrypointFiles.add(candidate);
+        return;
+      }
+    }
   }
+}
+
+function entrypointCandidates(packageDir, specifier) {
+  const resolved = path.resolve(packageDir, specifier);
+  if (path.extname(resolved)) {
+    return [resolved];
+  }
+  return [
+    resolved,
+    `${resolved}.js`,
+    `${resolved}.mjs`,
+    `${resolved}.cjs`,
+    `${resolved}.ts`,
+    path.join(resolved, "index.js"),
+    path.join(resolved, "index.mjs"),
+    path.join(resolved, "index.cjs"),
+    path.join(resolved, "index.ts"),
+  ];
+}
+
+function uniquePaths(paths) {
+  return [...new Set(paths)];
+}
+
+function shouldScanBuildArtifacts(fixture, packageInspection) {
+  if (fixture.package) {
+    return true;
+  }
+  return packageInspection.entrypoints.some((entrypoint) => /(^|\/)(?:dist|build)\//.test(entrypoint));
 }
 
 async function listSourceFiles(root, options = {}) {
@@ -484,7 +539,7 @@ function shouldSkipDir(name, normalizedPath, options = {}) {
   return (
     name === "node_modules" ||
     (!options.includeDist && name === "dist") ||
-    name === "build" ||
+    (!options.includeBuild && name === "build") ||
     name === "coverage" ||
     name === ".git" ||
     name === "test" ||

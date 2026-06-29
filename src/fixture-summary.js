@@ -724,12 +724,37 @@ function classifySdkDeprecations({ fixture, inspection, fixtureReport, warnings,
     decisions.push({
       fixture: fixture.id,
       decision: "core-compat-adapter",
-      seam: "session-store",
-      action:
-        "Keep loadSessionStore compatibility active while plugin authors migrate to row-scoped session helpers.",
+      seam: sdkDeprecationSeamForCode(code),
+      action: sdkDeprecationActionForCode(code),
       evidence: findings.map((finding) => finding.ref).join(", "),
     });
   }
+}
+
+function sdkDeprecationSeamForCode(code) {
+  if (code === "sdk-session-file-helper") {
+    return "session-file";
+  }
+  if (code === "sdk-session-transcript-file-target" || code === "sdk-session-transcript-low-level") {
+    return "session-transcript";
+  }
+  return "session-store";
+}
+
+function sdkDeprecationActionForCode(code) {
+  if (code === "sdk-session-store-write") {
+    return "Keep whole-store session write compatibility active while plugin authors migrate to row-scoped session write helpers.";
+  }
+  if (code === "sdk-session-file-helper") {
+    return "Keep session file-path compatibility active while plugin authors migrate to session entry and transcript identity helpers.";
+  }
+  if (code === "sdk-session-transcript-file-target") {
+    return "Keep legacy transcript file target compatibility active while plugin authors migrate to structured transcript targets.";
+  }
+  if (code === "sdk-session-transcript-low-level") {
+    return "Keep low-level transcript write compatibility active while plugin authors migrate to structured transcript runtime helpers.";
+  }
+  return "Keep loadSessionStore compatibility active while plugin authors migrate to row-scoped session helpers.";
 }
 
 function classifySecurityManifestCoverage({ fixture, fixtureReport, warnings, decisions }) {

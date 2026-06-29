@@ -32,6 +32,10 @@ const authorFacingKnownIssueCodes = new Set([
   "reserved-sdk-import",
   "security-manifest-schema-unavailable",
   "sdk-load-session-store",
+  "sdk-session-file-helper",
+  "sdk-session-store-write",
+  "sdk-session-transcript-file-target",
+  "sdk-session-transcript-low-level",
   "unrecognized-security-manifest",
 ]);
 

@@ -1,16 +1,53 @@
-const loadSessionStoreReplacement =
+const sessionStoreReadReplacement =
   "getSessionEntry(...) / listSessionEntries(...) for reads and patchSessionEntry(...) / upsertSessionEntry(...) for writes";
+const sessionStoreWriteReplacement = "patchSessionEntry(...) / upsertSessionEntry(...) for row-scoped writes";
+const sessionFileReplacement = "session entries and transcript identity helpers instead of persisted file paths";
+const sessionTranscriptReplacement =
+  "resolveSessionTranscriptTarget(...), appendSessionTranscriptMessageByIdentity(...), and publishSessionTranscriptUpdateByIdentity(...)";
 
-const loadSessionStoreSpecifiers = new Set([
+const sdkSessionSpecifiers = new Set([
   "openclaw/plugin-sdk/config-runtime",
+  "openclaw/plugin-sdk/mattermost",
+  "openclaw/plugin-sdk/agent-harness-runtime",
   "openclaw/plugin-sdk/session-store-runtime",
+  "openclaw/plugin-sdk/session-transcript-runtime",
 ]);
 
 export const pluginSdkDeprecationRules = [
   {
     code: "sdk-load-session-store",
+    symbols: new Set(["loadSessionStore"]),
     title: "deprecated whole-store session helper is still used",
-    replacement: loadSessionStoreReplacement,
+    replacement: sessionStoreReadReplacement,
+    message: (symbol, replacement) => `${symbol} keeps the legacy whole-store session shape; use ${replacement}.`,
+  },
+  {
+    code: "sdk-session-store-write",
+    symbols: new Set(["saveSessionStore", "updateSessionStore"]),
+    title: "deprecated whole-store session write helper is still used",
+    replacement: sessionStoreWriteReplacement,
+    message: (symbol, replacement) => `${symbol} writes the legacy whole-store session shape; use ${replacement}.`,
+  },
+  {
+    code: "sdk-session-file-helper",
+    symbols: new Set(["resolveSessionFilePath", "resolveAndPersistSessionFile"]),
+    title: "deprecated session file-path helper is still used",
+    replacement: sessionFileReplacement,
+    message: (symbol, replacement) => `${symbol} depends on legacy session transcript file paths; use ${replacement}.`,
+  },
+  {
+    code: "sdk-session-transcript-file-target",
+    symbols: new Set(["resolveSessionTranscriptLegacyFileTarget"]),
+    title: "deprecated transcript file target helper is still used",
+    replacement: "resolveSessionTranscriptTarget(...) or resolveSessionTranscriptIdentity(...)",
+    message: (symbol, replacement) => `${symbol} exposes legacy transcript file targets; use ${replacement}.`,
+  },
+  {
+    code: "sdk-session-transcript-low-level",
+    symbols: new Set(["appendSessionTranscriptMessage", "emitSessionTranscriptUpdate"]),
+    title: "deprecated low-level transcript helper is still used",
+    replacement: sessionTranscriptReplacement,
+    message: (symbol, replacement) => `${symbol} bypasses the structured transcript runtime surface; use ${replacement}.`,
   },
 ];
 
@@ -18,9 +55,7 @@ export function inspectSdkDeprecations(text, filePath = "source.js", rules = plu
   const findings = [];
 
   for (const rule of rules) {
-    if (rule.code === "sdk-load-session-store") {
-      collectLoadSessionStoreDeprecations(findings, { text, filePath, rule });
-    }
+    collectSdkHelperDeprecations(findings, { text, filePath, rule });
   }
 
   return uniqueFindings(findings)
@@ -28,12 +63,13 @@ export function inspectSdkDeprecations(text, filePath = "source.js", rules = plu
     .map(({ offset, ...finding }) => finding);
 }
 
-function collectLoadSessionStoreDeprecations(findings, context) {
+function collectSdkHelperDeprecations(findings, context) {
   collectNamedImportDeprecations(findings, context);
   collectNamedReexportDeprecations(findings, context);
   collectNamedRequireDeprecations(findings, context);
   collectNamespaceUsageDeprecations(findings, context);
   collectNamespaceRequireDeprecations(findings, context);
+  collectDynamicImportNamespaceDeprecations(findings, context);
   collectRuntimeUsageDeprecations(findings, context);
   collectRuntimeAliasUsageDeprecations(findings, context);
 }
@@ -43,16 +79,17 @@ function collectNamedImportDeprecations(findings, context) {
     /\bimport\s+(?:type\s+)?(?:[A-Za-z_$][\w$]*\s*,\s*)?{([^}]+)}\s*from\s*["'`]([^"'`]+)["'`]/g;
   for (const match of context.text.matchAll(regex)) {
     const specifier = match[2];
-    if (!loadSessionStoreSpecifiers.has(specifier)) {
+    if (!sdkSessionSpecifiers.has(specifier)) {
       continue;
     }
     for (const binding of parseNamedBindings(match[1])) {
-      if (binding.exported !== "loadSessionStore") {
+      if (!context.rule.symbols.has(binding.exported)) {
         continue;
       }
       findings.push(
         buildFinding(context.rule, {
-          surface: `${specifier} import`,
+          surface: `${specifier} ${binding.exported} import`,
+          symbol: binding.exported,
           sourceText: context.text,
           filePath: context.filePath,
           offset: (match.index ?? 0) + match[0].lastIndexOf(binding.local),
@@ -66,16 +103,17 @@ function collectNamedReexportDeprecations(findings, context) {
   const regex = /\bexport\s*{([^}]+)}\s*from\s*["'`]([^"'`]+)["'`]/g;
   for (const match of context.text.matchAll(regex)) {
     const specifier = match[2];
-    if (!loadSessionStoreSpecifiers.has(specifier)) {
+    if (!sdkSessionSpecifiers.has(specifier)) {
       continue;
     }
     for (const binding of parseNamedBindings(match[1])) {
-      if (binding.exported !== "loadSessionStore") {
+      if (!context.rule.symbols.has(binding.exported)) {
         continue;
       }
       findings.push(
         buildFinding(context.rule, {
-          surface: `${specifier} re-export`,
+          surface: `${specifier} ${binding.exported} re-export`,
+          symbol: binding.exported,
           sourceText: context.text,
           filePath: context.filePath,
           offset: (match.index ?? 0) + match[0].lastIndexOf(binding.local),
@@ -89,16 +127,17 @@ function collectNamedRequireDeprecations(findings, context) {
   const regex = /\b(?:const|let|var)\s+{([^}]+)}\s*=\s*require\(\s*["'`]([^"'`]+)["'`]\s*\)/g;
   for (const match of context.text.matchAll(regex)) {
     const specifier = match[2];
-    if (!loadSessionStoreSpecifiers.has(specifier)) {
+    if (!sdkSessionSpecifiers.has(specifier)) {
       continue;
     }
     for (const binding of parseNamedBindings(match[1], { aliasSeparator: ":" })) {
-      if (binding.exported !== "loadSessionStore") {
+      if (!context.rule.symbols.has(binding.exported)) {
         continue;
       }
       findings.push(
         buildFinding(context.rule, {
-          surface: `${specifier} require`,
+          surface: `${specifier} ${binding.exported} require`,
+          symbol: binding.exported,
           sourceText: context.text,
           filePath: context.filePath,
           offset: (match.index ?? 0) + match[0].lastIndexOf(binding.local),
@@ -109,21 +148,24 @@ function collectNamedRequireDeprecations(findings, context) {
 }
 
 function collectMemberCallDeprecations(findings, context, options) {
-  forEachMethodCall(context.text, "loadSessionStore", (offset) => {
-    // Normalize transparent parentheses and optional-chained member links before matching.
-    const receiver = readNormalizedCallReceiver(context.text, offset);
-    if (!receiver || !options.receiverMatcher(receiver)) {
-      return;
-    }
-    findings.push(
-      buildFinding(context.rule, {
-        surface: options.surface,
-        sourceText: context.text,
-        filePath: context.filePath,
-        offset,
-      }),
-    );
-  });
+  for (const symbol of context.rule.symbols) {
+    forEachMethodCall(context.text, symbol, (offset) => {
+      // Normalize transparent parentheses and optional-chained member links before matching.
+      const receiver = readNormalizedCallReceiver(context.text, offset);
+      if (!receiver || !options.receiverMatcher(receiver)) {
+        return;
+      }
+      findings.push(
+        buildFinding(context.rule, {
+          surface: `${options.surface} ${symbol}`,
+          symbol,
+          sourceText: context.text,
+          filePath: context.filePath,
+          offset,
+        }),
+      );
+    });
+  }
 }
 
 function forEachMethodCall(text, methodName, visit) {
@@ -259,7 +301,11 @@ function isIdentifierBoundary(text, offset) {
 }
 
 function isRuntimeSessionReceiver(receiver) {
-  return /^(?:[A-Za-z_$][A-Za-z0-9_$]*|this)\.runtime\.agent\.session$/.test(receiver);
+  return (
+    /(?:^|\.)(?:[A-Za-z_$][A-Za-z0-9_$]*|this)\.runtime\.agent\.session$/.test(receiver) ||
+    /^(?:runtime|[A-Za-z_$][A-Za-z0-9_$]*Runtime)\.agent\.session$/.test(receiver) ||
+    /^(?:agentRuntime|[A-Za-z_$][A-Za-z0-9_$]*AgentRuntime)\.session$/.test(receiver)
+  );
 }
 
 function collectNamespaceUsageDeprecations(findings, context) {
@@ -267,7 +313,7 @@ function collectNamespaceUsageDeprecations(findings, context) {
   for (const match of context.text.matchAll(regex)) {
     const local = match[1];
     const specifier = match[2];
-    if (!loadSessionStoreSpecifiers.has(specifier)) {
+    if (!sdkSessionSpecifiers.has(specifier)) {
       continue;
     }
     collectMemberCallDeprecations(findings, context, {
@@ -282,12 +328,28 @@ function collectNamespaceRequireDeprecations(findings, context) {
   for (const match of context.text.matchAll(regex)) {
     const local = match[1];
     const specifier = match[2];
-    if (!loadSessionStoreSpecifiers.has(specifier)) {
+    if (!sdkSessionSpecifiers.has(specifier)) {
       continue;
     }
     collectMemberCallDeprecations(findings, context, {
       receiverMatcher: (receiver) => receiver === local,
       surface: `${specifier} require namespace access`,
+    });
+  }
+}
+
+function collectDynamicImportNamespaceDeprecations(findings, context) {
+  const regex =
+    /\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*(?:await\s+)?import\(\s*["'`]([^"'`]+)["'`]\s*\)/g;
+  for (const match of context.text.matchAll(regex)) {
+    const local = match[1];
+    const specifier = match[2];
+    if (!sdkSessionSpecifiers.has(specifier)) {
+      continue;
+    }
+    collectMemberCallDeprecations(findings, context, {
+      receiverMatcher: (receiver) => receiver === local,
+      surface: `${specifier} dynamic import namespace access`,
     });
   }
 }
@@ -509,10 +571,11 @@ function buildFinding(rule, details) {
   const refLine = lineForOffset(details.sourceText, details.offset);
   return {
     code: rule.code,
+    symbol: details.symbol,
     surface: details.surface,
     replacement: rule.replacement,
     ref: `${details.filePath}:${refLine}`,
-    message: `loadSessionStore keeps the legacy whole-store session shape; use ${rule.replacement}.`,
+    message: rule.message(details.symbol, rule.replacement),
     offset: details.offset,
   };
 }
@@ -520,7 +583,7 @@ function buildFinding(rule, details) {
 function uniqueFindings(findings) {
   const byKey = new Map();
   for (const finding of findings) {
-    byKey.set(`${finding.code}:${finding.surface}:${finding.ref}`, finding);
+    byKey.set(`${finding.code}:${finding.symbol}:${finding.surface}:${finding.ref}`, finding);
   }
   return [...byKey.values()];
 }
