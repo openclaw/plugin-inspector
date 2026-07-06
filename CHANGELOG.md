@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Run synthetic gateway lifecycle hooks around ordinary probes while preserving capture indexes and report order, so `gateway_stop` teardown cannot invalidate later compatibility checks.
+
 ## 0.3.17 - 2026-06-29
 
 ### Fixed

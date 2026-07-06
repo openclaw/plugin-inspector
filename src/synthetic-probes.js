@@ -591,23 +591,37 @@ export async function runCapturedSyntheticProbes(capture, options = {}) {
   const hookContexts = options.hookContexts ?? defaultSyntheticHookContexts;
   const captured = capture.captured ?? [];
   const retained = new Map((capture.retained ?? []).map((item) => [item.captureIndex, item]));
-  const results = [];
+  const resultsByCaptureIndex = new Map();
+  const executionEntries = captured
+    .map((entry, captureIndex) => ({ entry, captureIndex }))
+    .sort(
+      (left, right) =>
+        syntheticLifecyclePhase(left.entry) - syntheticLifecyclePhase(right.entry) ||
+        left.captureIndex - right.captureIndex,
+    );
 
-  for (let index = 0; index < captured.length; index += 1) {
-    const entry = captured[index];
-    const retainedEntry = retained.get(index);
+  for (const { entry, captureIndex } of executionEntries) {
+    const retainedEntry = retained.get(captureIndex);
     if (!retainedEntry) {
-      results.push(blockedResult(entry, index, "handler retention was not enabled"));
+      resultsByCaptureIndex.set(captureIndex, [blockedResult(entry, captureIndex, "handler retention was not enabled")]);
       continue;
     }
     if (entry.kind === "hook") {
-      results.push(await runHookProbe(entry, retainedEntry, index, { hookEvents, hookContexts }));
+      resultsByCaptureIndex.set(captureIndex, [
+        await runHookProbe(entry, retainedEntry, captureIndex, { hookEvents, hookContexts }),
+      ]);
       continue;
     }
     if (entry.kind === "registration") {
-      results.push(...(await runRegistrationProbes(entry, retainedEntry, index, options)));
+      resultsByCaptureIndex.set(
+        captureIndex,
+        await runRegistrationProbes(entry, retainedEntry, captureIndex, options),
+      );
     }
   }
+  // Execute in lifecycle order, but keep report rows and captureIndex values
+  // stable for downstream consumers that compare artifacts across runs.
+  const results = captured.flatMap((_, captureIndex) => resultsByCaptureIndex.get(captureIndex) ?? []);
 
   return {
     entrypoint: capture.entrypoint,
@@ -620,6 +634,19 @@ export async function runCapturedSyntheticProbes(capture, options = {}) {
     },
     results,
   };
+}
+
+function syntheticLifecyclePhase(entry) {
+  if (entry.kind !== "hook") {
+    return 1;
+  }
+  if (entry.name === "gateway_start") {
+    return 0;
+  }
+  if (entry.name === "gateway_stop") {
+    return 2;
+  }
+  return 1;
 }
 
 export function renderSyntheticProbeMarkdown(plan, options = {}) {
