@@ -219,6 +219,48 @@ test("synthetic probes invoke retained hook and tool handlers", async () => {
   );
 });
 
+test("synthetic probes execute gateway lifecycle around ordinary probes without reordering results", async () => {
+  const capture = await captureLocalFixture([
+    "let started = false;",
+    "let ordinaryProbeCount = 0;",
+    "export function register(api) {",
+    "  api.on('gateway_stop', () => {",
+    "    if (!started || ordinaryProbeCount !== 2) throw new Error('gateway stopped before ordinary probes');",
+    "    started = false;",
+    "  });",
+    "  api.on('before_reset', () => {",
+    "    if (!started) throw new Error('ordinary hook ran outside gateway lifecycle');",
+    "    ordinaryProbeCount += 1;",
+    "  });",
+    "  api.registerCommand({",
+    "    name: 'fixture-command',",
+    "    handler() {",
+    "      if (!started) throw new Error('registration ran outside gateway lifecycle');",
+    "      ordinaryProbeCount += 1;",
+    "    },",
+    "  });",
+    "  api.on('gateway_start', () => {",
+    "    if (started) throw new Error('gateway started twice');",
+    "    started = true;",
+    "  });",
+    "}",
+  ]);
+
+  const result = await runCapturedSyntheticProbes(capture);
+
+  assert.equal(result.summary.failCount, 0);
+  assert.equal(result.summary.blockedCount, 0);
+  assert.deepEqual(
+    result.results.map((item) => [item.captureIndex, item.label]),
+    [
+      [0, "gateway_stop"],
+      [1, "before_reset"],
+      [2, "registerCommand.handler"],
+      [3, "gateway_start"],
+    ],
+  );
+});
+
 test("synthetic probes pass registrar-specific handler inputs", async () => {
   const capture = await captureLocalFixture([
     "export function register(api) {",
