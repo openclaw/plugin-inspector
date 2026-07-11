@@ -968,11 +968,11 @@ function createSchema(defaultValue, shape) {
     },
   };
   return new Proxy(schema, {
-    get(target, property) {
+    get(target, property, receiver) {
       if (property in target) {
         return target[property];
       }
-      return () => target;
+      return () => receiver;
     },
   });
 }

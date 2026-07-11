@@ -74,6 +74,14 @@ test("workspace plan maps blocked entrypoints to opt-in install/build/capture st
   assert.ok(entrypoint.requiredCapabilities.includes("dependency-install"));
   assert.ok(entrypoint.requiredCapabilities.includes("sdk-alias-compat"));
   assert.ok(entrypoint.requiredCapabilities.includes("ts-loader"));
+  assert.ok(
+    entrypoint.steps.some(
+      (step) =>
+        step.kind === "link-openclaw" &&
+        step.command.includes("link-openclaw-workspace-cli.js") &&
+        step.command.includes("file:../../../openclaw"),
+    ),
+  );
   assert.ok(entrypoint.steps.some((step) => step.kind === "install" && step.command === "npm install --ignore-scripts"));
   assert.ok(
     entrypoint.steps.some(
@@ -125,6 +133,10 @@ test("workspace plan defaults point at packaged helper wrappers", async (t) => {
   const readiness = buildColdImportReadiness({ report, rootDir });
   const plan = await buildWorkspacePlan({ report, readiness, rootDir });
   const entrypoint = plan.fixtures[0].entrypoints[0];
+  const linkHelper = resolveNodeScriptFromStep(
+    entrypoint.steps.find((step) => step.kind === "link-openclaw"),
+    rootDir,
+  );
   const captureStep = entrypoint.steps.find((step) => step.kind === "capture");
   const syntheticStep = entrypoint.steps.find((step) => step.kind === "synthetic-probe");
 
@@ -135,10 +147,12 @@ test("workspace plan defaults point at packaged helper wrappers", async (t) => {
   assert.ok(syntheticStep.command.includes("--mock-sdk"));
   assert.ok(syntheticStep.command.includes(".synthetic.json"));
 
+  await access(linkHelper);
   const captureHelper = resolveNodeScriptFromStep(captureStep, rootDir);
   const syntheticHelper = resolveNodeScriptFromStep(syntheticStep, rootDir);
   await access(captureHelper);
   await access(syntheticHelper);
+  assert.match(linkHelper, /src[\\/]link-openclaw-workspace-cli\.js$/);
   assert.match(captureHelper, /src[\\/]capture-cli\.js$/);
   assert.match(syntheticHelper, /src[\\/]synthetic-probes-cli\.js$/);
 });

@@ -375,7 +375,8 @@ test("runtime capture supports namespace imports from mocked externals", async (
     [
       'import { definePluginEntry } from "openclaw/plugin-sdk";',
       'import * as z from "zod";',
-      "const schema = z.object({ city: z.string().default('sf') });",
+      "const city = z.string().transform((value) => value).pipe(z.string()).optional().catch('unknown').default('sf');",
+      "const schema = z.object({ city });",
       "export default definePluginEntry((api) => {",
       "  api.registerTool({ name: schema.parse({}).city, inputSchema: {}, run() {} });",
       "});",

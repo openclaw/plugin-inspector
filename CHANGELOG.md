@@ -5,6 +5,8 @@
 ### Fixed
 
 - Run synthetic gateway lifecycle hooks around ordinary probes while preserving capture indexes and report order, so `gateway_stop` teardown cannot invalidate later compatibility checks.
+- Link isolated plugin workspaces to the OpenClaw checkout without npm normalizing duplicated dependency and peer declarations back to registry ranges.
+- Keep mocked Zod schemas chainable through unsupported methods such as `pipe()` and `catch()`.
 
 ## 0.3.17 - 2026-06-29
 

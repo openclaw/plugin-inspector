@@ -241,9 +241,10 @@ async function buildEntrypointPlan({ fixtureId, entrypoint, packageSummary, pack
   });
 
   if (requiredCapabilities.includes("target-openclaw-link")) {
+    const targetSpecifier = `file:${targetOpenClawWorkspacePath(settings, fixtureId, targetOpenClawPath)}`;
     steps.push({
       kind: "link-openclaw",
-      command: `${shellQuote(packageManager)} pkg set ${shellQuote(`dependencies.openclaw=file:${targetOpenClawWorkspacePath(settings, fixtureId, targetOpenClawPath)}`)}`,
+      command: `node ${shellQuote(helperScript(settings, workspacePath, settings.linkOpenClawWorkspaceScript, "link-openclaw-workspace-cli.js"))} ${shellQuote(targetSpecifier)}`,
       cwd: workspacePath,
       reason: "link the plugin's openclaw peer dependency to the target checkout under test",
     });
@@ -325,6 +326,7 @@ function workspaceSettings(options) {
   return {
     captureScript: options.captureScript ?? defaultWorkspacePlanOptions.captureScript,
     defaultTargetOpenClawWorkspacePath: options.defaultTargetOpenClawWorkspacePath ?? "../../../openclaw",
+    linkOpenClawWorkspaceScript: options.linkOpenClawWorkspaceScript,
     optInEnv: options.optInEnv ?? defaultWorkspacePlanOptions.optInEnv,
     resultsRoot: repoRelative(options.resultsRoot ?? defaultWorkspacePlanOptions.resultsRoot),
     rootDir: path.resolve(options.rootDir ?? process.cwd()),
