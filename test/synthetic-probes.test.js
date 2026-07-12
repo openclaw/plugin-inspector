@@ -155,6 +155,7 @@ test("synthetic probe plan classifies generated kitchen-sink registrars", () => 
     "registerSecurityAuditCollector",
     "registerService",
     "registerSessionAction",
+    "registerSessionCatalog",
     "registerSessionExtension",
     "registerSessionSchedulerJob",
     "registerSpeechProvider",

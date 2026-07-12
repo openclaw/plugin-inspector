@@ -236,6 +236,11 @@ export const syntheticRegistrationExecutionProfiles = {
     callableProperties: [],
     reason: "session actions are captured as registration metadata before session runtime execution",
   },
+  registerSessionCatalog: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "session catalogs are captured as registration metadata before catalog runtime execution",
+  },
   registerService: {
     mode: "lifecycle-opt-in",
     callableProperties: ["start", "stop", "dispose"],
