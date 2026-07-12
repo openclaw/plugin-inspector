@@ -194,6 +194,7 @@ function registrationReturnValue(name, args, context) {
 
 function createRuntimeContext(options) {
   const runtime = options.runtime ?? {};
+  const syncKeyedStores = new Map();
   return {
     ...runtime,
     agent: runtime.agent ?? {},
@@ -203,7 +204,57 @@ function createRuntimeContext(options) {
     tts: runtime.tts ?? {},
     state: {
       resolveStateDir: () => options.stateDir ?? process.cwd(),
+      openSyncKeyedStore({ namespace }) {
+        const existing = syncKeyedStores.get(namespace);
+        if (existing) {
+          return existing;
+        }
+        const store = createSyncKeyedStoreContext();
+        syncKeyedStores.set(namespace, store);
+        return store;
+      },
       ...(runtime.state ?? {}),
+    },
+  };
+}
+
+function createSyncKeyedStoreContext() {
+  const values = new Map();
+  return {
+    register(key, value) {
+      values.set(key, value);
+    },
+    registerIfAbsent(key, value) {
+      if (values.has(key)) {
+        return false;
+      }
+      values.set(key, value);
+      return true;
+    },
+    update(key, updateValue) {
+      const next = updateValue(values.get(key));
+      if (next === undefined) {
+        return false;
+      }
+      values.set(key, next);
+      return true;
+    },
+    lookup(key) {
+      return values.get(key);
+    },
+    consume(key) {
+      const value = values.get(key);
+      values.delete(key);
+      return value;
+    },
+    delete(key) {
+      return values.delete(key);
+    },
+    entries() {
+      return [...values].map(([key, value]) => ({ key, value, createdAt: 0 }));
+    },
+    clear() {
+      values.clear();
     },
   };
 }

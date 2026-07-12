@@ -84,6 +84,11 @@ test("capture API exposes mock context helpers", async () => {
   });
 
   await api.store.set("key", { value: 1 });
+  const keyedStore = api.runtime.state.openSyncKeyedStore({
+    namespace: "capture-test",
+    maxEntries: 10,
+  });
+  keyedStore.register("key", { value: 2 });
 
   assert.equal(await api.secrets.get("token"), "redacted");
   assert.equal(await api.secrets.resolve("secret:token"), "redacted");
@@ -92,6 +97,13 @@ test("capture API exposes mock context helpers", async () => {
   assert.equal(api.agent.id, "plugin-inspector-agent");
   assert.equal(api.paths.dataDir, ".plugin-inspector/data");
   assert.equal(api.resolvePath("state"), "/fixture/state");
+  assert.deepEqual(keyedStore.lookup("key"), { value: 2 });
+  assert.equal(keyedStore.update("key", () => undefined), false);
+  assert.deepEqual(keyedStore.lookup("key"), { value: 2 });
+  assert.equal(
+    api.runtime.state.openSyncKeyedStore({ namespace: "capture-test", maxEntries: 10 }),
+    keyedStore,
+  );
 });
 
 test("capture API can retain handlers for probes", () => {
