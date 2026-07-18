@@ -28,7 +28,7 @@ test("OpenClaw target parser reads public target surface facts", async (t) => {
   );
   await writeFile(
     path.join(targetRoot, "src/plugins/hook-types.ts"),
-    `export const PLUGIN_HOOK_NAMES = ["before_tool_call", "llm_input"] as const;\n`,
+    `const PLUGIN_HOOK_NAMES = ["before_tool_call", "llm_input"] as const satisfies readonly PluginHookName[];\n`,
     "utf8",
   );
   await writeFile(
