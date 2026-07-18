@@ -37,7 +37,7 @@ export async function readOpenClawTargetSurface(options = {}) {
   const registrySource = await readFile(registryPath, "utf8");
   const compatRecordEntries = parseCompatRecordEntries(registrySource);
   const hookTypesSource = existsSync(hookTypesPath) ? await readFile(hookTypesPath, "utf8") : "";
-  const hookNames = hookTypesSource ? parseExportedStringArray(hookTypesSource, "PLUGIN_HOOK_NAMES") : [];
+  const hookNames = hookTypesSource ? parseConstStringArray(hookTypesSource, "PLUGIN_HOOK_NAMES") : [];
   const apiBuilderSource = existsSync(apiBuilderPath) ? await readFile(apiBuilderPath, "utf8") : "";
   const apiRegistrars = apiBuilderSource ? parseApiRegistrars(apiBuilderSource) : [];
   const manifestTypesSource = existsSync(manifestTypesPath) ? await readFile(manifestTypesPath, "utf8") : "";
@@ -198,6 +198,15 @@ export function parsePluginSdkExports(packageJson) {
 
 export function parseExportedStringArray(source, exportName) {
   const match = source.match(new RegExp(`export\\s+const\\s+${exportName}\\s*=\\s*\\[([\\s\\S]*?)\\]\\s+as\\s+const`));
+  return parseStringArrayMatch(match);
+}
+
+function parseConstStringArray(source, constName) {
+  const match = source.match(new RegExp(`(?:export\\s+)?const\\s+${constName}\\s*=\\s*\\[([\\s\\S]*?)\\]\\s+as\\s+const`));
+  return parseStringArrayMatch(match);
+}
+
+function parseStringArrayMatch(match) {
   if (!match) {
     return [];
   }
