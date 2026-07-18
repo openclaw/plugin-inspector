@@ -194,6 +194,7 @@ function registrationReturnValue(name, args, context) {
 
 function createRuntimeContext(options) {
   const runtime = options.runtime ?? {};
+  const blobStores = new Map();
   const syncKeyedStores = new Map();
   return {
     ...runtime,
@@ -204,6 +205,15 @@ function createRuntimeContext(options) {
     tts: runtime.tts ?? {},
     state: {
       resolveStateDir: () => options.stateDir ?? process.cwd(),
+      openBlobStore(storeOptions) {
+        const existing = blobStores.get(storeOptions.namespace);
+        if (existing) {
+          return existing;
+        }
+        const store = createBlobStoreContext(storeOptions);
+        blobStores.set(storeOptions.namespace, store);
+        return store;
+      },
       openSyncKeyedStore({ namespace }) {
         const existing = syncKeyedStores.get(namespace);
         if (existing) {
@@ -214,6 +224,85 @@ function createRuntimeContext(options) {
         return store;
       },
       ...(runtime.state ?? {}),
+    },
+  };
+}
+
+function createBlobStoreContext(options) {
+  const values = new Map();
+  const entryInfo = (key, entry) => ({
+    key,
+    metadata: entry.metadata,
+    sizeBytes: entry.bytes.byteLength,
+    createdAt: entry.createdAt,
+    ...(entry.expiresAt === undefined ? {} : { expiresAt: entry.expiresAt }),
+  });
+  const read = (key) => {
+    const entry = values.get(key);
+    if (!entry) {
+      return undefined;
+    }
+    if (entry.expiresAt !== undefined && entry.expiresAt <= Date.now()) {
+      return undefined;
+    }
+    return { ...entryInfo(key, entry), bytes: Uint8Array.from(entry.bytes) };
+  };
+  const register = async (key, bytes, metadata, registerOptions) => {
+    const createdAt = Date.now();
+    const ttlMs = registerOptions?.ttlMs ?? options.defaultTtlMs;
+    values.set(key, {
+      bytes: Uint8Array.from(bytes),
+      metadata,
+      createdAt,
+      ...(ttlMs === undefined ? {} : { expiresAt: createdAt + ttlMs }),
+    });
+  };
+  return {
+    register,
+    async registerIfAbsent(key, bytes, metadata, registerOptions) {
+      if (values.has(key)) {
+        return false;
+      }
+      await register(key, bytes, metadata, registerOptions);
+      return true;
+    },
+    async lookup(key) {
+      return read(key);
+    },
+    async entries() {
+      return [...values.keys()].flatMap((key) => {
+        const entry = read(key);
+        if (!entry) {
+          return [];
+        }
+        const { bytes: _bytes, ...info } = entry;
+        return [info];
+      });
+    },
+    async delete(key) {
+      return values.delete(key);
+    },
+    async deleteExpiredKey(key) {
+      const entry = values.get(key);
+      if (!entry || entry.expiresAt === undefined || entry.expiresAt > Date.now()) {
+        return undefined;
+      }
+      values.delete(key);
+      return entryInfo(key, entry);
+    },
+    async deleteExpired() {
+      const expired = [];
+      for (const [key, entry] of values) {
+        if (entry.expiresAt === undefined || entry.expiresAt > Date.now()) {
+          continue;
+        }
+        values.delete(key);
+        expired.push(entryInfo(key, entry));
+      }
+      return expired;
+    },
+    async clear() {
+      values.clear();
     },
   };
 }

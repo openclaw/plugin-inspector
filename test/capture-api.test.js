@@ -88,7 +88,16 @@ test("capture API exposes mock context helpers", async () => {
     namespace: "capture-test",
     maxEntries: 10,
   });
+  const blobStore = api.runtime.state.openBlobStore({
+    namespace: "capture-blobs",
+    maxEntries: 10,
+    maxBytesPerEntry: 1_024,
+    maxBytesPerNamespace: 4_096,
+  });
+  const sourceBytes = Buffer.from([1, 2, 3]);
   keyedStore.register("key", { value: 2 });
+  assert.equal(await blobStore.registerIfAbsent("artifact", sourceBytes, { kind: "diff" }), true);
+  sourceBytes[0] = 9;
 
   assert.equal(await api.secrets.get("token"), "redacted");
   assert.equal(await api.secrets.resolve("secret:token"), "redacted");
@@ -98,6 +107,42 @@ test("capture API exposes mock context helpers", async () => {
   assert.equal(api.paths.dataDir, ".plugin-inspector/data");
   assert.equal(api.resolvePath("state"), "/fixture/state");
   assert.deepEqual(keyedStore.lookup("key"), { value: 2 });
+  const firstLookup = await blobStore.lookup("artifact");
+  assert.deepEqual([...(firstLookup?.bytes ?? [])], [1, 2, 3]);
+  firstLookup.bytes[1] = 9;
+  assert.deepEqual([...((await blobStore.lookup("artifact"))?.bytes ?? [])], [1, 2, 3]);
+  assert.deepEqual((await blobStore.entries()).map(({ key, metadata, sizeBytes }) => ({ key, metadata, sizeBytes })), [
+    { key: "artifact", metadata: { kind: "diff" }, sizeBytes: 3 },
+  ]);
+  assert.equal(await blobStore.registerIfAbsent("artifact", new Uint8Array([4]), { kind: "other" }), false);
+  const originalDateNow = Date.now;
+  let now = 1_000;
+  Date.now = () => now;
+  try {
+    assert.equal(
+      await blobStore.registerIfAbsent("expiring", new Uint8Array([5]), { kind: "old" }, { ttlMs: 10 }),
+      true,
+    );
+    now = 1_011;
+    assert.equal(await blobStore.lookup("expiring"), undefined);
+    assert.equal(
+      await blobStore.registerIfAbsent("expiring", new Uint8Array([6]), { kind: "new" }),
+      false,
+    );
+    assert.deepEqual(await blobStore.deleteExpiredKey("expiring"), {
+      key: "expiring",
+      metadata: { kind: "old" },
+      sizeBytes: 1,
+      createdAt: 1_000,
+      expiresAt: 1_010,
+    });
+    assert.equal(
+      await blobStore.registerIfAbsent("expiring", new Uint8Array([6]), { kind: "new" }),
+      true,
+    );
+  } finally {
+    Date.now = originalDateNow;
+  }
   assert.equal(keyedStore.update("key", () => undefined), false);
   assert.deepEqual(keyedStore.lookup("key"), { value: 2 });
   assert.equal(
