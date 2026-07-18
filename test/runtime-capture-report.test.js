@@ -256,6 +256,8 @@ test("runtime capture supports TypeScript entrypoints, SDK subpaths, external mo
       "reexportedSdkHelper?.();",
       "export default definePluginEntry((api) => {",
       "  api.runtime.state.resolveStateDir();",
+      "  const blobStore = api.runtime.state.openBlobStore({ namespace: 'artifacts', maxEntries: 10, maxBytesPerEntry: 1024, maxBytesPerNamespace: 4096 });",
+      "  void blobStore.lookup('viewer');",
       "  const stateStore = api.runtime.state.openSyncKeyedStore({ namespace: 'weather', maxEntries: 10 });",
       "  stateStore.register('forecast', { value: 'sunny' });",
       "  stateStore.lookup('forecast');",

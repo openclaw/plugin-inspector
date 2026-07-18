@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Mock the current plugin blob-store runtime so Diffs and other trusted plugins can be captured without persistent state.
 - Parse OpenClaw hook names after their source declaration became private and added a TypeScript `satisfies` constraint.
 - Run synthetic gateway lifecycle hooks around ordinary probes while preserving capture indexes and report order, so `gateway_stop` teardown cannot invalidate later compatibility checks.
 - Link isolated plugin workspaces to the OpenClaw checkout without npm normalizing duplicated dependency and peer declarations back to registry ranges.
