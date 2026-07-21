@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.3.18 - 2026-07-21
+
+### Highlights
+
+- Keep compatibility capture current with OpenClaw's evolving hook, gateway, workspace-linking, blob-store, and Zod runtime surfaces.
 
 ### Fixed
 

@@ -121,8 +121,17 @@ function npmPackFilePaths(root) {
     encoding: "utf8",
     stdio: ["ignore", "pipe", "inherit"],
   });
-  const pack = JSON.parse(output)[0];
+  const pack = parseNpmPackResult(output);
   return pack.files.map((file) => file.path).sort();
+}
+
+export function parseNpmPackResult(output) {
+  const parsed = JSON.parse(output);
+  const packs = Array.isArray(parsed) ? parsed : Object.values(parsed);
+  if (packs.length !== 1 || !Array.isArray(packs[0]?.files)) {
+    throw new Error("npm pack did not return exactly one package with a file list");
+  }
+  return packs[0];
 }
 
 function printChecklist(result) {

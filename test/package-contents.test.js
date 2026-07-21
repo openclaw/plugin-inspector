@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buildPackageContentsChecklist } from "../scripts/check-package-contents.mjs";
+import { buildPackageContentsChecklist, parseNpmPackResult } from "../scripts/check-package-contents.mjs";
 
 const packageJson = {
   bin: {
@@ -57,4 +57,12 @@ test("package contents fail when private release scripts are packed", () => {
     result.checks.find((check) => check.id === "package-forbidden-path").message,
     "scripts/release-notes.mjs should not be published in the npm package",
   );
+});
+
+test("package contents accepts npm pack's keyed result shape", () => {
+  const pack = parseNpmPackResult(JSON.stringify({
+    "@openclaw/plugin-inspector": { files: [{ path: "package.json" }] },
+  }));
+
+  assert.deepEqual(pack.files, [{ path: "package.json" }]);
 });
