@@ -1,8 +1,13 @@
 # Changelog
 
-## Unreleased
+## 0.3.19 - 2026-07-27
 
-- Restore target manifest-field coverage after OpenClaw moved its public manifest types into `manifest-types.ts`.
+### Highlights
+
+- Restore silently-lost manifest contract findings after OpenClaw moved its public manifest types into `manifest-types.ts`.
+
+### Changed
+
 - Refresh generated and repository GitHub Actions workflows to the current checkout, setup-node, upload-artifact, and pnpm/action-setup releases.
 
 ## 0.3.18 - 2026-07-21
