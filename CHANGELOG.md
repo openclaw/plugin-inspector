@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Refresh generated and repository GitHub Actions workflows to the current checkout, setup-node, upload-artifact, and pnpm/action-setup releases.
+
 ## 0.3.18 - 2026-07-21
 
 ### Highlights
