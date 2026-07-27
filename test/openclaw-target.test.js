@@ -103,7 +103,42 @@ export const publicPluginOwnedSdkEntrypoints = ["speech-core"] as const;\n`,
   assert.deepEqual(target.publicPluginOwnedSdkExports, ["openclaw/plugin-sdk/speech-core"]);
   assert.deepEqual(target.manifestFields, ["contracts", "id"]);
   assert.deepEqual(target.manifestContractFields, ["channels", "tools"]);
+  assert.equal(target.manifestTypesPath, "openclaw/src/plugins/manifest.ts");
   assert.equal(target.compatRegistryPath, "openclaw/src/plugins/compat/registry.ts");
+});
+
+test("OpenClaw target parser prefers the refactored manifest types module", async (t) => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-openclaw-target-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+
+  const targetRoot = path.join(rootDir, "openclaw");
+  await mkdir(path.join(targetRoot, "src/plugins/compat"), { recursive: true });
+  await writeFile(path.join(targetRoot, "src/plugins/compat/registry.ts"), "export const records = [];\n", "utf8");
+  await writeFile(
+    path.join(targetRoot, "src/plugins/manifest.ts"),
+    `export type PluginManifest = {
+  legacyOnly?: true;
+};\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(targetRoot, "src/plugins/manifest-types.ts"),
+    `export type PluginManifest = {
+  id: string;
+  contracts?: PluginManifestContracts;
+};
+export type PluginManifestContracts = {
+  embeddedExtensionFactories?: string[];
+  tools?: string[];
+};\n`,
+    "utf8",
+  );
+
+  const target = await readOpenClawTargetSurface({ rootDir, configuredPath: "./openclaw" });
+
+  assert.equal(target.manifestTypesPath, "openclaw/src/plugins/manifest-types.ts");
+  assert.deepEqual(target.manifestFields, ["contracts", "id"]);
+  assert.deepEqual(target.manifestContractFields, ["embeddedExtensionFactories", "tools"]);
 });
 
 test("OpenClaw target parser reports disabled and missing targets", async () => {

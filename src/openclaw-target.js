@@ -30,7 +30,9 @@ export async function readOpenClawTargetSurface(options = {}) {
   const hookTypesPath = path.join(resolvedPath, "src/plugins/hook-types.ts");
   const apiBuilderPath = path.join(resolvedPath, "src/plugins/api-builder.ts");
   const capturedRegistrationPath = path.join(resolvedPath, "src/plugins/captured-registration.ts");
-  const manifestTypesPath = path.join(resolvedPath, "src/plugins/manifest.ts");
+  const currentManifestTypesPath = path.join(resolvedPath, "src/plugins/manifest-types.ts");
+  const legacyManifestTypesPath = path.join(resolvedPath, "src/plugins/manifest.ts");
+  const manifestTypesPath = existsSync(currentManifestTypesPath) ? currentManifestTypesPath : legacyManifestTypesPath;
   const pluginSdkEntrypointsPath = path.join(resolvedPath, "src/plugin-sdk/entrypoints.ts");
   const packagePath = path.join(resolvedPath, "package.json");
 
