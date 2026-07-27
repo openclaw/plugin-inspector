@@ -396,6 +396,9 @@ test("init command writes plugin config and CI workflow", async () => {
   assert.equal(config.plugin.id, "weather");
   assert.equal(config.plugin.sourceRoot, "src");
   assert.equal(config.capture.mockSdk, true);
+  assert.match(workflow, /actions\/checkout@v7/);
+  assert.match(workflow, /actions\/setup-node@v7/);
+  assert.match(workflow, /actions\/upload-artifact@v7/);
   assert.match(workflow, /pnpm dlx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute/);
 });
 

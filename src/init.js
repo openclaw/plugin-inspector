@@ -108,14 +108,14 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: ${setup.cache}
 ${setup.corepack ? "      - run: corepack enable\n" : ""}      - run: ${setup.install}
       - run: ${setup.exec} @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: plugin-inspector-reports
