@@ -1,5 +1,7 @@
 # Changelog
 
+## Unreleased
+
 ## 0.3.19 - 2026-07-27
 
 ### Highlights
