@@ -32,7 +32,6 @@ export async function readOpenClawTargetSurface(options = {}) {
   const capturedRegistrationPath = path.join(resolvedPath, "src/plugins/captured-registration.ts");
   const currentManifestTypesPath = path.join(resolvedPath, "src/plugins/manifest-types.ts");
   const legacyManifestTypesPath = path.join(resolvedPath, "src/plugins/manifest.ts");
-  const manifestTypesPath = existsSync(currentManifestTypesPath) ? currentManifestTypesPath : legacyManifestTypesPath;
   const pluginSdkEntrypointsPath = path.join(resolvedPath, "src/plugin-sdk/entrypoints.ts");
   const packagePath = path.join(resolvedPath, "package.json");
 
@@ -42,9 +41,21 @@ export async function readOpenClawTargetSurface(options = {}) {
   const hookNames = hookTypesSource ? parseConstStringArray(hookTypesSource, "PLUGIN_HOOK_NAMES") : [];
   const apiBuilderSource = existsSync(apiBuilderPath) ? await readFile(apiBuilderPath, "utf8") : "";
   const apiRegistrars = apiBuilderSource ? parseApiRegistrars(apiBuilderSource) : [];
-  const manifestTypesSource = existsSync(manifestTypesPath) ? await readFile(manifestTypesPath, "utf8") : "";
-  const manifestFields = manifestTypesSource ? parseTypeFields(manifestTypesSource, "PluginManifest") : [];
-  const manifestContractFields = manifestTypesSource ? parseTypeFields(manifestTypesSource, "PluginManifestContracts") : [];
+  const currentManifestTypesSource = existsSync(currentManifestTypesPath)
+    ? await readFile(currentManifestTypesPath, "utf8")
+    : "";
+  const legacyManifestTypesSource = existsSync(legacyManifestTypesPath)
+    ? await readFile(legacyManifestTypesPath, "utf8")
+    : "";
+  const currentManifestFields = parseTypeFields(currentManifestTypesSource, "PluginManifest");
+  const legacyManifestFields = parseTypeFields(legacyManifestTypesSource, "PluginManifest");
+  const currentManifestContractFields = parseTypeFields(currentManifestTypesSource, "PluginManifestContracts");
+  const legacyManifestContractFields = parseTypeFields(legacyManifestTypesSource, "PluginManifestContracts");
+  const useCurrentManifestTypes = currentManifestFields.length > 0;
+  const manifestTypesPath = useCurrentManifestTypes ? currentManifestTypesPath : legacyManifestTypesPath;
+  const manifestFields = useCurrentManifestTypes ? currentManifestFields : legacyManifestFields;
+  const manifestContractFields =
+    currentManifestContractFields.length > 0 ? currentManifestContractFields : legacyManifestContractFields;
   const capturedRegistrars = existsSync(capturedRegistrationPath)
     ? parseCapturedRegistrars(await readFile(capturedRegistrationPath, "utf8"))
     : [];

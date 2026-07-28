@@ -141,6 +141,40 @@ export type PluginManifestContracts = {
   assert.deepEqual(target.manifestContractFields, ["embeddedExtensionFactories", "tools"]);
 });
 
+test("OpenClaw target parser ignores transitional manifest types modules without the manifest contract", async (t) => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-openclaw-target-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+
+  const targetRoot = path.join(rootDir, "openclaw");
+  await mkdir(path.join(targetRoot, "src/plugins/compat"), { recursive: true });
+  await writeFile(path.join(targetRoot, "src/plugins/compat/registry.ts"), "export const records = [];\n", "utf8");
+  await writeFile(
+    path.join(targetRoot, "src/plugins/manifest-types.ts"),
+    `export type PluginConfigUiHint = {
+  label?: string;
+};\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(targetRoot, "src/plugins/manifest.ts"),
+    `export type PluginManifest = {
+  id: string;
+  contracts?: PluginManifestContracts;
+};
+export type PluginManifestContracts = {
+  channels?: string[];
+  tools?: string[];
+};\n`,
+    "utf8",
+  );
+
+  const target = await readOpenClawTargetSurface({ rootDir, configuredPath: "./openclaw" });
+
+  assert.equal(target.manifestTypesPath, "openclaw/src/plugins/manifest.ts");
+  assert.deepEqual(target.manifestFields, ["contracts", "id"]);
+  assert.deepEqual(target.manifestContractFields, ["channels", "tools"]);
+});
+
 test("OpenClaw target parser reports disabled and missing targets", async () => {
   assert.equal((await readOpenClawTargetSurface({ configuredPath: false })).status, "disabled");
 
