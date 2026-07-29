@@ -1245,12 +1245,82 @@ function packageMinHostVersionDrift(packageSummary) {
   if (!nonEmptyString(openclaw?.install?.minHostVersion) || !nonEmptyString(openclaw?.buildOpenClawVersion)) {
     return false;
   }
-  return parseMinHostVersionFloor(openclaw.install.minHostVersion) !== openclaw.buildOpenClawVersion;
+  const minimumHostVersion = parseMinHostVersionFloor(openclaw.install.minHostVersion);
+  const buildOpenClawVersion = parseSemver(openclaw.buildOpenClawVersion);
+  if (!minimumHostVersion || !buildOpenClawVersion) {
+    return true;
+  }
+  return compareSemver(minimumHostVersion, buildOpenClawVersion) > 0;
 }
 
 function parseMinHostVersionFloor(value) {
   const match = /^>=([0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?)$/.exec(value);
-  return match?.[1] ?? null;
+  return match ? parseSemver(match[1]) : null;
+}
+
+function parseSemver(value) {
+  const match =
+    /^([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/.exec(
+      value,
+    );
+  if (!match) {
+    return null;
+  }
+  const coreParts = match.slice(1, 4);
+  if (coreParts.some((part) => part.length > 1 && part.startsWith("0"))) {
+    return null;
+  }
+  const prerelease = match[4]?.split(".") ?? [];
+  if (prerelease.some((part) => /^[0-9]+$/.test(part) && part.length > 1 && part.startsWith("0"))) {
+    return null;
+  }
+  return { core: coreParts, prerelease };
+}
+
+function compareNumericIdentifier(left, right) {
+  if (left.length !== right.length) {
+    return left.length < right.length ? -1 : 1;
+  }
+  if (left === right) {
+    return 0;
+  }
+  return left < right ? -1 : 1;
+}
+
+function compareSemver(left, right) {
+  for (let index = 0; index < left.core.length; index += 1) {
+    const comparison = compareNumericIdentifier(left.core[index], right.core[index]);
+    if (comparison !== 0) {
+      return comparison;
+    }
+  }
+  if (left.prerelease.length === 0 || right.prerelease.length === 0) {
+    if (left.prerelease.length === right.prerelease.length) {
+      return 0;
+    }
+    return left.prerelease.length === 0 ? 1 : -1;
+  }
+  const count = Math.max(left.prerelease.length, right.prerelease.length);
+  for (let index = 0; index < count; index += 1) {
+    const leftPart = left.prerelease[index];
+    const rightPart = right.prerelease[index];
+    if (leftPart === undefined || rightPart === undefined) {
+      return leftPart === undefined ? -1 : 1;
+    }
+    if (leftPart === rightPart) {
+      continue;
+    }
+    const leftNumeric = /^[0-9]+$/.test(leftPart);
+    const rightNumeric = /^[0-9]+$/.test(rightPart);
+    if (leftNumeric && rightNumeric) {
+      return compareNumericIdentifier(leftPart, rightPart);
+    }
+    if (leftNumeric !== rightNumeric) {
+      return leftNumeric ? -1 : 1;
+    }
+    return leftPart < rightPart ? -1 : 1;
+  }
+  return 0;
 }
 
 function repoPathIncludedInNpmPack(packageSummary, repoPath) {
