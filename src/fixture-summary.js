@@ -1270,21 +1270,28 @@ function parseSemver(value) {
   if (coreParts.some((part) => part.length > 1 && part.startsWith("0"))) {
     return null;
   }
-  const core = coreParts.map(Number);
-  if (core.some((part) => !Number.isSafeInteger(part))) {
-    return null;
-  }
   const prerelease = match[4]?.split(".") ?? [];
   if (prerelease.some((part) => /^[0-9]+$/.test(part) && part.length > 1 && part.startsWith("0"))) {
     return null;
   }
-  return { core, prerelease };
+  return { core: coreParts, prerelease };
+}
+
+function compareNumericIdentifier(left, right) {
+  if (left.length !== right.length) {
+    return left.length < right.length ? -1 : 1;
+  }
+  if (left === right) {
+    return 0;
+  }
+  return left < right ? -1 : 1;
 }
 
 function compareSemver(left, right) {
   for (let index = 0; index < left.core.length; index += 1) {
-    if (left.core[index] !== right.core[index]) {
-      return left.core[index] < right.core[index] ? -1 : 1;
+    const comparison = compareNumericIdentifier(left.core[index], right.core[index]);
+    if (comparison !== 0) {
+      return comparison;
     }
   }
   if (left.prerelease.length === 0 || right.prerelease.length === 0) {
@@ -1306,10 +1313,7 @@ function compareSemver(left, right) {
     const leftNumeric = /^[0-9]+$/.test(leftPart);
     const rightNumeric = /^[0-9]+$/.test(rightPart);
     if (leftNumeric && rightNumeric) {
-      if (leftPart.length !== rightPart.length) {
-        return leftPart.length < rightPart.length ? -1 : 1;
-      }
-      return leftPart < rightPart ? -1 : 1;
+      return compareNumericIdentifier(leftPart, rightPart);
     }
     if (leftNumeric !== rightNumeric) {
       return leftNumeric ? -1 : 1;

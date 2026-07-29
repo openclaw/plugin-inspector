@@ -984,6 +984,9 @@ test("package contract classifier compares minimum host semver with the build ve
   assert.equal(hasDriftWarning(">=2026.6.5", "2026.7.1-2"), false);
   assert.equal(hasDriftWarning(">=2026.7.1-1", "2026.7.1-2"), false);
   assert.equal(hasDriftWarning(">=2026.7.1-2+build.1", "2026.7.1-2+build.2"), false);
+  assert.equal(hasDriftWarning(">=9007199254740992.0.0", "9007199254740992.0.0"), false);
+  assert.equal(hasDriftWarning(">=9007199254740992.0.0", "9007199254740993.0.0"), false);
+  assert.equal(hasDriftWarning(">=9007199254740993.0.0", "9007199254740992.0.0"), true);
   assert.equal(hasDriftWarning(">=2026.7.1", "2026.7.1-2"), true);
   assert.equal(hasDriftWarning(">=2026.7.2", "2026.7.1"), true);
   assert.equal(hasDriftWarning("^2026.7.1", "2026.7.1"), true);
