@@ -884,7 +884,7 @@ test("package contract classifier treats openclaw as a host-linked dependency", 
   );
 });
 
-test("package contract classifier reports broken install and release metadata", () => {
+test("package contract classifier accepts an older tested host floor", () => {
   const result = classifyPackageContracts({
     fixture: {
       id: "fixture",
@@ -931,9 +931,63 @@ test("package contract classifier reports broken install and release metadata", 
   });
 
   assert.ok(result.warnings.some((finding) => finding.code === "package-install-metadata-incomplete"));
-  assert.ok(result.warnings.some((finding) => finding.code === "package-min-host-version-drift"));
+  assert.equal(
+    result.warnings.some((finding) => finding.code === "package-min-host-version-drift"),
+    false,
+  );
   assert.ok(result.warnings.some((finding) => finding.code === "package-openclaw-unsupported-metadata"));
   assert.ok(result.decisions.some((decision) => decision.seam === "package-metadata"));
+});
+
+test("package contract classifier compares minimum host semver with the build version", () => {
+  const hasDriftWarning = (minHostVersion, buildOpenClawVersion) => {
+    const result = classifyPackageContracts({
+      fixture: {
+        id: "fixture",
+        path: "plugins/fixture",
+      },
+      inspection: {
+        registrations: ["registerTool"],
+      },
+      fixtureReport: {
+        pluginManifests: [{ version: "1.0.0" }],
+        package: {
+          path: "plugins/fixture/package.json",
+          name: "@openclaw/fixture-plugin",
+          version: "1.0.0",
+          dependencies: [],
+          peerDependencies: [],
+          optionalDependencies: [],
+          openclaw: {
+            compatPluginApi: "^1.0.0",
+            buildOpenClawVersion,
+            install: {
+              clawhubSpec: "clawhub:@openclaw/fixture-plugin",
+              npmSpec: "@openclaw/fixture-plugin",
+              defaultChoice: "clawhub",
+              minHostVersion,
+            },
+            release: {
+              publishToClawHub: true,
+              publishToNpm: true,
+            },
+            unsupportedMetadata: [],
+            entrypoints: [],
+          },
+        },
+      },
+    });
+    return result.warnings.some((finding) => finding.code === "package-min-host-version-drift");
+  };
+
+  assert.equal(hasDriftWarning(">=2026.7.1", "2026.7.1"), false);
+  assert.equal(hasDriftWarning(">=2026.6.5", "2026.7.1-2"), false);
+  assert.equal(hasDriftWarning(">=2026.7.1-1", "2026.7.1-2"), false);
+  assert.equal(hasDriftWarning(">=2026.7.1-2+build.1", "2026.7.1-2+build.2"), false);
+  assert.equal(hasDriftWarning(">=2026.7.1", "2026.7.1-2"), true);
+  assert.equal(hasDriftWarning(">=2026.7.2", "2026.7.1"), true);
+  assert.equal(hasDriftWarning("^2026.7.1", "2026.7.1"), true);
+  assert.equal(hasDriftWarning(">=2026.7.1", "not-semver"), true);
 });
 
 test("package contract classifier reports advertised npm pack blockers", () => {

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Accept tested minimum OpenClaw host versions below a plugin's build version without reporting package metadata drift.
+
 ## 0.3.19 - 2026-07-27
 
 ### Highlights
