@@ -2,8 +2,13 @@
 
 ## Unreleased
 
+### Added
+
+- Resolve `latest`, `beta`, or exact OpenClaw npm versions for compatibility inspection, reuse prepared targets from cache, and report exact target/source metadata.
+
 ### Fixed
 
+- Treat version-derived API removals inside a plugin's declared OpenClaw range as author-facing errors while keeping out-of-range targets informational, including beta eligibility against the upcoming stable version.
 - Accept tested minimum OpenClaw host versions below a plugin's build version without reporting package metadata drift.
 
 ## 0.3.19 - 2026-07-27

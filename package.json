@@ -31,6 +31,7 @@
     "./execution-results": "./src/execution-results.js",
     "./import-loop-profile": "./src/import-loop-profile.js",
     "./openclaw-target": "./src/openclaw-target.js",
+    "./openclaw-version": "./src/openclaw-version.js",
     "./platform-probes": "./src/platform-probes.js",
     "./profile-diff": "./src/profile-diff.js",
     "./ref-diff": "./src/ref-diff.js",
@@ -69,5 +70,9 @@
     "plugin",
     "compatibility",
     "ci"
-  ]
+  ],
+  "dependencies": {
+    "semver": "^7.8.5",
+    "tar": "^7.5.22"
+  }
 }

@@ -9,6 +9,7 @@ import { captureApiOptionsForPlugin } from "./capture-config.js";
 import { fixtureCheckoutPath, fixtureSourceRoot } from "./config.js";
 import { buildCompatibilityFixtureReport } from "./fixture-summary.js";
 import { readOpenClawTargetSurface } from "./openclaw-target.js";
+import { prepareOpenClawTarget, resolveOpenClawTargetVersion } from "./openclaw-version.js";
 import { buildCompatibilityReport, buildReport } from "./report.js";
 import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
 
@@ -26,11 +27,13 @@ export async function inspectCompatibilityFixtureSet(config, options = {}) {
   const { inspections, failures } = await inspectConfiguredFixtures(config, options);
   const targetOpenClaw =
     options.targetOpenClaw ??
-    (await readOpenClawTargetSurface({
-      configuredPath: options.openclawPath,
-      manifest: config,
-      rootDir: config.rootDir,
-    }));
+    (options.openclawVersion
+      ? await prepareOpenClawTarget(await resolveOpenClawTargetVersion(options.openclawVersion, options), options)
+      : await readOpenClawTargetSurface({
+          configuredPath: options.openclawPath,
+          manifest: config,
+          rootDir: config.rootDir,
+        }));
 
   return buildCompatibilityReport({
     config,

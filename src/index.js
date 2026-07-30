@@ -8,7 +8,8 @@ import * as executionResultsApi from "./execution-results.js";
 import * as importLoopProfileApi from "./import-loop-profile.js";
 import * as inspectorApi from "./inspector.js";
 import * as issuesApi from "./issues.js";
-import * as openClawTargetApi from "./openclaw-target.js";
+import * as openClawTargetApi from "./openclaw-version.js";
+import * as openClawTargetSurfaceApi from "./openclaw-target.js";
 import * as profileDiffApi from "./profile-diff.js";
 import * as refDiffApi from "./ref-diff.js";
 import * as reportApi from "./report.js";
@@ -67,8 +68,16 @@ export const reports = Object.freeze({
   issueId: issuesApi.issueId,
   classifyIssueFinding: issuesApi.classifyIssueFinding,
   knownIssueCodes: issuesApi.knownIssueCodes,
-  openClawTargetPathCandidates: openClawTargetApi.openClawTargetPathCandidates,
-  readOpenClawTargetSurface: openClawTargetApi.readOpenClawTargetSurface,
+  openClawTargetPathCandidates: openClawTargetSurfaceApi.openClawTargetPathCandidates,
+  readOpenClawTargetSurface: openClawTargetSurfaceApi.readOpenClawTargetSurface,
+});
+
+export const openClawTargets = Object.freeze({
+  resolveVersion: openClawTargetApi.resolveOpenClawTargetVersion,
+  prepare: openClawTargetApi.prepareOpenClawTarget,
+  eligibilityVersion: openClawTargetApi.openClawEligibilityVersion,
+  satisfiesCompatibilityRange: openClawTargetApi.satisfiesOpenClawCompatibilityRange,
+  satisfiesRange: openClawTargetApi.satisfiesOpenClawVersionRange,
 });
 
 export const contracts = Object.freeze({

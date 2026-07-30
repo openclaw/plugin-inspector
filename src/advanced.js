@@ -117,6 +117,13 @@ export {
   readOpenClawTargetSurface,
 } from "./openclaw-target.js";
 export {
+  openClawEligibilityVersion,
+  prepareOpenClawTarget,
+  resolveOpenClawTargetVersion,
+  satisfiesOpenClawCompatibilityRange,
+  satisfiesOpenClawVersionRange,
+} from "./openclaw-version.js";
+export {
   captureEntrypoint,
   captureEntrypointWithMockSdk,
   inspectCompatibilityFixtureSet,

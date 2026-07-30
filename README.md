@@ -34,6 +34,12 @@ checkout. If an OpenClaw checkout is supplied with `--openclaw <path>`, the
 inspector only reads public compatibility surfaces such as compat records, SDK
 exports, hook names, manifest fields, and registrar metadata.
 
+Pass `--openclaw-version latest`, `--openclaw-version beta`, or an exact
+published version to resolve an official OpenClaw npm target. Reports keep the
+exact resolved version and npm source metadata. Prepared targets are cached, so
+batch and repeated inspections do not download the same OpenClaw package for
+each plugin.
+
 ## Quick Start
 
 Run this from a plugin package root:
@@ -181,6 +187,7 @@ Common options:
 | `--config <path>` | Read a standalone config file. Required for fixture-suite `report`. |
 | `--out <dir>` | Write reports somewhere other than `reports/`. |
 | `--openclaw <path>` | Compare against a local OpenClaw checkout. |
+| `--openclaw-version latest\|beta\|<exact>` | Resolve and compare against an official OpenClaw npm release. |
 | `--no-openclaw` | Disable OpenClaw checkout comparison. |
 | `--runtime` / `--capture` | Add opt-in runtime registration capture. |
 | `--no-runtime` / `--no-capture` | Disable runtime capture even when config enables it. |
@@ -298,7 +305,7 @@ Important report sections:
 | --- | --- |
 | `status` | `pass` unless hard breakages exist. |
 | `summary` | Counts for fixtures, breakages, warnings, suggestions, issues, issue classes, and contract probes. |
-| `targetOpenClaw` | Status and public compatibility data read from the optional OpenClaw checkout. |
+| `targetOpenClaw` | Exact resolved version, source metadata, cache state, and public compatibility data for the selected OpenClaw target. |
 | `fixtures` | Per-plugin metadata, hooks, registrations, manifest contracts, package data, SDK imports, and SDK deprecation evidence. |
 | `breakages` | Blocking compatibility failures. |
 | `warnings` / `suggestions` | Non-blocking compatibility findings. |
@@ -309,8 +316,9 @@ Important report sections:
 
 Default `check`, `ci`, and `batch` reports include both author-facing and
 internal findings. Pass `--author-facing` when producing plugin-author output;
-that filtered view includes only findings with `authorRemediation.summary` and
-`authorRemediation.docsUrl`.
+that filtered view includes only findings with `authorRemediation.summary`.
+Curated fixes include `authorRemediation.docsUrl`; dynamically discovered API
+removals use generic remediation without inventing a documentation URL.
 Current author-facing deprecation warnings include deprecated SDK helpers such
 as `loadSessionStore(...)` when a plugin still depends on the legacy whole-store
 session shape.

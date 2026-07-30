@@ -57,9 +57,10 @@ try {
 }
 
 async function runBatch(commandArgs) {
-  const inputDir = readFirstPositional(commandArgs, new Set(["--out", "--openclaw", "--concurrency"]));
+  const inputDir = readFirstPositional(commandArgs, new Set(["--out", "--openclaw", "--openclaw-version", "--concurrency"]));
   const outDir = readFlag(commandArgs, "--out") ?? "reports";
   const openclawPath = commandArgs.includes("--no-openclaw") ? false : readFlag(commandArgs, "--openclaw");
+  const openclawVersion = readOpenClawVersion(commandArgs);
   const concurrency = Number(readFlag(commandArgs, "--concurrency") ?? "4");
   const json = commandArgs.includes("--json");
   const check = commandArgs.includes("--check");
@@ -72,6 +73,7 @@ async function runBatch(commandArgs) {
     rootDir: inputDir,
     outDir,
     openclawPath,
+    openclawVersion,
     concurrency,
     authorFacing,
     keepPluginReports,
@@ -105,6 +107,7 @@ async function runCheck(commandArgs, options = {}) {
   const pluginRoot = readFlag(commandArgs, "--plugin-root") ?? readFlag(commandArgs, "--root");
   const outDir = readFlag(commandArgs, "--out") ?? "reports";
   const openclawPath = commandArgs.includes("--no-openclaw") ? false : readFlag(commandArgs, "--openclaw");
+  const openclawVersion = readOpenClawVersion(commandArgs);
   const json = commandArgs.includes("--json");
   const capture = readRuntimeFlag(commandArgs);
   const mockSdk = readMockSdkFlag(commandArgs);
@@ -118,6 +121,7 @@ async function runCheck(commandArgs, options = {}) {
     configPath,
     mockSdk,
     openclawPath,
+    openclawVersion,
     outDir,
     pluginRoot,
   });
@@ -169,15 +173,17 @@ async function runReport(command, commandArgs) {
   const configPath = readFlag(commandArgs, "--config");
   const outDir = readFlag(commandArgs, "--out") ?? "reports";
   const openclawPath = commandArgs.includes("--no-openclaw") ? false : readFlag(commandArgs, "--openclaw");
+  const openclawVersion = readOpenClawVersion(commandArgs);
   const check = commandArgs.includes("--check") || command === "ci";
   const json = commandArgs.includes("--json");
   const ciOutputs = readCiOutputFlags(commandArgs);
   const authorFacing = readAuthorFacingFlag(commandArgs);
   const config = await loadInspectorConfig(configPath);
-  const report = authorFacing
-    ? await inspectCompatibilityFixtureSet(config, { authorFacing, openclawPath })
+  const compatibilityInspection = authorFacing || typeof openclawPath === "string" || openclawVersion !== null;
+  const report = compatibilityInspection
+    ? await inspectCompatibilityFixtureSet(config, { authorFacing, openclawPath, openclawVersion })
     : await inspectFixtureSet(config);
-  const paths = authorFacing
+  const paths = compatibilityInspection
     ? await writeCompatibilityReport(report, { cwd: config.rootDir, outDir })
     : await writeReport(report, { outDir });
   await writeCiOutputArtifacts(report, {
@@ -202,6 +208,7 @@ async function runCi(commandArgs) {
   const pluginRoot = readFlag(commandArgs, "--plugin-root") ?? readFlag(commandArgs, "--root");
   const outDir = readFlag(commandArgs, "--out") ?? "reports";
   const openclawPath = commandArgs.includes("--no-openclaw") ? false : readFlag(commandArgs, "--openclaw");
+  const openclawVersion = readOpenClawVersion(commandArgs);
   const json = commandArgs.includes("--json");
   const capture = readRuntimeFlag(commandArgs);
   const mockSdk = readMockSdkFlag(commandArgs);
@@ -215,6 +222,7 @@ async function runCi(commandArgs) {
     configPath,
     mockSdk,
     openclawPath,
+    openclawVersion,
     outDir,
     pluginRoot,
   });
@@ -256,12 +264,13 @@ async function runCiCompatibilityReport({
   configPath,
   mockSdk,
   openclawPath,
+  openclawVersion,
   outDir,
   pluginRoot,
 }) {
   if (configPath) {
     const config = await loadInspectorConfig(configPath, { cwd: pluginRoot });
-    const report = await inspectCompatibilityFixtureSet(config, { authorFacing, openclawPath });
+    const report = await inspectCompatibilityFixtureSet(config, { authorFacing, openclawPath, openclawVersion });
     await writeCompatibilityReport(report, { cwd: config.rootDir, outDir });
     return {
       report,
@@ -275,6 +284,7 @@ async function runCiCompatibilityReport({
     capture,
     mockSdk,
     openclawPath,
+    openclawVersion,
     outDir,
     pluginRoot,
   });
@@ -312,6 +322,19 @@ function readFlag(commandArgs, name) {
     return null;
   }
   return commandArgs[index + 1] ?? null;
+}
+
+function readOpenClawVersion(commandArgs) {
+  const index = commandArgs.indexOf("--openclaw-version");
+  if (index === -1) return null;
+  const version = commandArgs[index + 1];
+  if (!version || version.startsWith("-")) {
+    throw new Error("--openclaw-version requires a value");
+  }
+  if (version && (commandArgs.includes("--no-openclaw") || commandArgs.includes("--openclaw"))) {
+    throw new Error("--openclaw-version cannot be combined with --openclaw or --no-openclaw");
+  }
+  return version;
 }
 
 function findCaptureEntrypoint(commandArgs) {
@@ -452,13 +475,13 @@ function printHelp() {
 
 Usage:
   plugin-inspector
-  plugin-inspector check [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--author-facing] [--json]
+  plugin-inspector check [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path> | --openclaw-version latest|beta|<exact> | --no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--author-facing] [--json]
   plugin-inspector config [--plugin-root <path>] [--config <path>] [--json]
   plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--scripts] [--package-manager npm|pnpm|yarn|bun] [--dry-run] [--json] [--force]
-  plugin-inspector report --config <path> [--out <dir>] [--openclaw <path>] [--no-openclaw] [--author-facing] [--check] [--json]
-  plugin-inspector batch <folder> [--out <dir>] [--openclaw <path>] [--no-openclaw] [--concurrency <n>] [--keep-plugin-reports] [--author-facing] [--check] [--json]
-  plugin-inspector inspect [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--author-facing] [--check] [--json] [--sarif [path]] [--junit [path]] [--allow-execute]
-  plugin-inspector ci [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path>] [--no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--author-facing] [--json] [--no-sarif] [--no-junit]
+  plugin-inspector report --config <path> [--out <dir>] [--openclaw <path> | --openclaw-version latest|beta|<exact> | --no-openclaw] [--author-facing] [--check] [--json]
+  plugin-inspector batch <folder> [--out <dir>] [--openclaw <path> | --openclaw-version latest|beta|<exact> | --no-openclaw] [--concurrency <n>] [--keep-plugin-reports] [--author-facing] [--check] [--json]
+  plugin-inspector inspect [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path> | --openclaw-version latest|beta|<exact> | --no-openclaw] [--author-facing] [--check] [--json] [--sarif [path]] [--junit [path]] [--allow-execute]
+  plugin-inspector ci [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path> | --openclaw-version latest|beta|<exact> | --no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--author-facing] [--json] [--no-sarif] [--no-junit]
   plugin-inspector capture <entrypoint> [--mock-sdk|--real-sdk] [--allow-execute] [--plugin-root <path>] [--output <path>]
 
 Default check runs from the current plugin root and writes reports/ unless --out is set.

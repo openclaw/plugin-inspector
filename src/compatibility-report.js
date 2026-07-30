@@ -351,6 +351,12 @@ function targetOpenClawTable(targetOpenClaw = {}) {
     [
       ["Configured path", targetOpenClaw.configuredPath ?? "-"],
       ["Status", targetOpenClaw.status],
+      ["Requested version", targetOpenClaw.requestedVersion ?? "-"],
+      ["Resolved version", targetOpenClaw.version ?? "-"],
+      ["Range eligibility version", targetOpenClaw.eligibilityVersion ?? "-"],
+      ["Source", targetOpenClaw.source ? `${targetOpenClaw.source.type}:${targetOpenClaw.source.package}` : "-"],
+      ["NPM dist-tag", targetOpenClaw.source?.distTag ?? "-"],
+      ["Prepared cache", targetOpenClaw.cache ? (targetOpenClaw.cache.hit ? "hit" : "miss") : "-"],
       ["Compat registry", targetOpenClaw.compatRegistryPath ?? "-"],
       ["Compat records", targetOpenClaw.compatRecordCount ?? 0],
       ["Compat status counts", Object.entries(statusCounts).map(([status, count]) => `${status}:${count}`).join(", ") || "-"],
