@@ -87,6 +87,17 @@ test("declared compatibility uses complete npm semver range syntax", () => {
   );
 });
 
+test("beta eligibility preserves historical prerelease lower bounds", () => {
+  assert.equal(
+    satisfiesOpenClawCompatibilityRange({
+      targetVersion: affectedBeta,
+      eligibilityVersion: "2026.7.2",
+      range: ">=2026.3.24-beta.2",
+    }),
+    true,
+  );
+});
+
 test("public CLI reports Honcho memory registrars as errors against the affected exact beta", async (t) => {
   const fixture = await createRegistryFixture(t);
   const pluginRoot = await createHonchoPlugin(t, ">=2026.3.22");

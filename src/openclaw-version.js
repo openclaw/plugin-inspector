@@ -115,13 +115,19 @@ export function satisfiesOpenClawVersionRange(version, range) {
 
 export function satisfiesOpenClawCompatibilityRange({ targetVersion, eligibilityVersion, range }) {
   try {
+    const target = semver.parse(targetVersion);
+    if (!target) return false;
     return new semver.Range(range).set.some((comparators) => {
       const branch = comparators.map((comparator) => comparator.value).filter(Boolean).join(" ") || "*";
       if (semver.satisfies(targetVersion, branch)) return true;
-      const includesPrerelease = comparators.some(
-        (comparator) => (comparator.semver?.prerelease?.length ?? 0) > 0,
+      const constrainsTargetPrerelease = comparators.some(
+        (comparator) =>
+          (comparator.semver?.prerelease?.length ?? 0) > 0 &&
+          comparator.semver.major === target.major &&
+          comparator.semver.minor === target.minor &&
+          comparator.semver.patch === target.patch,
       );
-      return !includesPrerelease && semver.satisfies(eligibilityVersion, branch);
+      return !constrainsTargetPrerelease && semver.satisfies(eligibilityVersion, branch);
     });
   } catch {
     return false;
