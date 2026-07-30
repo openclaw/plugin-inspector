@@ -106,7 +106,8 @@ export async function prepareOpenClawTarget(resolvedTarget, options = {}) {
 }
 
 export function openClawEligibilityVersion(version) {
-  return version.replace(/-(?:beta\.[0-9A-Za-z.-]+|\d+)$/, "");
+  const parsed = semver.parse(version);
+  return parsed ? `${parsed.major}.${parsed.minor}.${parsed.patch}` : version;
 }
 
 export function satisfiesOpenClawVersionRange(version, range) {
@@ -216,7 +217,10 @@ function isExactOpenClawVersion(value) {
 }
 
 function normalizeRegistryUrl(value) {
-  return String(value).replace(/\/+$/, "");
+  const url = String(value);
+  let end = url.length;
+  while (end > 0 && url.charCodeAt(end - 1) === 47) end -= 1;
+  return url.slice(0, end);
 }
 
 function sanitizeUrlForReport(value) {

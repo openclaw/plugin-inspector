@@ -9,6 +9,7 @@ import { c as createTar } from "tar";
 import { promisify } from "node:util";
 import { test } from "node:test";
 import {
+  openClawEligibilityVersion,
   prepareOpenClawTarget,
   resolveOpenClawTargetVersion,
   satisfiesOpenClawCompatibilityRange,
@@ -17,6 +18,10 @@ import {
 
 const execFileAsync = promisify(execFile);
 const affectedBeta = "2026.7.2-beta.4";
+
+test("eligibility normalization leaves invalid version-like input unchanged", () => {
+  assert.equal(openClawEligibilityVersion("not-a-version-beta.4"), "not-a-version-beta.4");
+});
 
 test("official OpenClaw tags resolve to exact versions and prepared targets reuse the cache", async (t) => {
   const fixture = await createRegistryFixture(t);
