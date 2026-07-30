@@ -3,6 +3,7 @@ import { readdir } from "node:fs/promises";
 import path from "node:path";
 import { compatRecordForIssueCode } from "./contract-probes.js";
 import { readJsonFile } from "./json-file.js";
+import { satisfiesOpenClawCompatibilityRange } from "./openclaw-version.js";
 
 const conversationAccessHooks = new Set(["agent_end", "llm_input", "llm_output"]);
 const captureGapRegistrations = new Set([
@@ -464,30 +465,36 @@ export function classifyPackageContracts({ fixture, inspection, fixtureReport })
 }
 
 export function classifyTargetOpenClawCoverage({ fixture, inspection, fixtureReport, targetOpenClaw }) {
+  const breakages = [];
   const warnings = [];
+  const suggestions = [];
   const logs = [];
   const decisions = [];
+  const findingContext = { breakages, warnings, suggestions, fixtureReport, targetOpenClaw };
 
-  classifyHookNameCoverage({ fixture, inspection, targetOpenClaw, warnings, logs });
-  classifyRegistrationNameCoverage({ fixture, inspection, targetOpenClaw, warnings, logs });
-  classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, warnings, logs, decisions });
+  classifyHookNameCoverage({ fixture, inspection, targetOpenClaw, logs, findingContext });
+  classifyRegistrationNameCoverage({ fixture, inspection, targetOpenClaw, logs, findingContext });
+  classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, warnings, logs, decisions, findingContext });
   classifyManifestFieldCoverage({ fixture, fixtureReport, targetOpenClaw, warnings, logs, decisions });
 
-  return { warnings, logs, decisions };
+  return { breakages, warnings, suggestions, logs, decisions };
 }
 
 export function classifyCompatibilityFixture({ fixture, inspection, fixtureReport, targetOpenClaw }) {
+  const breakages = [];
   const warnings = [];
   const suggestions = [];
   const logs = [];
   const decisions = [];
 
   if (inspection.status !== "ok") {
-    return { warnings, suggestions, logs, decisions };
+    return { breakages, warnings, suggestions, logs, decisions };
   }
 
   const targetCoverage = classifyTargetOpenClawCoverage({ fixture, inspection, fixtureReport, targetOpenClaw });
+  breakages.push(...targetCoverage.breakages);
   warnings.push(...targetCoverage.warnings);
+  suggestions.push(...targetCoverage.suggestions);
   logs.push(...targetCoverage.logs);
   decisions.push(...targetCoverage.decisions);
 
@@ -701,7 +708,7 @@ export function classifyCompatibilityFixture({ fixture, inspection, fixtureRepor
     });
   }
 
-  return { warnings, suggestions, logs, decisions };
+  return { breakages, warnings, suggestions, logs, decisions };
 }
 
 function classifySdkDeprecations({ fixture, inspection, fixtureReport, warnings, decisions }) {
@@ -807,7 +814,7 @@ function registrationCaptureGapDetails(inspection, targetOpenClaw) {
   return apiRegistrationDetails.filter((registration) => captureGapRegistrations.has(registration.name));
 }
 
-function classifyHookNameCoverage({ fixture, inspection, targetOpenClaw, warnings, logs }) {
+function classifyHookNameCoverage({ fixture, inspection, targetOpenClaw, logs, findingContext }) {
   if (targetOpenClaw.status !== "ok" || targetOpenClaw.hookNames.length === 0) {
     return;
   }
@@ -825,16 +832,18 @@ function classifyHookNameCoverage({ fixture, inspection, targetOpenClaw, warning
     return;
   }
 
-  warnings.push({
+  addVersionDerivedFinding({
+    ...findingContext,
+    finding: {
     fixture: fixture.id,
     code: "unknown-hook-name",
-    level: "warning",
     message: "fixture registers hooks that are not present in the target OpenClaw hook registry",
     evidence: detailEvidence(unknownHooks),
+    },
   });
 }
 
-function classifyRegistrationNameCoverage({ fixture, inspection, targetOpenClaw, warnings, logs }) {
+function classifyRegistrationNameCoverage({ fixture, inspection, targetOpenClaw, logs, findingContext }) {
   if (targetOpenClaw.status !== "ok" || targetOpenClaw.apiRegistrars.length === 0) {
     return;
   }
@@ -855,16 +864,18 @@ function classifyRegistrationNameCoverage({ fixture, inspection, targetOpenClaw,
     return;
   }
 
-  warnings.push({
+  addVersionDerivedFinding({
+    ...findingContext,
+    finding: {
     fixture: fixture.id,
     code: "unknown-registration-name",
-    level: "warning",
     message: "fixture calls api.register* methods that are not present in the target OpenClaw plugin API builder",
     evidence: detailEvidence(unknownRegistrations),
+    },
   });
 }
 
-function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, warnings, logs, decisions }) {
+function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, warnings, logs, decisions, findingContext }) {
   if (targetOpenClaw.status !== "ok" || targetOpenClaw.sdkExports.length === 0 || fixtureReport.sdkImports.length === 0) {
     return;
   }
@@ -888,13 +899,15 @@ function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, war
   }
 
   if (unknownImports.length > 0) {
-    warnings.push({
+    addVersionDerivedFinding({
+      ...findingContext,
+      finding: {
       fixture: fixture.id,
       code: "sdk-export-missing",
-      level: "warning",
       message: "fixture imports plugin SDK aliases that are not exported by the target OpenClaw package",
       evidence: detailEvidence(unknownImports, "specifier"),
       compatRecord: "plugin-sdk-export-aliases",
+      },
     });
     decisions.push({
       fixture: fixture.id,
@@ -921,6 +934,52 @@ function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, war
       evidence: unique(reservedImports.map((sdkImport) => sdkImport.specifier)).join(", "),
     });
   }
+}
+
+function addVersionDerivedFinding({ finding, fixtureReport, targetOpenClaw, breakages, warnings, suggestions }) {
+  const compatibility = targetCompatibility(fixtureReport, targetOpenClaw);
+  if (!compatibility) {
+    warnings.push({ ...finding, level: "warning" });
+    return;
+  }
+
+  if (compatibility.inDeclaredRange) {
+    breakages.push({
+      ...finding,
+      level: "breakage",
+      compatibility,
+      authorRemediation: {
+        summary:
+          "Update the plugin to use APIs available in the target OpenClaw version, or narrow its declared compatibility range.",
+      },
+      authorRemediationDocs: false,
+    });
+    return;
+  }
+
+  suggestions.push({
+    ...finding,
+    level: "information",
+    message: `${finding.message}; the resolved target is outside the plugin's declared compatibility range`,
+    compatibility,
+  });
+}
+
+function targetCompatibility(fixtureReport, targetOpenClaw) {
+  const declaredRange = fixtureReport.package?.openclaw?.compatPluginApi;
+  const targetVersion = targetOpenClaw.version;
+  const evaluatedVersion = targetOpenClaw.eligibilityVersion ?? targetOpenClaw.version;
+  if (!declaredRange || !targetVersion || !evaluatedVersion || !targetOpenClaw.requestedVersion) return null;
+  return {
+    declaredRange,
+    targetVersion,
+    evaluatedVersion,
+    inDeclaredRange: satisfiesOpenClawCompatibilityRange({
+      targetVersion,
+      eligibilityVersion: evaluatedVersion,
+      range: declaredRange,
+    }),
+  };
 }
 
 function classifyManifestFieldCoverage({ fixture, fixtureReport, targetOpenClaw, warnings, logs, decisions }) {

@@ -46,6 +46,7 @@ export async function inspectPluginRoot(options = {}) {
     authorFacing: options.authorFacing,
     generatedAt: options.generatedAt,
     openclawPath: options.openclawPath,
+    openclawVersion: options.openclawVersion,
     executionResults: options.executionResults,
     targetOpenClaw: options.targetOpenClaw,
   });
@@ -62,6 +63,7 @@ export async function inspectCompatibilityFixtureSetConfig(options = {}) {
     authorFacing: options.authorFacing,
     generatedAt: options.generatedAt,
     openclawPath: options.openclawPath,
+    openclawVersion: options.openclawVersion,
     executionResults: options.executionResults,
     targetOpenClaw: options.targetOpenClaw,
   });
@@ -117,6 +119,7 @@ export async function buildFixtureSetColdImportReadiness(options = {}) {
       authorFacing: options.authorFacing,
       generatedAt: options.generatedAt,
       openclawPath: options.openclawPath,
+      openclawVersion: options.openclawVersion,
       executionResults: options.executionResults,
       targetOpenClaw: options.targetOpenClaw,
     }));
@@ -150,6 +153,7 @@ export async function buildFixtureSetWorkspacePlan(options = {}) {
       authorFacing: options.authorFacing,
       generatedAt: options.generatedAt,
       openclawPath: options.openclawPath,
+      openclawVersion: options.openclawVersion,
       executionResults: options.executionResults,
       targetOpenClaw: options.targetOpenClaw,
     }));

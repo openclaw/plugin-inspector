@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { readFile } from "node:fs/promises";
+import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 
 export const defaultOpenClawCheckoutPaths = ["./openclaw", "../openclaw"];
@@ -24,6 +24,10 @@ export async function readOpenClawTargetSurface(options = {}) {
       searchedPaths: requestedPaths,
       status: "missing",
     });
+  }
+
+  if (match.kind === "package") {
+    return readPackedOpenClawTargetSurface({ rootDir, requestedPaths, ...match });
   }
 
   const { requestedPath, resolvedPath, registryPath } = match;
@@ -251,10 +255,189 @@ function findTargetCheckout(rootDir, requestedPaths) {
     const resolvedPath = path.resolve(rootDir, requestedPath);
     const registryPath = path.join(resolvedPath, "src/plugins/compat/registry.ts");
     if (existsSync(registryPath)) {
-      return { requestedPath, resolvedPath, registryPath };
+      return { kind: "checkout", requestedPath, resolvedPath, registryPath };
+    }
+    if (existsSync(path.join(resolvedPath, "package.json")) && existsSync(path.join(resolvedPath, "dist"))) {
+      return { kind: "package", requestedPath, resolvedPath };
     }
   }
   return null;
+}
+
+async function readPackedOpenClawTargetSurface({ rootDir, requestedPaths, requestedPath, resolvedPath }) {
+  const packagePath = path.join(resolvedPath, "package.json");
+  const packageJson = JSON.parse(await readFile(packagePath, "utf8"));
+  if (packageJson.name !== "openclaw") {
+    return emptyTargetSurface({ configuredPath: requestedPath, searchedPaths: requestedPaths, status: "missing" });
+  }
+
+  const distPath = path.join(resolvedPath, "dist");
+  const declarationFiles = await listDeclarationFiles(distPath);
+  const declarations = [];
+  for (const filePath of declarationFiles) {
+    declarations.push({ filePath, source: await readFile(filePath, "utf8") });
+  }
+  const apiDeclaration = declarations
+    .map((declaration) => ({
+      ...declaration,
+      values: parseObjectTypeFields(declaration.source, "OpenClawPluginApi", (value) => value.startsWith("register")),
+    }))
+    .sort((left, right) => right.values.length - left.values.length)[0];
+  const hookDeclaration = declarations.find((declaration) => declaration.source.includes("type PluginHookName ="));
+  const manifestDeclaration = declarations.find((declaration) => declaration.source.includes("type PluginManifestRecord ="));
+  const manifestContractDeclaration = declarations.find((declaration) => declaration.source.includes("type PluginManifestContracts ="));
+  const apiRegistrars = apiDeclaration?.values ?? [];
+  const hookNames = hookDeclaration ? parseStringUnion(hookDeclaration.source, "PluginHookName") : [];
+  const manifestFields = manifestDeclaration
+    ? parseObjectTypeFields(manifestDeclaration.source, "PluginManifestRecord")
+    : [];
+  const manifestContractFields = manifestContractDeclaration
+    ? parseObjectTypeFields(manifestContractDeclaration.source, "PluginManifestContracts")
+    : [];
+  const sdkExports = parsePluginSdkExports(packageJson);
+
+  return {
+    configuredPath: requestedPath,
+    searchedPaths: requestedPaths,
+    status: "ok",
+    version: packageJson.version ?? null,
+    compatRegistryPath: null,
+    compatRecordCount: 0,
+    compatRecords: [],
+    compatRecordStatuses: {},
+    hookTypesPath: hookDeclaration ? relativePath(rootDir, hookDeclaration.filePath) : null,
+    hookNameCount: hookNames.length,
+    hookNames,
+    apiBuilderPath: apiDeclaration ? relativePath(rootDir, apiDeclaration.filePath) : null,
+    apiRegistrarCount: apiRegistrars.length,
+    apiRegistrars,
+    capturedRegistrationPath: apiDeclaration ? relativePath(rootDir, apiDeclaration.filePath) : null,
+    capturedRegistrarCount: apiRegistrars.length,
+    capturedRegistrars: apiRegistrars,
+    packagePath: relativePath(rootDir, packagePath),
+    sdkExportCount: sdkExports.length,
+    sdkExports,
+    pluginSdkEntrypointsPath: null,
+    reservedSdkExportCount: 0,
+    reservedSdkExports: [],
+    supportedFacadeSdkExports: [],
+    publicPluginOwnedSdkExports: [],
+    manifestTypesPath: manifestDeclaration ? relativePath(rootDir, manifestDeclaration.filePath) : null,
+    manifestFieldCount: manifestFields.length,
+    manifestFields,
+    manifestContractFieldCount: manifestContractFields.length,
+    manifestContractFields,
+  };
+}
+
+async function listDeclarationFiles(rootDir) {
+  const files = [];
+  const entries = await readdir(rootDir, { withFileTypes: true });
+  for (const entry of entries) {
+    const entryPath = path.join(rootDir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...(await listDeclarationFiles(entryPath)));
+    } else if (entry.isFile() && entry.name.endsWith(".d.ts")) {
+      files.push(entryPath);
+    }
+  }
+  return files.sort();
+}
+
+function parseObjectTypeFields(source, typeName, filter = () => true) {
+  const body = readObjectTypeBody(source, typeName);
+  if (!body) return [];
+  return unique(parseTopLevelTypeProperties(body).filter(filter)).sort();
+}
+
+function parseTopLevelTypeProperties(body) {
+  const properties = [];
+  let braceDepth = 0;
+  let bracketDepth = 0;
+  let parenDepth = 0;
+  let propertyStart = true;
+
+  for (let index = 0; index < body.length; index += 1) {
+    const char = body[index];
+    const next = body[index + 1];
+    if (char === "/" && next === "*") {
+      index = body.indexOf("*/", index + 2);
+      if (index === -1) break;
+      index += 1;
+      continue;
+    }
+    if (char === "/" && next === "/") {
+      const newline = body.indexOf("\n", index + 2);
+      if (newline === -1) break;
+      index = newline;
+      continue;
+    }
+    if (char === '"' || char === "'" || char === "`") {
+      index = skipQuotedTypeText(body, index);
+      continue;
+    }
+    if (char === "{") braceDepth += 1;
+    else if (char === "}") braceDepth -= 1;
+    else if (char === "[") bracketDepth += 1;
+    else if (char === "]") bracketDepth -= 1;
+    else if (char === "(") parenDepth += 1;
+    else if (char === ")") parenDepth -= 1;
+
+    if (braceDepth !== 0 || bracketDepth !== 0 || parenDepth !== 0) continue;
+    if (char === ";" || char === ",") {
+      propertyStart = true;
+      continue;
+    }
+    if (/\s/.test(char)) continue;
+    if (!propertyStart || !/[A-Za-z_$]/.test(char)) {
+      propertyStart = false;
+      continue;
+    }
+
+    const match = body.slice(index).match(/^([A-Za-z_$][A-Za-z0-9_$]*)/);
+    if (!match) {
+      propertyStart = false;
+      continue;
+    }
+    const name = match[1];
+    index += name.length - 1;
+    if (name === "readonly") continue;
+    let cursor = index + 1;
+    while (/\s/.test(body[cursor] ?? "")) cursor += 1;
+    if (body[cursor] === "?") cursor += 1;
+    while (/\s/.test(body[cursor] ?? "")) cursor += 1;
+    if (body[cursor] === ":") properties.push(name);
+    propertyStart = false;
+  }
+  return properties;
+}
+
+function skipQuotedTypeText(source, quoteIndex) {
+  const quote = source[quoteIndex];
+  for (let index = quoteIndex + 1; index < source.length; index += 1) {
+    if (source[index] === "\\") index += 1;
+    else if (source[index] === quote) return index;
+  }
+  return source.length - 1;
+}
+
+function readObjectTypeBody(source, typeName) {
+  const marker = new RegExp(`(?:export\\s+)?type\\s+${typeName}(?:\\$\\d+)?\\s*=\\s*\\{`, "g");
+  const match = marker.exec(source);
+  if (!match) return null;
+  const start = match.index + match[0].length;
+  let depth = 1;
+  for (let index = start; index < source.length; index += 1) {
+    if (source[index] === "{") depth += 1;
+    if (source[index] === "}") depth -= 1;
+    if (depth === 0) return source.slice(start, index);
+  }
+  return null;
+}
+
+function parseStringUnion(source, typeName) {
+  const match = source.match(new RegExp(`type\\s+${typeName}\\s*=\\s*([^;]+);`));
+  return match ? unique([...match[1].matchAll(/["']([^"']+)["']/g)].map((item) => item[1])).sort() : [];
 }
 
 function emptyTargetSurface({ configuredPath, searchedPaths = undefined, status }) {

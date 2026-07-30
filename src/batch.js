@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { renderMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { runPluginCheck } from "./api.js";
+import { prepareOpenClawTarget, resolveOpenClawTargetVersion } from "./openclaw-version.js";
 
 const ignoredDirs = new Set([
   ".git",
@@ -22,6 +23,11 @@ export async function runBatchAnalysis(options = {}) {
   const outRoot = path.resolve(rootDir, outDir);
   const concurrency = Math.max(1, Math.min(Math.round(options.concurrency ?? 4), 32));
   const keepPluginReports = options.keepPluginReports === true;
+  const targetOpenClaw =
+    options.targetOpenClaw ??
+    (options.openclawVersion
+      ? await prepareOpenClawTarget(await resolveOpenClawTargetVersion(options.openclawVersion, options), options)
+      : undefined);
   const pluginRoots = await discoverPluginRoots(rootDir);
   const tempRoot = keepPluginReports ? null : await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-batch-"));
   const entries = [];
@@ -37,6 +43,7 @@ export async function runBatchAnalysis(options = {}) {
           rootDir,
           outDir: reportsRoot,
           openclawPath: options.openclawPath,
+          targetOpenClaw,
         }),
       );
     });
@@ -113,6 +120,7 @@ async function inspectBatchPlugin(pluginRoot, options) {
       configPath: options.configPath,
       mockSdk: options.mockSdk,
       openclawPath: options.openclawPath,
+      targetOpenClaw: options.targetOpenClaw,
       outDir: options.outDir,
       pluginRoot,
     });

@@ -110,6 +110,7 @@ export async function buildCompatibilityReport(options = {}) {
       fixtureReport,
       targetOpenClaw,
     });
+    breakages.push(...fixtureClassification.breakages);
     warnings.push(...fixtureClassification.warnings);
     suggestions.push(...fixtureClassification.suggestions);
     logs.push(...fixtureClassification.logs);

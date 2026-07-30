@@ -518,7 +518,10 @@ export function buildIssues({ breakages = [], warnings = [], suggestions = [], t
       runtimeCoverage: finding.runtimeCoverage ?? null,
       ...(finding.authorRemediation
         ? {
-            authorRemediation: withAuthorRemediationDocs(finding.code, finding.authorRemediation),
+            authorRemediation:
+              finding.authorRemediationDocs === false
+                ? finding.authorRemediation
+                : withAuthorRemediationDocs(finding.code, finding.authorRemediation),
           }
         : {}),
     }));
