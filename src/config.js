@@ -195,7 +195,8 @@ async function readJsonIfExists(filePath) {
   if (!existsSync(filePath)) {
     return null;
   }
-  return JSON.parse(await readFile(filePath, "utf8"));
+  const contents = await readFile(filePath, "utf8");
+  return JSON.parse(contents.startsWith("\uFEFF") ? contents.slice(1) : contents);
 }
 
 export function packageId(packageName) {
