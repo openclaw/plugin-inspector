@@ -157,6 +157,33 @@ test("public API reads plugin config from package.json", async () => {
   assert.equal(config.capture.mockSdk, true);
 });
 
+test("public API reads a package.json with one leading UTF-8 BOM", async () => {
+  const pluginRoot = await createPluginRoot();
+  const packageJsonPath = path.join(pluginRoot, "package.json");
+  const packageJson = await readFile(packageJsonPath, "utf8");
+  await writeFile(packageJsonPath, `\uFEFF${packageJson}`, "utf8");
+
+  const config = await loadPluginConfig({ pluginRoot });
+
+  assert.equal(config.fixtures[0].id, "weather");
+});
+
+test("public API still rejects invalid package.json after BOM compatibility handling", async () => {
+  const pluginRoot = await createPluginRoot();
+  await writeFile(path.join(pluginRoot, "package.json"), '{"name":', "utf8");
+
+  await assert.rejects(loadPluginConfig({ pluginRoot }), SyntaxError);
+});
+
+test("public API strips only one leading UTF-8 BOM from package.json", async () => {
+  const pluginRoot = await createPluginRoot();
+  const packageJsonPath = path.join(pluginRoot, "package.json");
+  const packageJson = await readFile(packageJsonPath, "utf8");
+  await writeFile(packageJsonPath, `\uFEFF\uFEFF${packageJson}`, "utf8");
+
+  await assert.rejects(loadPluginConfig({ pluginRoot }), SyntaxError);
+});
+
 test("public API keeps crabpot-style fixture configs behind an explicit helper", async () => {
   const report = await inspectFixtureSetConfig({ configPath: "test/fixtures/inspector.config.json" });
 
