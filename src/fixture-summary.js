@@ -144,6 +144,8 @@ export function summarizePackage(packagePath, packageJson, options = {}) {
         extensions: arrayValues(packageJson.openclaw.extensions),
         runtimeExtensions: arrayValues(packageJson.openclaw.runtimeExtensions),
         setupEntry: typeof packageJson.openclaw.setupEntry === "string" ? packageJson.openclaw.setupEntry : null,
+        runtimeSetupEntry:
+          typeof packageJson.openclaw.runtimeSetupEntry === "string" ? packageJson.openclaw.runtimeSetupEntry : null,
         compatPluginApi:
           typeof packageJson.openclaw.compat?.pluginApi === "string" ? packageJson.openclaw.compat.pluginApi : null,
         buildOpenClawVersion:
@@ -1043,6 +1045,9 @@ function collectOpenClawEntrypoints(packageDir, openclaw, options) {
     ...openclaw.extensions.map((specifier) => ({ kind: "extension", specifier })),
     ...openclaw.runtimeExtensions.map((specifier) => ({ kind: "runtimeExtension", specifier })),
     ...(openclaw.setupEntry ? [{ kind: "setupEntry", specifier: openclaw.setupEntry }] : []),
+    ...(openclaw.runtimeSetupEntry
+      ? [{ kind: "runtimeSetupEntry", specifier: openclaw.runtimeSetupEntry }]
+      : []),
   ];
 
   return entrypoints.map((entrypoint) => {
@@ -1074,7 +1079,7 @@ function hasUsablePackageRuntimeEntrypoint(entrypoint, packageSummary, entrypoin
     return true;
   }
 
-  if (entrypoint.kind === "extension" && entrypoints.some((candidate) => candidate.kind === "runtimeExtension" && candidate.exists)) {
+  if (entrypoints.some((candidate) => candidate.exists && isPairedRuntimeEntrypoint(entrypoint, candidate))) {
     return true;
   }
 
@@ -1095,6 +1100,13 @@ function runtimeBuildSpecifierFor(specifier) {
 function normalizeEntrypointSpecifier(specifier) {
   const normalized = specifier.replaceAll("\\", "/");
   return normalized.startsWith("./") ? normalized : `./${normalized}`;
+}
+
+function isPairedRuntimeEntrypoint(entrypoint, candidate) {
+  return (
+    (entrypoint.kind === "extension" && candidate.kind === "runtimeExtension") ||
+    (entrypoint.kind === "setupEntry" && candidate.kind === "runtimeSetupEntry")
+  );
 }
 
 async function findPackageFiles(root, options, depth = 0) {
@@ -1286,9 +1298,10 @@ function hasPackagedRuntimeEntrypoint(entrypoint, packageSummary, entrypoints) {
   }
 
   if (
-    entrypoint.kind === "extension" &&
     entrypoints.some(
-      (candidate) => candidate.kind === "runtimeExtension" && repoPathIncludedInNpmPack(packageSummary, candidate.relativePath),
+      (candidate) =>
+        isPairedRuntimeEntrypoint(entrypoint, candidate) &&
+        repoPathIncludedInNpmPack(packageSummary, candidate.relativePath),
     )
   ) {
     return true;

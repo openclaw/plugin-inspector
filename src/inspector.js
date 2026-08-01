@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { execFile } from "node:child_process";
 import { readdir, readFile } from "node:fs/promises";
+import * as nodeModule from "node:module";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { promisify } from "node:util";
@@ -168,12 +169,7 @@ export function inspectSourceText(text, filePath = "source.js") {
     ...collectDetailedMatches(searchableText, /\b(createChatChannelPlugin)\s*\(/g, filePath, "name"),
     ...collectDetailedMatches(searchableText, /\b(definePluginEntry)\s*\(/g, filePath, "name"),
   ];
-  const sdkImports = collectDetailedMatches(
-    searchableText,
-    /(?:from\s*["'`]|import\(\s*["'`])([^"'`]*openclaw\/plugin-sdk[^"'`]*)/g,
-    filePath,
-    "specifier",
-  );
+  const sdkImports = collectSdkImports(searchableText, filePath);
   const sdkDeprecations = inspectSdkDeprecations(searchableText, filePath);
 
   return {
@@ -388,6 +384,105 @@ function collectDetailedMatches(text, regex, filePath, key) {
   return details;
 }
 
+function collectSdkImports(text, filePath) {
+  const details = [];
+  const staticDeclaration =
+    /(?:^|;)[\t ]*(?:import|export)\s+((?:type\s+)?(?:\{[\s\S]*?\}|\*\s*(?:as\s+[A-Za-z_$][\w$]*)?|[A-Za-z_$][\w$]*(?:\s*,\s*(?:\{[\s\S]*?\}|\*\s+as\s+[A-Za-z_$][\w$]*))?))\s+from\s*["'`]([^"'`]*openclaw\/plugin-sdk[^"'`]*)["'`]/gm;
+  for (const match of text.matchAll(staticDeclaration)) {
+    if (isTypeOnlyStaticImportClause(match[1])) continue;
+    const line = lineForOffset(text, match.index ?? 0);
+    details.push({
+      specifier: match[2],
+      file: filePath,
+      line,
+      ref: `${filePath}:${line}`,
+    });
+  }
+
+  const dynamicMatches = [...text.matchAll(/\bimport\(\s*["'`]([^"'`]*openclaw\/plugin-sdk[^"'`]*)/g)];
+  const runtimeDynamicImports = runtimeDynamicImportIndexes(text, dynamicMatches);
+  for (const [index, match] of dynamicMatches.entries()) {
+    if (!runtimeDynamicImports.has(index)) continue;
+    const line = lineForOffset(text, match.index ?? 0);
+    details.push({
+      specifier: match[1],
+      file: filePath,
+      line,
+      ref: `${filePath}:${line}`,
+    });
+  }
+  return details.sort((left, right) => left.line - right.line || left.specifier.localeCompare(right.specifier));
+}
+
+function runtimeDynamicImportIndexes(text, matches) {
+  if (matches.length === 0) return new Set();
+  const markedImports = matches.map((match, index) => {
+    const specifier = match[1];
+    const specifierStart = (match.index ?? 0) + match[0].indexOf(specifier);
+    return {
+      index,
+      specifierStart,
+      specifierEnd: specifierStart + specifier.length,
+      marker: `${specifier}/__plugin_inspector_runtime_import_${index}__`,
+    };
+  });
+  let markedText = text;
+  for (const markedImport of markedImports.toReversed()) {
+    markedText =
+      markedText.slice(0, markedImport.specifierStart) +
+      markedImport.marker +
+      markedText.slice(markedImport.specifierEnd);
+  }
+
+  try {
+    const runtimeText = eraseTypeScript(markedText);
+    if (runtimeText === null) {
+      return new Set(markedImports.map((markedImport) => markedImport.index));
+    }
+    return new Set(
+      markedImports.filter((markedImport) => runtimeText.includes(markedImport.marker)).map((markedImport) => markedImport.index),
+    );
+  } catch {
+    return new Set(markedImports.map((markedImport) => markedImport.index));
+  }
+}
+
+function eraseTypeScript(text) {
+  if (typeof nodeModule.stripTypeScriptTypes === "function") {
+    return nodeModule.stripTypeScriptTypes(text, { mode: "transform" });
+  }
+  if (typeof globalThis.Bun?.Transpiler === "function") {
+    const transpiler = new globalThis.Bun.Transpiler({ loader: "ts", target: "bun" });
+    return transpiler.transformSync(text);
+  }
+  return null;
+}
+
+function isTypeOnlyStaticImportClause(clause) {
+  clause = clause.trim();
+  if (/^type\b/.test(clause)) {
+    const typeOnlyClause = clause.slice("type".length).trimStart();
+    return typeOnlyClause.length > 0 && !typeOnlyClause.startsWith(",");
+  }
+  if (!clause.startsWith("{") || !clause.endsWith("}")) {
+    return false;
+  }
+
+  const namedImports = clause
+    .slice(1, -1)
+    .split(",")
+    .map((specifier) => specifier.trim())
+    .filter(Boolean);
+  return namedImports.length > 0 && namedImports.every(isTypeOnlyNamedImport);
+}
+
+function isTypeOnlyNamedImport(specifier) {
+  const typeModifier = /^type\b/.exec(specifier);
+  if (!typeModifier) return false;
+  const importedName = specifier.slice(typeModifier[0].length).trimStart();
+  return importedName.length > 0 && !/^as\b/.test(importedName);
+}
+
 async function readManifestContracts(config, checkoutPath, sourceRoot) {
   const manifests = new Set(
     [path.join(sourceRoot, "openclaw.plugin.json"), path.join(checkoutPath, "openclaw.plugin.json")].filter(
@@ -439,6 +534,7 @@ async function readPackageMetadata(config, checkoutPath, sourceRoot) {
       collectEntrypoint(entrypoints, entrypointFiles, packageDir, packageJson.openclaw?.entry);
       collectEntrypoint(entrypoints, entrypointFiles, packageDir, packageJson.openclaw?.entrypoint);
       collectEntrypoint(entrypoints, entrypointFiles, packageDir, packageJson.openclaw?.setupEntry);
+      collectEntrypoint(entrypoints, entrypointFiles, packageDir, packageJson.openclaw?.runtimeSetupEntry);
       collectEntrypoint(entrypoints, entrypointFiles, packageDir, packageJson.exports?.["."]?.import);
       collectEntrypoint(entrypoints, entrypointFiles, packageDir, packageJson.exports?.["."]?.default);
       collectEntrypoints(entrypoints, entrypointFiles, packageDir, packageJson.openclaw?.extensions);
