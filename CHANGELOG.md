@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.3.20 - 2026-07-31
 
 ### Added
 
@@ -10,6 +10,8 @@
 
 - Treat version-derived API removals inside a plugin's declared OpenClaw range as author-facing errors while keeping out-of-range targets informational, including beta eligibility against the upcoming stable version.
 - Accept tested minimum OpenClaw host versions below a plugin's build version without reporting package metadata drift.
+- Ignore type-only OpenClaw SDK imports when classifying runtime compatibility against a target release.
+- Accept `openclaw.runtimeSetupEntry` and other paired compiled runtime entrypoints as valid replacements for absent source entrypoints.
 
 ## 0.3.19 - 2026-07-27
 
