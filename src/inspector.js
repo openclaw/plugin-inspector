@@ -386,13 +386,15 @@ function collectDetailedMatches(text, regex, filePath, key) {
 
 function collectSdkImports(text, filePath) {
   const details = [];
-  const staticDeclaration =
-    /(?:^|;)[\t ]*(?:import|export)\s+((?:type\s+)?(?:\{[\s\S]*?\}|\*\s*(?:as\s+[A-Za-z_$][\w$]*)?|[A-Za-z_$][\w$]*(?:\s*,\s*(?:\{[\s\S]*?\}|\*\s+as\s+[A-Za-z_$][\w$]*))?))\s+from\s*["'`]([^"'`]*openclaw\/plugin-sdk[^"'`]*)["'`]/gm;
-  for (const match of text.matchAll(staticDeclaration)) {
-    if (isTypeOnlyStaticImportClause(match[1])) continue;
-    const line = lineForOffset(text, match.index ?? 0);
+  for (const candidate of text.matchAll(/(?:^|;)[\t ]*(import|export)\b/gm)) {
+    const keyword = candidate[1];
+    const keywordIndex = (candidate.index ?? 0) + candidate[0].lastIndexOf(keyword);
+    const declaration = parseStaticModuleDeclaration(text, keywordIndex, keyword);
+    if (!declaration?.specifier.includes("openclaw/plugin-sdk")) continue;
+    if (isTypeOnlyStaticImportClause(declaration.clause)) continue;
+    const line = lineForOffset(text, keywordIndex);
     details.push({
-      specifier: match[2],
+      specifier: declaration.specifier,
       file: filePath,
       line,
       ref: `${filePath}:${line}`,
@@ -412,6 +414,64 @@ function collectSdkImports(text, filePath) {
     });
   }
   return details.sort((left, right) => left.line - right.line || left.specifier.localeCompare(right.specifier));
+}
+
+function parseStaticModuleDeclaration(text, keywordIndex, keyword) {
+  const clauseStart = keywordIndex + keyword.length;
+  let cursor = skipWhitespace(text, clauseStart);
+  if (text[cursor] === "(") return null;
+  if (keyword === "export" && text[cursor] !== "{" && text[cursor] !== "*" && !hasWordAt(text, cursor, "type")) {
+    return null;
+  }
+
+  let braceDepth = 0;
+  while (cursor < text.length) {
+    const char = text[cursor];
+    if (char === '"' || char === "'" || char === "`") {
+      cursor = skipQuotedText(text, cursor, char);
+      continue;
+    }
+    if (char === "{") braceDepth += 1;
+    if (char === "}") braceDepth = Math.max(0, braceDepth - 1);
+    if (char === ";" && braceDepth === 0) return null;
+    if (braceDepth === 0 && hasWordAt(text, cursor, "from")) {
+      const clause = text.slice(clauseStart, cursor).trim();
+      cursor = skipWhitespace(text, cursor + "from".length);
+      const quote = text[cursor];
+      if (quote !== '"' && quote !== "'" && quote !== "`") return null;
+      const specifierStart = cursor + 1;
+      const specifierEnd = skipQuotedText(text, cursor, quote) - 1;
+      return { clause, specifier: text.slice(specifierStart, specifierEnd) };
+    }
+    cursor += 1;
+  }
+  return null;
+}
+
+function skipWhitespace(text, index) {
+  while (index < text.length && /\s/.test(text[index])) index += 1;
+  return index;
+}
+
+function hasWordAt(text, index, word) {
+  return (
+    text.startsWith(word, index) &&
+    !/[A-Za-z0-9_$]/.test(text[index - 1] ?? "") &&
+    !/[A-Za-z0-9_$]/.test(text[index + word.length] ?? "")
+  );
+}
+
+function skipQuotedText(text, quoteIndex, quote) {
+  let cursor = quoteIndex + 1;
+  while (cursor < text.length) {
+    if (text[cursor] === "\\") {
+      cursor += 2;
+      continue;
+    }
+    cursor += 1;
+    if (text[cursor - 1] === quote) break;
+  }
+  return cursor;
 }
 
 function runtimeDynamicImportIndexes(text, matches) {
