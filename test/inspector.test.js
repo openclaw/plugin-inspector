@@ -5,7 +5,7 @@ import path from "node:path";
 import { test } from "node:test";
 import { captureEntrypoint, inspectFixtureSet, inspectSourceText, loadInspectorConfig } from "../src/advanced.js";
 
-test("source inspection records hook, registrar, and SDK import evidence", () => {
+test("source inspection records hooks and registrars without treating type-only SDK imports as runtime imports", () => {
   const inspection = inspectSourceText(
     [
       'import type { OpenClawPluginApi } from "openclaw/plugin-sdk";',
@@ -33,14 +33,89 @@ test("source inspection records hook, registrar, and SDK import evidence", () =>
     inspection.registrations.map((registration) => `${registration.name}@${registration.ref}`),
     ["registerService@plugins/example/index.ts:7", "definePluginEntry@plugins/example/index.ts:8"],
   );
+  assert.deepEqual(inspection.sdkImports, []);
+});
+
+test("source inspection ignores all type-only OpenClaw SDK import forms", () => {
+  const inspection = inspectSourceText(
+    [
+      'import type { OpenClawPluginApi } from "openclaw/plugin-sdk";',
+      'export type { PluginConfig } from "openclaw/plugin-sdk/config";',
+      'import { type PluginRuntime, } from "openclaw/plugin-sdk/runtime";',
+      'import { type PluginState, definePluginEntry } from "openclaw/plugin-sdk";',
+      'import { type as typeValue } from "openclaw/plugin-sdk/type-value";',
+      'import { type } from "openclaw/plugin-sdk/bare-type-value";',
+      'import { type PluginHook as import } from "openclaw/plugin-sdk/import-alias";',
+      'export { type PluginTool as export } from "openclaw/plugin-sdk/export-alias";',
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
   assert.deepEqual(inspection.sdkImports, [
     {
       specifier: "openclaw/plugin-sdk",
       file: "plugins/example/index.ts",
-      line: 1,
-      ref: "plugins/example/index.ts:1",
+      line: 4,
+      ref: "plugins/example/index.ts:4",
+    },
+    {
+      specifier: "openclaw/plugin-sdk/type-value",
+      file: "plugins/example/index.ts",
+      line: 5,
+      ref: "plugins/example/index.ts:5",
+    },
+    {
+      specifier: "openclaw/plugin-sdk/bare-type-value",
+      file: "plugins/example/index.ts",
+      line: 6,
+      ref: "plugins/example/index.ts:6",
     },
   ]);
+});
+
+test("source inspection keeps runtime default imports whose binding is named type", () => {
+  const inspection = inspectSourceText(
+    [
+      'import type from "openclaw/plugin-sdk/default-type-value";',
+      'import type, { definePluginEntry } from "openclaw/plugin-sdk";',
+      'import type PluginApi from "openclaw/plugin-sdk/types";',
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(
+    inspection.sdkImports.map((sdkImport) => `${sdkImport.specifier}@${sdkImport.ref}`),
+    [
+      "openclaw/plugin-sdk/default-type-value@plugins/example/index.ts:1",
+      "openclaw/plugin-sdk@plugins/example/index.ts:2",
+    ],
+  );
+});
+
+test("source inspection separates compact runtime imports from TypeScript import types", () => {
+  const inspection = inspectSourceText(
+    [
+      'import value from "elsewhere"; import { definePluginEntry } from "openclaw/plugin-sdk";',
+      'type PluginApi = import("openclaw/plugin-sdk").OpenClawPluginApi;',
+      'export type PluginState = import("openclaw/plugin-sdk/config").PluginState;',
+      'const loadRuntime = () => import("openclaw/plugin-sdk/runtime");',
+      'interface Options { api: import("openclaw/plugin-sdk/interface").Api }',
+      'const options: { api: import("openclaw/plugin-sdk/annotation").Api } = { api: null };',
+      'enum Mode { Default }',
+      'type Empty = {}',
+      'const loadSemicolonless = () => import("openclaw/plugin-sdk/semicolonless")',
+    ].join("\n"),
+    "plugins/example/index.ts",
+  );
+
+  assert.deepEqual(
+    inspection.sdkImports.map((sdkImport) => `${sdkImport.specifier}@${sdkImport.ref}`),
+    [
+      "openclaw/plugin-sdk@plugins/example/index.ts:1",
+      "openclaw/plugin-sdk/runtime@plugins/example/index.ts:4",
+      "openclaw/plugin-sdk/semicolonless@plugins/example/index.ts:9",
+    ],
+  );
 });
 
 test("source inspection strips long comments before matching registrations", () => {

@@ -662,6 +662,7 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-fixture-summary-"));
   const fixtureDir = path.join(rootDir, "plugin");
   await mkdir(path.join(fixtureDir, "src"), { recursive: true });
+  await mkdir(path.join(fixtureDir, "dist"), { recursive: true });
   await writeFile(
     path.join(fixtureDir, "openclaw.plugin.json"),
     `${JSON.stringify({ id: "fixture", name: "Fixture", version: "1.0.0", contracts: { tools: {} } }, null, 2)}\n`,
@@ -683,6 +684,7 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
     "utf8",
   );
   await writeFile(path.join(fixtureDir, "src", "index.js"), "export function register() {}\n", "utf8");
+  await writeFile(path.join(fixtureDir, "dist", "setup-entry.js"), "export function setup() {}\n", "utf8");
   await writeFile(
     path.join(fixtureDir, "package.json"),
     `${JSON.stringify(
@@ -694,6 +696,8 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
         dependencies: { zod: "^1.0.0" },
         openclaw: {
           extensions: ["src/index.js"],
+          setupEntry: "src/setup-entry.ts",
+          runtimeSetupEntry: "dist/setup-entry.js",
           compat: { pluginApi: "^1.0.0" },
           build: {
             openclawVersion: "2026.5.2",
@@ -779,6 +783,13 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
     relativePath: "plugin/src/index.js",
     exists: true,
     requiresBuild: false,
+  });
+  assert.deepEqual(report.package.openclaw.entrypoints[2], {
+    kind: "runtimeSetupEntry",
+    specifier: "dist/setup-entry.js",
+    relativePath: "plugin/dist/setup-entry.js",
+    exists: true,
+    requiresBuild: true,
   });
   assert.deepEqual(report.sdkImports, ["openclaw/plugin-sdk"]);
 });
@@ -1150,7 +1161,7 @@ test("package contract classifier accepts built runtime entries for source packa
               requiresBuild: false,
             },
             {
-              kind: "runtimeExtension",
+              kind: "runtimeSetupEntry",
               specifier: "./dist/setup-entry.js",
               relativePath: "plugins/fixture/dist/setup-entry.js",
               exists: true,
