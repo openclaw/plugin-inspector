@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### Fixed
+
+- Preserve record predicate and coercion contracts in generated SDK mocks so schema-aware plugin imports cannot recurse through primitive values.
+
 ## 0.3.20 - 2026-07-31
 
 ### Added

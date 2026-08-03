@@ -621,6 +621,21 @@ function isValidExportName(name) {
 }
 
 function genericExportStatement(name) {
+  if (name === "isRecord") {
+    return "export function isRecord(value) { return isPlainObject(value); }";
+  }
+  if (name === "asRecord") {
+    return 'export function asRecord(value) { return value !== null && typeof value === "object" ? value : {}; }';
+  }
+  if (name === "asOptionalRecord") {
+    return "export function asOptionalRecord(value) { return isPlainObject(value) ? value : undefined; }";
+  }
+  if (name === "asNullableRecord") {
+    return "export function asNullableRecord(value) { return isPlainObject(value) ? value : null; }";
+  }
+  if (name === "readStringField") {
+    return 'export function readStringField(record, key) { const value = record?.[key]; return typeof value === "string" ? value : undefined; }';
+  }
   if (name === "z") {
     return "export const z = createZNamespace();";
   }
