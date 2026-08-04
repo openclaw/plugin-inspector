@@ -284,12 +284,12 @@ async function readPackedOpenClawTargetSurface({ rootDir, requestedPaths, reques
     }))
     .sort((left, right) => right.values.length - left.values.length)[0];
   const hookDeclaration = declarations.find((declaration) => declaration.source.includes("type PluginHookName ="));
-  const manifestDeclaration = declarations.find((declaration) => declaration.source.includes("type PluginManifestRecord ="));
+  const manifestDeclaration = declarations.find((declaration) => declaration.source.includes("type PluginManifest ="));
   const manifestContractDeclaration = declarations.find((declaration) => declaration.source.includes("type PluginManifestContracts ="));
   const apiRegistrars = apiDeclaration?.values ?? [];
   const hookNames = hookDeclaration ? parseStringUnion(hookDeclaration.source, "PluginHookName") : [];
   const manifestFields = manifestDeclaration
-    ? parseObjectTypeFields(manifestDeclaration.source, "PluginManifestRecord")
+    ? parseObjectTypeFields(manifestDeclaration.source, "PluginManifest")
     : [];
   const manifestContractFields = manifestContractDeclaration
     ? parseObjectTypeFields(manifestContractDeclaration.source, "PluginManifestContracts")
