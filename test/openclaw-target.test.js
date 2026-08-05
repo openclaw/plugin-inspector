@@ -175,6 +175,44 @@ export type PluginManifestContracts = {
   assert.deepEqual(target.manifestContractFields, ["channels", "tools"]);
 });
 
+test("packed OpenClaw target parser reads raw manifest fields", async (t) => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-openclaw-target-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+
+  const targetRoot = path.join(rootDir, "openclaw");
+  await mkdir(path.join(targetRoot, "dist"), { recursive: true });
+  await writeFile(
+    path.join(targetRoot, "package.json"),
+    JSON.stringify({ name: "openclaw", version: "2026.7.2-beta.7" }),
+    "utf8",
+  );
+  await writeFile(
+    path.join(targetRoot, "dist", "manifest.d.ts"),
+    `type PluginManifest = {
+  id: string;
+  configSchema: Record<string, unknown>;
+  uiHints?: Record<string, unknown>;
+  contracts?: PluginManifestContracts;
+};
+type PluginManifestContracts = {
+  tools?: string[];
+};
+type PluginManifestRecord = {
+  id: string;
+  configUiHints?: Record<string, unknown>;
+  rootDir: string;
+};\n`,
+    "utf8",
+  );
+
+  const target = await readOpenClawTargetSurface({ rootDir, configuredPath: "./openclaw" });
+
+  assert.equal(target.version, "2026.7.2-beta.7");
+  assert.equal(target.manifestTypesPath, "openclaw/dist/manifest.d.ts");
+  assert.deepEqual(target.manifestFields, ["configSchema", "contracts", "id", "uiHints"]);
+  assert.deepEqual(target.manifestContractFields, ["tools"]);
+});
+
 test("OpenClaw target parser reports disabled and missing targets", async () => {
   assert.equal((await readOpenClawTargetSurface({ configuredPath: false })).status, "disabled");
 

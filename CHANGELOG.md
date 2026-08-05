@@ -5,6 +5,7 @@
 ### Fixed
 
 - Preserve record predicate and coercion contracts in generated SDK mocks so schema-aware plugin imports cannot recurse through primitive values.
+- Read raw plugin manifest fields from packed OpenClaw declarations instead of runtime registry fields, avoiding false unknown-field warnings for supported metadata such as `uiHints`.
 
 ## 0.3.20 - 2026-07-31
 
