@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Changed
+
+- Refresh Crabbox hydration tooling to pnpm 11.24.0 and pnpm/action-setup 6.0.10.
+- Update the code-scanning example to CodeQL's Node 24-based SARIF upload action.
+
 ## 0.3.21 - 2026-08-05
 
 ### Fixed
