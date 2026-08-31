@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.3.24 - 2026-08-31
+
 ### Fixed
 
 - Recognize compiled CommonJS plugin factory calls when checking expected channel registrations, preserving source references and excluding factory values passed to wrappers.
