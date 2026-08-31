@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.22 - 2026-08-30
+
+### Fixed
+
+- Finish OpenClaw target archive extraction before cleanup so strict extraction errors cannot race unfinished filesystem writes.
+
 ### Changed
 
 - Refresh Crabbox hydration tooling to pnpm 11.24.0 and pnpm/action-setup 6.0.10.

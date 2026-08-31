@@ -2,10 +2,13 @@ import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { createServer } from "node:http";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import fs from "node:fs";
+import fsPromises, { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import { syncBuiltinESMExports } from "node:module";
 import os from "node:os";
 import path from "node:path";
-import { c as createTar } from "tar";
+import { c as createTar, Header } from "tar";
+import { gzipSync, gunzipSync } from "node:zlib";
 import { promisify } from "node:util";
 import { test } from "node:test";
 import {
@@ -58,6 +61,53 @@ test("targets without verifiable npm integrity metadata are rejected", async (t)
     () => resolveOpenClawTargetVersion("beta", { registryUrl: fixture.registryUrl }),
     /verifiable integrity metadata/,
   );
+});
+
+test("failed target extraction finishes filesystem work before removing its workspace", async (t) => {
+  const fixture = await createRegistryFixture(t, { invalidArchiveHeader: true });
+  const target = await resolveOpenClawTargetVersion("beta", { registryUrl: fixture.registryUrl });
+  const pending = new Set();
+  const cleanupPendingCounts = [];
+  let resolveIdle;
+  // Observe real callback-based extraction work, including work queued by a callback.
+  for (const name of ["stat", "mkdir", "lstat", "open", "write", "futimes", "utimes", "fchown", "chown", "close", "unlink", "rmdir"]) {
+    const original = fs[name];
+    t.mock.method(fs, name, (...args) => {
+      const callback = args.pop();
+      const operation = {};
+      pending.add(operation);
+      return original(...args, (...result) => {
+        try {
+          callback(...result);
+        } finally {
+          pending.delete(operation);
+          if (pending.size === 0) resolveIdle?.();
+        }
+      });
+    });
+  }
+  const originalRm = fsPromises.rm;
+  t.mock.method(fsPromises, "rm", async (...args) => {
+    if (path.dirname(args[0]) === path.join(fixture.cacheDir, "openclaw")) {
+      cleanupPendingCounts.push(pending.size);
+      // Drain a regressed extractor before actually deleting the test workspace.
+      if (pending.size > 0) await new Promise((resolve) => { resolveIdle = resolve; });
+    }
+    return originalRm(...args);
+  });
+  syncBuiltinESMExports();
+  t.after(() => {
+    t.mock.restoreAll();
+    syncBuiltinESMExports();
+  });
+
+  await assert.rejects(
+    () => prepareOpenClawTarget(target, { cacheDir: fixture.cacheDir }),
+    (error) => error.tarCode === "TAR_ENTRY_INVALID" && /checksum failure/.test(error.message),
+  );
+  assert.deepEqual(cleanupPendingCounts, [0], "cleanup must not overtake extraction filesystem work");
+  assert.equal(pending.size, 0);
+  assert.deepEqual(await readdir(path.join(fixture.cacheDir, "openclaw")), []);
 });
 
 test("registry-controlled dist-tags cannot escape the target cache", async (t) => {
@@ -299,7 +349,7 @@ async function writeHonchoPlugin(pluginRoot, compatibilityRange) {
   );
 }
 
-async function createRegistryFixture(t) {
+async function createRegistryFixture(t, options = {}) {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-registry-"));
   const cacheDir = path.join(rootDir, "cache");
   const packageRoot = path.join(rootDir, "archive", "package");
@@ -325,7 +375,15 @@ async function createRegistryFixture(t) {
     "utf8",
   );
   await createTar({ cwd: path.join(rootDir, "archive"), file: tarballPath, gzip: true }, ["package"]);
-  const archive = await readFile(tarballPath);
+  let archive = await readFile(tarballPath);
+  if (options.invalidArchiveHeader) {
+    const invalidHeader = new Header({ path: "package/invalid", type: "File", size: 0, mode: 0o644 });
+    invalidHeader.encode();
+    invalidHeader.block[0] ^= 1;
+    // Queue a real directory creation before the strict parser rejects the next entry.
+    archive = gzipSync(Buffer.concat([gunzipSync(archive).subarray(0, 512), invalidHeader.block, Buffer.alloc(1024)]));
+    await writeFile(tarballPath, archive);
+  }
 
   const requests = [];
   const distTags = { latest: "2026.7.1-2", beta: affectedBeta };

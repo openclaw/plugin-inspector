@@ -149,7 +149,9 @@ async function preparePackageArchive(resolvedTarget, options) {
   try {
     const archivePath = path.join(temporaryDir, "openclaw.tgz");
     await writeFile(archivePath, archive);
-    await extractTar({ cwd: temporaryDir, file: archivePath, strict: true });
+    // Async tar rejection can leave filesystem writes running. Finish extraction
+    // before finally removes its workspace, including when strict validation fails.
+    extractTar({ cwd: temporaryDir, file: archivePath, strict: true, sync: true });
     const packageDir = path.join(temporaryDir, "package");
     if (!(await isPreparedPackage(packageDir, resolvedTarget.version))) {
       throw new Error(`downloaded OpenClaw ${resolvedTarget.version} archive has unexpected package metadata`);
