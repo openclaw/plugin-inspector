@@ -6,6 +6,7 @@ import { test } from "node:test";
 import {
   buildSyntheticProbePlan,
   captureEntrypoint,
+  createCaptureApi,
   defaultSyntheticHookContexts,
   defaultSyntheticHookEvents,
   renderSyntheticProbeMarkdown,
@@ -166,6 +167,7 @@ test("synthetic probe plan classifies generated kitchen-sink registrars", () => 
     "registerVideoGenerationProvider",
     "registerWebFetchProvider",
     "registerWebSearchProvider",
+    "registerWidgetPresenter",
   ];
   const plan = buildSyntheticProbePlan({
     capture: {
@@ -190,6 +192,39 @@ test("synthetic probe plan classifies generated kitchen-sink registrars", () => 
   assert.equal(plan.summary.probeCount, kitchenSinkRegistrars.length);
   assert.equal(plan.summary.blockedCount, 0);
   assert.deepEqual(validateSyntheticProbePlan(plan), []);
+});
+
+test("synthetic probes capture widget presenters without invoking runtime callbacks", async () => {
+  const api = createCaptureApi({ retainHandlers: true });
+  const invoked = [];
+  const callback = (name) => () => { invoked.push(name); };
+  for (const target of ["current_channel", "node_panel"]) {
+    api.registerWidgetPresenter({
+      target,
+      description: `Fixture ${target}`,
+      availability: callback(`${target}.availability`),
+      present: callback(`${target}.present`),
+      ...(target === "current_channel"
+        ? { match: callback(`${target}.match`), capabilities: { sourceKinds: ["html"] } }
+        : {}),
+    });
+  }
+  const capture = {
+    status: "captured",
+    captured: api.getCapturedContracts(),
+    retained: api.getRetainedContracts(),
+  };
+
+  for (const options of [{}, { includeLifecycle: true, includeChannelRuntime: true, includeProviderCapabilities: true }]) {
+    const result = await runCapturedSyntheticProbes(capture, options);
+
+    assert.deepEqual(result.summary, { probeCount: 2, passCount: 2, failCount: 0, blockedCount: 0 });
+    assert.deepEqual(
+      result.results.map((item) => [item.seam, item.output.mode]),
+      [["registerWidgetPresenter", "metadata-only"], ["registerWidgetPresenter", "metadata-only"]],
+    );
+    assert.deepEqual(invoked, []);
+  }
 });
 
 test("default hook payloads cover message and agent lifecycle readers", () => {

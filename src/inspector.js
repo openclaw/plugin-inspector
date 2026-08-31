@@ -15,6 +15,9 @@ import { buildCompatibilityReport, buildReport } from "./report.js";
 import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
 
 const execFileAsync = promisify(execFile);
+const pluginFactoryNames = "defineBundledChannelEntry|defineChannelPluginEntry|createChatChannelPlugin|definePluginEntry";
+// Bundlers emit unbound calls as (0, sdk.factory)(...), including inline require receivers.
+const compiledFactoryCall = new RegExp(String.raw`\(\s*0\s*,\s*(?:require\s*\(\s*(?:"[^"\r\n]*"|'[^'\r\n]*')\s*\)|[$A-Z_a-z][$\w]*)(?:\s*\.\s*[$A-Z_a-z][$\w]*)*\s*\.\s*(${pluginFactoryNames})\s*\)\s*\(`, "dg");
 const registrationEquivalents = new Map([
   ["registerChannel", new Set(["createChatChannelPlugin", "defineBundledChannelEntry", "defineChannelPluginEntry", "registerChannel"])],
 ]);
@@ -164,10 +167,8 @@ export function inspectSourceText(text, filePath = "source.js") {
   const hooks = collectDetailedMatches(searchableText, /\bapi\.on\(\s*["'`]([^"'`]+)["'`]/g, filePath, "name");
   const registrations = [
     ...collectDetailedMatches(searchableText, /\bapi\.(register[A-Za-z0-9]+)\s*\(/g, filePath, "name"),
-    ...collectDetailedMatches(searchableText, /\b(defineBundledChannelEntry)\s*\(/g, filePath, "name"),
-    ...collectDetailedMatches(searchableText, /\b(defineChannelPluginEntry)\s*\(/g, filePath, "name"),
-    ...collectDetailedMatches(searchableText, /\b(createChatChannelPlugin)\s*\(/g, filePath, "name"),
-    ...collectDetailedMatches(searchableText, /\b(definePluginEntry)\s*\(/g, filePath, "name"),
+    ...collectDetailedMatches(searchableText, new RegExp(String.raw`\b(${pluginFactoryNames})\s*\(`, "g"), filePath, "name"),
+    ...collectDetailedMatches(searchableText, compiledFactoryCall, filePath, "name"),
   ];
   const sdkImports = collectSdkImports(searchableText, filePath);
   const sdkDeprecations = inspectSdkDeprecations(searchableText, filePath);
@@ -373,7 +374,7 @@ function emptyInspection(fixture, status) {
 function collectDetailedMatches(text, regex, filePath, key) {
   const details = [];
   for (const match of text.matchAll(regex)) {
-    const line = lineForOffset(text, match.index ?? 0);
+    const line = lineForOffset(text, match.indices?.[1]?.[0] ?? match.index ?? 0);
     details.push({
       [key]: match[1],
       file: filePath,

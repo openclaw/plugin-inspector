@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Fixed
+
+- Recognize compiled CommonJS plugin factory calls when checking expected channel registrations, preserving source references and excluding factory values passed to wrappers.
+- Classify widget presenters as metadata-only synthetic probes without invoking presentation callbacks.
+
 ## 0.3.23 - 2026-08-30
 
 ### Fixed

@@ -295,6 +295,11 @@ export const syntheticRegistrationExecutionProfiles = {
     callableProperties: [],
     reason: "web search providers are captured as registration metadata before provider runtime execution",
   },
+  registerWidgetPresenter: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "widget presenters are captured as registration metadata before presentation runtime execution",
+  },
 };
 
 export const defaultSyntheticHookEvents = {

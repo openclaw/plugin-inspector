@@ -37,6 +37,33 @@ test("source inspection records hooks and registrars without treating type-only 
   assert.deepEqual(inspection.sdkImports, []);
 });
 
+test("source inspection recognizes direct and compiled plugin factory calls", () => {
+  for (const factory of ["defineBundledChannelEntry", "defineChannelPluginEntry", "createChatChannelPlugin", "definePluginEntry"]) {
+    for (const expression of [
+      `${factory}({});`,
+      `sdk.${factory}({});`,
+      `(0, sdk.${factory})({});`,
+      `(0, sdk.channel.${factory})({});`,
+      `(0, require("openclaw/plugin-sdk/channel-entry-contract").${factory})({});`,
+      `(0,\n require('openclaw/plugin-sdk/channel-entry-contract').${factory} /* compiled */\n) ({});`,
+    ]) {
+      const text = `// ignored ${factory}({});\n${expression}`;
+      const line = text.slice(0, text.lastIndexOf(factory)).split("\n").length;
+      assert.deepEqual(inspectSourceText(text, "index.cjs").registrations, [
+        { name: factory, file: "index.cjs", line, ref: `index.cjs:${line}` },
+      ], expression);
+    }
+    for (const expression of [
+      `(0, sdk.${factory});`,
+      `wrap(sdk.${factory})({});`,
+      `(0, sdk.${factory}Other)({});`,
+      `/* (0, sdk.${factory})({}); */`,
+    ]) {
+      assert.deepEqual(inspectSourceText(expression).registrations, [], expression);
+    }
+  }
+});
+
 test("source inspection ignores all type-only OpenClaw SDK import forms", () => {
   const inspection = inspectSourceText(
     [
@@ -466,6 +493,22 @@ test("fixture set inspection treats channel factories as channel registration co
   assert.equal(report.status, "pass");
   assert.deepEqual(report.breakages, []);
   assert.deepEqual(report.fixtures[0].registrations, ["createChatChannelPlugin", "defineBundledChannelEntry"]);
+
+  await writeFile(path.join(dir, "fixture", "index.js"), "", "utf8");
+  await writeFile(
+    path.join(dir, "fixture", "index.cjs"),
+    'module.exports = (0, require("openclaw/plugin-sdk/channel-entry-contract").defineBundledChannelEntry)({ id: "fixture-channel" });',
+    "utf8",
+  );
+  const compiledReport = await inspectFixtureSet({
+    version: 1,
+    submoduleRoot: ".",
+    rootDir: dir,
+    fixtures: [{ id: "fixture", path: "fixture", expect: { registrations: ["registerChannel"] } }],
+  });
+  assert.equal(compiledReport.status, "pass");
+  assert.deepEqual(compiledReport.breakages, []);
+  assert.deepEqual(compiledReport.fixtures[0].registrations, ["defineBundledChannelEntry"]);
 });
 
 test("capture entrypoint imports a local fixture and records registrations", async () => {

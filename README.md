@@ -208,6 +208,8 @@ plugin-inspector --help
 
 ## Runtime Capture
 
+Static inspection recognizes direct plugin factory calls and compiled CommonJS
+calls such as `(0, sdk.defineBundledChannelEntry)(...)` without importing them.
 Runtime capture imports plugin entrypoints in an isolated subprocess and records
 what `register(api)` does. Use it when static inspection cannot prove the actual
 registrations made at runtime.
@@ -229,6 +231,10 @@ subpaths and unresolved external packages discovered in the plugin import graph.
 That keeps compatibility CI offline and credential-free. It does not call live
 services, launch OpenClaw, run provider SDKs, or emulate service lifecycle side
 effects.
+
+Synthetic probes classify widget presenters as metadata-only. They record the
+registration without calling its match, availability, or presentation callbacks,
+including when channel, provider, or lifecycle execution is enabled.
 
 Use `--real-sdk` only when the plugin workspace already has real SDK
 dependencies installed and you intentionally want that path.
