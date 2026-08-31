@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -128,6 +129,39 @@ test("source inspection strips long comments before matching registrations", () 
     inspection.registrations.map((registration) => `${registration.name}@${registration.ref}`),
     ["registerTool@plugins/example/index.ts:2"],
   );
+});
+
+test("source inspection masks large comments within a bounded heap", () => {
+  const child = spawnSync(process.execPath, [
+    "--max-old-space-size=128",
+    "--input-type=module",
+    "-e",
+    `import { inspectSourceText } from ${JSON.stringify(new URL("../src/inspector.js", import.meta.url).href)};
+     const source = "/*" + "x".repeat(8 * 1024 * 1024) + "*/\\napi.registerTool({});";
+     console.log(JSON.stringify(inspectSourceText(source).registrations));`,
+  ], { encoding: "utf8", timeout: 30_000, env: { ...process.env, NODE_OPTIONS: "" } });
+  assert.equal(child.status, 0, child.stderr);
+  assert.deepEqual(JSON.parse(child.stdout), [
+    { name: "registerTool", file: "source.js", line: 2, ref: "source.js:2" },
+  ]);
+});
+
+test("comment masking preserves source locations and token boundaries", () => {
+  for (const [comment, line] of [
+    ["/* 🦞\ud800 */", 1],
+    ["/* first\r\nsecond\nthird\rlast */", 3],
+    ["// hidden api.registerService({});\r\n", 2],
+    ["/* outer /* nested */", 1],
+    ["/**/", 1],
+  ]) {
+    const inspection = inspectSourceText(`${comment}api.registerTool({});`);
+    assert.deepEqual(inspection.registrations, [
+      { name: "registerTool", file: "source.js", line, ref: `source.js:${line}` },
+    ]);
+  }
+  assert.deepEqual(inspectSourceText("api./* hidden */registerTool({});").registrations, []);
+  assert.deepEqual(inspectSourceText("/* unterminated\r\napi.registerTool({});").registrations, []);
+  assert.deepEqual(inspectSourceText("// unterminated api.registerTool({});").registrations, []);
 });
 
 test("source inspection records deprecated whole-store session helper usage", () => {

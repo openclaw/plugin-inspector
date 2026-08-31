@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 0.3.23 - 2026-08-30
+
+### Fixed
+
+- Mask source comments in spans so inspecting large bundled JavaScript stays within serverless memory limits while preserving source offsets and findings.
+
 ## 0.3.22 - 2026-08-30
 
 ### Fixed

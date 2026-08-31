@@ -727,38 +727,11 @@ function lineForOffset(text, offset) {
 }
 
 function stripComments(text) {
-  let result = "";
-  for (let index = 0; index < text.length; index += 1) {
-    const char = text[index];
-    const next = text[index + 1];
-    if (char === "/" && next === "*") {
-      result += "  ";
-      index += 2;
-      while (index < text.length && !(text[index] === "*" && text[index + 1] === "/")) {
-        result += blankCommentChar(text[index]);
-        index += 1;
-      }
-      if (index < text.length) {
-        result += "  ";
-        index += 1;
-      }
-    } else if (char === "/" && next === "/") {
-      result += "  ";
-      index += 2;
-      while (index < text.length && text[index] !== "\n" && text[index] !== "\r") {
-        result += " ";
-        index += 1;
-      }
-      index -= 1;
-    } else {
-      result += char;
-    }
-  }
-  return result;
-}
-
-function blankCommentChar(char) {
-  return char === "\n" || char === "\r" ? char : " ";
+  // Mask spans rather than building one string node per UTF-16 code unit.
+  // Keep offsets and CR/LF intact for findings, including unterminated comments.
+  return text.replace(/\/\*[\s\S]*?(?:\*\/|$)|\/\/[^\r\n]*/g, (comment) =>
+    comment.replace(/[^\r\n]+/g, (span) => " ".repeat(span.length)),
+  );
 }
 
 function sortDetails(details) {
