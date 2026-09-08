@@ -232,6 +232,13 @@ That keeps compatibility CI offline and credential-free. It does not call live
 services, launch OpenClaw, run provider SDKs, or emulate service lifecycle side
 effects.
 
+The default capture `api.runtime.modelAuth` passes synthetic provider IDs through
+unchanged, returns fresh empty auth stores and profile lists, and reports no
+configured API keys. Auth acquisition rejects with a mock-auth-unavailable error;
+it never looks up host credentials. This supports registration and no-auth
+callbacks, not provider alias validation or authenticated execution. An explicitly
+supplied runtime is preserved unchanged, including an empty runtime.
+
 Synthetic probes classify widget presenters as metadata-only. They record the
 registration without calling its match, availability, or presentation callbacks,
 including when channel, provider, or lifecycle execution is enabled.

@@ -164,3 +164,41 @@ test("capture API can retain handlers for probes", () => {
   assert.equal(retained[1].returnValue, service);
   assert.equal(typeof retained[1].returnValue.start, "function");
 });
+
+test("capture modelAuth stays credential-free with fresh stores and lists", async () => {
+  const api = createCaptureApi({
+    env: { OPENAI_API_KEY: "synthetic-not-a-credential" },
+    config: { models: { providers: { fixture: { apiKey: "synthetic-not-a-credential" } } } },
+    secrets: { get() { throw new Error("capture must not look up secrets"); } },
+  });
+  const auth = api.runtime.modelAuth;
+  const other = createCaptureApi().runtime.modelAuth;
+
+  assert.equal(auth.resolveProviderIdForAuth("fixture-provider"), "fixture-provider");
+  assert.equal(auth.isProviderApiKeyConfigured({ provider: "fixture", cfg: api.config }), false);
+  assert.deepEqual(auth.ensureAuthProfileStore(), { version: 1, profiles: {} });
+  auth.ensureAuthProfileStore().profiles.fixture = { apiKey: "synthetic-not-a-credential" };
+  assert.deepEqual(auth.ensureAuthProfileStore(), { version: 1, profiles: {} });
+  assert.deepEqual(other.ensureAuthProfileStore(), { version: 1, profiles: {} });
+  for (const method of ["resolveAuthProfileOrder", "listProfilesForProvider"]) {
+    assert.deepEqual(auth[method]({ provider: "fixture", cfg: api.config }), []);
+    auth[method]({}).push("fixture");
+    assert.deepEqual(auth[method]({}), []);
+    assert.deepEqual(other[method]({}), []);
+  }
+  for (const method of ["getApiKeyForModel", "getRuntimeAuthForModel", "resolveApiKeyForProvider"]) {
+    const result = auth[method]({ provider: "fixture", model: { provider: "fixture" }, cfg: api.config });
+    assert.ok(result instanceof Promise, method);
+    await assert.rejects(result, { message: "Model auth is unavailable in capture mocks" });
+  }
+});
+
+test("capture modelAuth preserves explicitly supplied runtime identity", () => {
+  const modelAuth = { resolveProviderIdForAuth: () => "custom-provider" };
+  for (const runtime of [{ modelAuth }, {}]) {
+    const api = createCaptureApi({ runtime });
+    assert.equal(api.runtime, runtime);
+    assert.equal(api.runtime.modelAuth, runtime.modelAuth);
+  }
+  assert.equal(createCaptureApi({ runtime: { modelAuth } }).runtime.modelAuth.resolveProviderIdForAuth(), "custom-provider");
+});

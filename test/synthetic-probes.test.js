@@ -552,6 +552,44 @@ test("mock SDK windows spawn helpers return concrete invocations", async () => {
   assert.deepEqual(result.results[0].output, { type: "object", keys: ["async", "sync"] });
 });
 
+for (const mockSdk of [false, true]) {
+  test(`synthetic modelAuth executes no-auth handlers and fails uncaught auth (mockSdk=${mockSdk})`, async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-model-auth-"));
+    const entrypoint = path.join(dir, "fixture.mjs");
+    await writeFile(entrypoint, [
+      'import assert from "node:assert/strict";',
+      "export function register(api) {",
+      "  const { resolveProviderIdForAuth, ensureAuthProfileStore, isProviderApiKeyConfigured } = api.runtime.modelAuth;",
+      "  api.registerTool({",
+      "    name: resolveProviderIdForAuth('fixture-provider'),",
+      "    run() {",
+      "      assert.equal(isProviderApiKeyConfigured({ provider: 'fixture-provider' }), false);",
+      "      assert.deepEqual(ensureAuthProfileStore(), { version: 1, profiles: {} });",
+      "      return resolveProviderIdForAuth('fixture-provider');",
+      "    },",
+      "  });",
+      "  api.on('before_tool_call', () => api.runtime.modelAuth.getRuntimeAuthForModel({ model: { provider: 'fixture-provider' } }));",
+      "  const unexpected = () => { throw new Error('opt-in callback executed'); };",
+      "  api.registerService({ name: 'fixture-service', start: unexpected });",
+      "  api.registerChannel({ id: 'fixture-channel', send: unexpected });",
+      "  api.registerSpeechProvider({ id: 'fixture-speech', speak: unexpected });",
+      "}",
+    ].join("\n"), "utf8");
+
+    const result = await runEntrypointSyntheticProbes(entrypoint, { mockSdk });
+
+    assert.deepEqual(result.summary, { probeCount: 5, passCount: 1, failCount: 1, blockedCount: 3 });
+    assert.deepEqual(result.results[0].output, { type: "string", value: "fixture-provider" });
+    assert.equal(result.results[1].status, "fail");
+    assert.equal(result.results[1].error, "Model auth is unavailable in capture mocks");
+    assert.deepEqual(result.results.slice(2).map((item) => item.reason), [
+      "captured registration requires includeLifecycle=true",
+      "captured registration requires includeChannelRuntime=true",
+      "captured registration requires includeProviderCapabilities=true",
+    ]);
+  });
+}
+
 async function captureLocalFixture(lines) {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-"));
   const entrypoint = path.join(dir, "fixture.mjs");

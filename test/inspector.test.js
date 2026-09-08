@@ -538,6 +538,61 @@ test("capture entrypoint imports a local fixture and records registrations", asy
   );
 });
 
+for (const mockSdk of [false, true]) {
+  test(`capture modelAuth binds a resolver during registration (mockSdk=${mockSdk})`, async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-model-auth-"));
+    const entrypoint = path.join(dir, "fixture.mjs");
+    await writeFile(entrypoint, [
+      "export function register(api) {",
+      "  const { resolveProviderIdForAuth } = api.runtime.modelAuth;",
+      "  api.registerTool({ name: resolveProviderIdForAuth('fixture-provider'), run() {} });",
+      "}",
+    ].join("\n"), "utf8");
+
+    const result = await captureEntrypoint(entrypoint, { mockSdk });
+
+    assert.equal(result.status, "captured");
+    assert.equal(result.captured.length, 1);
+    assert.equal(result.captured[0].name, "registerTool");
+    assert.equal(result.captured[0].arguments[0].name, "fixture-provider");
+  });
+
+  test(`capture modelAuth acquisition remains a registration failure (mockSdk=${mockSdk})`, async () => {
+    const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-model-auth-failure-"));
+    const entrypoint = path.join(dir, "fixture.mjs");
+    await writeFile(entrypoint, [
+      "export async function register(api) {",
+      "  await api.runtime.modelAuth.resolveApiKeyForProvider({ provider: 'fixture-provider' });",
+      "}",
+    ].join("\n"), "utf8");
+
+    await assert.rejects(captureEntrypoint(entrypoint, { mockSdk }), (error) => {
+      assert.equal(error.failureClass, "registration-execution-error");
+      assert.match(error.message, /Model auth is unavailable in capture mocks/);
+      return true;
+    });
+  });
+}
+
+test("capture modelAuth retains a supplied runtime through the in-process entrypoint", async () => {
+  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-model-auth-custom-"));
+  const entrypoint = path.join(dir, "fixture.mjs");
+  await writeFile(entrypoint, [
+    "export function register(api) {",
+    "  api.registerTool({",
+    "    name: api.runtime.modelAuth.resolveProviderIdForAuth('fixture-provider'),",
+    "    run: () => api.runtime,",
+    "  });",
+    "}",
+  ].join("\n"), "utf8");
+  const runtime = { modelAuth: { resolveProviderIdForAuth: () => "custom-provider" } };
+
+  const result = await captureEntrypoint(entrypoint, { apiOptions: { runtime, retainHandlers: true } });
+
+  assert.equal(result.captured[0].arguments[0].name, "custom-provider");
+  assert.equal(result.retained[0].arguments[0].run(), runtime);
+});
+
 test("capture entrypoint can mock OpenClaw plugin SDK imports", async () => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-sdk-capture-"));
   await mkdir(path.join(dir, "src"), { recursive: true });

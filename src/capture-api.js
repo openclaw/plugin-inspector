@@ -203,6 +203,17 @@ function createRuntimeContext(options) {
     logger: options.logger ?? console,
     now: () => new Date(0),
     tts: runtime.tts ?? {},
+    // Synthetic provider IDs pass through; capture never resolves host aliases or credentials.
+    modelAuth: {
+      resolveProviderIdForAuth: (provider) => provider,
+      ensureAuthProfileStore: () => ({ version: 1, profiles: {} }),
+      resolveAuthProfileOrder: () => [],
+      listProfilesForProvider: () => [],
+      isProviderApiKeyConfigured: () => false,
+      getApiKeyForModel: rejectCaptureModelAuth,
+      getRuntimeAuthForModel: rejectCaptureModelAuth,
+      resolveApiKeyForProvider: rejectCaptureModelAuth,
+    },
     state: {
       resolveStateDir: () => options.stateDir ?? process.cwd(),
       openBlobStore(storeOptions) {
@@ -226,6 +237,10 @@ function createRuntimeContext(options) {
       ...(runtime.state ?? {}),
     },
   };
+}
+
+async function rejectCaptureModelAuth() {
+  throw new Error("Model auth is unavailable in capture mocks");
 }
 
 function createBlobStoreContext(options) {
