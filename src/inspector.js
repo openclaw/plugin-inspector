@@ -13,6 +13,7 @@ import { readOpenClawTargetSurface } from "./openclaw-target.js";
 import { prepareOpenClawTarget, resolveOpenClawTargetVersion } from "./openclaw-version.js";
 import { buildCompatibilityReport, buildReport } from "./report.js";
 import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
+import { collectCommonJsRequires } from "./sdk-mock.js";
 
 const execFileAsync = promisify(execFile);
 const pluginFactoryNames = "defineBundledChannelEntry|defineChannelPluginEntry|createChatChannelPlugin|definePluginEntry";
@@ -290,9 +291,9 @@ export function classifyMockSdkCaptureError(error) {
   const missingModule =
     rawMessage.match(/Cannot find (?:package|module) ['"]([^'"]*openclaw\/plugin-sdk[^'"]*)['"]/)?.[1] ??
     rawMessage.match(/Package subpath ['"](\.\/plugin-sdk\/[^'"]+)['"]/)?.[1];
-  if (missingModule || rawMessage.includes("openclaw/plugin-sdk")) {
+  if (missingModule) {
     return enrichCaptureError(error, {
-      message: `Mock SDK import failed: ${missingModule ?? "openclaw/plugin-sdk module could not be resolved"}`,
+      message: `Mock SDK import failed: ${missingModule}`,
       failureClass: "missing-sdk-module",
       missingModule,
     });
@@ -303,6 +304,12 @@ export function classifyMockSdkCaptureError(error) {
     return enrichCaptureError(error, {
       message: firstMeaningfulErrorLine(rawMessage.replace(/\[plugin-inspector:[^\]]+\]/, "")) ?? "Mock SDK capture failed",
       failureClass,
+    });
+  }
+  if (rawMessage.includes("openclaw/plugin-sdk")) {
+    return enrichCaptureError(error, {
+      message: "Mock SDK import failed: openclaw/plugin-sdk module could not be resolved",
+      failureClass: "missing-sdk-module",
     });
   }
 
@@ -409,6 +416,16 @@ function collectSdkImports(text, filePath) {
     const line = lineForOffset(text, match.index ?? 0);
     details.push({
       specifier: match[1],
+      file: filePath,
+      line,
+      ref: `${filePath}:${line}`,
+    });
+  }
+  for (const { specifier, index } of collectCommonJsRequires(text)) {
+    if (specifier !== "openclaw/plugin-sdk" && !specifier.startsWith("openclaw/plugin-sdk/")) continue;
+    const line = lineForOffset(text, index);
+    details.push({
+      specifier,
       file: filePath,
       line,
       ref: `${filePath}:${line}`,

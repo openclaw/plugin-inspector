@@ -232,6 +232,13 @@ That keeps compatibility CI offline and credential-free. It does not call live
 services, launch OpenClaw, run provider SDKs, or emulate service lifecycle side
 effects.
 
+CommonJS SDK mocking, including compiled `.cjs` entrypoints and lazy `require()`
+calls in synthetic handlers, requires Node.js 22.15 or newer with
+`module.registerHooks()`. On older Node versions, upgrade Node.js or use an
+ESM/TypeScript entrypoint. This capability requirement does not change the
+package's Node.js `>=22` engine range or gate existing ESM/TypeScript capture.
+Static inspection also discovers literal CommonJS SDK `require()` references.
+
 The default capture `api.runtime.modelAuth` passes synthetic provider IDs through
 unchanged, returns fresh empty auth stores and profile lists, and reports no
 configured API keys. Auth acquisition rejects with a mock-auth-unavailable error;

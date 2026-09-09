@@ -1,5 +1,7 @@
-import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, realpath, writeFile } from "node:fs/promises";
+import * as nodeModule from "node:module";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 const SOURCE_EXTENSIONS = new Set([".js", ".mjs", ".cjs", ".ts", ".mts", ".cts"]);
 const SKIP_DIRS = new Set([".git", "coverage", "node_modules", "reports"]);
@@ -305,18 +307,48 @@ export async function createMockSdkPackage(rootDir, options = {}) {
 
   const fallbackExternalPath = path.join(externalDir, "__fallback__.js");
   await writeFile(fallbackExternalPath, externalMockModuleSource("__fallback__", new Set()), "utf8");
+  const roots = new Set();
+  for (const root of [options.pluginRoot, rootDir].filter(Boolean)) {
+    roots.add(path.resolve(root));
+    roots.add(await realpath(root));
+  }
   const loaderPath = path.join(rootDir, "mock-loader.mjs");
-  await writeFile(
-    loaderPath,
-    mockLoaderSource({
+  const syncLoaderPath = path.join(rootDir, "mock-loader-sync.mjs");
+  for (const [filePath, synchronous] of [[loaderPath, false], [syncLoaderPath, true]]) {
+    await writeFile(filePath, mockLoaderSource({
       externalMap,
       fallbackExternalPath,
       pluginSdkDir,
-    }),
-    "utf8",
-  );
+      roots: [...roots],
+      requireFiles: [...imports.requireFiles],
+      synchronous,
+    }), "utf8");
+  }
 
-  return { packageDir, loaderPath, pluginSdkDir };
+  return { packageDir, loaderPath, syncLoaderPath, pluginSdkDir };
+}
+
+export async function installMockSdkLoader(mockPackage) {
+  const supportsCommonJs = typeof nodeModule.registerHooks === "function";
+  // Async hooks cannot deregister. Shared state makes them inert after this capture.
+  const active = new Int32Array(new SharedArrayBuffer(4));
+  Atomics.store(active, 0, 1);
+  nodeModule.register(pathToFileURL(mockPackage.loaderPath), { data: { active, supportsCommonJs } });
+  let hooks;
+  try {
+    if (supportsCommonJs) {
+      const { resolve } = await import(pathToFileURL(mockPackage.syncLoaderPath).href);
+      // Keep CommonJS loading native; a sync load hook changes its import path on Node 22.15.
+      hooks = nodeModule.registerHooks({ resolve });
+    }
+  } catch (error) {
+    Atomics.store(active, 0, 0);
+    throw error;
+  }
+  return () => {
+    hooks?.deregister();
+    Atomics.store(active, 0, 0);
+  };
 }
 
 function emptyRuntimeImports() {
@@ -324,6 +356,7 @@ function emptyRuntimeImports() {
     bySpecifier: new Map(),
     openclawSdkSpecifiers: new Set(["openclaw/plugin-sdk"]),
     bareSpecifiers: new Set(),
+    requireFiles: new Set(),
   };
 }
 
@@ -331,6 +364,7 @@ async function collectRuntimeImports(pluginRoot) {
   const bySpecifier = new Map();
   const openclawSdkSpecifiers = new Set(["openclaw/plugin-sdk"]);
   const bareSpecifiers = new Set();
+  const requireFiles = new Set();
   for (const filePath of await listSourceFiles(pluginRoot)) {
     const text = await readFile(filePath, "utf8");
     for (const entry of parseModuleImports(text)) {
@@ -341,6 +375,10 @@ async function collectRuntimeImports(pluginRoot) {
       } else {
         continue;
       }
+      if (entry.require && !requireFiles.has(path.resolve(filePath))) {
+        requireFiles.add(path.resolve(filePath));
+        requireFiles.add(await realpath(filePath));
+      }
       const names = bySpecifier.get(entry.specifier) ?? new Set();
       for (const name of entry.names) {
         names.add(name);
@@ -348,7 +386,7 @@ async function collectRuntimeImports(pluginRoot) {
       bySpecifier.set(entry.specifier, names);
     }
   }
-  return { bySpecifier, openclawSdkSpecifiers, bareSpecifiers };
+  return { bySpecifier, openclawSdkSpecifiers, bareSpecifiers, requireFiles };
 }
 
 async function listSourceFiles(dir) {
@@ -392,7 +430,60 @@ function parseModuleImports(text) {
   for (const match of text.matchAll(/\bimport\s+["']([^"']+)["']/g)) {
     entries.push({ specifier: match[1], names: new Set() });
   }
+  for (const { specifier, binding, member } of collectCommonJsRequires(text)) {
+    const names = new Set();
+    if (binding?.startsWith("{")) {
+      for (const part of binding.slice(1, -1).split(",")) {
+        const name = part.split(/[:=]/)[0].trim();
+        if (isValidExportName(name)) names.add(name);
+      }
+    } else if (binding) {
+      const escaped = binding.replace(/[$]/g, "\\$");
+      for (const access of text.matchAll(new RegExp(`(?<![$\\w])${escaped}\\s*\\.\\s*([$\\w]+)`, "g"))) {
+        names.add(access[1]);
+      }
+    }
+    if (member) names.add(member);
+    entries.push({ specifier, names, require: true });
+  }
   return entries;
+}
+
+export function* collectCommonJsRequires(text) {
+  const code = /\/\/[^\r\n]*|\/\*[\s\S]*?(?:\*\/|$)|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|(?<![$\w.])(?:(?:const|let|var)\s+(\{[^{}]*\}|[$A-Z_a-z][$\w]*)\s*=\s*)?require\s*\(\s*["']([^"']+)["']\s*\)(?:\s*\.\s*([$A-Z_a-z][$\w]*))?|[`{}]/g;
+  const template = /\\[\s\S]|`|\$\{/g;
+  const templateDepths = [];
+  let inTemplateText = false;
+  let cursor = 0;
+  // Skip quoted/comment text, but scan executable template interpolations.
+  while (cursor < text.length) {
+    const pattern = inTemplateText ? template : code;
+    pattern.lastIndex = cursor;
+    const match = pattern.exec(text);
+    if (!match) break;
+    cursor = pattern.lastIndex;
+    if (inTemplateText) {
+      if (match[0] === "`") {
+        templateDepths.pop();
+        inTemplateText = false;
+      } else if (match[0] === "${") {
+        templateDepths[templateDepths.length - 1] = 1;
+        inTemplateText = false;
+      }
+      continue;
+    }
+    if (match[0] === "`") {
+      templateDepths.push(0);
+      inTemplateText = true;
+    } else if (templateDepths.length && match[0] === "{") {
+      templateDepths[templateDepths.length - 1] += 1;
+    } else if (templateDepths.length && match[0] === "}") {
+      inTemplateText = --templateDepths[templateDepths.length - 1] === 0;
+    }
+    if (match[2]) {
+      yield { specifier: match[2], binding: match[1], member: match[3], index: match.index };
+    }
+  }
 }
 
 function isTypeOnlyImportOrExport(statement, clause) {
@@ -417,6 +508,7 @@ function parseNamedImports(clause) {
 
 function isMockableBareSpecifier(specifier) {
   return (
+    !nodeModule.isBuiltin(specifier) &&
     !specifier.startsWith(".") &&
     !specifier.startsWith("/") &&
     !specifier.startsWith("node:") &&
@@ -429,7 +521,9 @@ function safeModuleFileName(specifier) {
   return specifier.replace(/[^A-Za-z0-9._-]+/gu, "__");
 }
 
-function mockLoaderSource({ externalMap, fallbackExternalPath, pluginSdkDir }) {
+function mockLoaderSource({ externalMap, fallbackExternalPath, pluginSdkDir, roots, requireFiles, synchronous }) {
+  const asyncKeyword = synchronous ? "" : "async ";
+  const awaitKeyword = synchronous ? "" : "await ";
   return `import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { builtinModules, stripTypeScriptTypes } from "node:module";
@@ -439,9 +533,30 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 const externalMap = new Map(Object.entries(${JSON.stringify(externalMap)}));
 const fallbackExternalPath = ${JSON.stringify(fallbackExternalPath)};
 const pluginSdkDir = ${JSON.stringify(pluginSdkDir)};
+const roots = ${JSON.stringify(roots)};
+const requireFiles = new Set(${JSON.stringify(requireFiles)});
 const builtins = new Set([...builtinModules, ...builtinModules.map((name) => \`node:\${name}\`)]);
+let active;
+let supportsCommonJs = false;
 
-export async function resolve(specifier, context, nextResolve) {
+export function initialize(data) {
+  active = data?.active;
+  supportsCommonJs = data?.supportsCommonJs === true;
+}
+
+function owns(url) {
+  if ((active && Atomics.load(active, 0) === 0) || !url?.startsWith("file:")) return false;
+  const filePath = fileURLToPath(url);
+  return roots.some((root) => {
+    const relative = path.relative(root, filePath);
+    return relative === "" || (!relative.startsWith(\`..\${path.sep}\`) && relative !== ".." && !path.isAbsolute(relative));
+  });
+}
+
+export ${asyncKeyword}function resolve(specifier, context, nextResolve) {
+  if (!owns(context.parentURL) || builtins.has(specifier) || specifier.startsWith("node:")) {
+    return nextResolve(specifier, context);
+  }
   if (specifier === "openclaw/plugin-sdk") {
     return moduleUrl(path.join(pluginSdkDir, "index.js"));
   }
@@ -458,7 +573,7 @@ export async function resolve(specifier, context, nextResolve) {
     return moduleUrl(externalMap.get(specifier));
   }
   try {
-    return await nextResolve(specifier, context);
+    return ${awaitKeyword}nextResolve(specifier, context);
   } catch (error) {
     const resolved = resolveExtensionless(specifier, context.parentURL);
     if (resolved) {
@@ -472,11 +587,16 @@ export async function resolve(specifier, context, nextResolve) {
 }
 
 export async function load(url, context, nextLoad) {
+  if (!owns(url)) return nextLoad(url, context);
   if (url.startsWith("file:") && /\\.[cm]?ts$/u.test(fileURLToPath(url))) {
     const rawSource = await readFile(fileURLToPath(url), "utf8");
     return { format: "module", source: stripPluginTypeScript(rawSource), shortCircuit: true };
   }
-  return nextLoad(url, context);
+  const result = await nextLoad(url, context);
+  ${synchronous ? "" : `if (!supportsCommonJs && result.format === "commonjs" && requireFiles.has(fileURLToPath(url))) {
+    throw new Error("CommonJS SDK mocking requires Node.js 22.15 or newer with module.registerHooks(); upgrade Node.js or use an ESM/TypeScript entrypoint.");
+  }`}
+  return result;
 }
 
 function stripPluginTypeScript(source) {

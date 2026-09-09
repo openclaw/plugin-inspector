@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Capture and synthetically probe compiled CommonJS plugins with generated SDK mocks, including lazy `require()` calls, and discover their SDK source references. CommonJS mocking requires Node.js 22.15+ synchronous module hooks; the package engine and existing ESM/TypeScript capture remain unchanged.
 - Capture plugins that bind `api.runtime.modelAuth` during registration with credential-free defaults; auth acquisition remains an explicit synthetic failure.
 
 ## 0.3.24 - 2026-08-31
