@@ -8,6 +8,9 @@ import { x as extractTar } from "tar";
 import { readOpenClawTargetSurface } from "./openclaw-target.js";
 
 const defaultRegistryUrl = "https://registry.npmjs.org";
+const defaultFetchTimeoutMs = 30_000;
+const defaultMaxArchiveBytes = 256 * 1024 * 1024;
+const defaultMaxMetadataBytes = 16 * 1024 * 1024;
 const supportedTags = new Set(["latest", "beta"]);
 const downloadUrls = new WeakMap();
 
@@ -25,8 +28,8 @@ export async function resolveOpenClawTargetVersion(requestedVersion, options = {
   let distTag = null;
 
   if (supportedTags.has(requested)) {
-    const metadata = await fetchJson(`${registryUrl}/openclaw`, fetchImpl);
-    version = metadata["dist-tags"]?.[requested];
+    const distTags = await fetchJson(`${registryUrl}/-/package/openclaw/dist-tags`, fetchImpl, options);
+    version = distTags?.[requested];
     if (typeof version !== "string" || version.length === 0) {
       throw new Error(`OpenClaw npm dist-tag ${requested} did not resolve to an exact version`);
     }
@@ -38,7 +41,7 @@ export async function resolveOpenClawTargetVersion(requestedVersion, options = {
     throw new Error("--openclaw-version must be latest, beta, or an exact OpenClaw version");
   }
 
-  const versionMetadata = await fetchJson(`${registryUrl}/openclaw/${encodeURIComponent(version)}`, fetchImpl);
+  const versionMetadata = await fetchJson(`${registryUrl}/openclaw/${encodeURIComponent(version)}`, fetchImpl, options);
   if (versionMetadata.version !== version || typeof versionMetadata.dist?.tarball !== "string") {
     throw new Error(`OpenClaw npm metadata for ${version} is incomplete`);
   }
@@ -137,11 +140,12 @@ export function satisfiesOpenClawCompatibilityRange({ targetVersion, eligibility
 
 async function preparePackageArchive(resolvedTarget, options) {
   const fetchImpl = options.fetch ?? globalThis.fetch;
-  const response = await fetchImpl(downloadUrlFor(resolvedTarget));
+  const response = await fetchWithTimeout(fetchImpl, downloadUrlFor(resolvedTarget), {}, options, "npm archive");
   if (!response.ok) {
+    await cancelBody(response.body);
     throw new Error(`failed to download OpenClaw ${resolvedTarget.version}: HTTP ${response.status}`);
   }
-  const archive = Buffer.from(await response.arrayBuffer());
+  const archive = await readLimitedBody(response, maxArchiveBytes(options), "npm archive");
   verifyArchive(archive, resolvedTarget.source);
 
   await mkdir(path.dirname(options.targetDir), { recursive: true });
@@ -191,10 +195,118 @@ function verifyArchive(archive, source) {
   throw new Error("OpenClaw npm archive has no supported integrity metadata");
 }
 
-async function fetchJson(url, fetchImpl) {
-  const response = await fetchImpl(url, { headers: { accept: "application/json" } });
-  if (!response.ok) throw new Error(`failed to resolve OpenClaw npm metadata: HTTP ${response.status}`);
-  return response.json();
+async function fetchJson(url, fetchImpl, options = {}) {
+  const response = await fetchWithTimeout(
+    fetchImpl,
+    url,
+    { headers: { accept: "application/json" } },
+    options,
+    "npm metadata",
+  );
+  if (!response.ok) {
+    await cancelBody(response.body);
+    throw new Error(`failed to resolve OpenClaw npm metadata: HTTP ${response.status}`);
+  }
+  const body = await readLimitedBody(response, maxMetadataBytes(options), "npm metadata");
+  return JSON.parse(body.toString("utf8"));
+}
+
+async function fetchWithTimeout(fetchImpl, url, init, options, what) {
+  try {
+    return await fetchImpl(url, { ...init, signal: AbortSignal.timeout(fetchTimeoutMs(options)) });
+  } catch (error) {
+    throw mapTargetFetchError(error, what);
+  }
+}
+
+async function readLimitedBody(response, maxBytes, what) {
+  const declared = Number(response.headers.get("content-length"));
+  if (Number.isFinite(declared) && declared > maxBytes) {
+    await cancelBody(response.body);
+    throw targetDownloadLimitError(what, maxBytes);
+  }
+
+  let reader;
+  try {
+    if (!response.body || typeof response.body.getReader !== "function") {
+      const buffer = Buffer.from(await response.arrayBuffer());
+      if (buffer.length > maxBytes) throw targetDownloadLimitError(what, maxBytes);
+      return buffer;
+    }
+
+    reader = response.body.getReader();
+    const chunks = [];
+    let received = 0;
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      received += value.byteLength;
+      if (received > maxBytes) {
+        try {
+          await reader.cancel();
+        } catch {}
+        throw targetDownloadLimitError(what, maxBytes);
+      }
+      chunks.push(value);
+    }
+    return Buffer.concat(chunks.map((chunk) => Buffer.from(chunk)));
+  } catch (error) {
+    throw mapTargetFetchError(error, what);
+  } finally {
+    reader?.releaseLock();
+  }
+}
+
+async function cancelBody(body) {
+  try {
+    await body?.cancel?.();
+  } catch {}
+}
+
+function fetchTimeoutMs(options) {
+  const timeout = positiveInteger(
+    options.fetchTimeoutMs ?? process.env.PLUGIN_INSPECTOR_TARGET_FETCH_TIMEOUT_MS,
+    defaultFetchTimeoutMs,
+  );
+  // Node clamps overflowing timer delays to 1ms instead of honoring the budget.
+  return timeout <= 2_147_483_647 ? timeout : defaultFetchTimeoutMs;
+}
+
+function maxArchiveBytes(options) {
+  return positiveInteger(options.maxArchiveBytes ?? process.env.PLUGIN_INSPECTOR_TARGET_ARCHIVE_MAX_BYTES, defaultMaxArchiveBytes);
+}
+
+function maxMetadataBytes(options) {
+  return positiveInteger(options.maxMetadataBytes ?? process.env.PLUGIN_INSPECTOR_TARGET_METADATA_MAX_BYTES, defaultMaxMetadataBytes);
+}
+
+function positiveInteger(value, fallback) {
+  const parsed = Number(value);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
+}
+
+function mapTargetFetchError(error, what) {
+  if (error?.failureClass) return error;
+  if (isTimeoutError(error)) {
+    const wrapped = new Error(`OpenClaw ${what} download timed out`);
+    wrapped.failureClass = "target-download-timeout";
+    wrapped.cause = error;
+    return wrapped;
+  }
+  return error;
+}
+
+function isTimeoutError(error) {
+  for (let current = error; current; current = current.cause) {
+    if (current.name === "TimeoutError" || current.name === "AbortError") return true;
+  }
+  return false;
+}
+
+function targetDownloadLimitError(what, maxBytes) {
+  const error = new Error(`OpenClaw ${what} exceeds the ${maxBytes} byte download limit`);
+  error.failureClass = "target-download-too-large";
+  return error;
 }
 
 function cacheKeyFor(target) {

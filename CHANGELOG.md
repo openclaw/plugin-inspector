@@ -3,7 +3,11 @@
 ## Unreleased
 
 - Capture and synthetically probe compiled CommonJS plugins with generated SDK mocks, including lazy `require()` calls, and discover their SDK source references. CommonJS mocking requires Node.js 22.15+ synchronous module hooks; the package engine and existing ESM/TypeScript capture remain unchanged.
+- Bound OpenClaw npm metadata and tarball downloads with a deadline through response-body reads, reject oversized responses, and release failed downloads. Resolve `latest` and `beta` through the small npm dist-tags endpoint before fetching exact-version metadata, keeping the 16 MiB metadata limit usable.
+
 - Capture plugins that bind `api.runtime.modelAuth` during registration with credential-free defaults; auth acquisition remains an explicit synthetic failure.
+- Report absent build output and missing entrypoints before SDK alias blockers in cold-import readiness, preserving build-required totals and all remediation evidence.
+- Recognize board widget content kinds, memory prompt preparation, transcript source providers, worker providers, and MCP server connection resolvers as metadata-only synthetic probes without invoking runtime callbacks.
 
 ## 0.3.24 - 2026-08-31
 
