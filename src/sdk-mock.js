@@ -438,7 +438,7 @@ function parseModuleImports(text) {
         if (isValidExportName(name)) names.add(name);
       }
     } else if (binding) {
-      const escaped = binding.replace(/[$]/g, "\\$");
+      const escaped = binding.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       for (const access of text.matchAll(new RegExp(`(?<![$\\w])${escaped}\\s*\\.\\s*([$\\w]+)`, "g"))) {
         names.add(access[1]);
       }
