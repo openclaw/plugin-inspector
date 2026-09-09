@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Capture plugins that bind `api.runtime.modelAuth` during registration with credential-free defaults; auth acquisition remains an explicit synthetic failure.
+- Report absent build output and missing entrypoints before SDK alias blockers in cold-import readiness, preserving build-required totals and all remediation evidence.
 
 ## 0.3.24 - 2026-08-31
 

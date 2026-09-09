@@ -226,14 +226,14 @@ function readinessStatus(blockers) {
   if (blockers.length === 0) {
     return "ready";
   }
-  if (blockers.some((blocker) => blocker.code === "sdk-alias-required")) {
-    return "sdk-alias-required";
-  }
   if (blockers.some((blocker) => blocker.code === "build-required")) {
     return "build-required";
   }
   if (blockers.some((blocker) => blocker.code === "missing-entrypoint")) {
     return "missing";
+  }
+  if (blockers.some((blocker) => blocker.code === "sdk-alias-required")) {
+    return "sdk-alias-required";
   }
   if (blockers.some((blocker) => blocker.code === "ts-loader-required")) {
     return "ts-loader-required";
