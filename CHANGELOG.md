@@ -2,7 +2,11 @@
 
 ## Unreleased
 
+### Fixed
+
 - Capture and synthetically probe compiled CommonJS plugins with generated SDK mocks, including lazy `require()` calls, and discover their SDK source references. CommonJS mocking requires Node.js 22.15+ synchronous module hooks; the package engine and existing ESM/TypeScript capture remain unchanged.
+- Bound mock-SDK capture and profile child lifetimes, output, and process sampling; clean owned POSIX descendants through stdio close and keep timeout/cancellation outcomes unsuccessful. Flush complete capture JSON before exiting despite retained plugin timers. Thanks @SebTardif.
+- Profile the default import-loop capture runner directly so its timeout also owns plugin execution. Validate fresh, bounded capture artifacts; RSS/CPU and wall-time measurements now exclude the intermediate CLI wrapper and are not directly comparable with historical profiles.
 - Bound OpenClaw npm metadata and tarball downloads with a deadline through response-body reads, reject oversized responses, and release failed downloads. Resolve `latest` and `beta` through the small npm dist-tags endpoint before fetching exact-version metadata, keeping the 16 MiB metadata limit usable.
 
 - Capture plugins that bind `api.runtime.modelAuth` during registration with credential-free defaults; auth acquisition remains an explicit synthetic failure.

@@ -1,21 +1,19 @@
 import { existsSync } from "node:fs";
-import { execFile } from "node:child_process";
 import { readdir, readFile } from "node:fs/promises";
 import * as nodeModule from "node:module";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { promisify } from "node:util";
 import { createCaptureApi } from "./capture-api.js";
 import { captureApiOptionsForPlugin } from "./capture-config.js";
 import { fixtureCheckoutPath, fixtureSourceRoot } from "./config.js";
 import { buildCompatibilityFixtureReport } from "./fixture-summary.js";
 import { readOpenClawTargetSurface } from "./openclaw-target.js";
 import { prepareOpenClawTarget, resolveOpenClawTargetVersion } from "./openclaw-version.js";
+import { startOwnedProcess } from "./process-profile.js";
 import { buildCompatibilityReport, buildReport } from "./report.js";
 import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
 import { collectCommonJsRequires } from "./sdk-mock.js";
 
-const execFileAsync = promisify(execFile);
 const pluginFactoryNames = "defineBundledChannelEntry|defineChannelPluginEntry|createChatChannelPlugin|definePluginEntry";
 // Bundlers emit unbound calls as (0, sdk.factory)(...), including inline require receivers.
 const compiledFactoryCall = new RegExp(String.raw`\(\s*0\s*,\s*(?:require\s*\(\s*(?:"[^"\r\n]*"|'[^'\r\n]*')\s*\)|[$A-Z_a-z][$\w]*)(?:\s*\.\s*[$A-Z_a-z][$\w]*)*\s*\.\s*(${pluginFactoryNames})\s*\)\s*\(`, "dg");
@@ -233,51 +231,47 @@ export async function captureEntrypointWithMockSdk(entrypoint, options = {}) {
     cwd: options.cwd ?? process.cwd(),
     pluginRoot: options.pluginRoot,
     apiOptions: options.apiOptions,
+    maxOutputBytes: options.maxOutputBytes,
   };
+  const { result } = startOwnedProcess({
+    command: process.execPath,
+    args: ["--no-warnings", "--preserve-symlinks", runnerPath, JSON.stringify(payload)],
+    cwd: options.cwd ?? process.cwd(),
+    env: { ...process.env, ...options.env },
+    timeoutMs: options.timeoutMs,
+    killGraceMs: options.killGraceMs,
+    maxOutputBytes: options.maxOutputBytes,
+    signal: options.signal,
+  }, "CAPTURE");
+  const outcome = await result;
+  if (outcome.exitCode !== 0 || outcome.outputTruncated) {
+    const message = outcome.cancelled ? "Mock SDK capture cancelled"
+      : outcome.outputTruncated ? "Mock SDK capture output exceeded its byte limit"
+      : "Mock SDK capture child failed";
+    const { error: childError, ...details } = outcome;
+    throw classifyMockSdkCaptureError(Object.assign(childError ?? new Error(message), details));
+  }
   try {
-    const { stdout } = await execFileAsync(
-      process.execPath,
-      ["--no-warnings", "--preserve-symlinks", runnerPath, JSON.stringify(payload)],
-      {
-        cwd: options.cwd ?? process.cwd(),
-        env: {
-          ...process.env,
-          ...(options.env ?? {}),
-        },
-        maxBuffer: 1024 * 1024 * 10,
-      },
-    );
-    return JSON.parse(stdout);
+    return JSON.parse(outcome.stdout);
   } catch (error) {
-    const captured = parseCaptureResultFromStdout(error?.stdout);
-    if (captured) {
-      return captured;
-    }
     throw classifyMockSdkCaptureError(error);
   }
 }
 
-function parseCaptureResultFromStdout(stdout) {
-  if (!stdout) {
-    return null;
-  }
-  try {
-    const parsed = JSON.parse(stdout);
-    if (
-      parsed &&
-      typeof parsed === "object" &&
-      typeof parsed.status === "string" &&
-      Array.isArray(parsed.captured)
-    ) {
-      return parsed;
-    }
-  } catch {
-    return null;
-  }
-  return null;
-}
-
 export function classifyMockSdkCaptureError(error) {
+  if (error?.timedOut === true) {
+    return enrichCaptureError(error, {
+      message: `Mock SDK capture timed out after ${error.timeoutMs}ms`,
+      failureClass: "capture-timeout",
+    });
+  }
+  if (error?.cancelled || error?.outputTruncated) {
+    return enrichCaptureError(error, {
+      message: error.message,
+      failureClass: "mock-sdk-capture-error",
+    });
+  }
+
   const rawMessage = [error?.stderr, error?.stdout, error?.message].filter(Boolean).join("\n");
   const missingExport = rawMessage.match(/does not provide an export named ['"]([^'"]+)['"]/)?.[1];
   if (missingExport) {

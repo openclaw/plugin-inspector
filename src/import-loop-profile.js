@@ -1,12 +1,13 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { constants } from "node:fs";
+import { mkdir, open, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { resolveFromRoot } from "./path-utils.js";
-import { runProfiledProcess } from "./process-profile.js";
+import { resolveProcessLimits, runProfiledProcess } from "./process-profile.js";
 import { assertRunCount, percentile } from "./stats.js";
 
-const defaultCliPath = fileURLToPath(new URL("./cli.js", import.meta.url));
+const defaultRunnerPath = fileURLToPath(new URL("./mock-sdk-capture-runner.js", import.meta.url));
 
 export const defaultImportLoopProfileOptions = {
   entrypoint: "test/fixtures/lazy-import-plugin.mjs",
@@ -255,18 +256,49 @@ async function runCaptureSample(options) {
   const outputPath = path.join(outputDir, `${options.sampleName ?? "capture"}-${options.index}.json`);
   await mkdir(path.dirname(outputPath), { recursive: true });
 
-  const command = buildCaptureCommand({ ...options, outputPath });
+  const defaultCapture = typeof options.captureCommand !== "function" && !options.captureScript;
+  const maxOutputBytes = resolveProcessLimits({
+    ...options,
+    env: { ...process.env, ...options.env, ...options.captureEnv },
+  }, "CAPTURE").maxOutputBytes;
+  // Only the built-in route owns these sample files. An early process.exit(0)
+  // must not turn a previous capture into this run's successful result.
+  if (defaultCapture) await rm(outputPath, { force: true });
+  const command = buildCaptureCommand({ ...options, outputPath, maxOutputBytes });
   const profile = await runProfiledProcess({
     command: command.command,
     args: command.args,
     cwd: command.cwd ?? options.rootDir,
-    env: { ...process.env, ...command.env },
+    env: { ...process.env, ...options.env, ...command.env },
+    timeoutMs: options.timeoutMs,
+    maxOutputBytes: options.maxOutputBytes,
+    killGraceMs: options.killGraceMs,
+    signal: options.signal,
   });
-  const output = profile.exitCode === 0 ? await readCaptureOutput(outputPath) : null;
+  let output = null;
+  if (profile.exitCode === 0 && !profile.timedOut && !profile.cancelled) {
+    if (defaultCapture) {
+      try {
+        output = await readCaptureOutput(outputPath, maxOutputBytes);
+      } catch (error) {
+        profile.exitCode = 1;
+        profile.stderrPreview = `Invalid capture artifact: ${error.message}`;
+      }
+    } else {
+      output = await readCaptureOutput(outputPath);
+    }
+  }
+  if (options.signal?.aborted) {
+    profile.exitCode = 1;
+    profile.cancelled = true;
+    output = null;
+  }
 
   return {
     index: options.index,
     exitCode: profile.exitCode,
+    timedOut: profile.timedOut === true,
+    cancelled: profile.cancelled === true,
     status: output?.status ?? "failed",
     capturedCount: output?.captured?.length ?? 0,
     openClawLifecycle: output?.openClawLifecycle ?? null,
@@ -407,15 +439,45 @@ function buildCaptureCommand(options) {
   }
   return {
     command: process.execPath,
-    args: [defaultCliPath, "capture", options.entrypoint, "--output", options.outputPath],
+    args: [
+      "--no-warnings",
+      "--preserve-symlinks",
+      defaultRunnerPath,
+      JSON.stringify({
+        entrypoint: options.entrypoint,
+        cwd: options.rootDir,
+        outputPath: options.outputPath,
+        maxOutputBytes: options.maxOutputBytes,
+      }),
+    ],
     cwd: options.rootDir,
     env: { PLUGIN_INSPECTOR_EXECUTE_ISOLATED: "1", ...options.captureEnv },
   };
 }
 
-async function readCaptureOutput(outputPath) {
-  const { readFile } = await import("node:fs/promises");
-  return JSON.parse(await readFile(outputPath, "utf8"));
+async function readCaptureOutput(outputPath, maxOutputBytes) {
+  if (maxOutputBytes === undefined) return JSON.parse(await readFile(outputPath, "utf8"));
+  const file = await open(outputPath, constants.O_RDONLY | constants.O_NONBLOCK);
+  try {
+    const stat = await file.stat();
+    if (!stat.isFile()) throw new Error("expected a regular capture file");
+    if (stat.size > maxOutputBytes) throw new Error("capture result exceeded its byte limit");
+    const chunks = [];
+    let bytes = 0;
+    // end is inclusive: read at most limit + 1 even if the file grew after stat.
+    for await (const chunk of file.createReadStream({ end: maxOutputBytes, autoClose: false })) {
+      chunks.push(chunk);
+      bytes += chunk.length;
+    }
+    if (bytes > maxOutputBytes) throw new Error("capture result exceeded its byte limit");
+    const result = JSON.parse(Buffer.concat(chunks, bytes).toString("utf8"));
+    if (!result || typeof result.status !== "string" || !Array.isArray(result.captured)) {
+      throw new Error("expected a capture status and captured contracts");
+    }
+    return result;
+  } finally {
+    await file.close();
+  }
 }
 
 function markdownTable(rows, headers) {

@@ -4,8 +4,10 @@ import { mkdtemp } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
+import { writeArtifacts } from "./artifacts.js";
 import { createCaptureApi } from "./capture-api.js";
 import { captureApiOptionsForPlugin } from "./capture-config.js";
+import { createCappedCollector, resolveProcessLimits } from "./process-profile.js";
 import { createMockSdkPackage, installMockSdkLoader } from "./sdk-mock.js";
 
 const options = JSON.parse(process.argv[2] ?? "{}");
@@ -13,13 +15,23 @@ let activeOutputCapture = null;
 
 try {
   const result = await run(options);
-  writeRunnerStdout(`${JSON.stringify(result, null, 2)}\n`);
+  const json = `${JSON.stringify(result, null, 2)}\n`;
+  const { maxOutputBytes } = resolveProcessLimits(options, "CAPTURE");
+  if (Buffer.byteLength(json) > maxOutputBytes) {
+    throw new Error(`Mock SDK capture result exceeded its ${maxOutputBytes}-byte limit`);
+  }
+  if (options.outputPath) {
+    await writeArtifacts([{ path: options.outputPath, content: json }]);
+  } else {
+    await writeRunnerStdout(json);
+  }
+  process.exit(0);
 } catch (error) {
   if (error.failureClass) {
-    writeRunnerStderr(`[plugin-inspector:${error.failureClass}]\n`);
+    await writeRunnerStderr(`[plugin-inspector:${error.failureClass}]\n`);
   }
-  writeRunnerStderr(`${error.stack ?? error.message}\n`);
-  process.exitCode = 1;
+  await writeRunnerStderr(`${options.outputPath ? error.message : (error.stack ?? error.message)}\n`);
+  process.exit(1);
 }
 
 async function run(options) {
@@ -127,18 +139,18 @@ function findRegisterExport(module) {
 }
 
 function installProcessOutputCapture() {
-  const stdoutChunks = [];
-  const stderrChunks = [];
+  const stdout = createCappedCollector(1024 * 1024);
+  const stderr = createCappedCollector(1024 * 1024);
   const originalStdoutWrite = process.stdout.write.bind(process.stdout);
   const originalStderrWrite = process.stderr.write.bind(process.stderr);
 
   process.stdout.write = (chunk, encoding, callback) => {
-    stdoutChunks.push(Buffer.isBuffer(chunk) ? chunk.toString("utf8") : String(chunk));
+    stdout.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk), typeof encoding === "string" ? encoding : "utf8"));
     invokeWriteCallback(encoding, callback);
     return true;
   };
   process.stderr.write = (chunk, encoding, callback) => {
-    stderrChunks.push(Buffer.isBuffer(chunk) ? chunk.toString("utf8") : String(chunk));
+    stderr.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(String(chunk), typeof encoding === "string" ? encoding : "utf8"));
     invokeWriteCallback(encoding, callback);
     return true;
   };
@@ -146,8 +158,8 @@ function installProcessOutputCapture() {
   return {
     originalStdoutWrite,
     originalStderrWrite,
-    stdout: () => stdoutChunks.join(""),
-    stderr: () => stderrChunks.join(""),
+    stdout: () => stdout.text(),
+    stderr: () => stderr.text(),
   };
 }
 
@@ -165,9 +177,19 @@ async function drainAsyncOutput() {
 }
 
 function writeRunnerStdout(text) {
-  (activeOutputCapture?.originalStdoutWrite ?? process.stdout.write.bind(process.stdout))(text);
+  const write = activeOutputCapture?.originalStdoutWrite ?? process.stdout.write.bind(process.stdout);
+  return flushWrite(write, text);
 }
 
 function writeRunnerStderr(text) {
-  (activeOutputCapture?.originalStderrWrite ?? process.stderr.write.bind(process.stderr))(text);
+  const write = activeOutputCapture?.originalStderrWrite ?? process.stderr.write.bind(process.stderr);
+  return flushWrite(write, text);
+}
+
+// The runner exits deliberately to shed plugin timers, but only after the
+// complete protocol response has reached its pipe.
+function flushWrite(write, text) {
+  return new Promise((resolve, reject) => {
+    write(text, (error) => error ? reject(error) : resolve());
+  });
 }

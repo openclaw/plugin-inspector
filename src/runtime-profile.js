@@ -333,6 +333,10 @@ async function profileCommand(command, options) {
     env: { ...process.env, ...options.env, ...command.env },
     stdio: ["ignore", "pipe", "pipe"],
     roundAverageCpuPercent: true,
+    timeoutMs: command.timeoutMs ?? options.timeoutMs,
+    maxOutputBytes: command.maxOutputBytes ?? options.maxOutputBytes,
+    killGraceMs: command.killGraceMs ?? options.killGraceMs,
+    signal: options.signal,
   });
 }
 
