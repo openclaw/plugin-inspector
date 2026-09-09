@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Invoke each synthetic Gateway method once, including registrations with options, and validate its first emitted response's JSON wire representation instead of treating any nonthrowing callback as successful. Preserve explicit response authority, returned-payload fallback, deferred replies within the existing deadline, and accepted-only initial responses.
 - Bound synthetic callback waits and cancellation, stop dependent probes after a timeout, and supervise CLI capture plus retained callbacks in one child. Validate report shape and counts before delivery while preserving complete failed-row reports, bounded plugin output, and in-process callback identity. Thanks @SebTardif.
 - Run `registerService` start, stop, and dispose probes serially so teardown cannot overlap startup.
 - Bound real-SDK CLI capture in an owned child, including stalled imports, busy registration, and retained timers. Give in-process capture a finite 30-second default deadline while preserving caller runtime and handler identity; arbitrary in-process JavaScript cannot be forcibly canceled. Thanks @SebTardif.

@@ -509,6 +509,7 @@ export const defaultSyntheticRegistrationProbeInputs = {
   registerGatewayMethod: {
     execute: gatewayProbeArgs,
     handler: gatewayProbeArgs,
+    invoke: gatewayProbeArgs,
     run: gatewayProbeArgs,
   },
   registerHttpRoute: {
@@ -797,7 +798,9 @@ async function runRegistrationProbes(entry, retainedEntry, captureIndex, options
   }
 
   const descriptor =
-    retainedEntry.arguments?.find((value) => value && typeof value === "object") ?? retainedEntry.returnValue;
+    entry.name === "registerGatewayMethod" && typeof retainedEntry.arguments?.[0] === "string"
+      ? retainedEntry.returnValue
+      : retainedEntry.arguments?.find((value) => value && typeof value === "object") ?? retainedEntry.returnValue;
   if (!descriptor || typeof descriptor !== "object") {
     return [blockedResult(entry, captureIndex, "captured registration has no object descriptor")];
   }
@@ -849,18 +852,98 @@ function registrationInvocations(registrar, descriptor, returnValue, profile, op
     if (typeof callable === "function") {
       invocations.push({
         label: `${registrar}.${property}`,
-        invoke: () => invokeRegistrationCallable(callable, registrar, property, options),
+        invoke: () => registrar === "registerGatewayMethod"
+          ? invokeGatewayCallable(callable, property, descriptor, options)
+          : invokeRegistrationCallable(callable, registrar, property, options),
       });
+      // Gateway aliases describe one method, not independent lifecycle callbacks.
+      if (registrar === "registerGatewayMethod") break;
     }
   }
   return invocations;
 }
 
-function invokeRegistrationCallable(callable, registrar, property, options) {
-  const event = syntheticRegistrationEvent(registrar, property, options);
+function invokeRegistrationCallable(
+  callable, registrar, property, options,
+  event = syntheticRegistrationEvent(registrar, property, options),
+) {
   const inputFactory = options.registrationProbeInputs?.[registrar]?.[property] ?? defaultSyntheticRegistrationProbeInputs[registrar]?.[property];
   const args = inputFactory ? inputFactory(event, options) : [event];
   return callable(...args);
+}
+
+async function invokeGatewayCallable(callable, property, descriptor, options) {
+  let responded = false;
+  let closed = false;
+  let resolveResponse;
+  const response = new Promise((resolve) => { resolveResponse = resolve; });
+  const onAbort = () => {
+    closed = true;
+    resolveResponse({ error: options.signal.reason });
+  };
+  options.signal.addEventListener("abort", onAbort, { once: true });
+  const respond = (ok, payload, error) => {
+    if (closed || responded) return;
+    // Snapshot the first emission, including invalid frames. Later responses
+    // cannot recover it; logging metadata is not part of the wire envelope.
+    responded = true;
+    try {
+      resolveResponse({ frame: gatewayResponseFrame(ok, payload, error) });
+    } catch (error) {
+      resolveResponse({ error });
+    }
+  };
+  try {
+    options.signal.throwIfAborted();
+    const event = {
+      ...syntheticRegistrationEvent("registerGatewayMethod", property, options),
+      method: descriptor.method ?? descriptor.name,
+      respond,
+    };
+    const result = await invokeRegistrationCallable(callable, "registerGatewayMethod", property, options, event);
+    // OpenClaw's plugin registrar adapts returns only without an explicit reply.
+    if (!responded && result !== undefined) respond(true, result);
+    // A void handler may respond later. The existing probe deadline bounds this
+    // observation as well as handler settlement; it owns timeout/cancellation.
+    const outcome = await response;
+    if (outcome.error) throw outcome.error;
+    if (!outcome.frame.ok) {
+      throw new Error(`Gateway response error: ${outcome.frame.error?.message ?? "request failed"}`);
+    }
+    return outcome.frame;
+  } finally {
+    closed = true;
+    options.signal.removeEventListener("abort", onAbort);
+  }
+}
+
+function gatewayResponseFrame(ok, payload, error) {
+  let frame;
+  try {
+    frame = JSON.parse(JSON.stringify({ type: "res", id: "fixture-request", ok, payload, error }));
+  } catch {
+    throw new Error("Gateway response is not JSON serializable");
+  }
+  // ResponseFrameSchema / ErrorShapeSchema in OpenClaw v2026.9.3. Payload and
+  // error are optional independently of ok; error codes are nonempty strings.
+  const responseError = frame.error;
+  if (
+    typeof frame.ok !== "boolean" ||
+    (responseError !== undefined && (
+      !responseError ||
+      typeof responseError !== "object" ||
+      Array.isArray(responseError) ||
+      typeof responseError.code !== "string" || responseError.code.length === 0 ||
+      typeof responseError.message !== "string" || responseError.message.length === 0 ||
+      (responseError.retryable !== undefined && typeof responseError.retryable !== "boolean") ||
+      (responseError.retryAfterMs !== undefined &&
+        (!Number.isInteger(responseError.retryAfterMs) || responseError.retryAfterMs < 0)) ||
+      Object.keys(responseError).some((key) => !["code", "message", "details", "retryable", "retryAfterMs"].includes(key))
+    ))
+  ) {
+    throw new Error("Gateway response is malformed");
+  }
+  return frame;
 }
 
 function syntheticRegistrationEvent(registrar, property, options) {
@@ -932,18 +1015,15 @@ function commandProbeArgs(event, options = {}) {
   ];
 }
 
-function gatewayProbeArgs(event) {
+function gatewayProbeArgs(event, options = {}) {
   return [
     {
       ...event,
-      params: event.params,
-      body: event.body,
-      headers: event.headers,
-      respond: event.respond,
-    },
-    {
-      source: event.source,
-      logger: console,
+      req: { type: "req", id: "fixture-request", method: event.method ?? "fixture.gateway.method", params: event.params },
+      client: null,
+      isWebchatConnect: () => false,
+      context: { source: event.source, logger: console },
+      signal: options.signal,
     },
   ];
 }

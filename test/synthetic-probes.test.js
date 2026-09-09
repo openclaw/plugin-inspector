@@ -402,8 +402,6 @@ test("synthetic probes pass channel envelopes and gateway responders", async () 
       "pass:registerChannel.send",
       "pass:registerChannel.receive",
       "pass:registerGatewayMethod.handler",
-      "pass:registerGatewayMethod.run",
-      "pass:registerGatewayMethod.execute",
     ],
   );
 });
@@ -423,10 +421,196 @@ test("synthetic probes can execute string plus handler registrations", async () 
     result.results.map((item) => `${item.status}:${item.label}`),
     [
       "pass:registerGatewayMethod.handler",
-      "pass:registerGatewayMethod.run",
-      "pass:registerGatewayMethod.execute",
     ],
   );
+});
+
+test("Gateway probes invoke each logical registration once, including positional options", async (t) => {
+  for (const withOptions of [false, true]) {
+    await t.test(`options=${withOptions}`, async () => {
+      let calls = 0;
+      const handler = () => { calls += 1; return { healthy: true }; };
+      const capture = captureRetained((api) => {
+        const args = withOptions ? [{ scope: "operator.read" }] : [];
+        api.registerGatewayMethod("fixture.first", handler, ...args);
+        api.registerGatewayMethod("fixture.second", handler, ...args);
+      });
+      const result = await runCapturedSyntheticProbes(capture);
+      assert.equal(calls, 2);
+      assert.deepEqual(result.results.map((row) => [row.label, row.status]), [
+        ["registerGatewayMethod.handler", "pass"],
+        ["registerGatewayMethod.handler", "pass"],
+      ]);
+    });
+  }
+});
+
+test("Gateway probes pass one host-shaped options object and a void responder", async () => {
+  let received;
+  const capture = captureRetained((api) => api.registerGatewayMethod("fixture.ping", (...args) => {
+    received = args;
+    assert.equal(args[0].respond(true, { healthy: true }), undefined);
+  }));
+  const result = await runCapturedSyntheticProbes(capture);
+  assert.equal(result.summary.passCount, 1, JSON.stringify(result.results));
+  assert.equal(received.length, 1);
+  const [options] = received;
+  assert.deepEqual(options.req, { type: "req", id: "fixture-request", method: "fixture.ping", params: {} });
+  assert.equal(options.client, null);
+  assert.equal(options.isWebchatConnect(null), false);
+  assert.equal(typeof options.context, "object");
+  assert.equal(options.signal.aborted, false);
+  assert.deepEqual(result.results[0].output, { type: "object", keys: ["id", "ok", "payload", "type"] });
+});
+
+test("Gateway probes preserve object aliases and explicit input overrides", async () => {
+  const params = { fixture: "custom" };
+  const context = { fixture: "context" };
+  let calls = 0;
+  const handler = (options) => {
+    calls += 1;
+    assert.equal(options.params, params);
+    assert.equal(options.context, context);
+    options.respond(true, params);
+  };
+  const capture = captureRetained((api) => api.registerGatewayMethod({
+    name: "fixture.custom", run: handler, execute: handler,
+  }));
+  const result = await runCapturedSyntheticProbes(capture, {
+    registrationProbeInputs: {
+      registerGatewayMethod: {
+        run: (event) => [{ ...event, params, context }],
+      },
+    },
+  });
+  assert.equal(calls, 1);
+  assert.equal(result.results[0].label, "registerGatewayMethod.run");
+  assert.equal(result.summary.passCount, 1, JSON.stringify(result.results));
+});
+
+test("Gateway probes adapt non-undefined return values as successful payloads", async (t) => {
+  for (const payload of [false, null, 0, "", { ok: false }]) {
+    await t.test(JSON.stringify(payload), async () => {
+      const capture = captureRetained((api) => api.registerGatewayMethod("fixture.return", () => payload));
+      const result = await runCapturedSyntheticProbes(capture);
+      assert.equal(result.summary.passCount, 1);
+      assert.deepEqual(result.results[0].output, { type: "object", keys: ["id", "ok", "payload", "type"] });
+    });
+  }
+});
+
+test("Gateway probes judge the first emitted response, without implicit expectFinal", async (t) => {
+  const error = { code: "PLUGIN_SPECIFIC", message: "fixture rejection" };
+  const cases = [
+    ["accepted only", ({ respond }) => { respond(true, { status: "accepted" }); }, "pass"],
+    ["explicit error", ({ respond }) => { respond(false, undefined, error); }, "fail", /fixture rejection/],
+    ["error without details", ({ respond }) => { respond(false); }, "fail", /Gateway.*error/i],
+    ["explicit error overrides return", ({ respond }) => { respond(false, undefined, error); return "ignored"; }, "fail", /fixture rejection/],
+    ["explicit success overrides unserializable return", ({ respond }) => { respond(true); return 1n; }, "pass"],
+    ["success then error", ({ respond }) => { respond(true); respond(false, undefined, error); }, "pass"],
+    ["error then success", ({ respond }) => { respond(false, undefined, error); respond(true); }, "fail", /fixture rejection/],
+    ["malformed then success", ({ respond }) => { respond("yes"); respond(true); }, "fail", /malformed/i],
+    ["success then malformed", ({ respond }) => { respond(true); respond("yes"); }, "pass"],
+    ["success with optional error", ({ respond }) => { respond(true, null, error); }, "pass"],
+    ["logging metadata is not wire payload", ({ respond }) => { respond(true, null, undefined, { ignored: 1n }); }, "pass"],
+  ];
+  for (const [name, handler, status, message] of cases) {
+    await t.test(name, async () => {
+      const capture = captureRetained((api) => api.registerGatewayMethod("fixture.response", handler));
+      const result = await runCapturedSyntheticProbes(capture);
+      assert.equal(result.results[0].status, status, JSON.stringify(result.results));
+      assert.equal(result.results.length, 1);
+      if (message) assert.match(result.results[0].error, message);
+    });
+  }
+});
+
+test("Gateway probes validate the serialized response and error schema", async (t) => {
+  const circular = {};
+  circular.self = circular;
+  const validError = { code: " ", message: " ", details: null, retryable: false, retryAfterMs: 0 };
+  const cases = [
+    ["optional payload", (respond) => respond(true), "pass"],
+    ["nonempty strings are not trimmed", (respond) => respond(true, undefined, validError), "pass"],
+    ["payload uses JSON serialization", (respond) => respond(true, { toJSON: () => "serialized" }), "pass"],
+    ["non-boolean ok", (respond) => respond(1), "fail"],
+    ["null error", (respond) => respond(true, undefined, null), "fail"],
+    ["empty code", (respond) => respond(true, undefined, { code: "", message: "error" }), "fail"],
+    ["missing message", (respond) => respond(true, undefined, { code: "CUSTOM" }), "fail"],
+    ["invalid retryable", (respond) => respond(true, undefined, { ...validError, retryable: "yes" }), "fail"],
+    ["negative retryAfterMs", (respond) => respond(true, undefined, { ...validError, retryAfterMs: -1 }), "fail"],
+    ["fractional retryAfterMs", (respond) => respond(true, undefined, { ...validError, retryAfterMs: 1.5 }), "fail"],
+    ["extra error field", (respond) => respond(true, undefined, { ...validError, extra: true }), "fail"],
+    ["BigInt payload", (respond) => respond(true, 1n), "fail"],
+    ["circular payload", (respond) => respond(true, circular), "fail"],
+    ["unserializable error details", (respond) => respond(true, undefined, { ...validError, details: 1n }), "fail"],
+  ];
+  for (const [name, emit, status] of cases) {
+    await t.test(name, async () => {
+      const capture = captureRetained((api) => api.registerGatewayMethod("fixture.schema", ({ respond }) => { emit(respond); }));
+      const result = await runCapturedSyntheticProbes(capture);
+      assert.equal(result.results[0].status, status, JSON.stringify(result.results));
+      if (status === "fail") assert.match(result.results[0].error, /malformed|serializ/i);
+    });
+  }
+  for (const payload of [1n, circular]) {
+    const capture = captureRetained((api) => api.registerGatewayMethod("fixture.return", () => payload));
+    const result = await runCapturedSyntheticProbes(capture);
+    assert.equal(result.results[0].status, "fail");
+    assert.match(result.results[0].error, /serializ/i);
+  }
+});
+
+test("Gateway probes observe deferred responses within the existing deadline", { timeout: 3000 }, async () => {
+  let emit;
+  let started;
+  const invoked = new Promise((resolve) => { started = resolve; });
+  const capture = captureRetained((api) => api.registerGatewayMethod("fixture.deferred", ({ respond }) => {
+    emit = respond;
+    started();
+  }));
+  let settled = false;
+  const pending = runCapturedSyntheticProbes(capture, { timeoutMs: 1000 }).then((result) => {
+    settled = true;
+    return result;
+  });
+  await invoked;
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.equal(settled, false);
+  assert.equal(emit(true, { deferred: true }), undefined);
+  const result = await pending;
+  assert.equal(result.summary.passCount, 1);
+});
+
+test("Gateway probes fail missing responses and retain timeout dependency blocking", { timeout: 3000 }, async () => {
+  let later = 0;
+  let emit;
+  const capture = captureRetained((api) => {
+    api.registerGatewayMethod("fixture.missing", ({ respond }) => { emit = respond; });
+    api.registerCommand({ name: "later", handler() { later += 1; } });
+  });
+  const result = await runCapturedSyntheticProbes(capture, { timeoutMs: 25 });
+  assert.equal(result.results[0].status, "fail");
+  assert.match(result.results[0].error, /timed out after 25ms/);
+  assert.equal(result.results[1].status, "blocked");
+  assert.equal(later, 0);
+  assert.equal(emit(true), undefined);
+  assert.equal(result.results[0].status, "fail");
+});
+
+test("Gateway probes preserve thrown, rejected, and hanging handler outcomes after a response", { timeout: 3000 }, async (t) => {
+  for (const [name, handler, error] of [
+    ["throw", ({ respond }) => { respond(true); throw new Error("handler threw"); }, /handler threw/],
+    ["reject", async ({ respond }) => { respond(true); throw new Error("handler rejected"); }, /handler rejected/],
+    ["hang", ({ respond }) => { respond(true); return new Promise(() => {}); }, /timed out after 25ms/],
+  ]) {
+    await t.test(name, async () => {
+      const capture = captureRetained((api) => api.registerGatewayMethod("fixture.failure", handler));
+      const result = await runCapturedSyntheticProbes(capture, { timeoutMs: 25 });
+      assert.equal(result.results[0].status, "fail");
+      assert.match(result.results[0].error, error);
+    });
+  }
 });
 
 test("synthetic probes keep opt-in registrations guarded", async () => {

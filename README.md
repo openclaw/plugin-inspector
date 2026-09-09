@@ -332,6 +332,27 @@ late promise settlement, but cannot preempt synchronous JavaScript or arbitrary
 plugin side effects. Programmatic probes stay in-process and preserve caller
 runtime objects and retained callback identity.
 
+Gateway method probes invoke each registered handler once, including positional
+`(method, handler, options)` registrations; captured `handler`/`run`/`execute`
+aliases do not create extra calls. The handler receives synthetic Gateway
+options and a void `respond(ok, payload, error, meta)` callback. Existing
+`registrationProbeInputs` overrides remain available.
+
+The first emitted response is authoritative, even when malformed. Probes check
+its JSON-serialized response/error shape: `ok: true` passes, `ok: false` fails,
+and later responses cannot overwrite the outcome. Logging `meta` is not a wire
+field. Without an explicit response, a non-`undefined` return is adapted into a
+successful payload, including `false`, `null`, and `{ ok: false }`, matching the
+OpenClaw plugin registrar. A void handler can respond later within the existing
+probe deadline; no response or return before that deadline fails. Handler throws,
+rejections, and timeouts still fail under the ordinary probe rules.
+
+This observes the initial RPC response plus ordinary handler settlement within
+the existing deadline. It does not prove asynchronous operation completion,
+transport delivery, or authorization. An accepted-only success is valid once the
+handler settles; probes do not implicitly request `expectFinal` or reject legal
+multi-frame methods. No Gateway connection or live host call is made.
+
 `synthetic-probes-cli.js` runs capture and retained callbacks together in one
 owned child. Its whole-child budget also defaults to 30 seconds, including
 imports and registration, with `PLUGIN_INSPECTOR_PROBE_TIMEOUT_MS`,
