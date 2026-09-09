@@ -44,31 +44,69 @@ test("cold import readiness classifies entrypoint blockers", async (t) => {
   assert.match(renderColdImportReadinessMarkdown(readiness), /## Entrypoints/);
 });
 
-test("cold import readiness preserves combined blocker evidence", () => {
-  const readiness = buildColdImportReadiness({
-    report: readinessReport(
-      [{ kind: "extension", specifier: "./index.js", relativePath: "index.js", exists: true }],
-      {
-        dependencies: ["left-pad"],
-        sdkImportDetails: [
-          {
-            specifier: "openclaw/plugin-sdk/legacy-helper",
-            ref: "index.js:1",
-          },
-        ],
-      },
-    ),
-  });
-  const entrypoint = readiness.fixtures[0].entrypoints[0];
+test("cold import readiness preserves combined blocker evidence", async (t) => {
+  const cases = [
+    {
+      name: "SDK alias precedes dependencies for an existing entrypoint",
+      entrypoint: { kind: "extension", specifier: "./index.js", relativePath: "index.js", exists: true },
+      status: "sdk-alias-required",
+      blocker: "dependency-install-required",
+      assertion: "fixture dependencies are installed in an isolated workspace before cold import",
+      buildRequiredCount: 0,
+      dependencyInstallRequiredCount: 1,
+    },
+    {
+      name: "absent build output precedes SDK alias",
+      entrypoint: { kind: "extension", specifier: "./dist/index.js", relativePath: "dist/index.js", exists: false, requiresBuild: true },
+      status: "build-required",
+      blocker: "build-required",
+      assertion: "plugin build or source alias resolution runs before cold import",
+      buildRequiredCount: 1,
+      dependencyInstallRequiredCount: 0,
+    },
+    {
+      name: "absent plain entrypoint precedes SDK alias",
+      entrypoint: { kind: "extension", specifier: "./missing.js", relativePath: "missing.js", exists: false },
+      status: "missing",
+      blocker: "missing-entrypoint",
+      assertion: "plugin package metadata points at an existing OpenClaw entrypoint",
+      buildRequiredCount: 0,
+      dependencyInstallRequiredCount: 0,
+    },
+  ];
 
-  assert.equal(entrypoint.status, "sdk-alias-required");
-  assert.deepEqual(
-    entrypoint.blockers.map((blocker) => blocker.code),
-    ["dependency-install-required", "sdk-alias-required"],
-  );
-  assert.equal(readiness.summary.dependencyInstallRequiredCount, 1);
-  assert.equal(readiness.summary.sdkAliasRequiredCount, 1);
-  assert.deepEqual(validateColdImportReadiness(readiness), []);
+  for (const fixture of cases) {
+    await t.test(fixture.name, () => {
+      const readiness = buildColdImportReadiness({
+        report: readinessReport([fixture.entrypoint], {
+          dependencies: ["left-pad"],
+          sdkImportDetails: [
+            {
+              specifier: "openclaw/plugin-sdk/legacy-helper",
+              ref: "index.js:1",
+            },
+          ],
+        }),
+      });
+      const entrypoint = readiness.fixtures[0].entrypoints[0];
+
+      assert.deepEqual(
+        { status: entrypoint.status, buildRequiredCount: readiness.summary.buildRequiredCount },
+        { status: fixture.status, buildRequiredCount: fixture.buildRequiredCount },
+      );
+      assert.deepEqual(
+        entrypoint.blockers.map((blocker) => blocker.code),
+        [fixture.blocker, "sdk-alias-required"],
+      );
+      assert.deepEqual(entrypoint.assertions, [
+        fixture.assertion,
+        "target OpenClaw exports the imported SDK alias or provides a migration shim",
+      ]);
+      assert.equal(readiness.summary.dependencyInstallRequiredCount, fixture.dependencyInstallRequiredCount);
+      assert.equal(readiness.summary.sdkAliasRequiredCount, 1);
+      assert.deepEqual(validateColdImportReadiness(readiness), []);
+    });
+  }
 });
 
 test("cold import readiness treats openclaw as a host-linked dependency", () => {

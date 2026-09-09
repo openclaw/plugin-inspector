@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Capture plugins that bind `api.runtime.modelAuth` during registration with credential-free defaults; auth acquisition remains an explicit synthetic failure.
+- Report absent build output and missing entrypoints before SDK alias blockers in cold-import readiness, preserving build-required totals and all remediation evidence.
 - Recognize board widget content kinds, memory prompt preparation, transcript source providers, worker providers, and MCP server connection resolvers as metadata-only synthetic probes without invoking runtime callbacks.
 
 ## 0.3.24 - 2026-08-31
