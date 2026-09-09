@@ -46,6 +46,11 @@ export const syntheticRegistrationExecutionProfiles = {
     callableProperties: [],
     reason: "auto-enable probes are captured as registration metadata before runtime activation checks",
   },
+  registerBoardWidgetContentKind: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "board widget content kinds are captured as registration metadata before source validation or document composition",
+  },
   registerCli: {
     mode: "direct",
     callableProperties: ["handler", "run", "execute"],
@@ -125,6 +130,16 @@ export const syntheticRegistrationExecutionProfiles = {
     mode: "metadata-only",
     callableProperties: [],
     reason: "hosted media resolvers are captured as registration metadata before media URL resolution",
+  },
+  registerMcpServerConnectionResolver: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "MCP server connection resolvers are captured as registration metadata before requester-bound transport resolution",
+  },
+  registerMemoryPromptPreparation: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "memory prompt preparation callbacks are captured as registration metadata before prompt-runtime execution",
   },
   registerMemoryPromptSection: {
     mode: "metadata-only",
@@ -275,6 +290,11 @@ export const syntheticRegistrationExecutionProfiles = {
     callableProperties: [],
     reason: "text transforms are captured as registration metadata before content mutation execution",
   },
+  registerTranscriptSourceProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "transcript source providers are captured as registration metadata before live capture or transcript import",
+  },
   registerVideoGenerationProvider: {
     mode: "metadata-only",
     callableProperties: [],
@@ -299,6 +319,11 @@ export const syntheticRegistrationExecutionProfiles = {
     mode: "metadata-only",
     callableProperties: [],
     reason: "widget presenters are captured as registration metadata before presentation runtime execution",
+  },
+  registerWorkerProvider: {
+    mode: "metadata-only",
+    callableProperties: [],
+    reason: "worker providers are captured as registration metadata before cloud-worker lifecycle execution",
   },
 };
 
