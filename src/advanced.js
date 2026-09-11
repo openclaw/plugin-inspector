@@ -7,9 +7,12 @@ export {
   writeJsonMarkdownArtifacts,
 } from "./artifacts.js";
 export {
+  isUncPath,
+  isWithinPluginRoot,
   normalizeRepoPath,
   posixJoin,
   resolveFromRoot,
+  resolveJailedPluginPath,
   resolveRequiredFromRoot,
   slugForArtifact,
   toRepoPath,

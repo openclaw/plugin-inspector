@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
+import { isUncPath, resolveJailedPluginPath } from "./path-utils.js";
 
 export const defaultOpenClawCheckoutPaths = ["./openclaw", "../openclaw"];
 
@@ -12,7 +13,7 @@ export async function readOpenClawTargetSurface(options = {}) {
     return emptyTargetSurface({ configuredPath: null, status: "disabled" });
   }
 
-  const requestedPaths = openClawTargetPathCandidates(options.manifest, configuredPath);
+  const requestedPaths = openClawTargetPathCandidates(options.manifest, configuredPath, { rootDir });
   if (requestedPaths.length === 0) {
     return emptyTargetSurface({ configuredPath: null, status: "not-configured" });
   }
@@ -114,11 +115,16 @@ export async function readOpenClawTargetSurface(options = {}) {
   };
 }
 
-export function openClawTargetPathCandidates(manifest, configuredPath) {
+export function openClawTargetPathCandidates(manifest, configuredPath, options = {}) {
   if (typeof configuredPath === "string") {
-    return [configuredPath];
+    return isUncPath(configuredPath) ? [] : [configuredPath];
   }
-  return unique([manifest?.openclaw?.defaultCheckoutPath, ...defaultOpenClawCheckoutPaths].filter(Boolean));
+  const pluginPath = manifest?.openclaw?.defaultCheckoutPath;
+  const allowedPluginPath =
+    typeof pluginPath === "string" && options.rootDir
+      ? (resolveJailedPluginPath(options.rootDir, pluginPath) ? pluginPath : null)
+      : pluginPath;
+  return unique([allowedPluginPath, ...defaultOpenClawCheckoutPaths].filter(Boolean));
 }
 
 export function parseCompatRecordEntries(source) {
@@ -252,7 +258,13 @@ export function parseTypeFields(source, typeName) {
 
 function findTargetCheckout(rootDir, requestedPaths) {
   for (const requestedPath of requestedPaths) {
+    if (isUncPath(requestedPath)) {
+      continue;
+    }
     const resolvedPath = path.resolve(rootDir, requestedPath);
+    if (isUncPath(resolvedPath)) {
+      continue;
+    }
     const registryPath = path.join(resolvedPath, "src/plugins/compat/registry.ts");
     if (existsSync(registryPath)) {
       return { kind: "checkout", requestedPath, resolvedPath, registryPath };

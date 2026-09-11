@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Jail plugin-owned path strings to the plugin root so inspect and check reject UNC, absolute, and `..` specifiers instead of reading host files or probing a remote SMB share.
+
 ## 0.3.25 - 2026-09-09
 
 ### Fixed

@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { resolveJailedPluginPath } from "./path-utils.js";
 
 export const npmPackagePayloadDir = ".crabpot-package";
 export const defaultPluginRootConfigFiles = ["plugin-inspector.config.json", ".plugin-inspector.json"];
@@ -123,7 +124,7 @@ export function fixtureCheckoutPath(config, fixture) {
 export function fixtureSourceRoot(config, fixture) {
   const checkoutPath = fixtureCheckoutPath(config, fixture);
   if (fixture.subdir) {
-    return path.join(checkoutPath, fixture.subdir);
+    return resolveJailedPluginPath(checkoutPath, fixture.subdir) ?? checkoutPath;
   }
   if (fixture.package) {
     return path.join(checkoutPath, npmPackagePayloadDir);

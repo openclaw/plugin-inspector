@@ -9,6 +9,7 @@ import { fixtureCheckoutPath, fixtureSourceRoot } from "./config.js";
 import { buildCompatibilityFixtureReport } from "./fixture-summary.js";
 import { readOpenClawTargetSurface } from "./openclaw-target.js";
 import { prepareOpenClawTarget, resolveOpenClawTargetVersion } from "./openclaw-version.js";
+import { resolveJailedPluginPath } from "./path-utils.js";
 import { resolveProcessLimits, startOwnedProcess } from "./process-profile.js";
 import { buildCompatibilityReport, buildReport } from "./report.js";
 import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
@@ -700,7 +701,10 @@ function collectEntrypoint(entrypoints, entrypointFiles, packageDir, value) {
 }
 
 function entrypointCandidates(packageDir, specifier) {
-  const resolved = path.resolve(packageDir, specifier);
+  const resolved = resolveJailedPluginPath(packageDir, specifier);
+  if (!resolved) {
+    return [];
+  }
   if (path.extname(resolved)) {
     return [resolved];
   }
