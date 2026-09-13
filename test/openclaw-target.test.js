@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import {
+  classifyCompatRecordCoverage,
   openClawTargetPathCandidates,
   parseCompatRecordEntries,
   parsePluginSdkEntrypointSpecifiers,
@@ -105,6 +106,106 @@ export const publicPluginOwnedSdkEntrypoints = ["speech-core"] as const;\n`,
   assert.deepEqual(target.manifestContractFields, ["channels", "tools"]);
   assert.equal(target.manifestTypesPath, "openclaw/src/plugins/manifest.ts");
   assert.equal(target.compatRegistryPath, "openclaw/src/plugins/compat/registry.ts");
+});
+
+test("split compat registry records retain their statuses and report coverage", async (t) => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-split-registry-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const registryDir = path.join(rootDir, "openclaw/src/plugins/compat");
+  await mkdir(registryDir, { recursive: true });
+  await writeFile(path.join(registryDir, "registry.ts"), `
+import { PLUGIN_COMPAT_RECORDS } from "./registry-records.js";
+import type { PluginCompatRecord } from "./types.js";
+export type PluginCompatCode = (typeof PLUGIN_COMPAT_RECORDS)[number]["code"];
+export function listPluginCompatRecords(): readonly PluginCompatRecord[] {
+  return PLUGIN_COMPAT_RECORDS;
+}
+`);
+  const codes = [
+    "api.capture.runtime-registrars",
+    "channel.runtime.envelope-config-metadata",
+    "hook.before_tool_call.terminal-block-approval",
+    "hook.llm-observer.privacy-payload",
+  ];
+  await writeFile(path.join(registryDir, "registry-records.ts"), `
+export const PLUGIN_COMPAT_RECORDS = [
+${codes.map((code) => `  { code: "${code}", status: "active" },`).join("\n")}
+  { code: "legacy-contract", status: "deprecated" },
+] as const;
+`);
+  const target = await readOpenClawTargetSurface({ rootDir, configuredPath: "./openclaw" });
+  assert.equal(target.compatRegistryPath, "openclaw/src/plugins/compat/registry-records.ts");
+  assert.deepEqual(target.compatRecords, [...codes, "legacy-contract"]);
+  assert.deepEqual(target.compatRecordStatuses, {
+    ...Object.fromEntries(codes.map((code) => [code, "active"])),
+    "legacy-contract": "deprecated",
+  });
+  assert.equal(target.compatRecordCount, 5);
+
+  const suggestions = [];
+  const logs = [];
+  const decisions = [];
+  classifyCompatRecordCoverage({
+    targetOpenClaw: target,
+    findings: [...codes, "genuinely-absent"].map((compatRecord) => ({ fixture: "sample", compatRecord })),
+    suggestions,
+    logs,
+    decisions,
+  });
+  assert.deepEqual(suggestions.map((finding) => [finding.code, finding.compatRecord]), [
+    ["missing-compat-record", "genuinely-absent"],
+  ]);
+  assert.deepEqual(decisions.map((decision) => decision.evidence), ["genuinely-absent"]);
+  assert.deepEqual(logs.map((entry) => entry.compatRecord), codes);
+});
+
+test("compat registry delegation requires an explicit value import", async (t) => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-registry-selection-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const registryDir = path.join(rootDir, "openclaw/src/plugins/compat");
+  await mkdir(registryDir, { recursive: true });
+  await writeFile(path.join(registryDir, "registry-records.ts"),
+    'export const PLUGIN_COMPAT_RECORDS = [{ code: "delegated", status: "active" }];\n');
+  const valueImport = 'import { PLUGIN_COMPAT_RECORDS } from "./registry-records.js";';
+  const cases = [
+    ["inline with unrelated sibling", "", false],
+    ["empty inline with unrelated sibling", "", false, true],
+    ["line comment", `// ${valueImport}`, false],
+    ["block comment", `/* ${valueImport} */`, false],
+    ["quoted import", `const example = ${JSON.stringify(valueImport)};`, false],
+    ["template import", `const example = \`${valueImport}\`;`, false],
+    ["type-only declaration", 'import type { PLUGIN_COMPAT_RECORDS } from "./registry-records.js";', false],
+    ["type-only binding", 'import { type PLUGIN_COMPAT_RECORDS } from "./registry-records.js";', false],
+    ["commented binding", 'import { /* PLUGIN_COMPAT_RECORDS, */ OTHER_RECORDS } from "./registry-records.js";', false],
+    ["other imported value", 'import { OTHER_RECORDS } from "./registry-records.js";', false],
+    ["other module", 'import { PLUGIN_COMPAT_RECORDS } from "./other-records.js";', false],
+    ["named value among types", 'import {\n type PluginCompatRecord,\n PLUGIN_COMPAT_RECORDS,\n} from "./registry-records.js";', true],
+    ["aliased value", "import { PLUGIN_COMPAT_RECORDS as records } from './registry-records.js';", true],
+    ["comments between tokens", 'import /* values */ { PLUGIN_COMPAT_RECORDS /* records */ } from /* sibling */ "./registry-records.js";', true],
+  ];
+  for (const [name, prefix, delegated, empty = false] of cases) {
+    await t.test(name, async () => {
+      await writeFile(path.join(registryDir, "registry.ts"),
+        `${prefix}\nexport const inlineRecords = ${empty ? "[]" : '[{ code: "inline", status: "deprecated" }]'};\n`);
+      const target = await readOpenClawTargetSurface({ rootDir, configuredPath: "./openclaw" });
+      assert.equal(target.compatRegistryPath,
+        `openclaw/src/plugins/compat/${delegated ? "registry-records.ts" : "registry.ts"}`);
+      assert.deepEqual(target.compatRecords, delegated ? ["delegated"] : empty ? [] : ["inline"]);
+    });
+  }
+});
+
+test("a missing explicitly delegated compat registry fails instead of falling back", async (t) => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-missing-registry-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const registryDir = path.join(rootDir, "openclaw/src/plugins/compat");
+  await mkdir(registryDir, { recursive: true });
+  await writeFile(path.join(registryDir, "registry.ts"),
+    'import { PLUGIN_COMPAT_RECORDS } from "./registry-records.js";\n');
+  await assert.rejects(
+    readOpenClawTargetSurface({ rootDir, configuredPath: "./openclaw" }),
+    { code: "ENOENT", path: path.join(registryDir, "registry-records.ts") },
+  );
 });
 
 test("OpenClaw target parser prefers the refactored manifest types module", async (t) => {

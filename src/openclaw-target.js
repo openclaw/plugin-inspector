@@ -30,7 +30,7 @@ export async function readOpenClawTargetSurface(options = {}) {
     return readPackedOpenClawTargetSurface({ rootDir, requestedPaths, ...match });
   }
 
-  const { requestedPath, resolvedPath, registryPath } = match;
+  const { requestedPath, resolvedPath, registryPath: registryEntryPath } = match;
   const hookTypesPath = path.join(resolvedPath, "src/plugins/hook-types.ts");
   const apiBuilderPath = path.join(resolvedPath, "src/plugins/api-builder.ts");
   const capturedRegistrationPath = path.join(resolvedPath, "src/plugins/captured-registration.ts");
@@ -39,7 +39,13 @@ export async function readOpenClawTargetSurface(options = {}) {
   const pluginSdkEntrypointsPath = path.join(resolvedPath, "src/plugin-sdk/entrypoints.ts");
   const packagePath = path.join(resolvedPath, "package.json");
 
-  const registrySource = await readFile(registryPath, "utf8");
+  const registryEntrySource = await readFile(registryEntryPath, "utf8");
+  const registryPath = importsCompatRecords(registryEntrySource)
+    ? path.join(path.dirname(registryEntryPath), "registry-records.ts")
+    : registryEntryPath;
+  const registrySource = registryPath === registryEntryPath
+    ? registryEntrySource
+    : await readFile(registryPath, "utf8");
   const compatRecordEntries = parseCompatRecordEntries(registrySource);
   const hookTypesSource = existsSync(hookTypesPath) ? await readFile(hookTypesPath, "utf8") : "";
   const hookNames = hookTypesSource ? parseConstStringArray(hookTypesSource, "PLUGIN_HOOK_NAMES") : [];
@@ -119,6 +125,23 @@ export function openClawTargetPathCandidates(manifest, configuredPath) {
     return [configuredPath];
   }
   return unique([manifest?.openclaw?.defaultCheckoutPath, ...defaultOpenClawCheckoutPaths].filter(Boolean));
+}
+
+function importsCompatRecords(source) {
+  // Keep quoted text atomic and discard comments before recognizing the fixed delegation.
+  const tokens = (source.match(/\/\/[^\r\n]*|\/\*[\s\S]*?(?:\*\/|$)|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|`(?:\\[\s\S]|[^`\\])*`|[$A-Z_a-z][$\w]*|[^\s]/g) ?? [])
+    .filter((token) => !token.startsWith("//") && !token.startsWith("/*"));
+  for (let index = 0; index < tokens.length; index += 1) {
+    if (tokens[index] !== "import" || tokens[index + 1] !== "{") continue;
+    const end = tokens.indexOf("}", index + 2);
+    if (end === -1 || tokens[end + 1] !== "from") continue;
+    if (!['"./registry-records.js"', "'./registry-records.js'"].includes(tokens[end + 2])) continue;
+    const bindings = tokens.slice(index + 2, end).join(" ").split(",");
+    if (bindings.some((binding) => /^PLUGIN_COMPAT_RECORDS(?:\s+as\s+[$A-Z_a-z][$\w]*)?$/.test(binding.trim()))) {
+      return true;
+    }
+  }
+  return false;
 }
 
 export function parseCompatRecordEntries(source) {
