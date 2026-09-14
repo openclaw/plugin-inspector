@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Keep tool-hook and conversation-privacy contract gaps open when runtime artifacts only capture hook registration. Preserve registration coverage and semantic contract probes.
 - Read OpenClaw compatibility records from the explicitly imported `registry-records.ts` data module, avoiding false missing-record findings after the registry split. Preserve inline registries and report missing delegated data as an error.
 
 ## 0.3.25 - 2026-09-09

@@ -81,12 +81,6 @@ function expectedRuntimeCaptureKeys(finding) {
   if (finding.code === "runtime-tool-capture") {
     return ["registration:registerTool"];
   }
-  if (finding.code === "conversation-access-hook") {
-    return names.map((name) => `hook:${name}`);
-  }
-  if (finding.code === "before-tool-call-probe") {
-    return ["hook:before_tool_call"];
-  }
   return [];
 }
 
