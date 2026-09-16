@@ -294,6 +294,36 @@ test("CommonJS template expressions discover and load SDK requirements without t
     { type: "boolean", value: true });
 });
 
+for (const extension of ["mjs", "cjs"]) {
+  test(`mock ${extension} Gateway rejections preserve error-runtime messages`, {
+    skip: extension === "cjs" && !supportsCommonJsMocks,
+  }, async (t) => {
+    const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-error-"));
+    t.after(() => rm(root, { recursive: true, force: true }));
+    await writeFile(path.join(root, `index.${extension}`), [
+      extension === "mjs"
+        ? 'import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";'
+        : "",
+      `${extension === "cjs" ? "module.exports =" : "export default"} { register(api) {`,
+      "  api.registerGatewayMethod('fixture.rejection', ({ respond }) => {",
+      extension === "cjs"
+        ? '    const { formatErrorMessage } = require("openclaw/plugin-sdk/error-runtime");'
+        : "",
+      "    const message = formatErrorMessage(new Error('fixture prerequisite missing'));",
+      "    if (typeof message !== 'string') throw new Error('error formatter returned a non-string');",
+      "    respond(false, undefined, { code: 'UNAVAILABLE', message });",
+      "  });",
+      "} };",
+    ].join("\n"));
+
+    const result = await runEntrypointSyntheticProbes(`index.${extension}`, {
+      cwd: root, pluginRoot: root, mockSdk: true,
+    });
+    assert.deepEqual(result.summary, { probeCount: 1, passCount: 0, failCount: 1, blockedCount: 0 });
+    assert.equal(result.results[0].error, "Gateway response error: fixture prerequisite missing");
+  });
+}
+
 test("mock SDK ignores subpaths that would escape the plugin-sdk package", async () => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-mock-"));
   const pluginRoot = path.join(rootDir, "plugin");

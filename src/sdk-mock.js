@@ -164,6 +164,7 @@ export const mockSdkSubpathExports = {
     "normalizeSecretInputString",
   ],
   "plugin-runtime": ["createLoggerBackedRuntime", "createSubsystemLogger"],
+  "error-runtime": ["formatErrorMessage"],
   "secret-input": [
     "buildOptionalSecretInputSchema",
     "buildSecretInputArraySchema",
