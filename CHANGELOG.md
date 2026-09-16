@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Generate SDK mocks for literal dynamic imports in retained handlers, including their named exports, while excluding TypeScript import types and keeping source inspection aligned with runtime capture.
 - Honor the OpenClaw lazy-runtime SDK contract in generated mocks, preserving deferred module loading, shared promise caches, explicit cache clearing, and rejected imports instead of returning callable placeholders.
 - Reject invalid batch concurrency instead of reporting success without inspecting any plugins, and preserve relative plugin paths in retained reports so similar directory names cannot overwrite each other's results.
 - Preserve error messages from the OpenClaw `error-runtime` SDK subpath in synthetic probes, including lazy CommonJS imports, so Gateway rejections report their actual cause and remain failures.

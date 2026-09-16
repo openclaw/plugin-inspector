@@ -27,3 +27,17 @@ jobs:
 
       - name: Check
         run: npm run check
+
+      - name: Check retained runtime import behavior
+        run: |
+          git rev-parse HEAD
+          git ls-files -s src/runtime-imports.js src/sdk-mock.js test/fixtures/runtime-import-behavior.mjs
+          node test/fixtures/runtime-import-behavior.mjs src/sdk-mock.js
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: latest
+
+      - name: Check runtime imports with Bun
+        run: bun test test/runtime-imports.test.js

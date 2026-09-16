@@ -1,6 +1,5 @@
 import { existsSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
-import * as nodeModule from "node:module";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { createCaptureApi } from "./capture-api.js";
@@ -12,7 +11,7 @@ import { prepareOpenClawTarget, resolveOpenClawTargetVersion } from "./openclaw-
 import { resolveProcessLimits, startOwnedProcess } from "./process-profile.js";
 import { buildCompatibilityReport, buildReport } from "./report.js";
 import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
-import { collectCommonJsRequires } from "./sdk-mock.js";
+import { collectRuntimeModuleImports } from "./runtime-imports.js";
 
 const pluginFactoryNames = "defineBundledChannelEntry|defineChannelPluginEntry|createChatChannelPlugin|definePluginEntry";
 // Bundlers emit unbound calls as (0, sdk.factory)(...), including inline require receivers.
@@ -169,7 +168,7 @@ export function inspectSourceText(text, filePath = "source.js") {
     ...collectDetailedMatches(searchableText, new RegExp(String.raw`\b(${pluginFactoryNames})\s*\(`, "g"), filePath, "name"),
     ...collectDetailedMatches(searchableText, compiledFactoryCall, filePath, "name"),
   ];
-  const sdkImports = collectSdkImports(searchableText, filePath);
+  const sdkImports = collectSdkImports(searchableText, filePath, text);
   const sdkDeprecations = inspectSdkDeprecations(searchableText, filePath);
 
   return {
@@ -440,7 +439,7 @@ function collectDetailedMatches(text, regex, filePath, key) {
   return details;
 }
 
-function collectSdkImports(text, filePath) {
+function collectSdkImports(text, filePath, sourceText) {
   const details = [];
   for (const candidate of text.matchAll(/(?:^|;)[\t ]*(import|export)\b/gm)) {
     const keyword = candidate[1];
@@ -457,19 +456,8 @@ function collectSdkImports(text, filePath) {
     });
   }
 
-  const dynamicMatches = [...text.matchAll(/\bimport\(\s*["'`]([^"'`]*openclaw\/plugin-sdk[^"'`]*)/g)];
-  const runtimeDynamicImports = runtimeDynamicImportIndexes(text, dynamicMatches);
-  for (const [index, match] of dynamicMatches.entries()) {
-    if (!runtimeDynamicImports.has(index)) continue;
-    const line = lineForOffset(text, match.index ?? 0);
-    details.push({
-      specifier: match[1],
-      file: filePath,
-      line,
-      ref: `${filePath}:${line}`,
-    });
-  }
-  for (const { specifier, index } of collectCommonJsRequires(text)) {
+  // Comment masking can erase executable interpolations after URL-like template text.
+  for (const { specifier, index } of collectRuntimeModuleImports(sourceText)) {
     if (specifier !== "openclaw/plugin-sdk" && !specifier.startsWith("openclaw/plugin-sdk/")) continue;
     const line = lineForOffset(text, index);
     details.push({
@@ -538,50 +526,6 @@ function skipQuotedText(text, quoteIndex, quote) {
     if (text[cursor - 1] === quote) break;
   }
   return cursor;
-}
-
-function runtimeDynamicImportIndexes(text, matches) {
-  if (matches.length === 0) return new Set();
-  const markedImports = matches.map((match, index) => {
-    const specifier = match[1];
-    const specifierStart = (match.index ?? 0) + match[0].indexOf(specifier);
-    return {
-      index,
-      specifierStart,
-      specifierEnd: specifierStart + specifier.length,
-      marker: `${specifier}/__plugin_inspector_runtime_import_${index}__`,
-    };
-  });
-  let markedText = text;
-  for (const markedImport of markedImports.toReversed()) {
-    markedText =
-      markedText.slice(0, markedImport.specifierStart) +
-      markedImport.marker +
-      markedText.slice(markedImport.specifierEnd);
-  }
-
-  try {
-    const runtimeText = eraseTypeScript(markedText);
-    if (runtimeText === null) {
-      return new Set(markedImports.map((markedImport) => markedImport.index));
-    }
-    return new Set(
-      markedImports.filter((markedImport) => runtimeText.includes(markedImport.marker)).map((markedImport) => markedImport.index),
-    );
-  } catch {
-    return new Set(markedImports.map((markedImport) => markedImport.index));
-  }
-}
-
-function eraseTypeScript(text) {
-  if (typeof nodeModule.stripTypeScriptTypes === "function") {
-    return nodeModule.stripTypeScriptTypes(text, { mode: "transform" });
-  }
-  if (typeof globalThis.Bun?.Transpiler === "function") {
-    const transpiler = new globalThis.Bun.Transpiler({ loader: "ts", target: "bun" });
-    return transpiler.transformSync(text);
-  }
-  return null;
 }
 
 function isTypeOnlyStaticImportClause(clause) {

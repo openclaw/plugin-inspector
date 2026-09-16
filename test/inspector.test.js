@@ -146,6 +146,60 @@ test("source inspection separates compact runtime imports from TypeScript import
   );
 });
 
+test("source inspection discovers literal runtime imports without importing promise or quoted expressions", () => {
+  const source = [
+    'type Shape = import("openclaw/plugin-sdk/shared").Shape;',
+    'const { sharedHelper: aliased } = await import("openclaw/plugin-sdk/shared");',
+    'const sdk = await import(`openclaw/plugin-sdk/namespace`); sdk.namespaceHelper;',
+    'const direct = (await import("openclaw/plugin-sdk/direct")).directHelper;',
+    'const load = () => import("openclaw/plugin-sdk/promise").then(() => {});',
+    '// import("openclaw/plugin-sdk/comment");',
+    '/* import("openclaw/plugin-sdk/block-comment"); */',
+    'const text = \'import("openclaw/plugin-sdk/string")\';',
+    'const template = `https://fixture.invalid import("openclaw/plugin-sdk/template-text") ${',
+    '  `nested ${typeof (await import("openclaw/plugin-sdk/template-expression")).templateHelper}`',
+    '}`;',
+    'const computed = (name) => import(`openclaw/plugin-sdk/${name}`);',
+    'const joined = (name) => import("openclaw/plugin-sdk/" + name);',
+    'const property = receiver.import("openclaw/plugin-sdk/property");',
+    'const required = require("openclaw/plugin-sdk/required");',
+  ].join("\n");
+  assert.deepEqual(
+    inspectSourceText(source, "fixture.ts").sdkImports.map(({ specifier, ref }) => [specifier, ref]),
+    [
+      ["openclaw/plugin-sdk/shared", "fixture.ts:2"],
+      ["openclaw/plugin-sdk/namespace", "fixture.ts:3"],
+      ["openclaw/plugin-sdk/direct", "fixture.ts:4"],
+      ["openclaw/plugin-sdk/promise", "fixture.ts:5"],
+      ["openclaw/plugin-sdk/template-expression", "fixture.ts:10"],
+      ["openclaw/plugin-sdk/required", "fixture.ts:15"],
+    ],
+  );
+});
+
+test("source inspection retains dynamic imports conservatively when TypeScript cannot be erased", () => {
+  const source = 'type Shape = import("openclaw/plugin-sdk/uncertain").Shape; const incomplete =';
+  assert.deepEqual(inspectSourceText(source).sdkImports.map(({ specifier }) => specifier),
+    ["openclaw/plugin-sdk/uncertain"]);
+});
+
+test("source inspection finds imports after quoted regexes at their original location", () => {
+  const source = [
+    `const quote = /["']/;`,
+    'const fake = /require("demo")/;',
+    'const sdk = await import("openclaw/plugin-sdk/after-regex");',
+  ].join("\n");
+  assert.deepEqual(inspectSourceText(source, "fixture.js").sdkImports, [
+    { specifier: "openclaw/plugin-sdk/after-regex", file: "fixture.js", line: 3, ref: "fixture.js:3" },
+  ]);
+});
+
+test("source inspection preserves erased import types when runtime AST analysis fails", () => {
+  const source = 'type Only = import("openclaw/plugin-sdk/type-only").Only; const sdk = await import("openclaw/plugin-sdk/retained"); const sdk = 0;';
+  assert.deepEqual(inspectSourceText(source).sdkImports.map(({ specifier }) => specifier),
+    ["openclaw/plugin-sdk/retained"]);
+});
+
 test("source inspection strips long comments before matching registrations", () => {
   const inspection = inspectSourceText(
     [`/* ${"a/*".repeat(512)} */`, "api.registerTool({ name: 'weather' });"].join("\n"),

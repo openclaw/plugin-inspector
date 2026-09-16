@@ -234,6 +234,106 @@ for (const extension of ["mjs", "ts"]) {
   });
 }
 
+test("dynamic mock generation agrees with runtime source imports and excludes promise methods", async (t) => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-dynamic-imports-"));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const source = [
+    'type Shape = import("openclaw/plugin-sdk/dynamic-shared").Shape;',
+    'type Only = import("openclaw/plugin-sdk/type-only").Only;',
+    'const { sharedHelper: aliased } = await import("openclaw/plugin-sdk/dynamic-shared");',
+    'const sdk = await import(`openclaw/plugin-sdk/dynamic-namespace`); sdk.namespaceHelper;',
+    'type NamespaceType = typeof sdk.then;',
+    'function shadowed(sdk) { sdk.then(); }',
+    'const quoted = "sdk.then";',
+    '// sdk.then();',
+    '/* sdk.commentOnly(); */',
+    'const unrelated = { sdk: { then() {} } }; unrelated.sdk.then();',
+    'const spaced = unrelated . sdk . then;',
+    'const templateText = `sdk.templateOnly`;',
+    'const direct = (await import("openclaw/plugin-sdk/dynamic-direct")).directHelper;',
+    'const promise = import("openclaw/plugin-sdk/dynamic-promise").then(() => {});',
+    '// import("openclaw/plugin-sdk/comment-only");',
+    'const text = \'import("openclaw/plugin-sdk/string-only")\';',
+    'const template = `https://fixture.invalid import("openclaw/plugin-sdk/template-only") ${',
+    '  `nested ${typeof (await import("openclaw/plugin-sdk/dynamic-template")).templateHelper}`',
+    '}`;',
+    'const computed = (name) => import(`openclaw/plugin-sdk/${name}`);',
+    'const joined = (name) => import("openclaw/plugin-sdk/" + name);',
+    'const property = receiver.import("openclaw/plugin-sdk/property-only");',
+  ].join("\n");
+  await writeFile(path.join(root, "index.ts"), source);
+  const { pluginSdkDir } = await createMockSdkPackage(root, { pluginRoot: root });
+  const expected = new Map([
+    ["dynamic-shared", ["sharedHelper"]],
+    ["dynamic-namespace", ["namespaceHelper"]],
+    ["dynamic-direct", ["directHelper"]],
+    ["dynamic-promise", []],
+    ["dynamic-template", ["templateHelper"]],
+  ]);
+  assert.deepEqual(inspectSourceText(source).sdkImports.map(({ specifier }) => specifier),
+    [...expected.keys()].map((subpath) => `openclaw/plugin-sdk/${subpath}`));
+  for (const [subpath, names] of expected) {
+    const module = await import(pathToFileURL(path.join(pluginSdkDir, `${subpath}.js`)).href);
+    assert.deepEqual(Object.keys(module).sort(), ["default", ...names].sort(), subpath);
+    for (const name of names) assert.equal(typeof module[name], "function");
+  }
+  for (const subpath of ["type-only", "comment-only", "string-only", "template-only", "property-only"]) {
+    await assert.rejects(stat(path.join(pluginSdkDir, `${subpath}.js`)), { code: "ENOENT" });
+  }
+});
+
+for (const extension of ["mjs", "ts", "cjs"]) {
+  for (const rejected of [false, true]) {
+    test(`mock ${extension} dynamic imports load in retained handlers and ${rejected ? "preserve rejection" : "respond successfully"}`, {
+      skip: extension === "cjs" && !supportsCommonJsMocks,
+    }, async (t) => {
+      const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-dynamic-handler-"));
+      t.after(() => rm(root, { recursive: true, force: true }));
+      await writeFile(path.join(root, `index.${extension}`), [
+        extension === "cjs"
+          ? 'const { formatErrorMessage } = require("openclaw/plugin-sdk/error-runtime");'
+          : 'import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";',
+        "let registered = false;",
+        `${extension === "cjs" ? "module.exports =" : "export default"} { register(api) {`,
+        "  api.registerGatewayMethod('fixture.dynamic', async ({ respond }) => {",
+        "    if (!registered) throw new Error('handler ran during registration');",
+        '    const { readStringField: readField } = await import("openclaw/plugin-sdk/dynamic-destructure");',
+        '    const sdk = await import(`openclaw/plugin-sdk/dynamic-namespace`);',
+        extension === "ts" ? '    type NamespaceType = typeof sdk.then;' : '',
+        '    const quoted = "sdk.then";',
+        '    // sdk.then();',
+        '    const unrelated = { sdk: { then() {} } }; unrelated.sdk.then();',
+        '    const direct = (await import("openclaw/plugin-sdk/dynamic-direct"))?.asOptionalRecord;',
+        '    const callbackValue = await import("openclaw/plugin-sdk/dynamic-then").then(({ readStringField }) => readStringField({ value: "callback loaded" }, "value"));',
+        '    const callbackRecord = await import("openclaw/plugin-sdk/dynamic-then-namespace")?.then(sdk => sdk.isRecord({}));',
+        '    const template = `https://fixture.invalid ${`nested ${(await import("openclaw/plugin-sdk/dynamic-template")).readStringField({ value: "loaded" }, "value")}`}`;',
+        "    const value = readField({ message: 'dynamic exports loaded' }, 'message');",
+        "    if (value !== 'dynamic exports loaded' || !sdk.isRecord({}) || sdk.isRecord([]) || direct([]) !== undefined || !template.endsWith('nested loaded') || callbackValue !== 'callback loaded' || !callbackRecord) {",
+        "      throw new Error('dynamic SDK exports missing');",
+        "    }",
+        rejected
+          ? "    respond(false, undefined, { code: 'UNAVAILABLE', message: formatErrorMessage(new Error('fixture prerequisite missing')) });"
+          : "    respond(true, { value });",
+        "  });",
+        "  registered = true;",
+        "} };",
+        'function shadowed(sdk) { sdk.then(); }',
+      ].join("\n"));
+      const result = await runEntrypointSyntheticProbes(`index.${extension}`, {
+        cwd: root, pluginRoot: root, mockSdk: true,
+      });
+      assert.deepEqual(result.summary, {
+        probeCount: 1, passCount: rejected ? 0 : 1, failCount: rejected ? 1 : 0, blockedCount: 0,
+      });
+      if (rejected) {
+        assert.equal(result.results[0].error, "Gateway response error: fixture prerequisite missing");
+      } else {
+        assert.deepEqual(result.results[0].output, { type: "object", keys: ["id", "ok", "payload", "type"] });
+      }
+    });
+  }
+}
+
 for (const extension of ["mjs", "cjs"]) {
   test(`mock ${extension} capture follows a symlinked plugin root`, async (t) => {
     const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-symlink-"));
