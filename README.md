@@ -200,6 +200,13 @@ Common options:
 | `--junit [path]` | Write JUnit XML from `check` or `inspect`; `ci` enables this by default. |
 | `--no-sarif` / `--no-junit` | Disable default `ci` outputs. |
 
+For `batch`, `--concurrency <n>` must be a finite number (default `4`, rounded
+and clamped to `1`–`32` workers). Invalid or missing values fail before inspection
+or report writes. `--keep-plugin-reports` retains individual reports under
+`<out>/plugins/<relative-plugin-path>/`, preserving the corpus directory layout
+and names so plugins such as `a/b`, `a-b`, and `a b` cannot overwrite each other's
+reports. If the corpus root is itself a plugin, its reports go in `<out>/plugins/`.
+
 Run the built-in help for the exact CLI surface:
 
 ```bash
@@ -567,6 +574,8 @@ npm run check
 ```
 
 `npm run check` runs the Node test suite and the package-contents guard. The
+test runner limits parallel test files to four so process-supervision tests do
+not contend with a machine-wide burst of child processes for their deadlines. The
 contents guard shells through `npm pack --dry-run --json` and verifies the npm
 tarball includes package entrypoints, examples, README assets, and no private
 `test/`, `scripts/`, or `.github/` paths.

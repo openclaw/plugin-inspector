@@ -394,9 +394,9 @@ test("custom import-loop commands retain arguments, cwd, env, and artifact owner
   await writeFile(outputPath, "previous-custom-artifact");
   await writeFile(captureScript, `
     import assert from 'node:assert/strict';
-    import { readFile, writeFile } from 'node:fs/promises';
+    import { readFile, realpath, writeFile } from 'node:fs/promises';
     assert.equal(process.argv[2], 'custom-argument');
-    assert.equal(process.cwd(), ${JSON.stringify(cwd)});
+    assert.equal(process.cwd(), await realpath(${JSON.stringify(cwd)}));
     assert.equal(process.env.CUSTOM_CAPTURE, 'present');
     assert.equal(await readFile(process.argv[3], 'utf8'), 'previous-custom-artifact');
     await writeFile(process.argv[3], JSON.stringify({ status: 'captured', captured: [{ name: 'custom' }] }));

@@ -4,6 +4,7 @@
 
 ### Fixed
 
+- Reject invalid batch concurrency instead of reporting success without inspecting any plugins, and preserve relative plugin paths in retained reports so similar directory names cannot overwrite each other's results.
 - Preserve error messages from the OpenClaw `error-runtime` SDK subpath in synthetic probes, including lazy CommonJS imports, so Gateway rejections report their actual cause and remain failures.
 - Keep tool-hook and conversation-privacy contract gaps open when runtime artifacts only capture hook registration. Preserve registration coverage and semantic contract probes.
 - Read OpenClaw compatibility records from the explicitly imported `registry-records.ts` data module, avoiding false missing-record findings after the registry split. Preserve inline registries and report missing delegated data as an error.

@@ -21,7 +21,11 @@ export async function runBatchAnalysis(options = {}) {
   const rootDir = path.resolve(options.rootDir ?? options.inputDir ?? process.cwd());
   const outDir = options.outDir ?? "reports";
   const outRoot = path.resolve(rootDir, outDir);
-  const concurrency = Math.max(1, Math.min(Math.round(options.concurrency ?? 4), 32));
+  const requestedConcurrency = options.concurrency ?? 4;
+  if (!Number.isFinite(requestedConcurrency)) {
+    throw new TypeError("batch concurrency must be a finite number");
+  }
+  const concurrency = Math.max(1, Math.min(Math.round(requestedConcurrency), 32));
   const keepPluginReports = options.keepPluginReports === true;
   const targetOpenClaw =
     options.targetOpenClaw ??
@@ -35,8 +39,8 @@ export async function runBatchAnalysis(options = {}) {
   try {
     await runWithConcurrency(pluginRoots, concurrency, async (pluginRoot) => {
       const reportsRoot = keepPluginReports
-        ? path.join(outRoot, "plugins", slugForPath(path.relative(rootDir, pluginRoot)))
-        : path.join(tempRoot, slugForPath(path.relative(rootDir, pluginRoot)));
+        ? path.join(outRoot, "plugins", path.relative(rootDir, pluginRoot))
+        : path.join(tempRoot, path.relative(rootDir, pluginRoot));
       entries.push(
         await inspectBatchPlugin(pluginRoot, {
           ...options,
@@ -304,14 +308,5 @@ function packageNameFromReport(report) {
     report.fixtures?.[0]?.name ??
     report.fixtures?.[0]?.id ??
     "plugin"
-  );
-}
-
-function slugForPath(value) {
-  return (
-    String(value)
-      .replaceAll(path.sep, "-")
-      .replace(/[^a-zA-Z0-9._-]+/g, "-")
-      .replace(/^-+|-+$/g, "") || "plugin"
   );
 }

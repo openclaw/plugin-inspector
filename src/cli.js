@@ -61,7 +61,9 @@ async function runBatch(commandArgs) {
   const outDir = readFlag(commandArgs, "--out") ?? "reports";
   const openclawPath = commandArgs.includes("--no-openclaw") ? false : readFlag(commandArgs, "--openclaw");
   const openclawVersion = readOpenClawVersion(commandArgs);
-  const concurrency = Number(readFlag(commandArgs, "--concurrency") ?? "4");
+  const concurrency = commandArgs.includes("--concurrency")
+    ? Number(readFlag(commandArgs, "--concurrency") ?? NaN)
+    : 4;
   const json = commandArgs.includes("--json");
   const check = commandArgs.includes("--check");
   const keepPluginReports = commandArgs.includes("--keep-plugin-reports");
