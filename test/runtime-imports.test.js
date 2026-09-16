@@ -68,6 +68,20 @@ test("runtime AST excludes regex calls without losing imports after quoted regex
   ]);
 });
 
+test("runtime imports retain literal arguments with options, trailing commas, and comments", () => {
+  const source = [
+    'const options = await import("openclaw/plugin-sdk/options", {}); options.readStringField({}, "value");',
+    'const { isRecord } = await import("openclaw/plugin-sdk/comma",);',
+    'const direct = (await import("openclaw/plugin-sdk/comment" /* trailing comment */)).asOptionalRecord;',
+    'const computed = name => import("openclaw/plugin-sdk/" + name);',
+  ].join("\n");
+  assert.deepEqual(collectRuntimeModuleImports(source).map(({ specifier, names }) => [specifier, [...names]]), [
+    ["openclaw/plugin-sdk/options", ["readStringField"]],
+    ["openclaw/plugin-sdk/comma", ["isRecord"]],
+    ["openclaw/plugin-sdk/comment", ["asOptionalRecord"]],
+  ]);
+});
+
 test("inline fulfillment callbacks expose their own SDK bindings without promise or rejection members", () => {
   const source = [
     'import("openclaw/plugin-sdk/destructured").then(({ readStringField: read }) => read({}, "value"));',
@@ -98,9 +112,9 @@ test("generated runtime modules settle and retained callbacks compute values and
       '  let registered = false;',
       '  save(async (value, reject = false) => {',
       '    if (!registered) throw new Error("callback ran during registration");',
-      '    const sdk = await import("openclaw/plugin-sdk/namespace-proof");',
-      '    const { isRecord: record } = await import("openclaw/plugin-sdk/destructure-proof");',
-      '    const direct = (await import("openclaw/plugin-sdk/direct-proof"))?.asOptionalRecord;',
+      '    const sdk = await import("openclaw/plugin-sdk/namespace-proof", {});',
+      '    const { isRecord: record } = await import("openclaw/plugin-sdk/destructure-proof",);',
+      '    const direct = (await import("openclaw/plugin-sdk/direct-proof" /* trailing comment */))?.asOptionalRecord;',
       '    const result = await import("openclaw/plugin-sdk/promise-proof")?.then(() => ({ then: "resolved" }));',
       '    const callbackValue = await import("openclaw/plugin-sdk/then-destructure").then(({ readStringField: read }) => read({ value }, "value"));',
       '    const callbackRecord = await import("openclaw/plugin-sdk/then-namespace")?.then(sdk => sdk.isRecord({}));',

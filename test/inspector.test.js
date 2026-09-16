@@ -4,7 +4,7 @@ import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
-import { captureEntrypoint, inspectFixtureSet, inspectSourceText, loadInspectorConfig } from "../src/advanced.js";
+import { captureEntrypoint, classifyTargetOpenClawCoverage, inspectFixtureSet, inspectSourceText, loadInspectorConfig } from "../src/advanced.js";
 
 test("source inspection records hooks and registrars without treating type-only SDK imports as runtime imports", () => {
   const inspection = inspectSourceText(
@@ -181,6 +181,34 @@ test("source inspection retains dynamic imports conservatively when TypeScript c
   const source = 'type Shape = import("openclaw/plugin-sdk/uncertain").Shape; const incomplete =';
   assert.deepEqual(inspectSourceText(source).sdkImports.map(({ specifier }) => specifier),
     ["openclaw/plugin-sdk/uncertain"]);
+});
+
+test("source compatibility findings retain imports with options, trailing commas, and comments", () => {
+  const source = [
+    'type Only = import("openclaw/plugin-sdk/options").Only;',
+    'const options = import("openclaw/plugin-sdk/options", {});',
+    'const comma = import("openclaw/plugin-sdk/comma",);',
+    'const comment = import("openclaw/plugin-sdk/comment" /* trailing comment */);',
+  ].join("\n");
+  const sdkImportDetails = inspectSourceText(source, "fixture.ts").sdkImports;
+  assert.deepEqual(sdkImportDetails.map(({ specifier, ref }) => [specifier, ref]), [
+    ["openclaw/plugin-sdk/options", "fixture.ts:2"],
+    ["openclaw/plugin-sdk/comma", "fixture.ts:3"],
+    ["openclaw/plugin-sdk/comment", "fixture.ts:4"],
+  ]);
+  const result = classifyTargetOpenClawCoverage({
+    fixture: { id: "fixture" },
+    inspection: { hooks: [], hookDetails: [], registrationDetails: [] },
+    fixtureReport: { sdkImports: sdkImportDetails.map(({ specifier }) => specifier), sdkImportDetails },
+    targetOpenClaw: {
+      status: "ok", hookNames: [], apiRegistrars: [], manifestFields: [], sdkExports: ["openclaw/plugin-sdk"],
+    },
+  });
+  assert.deepEqual(result.warnings.find(({ code }) => code === "sdk-export-missing")?.evidence, [
+    "openclaw/plugin-sdk/options @ fixture.ts:2",
+    "openclaw/plugin-sdk/comma @ fixture.ts:3",
+    "openclaw/plugin-sdk/comment @ fixture.ts:4",
+  ]);
 });
 
 test("source inspection finds imports after quoted regexes at their original location", () => {

@@ -127,6 +127,29 @@ async function runChild(workspace) {
       } });
     } };`,
   };
+  for (const [format, extension, bindings] of [
+    ["esm", "mjs", ["irisOptions", "poppyComma", "asterComment"]],
+    ["cjs", "cjs", ["mapleOptions", "juniperComma", "balsaComment"]],
+  ]) {
+    const branches = ["options", "comma", "comment"].map((tail, index) => {
+      const binding = bindings[index];
+      const specifier = `openclaw/plugin-sdk/probe-${format}-${tail}-tail`;
+      const suffix = tail === "options" ? ", {}" : tail === "comma" ? "," : ` /* ${binding}.commentTailPhantomExport */`;
+      return `if (tail === "${tail}") {
+        const ${binding} = await import("${specifier}"${suffix});
+        const ignoredQuote = "${binding}.quotedTailPhantomExport";
+        /* ${binding}.commentTailPhantomExport */
+        const record = ${binding}.isRecord(payload);
+        return { value: record ? ${binding}.readStringField(payload, "${format}_${tail}") : undefined, record, optional: ${binding}.asOptionalRecord(payload), keys: Object.keys(${binding}) };
+      }`;
+    });
+    fixtures[`tails.${extension}`] = `${format === "esm" ? "export default" : "module.exports ="} { register(api) {
+      api.registerTool({ name: "${format}_literal_tails", async execute({tail, payload}) {
+        ${branches.join("\n")}
+        throw new Error("unrecognized fixture tail");
+      } });
+    } };`;
+  }
   for (const [name, contents] of Object.entries(fixtures)) {
     await writeFile(path.join(pluginRoot, name), contents, { flag: "wx" });
   }
@@ -244,6 +267,26 @@ async function runChild(workspace) {
       }
       return { calls: 10, observed: "false retained; thrown/rejected Errors and raw rejections retain two exact messages; success remains success" };
     });
+    for (const [format, file] of [["esm", "tails.mjs"], ["cjs", "tails.cjs"]]) {
+      for (const tail of ["options", "comma", "comment"]) {
+        await contract(`R6.${format}-${tail}`, async () => {
+          const callback = await retainedCallback(file);
+          const field = `${format}_${tail}`;
+          const payloads = [{ [field]: "petal-563", other: "unused" }, { [field]: "canopy-812" }, { [field]: 41 }, {}, null, ["not-a-parcel"]];
+          for (const payload of payloads) {
+            const actual = await callback({ tail, payload });
+            const record = payload !== null && typeof payload === "object" && !Array.isArray(payload);
+            assert.equal(actual.value, record && typeof payload[field] === "string" ? payload[field] : undefined);
+            assert.equal(actual.record, record);
+            assert.strictEqual(actual.optional, record ? payload : undefined);
+            for (const unknown of ["quotedTailPhantomExport", "commentTailPhantomExport"]) {
+              assert.equal(actual.keys.includes(unknown), false, `invented export ${unknown} for ${format} ${tail}`);
+            }
+          }
+          return { calls: payloads.length, excludedExports: 2, observed: `${format} literal dynamic import with ${tail} tail; varied strings, absent/nonstring fields, null, array, record identity` };
+        });
+      }
+    }
     await contract("R5.type-only-produces-no-runtime-module", async () => {
       for (const name of ["probe-ink-type-only", "probe-marble-type-query", "probe-jade-import-type"]) {
         assert.equal(artifacts.some(relative => relative.includes(name)), false, `generated module from erased type declaration: ${name}`);
@@ -264,7 +307,7 @@ async function runChild(workspace) {
   const failed = statuses.filter(entry => entry.status === "fail").length;
   const blocked = statuses.filter(entry => entry.status === "blocked").length;
   emit({ summary: { passed, failed, blocked, outOfScope: ["malformed or unsupported TypeScript", "public CLI and counters", "npm/release packaging"] } });
-  process.exitCode = failed || blocked || passed !== 6 ? 1 : 0;
+  process.exitCode = failed || blocked || passed !== 12 ? 1 : 0;
 }
 
 if (!target) {

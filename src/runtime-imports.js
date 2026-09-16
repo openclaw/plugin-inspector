@@ -2,7 +2,7 @@ import * as nodeModule from "node:module";
 import { parse } from "acorn";
 import { analyze } from "eslint-scope";
 
-const literalModuleImport = /(?<![$\w.])(?:(?:const|let|var)\s+(?:\{[^{}]*\}|[$A-Z_a-z][$\w]*)\s*=\s*)?(?<kind>require|import)\s*\(\s*(?<quote>["'`])(?<specifier>[^"'`\\\r\n]+)\k<quote>\s*\)/dg;
+const literalModuleImport = /(?<![$\w.])(?:(?:const|let|var)\s+(?:\{[^{}]*\}|[$A-Z_a-z][$\w]*)\s*=\s*)?(?<kind>require|import)\s*\(\s*(?<quote>["'`])(?<specifier>[^"'`\\\r\n]+)\k<quote>/dg;
 
 export function collectRuntimeModuleImports(text) {
   // Mark literal occurrences without interpreting quotes or regexes; the AST owns real calls.
