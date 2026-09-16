@@ -164,6 +164,13 @@ export const mockSdkSubpathExports = {
     "normalizeSecretInputString",
   ],
   "plugin-runtime": ["createLoggerBackedRuntime", "createSubsystemLogger"],
+  "lazy-runtime": [
+    "createLazyRuntimeModule",
+    "createLazyRuntimeMethod",
+    "createLazyRuntimeMethodBinder",
+    "createLazyRuntimeNamedExport",
+    "createLazyRuntimeSurface",
+  ],
   "error-runtime": ["formatErrorMessage"],
   "secret-input": [
     "buildOptionalSecretInputSchema",
@@ -1757,6 +1764,37 @@ export function createRuntimeEnv(env = {}) {
 
 export function resolveRuntimeEnv(env = {}) {
   return createRuntimeEnv(env);
+}
+
+export function createLazyRuntimeSurface(importer, select) {
+  let promise;
+  const load = () => {
+    // SDK runtime imports retain the same promise, including rejection, until clear().
+    promise ??= Promise.resolve().then(() => importer().then(select));
+    return promise;
+  };
+  load.peek = () => promise;
+  load.clear = () => { promise = undefined; };
+  return load;
+}
+
+export function createLazyRuntimeModule(importer) {
+  return createLazyRuntimeSurface(importer, (module) => module);
+}
+
+export function createLazyRuntimeNamedExport(importer, key) {
+  return createLazyRuntimeSurface(importer, (module) => module[key]);
+}
+
+export function createLazyRuntimeMethod(load, select) {
+  return async (...args) => {
+    const method = select(await load());
+    return await method(...args);
+  };
+}
+
+export function createLazyRuntimeMethodBinder(load) {
+  return (select) => createLazyRuntimeMethod(load, select);
 }
 
 export function createLoggerBackedRuntime(logger = console) {

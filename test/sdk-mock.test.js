@@ -324,6 +324,161 @@ for (const extension of ["mjs", "cjs"]) {
   });
 }
 
+async function loadLazyRuntimeMock(t) {
+  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-lazy-"));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const { pluginSdkDir } = await createMockSdkPackage(root);
+  return import(pathToFileURL(path.join(pluginSdkDir, "lazy-runtime.js")).href);
+}
+
+test("mock lazy runtime modules defer imports and reuse their promise until cleared", async (t) => {
+  const { createLazyRuntimeModule } = await loadLazyRuntimeMock(t);
+  const module = { value: "loaded" };
+  let calls = 0;
+  const load = createLazyRuntimeModule(async () => { calls += 1; return module; });
+  assert.equal(calls, 0);
+  assert.equal(load.peek(), undefined);
+  const first = load();
+  assert.equal(calls, 0);
+  assert.equal(load(), first);
+  assert.equal(load.peek(), first);
+  assert.equal(await first, module);
+  assert.equal(load(), first);
+  assert.equal(calls, 1);
+  load.clear();
+  assert.equal(load.peek(), undefined);
+  const next = load();
+  assert.notEqual(next, first);
+  assert.equal(await next, module);
+  assert.equal(calls, 2);
+});
+
+for (const phase of ["import", "selection"]) {
+  test(`mock lazy runtime caches ${phase} failures until cleared`, async (t) => {
+    const { createLazyRuntimeSurface } = await loadLazyRuntimeMock(t);
+    const failure = new Error("fixture runtime unavailable");
+    let calls = 0;
+    const load = createLazyRuntimeSurface(() => {
+      calls += 1;
+      if (phase === "import") throw failure;
+      return Promise.resolve({});
+    }, () => { throw failure; });
+    const first = load();
+    assert.equal(calls, 0);
+    await assert.rejects(first, (error) => error === failure);
+    assert.equal(load(), first);
+    assert.equal(load.peek(), first);
+    assert.equal(calls, 1);
+    load.clear();
+    const next = load();
+    assert.notEqual(next, first);
+    await assert.rejects(next, (error) => error === failure);
+    assert.equal(calls, 2);
+  });
+}
+
+for (const rejected of [false, true]) {
+  test(`mock lazy runtime clear protects replacement from stale ${rejected ? "rejection" : "fulfillment"}`, async (t) => {
+    const { createLazyRuntimeModule } = await loadLazyRuntimeMock(t);
+    let settleOld;
+    let resolveNew;
+    const pending = [
+      new Promise((resolve, reject) => { settleOld = rejected ? reject : resolve; }),
+      new Promise((resolve) => { resolveNew = resolve; }),
+    ];
+    const load = createLazyRuntimeModule(() => pending.shift());
+    const first = load();
+    await Promise.resolve();
+    const oldOutcome = rejected
+      ? assert.rejects(first, /stale runtime/)
+      : first.then((value) => assert.equal(value, "stale runtime"));
+    load.clear();
+    const next = load();
+    assert.notEqual(next, first);
+    settleOld(rejected ? new Error("stale runtime") : "stale runtime");
+    await oldOutcome;
+    assert.equal(load.peek(), next);
+    assert.equal(load(), next);
+    resolveNew("current runtime");
+    assert.equal(await next, "current runtime");
+    assert.equal(load(), next);
+  });
+}
+
+test("mock lazy runtime named exports and method binders use the selected surface", async (t) => {
+  const sdk = await loadLazyRuntimeMock(t);
+  const module = { service: { offset: 7, add(a, b) { return this.offset + a + b; } } };
+  let imports = 0;
+  let selections = 0;
+  const load = sdk.createLazyRuntimeSurface(async () => { imports += 1; return module; }, (value) => {
+    selections += 1;
+    return value.service;
+  });
+  const add = sdk.createLazyRuntimeMethod(load, (service) => service.add.bind(service));
+  const bound = sdk.createLazyRuntimeMethodBinder(load)((service) => service.add.bind(service));
+  assert.equal(imports, 0);
+  assert.equal(await add(1, 2), 10);
+  assert.equal(await bound(3, 4), 14);
+  assert.equal(imports, 1);
+  assert.equal(selections, 1);
+  const named = sdk.createLazyRuntimeNamedExport(async () => module, "service");
+  const first = named();
+  assert.equal(named(), first);
+  assert.equal(await first, module.service);
+});
+
+for (const extension of ["mjs", "cjs"]) {
+  for (const rejected of [false, true]) {
+    test(`mock ${extension} Gateway lazy runtime ${rejected ? "rejection remains failed" : "loads after registration"}`, {
+      skip: extension === "cjs" && !supportsCommonJsMocks,
+    }, async (t) => {
+      const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-lazy-gateway-"));
+      t.after(() => rm(root, { recursive: true, force: true }));
+      await writeFile(path.join(root, "runtime.mjs"), [
+        'import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";',
+        'export const value = formatErrorMessage(new Error("fixture runtime value"));',
+      ].join("\n"));
+      await writeFile(path.join(root, `index.${extension}`), [
+        extension === "mjs" ? 'import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";' : "",
+        extension === "mjs" ? 'import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";' : "",
+        "let registered = false;",
+        "async function importRuntime() {",
+        "  if (!registered) throw new Error('runtime loaded during registration');",
+        rejected ? "  throw new Error('fixture runtime unavailable');" : "  return import('./runtime.mjs');",
+        "}",
+        extension === "mjs" ? "const load = createLazyRuntimeModule(importRuntime);" : "let load;",
+        `${extension === "cjs" ? "module.exports =" : "export default"} { register(api) {`,
+        "  if (load?.peek() !== undefined) throw new Error('runtime load started before handler');",
+        "  api.registerGatewayMethod('fixture.lazy', async ({ respond }) => {",
+        extension === "cjs" ? '    const { createLazyRuntimeModule } = require("openclaw/plugin-sdk/lazy-runtime");' : "",
+        extension === "cjs" ? '    const { formatErrorMessage } = require("openclaw/plugin-sdk/error-runtime");' : "",
+        extension === "cjs" ? "    load ??= createLazyRuntimeModule(importRuntime);" : "",
+        "    try {",
+        "      const first = load();",
+        "      if (load() !== first || load.peek() !== first) throw new Error('runtime promise was not reused');",
+        "      const runtime = await first;",
+        "      if (runtime.value !== 'fixture runtime value') throw new Error('runtime SDK import was not preserved');",
+        "      respond(true, { value: runtime.value });",
+        "    } catch (error) {",
+        "      respond(false, undefined, { code: 'UNAVAILABLE', message: formatErrorMessage(error) });",
+        "    }",
+        "  });",
+        "  registered = true;",
+        "} };",
+      ].join("\n"));
+      const result = await runEntrypointSyntheticProbes(`index.${extension}`, {
+        cwd: root, pluginRoot: root, mockSdk: true,
+      });
+      assert.deepEqual(result.summary, {
+        probeCount: 1, passCount: rejected ? 0 : 1, failCount: rejected ? 1 : 0, blockedCount: 0,
+      });
+      if (rejected) {
+        assert.equal(result.results[0].error, "Gateway response error: fixture runtime unavailable");
+      }
+    });
+  }
+}
+
 test("mock SDK ignores subpaths that would escape the plugin-sdk package", async () => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-mock-"));
   const pluginRoot = path.join(rootDir, "plugin");
