@@ -635,6 +635,7 @@ export async function runCapturedSyntheticProbes(capture, options = {}) {
   try {
     const result = await runCapturedProbes(capture, {
       ...options, hookEvents, hookContexts, timeoutMs, controller, signal: controller.signal,
+      gatewayConfig: options.apiOptions?.config ?? {},
     });
     if (options.signal?.aborted) throw controller.signal.reason;
     return result;
@@ -803,6 +804,16 @@ async function runRegistrationProbes(entry, retainedEntry, captureIndex, options
       : retainedEntry.arguments?.find((value) => value && typeof value === "object") ?? retainedEntry.returnValue;
   if (!descriptor || typeof descriptor !== "object") {
     return [blockedResult(entry, captureIndex, "captured registration has no object descriptor")];
+  }
+  const method = descriptor.method ?? descriptor.name;
+  if (entry.name === "registerGatewayMethod" && Object.hasOwn(options.gatewayMethodPrerequisites ?? {}, method)) {
+    const reason = options.gatewayMethodPrerequisites[method];
+    if (typeof reason !== "string" || reason.trim().length === 0) {
+      throw new TypeError(`Gateway probe prerequisite for ${method} must be a non-empty string`);
+    }
+    // A method needing host state or live credentials cannot be exercised with
+    // the default empty request. Record the missing prerequisite before calling it.
+    return [{ ...blockedResult(entry, captureIndex, reason), method }];
   }
   if (profile.option && options[profile.option] !== true) {
     return [blockedResult(entry, captureIndex, `captured registration requires ${profile.option}=true`)];
@@ -1022,7 +1033,7 @@ function gatewayProbeArgs(event, options = {}) {
       req: { type: "req", id: "fixture-request", method: event.method ?? "fixture.gateway.method", params: event.params },
       client: null,
       isWebchatConnect: () => false,
-      context: { source: event.source, logger: console },
+      context: { source: event.source, logger: console, getRuntimeConfig: () => options.gatewayConfig },
       signal: options.signal,
     },
   ];

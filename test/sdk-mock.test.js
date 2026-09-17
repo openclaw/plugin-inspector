@@ -594,15 +594,15 @@ test("mock SDK ignores subpaths that would escape the plugin-sdk package", async
   await assert.rejects(stat(path.join(rootDir, "node_modules", "openclaw", "escape.js")), { code: "ENOENT" });
 });
 
-test("mock SDK preserves the isRecord predicate contract", async () => {
+test("mock SDK preserves string and record coercion contracts", async () => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-mock-"));
   const pluginRoot = path.join(rootDir, "plugin");
   await mkdir(pluginRoot, { recursive: true });
   await writeFile(
     path.join(pluginRoot, "index.js"),
     [
-      'import { asNullableRecord, asOptionalRecord, asRecord, isRecord, readStringField } from "openclaw/plugin-sdk/string-coerce-runtime";',
-      "export { asNullableRecord, asOptionalRecord, asRecord, isRecord, readStringField };",
+      'import { asNullableRecord, asOptionalRecord, asRecord, isRecord, readStringField, normalizeOptionalString } from "openclaw/plugin-sdk/string-coerce-runtime";',
+      "export { asNullableRecord, asOptionalRecord, asRecord, isRecord, readStringField, normalizeOptionalString };",
       "",
     ].join("\n"),
     "utf8",
@@ -631,4 +631,8 @@ test("mock SDK preserves the isRecord predicate contract", async () => {
   assert.equal(mockModule.readStringField(record, "value"), "ok");
   assert.equal(mockModule.readStringField(record, "count"), undefined);
   assert.equal(mockModule.readStringField(undefined, "value"), undefined);
+  for (const value of [undefined, null, false, 0, {}, [], "", "  \t\n"]) {
+    assert.equal(mockModule.normalizeOptionalString(value), undefined);
+  }
+  assert.equal(mockModule.normalizeOptionalString("  fixture-value  "), "fixture-value");
 });

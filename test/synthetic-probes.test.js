@@ -17,6 +17,103 @@ import {
 } from "../src/advanced.js";
 import { buildSyntheticProbePlanFromReport } from "../src/synthetic-probe-suite.js";
 
+test("gateway prerequisites stop only the named method before invocation", async () => {
+  const api = createCaptureApi({ retainHandlers: true });
+  const called = [];
+  api.registerGatewayMethod("fixture.account", () => {
+    throw new Error("must not read account state without a configured probe");
+  });
+  api.registerGatewayMethod("fixture.status", ({ respond }) => {
+    called.push("status");
+    respond(true, { ready: true });
+  });
+  api.registerGatewayMethod("fixture.failure", ({ respond }) => {
+    called.push("failure");
+    respond(false, undefined, { code: "UNAVAILABLE", message: "saved account required" });
+  });
+  const result = await runCapturedSyntheticProbes({
+    status: "captured",
+    captured: api.getCapturedContracts(),
+    retained: api.getRetainedContracts(),
+  }, { gatewayMethodPrerequisites: { "fixture.account": "saved account required" } });
+
+  assert.deepEqual(called, ["status", "failure"]);
+  assert.deepEqual(result.summary, { probeCount: 3, passCount: 1, failCount: 1, blockedCount: 1 });
+  assert.deepEqual(result.results[0], {
+    captureIndex: 0, kind: "registration", seam: "registerGatewayMethod",
+    label: "registerGatewayMethod", status: "blocked", method: "fixture.account",
+    reason: "saved account required",
+  });
+  assert.match(result.results[2].error, /Gateway response error: saved account required/);
+});
+
+test("configured gateway probes still validate their actual response", async () => {
+  const api = createCaptureApi({ retainHandlers: true });
+  api.registerGatewayMethod("fixture.account", ({ params, respond }) => {
+    assert.equal(params.profileId, "fixture-profile");
+    respond(false, undefined, { code: "UNAVAILABLE", message: "account unavailable" });
+  });
+  const result = await runCapturedSyntheticProbes({
+    status: "captured", captured: api.getCapturedContracts(), retained: api.getRetainedContracts(),
+  }, {
+    gatewayMethodPrerequisites: {},
+    registrationProbeInputs: {
+      registerGatewayMethod: { handler: (event) => [{ ...event, params: { profileId: "fixture-profile" } }] },
+    },
+  });
+  assert.equal(result.summary.failCount, 1);
+  assert.match(result.results[0].error, /Gateway response error: account unavailable/);
+});
+
+test("gateway runtime config retains the configured snapshot identity", async () => {
+  const api = createCaptureApi({ retainHandlers: true });
+  const config = { agents: { list: [{ id: "fixture-agent" }] } };
+  api.registerGatewayMethod("fixture.config", ({ context, respond }) => {
+    assert.equal(context.getRuntimeConfig(), config);
+    assert.equal(context.getRuntimeConfig(), context.getRuntimeConfig());
+    respond(true, {});
+  });
+  const result = await runCapturedSyntheticProbes({
+    status: "captured", captured: api.getCapturedContracts(), retained: api.getRetainedContracts(),
+  }, { apiOptions: { config } });
+  assert.equal(result.summary.passCount, 1);
+});
+
+test("default gateway probes share one runtime config snapshot across the batch", async () => {
+  const api = createCaptureApi({ retainHandlers: true });
+  let snapshot;
+  api.registerGatewayMethod("fixture.first", ({ context, respond }) => {
+    snapshot = context.getRuntimeConfig();
+    assert.deepEqual(snapshot, {});
+    respond(true, {});
+  });
+  api.registerGatewayMethod("fixture.second", ({ context, respond }) => {
+    assert.equal(context.getRuntimeConfig(), snapshot);
+    respond(true, {});
+  });
+  const result = await runCapturedSyntheticProbes({
+    status: "captured", captured: api.getCapturedContracts(), retained: api.getRetainedContracts(),
+  });
+  assert.equal(result.summary.passCount, 2);
+});
+
+test("gateway prerequisite maps ignore inherited method names and reject missing reasons", async () => {
+  const api = createCaptureApi({ retainHandlers: true });
+  let calls = 0;
+  api.registerGatewayMethod("fixture.status", ({ respond }) => { calls += 1; respond(true, {}); });
+  const capture = { status: "captured", captured: api.getCapturedContracts(), retained: api.getRetainedContracts() };
+  const result = await runCapturedSyntheticProbes(capture, {
+    gatewayMethodPrerequisites: Object.create({ "fixture.status": "not an own prerequisite" }),
+  });
+  assert.equal(result.summary.passCount, 1);
+  for (const reason of ["", " ", null, false]) {
+    await assert.rejects(runCapturedSyntheticProbes(capture, {
+      gatewayMethodPrerequisites: { "fixture.status": reason },
+    }), /must be a non-empty string/);
+  }
+  assert.equal(calls, 1);
+});
+
 test("synthetic probe plan maps capture inventory to executable probes", () => {
   const plan = buildSyntheticProbePlan({
     capture: {

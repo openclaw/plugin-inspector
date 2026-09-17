@@ -700,6 +700,11 @@ function isValidExportName(name) {
 }
 
 function genericExportStatement(name) {
+  if (name === "normalizeOptionalString") {
+    // Optional values stay absent; an empty string invents explicit input in
+    // callers that distinguish undefined from a configured policy value.
+    return 'export function normalizeOptionalString(value) { return typeof value === "string" ? value.trim() || undefined : undefined; }';
+  }
   if (name === "isRecord") {
     return "export function isRecord(value) { return isPlainObject(value); }";
   }

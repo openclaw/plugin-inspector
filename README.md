@@ -345,6 +345,15 @@ aliases do not create extra calls. The handler receives synthetic Gateway
 options and a void `respond(ok, payload, error, meta)` callback. Existing
 `registrationProbeInputs` overrides remain available.
 
+For a method that needs unavailable host state or live credentials, pass
+`gatewayMethodPrerequisites: { "fixture.account": "saved account required" }`
+to `runCapturedSyntheticProbes` or `runEntrypointSyntheticProbes`. The named
+method produces a `blocked` row with its method and reason before its handler
+runs. Other methods retain normal response validation. Once a caller supplies
+the required inputs and runtime, omit that method from the prerequisite map;
+rejected or malformed responses still fail. This option never reports a
+missing prerequisite as a passing runtime check.
+
 The first emitted response is authoritative, even when malformed. Probes check
 its JSON-serialized response/error shape: `ok: true` passes, `ok: false` fails,
 and later responses cannot overwrite the outcome. Logging `meta` is not a wire
