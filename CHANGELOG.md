@@ -5,6 +5,7 @@
 ### Fixed
 
 - Recognize OpenClaw's declared private-local Plugin SDK subpaths and reserved bundled-plugin imports when inspecting bundled `extensions/*` fixtures, while continuing to report those imports for external plugins and genuinely missing SDK aliases.
+- Treat active OpenClaw conversation-access compat records with present contract tests as target-owned proof instead of repeatedly emitting a P1 Inspector probe backlog advisory.
 - Record explicit method-scoped Gateway probe prerequisites before calling handlers that require unavailable host state or live credentials; preserve actual response failures for admitted probes.
 - Preserve absent optional strings in SDK mocks and supply a stable runtime config snapshot to Gateway probes instead of inventing configured values or missing host accessors.
 

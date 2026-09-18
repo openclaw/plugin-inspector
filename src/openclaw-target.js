@@ -51,6 +51,15 @@ export async function readOpenClawTargetSurface(options = {}) {
     ? registryEntrySource
     : await readFile(registryPath, "utf8");
   const compatRecordEntries = parseCompatRecordEntries(registrySource);
+  const compatRecordTests = Object.fromEntries(
+    compatRecordEntries.map((record) => [record.code, record.tests]),
+  );
+  const compatRecordMissingTests = Object.fromEntries(
+    compatRecordEntries.map((record) => [
+      record.code,
+      record.tests.filter((testPath) => !existsSync(path.join(resolvedPath, testPath))),
+    ]),
+  );
   const hookTypesSource = existsSync(hookTypesPath) ? await readFile(hookTypesPath, "utf8") : "";
   const hookNames = hookTypesSource ? parseConstStringArray(hookTypesSource, "PLUGIN_HOOK_NAMES") : [];
   const apiBuilderSource = existsSync(apiBuilderPath) ? await readFile(apiBuilderPath, "utf8") : "";
@@ -107,6 +116,8 @@ export async function readOpenClawTargetSurface(options = {}) {
     compatRecordCount: compatRecordEntries.length,
     compatRecords: compatRecordEntries.map((record) => record.code).sort(),
     compatRecordStatuses: Object.fromEntries(compatRecordEntries.map((record) => [record.code, record.status])),
+    compatRecordTests,
+    compatRecordMissingTests,
     hookTypesPath: existsSync(hookTypesPath) ? relativePath(rootDir, hookTypesPath) : null,
     hookNameCount: hookNames.length,
     hookNames,
@@ -172,8 +183,14 @@ export function parseCompatRecordEntries(source) {
 
     const statusProperty = readStringProperty(source, "status", codeProperty.end);
     if (statusProperty) {
-      entries.push({ code: codeProperty.value, status: statusProperty.value });
-      cursor = statusProperty.end;
+      const nextCodeProperty = readStringProperty(source, "code", statusProperty.end);
+      const recordEnd = nextCodeProperty?.propertyIndex ?? source.length;
+      entries.push({
+        code: codeProperty.value,
+        status: statusProperty.value,
+        tests: readStringArrayProperty(source, "tests", statusProperty.end, recordEnd),
+      });
+      cursor = recordEnd;
     } else {
       cursor = codeProperty.end;
     }
@@ -197,7 +214,21 @@ function readStringProperty(source, property, fromIndex) {
   if (!isQuote(source[quoteIndex])) {
     return null;
   }
-  return readQuotedValue(source, quoteIndex);
+  const value = readQuotedValue(source, quoteIndex);
+  return value ? { ...value, propertyIndex } : null;
+}
+
+function readStringArrayProperty(source, property, fromIndex, toIndex) {
+  const propertyIndex = findProperty(source, property, fromIndex);
+  if (propertyIndex === -1 || propertyIndex >= toIndex) return [];
+  const colonIndex = source.indexOf(":", propertyIndex + property.length);
+  const openIndex = source.indexOf("[", colonIndex + 1);
+  if (colonIndex === -1 || openIndex === -1 || openIndex >= toIndex) return [];
+  const closeIndex = source.indexOf("]", openIndex + 1);
+  if (closeIndex === -1 || closeIndex >= toIndex) return [];
+  return unique(
+    [...source.slice(openIndex + 1, closeIndex).matchAll(/["']([^"']+)["']/g)].map((match) => match[1]),
+  ).sort();
 }
 
 function findProperty(source, property, fromIndex) {
@@ -346,6 +377,8 @@ async function readPackedOpenClawTargetSurface({ rootDir, requestedPaths, reques
     compatRecordCount: 0,
     compatRecords: [],
     compatRecordStatuses: {},
+    compatRecordTests: {},
+    compatRecordMissingTests: {},
     hookTypesPath: hookDeclaration ? relativePath(rootDir, hookDeclaration.filePath) : null,
     hookNameCount: hookNames.length,
     hookNames,
@@ -492,6 +525,8 @@ function emptyTargetSurface({ configuredPath, searchedPaths = undefined, status 
     status,
     compatRecords: [],
     compatRecordStatuses: {},
+    compatRecordTests: {},
+    compatRecordMissingTests: {},
     hookNames: [],
     apiRegistrars: [],
     capturedRegistrars: [],
