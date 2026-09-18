@@ -883,7 +883,7 @@ function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, war
   }
 
   const sdkExports = new Set(targetOpenClaw.sdkExports);
-  const isBundledFixture = isBundledOpenClawFixture(fixture);
+  const isBundledFixture = isBundledOpenClawFixture(fixture, targetOpenClaw);
   const privateLocalSdkExports = new Set(targetOpenClaw.privateLocalSdkExports ?? []);
   const unknownImports = fixtureReport.sdkImportDetails.filter(
     (sdkImport) =>
@@ -948,9 +948,16 @@ function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, war
   }
 }
 
-function isBundledOpenClawFixture(fixture) {
-  const fixturePath = String(fixture.path ?? "").replaceAll("\\", "/");
-  return fixture.repo === "local" && /^(?:\.\/)?extensions\//.test(fixturePath);
+function isBundledOpenClawFixture(fixture, targetOpenClaw) {
+  if (fixture.repo !== "local" || !targetOpenClaw.checkoutPath) return false;
+  const fixturePath = normalizeRepoPath(fixture.path);
+  const targetPath = normalizeRepoPath(targetOpenClaw.checkoutPath);
+  const relativePath = targetPath === "."
+    ? fixturePath
+    : fixturePath.startsWith(`${targetPath}/`)
+      ? fixturePath.slice(targetPath.length + 1)
+      : "";
+  return /^extensions\//.test(relativePath);
 }
 
 function addVersionDerivedFinding({ finding, fixtureReport, targetOpenClaw, breakages, warnings, suggestions }) {

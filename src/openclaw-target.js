@@ -96,6 +96,7 @@ export async function readOpenClawTargetSurface(options = {}) {
 
   return {
     configuredPath: requestedPath,
+    checkoutPath: relativePath(rootDir, resolvedPath),
     searchedPaths: requestedPaths,
     status: "ok",
     compatRegistryPath: relativePath(rootDir, registryPath),
@@ -332,6 +333,7 @@ async function readPackedOpenClawTargetSurface({ rootDir, requestedPaths, reques
 
   return {
     configuredPath: requestedPath,
+    checkoutPath: relativePath(rootDir, resolvedPath),
     searchedPaths: requestedPaths,
     status: "ok",
     version: packageJson.version ?? null,
@@ -479,6 +481,7 @@ function parseStringUnion(source, typeName) {
 function emptyTargetSurface({ configuredPath, searchedPaths = undefined, status }) {
   return {
     configuredPath,
+    checkoutPath: null,
     searchedPaths,
     status,
     compatRecords: [],

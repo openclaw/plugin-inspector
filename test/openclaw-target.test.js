@@ -93,6 +93,7 @@ export const publicPluginOwnedSdkEntrypoints = ["speech-core"] as const;\n`,
 
   assert.equal(target.status, "ok");
   assert.equal(target.configuredPath, "./openclaw");
+  assert.equal(target.checkoutPath, "openclaw");
   assert.deepEqual(target.compatRecords, [
     "hook.before_tool_call.terminal-block-approval",
     "sdk.import.root-barrel-cold-import",
