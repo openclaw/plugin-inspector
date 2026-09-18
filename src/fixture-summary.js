@@ -883,18 +883,28 @@ function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, war
   }
 
   const sdkExports = new Set(targetOpenClaw.sdkExports);
-  const unknownImports = fixtureReport.sdkImportDetails.filter((sdkImport) => !sdkExports.has(sdkImport.specifier));
-  const reservedSdkExports = new Set(targetOpenClaw.reservedSdkExports ?? []);
-  const reservedImports = fixtureReport.sdkImportDetails.filter((sdkImport) =>
-    reservedSdkExports.has(sdkImport.specifier),
+  const isBundledFixture = isBundledOpenClawFixture(fixture);
+  const privateLocalSdkExports = new Set(targetOpenClaw.privateLocalSdkExports ?? []);
+  const unknownImports = fixtureReport.sdkImportDetails.filter(
+    (sdkImport) =>
+      !sdkExports.has(sdkImport.specifier) &&
+      !(isBundledFixture && privateLocalSdkExports.has(sdkImport.specifier)),
   );
+  const reservedSdkExports = new Set(targetOpenClaw.reservedSdkExports ?? []);
+  const reservedImports = isBundledFixture
+    ? []
+    : fixtureReport.sdkImportDetails.filter((sdkImport) =>
+        reservedSdkExports.has(sdkImport.specifier),
+      );
 
   if (reservedImports.length === 0 && unknownImports.length === 0) {
     logs.push({
       fixture: fixture.id,
       code: "sdk-exports-present",
       level: "log",
-      message: "all observed plugin SDK imports exist in target OpenClaw package exports",
+      message: isBundledFixture
+        ? "all observed plugin SDK imports are exported or declared private-local for bundled plugins"
+        : "all observed plugin SDK imports exist in target OpenClaw package exports",
       evidence: fixtureReport.sdkImports,
     });
     return;
@@ -936,6 +946,11 @@ function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, war
       evidence: unique(reservedImports.map((sdkImport) => sdkImport.specifier)).join(", "),
     });
   }
+}
+
+function isBundledOpenClawFixture(fixture) {
+  const fixturePath = String(fixture.path ?? "").replaceAll("\\", "/");
+  return fixture.repo === "local" && /^(?:\.\/)?extensions\//.test(fixturePath);
 }
 
 function addVersionDerivedFinding({ finding, fixtureReport, targetOpenClaw, breakages, warnings, suggestions }) {
