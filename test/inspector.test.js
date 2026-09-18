@@ -540,7 +540,7 @@ test("compatibility inspection resolves bundled fixture membership before SDK cl
   await writeFile(path.join(targetDir, "src/plugins/compat/registry.ts"), "export const records = [];\n");
   await writeFile(
     path.join(targetDir, "src/plugin-sdk/entrypoints.ts"),
-    'export const reservedBundledPluginSdkEntrypoints = ["private-runtime"] as const;\n',
+    'export const reservedBundledPluginSdkEntrypoints = ["bundled-private-runtime"] as const;\n',
   );
   await writeFile(
     path.join(targetDir, "package.json"),
@@ -549,7 +549,7 @@ test("compatibility inspection resolves bundled fixture membership before SDK cl
   for (const fixtureDir of [bundledDir, externalDir]) {
     await writeFile(
       path.join(fixtureDir, "index.js"),
-      'import { fixture } from "openclaw/plugin-sdk/private-runtime";\nvoid fixture;\n',
+      'import { fixture } from "openclaw/plugin-sdk/bundled-private-runtime";\nvoid fixture;\n',
     );
   }
   const config = {

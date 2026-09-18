@@ -1281,6 +1281,7 @@ test("target OpenClaw coverage classifier accepts declared private and reserved 
       ],
       privateLocalSdkExports: ["openclaw/plugin-sdk/plugin-test-runtime"],
       reservedSdkExports: ["openclaw/plugin-sdk/codex-mcp-projection"],
+      reservedSdkExportOwners: { "openclaw/plugin-sdk/codex-mcp-projection": "codex" },
       manifestFields: [],
       manifestContractFields: [],
     },
@@ -1320,12 +1321,44 @@ test("target OpenClaw coverage classifier accepts declared private and reserved 
       sdkExports: ["openclaw/plugin-sdk", "openclaw/plugin-sdk/codex-mcp-projection"],
       privateLocalSdkExports: ["openclaw/plugin-sdk/plugin-test-runtime"],
       reservedSdkExports: ["openclaw/plugin-sdk/codex-mcp-projection"],
+      reservedSdkExportOwners: { "openclaw/plugin-sdk/codex-mcp-projection": "codex" },
       manifestFields: [],
       manifestContractFields: [],
     },
   });
   assert.ok(externalResult.warnings.some((finding) => finding.code === "sdk-export-missing"));
   assert.ok(externalResult.warnings.some((finding) => finding.code === "reserved-sdk-import"));
+
+  const crossOwnerResult = classifyTargetOpenClawCoverage({
+    fixture: {
+      id: "telegram",
+      path: "extensions/telegram",
+      checkoutPath: "extensions/telegram",
+      repo: "local",
+    },
+    inspection: { hooks: [], hookDetails: [], registrationDetails: [] },
+    fixtureReport: {
+      sdkImports: ["openclaw/plugin-sdk/codex-mcp-projection"],
+      sdkImportDetails: [{
+        specifier: "openclaw/plugin-sdk/codex-mcp-projection",
+        ref: "extensions/telegram/src/index.ts:1",
+      }],
+      pluginManifests: [],
+    },
+    targetOpenClaw: {
+      status: "ok",
+      checkoutPath: ".",
+      hookNames: [],
+      apiRegistrars: [],
+      sdkExports: ["openclaw/plugin-sdk", "openclaw/plugin-sdk/codex-mcp-projection"],
+      privateLocalSdkExports: [],
+      reservedSdkExports: ["openclaw/plugin-sdk/codex-mcp-projection"],
+      reservedSdkExportOwners: { "openclaw/plugin-sdk/codex-mcp-projection": "codex" },
+      manifestFields: [],
+      manifestContractFields: [],
+    },
+  });
+  assert.ok(crossOwnerResult.warnings.some((finding) => finding.code === "reserved-sdk-import"));
 });
 
 test("compatibility fixture classifier reports seam and metadata follow-ups", () => {

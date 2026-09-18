@@ -72,6 +72,7 @@ export type PluginManifestContracts = {
     "utf8",
   );
   await mkdir(path.join(targetRoot, "src/plugin-sdk"), { recursive: true });
+  await mkdir(path.join(targetRoot, "extensions/browser-security"), { recursive: true });
   await mkdir(path.join(targetRoot, "scripts/lib"), { recursive: true });
   await writeFile(
     path.join(targetRoot, "scripts/lib/plugin-sdk-private-local-only-subpaths.json"),
@@ -111,6 +112,9 @@ export const publicPluginOwnedSdkEntrypoints = ["speech-core"] as const;\n`,
     "openclaw/plugin-sdk/plugin-test-runtime",
   ]);
   assert.deepEqual(target.reservedSdkExports, ["openclaw/plugin-sdk/browser-security-runtime"]);
+  assert.deepEqual(target.reservedSdkExportOwners, {
+    "openclaw/plugin-sdk/browser-security-runtime": "browser-security",
+  });
   assert.deepEqual(target.supportedFacadeSdkExports, ["openclaw/plugin-sdk/lmstudio"]);
   assert.deepEqual(target.publicPluginOwnedSdkExports, ["openclaw/plugin-sdk/speech-core"]);
   assert.deepEqual(target.manifestFields, ["contracts", "id"]);

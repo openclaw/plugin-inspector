@@ -883,7 +883,8 @@ function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, war
   }
 
   const sdkExports = new Set(targetOpenClaw.sdkExports);
-  const isBundledFixture = isBundledOpenClawFixture(fixture, targetOpenClaw);
+  const bundledPluginId = bundledOpenClawPluginId(fixture, targetOpenClaw);
+  const isBundledFixture = bundledPluginId !== null;
   const privateLocalSdkExports = new Set(targetOpenClaw.privateLocalSdkExports ?? []);
   const unknownImports = fixtureReport.sdkImportDetails.filter(
     (sdkImport) =>
@@ -891,11 +892,11 @@ function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, war
       !(isBundledFixture && privateLocalSdkExports.has(sdkImport.specifier)),
   );
   const reservedSdkExports = new Set(targetOpenClaw.reservedSdkExports ?? []);
-  const reservedImports = isBundledFixture
-    ? []
-    : fixtureReport.sdkImportDetails.filter((sdkImport) =>
-        reservedSdkExports.has(sdkImport.specifier),
-      );
+  const reservedImports = fixtureReport.sdkImportDetails.filter(
+    (sdkImport) =>
+      reservedSdkExports.has(sdkImport.specifier) &&
+      targetOpenClaw.reservedSdkExportOwners?.[sdkImport.specifier] !== bundledPluginId,
+  );
 
   if (reservedImports.length === 0 && unknownImports.length === 0) {
     logs.push({
@@ -948,8 +949,8 @@ function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, war
   }
 }
 
-function isBundledOpenClawFixture(fixture, targetOpenClaw) {
-  if (fixture.repo !== "local" || !fixture.checkoutPath || !targetOpenClaw.checkoutPath) return false;
+function bundledOpenClawPluginId(fixture, targetOpenClaw) {
+  if (fixture.repo !== "local" || !fixture.checkoutPath || !targetOpenClaw.checkoutPath) return null;
   const fixturePath = normalizeRepoPath(fixture.checkoutPath);
   const targetPath = normalizeRepoPath(targetOpenClaw.checkoutPath);
   const relativePath = targetPath === "."
@@ -957,7 +958,7 @@ function isBundledOpenClawFixture(fixture, targetOpenClaw) {
     : fixturePath.startsWith(`${targetPath}/`)
       ? fixturePath.slice(targetPath.length + 1)
       : "";
-  return /^extensions\//.test(relativePath);
+  return relativePath.match(/^extensions\/([^/]+)(?:\/|$)/)?.[1] ?? null;
 }
 
 function addVersionDerivedFinding({ finding, fixtureReport, targetOpenClaw, breakages, warnings, suggestions }) {
