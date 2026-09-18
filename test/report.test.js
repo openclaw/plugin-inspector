@@ -1460,6 +1460,46 @@ test("compatibility fixture classifier reports seam and metadata follow-ups", ()
   );
 });
 
+test("compatibility fixture classifier accepts active target conversation contract tests", () => {
+  const compatRecord = "hook.llm-observer.privacy-payload";
+  const result = classifyCompatibilityFixture({
+    fixture: { id: "fixture", path: "plugins/fixture" },
+    inspection: {
+      status: "ok",
+      hooks: ["llm_input"],
+      hookDetails: [{ name: "llm_input", ref: "plugins/fixture/src/index.ts:1" }],
+      registrations: [],
+      registrationDetails: [],
+      manifestContracts: [],
+      manifestFiles: [],
+      sdkImports: [],
+      sourceFiles: ["plugins/fixture/src/index.ts"],
+    },
+    fixtureReport: {
+      sdkImports: [],
+      sdkImportDetails: [],
+      pluginManifests: [],
+      securityManifests: [],
+      package: null,
+    },
+    targetOpenClaw: {
+      status: "ok",
+      hookNames: ["llm_input"],
+      apiRegistrars: [],
+      sdkExports: [],
+      manifestFields: [],
+      manifestContractFields: [],
+      capturedRegistrars: [],
+      compatRecordStatuses: { [compatRecord]: "active" },
+      compatRecordTests: { [compatRecord]: ["src/plugins/hooks.security.test.ts"] },
+      compatRecordMissingTests: { [compatRecord]: [] },
+    },
+  });
+
+  assert.equal(result.warnings.some((finding) => finding.code === "conversation-access-hook"), false);
+  assert.equal(result.decisions.some((decision) => decision.seam === "conversation-access"), false);
+});
+
 test("compatibility fixture classifier groups deprecated whole-store session helper usage", () => {
   const result = classifyCompatibilityFixture({
     fixture: { id: "fixture", path: "plugins/fixture" },

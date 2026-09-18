@@ -23,7 +23,11 @@ test("OpenClaw target parser reads public target surface facts", async (t) => {
     path.join(targetRoot, "src/plugins/compat/registry.ts"),
     `export const records = [
       { code: "sdk.import.root-barrel-cold-import", status: "deprecated" },
-      { code: "hook.before_tool_call.terminal-block-approval", status: "supported" },
+      {
+        code: "hook.before_tool_call.terminal-block-approval",
+        status: "supported",
+        tests: ["src/plugins/hooks.test.ts", "src/plugins/missing.test.ts"],
+      },
     ];\n`,
     "utf8",
   );
@@ -32,6 +36,7 @@ test("OpenClaw target parser reads public target surface facts", async (t) => {
     `const PLUGIN_HOOK_NAMES = ["before_tool_call", "llm_input"] as const satisfies readonly PluginHookName[];\n`,
     "utf8",
   );
+  await writeFile(path.join(targetRoot, "src/plugins/hooks.test.ts"), "// contract coverage\n", "utf8");
   await writeFile(
     path.join(targetRoot, "src/plugins/api-builder.ts"),
     `api.registerTool(tool); api.registerService(service); api.registerTool(other);\n`,
@@ -102,6 +107,17 @@ export const publicPluginOwnedSdkEntrypoints = ["speech-core"] as const;\n`,
   assert.deepEqual(target.compatRecordStatuses, {
     "hook.before_tool_call.terminal-block-approval": "supported",
     "sdk.import.root-barrel-cold-import": "deprecated",
+  });
+  assert.deepEqual(target.compatRecordTests, {
+    "hook.before_tool_call.terminal-block-approval": [
+      "src/plugins/hooks.test.ts",
+      "src/plugins/missing.test.ts",
+    ],
+    "sdk.import.root-barrel-cold-import": [],
+  });
+  assert.deepEqual(target.compatRecordMissingTests, {
+    "hook.before_tool_call.terminal-block-approval": ["src/plugins/missing.test.ts"],
+    "sdk.import.root-barrel-cold-import": [],
   });
   assert.deepEqual(target.hookNames, ["before_tool_call", "llm_input"]);
   assert.deepEqual(target.apiRegistrars, ["registerService", "registerTool"]);

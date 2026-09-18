@@ -550,14 +550,16 @@ export function classifyCompatibilityFixture({ fixture, inspection, fixtureRepor
 
   const conversationHooks = inspection.hooks.filter((hook) => conversationAccessHooks.has(hook));
   const conversationHookDetails = inspection.hookDetails.filter((hook) => conversationAccessHooks.has(hook.name));
-  if (conversationHooks.length > 0) {
+  const conversationCompatRecord = compatRecordForIssueCode("conversation-access-hook");
+  const conversationContractCovered = hasActiveTargetContractTests(targetOpenClaw, conversationCompatRecord);
+  if (conversationHooks.length > 0 && !conversationContractCovered) {
     warnings.push({
       fixture: fixture.id,
       code: "conversation-access-hook",
       level: "warning",
       message: "fixture observes raw model or conversation content and needs privacy-boundary contract probes",
       evidence: detailEvidence(conversationHookDetails),
-      compatRecord: compatRecordForIssueCode("conversation-access-hook"),
+      compatRecord: conversationCompatRecord,
     });
     decisions.push({
       fixture: fixture.id,
@@ -711,6 +713,15 @@ export function classifyCompatibilityFixture({ fixture, inspection, fixtureRepor
   }
 
   return { breakages, warnings, suggestions, logs, decisions };
+}
+
+function hasActiveTargetContractTests(targetOpenClaw, compatRecord) {
+  if (!compatRecord || !["active", "supported"].includes(targetOpenClaw.compatRecordStatuses?.[compatRecord])) {
+    return false;
+  }
+  const tests = targetOpenClaw.compatRecordTests?.[compatRecord] ?? [];
+  const missingTests = targetOpenClaw.compatRecordMissingTests?.[compatRecord] ?? [];
+  return tests.length > 0 && missingTests.length === 0;
 }
 
 function classifySdkDeprecations({ fixture, inspection, fixtureReport, warnings, decisions }) {
