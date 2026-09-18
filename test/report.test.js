@@ -1321,7 +1321,7 @@ test("target OpenClaw coverage classifier accepts declared private and reserved 
       sdkExports: ["openclaw/plugin-sdk", "openclaw/plugin-sdk/codex-mcp-projection"],
       privateLocalSdkExports: ["openclaw/plugin-sdk/plugin-test-runtime"],
       reservedSdkExports: ["openclaw/plugin-sdk/codex-mcp-projection"],
-      reservedSdkExportOwners: { "openclaw/plugin-sdk/codex-mcp-projection": "codex" },
+      reservedSdkExportOwners: { "openclaw/plugin-sdk/codex-mcp-projection": null },
       manifestFields: [],
       manifestContractFields: [],
     },

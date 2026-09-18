@@ -895,7 +895,10 @@ function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, war
   const reservedImports = fixtureReport.sdkImportDetails.filter(
     (sdkImport) =>
       reservedSdkExports.has(sdkImport.specifier) &&
-      targetOpenClaw.reservedSdkExportOwners?.[sdkImport.specifier] !== bundledPluginId,
+      !(
+        bundledPluginId !== null &&
+        targetOpenClaw.reservedSdkExportOwners?.[sdkImport.specifier] === bundledPluginId
+      ),
   );
 
   if (reservedImports.length === 0 && unknownImports.length === 0) {
