@@ -1242,7 +1242,7 @@ test("target OpenClaw coverage classifier reports missing public surface", () =>
 
 test("target OpenClaw coverage classifier accepts declared private and reserved imports from bundled fixtures", () => {
   const result = classifyTargetOpenClawCoverage({
-    fixture: { id: "codex", path: "extensions/codex", repo: "local" },
+    fixture: { id: "codex", path: "extensions/codex", checkoutPath: "extensions/codex", repo: "local" },
     inspection: {
       hooks: [],
       hookDetails: [],
@@ -1293,7 +1293,7 @@ test("target OpenClaw coverage classifier accepts declared private and reserved 
   assert.equal(result.warnings.some((finding) => finding.code === "reserved-sdk-import"), false);
 
   const externalResult = classifyTargetOpenClawCoverage({
-    fixture: { id: "codex", path: "extensions/codex", repo: "local" },
+    fixture: { id: "codex", path: "extensions/codex", checkoutPath: "extensions/codex", repo: "local" },
     inspection: { hooks: [], hookDetails: [], registrationDetails: [] },
     fixtureReport: {
       sdkImports: [

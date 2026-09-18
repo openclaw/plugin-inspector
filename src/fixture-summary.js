@@ -949,8 +949,8 @@ function classifySdkImportCoverage({ fixture, fixtureReport, targetOpenClaw, war
 }
 
 function isBundledOpenClawFixture(fixture, targetOpenClaw) {
-  if (fixture.repo !== "local" || !targetOpenClaw.checkoutPath) return false;
-  const fixturePath = normalizeRepoPath(fixture.path);
+  if (fixture.repo !== "local" || !fixture.checkoutPath || !targetOpenClaw.checkoutPath) return false;
+  const fixturePath = normalizeRepoPath(fixture.checkoutPath);
   const targetPath = normalizeRepoPath(targetOpenClaw.checkoutPath);
   const relativePath = targetPath === "."
     ? fixturePath

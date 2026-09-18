@@ -96,7 +96,7 @@ export async function readOpenClawTargetSurface(options = {}) {
 
   return {
     configuredPath: requestedPath,
-    checkoutPath: relativePath(rootDir, resolvedPath),
+    checkoutPath: relativePath(rootDir, resolvedPath) || ".",
     searchedPaths: requestedPaths,
     status: "ok",
     compatRegistryPath: relativePath(rootDir, registryPath),
@@ -333,7 +333,7 @@ async function readPackedOpenClawTargetSurface({ rootDir, requestedPaths, reques
 
   return {
     configuredPath: requestedPath,
-    checkoutPath: relativePath(rootDir, resolvedPath),
+    checkoutPath: relativePath(rootDir, resolvedPath) || ".",
     searchedPaths: requestedPaths,
     status: "ok",
     version: packageJson.version ?? null,

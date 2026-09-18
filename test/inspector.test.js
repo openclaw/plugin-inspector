@@ -4,7 +4,7 @@ import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
-import { captureEntrypoint, classifyTargetOpenClawCoverage, inspectFixtureSet, inspectSourceText, loadInspectorConfig } from "../src/advanced.js";
+import { captureEntrypoint, classifyTargetOpenClawCoverage, inspectCompatibilityFixtureSet, inspectFixtureSet, inspectSourceText, loadInspectorConfig } from "../src/advanced.js";
 
 test("source inspection records hooks and registrars without treating type-only SDK imports as runtime imports", () => {
   const inspection = inspectSourceText(
@@ -526,6 +526,62 @@ test("fixture set inspection produces a passing report", async () => {
   assert.deepEqual(report.fixtures[0].hooks, ["before_tool_call"]);
   assert.deepEqual(report.fixtures[0].registrations, ["definePluginEntry", "registerTool"]);
   assert.deepEqual(report.fixtures[0].manifestContracts, ["tools"]);
+});
+
+test("compatibility inspection resolves bundled fixture membership before SDK classification", async () => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-membership-"));
+  const targetDir = path.join(rootDir, "openclaw");
+  const bundledDir = path.join(targetDir, "extensions/bundled");
+  const externalDir = path.join(rootDir, "external");
+  await mkdir(path.join(targetDir, "src/plugins/compat"), { recursive: true });
+  await mkdir(path.join(targetDir, "src/plugin-sdk"), { recursive: true });
+  await mkdir(bundledDir, { recursive: true });
+  await mkdir(externalDir, { recursive: true });
+  await writeFile(path.join(targetDir, "src/plugins/compat/registry.ts"), "export const records = [];\n");
+  await writeFile(
+    path.join(targetDir, "src/plugin-sdk/entrypoints.ts"),
+    'export const reservedBundledPluginSdkEntrypoints = ["private-runtime"] as const;\n',
+  );
+  await writeFile(
+    path.join(targetDir, "package.json"),
+    JSON.stringify({ exports: { "./plugin-sdk": "./dist/plugin-sdk.js" } }),
+  );
+  for (const fixtureDir of [bundledDir, externalDir]) {
+    await writeFile(
+      path.join(fixtureDir, "index.js"),
+      'import { fixture } from "openclaw/plugin-sdk/private-runtime";\nvoid fixture;\n',
+    );
+  }
+  const config = {
+    version: 1,
+    submoduleRoot: ".",
+    rootDir,
+    fixtures: [
+      {
+        id: "bundled",
+        path: "openclaw/extensions/bundled",
+        repo: "local",
+        priority: "high",
+        seams: ["plugin-runtime"],
+      },
+      {
+        id: "escaping",
+        path: "openclaw/extensions/../../external",
+        repo: "local",
+        priority: "high",
+        seams: ["plugin-runtime"],
+      },
+    ],
+  };
+
+  const report = await inspectCompatibilityFixtureSet(config, { openclawPath: "openclaw" });
+  assert.equal(
+    report.warnings.some((finding) => finding.fixture === "bundled" && finding.code === "reserved-sdk-import"),
+    false,
+  );
+  assert.ok(
+    report.warnings.some((finding) => finding.fixture === "escaping" && finding.code === "reserved-sdk-import"),
+  );
 });
 
 test("fixture set inspection reports missing expected seams", async () => {

@@ -27,6 +27,13 @@ export async function inspectFixtureSet(config, options = {}) {
 
 export async function inspectCompatibilityFixtureSet(config, options = {}) {
   const { inspections, failures } = await inspectConfiguredFixtures(config, options);
+  const reportConfig = {
+    ...config,
+    fixtures: config.fixtures.map((fixture) => ({
+      ...fixture,
+      checkoutPath: normalizeFixtureCheckoutPath(config, fixture),
+    })),
+  };
   const targetOpenClaw =
     options.targetOpenClaw ??
     (options.openclawVersion
@@ -38,7 +45,7 @@ export async function inspectCompatibilityFixtureSet(config, options = {}) {
         }));
 
   return buildCompatibilityReport({
-    config,
+    config: reportConfig,
     inspections,
     failures,
     authorFacing: options.authorFacing,
@@ -54,6 +61,11 @@ export async function inspectCompatibilityFixtureSet(config, options = {}) {
         rootDir: config.rootDir,
       }),
   });
+}
+
+function normalizeFixtureCheckoutPath(config, fixture) {
+  const relative = path.relative(config.rootDir ?? process.cwd(), fixtureCheckoutPath(config, fixture));
+  return (relative || ".").replaceAll("\\", "/");
 }
 
 async function inspectConfiguredFixtures(config, options = {}) {
