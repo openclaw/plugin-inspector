@@ -4,6 +4,9 @@
 
 ### Fixed
 
+- Jail plugin-owned path strings to the plugin root so inspect and check reject UNC, absolute, and `..` specifiers instead of reading host files or probing a remote SMB share.
+- Tell operators to pass `--openclaw` / `openclawPath` when a plugin `defaultCheckoutPath` is rejected, and stop documenting `../openclaw` as that setting.
+- Keep plugin-root jail helpers internal. They are lexical path checks, not a public symlink-confinement API.
 - Recognize OpenClaw's declared private-local Plugin SDK subpaths and reserved bundled-plugin imports when inspecting bundled `extensions/*` fixtures, while continuing to report those imports for external plugins and genuinely missing SDK aliases.
 - Treat active OpenClaw conversation-access compat records with present contract tests as target-owned proof instead of repeatedly emitting a P1 Inspector probe backlog advisory.
 - Record explicit method-scoped Gateway probe prerequisites before calling handlers that require unavailable host state or live credentials; preserve actual response failures for admitted probes.

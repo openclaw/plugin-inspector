@@ -3,6 +3,7 @@ import { readdir } from "node:fs/promises";
 import path from "node:path";
 import { compatRecordForIssueCode } from "./contract-probes.js";
 import { readJsonFile } from "./json-file.js";
+import { resolveJailedPluginPath } from "./path-utils.js";
 import { satisfiesOpenClawCompatibilityRange } from "./openclaw-version.js";
 
 const conversationAccessHooks = new Set(["agent_end", "llm_input", "llm_output"]);
@@ -1088,7 +1089,15 @@ function collectOpenClawEntrypoints(packageDir, openclaw, options) {
   ];
 
   return entrypoints.map((entrypoint) => {
-    const resolvedPath = path.resolve(packageDir, entrypoint.specifier);
+    const resolvedPath = resolveJailedPluginPath(packageDir, entrypoint.specifier);
+    if (!resolvedPath) {
+      return {
+        ...entrypoint,
+        relativePath: entrypoint.specifier,
+        exists: false,
+        requiresBuild: /(^|\/)dist\//.test(entrypoint.specifier) || /(^|\/)build\//.test(entrypoint.specifier),
+      };
+    }
     const relativePath = path.relative(options.rootDir, resolvedPath);
     return {
       ...entrypoint,
@@ -1121,7 +1130,8 @@ function hasUsablePackageRuntimeEntrypoint(entrypoint, packageSummary, entrypoin
   }
 
   const packageDir = path.dirname(packageSummary.path);
-  return existsSync(path.resolve(packageDir, runtimeBuildSpecifier));
+  const resolvedRuntime = resolveJailedPluginPath(packageDir, runtimeBuildSpecifier);
+  return Boolean(resolvedRuntime && existsSync(resolvedRuntime));
 }
 
 function isSourceEntrypoint(specifier) {

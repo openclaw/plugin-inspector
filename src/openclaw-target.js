@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
+import { isUncPath, resolveJailedPluginPath } from "./path-utils.js";
 
 export const defaultOpenClawCheckoutPaths = ["./openclaw", "../openclaw"];
 
@@ -12,7 +13,16 @@ export async function readOpenClawTargetSurface(options = {}) {
     return emptyTargetSurface({ configuredPath: null, status: "disabled" });
   }
 
-  const requestedPaths = openClawTargetPathCandidates(options.manifest, configuredPath);
+  const requestedPaths = openClawTargetPathCandidates(options.manifest, configuredPath, { rootDir });
+  const rejectedCheckoutPath = rejectedPluginCheckoutPath(options.manifest, configuredPath, { rootDir });
+  if (rejectedCheckoutPath) {
+    return emptyTargetSurface({
+      configuredPath: rejectedCheckoutPath,
+      searchedPaths: [rejectedCheckoutPath],
+      status: "rejected",
+      message: rejectedPluginCheckoutMessage(rejectedCheckoutPath),
+    });
+  }
   if (requestedPaths.length === 0) {
     return emptyTargetSurface({ configuredPath: null, status: "not-configured" });
   }
@@ -148,11 +158,26 @@ export async function readOpenClawTargetSurface(options = {}) {
   };
 }
 
-export function openClawTargetPathCandidates(manifest, configuredPath) {
+export function openClawTargetPathCandidates(manifest, configuredPath, options = {}) {
   if (typeof configuredPath === "string") {
-    return [configuredPath];
+    return isUncPath(configuredPath) ? [] : [configuredPath];
   }
-  return unique([manifest?.openclaw?.defaultCheckoutPath, ...defaultOpenClawCheckoutPaths].filter(Boolean));
+  const pluginPath = manifest?.openclaw?.defaultCheckoutPath;
+  if (rejectedPluginCheckoutPath(manifest, configuredPath, options)) {
+    return [];
+  }
+  return unique([pluginPath, ...defaultOpenClawCheckoutPaths].filter(Boolean));
+}
+
+function rejectedPluginCheckoutPath(manifest, configuredPath, options = {}) {
+  if (typeof configuredPath === "string" || configuredPath === false) {
+    return null;
+  }
+  const pluginPath = manifest?.openclaw?.defaultCheckoutPath;
+  if (typeof pluginPath !== "string" || !options.rootDir) {
+    return null;
+  }
+  return resolveJailedPluginPath(options.rootDir, pluginPath) ? null : pluginPath;
 }
 
 function importsCompatRecords(source) {
@@ -323,7 +348,13 @@ export function parseTypeFields(source, typeName) {
 
 function findTargetCheckout(rootDir, requestedPaths) {
   for (const requestedPath of requestedPaths) {
+    if (isUncPath(requestedPath)) {
+      continue;
+    }
     const resolvedPath = path.resolve(rootDir, requestedPath);
+    if (isUncPath(resolvedPath)) {
+      continue;
+    }
     const registryPath = path.join(resolvedPath, "src/plugins/compat/registry.ts");
     if (existsSync(registryPath)) {
       return { kind: "checkout", requestedPath, resolvedPath, registryPath };
@@ -517,12 +548,17 @@ function parseStringUnion(source, typeName) {
   return match ? unique([...match[1].matchAll(/["']([^"']+)["']/g)].map((item) => item[1])).sort() : [];
 }
 
-function emptyTargetSurface({ configuredPath, searchedPaths = undefined, status }) {
+export function rejectedPluginCheckoutMessage(configuredPath) {
+  return `plugin defaultCheckoutPath ${JSON.stringify(configuredPath)} is outside the plugin root; pass --openclaw / openclawPath to compare against a sibling checkout`;
+}
+
+function emptyTargetSurface({ configuredPath, searchedPaths = undefined, status, message }) {
   return {
     configuredPath,
     checkoutPath: null,
     searchedPaths,
     status,
+    message,
     compatRecords: [],
     compatRecordStatuses: {},
     compatRecordTests: {},
