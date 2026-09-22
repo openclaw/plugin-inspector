@@ -575,6 +575,52 @@ Named exports remain available for existing automation. Prefer the grouped
 facades for new code because they show ownership and keep downstream wrappers
 thin.
 
+### In-process resource snapshots
+
+Workload harnesses can capture phase boundaries inside the measured runtime:
+
+```js
+import {
+  captureProcessResources,
+  diffProcessResources,
+} from "@openclaw/plugin-inspector/resource-profile";
+
+const before = captureProcessResources();
+await runWorkload();
+const after = captureProcessResources();
+const phase = diffProcessResources(before, after);
+```
+
+The same functions are available on the `runtime` facade. The dedicated subpath
+loads only Node built-ins and avoids importing the compatibility inspector into
+the measured host. Capture does not start timers, retain samples, or force GC.
+Import it before the empty-host baseline, and account for capture overhead.
+
+Snapshots include PID, thread ID, process time origin, monotonic elapsed time,
+CPU counters in microseconds, memory in bytes, event-loop counters, and an active
+resource histogram. JSON-transported snapshots can be compared, but different
+process lifetimes/threads and reversed wall/CPU counters are rejected.
+
+- `cpuMs` reports actual process user/system/total deltas. It includes worker
+  threads, excludes child processes, and can exceed wall time on multiple cores.
+- `memoryDeltaBytes` preserves signed endpoint changes, not phase peaks. RSS
+  covers the process; heap, external, and ArrayBuffer fields cover the current
+  thread. ArrayBuffers are included in external memory; do not add them together.
+- `eventLoop` reports the current loop's active/idle deltas and utilization,
+  independently of CPU. No elapsed loop time produces `null`, not an idle verdict.
+- `activeResourceDelta` counts resources keeping the current loop alive. It does
+  not inventory arbitrary listeners or unreferenced resources, prove ownership,
+  or establish complete cleanup.
+
+Use equivalent warmup/drain/GC boundaries for retention comparisons. A single
+RSS or heap delta is not a leak verdict. Collect child-process usage separately;
+do not add process-wide counters from multiple worker snapshots. Existing
+`cpuMsEstimate` and `harnessHeapDeltaMb` reports retain their separate meaning:
+sampled immediate-child CPU estimates and the Inspector supervisor's heap.
+
+Contracts: [Node process counters](https://nodejs.org/api/process.html) and
+[event-loop utilization](https://nodejs.org/api/perf_hooks.html).
+
 ## Development
 
 Repository checks are intentionally small and offline:

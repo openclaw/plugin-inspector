@@ -17,6 +17,7 @@ export {
 export { readJsonFile, readOptionalJsonFile } from "./json-file.js";
 export { assertRunCount, percentile } from "./stats.js";
 export { createCaptureApi } from "./capture-api.js";
+export { captureProcessResources, diffProcessResources } from "./resource-profile.js";
 export {
   buildCiPolicyReport,
   defaultCiPolicyReportOptions,

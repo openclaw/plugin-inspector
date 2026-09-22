@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Capture in-process CPU, memory, event-loop, and active-resource snapshots at workload phase boundaries, preserving signed deltas and process/thread attribution separately from sampled child-process estimates.
+
 - Preserve mocked Zod enum options so plugins can compose schemas during capture and retained-handler probes.
 
 - Discover SDK imports in published `.setup` runtime modules so ESM and CommonJS entrypoints can capture and execute retained handlers without missing generated SDK files.
