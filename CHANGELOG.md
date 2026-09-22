@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Preserve mocked Zod enum options so plugins can compose schemas during capture and retained-handler probes.
+
 - Discover SDK imports in published `.setup` runtime modules so ESM and CommonJS entrypoints can capture and execute retained handlers without missing generated SDK files.
 
 ## 0.3.26 - 2026-09-20

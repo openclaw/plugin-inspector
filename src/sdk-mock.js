@@ -976,7 +976,10 @@ function createZNamespace() {
     any: () => createSchema(),
     array: () => createSchema([]),
     boolean: () => createSchema(),
-    enum: (values) => createSchema(Array.isArray(values) ? values[0] : undefined),
+    enum: (values) => {
+      const options = Array.isArray(values) ? [...values] : Object.values(values);
+      return Object.assign(createSchema(options[0]), { options });
+    },
     literal: (value) => createSchema(value),
     number: () => createSchema(),
     object: (shape = {}) => createSchema(undefined, shape),
