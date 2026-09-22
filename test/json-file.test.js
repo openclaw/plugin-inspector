@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, open, readFile, readdir, symlink, writeFile, chmod, lstat } from "node:fs/promises";
+import { mkdir, mkdtemp, open, readFile, readdir, symlink, writeFile, chmod, lstat } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
@@ -60,4 +60,36 @@ test("writeJsonFileAtomic removes the temp file when staging fails", async () =>
   const files = await readdir(rootDir);
   assert.deepEqual(files, ["package.json"]);
   assert.equal(await readFile(jsonPath, "utf8"), "{}\n");
+});
+
+test("writeJsonFileAtomic removes the temp file when the rename fails", async () => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-json-file-"));
+  const jsonPath = path.join(rootDir, "package.json");
+  await mkdir(jsonPath);
+
+  await assert.rejects(writeJsonFileAtomic(jsonPath, { name: "fixture" }), { code: "EISDIR" });
+
+  assert.deepEqual(await readdir(rootDir), ["package.json"]);
+});
+
+test("writeJsonFileAtomic resolves a dangling manifest symlink to its target", async () => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-json-file-"));
+  const linkPath = path.join(rootDir, "package.json");
+  const targetPath = path.join(rootDir, "target-package.json");
+  await symlink("target-package.json", linkPath);
+
+  await writeJsonFileAtomic(linkPath, { name: "fixture" });
+
+  assert.equal((await lstat(linkPath)).isSymbolicLink(), true);
+  assert.equal(await readFile(targetPath, "utf8"), `${JSON.stringify({ name: "fixture" }, null, 2)}\n`);
+});
+
+test("writeJsonFileAtomic rejects a manifest symlink cycle", async () => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-json-file-"));
+  const firstPath = path.join(rootDir, "a.json");
+  const secondPath = path.join(rootDir, "b.json");
+  await symlink("b.json", firstPath);
+  await symlink("a.json", secondPath);
+
+  await assert.rejects(writeJsonFileAtomic(firstPath, { name: "fixture" }), { code: "ELOOP" });
 });
