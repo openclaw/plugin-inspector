@@ -14,6 +14,7 @@ import * as profileDiffApi from "./profile-diff.js";
 import * as refDiffApi from "./ref-diff.js";
 import * as reportApi from "./report.js";
 import * as runtimeProfileApi from "./runtime-profile.js";
+import * as resourceProfileApi from "./resource-profile.js";
 import * as runtimeReconciliationApi from "./runtime-reconciliation.js";
 import * as syntheticEntrypointApi from "./synthetic-entrypoint.js";
 import * as syntheticProbeSuiteApi from "./synthetic-probe-suite.js";
@@ -113,6 +114,8 @@ export const ci = Object.freeze({
 });
 
 export const runtime = Object.freeze({
+  captureProcessResources: resourceProfileApi.captureProcessResources,
+  diffProcessResources: resourceProfileApi.diffProcessResources,
   buildProfile: runtimeProfileApi.buildRuntimeProfile,
   writeProfile: runtimeProfileApi.writeRuntimeProfile,
   renderProfile: runtimeProfileApi.renderRuntimeProfileMarkdown,
@@ -196,6 +199,7 @@ export {
   writeContractCapture,
 } from "./contract-capture.js";
 export { validateContractCoverage } from "./contract-coverage.js";
+export { captureProcessResources, diffProcessResources } from "./resource-profile.js";
 export {
   buildCiPolicyReport,
   defaultCiPolicyReportOptions,

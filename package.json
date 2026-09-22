@@ -35,6 +35,7 @@
     "./platform-probes": "./src/platform-probes.js",
     "./profile-diff": "./src/profile-diff.js",
     "./ref-diff": "./src/ref-diff.js",
+    "./resource-profile": "./src/resource-profile.js",
     "./runtime-capture-report": "./src/runtime-capture-report.js",
     "./runtime-profile": "./src/runtime-profile.js",
     "./synthetic-probe-suite": "./src/synthetic-probe-suite.js",
