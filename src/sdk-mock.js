@@ -402,7 +402,7 @@ async function listSourceFiles(dir) {
   const entries = await readdir(dir, { withFileTypes: true });
   const files = [];
   for (const entry of entries) {
-    if (entry.name.startsWith(".") && entry.name !== ".clawhub") {
+    if (entry.name.startsWith(".") && entry.name !== ".clawhub" && entry.name !== ".setup") {
       continue;
     }
     const fullPath = path.join(dir, entry.name);
