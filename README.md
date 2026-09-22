@@ -237,6 +237,7 @@ By default, runtime capture uses generated mocks for `openclaw/plugin-sdk`
 subpaths and unresolved external packages discovered in the plugin import graph.
 Discovery includes executable `.setup` modules shipped inside published plugin
 packages, including their retained-handler imports and CommonJS requirements.
+Mocked Zod enums preserve their option values for composed schemas.
 That keeps compatibility CI offline and credential-free. It does not call live
 services, launch OpenClaw, run provider SDKs, or emulate service lifecycle side
 effects.
