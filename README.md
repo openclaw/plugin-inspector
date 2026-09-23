@@ -102,6 +102,9 @@ npx @openclaw/plugin-inspector init --ci --scripts
 `init` detects `packageManager` and common lockfiles. Override that with
 `--package-manager npm`, `--package-manager pnpm`, `--package-manager yarn`, or
 `--package-manager bun`. Existing files are protected unless you pass `--force`.
+Generated workflows enable Corepack for pnpm/Yarn or install Bun before running
+the package manager. Only npm workflows enable setup-node's lockfile cache;
+other workflows do not require an npm lockfile or a preinstalled package manager.
 
 ## Configuration
 

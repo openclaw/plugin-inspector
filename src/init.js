@@ -112,8 +112,7 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 24
-          cache: ${setup.cache}
-${setup.corepack ? "      - run: corepack enable\n" : ""}      - run: ${setup.install}
+${setup.cache ? `          cache: ${setup.cache}\n` : "          package-manager-cache: false\n"}${setup.corepack ? "      - run: corepack enable\n" : packageManager === "bun" ? "      - uses: oven-sh/setup-bun@v2\n" : ""}      - run: ${setup.install}
       - run: ${setup.exec} @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute
       - uses: actions/upload-artifact@v7
         if: always()
@@ -196,7 +195,6 @@ function normalizePackageManager(packageManager = "npm") {
 function packageManagerSetup(packageManager) {
   if (packageManager === "pnpm") {
     return {
-      cache: "pnpm",
       corepack: true,
       install: "pnpm install --frozen-lockfile",
       exec: "pnpm dlx",
@@ -204,7 +202,6 @@ function packageManagerSetup(packageManager) {
   }
   if (packageManager === "yarn") {
     return {
-      cache: "yarn",
       corepack: true,
       install: "yarn install --immutable",
       exec: "yarn dlx",
@@ -212,7 +209,6 @@ function packageManagerSetup(packageManager) {
   }
   if (packageManager === "bun") {
     return {
-      cache: "npm",
       corepack: false,
       install: "bun install --frozen-lockfile",
       exec: "bunx",

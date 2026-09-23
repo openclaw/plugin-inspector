@@ -410,7 +410,7 @@ test("init command detects plugin package managers", async () => {
   await execFileAsync(process.execPath, [cliPath, "init", "--plugin-root", rootDir, "--ci", "--force"]);
   const workflow = await readFile(path.join(rootDir, ".github", "workflows", "plugin-inspector.yml"), "utf8");
 
-  assert.match(workflow, /cache: pnpm/);
+  assert.match(workflow, /package-manager-cache: false/);
   assert.match(workflow, /corepack enable/);
   assert.match(workflow, /pnpm install --frozen-lockfile/);
   assert.match(workflow, /pnpm dlx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute/);
