@@ -8,11 +8,12 @@ import { captureProcessResources, diffProcessResources } from "@openclaw/plugin-
 const moduleUrl = new URL("../src/resource-profile.js", import.meta.url).href;
 
 test("resource snapshots observe CPU work, retained buffers, and timer disposal in the measured child", () => {
+  const retainedBytes = 8 * 1024 * 1024;
   const child = spawnSync(process.execPath, ["--input-type=module", "--expose-gc", "-e", `
     import { captureProcessResources, diffProcessResources } from ${JSON.stringify(moduleUrl)};
     globalThis.gc();
     const before = captureProcessResources();
-    let retained = Buffer.alloc(8 * 1024 * 1024, 1);
+    let retained = Buffer.alloc(${retainedBytes}, 1);
     const timer = setInterval(() => {}, 60_000);
     const cpuStart = process.cpuUsage();
     while (true) {
@@ -47,10 +48,12 @@ test("resource snapshots observe CPU work, retained buffers, and timer disposal 
   assert.equal(report.sentinel, 1);
   assert.ok(report.work.cpuMs.total >= 20, JSON.stringify(report.work));
   assert.ok(report.work.wallMs > 0);
-  assert.ok(report.work.memoryDeltaBytes.arrayBuffers >= 8 * 1024 * 1024);
+  // This is a net delta: GC may release pre-existing buffers during CPU work.
+  assert.ok(report.work.memoryDeltaBytes.arrayBuffers > 0, JSON.stringify(report));
+  assert.ok(report.work.memoryDeltaBytes.arrayBuffers >= retainedBytes - report.before.memoryBytes.arrayBuffers, JSON.stringify(report));
   assert.equal(report.work.activeResourceDelta.Timeout, 1);
   assert.equal(report.cleanup.activeResourceDelta.Timeout, -1);
-  assert.ok(report.cleanup.memoryDeltaBytes.arrayBuffers <= -8 * 1024 * 1024);
+  assert.ok(report.cleanup.memoryDeltaBytes.arrayBuffers <= -retainedBytes, JSON.stringify(report));
 });
 
 test("resource differences survive JSON transport and preserve signed memory changes", () => {
