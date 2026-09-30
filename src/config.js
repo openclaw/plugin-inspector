@@ -1,10 +1,16 @@
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { resolveJailedPluginPath } from "./path-utils.js";
 
 export const npmPackagePayloadDir = ".crabpot-package";
 export const defaultPluginRootConfigFiles = ["plugin-inspector.config.json", ".plugin-inspector.json"];
 export const packageJsonConfigKeys = ["pluginInspector", "plugin-inspector"];
+const pluginRootConfig = Symbol("pluginRootConfig");
+
+export function isPluginRootConfig(config) {
+  return config[pluginRootConfig] === true;
+}
 
 export async function loadInspectorConfig(configPath, options = {}) {
   if (!configPath) {
@@ -123,7 +129,16 @@ export function fixtureCheckoutPath(config, fixture) {
 export function fixtureSourceRoot(config, fixture) {
   const checkoutPath = fixtureCheckoutPath(config, fixture);
   if (fixture.subdir) {
-    return path.join(checkoutPath, fixture.subdir);
+    if (!isPluginRootConfig(config)) {
+      return path.join(checkoutPath, fixture.subdir);
+    }
+    const jailed = resolveJailedPluginPath(checkoutPath, fixture.subdir);
+    if (!jailed) {
+      throw new Error(
+        `sourceRoot ${JSON.stringify(fixture.subdir)} is outside the plugin root; refuse to scan a replacement tree`,
+      );
+    }
+    return jailed;
   }
   if (fixture.package) {
     return path.join(checkoutPath, npmPackagePayloadDir);
@@ -153,6 +168,7 @@ export async function normalizePluginRootConfig(config, options = {}) {
   }
 
   return {
+    [pluginRootConfig]: true,
     version: 1,
     submoduleRoot: ".",
     capture: config.capture,

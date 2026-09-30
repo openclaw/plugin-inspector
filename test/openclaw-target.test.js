@@ -362,6 +362,14 @@ test("OpenClaw target parsing helpers stay deterministic", () => {
     "./openclaw",
     "../openclaw",
   ]);
+  assert.deepEqual(
+    openClawTargetPathCandidates({ openclaw: { defaultCheckoutPath: "../target" } }, undefined, {
+      rootDir: "/tmp/plugin-root",
+    }),
+    [],
+  );
+  assert.deepEqual(openClawTargetPathCandidates({}, "../target"), ["../target"]);
+  assert.deepEqual(openClawTargetPathCandidates({}, "//operator-share/openclaw"), ["//operator-share/openclaw"]);
   assert.deepEqual(parsePluginSdkExports({ exports: { "./plugin-sdk": "", "./plugin-sdk/tools": "", ".": "" } }), [
     "openclaw/plugin-sdk",
     "openclaw/plugin-sdk/tools",

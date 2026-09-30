@@ -140,6 +140,7 @@ export async function buildCompatibilityReport(options = {}) {
     findings: [...warnings, ...suggestions],
     suggestions,
     logs,
+    warnings,
     decisions,
   });
 
@@ -216,7 +217,21 @@ function filterVisibleFindings(findings, targetOpenClaw, options) {
   return findings.filter((finding) => isAuthorFacingFinding(finding, targetOpenClaw));
 }
 
-export function classifyCompatRecordCoverage({ targetOpenClaw, findings, suggestions, logs, decisions }) {
+export function classifyCompatRecordCoverage({ targetOpenClaw, findings, suggestions, logs, warnings, decisions }) {
+  if (targetOpenClaw.status === "rejected") {
+    const diagnostic = {
+      fixture: "openclaw",
+      code: "target-openclaw-rejected",
+      level: "warning",
+      message:
+        targetOpenClaw.message ??
+        `plugin defaultCheckoutPath ${JSON.stringify(targetOpenClaw.configuredPath)} is outside the plugin root; pass --openclaw / openclawPath to compare against a sibling checkout`,
+      evidence: [targetOpenClaw.configuredPath ?? "not configured", "--openclaw", "openclawPath"],
+    };
+    logs.push(diagnostic);
+    warnings?.push(diagnostic);
+    return;
+  }
   if (targetOpenClaw.status !== "ok") {
     logs.push({
       fixture: "openclaw",

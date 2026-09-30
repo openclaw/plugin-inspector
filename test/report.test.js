@@ -674,6 +674,28 @@ test("compat record coverage logs unavailable targets", () => {
   });
 });
 
+test("compat record coverage warns when plugin checkout config is rejected", () => {
+  const logs = [];
+  const warnings = [];
+  classifyCompatRecordCoverage({
+    targetOpenClaw: {
+      status: "rejected",
+      configuredPath: "../openclaw",
+      message:
+        'plugin defaultCheckoutPath "../openclaw" is outside the plugin root; pass --openclaw / openclawPath to compare against a sibling checkout',
+    },
+    findings: [{ fixture: "fixture", compatRecord: "legacy-root-sdk-import" }],
+    suggestions: [],
+    logs,
+    warnings,
+    decisions: [],
+  });
+
+  assert.equal(logs[0].code, "target-openclaw-rejected");
+  assert.match(logs[0].message, /--openclaw \/ openclawPath/);
+  assert.equal(warnings[0].code, "target-openclaw-rejected");
+});
+
 test("compatibility fixture summary reads manifests and OpenClaw package metadata", async () => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-fixture-summary-"));
   const fixtureDir = path.join(rootDir, "plugin");

@@ -150,12 +150,20 @@ Use `plugin-inspector.config.json` for a standalone config file:
   },
   "capture": {
     "mockSdk": true
-  },
-  "openclaw": {
-    "defaultCheckoutPath": "../openclaw"
   }
 }
 ```
+
+Plugin-owned entrypoints, `sourceRoot`, and `openclaw.defaultCheckoutPath` must
+stay inside the plugin root. Absolute paths, UNC shares, and paths that escape
+the root are rejected before filesystem access. An invalid `sourceRoot` stops
+inspection; an invalid checkout setting produces `target-openclaw-rejected`.
+Compare against a sibling OpenClaw checkout with `--openclaw ../openclaw` or
+the API's `openclawPath` option. Operator-owned fixture-suite configurations
+retain their existing sibling checkout and source paths.
+
+These are lexical path checks. They do not follow or reject symlinks or Windows
+junctions, and do not sandbox runtime capture.
 
 Inspect the resolved config before wiring CI:
 

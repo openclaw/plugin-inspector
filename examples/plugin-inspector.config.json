@@ -11,8 +11,5 @@
   },
   "capture": {
     "mockSdk": true
-  },
-  "openclaw": {
-    "defaultCheckoutPath": "../openclaw"
   }
 }

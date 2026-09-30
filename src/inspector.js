@@ -4,10 +4,11 @@ import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { createCaptureApi } from "./capture-api.js";
 import { captureApiOptionsForPlugin } from "./capture-config.js";
-import { fixtureCheckoutPath, fixtureSourceRoot } from "./config.js";
+import { fixtureCheckoutPath, fixtureSourceRoot, isPluginRootConfig } from "./config.js";
 import { buildCompatibilityFixtureReport } from "./fixture-summary.js";
 import { readOpenClawTargetSurface } from "./openclaw-target.js";
 import { prepareOpenClawTarget, resolveOpenClawTargetVersion } from "./openclaw-version.js";
+import { isWithinPluginRoot, resolveJailedPluginPath } from "./path-utils.js";
 import { resolveProcessLimits, startOwnedProcess } from "./process-profile.js";
 import { buildCompatibilityReport, buildReport } from "./report.js";
 import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
@@ -39,7 +40,7 @@ export async function inspectCompatibilityFixtureSet(config, options = {}) {
     (options.openclawVersion
       ? await prepareOpenClawTarget(await resolveOpenClawTargetVersion(options.openclawVersion, options), options)
       : await readOpenClawTargetSurface({
-          configuredPath: options.openclawPath,
+          configuredPath: options.openclawPath ?? (isPluginRootConfig(config) ? undefined : config.openclaw?.defaultCheckoutPath),
           manifest: config,
           rootDir: config.rootDir,
         }));
@@ -656,7 +657,10 @@ function collectEntrypoint(entrypoints, entrypointFiles, packageDir, value) {
 }
 
 function entrypointCandidates(packageDir, specifier) {
-  const resolved = path.resolve(packageDir, specifier);
+  const resolved = resolveJailedPluginPath(packageDir, specifier);
+  if (!resolved) {
+    return [];
+  }
   if (path.extname(resolved)) {
     return [resolved];
   }
@@ -670,7 +674,7 @@ function entrypointCandidates(packageDir, specifier) {
     path.join(resolved, "index.mjs"),
     path.join(resolved, "index.cjs"),
     path.join(resolved, "index.ts"),
-  ];
+  ].filter((candidate) => isWithinPluginRoot(packageDir, candidate));
 }
 
 function uniquePaths(paths) {

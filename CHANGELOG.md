@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Reject plugin-controlled entrypoint, source-root, and target-checkout path escapes before filesystem access; preserve explicit operator paths and fixture-suite configuration, and explain how to migrate rejected sibling checkout settings. Thanks @SebTardif.
+
 - Initialize pnpm/Yarn workflows without querying a package manager before Corepack setup, and install Bun without requiring an npm lockfile in Bun workflows.
 
 - Capture in-process CPU, memory, event-loop, and active-resource snapshots at workload phase boundaries, preserving signed deltas and process/thread attribution separately from sampled child-process estimates.
