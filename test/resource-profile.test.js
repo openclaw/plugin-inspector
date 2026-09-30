@@ -54,7 +54,7 @@ test("resource snapshots observe CPU work, retained buffers, and timer disposal 
 });
 
 test("resource differences survive JSON transport and preserve signed memory changes", () => {
-  const before = captureProcessResources();
+  const before = { ...captureProcessResources(), elapsedMs: 100.25 };
   const after = structuredClone(before);
   after.elapsedMs += 10;
   after.cpuMicros.user += 2500;
