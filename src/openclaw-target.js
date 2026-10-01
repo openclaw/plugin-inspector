@@ -46,6 +46,7 @@ export async function readOpenClawTargetSurface(options = {}) {
   const capturedRegistrationPath = path.join(resolvedPath, "src/plugins/captured-registration.ts");
   const currentManifestTypesPath = path.join(resolvedPath, "src/plugins/manifest-types.ts");
   const legacyManifestTypesPath = path.join(resolvedPath, "src/plugins/manifest.ts");
+  const manifestContractKeysPath = path.join(resolvedPath, "src/plugins/manifest-contract-keys.ts");
   const pluginSdkEntrypointsPath = path.join(resolvedPath, "src/plugin-sdk/entrypoints.ts");
   const privateLocalSdkSubpathsPath = path.join(
     resolvedPath,
@@ -80,10 +81,19 @@ export async function readOpenClawTargetSurface(options = {}) {
   const legacyManifestTypesSource = existsSync(legacyManifestTypesPath)
     ? await readFile(legacyManifestTypesPath, "utf8")
     : "";
+  const manifestContractKeysSource = existsSync(manifestContractKeysPath)
+    ? await readFile(manifestContractKeysPath, "utf8")
+    : "";
   const currentManifestFields = parseTypeFields(currentManifestTypesSource, "PluginManifest");
   const legacyManifestFields = parseTypeFields(legacyManifestTypesSource, "PluginManifest");
-  const currentManifestContractFields = parseTypeFields(currentManifestTypesSource, "PluginManifestContracts");
-  const legacyManifestContractFields = parseTypeFields(legacyManifestTypesSource, "PluginManifestContracts");
+  const currentManifestContractFields = parseManifestContractFields(
+    currentManifestTypesSource,
+    manifestContractKeysSource,
+  );
+  const legacyManifestContractFields = parseManifestContractFields(
+    legacyManifestTypesSource,
+    manifestContractKeysSource,
+  );
   const useCurrentManifestTypes = currentManifestFields.length > 0;
   const manifestTypesPath = useCurrentManifestTypes ? currentManifestTypesPath : legacyManifestTypesPath;
   const manifestFields = useCurrentManifestTypes ? currentManifestFields : legacyManifestFields;
@@ -324,7 +334,30 @@ function parseStringArrayMatch(match) {
     return [];
   }
 
-  return unique([...match[1].matchAll(/["'`]([^"'`]+)["'`]/g)].map((item) => item[1])).sort();
+  const values = [];
+  const source = match[1];
+  for (let index = 0; index < source.length; index += 1) {
+    if (source[index] === "/" && source[index + 1] === "/") {
+      const lineEnd = source.indexOf("\n", index + 2);
+      index = lineEnd === -1 ? source.length : lineEnd;
+      continue;
+    }
+    if (source[index] === "/" && source[index + 1] === "*") {
+      const commentEnd = source.indexOf("*/", index + 2);
+      index = commentEnd === -1 ? source.length : commentEnd + 1;
+      continue;
+    }
+    if (!isQuote(source[index])) {
+      continue;
+    }
+    const parsed = readQuotedValue(source, index);
+    if (!parsed) {
+      break;
+    }
+    values.push(parsed.value);
+    index = parsed.end - 1;
+  }
+  return unique(values).sort();
 }
 
 export function parseTypeFields(source, typeName) {
@@ -344,6 +377,22 @@ export function parseTypeFields(source, typeName) {
       .map((match) => match[1])
       .filter((field) => !field.startsWith("PluginManifest")),
   ).sort();
+}
+
+function parseManifestContractFields(manifestTypesSource, manifestContractKeysSource) {
+  const inlineFields = parseTypeFields(manifestTypesSource, "PluginManifestContracts");
+  if (inlineFields.length > 0) {
+    return inlineFields;
+  }
+
+  const marker = "export type PluginManifestContracts =";
+  const start = manifestTypesSource.indexOf(marker);
+  const end = start === -1 ? -1 : manifestTypesSource.indexOf(";", start + marker.length);
+  const definition = end === -1 ? "" : manifestTypesSource.slice(start + marker.length, end);
+  if (!/\(\s*typeof\s+PLUGIN_MANIFEST_CONTRACT_KEYS\s*\)\s*\[\s*number\s*\]/.test(definition)) {
+    return [];
+  }
+  return parseConstStringArray(manifestContractKeysSource, "PLUGIN_MANIFEST_CONTRACT_KEYS");
 }
 
 function findTargetCheckout(rootDir, requestedPaths) {

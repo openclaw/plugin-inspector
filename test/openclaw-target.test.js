@@ -273,6 +273,45 @@ export type PluginManifestContracts = {
   assert.deepEqual(target.manifestContractFields, ["embeddedExtensionFactories", "tools"]);
 });
 
+test("OpenClaw target parser reads manifest contract keys from the canonical tuple", async (t) => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-openclaw-target-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+
+  const targetRoot = path.join(rootDir, "openclaw");
+  await mkdir(path.join(targetRoot, "src/plugins/compat"), { recursive: true });
+  await writeFile(path.join(targetRoot, "src/plugins/compat/registry.ts"), "export const records = [];\n", "utf8");
+  await writeFile(
+    path.join(targetRoot, "src/plugins/manifest-types.ts"),
+    `import type { PLUGIN_MANIFEST_CONTRACT_KEYS } from "./manifest-contract-keys.js";
+export type PluginManifest = {
+  id: string;
+  contracts?: PluginManifestContracts;
+};
+export type PluginManifestContracts = Partial<
+  Record<(typeof PLUGIN_MANIFEST_CONTRACT_KEYS)[number], string[]>
+>;\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(targetRoot, "src/plugins/manifest-contract-keys.ts"),
+    `export const PLUGIN_MANIFEST_CONTRACT_KEYS = [
+  /** Provider ids implemented by the plugin's speech runtime. */
+  "speechProviders",
+  /** Tool ids whose plugin owns execution. */
+  "tools",
+  // Provider ids exposed through the plugin's web search contract.
+  "webSearchProviders",
+] as const;\n`,
+    "utf8",
+  );
+
+  const target = await readOpenClawTargetSurface({ rootDir, configuredPath: "./openclaw" });
+
+  assert.equal(target.manifestTypesPath, "openclaw/src/plugins/manifest-types.ts");
+  assert.deepEqual(target.manifestFields, ["contracts", "id"]);
+  assert.deepEqual(target.manifestContractFields, ["speechProviders", "tools", "webSearchProviders"]);
+});
+
 test("OpenClaw target parser ignores transitional manifest types modules without the manifest contract", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-openclaw-target-"));
   t.after(() => rm(rootDir, { recursive: true, force: true }));

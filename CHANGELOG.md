@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Read OpenClaw manifest contract fields from its canonical key tuple when the manifest type derives its keys through `Partial<Record<...>>`, preserving inline object-type parsing for older targets.
+
 ## 0.3.27 - 2026-10-01
 
 - Reject plugin-controlled entrypoint, source-root, and target-checkout path escapes before filesystem access; preserve explicit operator paths and fixture-suite configuration, and explain how to migrate rejected sibling checkout settings. Thanks @SebTardif.
