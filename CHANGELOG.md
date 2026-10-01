@@ -4,7 +4,7 @@
 
 ### Changed
 
-- Update `eslint-scope` to 9.1.2 and align the Node.js floor with its Node 22.13 requirement.
+- Update `eslint-scope` to 9.1.2 and align supported Node.js versions with its Node 22.13 and Node 24 requirements.
 
 ## 0.3.27 - 2026-10-01
 

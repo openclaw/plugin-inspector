@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/openclaw/plugin-inspector#readme",
   "engines": {
-    "node": ">=22.13.0"
+    "node": "^22.13.0 || >=24"
   },
   "bin": {
     "plugin-inspector": "src/cli.js"

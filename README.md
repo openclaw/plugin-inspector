@@ -23,7 +23,7 @@ but it is opt-in because it imports plugin code.
 
 ## Requirements
 
-- Node.js 22 or newer.
+- Node.js 22.13 or newer on the Node.js 22 line, or Node.js 24 or newer.
 - A plugin package root with `package.json`.
 - `openclaw.plugin.json` when the plugin uses the OpenClaw manifest contract.
 - No OpenClaw checkout, credentials, network service, or live provider access for
@@ -256,8 +256,9 @@ effects.
 CommonJS SDK mocking, including compiled `.cjs` entrypoints and lazy `require()`
 calls in synthetic handlers, requires Node.js 22.15 or newer with
 `module.registerHooks()`. On older Node versions, upgrade Node.js or use an
-ESM/TypeScript entrypoint. This capability requirement does not change the
-package's Node.js `>=22` engine range or gate existing ESM/TypeScript capture.
+ESM/TypeScript entrypoint. The package supports Node.js `^22.13.0 || >=24`;
+Node.js 22.13 and 22.14 support existing ESM/TypeScript capture but not CommonJS
+SDK mocking.
 Static inspection also discovers literal CommonJS SDK `require()` references.
 
 The default capture `api.runtime.modelAuth` passes synthetic provider IDs through
