@@ -4,6 +4,10 @@
 
 - Read OpenClaw manifest contract fields from its canonical key tuple when the manifest type derives its keys through `Partial<Record<...>>`, preserving inline object-type parsing for older targets.
 
+### Changed
+
+- Update `eslint-scope` to 9.1.2 and align supported Node.js versions with its Node 22.13 and Node 24 requirements.
+
 ## 0.3.27 - 2026-10-01
 
 - Reject plugin-controlled entrypoint, source-root, and target-checkout path escapes before filesystem access; preserve explicit operator paths and fixture-suite configuration, and explain how to migrate rejected sibling checkout settings. Thanks @SebTardif.

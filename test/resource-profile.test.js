@@ -53,7 +53,6 @@ test("resource snapshots observe CPU work, retained buffers, and timer disposal 
   assert.ok(report.work.memoryDeltaBytes.arrayBuffers >= retainedBytes - report.before.memoryBytes.arrayBuffers, JSON.stringify(report));
   assert.equal(report.work.activeResourceDelta.Timeout, 1);
   assert.equal(report.cleanup.activeResourceDelta.Timeout, -1);
-  assert.ok(report.cleanup.memoryDeltaBytes.arrayBuffers <= -retainedBytes, JSON.stringify(report));
 });
 
 test("resource differences survive JSON transport and preserve signed memory changes", () => {

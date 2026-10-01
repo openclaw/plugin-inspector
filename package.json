@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/openclaw/plugin-inspector#readme",
   "engines": {
-    "node": ">=22"
+    "node": "^22.13.0 || >=24"
   },
   "bin": {
     "plugin-inspector": "src/cli.js"
@@ -74,7 +74,7 @@
   ],
   "dependencies": {
     "acorn": "^8.18.0",
-    "eslint-scope": "^8.4.0",
+    "eslint-scope": "^9.1.2",
     "semver": "^7.8.5",
     "tar": "^7.5.22"
   }
