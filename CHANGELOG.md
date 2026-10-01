@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Changed
+
+- Update `eslint-scope` to 9.1.2 and align the Node.js floor with its Node 22.13 requirement.
+
 ## 0.3.27 - 2026-10-01
 
 - Reject plugin-controlled entrypoint, source-root, and target-checkout path escapes before filesystem access; preserve explicit operator paths and fixture-suite configuration, and explain how to migrate rejected sibling checkout settings. Thanks @SebTardif.
