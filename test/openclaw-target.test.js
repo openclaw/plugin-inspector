@@ -384,6 +384,74 @@ type PluginManifestRecord = {
   assert.deepEqual(target.manifestContractFields, ["tools"]);
 });
 
+test("packed OpenClaw target parser reads manifest contract keys from the declared tuple", async (t) => {
+  // OpenClaw 2026.10.1-beta.1 ships the contract type mapped over the key tuple,
+  // and the tuple itself as a declared readonly const, in bundled .d.ts chunks.
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-openclaw-target-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+
+  const targetRoot = path.join(rootDir, "openclaw");
+  await mkdir(path.join(targetRoot, "dist"), { recursive: true });
+  await writeFile(
+    path.join(targetRoot, "package.json"),
+    JSON.stringify({ name: "openclaw", version: "2026.10.1-beta.1" }),
+    "utf8",
+  );
+  await writeFile(
+    path.join(targetRoot, "dist", "contract-keys-AbC123.d.ts"),
+    `declare const PLUGIN_MANIFEST_CONTRACT_KEYS: readonly [
+/** Executor ids implemented by the plugin's code-mode-executor-api artifact. */
+"codeModeExecutors", "speechProviders",
+// Tool ids whose plugin owns execution.
+"tools"];
+export { PLUGIN_MANIFEST_CONTRACT_KEYS as t };\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(targetRoot, "dist", "manifest-XyZ789.d.ts"),
+    `type PluginManifest = {
+  id: string;
+  contracts?: PluginManifestContracts;
+};
+type PluginManifestContracts = Partial<Record<(typeof PLUGIN_MANIFEST_CONTRACT_KEYS)[number], string[]>>;\n`,
+    "utf8",
+  );
+
+  const target = await readOpenClawTargetSurface({ rootDir, configuredPath: "./openclaw" });
+
+  assert.deepEqual(target.manifestFields, ["contracts", "id"]);
+  assert.deepEqual(target.manifestContractFields, ["codeModeExecutors", "speechProviders", "tools"]);
+  assert.equal(target.manifestContractFieldCount, 3);
+});
+
+test("packed OpenClaw target parser does not guess contract keys for an unrecognized type", async (t) => {
+  // A declaration that is neither an object type nor mapped over the key tuple
+  // stays unread, so genuine unknown-key findings are not silenced by a stray tuple.
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-openclaw-target-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+
+  const targetRoot = path.join(rootDir, "openclaw");
+  await mkdir(path.join(targetRoot, "dist"), { recursive: true });
+  await writeFile(
+    path.join(targetRoot, "package.json"),
+    JSON.stringify({ name: "openclaw", version: "2026.10.1-beta.1" }),
+    "utf8",
+  );
+  await writeFile(
+    path.join(targetRoot, "dist", "manifest.d.ts"),
+    `declare const PLUGIN_MANIFEST_CONTRACT_KEYS: readonly ["tools"];
+type PluginManifest = {
+  id: string;
+};
+type PluginManifestContracts = Record<string, string[]>;\n`,
+    "utf8",
+  );
+
+  const target = await readOpenClawTargetSurface({ rootDir, configuredPath: "./openclaw" });
+
+  assert.deepEqual(target.manifestContractFields, []);
+});
+
 test("OpenClaw target parser reports disabled and missing targets", async () => {
   assert.equal((await readOpenClawTargetSurface({ configuredPath: false })).status, "disabled");
 
