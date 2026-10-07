@@ -62,9 +62,10 @@ The command writes:
 - `reports/plugin-inspector-report.md`
 - `reports/plugin-inspector-issues.md`
 
-It exits non-zero when hard compatibility breakages are found. Warnings,
-suggestions, issue classifications, and logs stay visible in the report without
-necessarily failing the command.
+`inspect` exits zero after writing the report, even when it finds hard
+compatibility breakages. Add `--check`, or run `plugin-inspector check`, to exit
+non-zero on hard breakages. Warnings, suggestions, issue classifications, and
+logs stay visible in the report without failing the command.
 
 ## Install In A Plugin Repo
 

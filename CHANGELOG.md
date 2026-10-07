@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Clarify that `inspect` reports hard breakages without failing unless `--check` is passed; use `check` for CI failure enforcement. Thanks @KrasimirKralev.
+
 - Read OpenClaw manifest contract fields from its canonical key tuple when the manifest type derives its keys through `Partial<Record<...>>`, preserving inline object-type parsing for older targets.
 
 ### Changed
