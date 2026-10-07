@@ -8,6 +8,8 @@
 
 ### Changed
 
+- Update Acorn to 8.19.0 for current JavaScript parser fixes and Unicode 18 support.
+
 - Update `eslint-scope` to 9.1.2 and align supported Node.js versions with its Node 22.13 and Node 24 requirements.
 
 ## 0.3.27 - 2026-10-01
