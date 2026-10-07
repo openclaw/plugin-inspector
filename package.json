@@ -73,7 +73,7 @@
     "ci"
   ],
   "dependencies": {
-    "acorn": "^8.18.0",
+    "acorn": "^8.19.0",
     "eslint-scope": "^9.1.2",
     "semver": "^7.8.5",
     "tar": "^7.5.22"
