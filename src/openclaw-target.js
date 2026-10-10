@@ -385,14 +385,47 @@ function parseManifestContractFields(manifestTypesSource, manifestContractKeysSo
     return inlineFields;
   }
 
-  const marker = "export type PluginManifestContracts =";
-  const start = manifestTypesSource.indexOf(marker);
-  const end = start === -1 ? -1 : manifestTypesSource.indexOf(";", start + marker.length);
-  const definition = end === -1 ? "" : manifestTypesSource.slice(start + marker.length, end);
-  if (!/\(\s*typeof\s+PLUGIN_MANIFEST_CONTRACT_KEYS\s*\)\s*\[\s*number\s*\]/.test(definition)) {
+  if (!isMappedOverContractKeys(manifestTypesSource, "export type PluginManifestContracts =")) {
     return [];
   }
   return parseConstStringArray(manifestContractKeysSource, "PLUGIN_MANIFEST_CONTRACT_KEYS");
+}
+
+// The contract type as recent OpenClaw declares it:
+// Partial<Record<(typeof PLUGIN_MANIFEST_CONTRACT_KEYS)[number], string[]>>.
+function isMappedOverContractKeys(source, marker) {
+  const start = source.indexOf(marker);
+  const end = start === -1 ? -1 : source.indexOf(";", start + marker.length);
+  const definition = end === -1 ? "" : source.slice(start + marker.length, end);
+  return /\(\s*typeof\s+PLUGIN_MANIFEST_CONTRACT_KEYS\s*\)\s*\[\s*number\s*\]/.test(definition);
+}
+
+// A packed target ships the same declarations bundled into dist/*.d.ts chunks:
+// the type without `export`, and the key tuple as `declare const ...: readonly [...]`,
+// often in another chunk than the type.
+function parsePackedManifestContractFields(contractDeclaration, declarations) {
+  const inlineFields = parseObjectTypeFields(contractDeclaration.source, "PluginManifestContracts");
+  if (inlineFields.length > 0) {
+    return inlineFields;
+  }
+
+  if (!isMappedOverContractKeys(contractDeclaration.source, "type PluginManifestContracts =")) {
+    return [];
+  }
+  for (const declaration of [contractDeclaration, ...declarations]) {
+    const keys = parseDeclaredConstStringTuple(declaration.source, "PLUGIN_MANIFEST_CONTRACT_KEYS");
+    if (keys.length > 0) {
+      return keys;
+    }
+  }
+  return [];
+}
+
+function parseDeclaredConstStringTuple(source, constName) {
+  const match = source.match(
+    new RegExp(`declare\\s+const\\s+${constName}\\s*:\\s*readonly\\s*\\[([\\s\\S]*?)\\]\\s*;`),
+  );
+  return parseStringArrayMatch(match);
 }
 
 function findTargetCheckout(rootDir, requestedPaths) {
@@ -437,7 +470,7 @@ async function readPackedOpenClawTargetSurface({ rootDir, requestedPaths, reques
     ? parseObjectTypeFields(manifestDeclaration.source, "PluginManifest")
     : [];
   const manifestContractFields = manifestContractDeclaration
-    ? parseObjectTypeFields(manifestContractDeclaration.source, "PluginManifestContracts")
+    ? parsePackedManifestContractFields(manifestContractDeclaration, declarations)
     : [];
   const sdkExports = parsePluginSdkExports(packageJson);
 
