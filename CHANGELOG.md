@@ -6,7 +6,7 @@
 
 - Read OpenClaw manifest contract fields from its canonical key tuple when the manifest type derives its keys through `Partial<Record<...>>`, preserving inline object-type parsing for older targets.
 
-- Apply the same canonical key tuple to packed npm targets (`--openclaw-version`), where the tuple ships as a declared `readonly` const in bundled `dist/*.d.ts`; `manifest-unknown-contracts` no longer flags valid keys such as `tools` on OpenClaw 2026.10.1-beta.1. Fixes #101.
+- Apply the same canonical key tuple to packed npm targets (`--openclaw-version`), where the tuple ships as a declared `readonly` const in bundled `dist/*.d.ts`; `manifest-unknown-contracts` no longer flags valid keys such as `tools` on OpenClaw 2026.10.1-beta.1. Fixes #101. Thanks @Bergschloss.
 
 ### Changed
 

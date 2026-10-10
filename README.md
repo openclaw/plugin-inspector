@@ -40,6 +40,10 @@ exact resolved version and npm source metadata. Prepared targets are cached, so
 batch and repeated inspections do not download the same OpenClaw package for
 each plugin.
 
+Manifest contract checks recognize both inline contract types and canonical
+contract-key tuples, including tuples in separate bundled declarations in
+published OpenClaw targets.
+
 ## Quick Start
 
 Run this from a plugin package root:
