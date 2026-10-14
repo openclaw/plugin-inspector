@@ -222,7 +222,9 @@ function eraseTypeScript(text) {
     }
   }
   if (typeof globalThis.Bun?.Transpiler === "function") {
-    const transpiler = new globalThis.Bun.Transpiler({ loader: "ts", target: "bun" });
+    // Analyze source bindings: the Bun target injects a require binding that
+    // would make native calls look shadowed after type erasure.
+    const transpiler = new globalThis.Bun.Transpiler({ loader: "ts", target: "node" });
     return transpiler.transformSync(text);
   }
   return null;
