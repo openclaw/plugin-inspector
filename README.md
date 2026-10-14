@@ -268,6 +268,10 @@ without changing them. Reset callbacks are recorded without execution; explicit
 lifecycle drains reject as unsupported. Runtime-store helpers retain supplied
 values in capture-local slots and throw the configured error before initialization.
 They do not emulate the host's managed plugin instances or persistent state.
+The generated runtime's `config.current()` reads the same fixed snapshot as
+`api.config`, including an explicit `apiOptions.config` supplied to capture or
+retained probes. It does not load host configuration or simulate config reloads;
+an explicitly supplied runtime remains authoritative.
 
 CommonJS SDK mocking, including compiled `.cjs` entrypoints and lazy `require()`
 calls in synthetic handlers, requires Node.js 22.15 or newer with

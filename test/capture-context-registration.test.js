@@ -5,6 +5,41 @@ import path from "node:path";
 import { test } from "node:test";
 import { captureEntrypoint, runEntrypointSyntheticProbes } from "@openclaw/plugin-inspector/advanced";
 
+test("child capture and retained callbacks read the explicit config without masking rejections", async (t) => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "inspector-config-registration-"));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  await writeFile(path.join(root, "index.mjs"), `
+export default { register(api) {
+  if (api.runtime.config.current() !== api.config) throw new Error("split config snapshots");
+  if (api.config.channels?.fixture?.label !== "fixture-config") throw new Error("missing explicit config");
+  api.registerGatewayMethod("fixture.status", ({ respond }) => {
+    const channel = api.runtime.config.current().channels?.fixture;
+    if (channel?.label !== "fixture-config") throw new Error("lost retained config");
+    const configured = channel.enabled === true;
+    respond(true, { configured });
+  });
+  api.registerGatewayMethod("fixture.send", ({ respond }) => {
+    if (!api.runtime.config.current().channels?.fixture?.enabled) {
+      respond(false, undefined, { code: "UNAVAILABLE", message: "fixture channel not configured" });
+      return;
+    }
+    throw new Error("fixture must not execute configured sends");
+  });
+} };
+`);
+  const config = { channels: { fixture: { enabled: false, label: "fixture-config" } } };
+  const options = { cwd: root, pluginRoot: root, mockSdk: true, apiOptions: { config } };
+  const capture = await captureEntrypoint("index.mjs", options);
+  assert.equal(capture.status, "captured");
+  assert.equal(capture.captured.length, 2);
+  const probes = await runEntrypointSyntheticProbes("index.mjs", options);
+  assert.equal(probes.summary.passCount, 1);
+  assert.equal(probes.summary.failCount, 1);
+  assert.equal(probes.results[0].status, "pass");
+  assert.equal(probes.results[1].status, "fail");
+  assert.match(probes.results[1].error, /fixture channel not configured/);
+});
+
 test("registration descriptors do not turn unsupported state or lifecycle execution into success", async (t) => {
   const root = await mkdtemp(path.join(os.tmpdir(), "inspector-context-registration-"));
   t.after(() => rm(root, { recursive: true, force: true }));

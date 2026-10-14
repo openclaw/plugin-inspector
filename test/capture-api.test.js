@@ -165,6 +165,32 @@ test("capture API can retain handlers for probes", () => {
   assert.equal(typeof retained[1].returnValue.start, "function");
 });
 
+test("capture config readers share the explicit snapshot and isolate default snapshots", () => {
+  const config = { channels: { fixture: { enabled: false } } };
+  const api = createCaptureApi({ config, pluginConfig: { label: "plugin-only" } });
+  assert.equal(api.config, config);
+  assert.equal(api.runtime.config.current(), config);
+  assert.equal(api.runtime.config.current(), api.runtime.config.current());
+  assert.notEqual(api.runtime.config.current(), api.pluginConfig);
+
+  const empty = createCaptureApi();
+  const other = createCaptureApi();
+  assert.deepEqual(empty.runtime.config.current(), {});
+  assert.equal(empty.runtime.config.current(), empty.config);
+  assert.notEqual(empty.runtime.config.current(), other.runtime.config.current());
+});
+
+test("explicit runtime config remains authoritative without merging generated helpers", () => {
+  const config = { channels: { fixture: { enabled: false } } };
+  const runtimeConfig = { channels: { provided: { enabled: true } } };
+  for (const runtime of [{}, { config: { current: () => runtimeConfig } }]) {
+    const api = createCaptureApi({ config, runtime });
+    assert.equal(api.config, config);
+    assert.equal(api.runtime, runtime);
+    assert.equal(api.runtime.config, runtime.config);
+  }
+});
+
 test("async keyed stores can be bound during registration but never simulate state", async () => {
   const api = createCaptureApi();
   const open = api.runtime.state.openKeyedStore.bind(api.runtime.state);

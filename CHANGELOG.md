@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Let registration and retained callbacks read the supplied capture config through `runtime.config.current()` without loading host configuration.
+
 - Avoid type erasure and scope analysis for unrelated literal calls, and process runtime-import markers in linear passes so large plugin sources do not amplify inspection cost.
 
 - Discover literal SDK imports through stable handles from named Node.js `createRequire` imports so deferred registration and retained handlers receive their generated mock modules. Namespace/default factory handles are outside the supported static contract; shadowed `require` calls now need proven factory provenance.

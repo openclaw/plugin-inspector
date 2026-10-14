@@ -149,13 +149,14 @@ export function createCaptureApi(options = {}) {
 }
 
 export function createCaptureContext(options = {}) {
+  const config = options.config ?? {};
   return {
     registrationMode: options.registrationMode ?? "full",
-    config: options.config ?? {},
+    config,
     logger: options.logger ?? console,
     pluginConfig: options.pluginConfig ?? {},
     resolvePath: options.resolvePath ?? ((value) => value),
-    runtime: options.runtime ?? createRuntimeContext(options),
+    runtime: options.runtime ?? createRuntimeContext(options, config),
     secrets: options.secrets ?? createSecretContext(options),
     store: options.store ?? createStoreContext(),
     paths: options.paths ?? {
@@ -198,13 +199,16 @@ function registrationReturnValue(name, args, context) {
   return registrationObject(args, {});
 }
 
-function createRuntimeContext(options) {
+function createRuntimeContext(options, config) {
   const runtime = options.runtime ?? {};
   const blobStores = new Map();
   const syncKeyedStores = new Map();
   const keyedStores = new Map();
   return {
     ...runtime,
+    // Capture has one fixed config snapshot; retained callbacks read that same
+    // input without loading the operator's host config or simulating reloads.
+    config: { current: () => config },
     agent: runtime.agent ?? {},
     env: options.env ?? {},
     logger: options.logger ?? console,
