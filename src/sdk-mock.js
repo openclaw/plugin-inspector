@@ -721,19 +721,39 @@ function mockSingletonSource() {
   // All SDK barrels share this capture-owned module. Keep factory state local,
   // while respecting prepopulated host slots without changing foreign globals.
   return `const values = new Map();
-export function resolveGlobalSingleton(key, create, reset) {
-  if (reset) throw new Error("SDK mock does not execute global singleton lifecycle resets");
-  if (!values.has(key)) values.set(key, Object.hasOwn(globalThis, key) ? globalThis[key] : create());
-  return values.get(key);
+const runtimeSlots = new Map();
+export function resolveGlobalSingleton(key, create, reset, lifecycle = "close-and-restart") {
+  if (!values.has(key)) values.set(key, { value: Object.hasOwn(globalThis, key) ? globalThis[key] : create() });
+  const slot = values.get(key);
+  if (reset) Object.assign(slot, { reset, lifecycle });
+  return slot.value;
 }
-export function resolveGlobalMap(key, reset) {
-  return resolveGlobalSingleton(key, () => new Map(), reset);
+export function resolveGlobalMap(key, reset, lifecycle) {
+  return resolveGlobalSingleton(key, () => new Map(), typeof reset === "string" ? (value) => value.clear() : reset, typeof reset === "string" ? reset : lifecycle);
+}
+export async function drainGlobalSingletonLifecycleState() {
+  throw new Error("SDK mock does not execute global singleton lifecycle resets");
+}
+export function createPluginRuntimeStore(options) {
+  const isolated = typeof options === "string";
+  const pluginId = !isolated && "pluginId" in options ? options.pluginId.trim() : undefined;
+  if (pluginId === "") throw new Error("createPluginRuntimeStore: pluginId must not be empty");
+  const key = pluginId === undefined ? options.key : "plugin-runtime:" + pluginId;
+  const errorMessage = isolated ? options : options.errorMessage;
+  const slot = isolated ? { runtime: null } : runtimeSlots.get(key) ?? { runtime: null };
+  if (!isolated) runtimeSlots.set(key, slot);
+  return {
+    setRuntime(next) { slot.runtime = next; },
+    clearRuntime() { slot.runtime = null; },
+    tryGetRuntime() { return slot.runtime ?? null; },
+    getRuntime() { if (slot.runtime == null) throw new Error(errorMessage); return slot.runtime; },
+  };
 }
 `;
 }
 
 function genericExportStatement(name, options = {}) {
-  if (options.singletonModuleUrl && ["resolveGlobalSingleton", "resolveGlobalMap"].includes(name)) {
+  if (options.singletonModuleUrl && ["resolveGlobalSingleton", "resolveGlobalMap", "drainGlobalSingletonLifecycleState", "createPluginRuntimeStore"].includes(name)) {
     return `import { ${name} } from ${JSON.stringify(options.singletonModuleUrl)};\nexport { ${name} };`;
   }
   if (name === "asObjectRecord") {

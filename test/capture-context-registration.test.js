@@ -36,12 +36,16 @@ test("singleton factory state remains real through retained callbacks", async (t
   await writeFile(path.join(root, "index.mjs"), `
 import { resolveGlobalSingleton } from "openclaw/plugin-sdk/global-singleton";
 import { resolveGlobalSingleton as shared } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
+import { createPluginRuntimeStore } from "openclaw/plugin-sdk/runtime-store";
 const key = Symbol.for("plugin-inspector.test.factory-state");
-const state = resolveGlobalSingleton(key, () => ({ tail: Promise.resolve(), values: new Map() }));
+const state = resolveGlobalSingleton(key, () => ({ tail: Promise.resolve(), values: new Map() }), () => { throw new Error("reset executed"); });
 if (shared(key, () => { throw new Error("duplicate factory"); }) !== state) throw new Error("split state");
+const runtime = createPluginRuntimeStore({ pluginId: "fixture", errorMessage: "runtime not initialized" });
 export default { register(api) {
   api.registerTool({ name: "singleton-state", async run() {
     await state.tail.then(() => state.values.set("retained", 1));
+    try { runtime.getRuntime(); throw new Error("missing runtime did not throw"); }
+    catch (error) { if (error.message !== "runtime not initialized") throw error; }
     return state.values.get("retained");
   } });
 } };
