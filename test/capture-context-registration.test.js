@@ -29,3 +29,26 @@ export default definePluginEntry({ register(api) {
   assert.match(tool.error, /Plugin state lookup is unavailable in capture mocks/);
   assert.equal(probes.summary.failCount, 1);
 });
+
+test("singleton factory state remains real through retained callbacks", async (t) => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "inspector-singleton-registration-"));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  await writeFile(path.join(root, "index.mjs"), `
+import { resolveGlobalSingleton } from "openclaw/plugin-sdk/global-singleton";
+import { resolveGlobalSingleton as shared } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";
+const key = Symbol.for("plugin-inspector.test.factory-state");
+const state = resolveGlobalSingleton(key, () => ({ tail: Promise.resolve(), values: new Map() }));
+if (shared(key, () => { throw new Error("duplicate factory"); }) !== state) throw new Error("split state");
+export default { register(api) {
+  api.registerTool({ name: "singleton-state", async run() {
+    await state.tail.then(() => state.values.set("retained", 1));
+    return state.values.get("retained");
+  } });
+} };
+`);
+  const probes = await runEntrypointSyntheticProbes("index.mjs", { cwd: root, pluginRoot: root, mockSdk: true });
+  assert.equal(probes.summary.failCount, 0, JSON.stringify(probes));
+  const tool = probes.results.find((entry) => entry.label === "registerTool.run");
+  assert.equal(tool.status, "pass");
+  assert.deepEqual(tool.output, { type: "number", value: 1 });
+});

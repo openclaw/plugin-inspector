@@ -258,6 +258,8 @@ export async function createMockSdkPackage(rootDir, options = {}) {
   const externalDir = path.join(rootDir, "mock-modules", "external");
   await mkdir(pluginSdkDir, { recursive: true });
   await mkdir(externalDir, { recursive: true });
+  const singletonModuleUrl = pathToFileURL(path.join(rootDir, "mock-singletons.mjs")).href;
+  await writeFile(new URL(singletonModuleUrl), mockSingletonSource(), "utf8");
   const imports = options.pluginRoot ? await collectRuntimeImports(options.pluginRoot) : emptyRuntimeImports();
   await writeFile(
     path.join(packageDir, "package.json"),
@@ -280,13 +282,14 @@ export async function createMockSdkPackage(rootDir, options = {}) {
     ...mockSdkExportNames,
     ...(imports.bySpecifier.get("openclaw/plugin-sdk") ?? []),
   ]);
-  await writeFile(path.join(pluginSdkDir, "index.js"), mockSdkSource(rootExportNames), "utf8");
+  await writeFile(path.join(pluginSdkDir, "index.js"), mockSdkSource(rootExportNames, { singletonModuleUrl }), "utf8");
   for (const [subpath, exportNames] of Object.entries(mockSdkSubpathExports)) {
     const specifier = `openclaw/plugin-sdk/${subpath}`;
     await writeFile(
       path.join(pluginSdkDir, `${subpath}.js`),
       mockSdkSubpathSource(exportNames, imports.bySpecifier.get(specifier) ?? new Set(), {
         zod: subpath === "zod",
+        singletonModuleUrl,
       }),
       "utf8",
     );
@@ -312,6 +315,7 @@ export async function createMockSdkPackage(rootDir, options = {}) {
       ]), {
         includeSdkRuntime: true,
         zod: relative === "zod",
+        singletonModuleUrl,
       }),
       "utf8",
     );
@@ -640,7 +644,7 @@ function dynamicMockModuleSource(exportNames, options = {}) {
     addZodExports(names);
   }
   return `${genericMockRuntimeSource(options)}
-${[...names].map(genericExportStatement).join("\n")}
+${[...names].map((name) => genericExportStatement(name, options)).join("\n")}
 
 export default ${options.zod ? "createZNamespace()" : 'createMockValue("default")'};
 `;
@@ -713,7 +717,25 @@ function isValidExportName(name) {
   return name !== "default" && /^[A-Za-z_$][\w$]*$/u.test(name);
 }
 
-function genericExportStatement(name) {
+function mockSingletonSource() {
+  // All SDK barrels share this capture-owned module. Keep factory state local,
+  // while respecting prepopulated host slots without changing foreign globals.
+  return `const values = new Map();
+export function resolveGlobalSingleton(key, create, reset) {
+  if (reset) throw new Error("SDK mock does not execute global singleton lifecycle resets");
+  if (!values.has(key)) values.set(key, Object.hasOwn(globalThis, key) ? globalThis[key] : create());
+  return values.get(key);
+}
+export function resolveGlobalMap(key, reset) {
+  return resolveGlobalSingleton(key, () => new Map(), reset);
+}
+`;
+}
+
+function genericExportStatement(name, options = {}) {
+  if (options.singletonModuleUrl && ["resolveGlobalSingleton", "resolveGlobalMap"].includes(name)) {
+    return `import { ${name} } from ${JSON.stringify(options.singletonModuleUrl)};\nexport { ${name} };`;
+  }
   if (name === "asObjectRecord") {
     return "export function asObjectRecord(value) { return isPlainObject(value) ? value : null; }";
   }
@@ -1169,7 +1191,7 @@ function createTypeNamespace() {
 `;
 }
 
-function mockSdkSource(exportNames = mockSdkExportNames) {
+function mockSdkSource(exportNames = mockSdkExportNames, options = {}) {
   const dynamicExportNames = [...exportNames].filter((name) => !mockSdkExportNames.includes(name));
   return `function normalizeEntry(entry) {
   return typeof entry === "function" ? { register: entry } : entry;
@@ -2032,7 +2054,7 @@ export const OPENROUTER_THINKING_STREAM_HOOKS = buildProviderStreamFamilyHooks("
 export const TOOL_STREAM_DEFAULT_ON_HOOKS = buildProviderStreamFamilyHooks("tool-stream-default");
 export const pluginSdkMock = true;
 ${dynamicExportNames.length > 0 ? mockValueRuntimeSource() : ""}
-${dynamicExportNames.map(genericExportStatement).join("\n")}
+${dynamicExportNames.map((name) => genericExportStatement(name, options)).join("\n")}
 
 export default {
 ${[...exportNames].map((name) => `  ${name},`).join("\n")}
@@ -2086,7 +2108,7 @@ function mockSdkSubpathSource(staticExportNames, importedExportNames, options = 
   const dynamicNames = [...importedExportNames].filter((name) => !staticNames.has(name));
   return `${[...staticNames].map((name) => `export { ${name} } from "./index.js";`).join("\n")}
 ${dynamicNames.length > 0 ? genericMockRuntimeSource({ includeSdkRuntime: true, zod: options.zod }) : ""}
-${dynamicNames.map(genericExportStatement).join("\n")}
+${dynamicNames.map((name) => genericExportStatement(name, options)).join("\n")}
 export { default } from "./index.js";
 `;
 }
