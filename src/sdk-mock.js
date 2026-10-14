@@ -7,6 +7,17 @@ import { collectRuntimeModuleImports } from "./runtime-imports.js";
 const SOURCE_EXTENSIONS = new Set([".js", ".mjs", ".cjs", ".ts", ".mts", ".cts"]);
 const SKIP_DIRS = new Set([".git", "coverage", "node_modules", "reports"]);
 
+// Published bundles enumerate this public namespace before using its builders.
+// OpenClaw v2026.9.9 runtime-doctor-migrations exports these names; registration
+// mocks preserve descriptor shapes, but never pretend to execute migrations.
+const namespaceSdkExports = {
+  "runtime-doctor-migrations": [
+    "asObjectRecord", "createLegacyWebhookListenerDoctorContract", "defineChannelAliasMigration",
+    "defineKeyMoveMigration", "defineStrayPluginEntryConfigMigration",
+    "hasLegacyAccountStreamingAliases", "normalizeChannelConfigEntries",
+  ],
+};
+
 export const mockSdkSubpathExports = {
   "plugin-entry": [
     "buildPluginConfigSchema",
@@ -295,7 +306,10 @@ export async function createMockSdkPackage(rootDir, options = {}) {
     await mkdir(path.dirname(targetPath), { recursive: true });
     await writeFile(
       targetPath,
-      dynamicMockModuleSource(imports.bySpecifier.get(specifier) ?? new Set(), {
+      dynamicMockModuleSource(new Set([
+        ...(namespaceSdkExports[relative] ?? []),
+        ...(imports.bySpecifier.get(specifier) ?? []),
+      ]), {
         includeSdkRuntime: true,
         zod: relative === "zod",
       }),
@@ -439,7 +453,7 @@ function parseModuleImports(text) {
   for (const match of text.matchAll(/\bimport\s+["']([^"']+)["']/g)) {
     entries.push({ specifier: match[1], names: new Set() });
   }
-  for (const { specifier, names, kind } of collectRuntimeModuleImports(text)) {
+  for (const { specifier, names, kind } of collectRuntimeModuleImports(text, { includeStaticNamespaces: true })) {
     entries.push({ specifier, names, require: kind === "require" });
   }
   return entries;
@@ -700,6 +714,21 @@ function isValidExportName(name) {
 }
 
 function genericExportStatement(name) {
+  if (name === "asObjectRecord") {
+    return "export function asObjectRecord(value) { return isPlainObject(value) ? value : null; }";
+  }
+  if (["defineChannelAliasMigration", "defineKeyMoveMigration", "defineStrayPluginEntryConfigMigration", "createLegacyWebhookListenerDoctorContract"].includes(name)) {
+    const shapes = {
+      defineChannelAliasMigration: "legacyConfigRules: [], hasLegacyAliases: unsupported, normalizeChannelConfig: unsupported",
+      defineKeyMoveMigration: "hasLegacy: unsupported, normalize: unsupported",
+      defineStrayPluginEntryConfigMigration: "legacyConfigRule: { match: unsupported }, normalizeConfig: unsupported",
+      createLegacyWebhookListenerDoctorContract: "legacyConfigRules: [], normalizeCompatibilityConfig: unsupported",
+    };
+    return `export function ${name}() { const unsupported = () => { throw new Error("SDK mock does not execute doctor migrations (${name})"); }; return { ${shapes[name]} }; }`;
+  }
+  if (["hasLegacyAccountStreamingAliases", "normalizeChannelConfigEntries"].includes(name)) {
+    return `export function ${name}() { throw new Error("SDK mock does not execute doctor migrations (${name})"); }`;
+  }
   if (name === "normalizeOptionalString") {
     // Optional values stay absent; an empty string invents explicit input in
     // callers that distinguish undefined from a configured policy value.

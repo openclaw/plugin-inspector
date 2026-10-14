@@ -4,10 +4,10 @@ import { analyze } from "eslint-scope";
 
 const literalModuleImport = /(?<![$\w.])(?:(?:const|let|var)\s+(?:\{[^{}]*\}|[$A-Z_a-z][$\w]*)\s*=\s*)?(?<kind>require|import)\s*\(\s*(?<quote>["'`])(?<specifier>[^"'`\\\r\n]+)\k<quote>/dg;
 
-export function collectRuntimeModuleImports(text) {
+export function collectRuntimeModuleImports(text, { includeStaticNamespaces = false } = {}) {
   // Mark literal occurrences without interpreting quotes or regexes; the AST owns real calls.
   const entries = [...text.matchAll(literalModuleImport)].map(moduleImportEntry).filter(Boolean);
-  if (entries.length === 0) return entries;
+  if (entries.length === 0 && !includeStaticNamespaces) return entries;
   const { runtimeText, imports } = classifyRuntimeImports(text, entries);
   let ast;
   let scopes;
@@ -44,6 +44,15 @@ export function collectRuntimeModuleImports(text) {
   const byMarker = new Map(imports.map(({ marker, entry }) => [marker, entry]));
   const result = [];
   for (const node of nodes) {
+    if (includeStaticNamespaces && node.type === "ImportDeclaration") {
+      for (const binding of node.specifiers) {
+        if (binding.type !== "ImportNamespaceSpecifier") continue;
+        const names = new Set();
+        collectBindingNames(binding.local, node, names);
+        result.push({ specifier: node.source.value, specifierStart: node.source.start + 1,
+          kind: "namespace", index: node.start, names });
+      }
+    }
     const source = node.type === "ImportExpression" ? node.source
       : node.type === "CallExpression" && node.callee.type === "Identifier"
         && node.callee.name === "require" && node.arguments.length === 1 ? node.arguments[0] : null;
