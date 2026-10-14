@@ -64,6 +64,12 @@ export function createCaptureApi(options = {}) {
   const api = new Proxy(
     {
       ...createCaptureContext(options),
+      // Instance signal/disposal are optional host capabilities, not mock lifetimes.
+      lifecycle: options.lifecycle ?? {
+        registerRuntimeLifecycle(...args) {
+          api.registerRuntimeLifecycle(...args);
+        },
+      },
       on(name, handler) {
         const captureIndex =
           captured.push({
@@ -196,6 +202,7 @@ function createRuntimeContext(options) {
   const runtime = options.runtime ?? {};
   const blobStores = new Map();
   const syncKeyedStores = new Map();
+  const keyedStores = new Map();
   return {
     ...runtime,
     agent: runtime.agent ?? {},
@@ -234,6 +241,12 @@ function createRuntimeContext(options) {
         syncKeyedStores.set(namespace, store);
         return store;
       },
+      openKeyedStore({ namespace }) {
+        if (!keyedStores.has(namespace)) {
+          keyedStores.set(namespace, createKeyedStoreDescriptor());
+        }
+        return keyedStores.get(namespace);
+      },
       ...(runtime.state ?? {}),
     },
   };
@@ -241,6 +254,17 @@ function createRuntimeContext(options) {
 
 async function rejectCaptureModelAuth() {
   throw new Error("Model auth is unavailable in capture mocks");
+}
+
+function createKeyedStoreDescriptor() {
+  // Registration may bind the public store contract. Persisted state and atomic
+  // comparisons are not simulated; execution must fail rather than claim success.
+  return Object.fromEntries([
+    "register", "registerIfAbsent", "lookup", "consume", "delete", "entries", "clear",
+    "observe", "compareAndApply",
+  ].map((name) => [name, async () => {
+    throw new Error(`Plugin state ${name} is unavailable in capture mocks`);
+  }]));
 }
 
 function createBlobStoreContext(options) {

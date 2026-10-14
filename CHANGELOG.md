@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Capture plugins that bind asynchronous state stores or inspect optional instance lifecycle capabilities during registration; state operations remain explicitly unsupported by capture mocks.
+
 - Capture namespace SDK imports and published doctor-contract bundles without missing exports; mock doctor descriptors remain inspectable while actual migration execution fails explicitly.
 
 - Clarify that `inspect` reports hard breakages without failing unless `--check` is passed; use `check` for CI failure enforcement. Thanks @KrasimirKralev.

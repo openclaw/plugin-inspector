@@ -165,6 +165,41 @@ test("capture API can retain handlers for probes", () => {
   assert.equal(typeof retained[1].returnValue.start, "function");
 });
 
+test("async keyed stores can be bound during registration but never simulate state", async () => {
+  const api = createCaptureApi();
+  const open = api.runtime.state.openKeyedStore.bind(api.runtime.state);
+  const store = open({ namespace: "registration", maxEntries: 8 });
+  assert.equal(open({ namespace: "registration", maxEntries: 8 }), store);
+  assert.notEqual(open({ namespace: "other", maxEntries: 8 }), store);
+  assert.notEqual(createCaptureApi().runtime.state.openKeyedStore({ namespace: "registration", maxEntries: 8 }), store);
+  for (const name of ["register", "registerIfAbsent", "lookup", "consume", "delete", "entries", "clear", "observe", "compareAndApply"]) {
+    assert.equal(typeof store[name], "function");
+    await assert.rejects(store[name].bind(store), new RegExp(`Plugin state ${name} is unavailable in capture mocks`));
+  }
+});
+
+test("partial lifecycle records runtime hooks without inventing instance disposal", () => {
+  const api = createCaptureApi({ retainHandlers: true });
+  const lifecycle = { stop() {} };
+  assert.equal(api.lifecycle.signal, undefined);
+  assert.equal(api.lifecycle.onDispose, undefined);
+  assert.equal(api.lifecycle.registerRuntimeLifecycle(lifecycle), undefined);
+  assert.equal(api.getCapturedContracts()[0].name, "registerRuntimeLifecycle");
+  assert.equal(api.getRetainedContracts()[0].arguments[0], lifecycle);
+});
+
+test("caller-provided runtime and lifecycle remain authoritative", () => {
+  let disposed = false;
+  const runtime = { state: { openKeyedStore: () => "provided" } };
+  const lifecycle = { signal: new AbortController().signal, onDispose() { disposed = true; } };
+  const api = createCaptureApi({ runtime, lifecycle });
+  assert.equal(api.runtime, runtime);
+  assert.equal(api.lifecycle, lifecycle);
+  assert.equal(api.runtime.state.openKeyedStore(), "provided");
+  assert.equal(disposed, false);
+  assert.equal(api.lifecycle.signal.aborted, false);
+});
+
 test("capture modelAuth stays credential-free with fresh stores and lists", async () => {
   const api = createCaptureApi({
     env: { OPENAI_API_KEY: "synthetic-not-a-credential" },

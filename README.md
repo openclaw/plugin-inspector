@@ -258,6 +258,11 @@ That keeps compatibility CI offline and credential-free. It does not call live
 services, launch OpenClaw, run provider SDKs, or emulate service lifecycle side
 effects.
 
+Capture exposes asynchronous keyed-store descriptors so registration can bind
+their public methods; every state operation rejects as unsupported. It records
+runtime lifecycle registrations but does not invent an instance abort signal or
+disposal hook. These descriptors do not prove persisted state or lifecycle execution.
+
 CommonJS SDK mocking, including compiled `.cjs` entrypoints and lazy `require()`
 calls in synthetic handlers, requires Node.js 22.15 or newer with
 `module.registerHooks()`. On older Node versions, upgrade Node.js or use an
