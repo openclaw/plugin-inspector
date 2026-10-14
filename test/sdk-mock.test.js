@@ -81,7 +81,8 @@ for (const rejected of [false, true]) {
       'throw new Error("alias import failure");',
     ].join("\n"));
     await assert.rejects(captureEntrypoint("bad.mjs", options), /alias import failure/);
-    assert.throws(() => nodeModule.createRequire(path.join(root, "outside.cjs"))("openclaw/plugin-sdk/alias-registration-proof"),
+    // A fresh parent directory bypasses Node's pre-hook require cache while staying in the loader's scope.
+    assert.throws(() => nodeModule.createRequire(path.join(root, "uncached-parent", "after-capture.cjs"))("openclaw/plugin-sdk/alias-registration-proof"),
       { code: "MODULE_NOT_FOUND" });
   });
 }
