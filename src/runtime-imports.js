@@ -2,10 +2,11 @@ import * as nodeModule from "node:module";
 import { parse } from "acorn";
 import { analyze } from "eslint-scope";
 
-const literalModuleImport = /(?<![$\w.])(?:(?:const|let|var)\s+(?:\{[^{}]*\}|[$A-Z_a-z][$\w]*)\s*=\s*)?(?<kind>require|import)\s*\(\s*(?<quote>["'`])(?<specifier>[^"'`\\\r\n]+)\k<quote>/dg;
+const literalModuleImport = /(?<![$\w.])(?<kind>[$A-Z_a-z][$\w]*)\s*\(\s*(?<quote>["'`])(?<specifier>[^"'`\\\r\n]+)\k<quote>/dg;
 
 export function collectRuntimeModuleImports(text, { includeStaticNamespaces = false } = {}) {
-  // Mark literal occurrences without interpreting quotes or regexes; the AST owns real calls.
+  // Mark literal call arguments to preserve offsets through type erasure. Only
+  // the AST and resolved Node createRequire bindings can classify real imports.
   const entries = [...text.matchAll(literalModuleImport)].map(moduleImportEntry).filter(Boolean);
   if (entries.length === 0 && !includeStaticNamespaces) return entries;
   const { runtimeText, imports } = classifyRuntimeImports(text, entries);
@@ -25,7 +26,8 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
     // Keep known imports if syntax is incomplete/unsupported; never guess namespace exports.
     // Type erasure has already classified each occurrence, even when AST analysis fails.
     const retained = new Set(imports.map(({ entry }) => entry.specifierStart));
-    return [...scanLiteralModuleImports(text)].filter((entry) => retained.has(entry.specifierStart))
+    return [...scanLiteralModuleImports(text)].filter((entry) =>
+      ["require", "import"].includes(entry.kind) && retained.has(entry.specifierStart))
       .map((entry) => ({ ...entry, names: new Set() }));
   }
 
@@ -41,6 +43,31 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
       else if (value && typeof value === "object") visit(value, node);
     }
   }
+  const requireReferences = new Set();
+  const lexicalReferences = new Set(scopes.scopes.flatMap((scope) =>
+    scope.references.filter((reference) => reference.resolved).map((reference) => reference.identifier)));
+  for (const declaration of nodes) {
+    if (declaration.type !== "ImportDeclaration" || !["module", "node:module"].includes(declaration.source.value)) continue;
+    for (const binding of declaration.specifiers) {
+      const variable = scopes.getDeclaredVariables(declaration).find((value) => value.identifiers.includes(binding.local));
+      if (!variable || variable.defs.length !== 1 || variable.references.some((reference) => reference.isWrite())) continue;
+      // Named imports identify the factory without following mutable module objects.
+      if (binding.type !== "ImportSpecifier" || binding.imported.name !== "createRequire") continue;
+      for (const reference of variable.references) {
+        const factory = reference.identifier;
+        const call = parents.get(factory);
+        if (!reference.isStatic() || call?.type !== "CallExpression" || call.callee !== factory || call.arguments.length !== 1) continue;
+        const owner = parents.get(call);
+        if (owner?.type !== "VariableDeclarator" || owner.init !== call || owner.id.type !== "Identifier") continue;
+        const handle = scopes.getDeclaredVariables(owner).find((value) => value.identifiers.includes(owner.id));
+        if (!handle || handle.defs.length !== 1 || handle.references.some((value) => value.isWrite() && !value.init)) continue;
+        for (const use of handle.references) {
+          if (use.isStatic() && use.isRead()) requireReferences.add(use.identifier);
+        }
+      }
+    }
+  }
+
   const byMarker = new Map(imports.map(({ marker, entry }) => [marker, entry]));
   const result = [];
   for (const node of nodes) {
@@ -55,11 +82,13 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
     }
     const source = node.type === "ImportExpression" ? node.source
       : node.type === "CallExpression" && node.callee.type === "Identifier"
-        && node.callee.name === "require" && node.arguments.length === 1 ? node.arguments[0] : null;
+        && ((node.callee.name === "require" && !lexicalReferences.has(node.callee)) || requireReferences.has(node.callee))
+        && node.arguments.length === 1 ? node.arguments[0] : null;
     const specifier = source?.type === "Literal" ? source.value
       : source?.type === "TemplateLiteral" && source.expressions.length === 0 ? source.quasis[0].value.cooked : null;
-    const entry = byMarker.get(specifier);
-    if (!entry) continue;
+    const candidate = byMarker.get(specifier);
+    if (!candidate) continue;
+    const entry = node.type === "CallExpression" ? { ...candidate, kind: "require" } : candidate;
     const names = new Set();
     result.push({ ...entry, names });
     const access = parents.get(node);

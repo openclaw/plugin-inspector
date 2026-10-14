@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Discover literal SDK imports through stable handles from named Node.js `createRequire` imports so deferred registration and retained handlers receive their generated mock modules. Namespace/default factory handles are outside the supported static contract; shadowed `require` calls now need proven factory provenance.
+
 - Capture plugins that bind asynchronous state stores or inspect optional instance lifecycle capabilities during registration; preserve capture-local singleton factory state and runtime slots across SDK barrels. State operations and singleton lifecycle drains remain explicitly unsupported by capture mocks.
 
 - Capture namespace SDK imports and published doctor-contract bundles without missing exports; mock doctor descriptors remain inspectable while actual migration execution fails explicitly.

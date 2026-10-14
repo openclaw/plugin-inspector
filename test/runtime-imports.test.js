@@ -7,6 +7,84 @@ import { pathToFileURL } from "node:url";
 import { collectRuntimeModuleImports } from "../src/runtime-imports.js";
 import { createMockSdkPackage } from "../src/sdk-mock.js";
 
+test("Node createRequire handles retain literal SDK calls and original source positions", () => {
+  for (const [declaration, factory] of [
+    ['import { createRequire as make } from "node:module";', "make"],
+    ['import { createRequire as make } from "module";', "make"],
+  ]) {
+    const source = [declaration,
+      `const load = ${factory}(import.meta.url);`,
+      'const regex = /load("fake")/; const text = `load("openclaw/plugin-sdk/template-only")`; const quoted = \'load("openclaw/plugin-sdk/string-only")\';',
+      '// load("openclaw/plugin-sdk/comment-only");',
+      'const sdk = load("openclaw/plugin-sdk/alias-only");',
+      'const read = () => sdk.readStringField({}, "value");',
+      'const { isRecord: record } = load(`openclaw/plugin-sdk/destructured`);',
+      'const direct = load("openclaw/plugin-sdk/direct").asOptionalRecord;',
+      'function shadow(load) { return load("openclaw/plugin-sdk/ignored"); }',
+      '{ const load = () => ({}); load("openclaw/plugin-sdk/block"); }',
+      'try {} catch (load) { load("openclaw/plugin-sdk/catch"); }',
+      'function factoryShadow(make, moduleApi) { const other = make(import.meta.url); other("openclaw/plugin-sdk/factory-shadow"); const next = moduleApi.createRequire(import.meta.url); next("openclaw/plugin-sdk/module-shadow"); }',
+    ].join("\n");
+    const imports = collectRuntimeModuleImports(source);
+    assert.deepEqual(imports.map(({ specifier, kind, names }) => [specifier, kind, [...names]]), [
+      ["openclaw/plugin-sdk/alias-only", "require", ["readStringField"]],
+      ["openclaw/plugin-sdk/destructured", "require", ["isRecord"]],
+      ["openclaw/plugin-sdk/direct", "require", ["asOptionalRecord"]],
+    ], declaration);
+    for (const entry of imports) assert.equal(source.slice(entry.specifierStart, entry.specifierStart + entry.specifier.length), entry.specifier);
+  }
+  const typed = 'import { createRequire as make } from "node:module"; const load: NodeRequire = make(import.meta.url); type Only = ReturnType<typeof load>; const sdk: object = load("openclaw/plugin-sdk/typed-alias"); sdk.isRecord({});';
+  assert.deepEqual(collectRuntimeModuleImports(typed).map(({ specifier, names }) => [specifier, [...names]]),
+    [["openclaw/plugin-sdk/typed-alias", ["isRecord"]]]);
+  const nested = 'import { createRequire as make } from "node:module"; function initialize() { const require = make(import.meta.url); const { isRecord } = require("openclaw/plugin-sdk/nested"); return () => require("openclaw/plugin-sdk/retained").readStringField({}, "value"); }';
+  assert.deepEqual(collectRuntimeModuleImports(nested).map(({ specifier, names }) => [specifier, [...names]]), [
+    ["openclaw/plugin-sdk/nested", ["isRecord"]], ["openclaw/plugin-sdk/retained", ["readStringField"]],
+  ]);
+});
+
+test("destructuring defaults retain nested SDK calls and their actual source offsets", () => {
+  const source = [
+    'import { createRequire as make } from "node:module";',
+    'const load = make(import.meta.url);',
+    'const { nativeSdk =',
+    '  require("openclaw/plugin-sdk/native-default").isRecord } = getOptions("plugin");',
+    'const { dynamicSdk = await import("openclaw/plugin-sdk/dynamic-default") } = getOptions("plugin");',
+    'const { aliasSdk = load("openclaw/plugin-sdk/alias-default").readStringField } = getOptions("plugin");',
+  ].join("\n");
+  const imports = collectRuntimeModuleImports(source);
+  assert.deepEqual(imports.map(({ specifier, names }) => [specifier, [...names]]), [
+    ["openclaw/plugin-sdk/native-default", ["isRecord"]],
+    ["openclaw/plugin-sdk/dynamic-default", []],
+    ["openclaw/plugin-sdk/alias-default", ["readStringField"]],
+  ]);
+  for (const [index, callee] of ["require", "import", "load"].entries()) {
+    const entry = imports[index];
+    assert.equal(entry.index, source.indexOf(`${callee}("${entry.specifier}"`));
+    assert.equal(source.slice(entry.specifierStart, entry.specifierStart + entry.specifier.length), entry.specifier);
+  }
+});
+
+test("createRequire discovery excludes unproven factories, writes and nonliteral calls", () => {
+  for (const source of [
+    'import { createRequire as make } from "other-module"; const load = make(import.meta.url); load("openclaw/plugin-sdk/no");',
+    'function make(base) { return () => ({}); } const load = make(import.meta.url); load("openclaw/plugin-sdk/no");',
+    'import { createRequire as make } from "node:module"; let load = make(import.meta.url); load = other; load("openclaw/plugin-sdk/no");',
+    'import { createRequire as make } from "node:module"; var load = make(import.meta.url); var load = other; load("openclaw/plugin-sdk/no");',
+    'import { createRequire as make } from "node:module"; let require = make(import.meta.url); require = other; require("openclaw/plugin-sdk/no");',
+    'import { createRequire as make } from "node:module"; const require = make(import.meta.url); function shadow(require) { require("openclaw/plugin-sdk/no"); }',
+    'function shadow(require) { require("openclaw/plugin-sdk/no"); }',
+    'import { createRequire as make } from "node:module"; const alias = make; const load = alias(import.meta.url); load("openclaw/plugin-sdk/no");',
+    'import { createRequire as make } from "node:module"; const load = make(import.meta.url); load("openclaw/plugin-sdk/" + name); load(`openclaw/plugin-sdk/${name}`); receiver.load("openclaw/plugin-sdk/no");',
+    'import type { createRequire as make } from "node:module"; const load = make(import.meta.url); load("openclaw/plugin-sdk/no");',
+    // Mutable module-object factories remain outside the supported static contract.
+    'import * as moduleApi from "node:module"; const load = moduleApi.createRequire(import.meta.url); load("openclaw/plugin-sdk/no");',
+    'import moduleApi from "module"; const load = moduleApi.createRequire(import.meta.url); load("openclaw/plugin-sdk/no");',
+  ]) assert.deepEqual(collectRuntimeModuleImports(source), [], source);
+  const incomplete = 'import { createRequire as make } from "node:module"; const load = make(import.meta.url); load("openclaw/plugin-sdk/alias"); require("openclaw/plugin-sdk/retained"); const invalid =';
+  assert.deepEqual(collectRuntimeModuleImports(incomplete).map(({ specifier, names }) => [specifier, [...names]]),
+    [["openclaw/plugin-sdk/retained", []]]);
+});
+
 test("runtime import names follow declarations through closures and exclude shadowed receivers", () => {
   const source = [
     'async function handler() { const sdk = await import("openclaw/plugin-sdk/outer");',

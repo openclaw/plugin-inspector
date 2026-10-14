@@ -33,6 +33,59 @@ const cjsEntries = {
   ],
 };
 
+for (const rejected of [false, true]) {
+  test(`createRequire aliases generate SDK modules and retained handlers ${rejected ? "preserve rejection" : "compute values"}`, {
+    skip: !supportsCommonJsMocks,
+  }, async (t) => {
+    const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-require-alias-"));
+    t.after(() => rm(root, { recursive: true, force: true }));
+    const source = [
+      'import { createRequire as nodeCreateRequire } from "node:module";',
+      'function initializeSchema() {',
+      'const require_ = nodeCreateRequire(import.meta.url);',
+      'const { isRecord } = require_("openclaw/plugin-sdk/alias-registration-proof");',
+      'if (!isRecord({}) || isRecord([])) throw new Error("registration SDK contract missing");',
+      '}',
+      'let registered = false;',
+      'export default { register(api) {',
+      '  initializeSchema();',
+      '  const require_ = nodeCreateRequire(import.meta.url);',
+      '  api.registerGatewayMethod("fixture.alias", ({ respond }) => {',
+      '    if (!registered) throw new Error("handler ran during registration");',
+      '    const sdk = require_("openclaw/plugin-sdk/alias-retained-proof");',
+      '    const read = () => sdk.readStringField({ value: "alias value" }, "value");',
+      '    if (read() !== "alias value") throw new Error("retained SDK contract missing");',
+      rejected
+        ? '    respond(false, undefined, { code: "UNAVAILABLE", message: read() });'
+        : '    respond(true, { value: read() });',
+      '  });',
+      '  registered = true;',
+      '} };',
+    ].join("\n");
+    await writeFile(path.join(root, "index.mjs"), source);
+    assert.deepEqual(inspectSourceText(source, "index.mjs").sdkImports.map(({ specifier, line }) => [specifier, line]), [
+      ["openclaw/plugin-sdk/alias-registration-proof", 4],
+      ["openclaw/plugin-sdk/alias-retained-proof", 13],
+    ]);
+    const options = { cwd: root, pluginRoot: root, mockSdk: true };
+    assert.equal((await captureEntrypoint("index.mjs", options)).status, "captured");
+    const result = await runEntrypointSyntheticProbes("index.mjs", options);
+    assert.deepEqual(result.summary, {
+      probeCount: 1, passCount: rejected ? 0 : 1, failCount: rejected ? 1 : 0, blockedCount: 0,
+    });
+    if (rejected) assert.equal(result.results[0].error, "Gateway response error: alias value");
+    await writeFile(path.join(root, "bad.mjs"), [
+      'import { createRequire } from "node:module";',
+      'const load = createRequire(import.meta.url);',
+      'load("openclaw/plugin-sdk/alias-failure-proof");',
+      'throw new Error("alias import failure");',
+    ].join("\n"));
+    await assert.rejects(captureEntrypoint("bad.mjs", options), /alias import failure/);
+    assert.throws(() => nodeModule.createRequire(path.join(root, "outside.cjs"))("openclaw/plugin-sdk/alias-registration-proof"),
+      { code: "MODULE_NOT_FOUND" });
+  });
+}
+
 for (const [form, entryLines] of Object.entries(cjsEntries)) {
   for (const boundary of ["API", "CLI", "synthetic"]) {
     test(`CommonJS ${form} SDK calls execute through ${boundary}`, async (t) => {
