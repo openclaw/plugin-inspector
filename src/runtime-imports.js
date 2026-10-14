@@ -5,9 +5,12 @@ import { analyze } from "eslint-scope";
 const literalModuleImport = /(?<![$\w.])(?<kind>[$A-Z_a-z][$\w]*)\s*\(\s*(?<quote>["'`])(?<specifier>[^"'`\\\r\n]+)\k<quote>/dg;
 
 export function collectRuntimeModuleImports(text, { includeStaticNamespaces = false } = {}) {
-  // Mark literal call arguments to preserve offsets through type erasure. Only
-  // the AST and resolved Node createRequire bindings can classify real imports.
-  const entries = [...text.matchAll(literalModuleImport)].map(moduleImportEntry).filter(Boolean);
+  // Preserve possible-import offsets through erasure; AST and scopes classify them.
+  // Named factories use createRequire or a \u escape. Avoid parsing unrelated
+  // calls, which can dominate whole-plugin inspection.
+  const mayUseCreateRequire = text.includes("createRequire") || text.includes("\\u");
+  const entries = [...text.matchAll(literalModuleImport)].map(moduleImportEntry)
+    .filter((entry) => entry && (mayUseCreateRequire || ["require", "import"].includes(entry.kind)));
   if (entries.length === 0 && !includeStaticNamespaces) return entries;
   const { runtimeText, imports } = classifyRuntimeImports(text, entries);
   let ast;
@@ -192,13 +195,14 @@ function classifyRuntimeImports(text, entries) {
       marker: `${specifier}__plugin_inspector_runtime_import_${index}__`,
     };
   });
-  let markedText = text;
-  for (const markedImport of markedImports.toReversed()) {
-    markedText =
-      markedText.slice(0, markedImport.specifierStart) +
-      markedImport.marker +
-      markedText.slice(markedImport.specifierEnd);
+  const parts = [];
+  let cursor = 0;
+  for (const markedImport of markedImports) {
+    parts.push(text.slice(cursor, markedImport.specifierStart), markedImport.marker);
+    cursor = markedImport.specifierEnd;
   }
+  parts.push(text.slice(cursor));
+  const markedText = parts.join("");
 
   let runtimeText = null;
   try {
@@ -206,9 +210,20 @@ function classifyRuntimeImports(text, entries) {
   } catch {
     // Unsupported or incomplete TypeScript cannot prove an import is type-only.
   }
+  // Scan once, including overlapping suffixes inside a specifier. The full marker
+  // must match: an unrelated string with the same numeric suffix is not retention.
+  const retained = new Set();
+  if (runtimeText !== null) {
+    for (const match of runtimeText.matchAll(/(?=__plugin_inspector_runtime_import_(\d+)__)/g)) {
+      const markedImport = markedImports[Number(match[1])];
+      if (!markedImport || retained.has(markedImport)) continue;
+      const start = match.index - markedImport.entry.specifier.length;
+      if (start >= 0 && runtimeText.startsWith(markedImport.marker, start)) retained.add(markedImport);
+    }
+  }
   return {
     runtimeText: runtimeText ?? markedText,
-    imports: runtimeText === null ? markedImports : markedImports.filter(({ marker }) => runtimeText.includes(marker)),
+    imports: runtimeText === null ? markedImports : markedImports.filter((entry) => retained.has(entry)),
   };
 }
 

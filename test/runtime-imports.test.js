@@ -1,11 +1,83 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import * as nodeModule from "node:module";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import { pathToFileURL } from "node:url";
 import { collectRuntimeModuleImports } from "../src/runtime-imports.js";
 import { createMockSdkPackage } from "../src/sdk-mock.js";
+
+test("ordinary calls and retained markers avoid redundant analysis", (t) => {
+  if (process.versions.bun || typeof nodeModule.stripTypeScriptTypes !== "function") {
+    return t.skip("requires Node's replaceable type-erasure builtin");
+  }
+  const source = [
+    'import assert from "node:assert/strict";',
+    'import module from "node:module";',
+    'let calls = 0; const erase = module.stripTypeScriptTypes;',
+    'module.stripTypeScriptTypes = (...args) => { calls++; return erase(...args); };',
+    'module.syncBuiltinESMExports();',
+    `const { collectRuntimeModuleImports: collect } = await import(${JSON.stringify(new URL("../src/runtime-imports.js", import.meta.url).href)});`,
+    `assert.deepEqual(collect(${JSON.stringify(String.raw`const regex = /\s+/; check("ordinary");`)}), []);`,
+    'assert.equal(calls, 0);',
+    'assert.equal(collect(\'require("node:os")\').length, 1);',
+    'assert.ok(calls > 0); const nativeCalls = calls;',
+    'const imports = collect(\'import * as sdk from "openclaw/plugin-sdk/plain"; sdk.isRecord({});\', { includeStaticNamespaces: true });',
+    'assert.equal(imports.length, 1); assert.deepEqual([...imports[0].names], ["isRecord"]);',
+    'assert.ok(calls > nativeCalls);',
+    // Count full-marker comparisons, not timing: repeated marker text must stop
+    // doing long comparisons as soon as the one import is known to survive.
+    'const suffix = "__plugin_inspector_runtime_import_0__";',
+    'const startsWith = String.prototype.startsWith;',
+    'for (const n of [100, 1000]) {',
+    '  const specifier = suffix.repeat(n), marker = specifier + suffix;',
+    '  const input = `require("${specifier}"); const x = "${suffix.repeat(2*n)}";`;',
+    '  let comparisons = 0, imports;',
+    '  String.prototype.startsWith = function(prefix, ...args) { if (prefix === marker) comparisons++; return startsWith.call(this, prefix, ...args); };',
+    '  try { imports = collect(input); } finally { String.prototype.startsWith = startsWith; }',
+    '  assert.equal(imports.length, 1); assert.equal(imports[0].specifier, specifier);',
+    '  assert.ok(comparisons > 0 && comparisons <= 2, `n=${n}: ${comparisons} marker comparisons`);',
+    '}',
+  ].join("\n");
+  const result = spawnSync(process.execPath, ["--input-type=module", "--eval", source], {
+    encoding: "utf8", timeout: 15_000, maxBuffer: 64 * 1024,
+  });
+  assert.equal(result.error, undefined);
+  assert.equal(result.status, 0, result.stderr);
+});
+
+test("escaped named factory imports retain SDK calls without a raw createRequire token", () => {
+  for (const name of [String.raw`create\u0052equire`, String.raw`create\u{52}equire`]) {
+    const source = `import { ${name} as make } from "node:module"; const load = make(import.meta.url); const sdk = load("openclaw/plugin-sdk/escaped"); sdk.isRecord({});`;
+    assert.equal(source.includes("createRequire"), false);
+    const imports = collectRuntimeModuleImports(source);
+    assert.deepEqual(imports.map(({ specifier, names }) => [specifier, [...names]]),
+      [["openclaw/plugin-sdk/escaped", ["isRecord"]]]);
+    assert.equal(imports[0].index, source.indexOf('load("'));
+    assert.equal(imports[0].specifierStart, source.indexOf("openclaw/plugin-sdk/escaped"));
+  }
+});
+
+test("erased import markers require full identity and preserve overlapping suffixes", (t) => {
+  if (process.versions.bun || typeof nodeModule.stripTypeScriptTypes !== "function") {
+    return t.skip("requires Node erasure before duplicate-binding AST fallback");
+  }
+  const specifier = "openclaw/plugin-sdk/embedded__plugin_inspector_runtime_import_1";
+  const source = [
+    'type Gone = import("openclaw/plugin-sdk/erased").Gone;',
+    'const lookalike = "different__plugin_inspector_runtime_import_0__";',
+    'const outOfRange = "__plugin_inspector_runtime_import_999999999999999999999__";',
+    `const sdk = await import("${specifier}");`,
+    // Erasure succeeds, then the duplicate binding selects the existing AST fallback.
+    'const duplicate = 0; const duplicate = 1;',
+  ].join("\n");
+  const imports = collectRuntimeModuleImports(source);
+  assert.deepEqual(imports.map(({ specifier, names }) => [specifier, [...names]]), [[specifier, []]]);
+  assert.equal(imports[0].index, source.indexOf(`import("${specifier}"`));
+  assert.equal(imports[0].specifierStart, source.indexOf(specifier));
+});
 
 test("Node createRequire handles retain literal SDK calls and original source positions", () => {
   for (const [declaration, factory] of [
