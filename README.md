@@ -266,6 +266,14 @@ Node.js 22.13 and 22.14 support existing ESM/TypeScript capture but not CommonJS
 SDK mocking.
 Static inspection also discovers literal CommonJS SDK `require()` references.
 
+Synchronous bundled-module namespace capture also requires `module.registerHooks()`
+to keep SDK mocks active. Older Node.js versions report this requirement before
+loading the module; existing named callable capture remains available.
+TypeScript loaded through this synchronous namespace path uses Node's native
+type stripping. On Node.js 22.15, enable `--experimental-strip-types` explicitly;
+without it, TypeScript namespace imports fail with a syntax error. Named callable
+TypeScript loading continues to use the existing asynchronous loader.
+
 The default capture `api.runtime.modelAuth` passes synthetic provider IDs through
 unchanged, returns fresh empty auth stores and profile lists, and reports no
 configured API keys. Auth acquisition rejects with a mock-auth-unavailable error;

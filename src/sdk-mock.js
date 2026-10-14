@@ -781,6 +781,7 @@ function genericExportStatement(name) {
 
 function genericMockRuntimeSource(options = {}) {
   return `${options.includeSdkRuntime ? `import { existsSync } from "node:fs";
+import * as nodeModule from "node:module";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -831,15 +832,35 @@ function defineBundledChannelSetupEntry(entry = {}) {
 }
 
 function loadBundledEntryExportSync(importMetaUrl, options = {}) {
+  if (!options.exportName) {
+    // createRequire bypasses async hooks. Refuse before loading on older Node,
+    // where a namespace load could execute real SDK/dependency modules unmocked.
+    if (typeof nodeModule.registerHooks !== "function") {
+      throw new Error("Bundled module namespace capture requires Node.js 22.15 or newer with module.registerHooks(); upgrade Node.js to keep SDK mocks active.");
+    }
+    const loaded = nodeModule.createRequire(importMetaUrl)(fileURLToPath(resolveBundledEntryUrl(importMetaUrl, options.specifier)));
+    return selectBundledEntryExport(loaded);
+  }
   return (...args) => {
     const promise = import(resolveBundledEntryUrl(importMetaUrl, options.specifier)).then((module) => {
-      const loaded = module[options.exportName] ?? module.default;
+      const loaded = selectBundledEntryExport(module, options.exportName);
       return typeof loaded === "function" ? loaded(...args) : loaded;
     });
     pendingBundledEntryLoads.add(promise);
-    promise.finally(() => pendingBundledEntryLoads.delete(promise));
+    promise.then(() => pendingBundledEntryLoads.delete(promise), () => pendingBundledEntryLoads.delete(promise));
     return promise;
   };
+}
+
+function selectBundledEntryExport(loaded, exportName) {
+  // Match the public channel-entry contract: unwrap default before selection.
+  const resolved = loaded && typeof loaded === "object" && "default" in loaded ? loaded.default : loaded;
+  if (!exportName) return resolved;
+  const record = resolved ?? loaded;
+  if (!record || !(exportName in record)) {
+    throw new Error(\`Missing bundled entry export: \${exportName}\`);
+  }
+  return record[exportName];
 }
 
 async function drainBundledEntryLoads() {

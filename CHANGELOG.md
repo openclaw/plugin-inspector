@@ -4,6 +4,8 @@
 
 - Capture namespace SDK imports and published doctor-contract bundles without missing exports; mock doctor descriptors remain inspectable while actual migration execution fails explicitly.
 
+- Capture synchronous bundled module namespaces with scoped SDK mocks on Node.js 22.15+; preserve named callable capture on Node.js 22.13 and report unsupported namespace capture before loading any module.
+
 - Clarify that `inspect` reports hard breakages without failing unless `--check` is passed; use `check` for CI failure enforcement. Thanks @KrasimirKralev.
 
 - Read OpenClaw manifest contract fields from its canonical key tuple when the manifest type derives its keys through `Partial<Record<...>>`, preserving inline object-type parsing for older targets.
