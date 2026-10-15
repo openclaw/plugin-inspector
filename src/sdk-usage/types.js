@@ -26,7 +26,7 @@ export function createTypeProvenance({ checker, program, resolve, select, module
         const base = declared?.kind === "signature" ? declared.value : declared;
         const keyType = checker.getTypeFromTypeNode(keyNode);
         const alternatives = keyType.isUnion() ? keyType.types : [keyType];
-        if (alternatives.every((type) => type.isStringLiteral())) value = { kind: "projection", base, keys: alternatives.map((type) => type.value) };
+        if (alternatives.every((type) => type.isStringLiteral())) value = { kind: "projection", base, keys: alternatives.map((type) => type.value), selectionNode: node };
       }
       if (!value && ["NonNullable", "Readonly", "Required", "Partial"].includes(nameText(node.typeName)) && builtinUtility(node)) value = typeValue(node.typeArguments?.[0]);
       if (!value) {

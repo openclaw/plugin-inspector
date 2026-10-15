@@ -462,6 +462,25 @@ type Chosen = Pick<typeof import("openclaw/plugin-sdk/example"), "run">;
   assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#run")?.referenceKinds, ["type-reference"]);
 });
 
+test("local projected-type annotations do not add transitive SDK evidence", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { warn } from "openclaw/plugin-sdk/example";
+import type { PluginRuntime } from "openclaw/plugin-sdk/core";
+const helpers = { warn };
+type Chosen = Pick<typeof helpers, "warn">;
+type RuntimeChosen = Pick<PluginRuntime["state"], "openKeyedStore">;
+type Renamed = Chosen;
+export function consume(helpers: Chosen, runtime: RuntimeChosen) {}
+`);
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  for (const key of ["sdk-export:openclaw/plugin-sdk/example#warn", "runtime-member:runtime.state.openKeyedStore"]) {
+    const entry = entries.get(key);
+    assert.ok(entry.referenceKinds.includes("type-reference"), key);
+    assert.ok(entry.evidence.some((site) => site.snippet.includes("Pick<")), key);
+    assert.ok(entry.evidence.every((site) => !site.snippet.includes("function consume") && !site.snippet.includes("type Renamed")), key);
+  }
+});
+
 test("a lazy import selector preserves its callable result and explicit type query", async (t) => {
   const report = await inspectPublishedJson(t, `
 import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";

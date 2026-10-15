@@ -80,7 +80,7 @@ export function collectSdkImports({ sources, report, provenance }) {
     if (ts.isIndexedAccessTypeNode(node)) record(typeValue(node), "type-reference", node, true);
     if (ts.isTypeReferenceNode(node)) {
       const projected = typeValue(node);
-      if (projected?.kind === "projection") for (const key of projected.keys) record(select(projected.base, key), "type-reference", node, true);
+      if (projected?.kind === "projection" && projected.selectionNode === node) for (const key of projected.keys) record(select(projected.base, key), "type-reference", node, true);
     }
     if (isDependencyDeclaration(node)) return;
     if (ts.isBindingElement(node) && ts.isIdentifier(node.name) && !directDependencyBinding(node)) record(resolve(node.name), "member-access", node);

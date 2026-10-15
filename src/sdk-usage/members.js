@@ -41,7 +41,7 @@ export function collectSdkMembers({ sources, report, provenance }) {
     if (ts.isBindingElement(node) && ts.isIdentifier(node.name)) record(resolve(node.name), "member-access", node);
     if (ts.isTypeReferenceNode(node)) {
       const value = typeValue(node);
-      if (value?.kind === "projection") for (const key of value.keys) record(select(value.base, key), "type-reference", node, "type");
+      if (value?.kind === "projection" && value.selectionNode === node) for (const key of value.keys) record(select(value.base, key), "type-reference", node, "type");
     }
     if (ts.isIndexedAccessTypeNode(node) && !ts.isIndexedAccessTypeNode(node.parent)) {
       const selectedByPick = ts.isTypeReferenceNode(node.parent) && nameText(node.parent.typeName) === "Pick" && node.parent.typeArguments?.[0] === node;
