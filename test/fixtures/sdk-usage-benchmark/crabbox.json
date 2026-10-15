@@ -36,7 +36,7 @@
       "path": "extensions/crabbox/index.ts",
       "sha256": "cc52b13315b0931264f8e3b44014e33bedde00e29712337aed783f4b3406f6a4",
       "role": "production-source",
-      "findingCount": 16
+      "findingCount": 18
     },
     {
       "path": "extensions/crabbox/openclaw.plugin.json",
@@ -60,7 +60,7 @@
       "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
       "sha256": "96a5df142e343082c6d1145f42563f7e75fe85639b8fb4af277c59e2e73f7b0c",
       "role": "production-source",
-      "findingCount": 12
+      "findingCount": 13
     },
     {
       "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
@@ -96,7 +96,7 @@
       "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
       "sha256": "26814325307d5ccbdcb58552745912499d548e06f32f3ee1b82468afa3b3b6d3",
       "role": "production-source",
-      "findingCount": 3
+      "findingCount": 9
     },
     {
       "path": "extensions/crabbox/src/crabbox-sandbox-lease.ts",
@@ -282,7 +282,7 @@
       "path": "extensions/crabbox/src/crabbox-worker-warm-image-policy.ts",
       "sha256": "d19104de6670ee3e8d7cc3aa245011d09889dd0cd072e5768d614eb6023b16ce",
       "role": "production-source",
-      "findingCount": 2
+      "findingCount": 6
     },
     {
       "path": "extensions/crabbox/src/crabbox-worker-warm-image-recipe.ts",
@@ -666,6 +666,231 @@
       "classification": "runtime"
     },
     {
+      "key": "api-member:api.pluginConfig.sandbox",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.sandbox",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 18,
+          "snippet": "const raw = pluginConfig?.sandbox;",
+          "note": "index.ts:90 passes api.pluginConfig unchanged into this local parameter. The public config origin survives the parameter annotation and isRecord guard."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.pluginConfig.sandbox.binary",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.sandbox.binary",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 11,
+          "snippet": "const FIELDS = [\"provider\", \"class\", \"binary\", \"ttl\", \"idleTimeout\"] as const;",
+          "note": "FIELDS is the exact finite key set for the source read below; this finding records its binary member."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 31,
+          "snippet": "for (const key of FIELDS) {"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 32,
+          "snippet": "const value = raw[key];",
+          "note": "raw aliases pluginConfig.sandbox from line 18, supplied unchanged from api.pluginConfig at index.ts:90. The loop statically selects each FIELDS member; normalizeOptionalString and the fresh resolved object do not propagate this API identity."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.pluginConfig.sandbox.class",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.sandbox.class",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 11,
+          "snippet": "const FIELDS = [\"provider\", \"class\", \"binary\", \"ttl\", \"idleTimeout\"] as const;",
+          "note": "FIELDS is the exact finite key set for the source read below; this finding records its class member."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 31,
+          "snippet": "for (const key of FIELDS) {"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 32,
+          "snippet": "const value = raw[key];",
+          "note": "raw aliases pluginConfig.sandbox from line 18, supplied unchanged from api.pluginConfig at index.ts:90. The loop statically selects each FIELDS member; normalizeOptionalString and the fresh resolved object do not propagate this API identity."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.pluginConfig.sandbox.idleTimeout",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.sandbox.idleTimeout",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 11,
+          "snippet": "const FIELDS = [\"provider\", \"class\", \"binary\", \"ttl\", \"idleTimeout\"] as const;",
+          "note": "FIELDS is the exact finite key set for the source read below; this finding records its idleTimeout member."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 31,
+          "snippet": "for (const key of FIELDS) {"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 32,
+          "snippet": "const value = raw[key];",
+          "note": "raw aliases pluginConfig.sandbox from line 18, supplied unchanged from api.pluginConfig at index.ts:90. The loop statically selects each FIELDS member; normalizeOptionalString and the fresh resolved object do not propagate this API identity."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.pluginConfig.sandbox.provider",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.sandbox.provider",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 11,
+          "snippet": "const FIELDS = [\"provider\", \"class\", \"binary\", \"ttl\", \"idleTimeout\"] as const;",
+          "note": "FIELDS is the exact finite key set for the source read below; this finding records its provider member."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 31,
+          "snippet": "for (const key of FIELDS) {"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 32,
+          "snippet": "const value = raw[key];",
+          "note": "raw aliases pluginConfig.sandbox from line 18, supplied unchanged from api.pluginConfig at index.ts:90. The loop statically selects each FIELDS member; normalizeOptionalString and the fresh resolved object do not propagate this API identity."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.pluginConfig.sandbox.ttl",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.sandbox.ttl",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 11,
+          "snippet": "const FIELDS = [\"provider\", \"class\", \"binary\", \"ttl\", \"idleTimeout\"] as const;",
+          "note": "FIELDS is the exact finite key set for the source read below; this finding records its ttl member."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 31,
+          "snippet": "for (const key of FIELDS) {"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 32,
+          "snippet": "const value = raw[key];",
+          "note": "raw aliases pluginConfig.sandbox from line 18, supplied unchanged from api.pluginConfig at index.ts:90. The loop statically selects each FIELDS member; normalizeOptionalString and the fresh resolved object do not propagate this API identity."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.pluginConfig.warmImages",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.warmImages",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-policy.ts",
+          "line": 26,
+          "snippet": "const raw = pluginConfig?.warmImages;",
+          "note": "index.ts:75 passes api.pluginConfig unchanged into this local parameter. The isRecord guard preserves the original object provenance."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.pluginConfig.warmImages.keepPrevious",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.warmImages.keepPrevious",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-policy.ts",
+          "line": 31,
+          "snippet": "const keepPrevious = config.keepPrevious === undefined ? 0 : config.keepPrevious;",
+          "note": "config is raw ?? {} at line 30, where raw is pluginConfig.warmImages from line 26 and index.ts:75 supplies api.pluginConfig unchanged. This records the statically proven original-object branch; the fresh policy result and standard string methods do not extend the public path."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.pluginConfig.warmImages.refreshAfter",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.warmImages.refreshAfter",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-policy.ts",
+          "line": 36,
+          "snippet": "refreshAfterMs: duration(config.refreshAfter, \"refreshAfter\", \"24h\", 3_600_000),",
+          "note": "config is raw ?? {} at line 30, where raw is pluginConfig.warmImages from line 26 and index.ts:75 supplies api.pluginConfig unchanged. This records the statically proven original-object branch; the fresh policy result and standard string methods do not extend the public path."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.pluginConfig.warmImages.retainUnused",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.warmImages.retainUnused",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-policy.ts",
+          "line": 37,
+          "snippet": "retainUnusedMs: duration(config.retainUnused, \"retainUnused\", \"14d\", 86_400_000),",
+          "note": "config is raw ?? {} at line 30, where raw is pluginConfig.warmImages from line 26 and index.ts:75 supplies api.pluginConfig unchanged. This records the statically proven original-object branch; the fresh policy result and standard string methods do not extend the public path."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
       "key": "api-member:api.registerCli",
       "kind": "api-member",
       "identity": "api.registerCli",
@@ -929,9 +1154,16 @@
       "kind": "runtime-member",
       "identity": "runtime.gateway",
       "referenceKinds": [
+        "member-access",
         "type-reference"
       ],
       "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 26,
+          "snippet": "api.registerTool((context) => createCrabboxTool({ context, gateway: api.runtime.gateway }), {",
+          "note": "api.runtime.gateway is a distinct non-call nested-handle read. Maximal paths are recorded per occurrence; only the bare runtime root is suppressed."
+        },
         {
           "path": "extensions/crabbox/src/crabbox-tool.ts",
           "line": 67,
@@ -939,7 +1171,7 @@
           "note": "Maximal explicit indexed path OpenClawPluginApi[\"runtime\"][\"gateway\"]."
         }
       ],
-      "classification": "type"
+      "classification": "mixed"
     },
     {
       "key": "runtime-member:runtime.gateway.request",
@@ -959,6 +1191,39 @@
       "classification": "runtime"
     },
     {
+      "key": "runtime-member:runtime.state",
+      "kind": "runtime-member",
+      "identity": "runtime.state",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 40,
+          "snippet": "registerCrabboxWarmImageCommands(program, api.runtime.state);",
+          "note": "The public runtime state handle is read and passed unchanged to the local CLI helper; this is a maximal path at this occurrence."
+        },
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 66,
+          "snippet": "await recoverCrabboxImage(api.runtime.state, request);"
+        },
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 71,
+          "snippet": "state: api.runtime.state,"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 142,
+          "snippet": "respond(true, { ...(await snapshotStatus(api.runtime.state)), profiles });",
+          "note": "api is explicitly OpenClawPluginApi at line 130; snapshotStatus receives the unchanged runtime state handle."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
       "key": "runtime-member:runtime.state.openKeyedStore",
       "kind": "runtime-member",
       "identity": "runtime.state.openKeyedStore",
@@ -971,7 +1236,7 @@
           "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
           "line": 20,
           "snippet": "export type CrabboxState = Pick<OpenClawPluginApi[\"runtime\"][\"state\"], \"openKeyedStore\">;",
-          "note": "Literal Pick explicitly selects openKeyedStore from the public runtime state type; no separate state prefix."
+          "note": "Literal Pick explicitly selects openKeyedStore from the public runtime state type; this type occurrence contributes no separate state prefix. Independent runtime.state value reads are recorded separately."
         },
         {
           "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
@@ -3692,11 +3957,12 @@
     "Package exports ./cli-runtime-api.js to ./cli-runtime-api.ts and the build copies the PNG wallpaper. These metadata declarations do not create SDK or manifest-contract identities. Source-phase findings include explicit erased types and do not claim a published-artifact audit.",
     "Verified each SDK subpath against root package exports and each imported name against its public src/plugin-sdk facade. Original public names are preserved: normalizeOptionalString is locally nonEmptyString, and asOptionalRecord is locally readRecord. readStringParam is the public SDK export despite its core implementation name readToolStringParam.",
     "Managed binary download helpers use narrowed dynamic imports, including destructured Promise.all imports of buildTimeoutAbortSignal and fetchWithSsrFGuard. root is both explicitly type-imported/typeof-referenced and dynamically imported/called; its export and module are mixed. toErrorObject has both static and dynamic imports. No unused syntactic SDK dependencies were dropped.",
-    "Public indexed types contribute api.registerCli and runtime.gateway. CrabboxState uses literal Pick to select runtime.state.openKeyedStore; the state prefix is not separately emitted. Runtime state/gateway handles passed through owned helpers are traced to concrete calls. Downstream projected CrabboxState and other composite types do not re-enumerate public members.",
+    "Public indexed types contribute api.registerCli and runtime.gateway. CrabboxState uses literal Pick to select runtime.state.openKeyedStore without a separate state prefix at that type occurrence. Maximal paths are recorded per occurrence: independent api.runtime.gateway and api.runtime.state value reads contribute runtime.gateway and runtime.state even when passed unchanged to owned helpers that later consume concrete members. The bare-runtime-handle exclusion applies only to the runtime root, not nested handles. Downstream projected CrabboxState and other composite types do not re-enumerate public members. This corrects the original-owner audit, which overextended the runtime-root exclusion.",
     "worker-profile-api.ts stores WorkerProfileSuggestionDiscovery, a plugin-owned discovery function, in createPluginRuntimeStore. discovery.tryGetRuntime/setRuntime and calling the stored function are not PluginRuntime members. The logger returned by createSubsystemLogger is likewise not the plugin API logger; api.logger.warn in index.ts is proven API usage.",
     "Doctor migration contexts, CrabboxDoctorRegistrationHost, tool context, WorkerProvider and its provision/enrollment/project capabilities are distinct contracts, not OpenClawPluginApi or PluginRuntime handles. Store objects returned by openKeyedStore, sandbox helpers, file-access root, timeout/SSRF helpers and egress helpers are not recursively expanded into API/runtime paths.",
     "WorkerProviderError construction and its static cleanup methods contribute SDK-export call references; ErrorCodes constants contribute member-access. Direct helper calls retain only their public SDK dependency, without attributing internal runtime effects. Embedded remote shell/PowerShell/Node/C# scripts contain no SDK dependencies; ordinary EventEmitter .on calls are not plugin hook registrations.",
     "Manifest contract identities are limited to cliCommands.name, commandAliases.name, contracts.workerProviders, contracts.workerProfileSuggestions, contracts.tools and skills. Doctor migration metadata, activation rules, toolMetadata, category and config schema fields are not agreed manifest-contract identities. No named plugin hooks are registered.",
-    "All four .test-support.ts helpers were read and their callers verified repository-wide: only test files and mutually test-only helpers consume them. Their SDK testing dependencies are excluded individually. No genuine nonstatic SDK/API/runtime use or opaque handle escape remains unresolved."
+    "All four .test-support.ts helpers were read and their callers verified repository-wide: only test files and mutually test-only helpers consume them. Their SDK testing dependencies are excluded individually. No genuine nonstatic SDK/API/runtime use or opaque handle escape remains unresolved.",
+    "Original-owner source reconciliation preserves api.pluginConfig provenance through unchanged local arguments to resolveCrabboxSandboxConfig and resolveCrabboxWarmImagePolicy at index.ts:90 and :75. Guards, parameter types and the raw ?? {} fallback do not erase possible original-object reads. Sandbox reads sandbox plus the five finite FIELDS members; warm-image policy reads warmImages, keepPrevious, refreshAfter and retainUnused. Both resolvers produce fresh transformed objects, so downstream backend/policy accesses are not attributed to the original API config. Built-in string parsing stops at the config data field. These ten config identities and the runtime nested-handle correction were independently reconciled against source and contract without Inspector output."
   ]
 }

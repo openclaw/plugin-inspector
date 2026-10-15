@@ -1958,7 +1958,8 @@
       "identity": "openclaw/plugin-sdk/provider-setup#SELF_HOSTED_DEFAULT_CONTEXT_WINDOW",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
@@ -1966,6 +1967,12 @@
           "line": 7,
           "snippet": "SELF_HOSTED_DEFAULT_CONTEXT_WINDOW,",
           "note": "Imported original export from openclaw/plugin-sdk/provider-setup."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 518,
+          "snippet": "contextWindow: base.contextWindow,",
+          "note": "base is the local mapLmstudioWireEntry result (line 503); its contextWindow property (line 484) preserves SELF_HOSTED_DEFAULT_CONTEXT_WINDOW unchanged on the fallback branch at line 453. This property selection is a possible SDK-export dependency without claiming the fallback executed."
         }
       ]
     },
@@ -1975,7 +1982,8 @@
       "identity": "openclaw/plugin-sdk/provider-setup#SELF_HOSTED_DEFAULT_COST",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
@@ -1983,6 +1991,12 @@
           "line": 8,
           "snippet": "SELF_HOSTED_DEFAULT_COST,",
           "note": "Imported original export from openclaw/plugin-sdk/provider-setup."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 512,
+          "snippet": "cost: base.cost,",
+          "note": "base is the local mapLmstudioWireEntry result (line 503); its cost property is assigned SELF_HOSTED_DEFAULT_COST unchanged at line 482. Selecting base.cost preserves that SDK-export provenance; the enclosing object remains plugin-owned."
         }
       ]
     },
@@ -3470,6 +3484,7 @@
     "stream.ts underlying is the unchanged fallback alias ctx.streamFn ?? streamSimple; its direct invocations preserve streamSimple call provenance. Bare fallback selection adds no member-access, and calls through SDK-created wrappers add no transitive call to streamSimple.",
     "Runtime resolveApiKeyForProvider has an ordinary import and direct invocation plus explicit typeof in ReturnType at runtime.ts:227; its export classification is mixed, while provider-auth-runtime module dependency sites remain runtime.",
     "Explicit inline type imports retain type-import. All imported SDK types used in annotations/indexed access carry type-reference; indexed config/provider/embedding types are not API/runtime public member handles. The local barrels do not reexport their inferred SDK constituent types.",
-    "Only top-level providers and contracts.embeddingProviders establish agreed manifest-contract identities. Categories, providerCatalogEntry, modelCatalog, providerRequest, modelPricing, auth markers, setup/providerAuthChoices and configSchema metadata do not add contracts under the frozen schema."
+    "Only top-level providers and contracts.embeddingProviders establish agreed manifest-contract identities. Categories, providerCatalogEntry, modelCatalog, providerRequest, modelPricing, auth markers, setup/providerAuthChoices and configSchema metadata do not add contracts under the frozen schema.",
+    "Original-owner source reconciliation: models.ts selects base.cost (line 512) and base.contextWindow (line 518) from the plugin-owned mapLmstudioWireEntry result. Those properties retain SELF_HOSTED_DEFAULT_COST unchanged and SELF_HOSTED_DEFAULT_CONTEXT_WINDOW unchanged on its fallback branch, respectively. Both SDK exports therefore include member-access alongside import; classifications and finding counts remain unchanged. The fresh enclosing object does not acquire an API/runtime identity."
   ]
 }

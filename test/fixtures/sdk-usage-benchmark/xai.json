@@ -96,7 +96,7 @@
       "path": "extensions/xai/lazy-capability-provider-factories.ts",
       "sha256": "d81e5b7d0aab20595fbae4c9589cf61a074a585e2fb15c8cd5019ff4a9ad8dac",
       "role": "production-source",
-      "findingCount": 18
+      "findingCount": 23
     },
     {
       "path": "extensions/xai/lazy-capability-providers.ts",
@@ -186,7 +186,7 @@
       "path": "extensions/xai/realtime-transcription-provider-factory.ts",
       "sha256": "1052ee07ecdcf3493c1ed3ed6e0961a53daab9785364fbd1c3baeb80ad39fcb4",
       "role": "production-source",
-      "findingCount": 7
+      "findingCount": 10
     },
     {
       "path": "extensions/xai/realtime-voice-auth.runtime.ts",
@@ -1112,13 +1112,20 @@
       "key": "sdk-export:openclaw/plugin-sdk/agent-scope-runtime#resolveAgentDir",
       "kind": "sdk-export",
       "identity": "openclaw/plugin-sdk/agent-scope-runtime#resolveAgentDir",
-      "classification": "runtime",
+      "classification": "mixed",
       "referenceKinds": [
         "call",
         "import",
-        "member-access"
+        "member-access",
+        "type-reference"
       ],
       "evidence": [
+        {
+          "path": "extensions/xai/capability-provider-metadata-factory.ts",
+          "line": 253,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"isProviderAuthProfileConfiguredAsync\" | \"resolveAgentDir\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
         {
           "path": "extensions/xai/capability-provider-metadata-factory.ts",
           "line": 319,
@@ -1127,14 +1134,32 @@
         },
         {
           "path": "extensions/xai/capability-provider-metadata-factory.ts",
+          "line": 322,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"resolveAgentDir\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
+        {
+          "path": "extensions/xai/capability-provider-metadata-factory.ts",
           "line": 331,
           "snippet": "...(cfg && agentId ? { agentDir: resolveAgentDir(cfg, agentId) } : {}),",
           "note": "Unchanged SDK function supplied by capability-provider-metadata.ts (or lazy-capability-providers.ts) through the local context parameter; context is not an API/runtime handle."
         },
         {
+          "path": "extensions/xai/capability-provider-metadata-factory.ts",
+          "line": 344,
+          "snippet": "\"isProviderAuthProfileConfiguredAsync\" | \"resolveAgentDir\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
+        {
           "path": "extensions/xai/capability-provider-metadata.ts",
           "line": 1,
           "snippet": "import { resolveAgentDir } from \"openclaw/plugin-sdk/agent-scope-runtime\";"
+        },
+        {
+          "path": "extensions/xai/lazy-capability-provider-factories.ts",
+          "line": 247,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"isProviderAuthProfileConfiguredAsync\" | \"resolveAgentDir\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
         },
         {
           "path": "extensions/xai/realtime-voice-auth.runtime.ts",
@@ -2290,12 +2315,19 @@
       "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isProviderApiKeyConfiguredAsync",
       "kind": "sdk-export",
       "identity": "openclaw/plugin-sdk/provider-auth#isProviderApiKeyConfiguredAsync",
-      "classification": "runtime",
+      "classification": "mixed",
       "referenceKinds": [
         "call",
-        "import"
+        "import",
+        "type-reference"
       ],
       "evidence": [
+        {
+          "path": "extensions/xai/capability-provider-metadata-factory.ts",
+          "line": 122,
+          "snippet": "context: Pick<PluginCapabilityCatalogHostContext, \"isProviderApiKeyConfiguredAsync\">,",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
         {
           "path": "extensions/xai/capability-provider-metadata-factory.ts",
           "line": 137,
@@ -2308,6 +2340,12 @@
           "snippet": "isProviderApiKeyConfiguredAsync,"
         },
         {
+          "path": "extensions/xai/lazy-capability-provider-factories.ts",
+          "line": 197,
+          "snippet": "context: Pick<PluginCapabilityCatalogHostContext, \"isProviderApiKeyConfiguredAsync\">,",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
+        {
           "path": "extensions/xai/lazy-capability-providers.ts",
           "line": 1,
           "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
@@ -2318,18 +2356,37 @@
       "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isProviderAuthProfileConfigured",
       "kind": "sdk-export",
       "identity": "openclaw/plugin-sdk/provider-auth#isProviderAuthProfileConfigured",
-      "classification": "runtime",
+      "classification": "mixed",
       "referenceKinds": [
         "call",
         "import",
-        "member-access"
+        "member-access",
+        "type-reference"
       ],
       "evidence": [
+        {
+          "path": "extensions/xai/capability-provider-metadata-factory.ts",
+          "line": 216,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"isProviderAuthProfileConfiguredAsync\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
+        {
+          "path": "extensions/xai/capability-provider-metadata-factory.ts",
+          "line": 253,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"isProviderAuthProfileConfiguredAsync\" | \"resolveAgentDir\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
         {
           "path": "extensions/xai/capability-provider-metadata-factory.ts",
           "line": 318,
           "snippet": "isProviderAuthProfileConfigured,",
           "note": "Destructured field retains the original SDK function injected by capability-provider-metadata.ts; later direct calls are separately evidenced."
+        },
+        {
+          "path": "extensions/xai/capability-provider-metadata-factory.ts",
+          "line": 322,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"resolveAgentDir\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
         },
         {
           "path": "extensions/xai/capability-provider-metadata-factory.ts",
@@ -2341,6 +2398,36 @@
           "path": "extensions/xai/capability-provider-metadata.ts",
           "line": 3,
           "snippet": "isProviderAuthProfileConfigured,"
+        },
+        {
+          "path": "extensions/xai/lazy-capability-provider-factories.ts",
+          "line": 208,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"isProviderAuthProfileConfiguredAsync\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
+        {
+          "path": "extensions/xai/lazy-capability-provider-factories.ts",
+          "line": 223,
+          "snippet": "| \"isProviderAuthProfileConfigured\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
+        {
+          "path": "extensions/xai/lazy-capability-provider-factories.ts",
+          "line": 247,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"isProviderAuthProfileConfiguredAsync\" | \"resolveAgentDir\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
+        {
+          "path": "extensions/xai/realtime-transcription-provider-factory.ts",
+          "line": 13,
+          "snippet": "| \"isProviderAuthProfileConfigured\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
+        {
+          "path": "extensions/xai/speech-provider-metadata-factory.ts",
+          "line": 154,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"isProviderAuthProfileConfiguredAsync\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
         },
         {
           "path": "extensions/xai/speech-provider-metadata-factory.ts",
@@ -2359,18 +2446,37 @@
       "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isProviderAuthProfileConfiguredAsync",
       "kind": "sdk-export",
       "identity": "openclaw/plugin-sdk/provider-auth#isProviderAuthProfileConfiguredAsync",
-      "classification": "runtime",
+      "classification": "mixed",
       "referenceKinds": [
         "call",
         "import",
-        "member-access"
+        "member-access",
+        "type-reference"
       ],
       "evidence": [
+        {
+          "path": "extensions/xai/capability-provider-metadata-factory.ts",
+          "line": 216,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"isProviderAuthProfileConfiguredAsync\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
+        {
+          "path": "extensions/xai/capability-provider-metadata-factory.ts",
+          "line": 253,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"isProviderAuthProfileConfiguredAsync\" | \"resolveAgentDir\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
         {
           "path": "extensions/xai/capability-provider-metadata-factory.ts",
           "line": 340,
           "snippet": "isProviderAuthProfileConfiguredAsync,",
           "note": "Destructured field retains the original SDK function injected by capability-provider-metadata.ts; later direct calls are separately evidenced."
+        },
+        {
+          "path": "extensions/xai/capability-provider-metadata-factory.ts",
+          "line": 344,
+          "snippet": "\"isProviderAuthProfileConfiguredAsync\" | \"resolveAgentDir\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
         },
         {
           "path": "extensions/xai/capability-provider-metadata-factory.ts",
@@ -2382,6 +2488,36 @@
           "path": "extensions/xai/capability-provider-metadata.ts",
           "line": 4,
           "snippet": "isProviderAuthProfileConfiguredAsync,"
+        },
+        {
+          "path": "extensions/xai/lazy-capability-provider-factories.ts",
+          "line": 208,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"isProviderAuthProfileConfiguredAsync\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
+        {
+          "path": "extensions/xai/lazy-capability-provider-factories.ts",
+          "line": 224,
+          "snippet": "| \"isProviderAuthProfileConfiguredAsync\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
+        {
+          "path": "extensions/xai/lazy-capability-provider-factories.ts",
+          "line": 247,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"isProviderAuthProfileConfiguredAsync\" | \"resolveAgentDir\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
+        {
+          "path": "extensions/xai/realtime-transcription-provider-factory.ts",
+          "line": 14,
+          "snippet": "| \"isProviderAuthProfileConfiguredAsync\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
+        },
+        {
+          "path": "extensions/xai/speech-provider-metadata-factory.ts",
+          "line": 154,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"isProviderAuthProfileConfiguredAsync\"",
+          "note": "Explicit literal Pick selects this SDK-valued context property. PluginCapabilityCatalogHostContext preserves its exact typeof declaration in src/plugins/capability-catalog-context.types.ts; local factory callers inject the corresponding SDK function unchanged. This adds an export type-reference, not a module import or API/runtime path."
         },
         {
           "path": "extensions/xai/speech-provider-metadata-factory.ts",
@@ -4545,6 +4681,36 @@
       ]
     },
     {
+      "key": "sdk-export:openclaw/plugin-sdk/realtime-transcription-session#createRealtimeTranscriptionWebSocketSession",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/realtime-transcription-session#createRealtimeTranscriptionWebSocketSession",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/xai/lazy-capability-provider-factories.ts",
+          "line": 226,
+          "snippet": "| \"createRealtimeTranscriptionWebSocketSession\"",
+          "note": "Explicit literal Pick selects the injected SDK function type. PluginCapabilityCatalogHostContext declares the exact typeof ../realtime-transcription/websocket-session.js export at src/plugins/capability-catalog-context.types.ts:12; the host imports it and assigns it unchanged at src/plugins/capability-catalog-context.ts:14,34. src/plugin-sdk/realtime-transcription-session.ts:13 reexports the same function, and docs/plugins/sdk-subpaths.md:551 selects that focused facade. No import site is invented."
+        },
+        {
+          "path": "extensions/xai/realtime-transcription-provider-factory.ts",
+          "line": 16,
+          "snippet": "| \"createRealtimeTranscriptionWebSocketSession\"",
+          "note": "Explicit literal Pick selects the injected SDK function type; subsequent uses of the whole XaiTranscriptionRuntime alias do not expand it again. PluginCapabilityCatalogHostContext declares the exact typeof ../realtime-transcription/websocket-session.js export at src/plugins/capability-catalog-context.types.ts:12; the host imports it and assigns it unchanged at src/plugins/capability-catalog-context.ts:14,34. src/plugin-sdk/realtime-transcription-session.ts:13 reexports the same function, and docs/plugins/sdk-subpaths.md:551 selects that focused facade. No import site is invented."
+        },
+        {
+          "path": "extensions/xai/realtime-transcription-provider-factory.ts",
+          "line": 58,
+          "snippet": "return runtime.createRealtimeTranscriptionWebSocketSession<XaiRealtimeTranscriptionEvent>({",
+          "note": "Direct invocation through the unchanged host context function. PluginCapabilityCatalogHostContext declares the exact typeof ../realtime-transcription/websocket-session.js export at src/plugins/capability-catalog-context.types.ts:12; the host imports it and assigns it unchanged at src/plugins/capability-catalog-context.ts:14,34. src/plugin-sdk/realtime-transcription-session.ts:13 reexports the same function, and docs/plugins/sdk-subpaths.md:551 selects that focused facade. No import site is invented."
+        }
+      ]
+    },
+    {
       "key": "sdk-export:openclaw/plugin-sdk/realtime-voice#OpenAICompatibleRealtimeAudioFormat",
       "kind": "sdk-export",
       "identity": "openclaw/plugin-sdk/realtime-voice#OpenAICompatibleRealtimeAudioFormat",
@@ -4842,13 +5008,26 @@
       "identity": "openclaw/plugin-sdk/realtime-voice-provider#REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
           "path": "extensions/xai/realtime-voice-protocol.ts",
           "line": 10,
           "snippet": "REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ,"
+        },
+        {
+          "path": "extensions/xai/realtime-voice-protocol.ts",
+          "line": 119,
+          "snippet": "const producedAudioMs = Math.floor(realtimeVoiceAudioDurationMs(this.audioFormat, item.bytes));",
+          "note": "Line 51 stores config.audioFormat ?? REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ unchanged in this.audioFormat. This non-call selection reads that proven SDK-valued field on the fallback branch; helper internals and encoding accesses inside SDK functions are not inferred."
+        },
+        {
+          "path": "extensions/xai/realtime-voice-protocol.ts",
+          "line": 175,
+          "snippet": "const format = toOpenAICompatibleRealtimeAudioFormat(this.audioFormat);",
+          "note": "Line 51 stores config.audioFormat ?? REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ unchanged in this.audioFormat. This non-call selection reads that proven SDK-valued field on the fallback branch; helper internals and encoding accesses inside SDK functions are not inferred."
         }
       ]
     },
@@ -7895,11 +8074,13 @@
     "Public package exports and SDK facade declarations verify all 46 imported SDK subpaths. Original public export names are retained for local aliases: OPENCLAW_VERSION as PACKAGE_VERSION, normalizeOptionalString as trimString/trimToUndefined, and asOptionalObjectRecord as readXaiObjectRecord.",
     "index.ts provider(pluginApi) and register(api) callbacks are typed by defineSingleProviderPluginEntry as OpenClawPluginApi; setup-api.ts uses definePluginEntry. Only explicit registration calls and pluginApi.runtime.version contribute API/runtime findings. Registration performed inside SDK entry helpers and replay-family helper effects are not expanded.",
     "ProviderAuthContext.runtime is RuntimeEnv (src/plugins/provider-authentication.types.ts), not PluginRuntime, so xai-oauth.ts ctx.runtime.log does not contribute runtime-member findings. Provider/model/tool/setup/voice contexts, req/config objects, the stream.ts clientVersion container, and XaiTranscriptionRuntime (Pick<PluginCapabilityCatalogHostContext, ...>) likewise are not API/runtime handles.",
-    "capability-provider-metadata.ts, lazy-capability-providers.ts and speech-provider-metadata.ts inject unchanged imported SDK auth/agent-scope functions into local factory contexts. Proven local calls retain the original SDK-export identities; destructured parameter selections contribute member-access. Host capability context property types alone are not expanded into transitive SDK import identities.",
+    "capability-provider-metadata.ts, lazy-capability-providers.ts and speech-provider-metadata.ts inject unchanged imported SDK auth/agent-scope functions into local factory contexts. Proven local calls retain the original SDK-export identities; destructured parameter selections contribute member-access. Explicit literal Pick selections of those proven SDK-valued context fields contribute type-reference, making the four auth/agent-scope export identities mixed. Neither whole context types nor downstream uses of projected aliases expand every possible property; no SDK-module import is inferred from a later type-reference.",
     "realtime-voice-bridge.ts preserves the proxy-capture namespace #* import. Separately narrowed named exports record the observed calls or captureWsEventAsync member read; no named import syntax is invented. Constructors count as call; RealtimeVoiceWebSocketTransport also has an explicit type annotation and is mixed.",
     "stream.ts underlying = baseStreamFn ?? streamSimple preserves a direct callable fallback alias. createPlainTextToolCallCompatWrapper is only imported and passed to composeProviderStreamWrappers; no call is inferred inside the SDK helper. Objects returned by SDK helpers and class instances do not become public API/runtime handles.",
     "Local api.ts/setup/capability/metadata reexports forward plugin-owned implementations or constants rather than SDK exports. No SDK reexport, hook registration, opaque runtime escape, or genuinely nonstatic SDK dependency remains unresolved.",
     "Manifest findings include providers and every contracts item only: descriptive categories, capability/doctor/setup/model-catalog/endpoint/config/toolMetadata fields are not extra contract identities. Source dependencies include explicit type syntax; the actual published artifact has not been enumerated.",
-    "Test support exclusions were verified through repository-wide caller searches. The three declaration stubs are retained as eligible source with zero SDK findings; they contain only local declarations and no SDK dependencies."
+    "Test support exclusions were verified through repository-wide caller searches. The three declaration stubs are retained as eligible source with zero SDK findings; they contain only local declarations and no SDK dependencies.",
+    "Source-only reconciliation: exact typeof plus unchanged host assignment proves the injected createRealtimeTranscriptionWebSocketSession function. Per the frozen focused-facade convention, its identity is openclaw/plugin-sdk/realtime-transcription-session#createRealtimeTranscriptionWebSocketSession with call and type-reference; no implicit import or runtime-member is invented. The selected resolveApiKeyForProvider host field is a forwarding wrapper (src/plugins/capability-catalog-context.ts:37-42), so it does not acquire the separately imported SDK function identity.",
+    "Source-only reconciliation: realtime-voice-protocol.ts:51 stores the G711 SDK constant unchanged behind the config.audioFormat fallback. Reads of this.audioFormat at lines 119 and 175 add member-access to the original constant export. No plugin-owned audioFormat.encoding access exists at the pin; encoding effects inside SDK helpers are outside this source benchmark."
   ]
 }

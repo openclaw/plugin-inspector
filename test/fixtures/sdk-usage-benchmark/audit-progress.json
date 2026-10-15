@@ -28,7 +28,7 @@
       "agentId": "/root/audit_active_memory",
       "fixture": "active-memory.json",
       "counts": {
-        "findings": 128,
+        "findings": 131,
         "reviewedFiles": 17,
         "excludedFiles": 16,
         "unknowns": 0
@@ -103,7 +103,7 @@
       "agentId": "/root/sdk_benchmark_coordinator/audit_anthropic",
       "fixture": "anthropic.json",
       "counts": {
-        "findings": 242,
+        "findings": 243,
         "reviewedFiles": 57,
         "excludedFiles": 45,
         "unknowns": 0
@@ -267,7 +267,7 @@
       "agentId": "/root/sdk_benchmark_coordinator/audit_crabbox",
       "fixture": "crabbox.json",
       "counts": {
-        "findings": 118,
+        "findings": 129,
         "reviewedFiles": 52,
         "excludedFiles": 57,
         "unknowns": 0
@@ -571,7 +571,7 @@
       "agentId": "/root/audit_mcp_relay",
       "fixture": "mcp-relay.json",
       "counts": {
-        "findings": 59,
+        "findings": 61,
         "reviewedFiles": 19,
         "excludedFiles": 15,
         "unknowns": 0
@@ -585,7 +585,7 @@
       "agentId": "/root/sdk_benchmark_coordinator/audit_memory_core",
       "fixture": "memory-core.json",
       "counts": {
-        "findings": 526,
+        "findings": 528,
         "reviewedFiles": 203,
         "excludedFiles": 209,
         "unknowns": 0
@@ -604,7 +604,7 @@
       "agentId": "/root/sdk_benchmark_coordinator/audit_memory_wiki",
       "fixture": "memory-wiki.json",
       "counts": {
-        "findings": 123,
+        "findings": 148,
         "reviewedFiles": 50,
         "excludedFiles": 63,
         "unknowns": 0
@@ -721,7 +721,7 @@
       "agentId": "/root/sdk_benchmark_coordinator/audit_ollama",
       "fixture": "ollama.json",
       "counts": {
-        "findings": 230,
+        "findings": 233,
         "reviewedFiles": 49,
         "excludedFiles": 47,
         "unknowns": 0
@@ -740,7 +740,7 @@
       "agentId": "/root/audit_onepassword",
       "fixture": "onepassword.json",
       "counts": {
-        "findings": 58,
+        "findings": 65,
         "reviewedFiles": 16,
         "excludedFiles": 15,
         "unknowns": 0
@@ -754,7 +754,7 @@
       "agentId": "/root/sdk_benchmark_coordinator/audit_openai",
       "fixture": "openai.json",
       "counts": {
-        "findings": 408,
+        "findings": 409,
         "reviewedFiles": 89,
         "excludedFiles": 117,
         "unknowns": 0
@@ -909,10 +909,10 @@
       "agentId": "/root/sdk_benchmark_coordinator/audit_telegram",
       "fixture": "telegram.json",
       "counts": {
-        "findings": 877,
+        "findings": 890,
         "reviewedFiles": 298,
         "excludedFiles": 214,
-        "unknowns": 0
+        "unknowns": 1
       },
       "issues": [],
       "progress": {
@@ -1032,7 +1032,7 @@
       "agentId": "/root/sdk_benchmark_coordinator/audit_xai",
       "fixture": "xai.json",
       "counts": {
-        "findings": 276,
+        "findings": 277,
         "reviewedFiles": 66,
         "excludedFiles": 51,
         "unknowns": 0

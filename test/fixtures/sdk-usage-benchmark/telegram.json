@@ -30,7 +30,7 @@
       "path": "extensions/telegram/api.ts",
       "sha256": "eafb8ac82ac8ccc141823139283b648f72b51e2ac87a5b657299deb8bd946913",
       "role": "production-source",
-      "findingCount": 0
+      "findingCount": 3
     },
     {
       "path": "extensions/telegram/channel-config-api.ts",
@@ -150,7 +150,7 @@
       "path": "extensions/telegram/src/account-config.ts",
       "sha256": "e0de9f4259a7f51a4f2d2b1b4f56b87e8b9572a66234f30350f648b803ca6954",
       "role": "production-source",
-      "findingCount": 7
+      "findingCount": 9
     },
     {
       "path": "extensions/telegram/src/account-inspect.ts",
@@ -168,7 +168,7 @@
       "path": "extensions/telegram/src/account-selection.ts",
       "sha256": "d4ad9bff0165f4e62a4e57b93ee8817f5327560234b7e737922dda4c10f0d8d3",
       "role": "production-source",
-      "findingCount": 16
+      "findingCount": 18
     },
     {
       "path": "extensions/telegram/src/account-throttler.ts",
@@ -180,7 +180,7 @@
       "path": "extensions/telegram/src/accounts.ts",
       "sha256": "639024bc714e836d1266665af207f1dcd93d24f0b68bc3d33207816f291d753d",
       "role": "production-source",
-      "findingCount": 15
+      "findingCount": 16
     },
     {
       "path": "extensions/telegram/src/action-names.ts",
@@ -240,7 +240,7 @@
       "path": "extensions/telegram/src/api-logging.ts",
       "sha256": "63d96a965174e918b9afe9bee19fef57acddc811b23a88c27bed20d49c01c084",
       "role": "production-source",
-      "findingCount": 9
+      "findingCount": 10
     },
     {
       "path": "extensions/telegram/src/api-root.ts",
@@ -1080,7 +1080,7 @@
       "path": "extensions/telegram/src/miniapp/owner.ts",
       "sha256": "2d9d6d1c2e4109f0bfa4b5dfeae6662c6a34535f26e2546bd6923d49ac4bc86e",
       "role": "production-source",
-      "findingCount": 4
+      "findingCount": 5
     },
     {
       "path": "extensions/telegram/src/miniapp/page.ts",
@@ -1092,13 +1092,13 @@
       "path": "extensions/telegram/src/miniapp/routes.ts",
       "sha256": "66600ff3f7715c769a5c1aa412c85fae42490c26984daf38baf01b47a302601a",
       "role": "production-source",
-      "findingCount": 23
+      "findingCount": 25
     },
     {
       "path": "extensions/telegram/src/miniapp/url.ts",
       "sha256": "521928bc23d6991f3813ed5a79b0d40f81809de9236b54d0bbef861667722f2b",
       "role": "production-source",
-      "findingCount": 8
+      "findingCount": 10
     },
     {
       "path": "extensions/telegram/src/model-buttons.ts",
@@ -1218,7 +1218,7 @@
       "path": "extensions/telegram/src/polling-session.ts",
       "sha256": "f427ae4a1af65c22aea07da841b1171a8cb04969e35aa9bec2e48c8bf465d29a",
       "role": "production-source",
-      "findingCount": 15
+      "findingCount": 16
     },
     {
       "path": "extensions/telegram/src/polling-transport-state.ts",
@@ -1740,7 +1740,7 @@
       "path": "extensions/telegram/src/token.ts",
       "sha256": "4eda36a8aca5ed5b1d6c5c0ff2b0a0d40e520e3a60449b3ad864e1407498951e",
       "role": "production-source",
-      "findingCount": 19
+      "findingCount": 22
     },
     {
       "path": "extensions/telegram/src/topic-conversation.ts",
@@ -2894,6 +2894,227 @@
           "path": "extensions/telegram/src/miniapp/routes.ts",
           "line": 93,
           "snippet": "  const currentConfig = () => (api.runtime.config?.current?.() ?? api.config) as OpenClawConfig;"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.agents.ownership",
+      "kind": "api-member",
+      "identity": "api.config.agents.ownership",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/telegram/src/account-selection.ts",
+          "line": 74,
+          "snippet": "    cfg.agents?.ownership === \"explicit\" && listAgentIds(cfg).length !== 1",
+          "note": "The api.config fallback in miniapp/routes.ts93 is passed unchanged to resolveTelegramAccount at line129. accounts.ts122 closes over that config in resolveDefaultAccountId; its local default-selection chain reaches this read. No SDK helper implementation is inferred."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.channels.telegram",
+      "kind": "api-member",
+      "identity": "api.config.channels.telegram",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/telegram/src/account-config.ts",
+          "line": 25,
+          "snippet": "  const channelConfig = cfg.channels?.telegram;",
+          "note": "miniapp/command.ts22 and miniapp/routes.ts93 retain an api.config fallback. Their owner/account helpers pass cfg unchanged into mergeTelegramAccountConfig; channelConfig selects the original Telegram section here."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.channels.telegram.accounts",
+      "kind": "api-member",
+      "identity": "api.config.channels.telegram.accounts",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/telegram/src/account-config.ts",
+          "line": 15,
+          "snippet": "    cfg.channels?.telegram?.accounts,",
+          "note": "The Mini App api.config fallback reaches mergeTelegramAccountConfig unchanged; its call at line31 forwards cfg into resolveTelegramAccountConfig. This read precedes the SDK lookup; returned account entries are not assigned API provenance."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.channels.telegram.botToken",
+      "kind": "api-member",
+      "identity": "api.config.channels.telegram.botToken",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/telegram/src/token.ts",
+          "line": 160,
+          "snippet": "      value: config?.botToken,",
+          "note": "miniapp/routes.ts93,128-129 passes the api.config fallback through accounts.ts136 to resolveTelegramToken. telegramCfg at line129 retains the original channel object and is copied unchanged into the loop config property at line152. This finding covers that branch; the SDK-derived accountCfg branch has no inferred API provenance."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.channels.telegram.defaultAccount",
+      "kind": "api-member",
+      "identity": "api.config.channels.telegram.defaultAccount",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/telegram/src/account-selection.ts",
+          "line": 86,
+          "snippet": "    normalizeOptionalAccountId(cfg.channels?.telegram?.defaultAccount) ?? undefined;",
+          "note": "The Mini App api.config fallback reaches accounts.ts122 through the unchanged cfg closure, then local default-account selection. This is the explicit config-field read; SDK helper internals are excluded."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.channels.telegram.enabled",
+      "kind": "api-member",
+      "identity": "api.config.channels.telegram.enabled",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/telegram/src/accounts.ts",
+          "line": 130,
+          "snippet": "  const baseEnabled = params.cfg.channels?.telegram?.enabled !== false;",
+          "note": "miniapp/routes.ts93,128-129 passes the api.config fallback unchanged as cfg to resolveTelegramAccount. This directly reads the original channel enabled field."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.channels.telegram.tokenFile",
+      "kind": "api-member",
+      "identity": "api.config.channels.telegram.tokenFile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/telegram/src/token.ts",
+          "line": 154,
+          "snippet": "    const tokenFile = config?.tokenFile?.trim();",
+          "note": "miniapp/routes.ts93,128-129 passes the api.config fallback through accounts.ts136 to resolveTelegramToken. telegramCfg at line129 is copied unchanged into the loop config property at line152. The public path stops at tokenFile; standard String.prototype.trim is not an API method. The SDK-derived accountCfg branch is excluded."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.commands.ownerAllowFrom",
+      "kind": "api-member",
+      "identity": "api.config.commands.ownerAllowFrom",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/telegram/src/miniapp/owner.ts",
+          "line": 16,
+          "snippet": "  const allowFrom = [...(account.allowFrom ?? []), ...(params.cfg.commands?.ownerAllowFrom ?? [])];",
+          "note": "miniapp/command.ts22,28 and miniapp/routes.ts93,128,137 pass the api.config fallback unchanged to isTelegramMiniAppOwner. Only the direct params.cfg branch has API provenance; account.allowFrom comes from the SDK merge result."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.gateway.allowRealIpFallback",
+      "kind": "api-member",
+      "identity": "api.config.gateway.allowRealIpFallback",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/telegram/src/miniapp/routes.ts",
+          "line": 99,
+          "snippet": "      requestConfig.gateway?.allowRealIpFallback === true,",
+          "note": "currentConfig at line93 returns api.runtime.config.current() or the unchanged api.config fallback; requestConfig at line94 retains that possible original-object branch."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.gateway.controlUi.basePath",
+      "kind": "api-member",
+      "identity": "api.config.gateway.controlUi.basePath",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/telegram/src/miniapp/url.ts",
+          "line": 40,
+          "snippet": "  const basePath = params.cfg.gateway?.controlUi?.basePath;",
+          "note": "miniapp/command.ts22,38 and miniapp/routes.ts93,128,143 pass the api.config fallback unchanged into resolveTelegramMiniAppUrls. Subsequent string trimming does not extend the public path."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.gateway.tailscale.mode",
+      "kind": "api-member",
+      "identity": "api.config.gateway.tailscale.mode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/telegram/src/miniapp/url.ts",
+          "line": 24,
+          "snippet": "  const mode = params.cfg.gateway?.tailscale?.mode ?? \"off\";",
+          "note": "miniapp/command.ts22,38 and miniapp/routes.ts93,128,143 pass the api.config fallback unchanged into resolveTelegramMiniAppUrls."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.gateway.trustedProxies",
+      "kind": "api-member",
+      "identity": "api.config.gateway.trustedProxies",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/telegram/src/miniapp/routes.ts",
+          "line": 98,
+          "snippet": "      requestConfig.gateway?.trustedProxies,",
+          "note": "currentConfig at line93 returns api.runtime.config.current() or the unchanged api.config fallback; requestConfig at line94 retains that possible original-object branch."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.secrets.defaults",
+      "kind": "api-member",
+      "identity": "api.config.secrets.defaults",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/telegram/src/token.ts",
+          "line": 90,
+          "snippet": "    defaults: params.cfg?.secrets?.defaults,",
+          "note": "The Mini App api.config fallback reaches accounts.ts136 and resolveTelegramToken unchanged. token.ts158-160 forwards cfg into resolveRuntimeTokenValue, preserving its origin for this defaults read."
         }
       ]
     },
@@ -8095,9 +8316,16 @@
       "identity": "openclaw/plugin-sdk/channel-outbound#DEFAULT_INGRESS_ADOPTION_STALL_MS",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
+        {
+          "path": "extensions/telegram/src/polling-session.ts",
+          "line": 306,
+          "snippet": "      adoptionStallTimeoutMs: this.#spooledUpdateHandlerTimeoutMs,",
+          "note": "resolveTelegramAdoptionStallTimeoutMs returns the unchanged SDK constant on its fallback branch at telegram-ingress-drain.ts66. That result is stored in this.#spooledUpdateHandlerTimeoutMs at polling-session.ts111-116 and selected here. This records the possible unchanged value branch, not a call to the SDK constant or to the local wrapper as an SDK function."
+        },
         {
           "path": "extensions/telegram/src/telegram-ingress-drain.ts",
           "line": 2,
@@ -14742,7 +14970,6 @@
         "call",
         "dynamic-import",
         "import",
-        "member-access",
         "reexport"
       ],
       "evidence": [
@@ -14771,7 +14998,7 @@
           "path": "extensions/telegram/src/bot-native-command-dispatch.ts",
           "line": 50,
           "snippet": "    getAgentScopedMediaLocalRoots,",
-          "note": "Destructures getAgentScopedMediaLocalRoots from the local bot-native-commands.runtime.ts SDK reexport namespace at line55."
+          "note": "Destructures getAgentScopedMediaLocalRoots from the local bot-native-commands.runtime.ts SDK reexport namespace at line55. This is direct await-import binding syntax and supports dynamic-import provenance, not a separate member-access kind."
         },
         {
           "path": "extensions/telegram/src/bot-native-commands.runtime.ts",
@@ -15033,9 +15260,16 @@
       "classification": "runtime",
       "referenceKinds": [
         "call",
+        "dynamic-import",
         "member-access"
       ],
       "evidence": [
+        {
+          "path": "extensions/telegram/src/bot-message-context.body.ts",
+          "line": 72,
+          "snippet": "  () => import(\"openclaw/plugin-sdk/media-runtime\"),",
+          "note": "The lazy loader retains the directly imported SDK module namespace. Its transcribeFirstAudio export is selected at line240 and called at line251, preserving named-export dynamic-import provenance alongside the existing namespace * dependency."
+        },
         {
           "path": "extensions/telegram/src/bot-message-context.body.ts",
           "line": 240,
@@ -15100,13 +15334,20 @@
       "identity": "openclaw/plugin-sdk/models-provider-runtime#MODEL_PICKER_CHANGED_MESSAGE",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
           "path": "extensions/telegram/src/bot-handlers.callback-router.ts",
           "line": 6,
           "snippet": "import {\n  formatModelsAvailableHeaderAsync,\n  MODEL_PICKER_CHANGED_MESSAGE,\n} from \"openclaw/plugin-sdk/models-provider-runtime\";"
+        },
+        {
+          "path": "extensions/telegram/src/bot-handlers.callback-router.ts",
+          "line": 434,
+          "snippet": "          const [text, buttons] = args;",
+          "note": "showModelReply captures a rest tuple at line432; line456 passes MODEL_PICKER_CHANGED_MESSAGE unchanged as argument zero. This tuple destructuring selects the SDK constant into text. The second argument supplies buttons independently. String.prototype.replace at line444 is built-in behavior and does not add an SDK call."
         }
       ]
     },
@@ -15978,9 +16219,16 @@
       "classification": "type",
       "referenceKinds": [
         "type-import",
+        "type-reexport",
         "type-reference"
       ],
       "evidence": [
+        {
+          "path": "extensions/telegram/api.ts",
+          "line": 103,
+          "snippet": "  TelegramInteractiveHandlerRegistration,",
+          "note": "The explicit local-barrel type export names TelegramInteractiveHandlerRegistration, defined at src/interactive-dispatch.ts57-61 as the SDK PluginInteractiveRegistration generic applied to local type arguments. The alias declaration itself supplies type-reference, not reexport syntax."
+        },
         {
           "path": "extensions/telegram/src/interactive-dispatch.ts",
           "line": 1,
@@ -16850,7 +17098,6 @@
         "call",
         "dynamic-import",
         "import",
-        "member-access",
         "reexport"
       ],
       "evidence": [
@@ -16881,7 +17128,7 @@
           "path": "extensions/telegram/src/bot-native-command-dispatch.ts",
           "line": 53,
           "snippet": "    resolveChunkMode,",
-          "note": "Destructures resolveChunkMode from the local bot-native-commands.runtime.ts SDK reexport namespace at line55."
+          "note": "Destructures resolveChunkMode from the local bot-native-commands.runtime.ts SDK reexport namespace at line55. This is direct await-import binding syntax and supports dynamic-import provenance, not a separate member-access kind."
         },
         {
           "path": "extensions/telegram/src/bot-native-commands.runtime.ts",
@@ -16896,13 +17143,20 @@
       "identity": "openclaw/plugin-sdk/reply-history#DEFAULT_GROUP_HISTORY_LIMIT",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
           "path": "extensions/telegram/src/doctor-contract.ts",
           "line": 6,
           "snippet": "import { DEFAULT_GROUP_HISTORY_LIMIT } from \"openclaw/plugin-sdk/reply-history\";"
+        },
+        {
+          "path": "extensions/telegram/src/doctor-contract.ts",
+          "line": 100,
+          "snippet": "          params.preserveRecentHistoryLimit !== undefined &&",
+          "note": "rootGroupHistoryLimitBeforeMigration retains the unchanged SDK constant fallback at line181. The local callback copies that value into preserveRecentHistoryLimit at line200; the plugin-owned helper selects it here and at line102. No SDK helper implementation is inferred."
         }
       ]
     },
@@ -18876,9 +19130,16 @@
       "classification": "runtime",
       "referenceKinds": [
         "call",
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
+        {
+          "path": "extensions/telegram/src/api-logging.ts",
+          "line": 55,
+          "snippet": "      const log = logger ?? runtime?.error ?? ((message: string) => fallbackLogger.error(message));",
+          "note": "webhook.ts215 selects the unchanged imported defaultRuntime fallback and passes runtime to withTelegramApiErrorLogging at lines335-337. After destructuring params at line48, this distinct noncall read selects runtime.error; calls remain separately evidenced."
+        },
         {
           "path": "extensions/telegram/src/webhook.ts",
           "line": 14,
@@ -20266,7 +20527,6 @@
         "call",
         "dynamic-import",
         "import",
-        "member-access",
         "reexport"
       ],
       "evidence": [
@@ -20290,7 +20550,7 @@
           "path": "extensions/telegram/src/bot-native-command-dispatch.ts",
           "line": 52,
           "snippet": "    recordDeliveredCommandExchange,",
-          "note": "Destructures recordDeliveredCommandExchange from the local bot-native-commands.runtime.ts SDK reexport namespace at line55."
+          "note": "Destructures recordDeliveredCommandExchange from the local bot-native-commands.runtime.ts SDK reexport namespace at line55. This is direct await-import binding syntax and supports dynamic-import provenance, not a separate member-access kind."
         },
         {
           "path": "extensions/telegram/src/bot-native-commands.runtime.ts",
@@ -20971,9 +21231,16 @@
       "classification": "type",
       "referenceKinds": [
         "type-import",
+        "type-reexport",
         "type-reference"
       ],
       "evidence": [
+        {
+          "path": "extensions/telegram/api.ts",
+          "line": 143,
+          "snippet": "  type TelegramReactionLevel,",
+          "note": "TelegramReactionLevel is a direct type alias of SDK ReactionLevel at src/reaction-level.ts9. This explicit export specifier supplies type-reexport; the alias declaration itself does not."
+        },
         {
           "path": "extensions/telegram/src/reaction-level.ts",
           "line": 2,
@@ -20993,9 +21260,16 @@
       "classification": "type",
       "referenceKinds": [
         "type-import",
+        "type-reexport",
         "type-reference"
       ],
       "evidence": [
+        {
+          "path": "extensions/telegram/api.ts",
+          "line": 141,
+          "snippet": "  type ResolvedReactionLevel,",
+          "note": "src/reaction-level.ts5 imports SDK ResolvedReactionLevel as BaseResolvedReactionLevel; line10 directly aliases it as ResolvedReactionLevel. This is the explicit local-barrel type-reexport site."
+        },
         {
           "path": "extensions/telegram/src/reaction-level.ts",
           "line": 2,
@@ -29130,7 +29404,14 @@
       ]
     }
   ],
-  "unknowns": [],
+  "unknowns": [
+    {
+      "path": "extensions/telegram/src/token.ts",
+      "line": 66,
+      "expression": "params.cfg?.secrets?.providers?.[params.provider]",
+      "reason": "The Mini App api.config fallback is forwarded unchanged through accounts.ts136, resolveTelegramToken and resolveRuntimeTokenValue to this helper. params.provider comes from resolved.ref.provider at token.ts99, returned by resolveSecretInputString for runtime token configuration; no literal provider name is statically established. Subsequent providerConfig.source reads at lines72-74 inherit the unresolved key. Record this computed access once without inventing a provider-key identity or an incidental static-prefix API finding."
+    }
+  ],
   "auditedEmpty": false,
   "notes": [
     "Manually read all 296 eligible production TypeScript files (including local public/runtime/setup barrels, onboarding, CLI-related support and the declared worker entry), plus package.json and openclaw.plugin.json. The 512-file plugin inventory is completely partitioned into reviewed and individually excluded records. Findings were manually authored from source; scripts only assembled explicit declarations, enumerated files, captured exact snippets and computed hashes.",
@@ -29145,6 +29426,8 @@
     "defineBundledChannelEntry, createChatChannelPlugin and other SDK helpers retain export dependencies without inferred internal registrations. Direct miniapp API registration methods are recorded. Hook-runner inspection/emission is not API hook registration, so no named hook finding is synthesized.",
     "Only manifest.channels:telegram is an eligible manifest contract. doctorContract, activation, categories and configSchema metadata are outside the frozen manifest identity categories.",
     "Original-owner reference-kind reconciliation revisited direct SDK uses, local barrels, function aliases, literal Pick selections, constructor/super calls and exported-object member operations. Actual call, type-reference and distinct noncall member-access categories are retained independently of evidence sampling. Proven local-barrel import/reexport/dynamic-import sites apply to original SDK-export identities without adding SDK-module sites or synthetic SDK namespace stars. Literal Pick selects only its explicit SDK-valued properties; whole local composites remain unexpanded. Corrected runtime.state.openKeyedStore in bot-info-cache.ts19 from member-access to call.",
-    "Evidence is representative per unique canonical dependency and reference kind; repeated identical calls need not appear individually. Each reviewed file findingCount is the number of distinct findings with evidence in that file. No relevant genuinely nonstatic SDK/API/runtime use remained unresolved."
+    "Evidence is representative per unique canonical dependency and reference kind; repeated identical calls need not appear individually. Each reviewed file findingCount is the number of distinct findings with evidence in that file. The later source-only reconciliation records the genuinely dynamic secret-provider lookup explicitly in unknowns.",
+    "Original-owner source-only reconciliation traced the unchanged api.config fallback through Mini App callbacks and local helpers, adding 13 maximal public config paths and one dynamic secret-provider-key unknown. The raw Telegram config branch in token.ts preserves botToken/tokenFile provenance; merged account values and arbitrary SDK helper results do not inherit it. Added three explicit local-barrel type-reexport kinds, named transcribeFirstAudio dynamic-import provenance, and distinct noncall selections of DEFAULT_INGRESS_ADOPTION_STALL_MS, DEFAULT_GROUP_HISTORY_LIMIT and defaultRuntime. questionGatewayRuntime remains call/import/type-reference because its property occurrences are callees or type expressions, not distinct noncall runtime selections. Source identity and reviewed/excluded scope are unchanged.",
+    "Original-owner source-only follow-up corrected four reference-kind sets. Direct destructuring of await import(\"./bot-native-commands.runtime.js\") at bot-native-command-dispatch.ts48-55 retains dynamic-import provenance for getAgentScopedMediaLocalRoots, resolveChunkMode (reply-dispatch-runtime) and recordDeliveredCommandExchange, without an additional member-access kind; no distinct noncall selections of those exports were found. MODEL_PICKER_CHANGED_MESSAGE gains member-access at callback-router.ts434 because an unchanged argument-zero value is selected from the local rest tuple established at lines432 and456. The subsequent built-in string replacement adds no SDK call, and buttons has independent second-argument provenance. All identities, classifications, source inventory and the existing dynamic-key unknown are preserved."
   ]
 }

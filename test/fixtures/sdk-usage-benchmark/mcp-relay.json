@@ -54,7 +54,7 @@
       "path": "extensions/mcp-relay/src/config.ts",
       "sha256": "6e68b38b8479b824c7106915b54b37a0ae92e795ff0252bcebfc351973415e99",
       "role": "production-source",
-      "findingCount": 2
+      "findingCount": 4
     },
     {
       "path": "extensions/mcp-relay/src/consent.ts",
@@ -276,6 +276,40 @@
           "path": "extensions/mcp-relay/index.ts",
           "line": 50,
           "snippet": "const config = parseMcpRelayConfig(api.pluginConfig);"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.agentId",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.agentId",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/config.ts",
+          "line": 37,
+          "snippet": "const agentId = \"agentId\" in value ? value.agentId : undefined;",
+          "note": "index.ts:33 and :50 pass api.pluginConfig unchanged to parseMcpRelayConfig(raw: unknown). At config.ts:12, the defined branch of raw === undefined ? {} : raw preserves that origin; the object guards preserve provenance for this field read."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.relayUrl",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.relayUrl",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/config.ts",
+          "line": 19,
+          "snippet": "const relayUrl = \"relayUrl\" in value ? value.relayUrl : DEFAULT_RELAY_URL;",
+          "note": "index.ts:33 and :50 pass api.pluginConfig unchanged to parseMcpRelayConfig(raw: unknown). At config.ts:12, the defined branch of raw === undefined ? {} : raw preserves that origin; the object guards preserve provenance for this field read."
         }
       ]
     },
@@ -1780,6 +1814,7 @@
     "createOperations receives api.logger unchanged from its sole production caller, so its logger.error call has proven api.logger.error provenance. API configuration access stops at basePath: OpenClawPluginApi.config is OpenClawConfig (src/plugins/plugin-api.types.ts:216), whose gateway uses GatewayConfig (src/config/types.openclaw.ts:75); GatewayControlUiConfig inherits the schema input (src/config/types.gateway.ts:36-40), and basePath is z.string().optional() (src/config/zod-schema.gateway.ts:205). Built-in String trim/replace are not SDK members, so this finding is member-access.",
     "GatewayControlUiIngressError is imported as a value and used in an explicit type predicate, making its export mixed; instanceof uses do not invent constructor calls. WebSocket construction and defaultRuntime member calls contribute call kinds to their imported exported-root identities.",
     "Only cliCommands.name is an agreed manifest contract here. Activation commands, category, enabledByDefault, configSchema, uiHints and Control UI artifact metadata are not extra contract identities. No named API hooks are registered.",
-    "The browser.d.ts declaration contains only a CSS module declaration; ui-tunnel-body.ts has only plugin-local imports and platform APIs. Both were reviewed and have zero findings. No genuine unresolved SDK/API/runtime references remain."
+    "The browser.d.ts declaration contains only a CSS module declaration; ui-tunnel-body.ts has only plugin-local imports and platform APIs. Both were reviewed and have zero findings. No genuine unresolved SDK/API/runtime references remain.",
+    "Source-only reconciliation: parseMcpRelayConfig receives api.pluginConfig unchanged from index.ts:33 and :50. Its raw: unknown parameter, undefined fallback at config.ts:12, and object/field guards preserve origin on the original-object branch; config.ts:19 and :37 therefore contribute api.pluginConfig.relayUrl and api.pluginConfig.agentId as runtime member-access dependencies. This records possible source dependencies without claiming execution. runtime.version remains runtime/member-access: its unchanged value flows through gateway.version into truncateText, but text.length is built-in String behavior and does not create runtime.version.length or a call kind. agentId.trim likewise does not extend the SDK path."
   ]
 }

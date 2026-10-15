@@ -18,7 +18,7 @@
       "path": "extensions/active-memory/config.ts",
       "sha256": "4ba4c96648f4836698a0cf6c955ea96f46a2b1d46d49fe40ef8806bbbed5470d",
       "role": "production-source",
-      "findingCount": 46
+      "findingCount": 47
     },
     {
       "path": "extensions/active-memory/doctor-contract-api.ts",
@@ -36,7 +36,7 @@
       "path": "extensions/active-memory/index.ts",
       "sha256": "8052d45f31b37fb62dbb0a90a1892dcf7ea71bb942883140823d596c5e835533",
       "role": "production-source",
-      "findingCount": 30
+      "findingCount": 33
     },
     {
       "path": "extensions/active-memory/openclaw.plugin.json",
@@ -60,25 +60,25 @@
       "path": "extensions/active-memory/recall-run.ts",
       "sha256": "7fcd958b6ab14eae2813914fcf378b46619d159126fea85d3afad34dfd1f9fa5",
       "role": "production-source",
-      "findingCount": 26
+      "findingCount": 27
     },
     {
       "path": "extensions/active-memory/recall-state.ts",
       "sha256": "60a63b0c6ad7d4871afddbb6ca14ac6967e1d9037162960b500b3240e0980199",
       "role": "production-source",
-      "findingCount": 14
+      "findingCount": 15
     },
     {
       "path": "extensions/active-memory/recall.ts",
       "sha256": "b59490400be983891d1ebadaee1ddb2dd1e060404d0c0541deb808613f1a473b",
       "role": "production-source",
-      "findingCount": 13
+      "findingCount": 14
     },
     {
       "path": "extensions/active-memory/session-policy.ts",
       "sha256": "28242048b0b703ebc4b5ee38d6eddd3c92ac99d359828bbd1747fd632d4b66f6",
       "role": "production-source",
-      "findingCount": 16
+      "findingCount": 18
     },
     {
       "path": "extensions/active-memory/session.ts",
@@ -108,7 +108,7 @@
       "path": "extensions/active-memory/trigger-recall.ts",
       "sha256": "ea592725f6fae1bc3a577da26c875dacb3df46177e9d2a2351461e8ba62a415a",
       "role": "production-source",
-      "findingCount": 15
+      "findingCount": 16
     },
     {
       "path": "extensions/active-memory/types.ts",
@@ -217,6 +217,58 @@
       ]
     },
     {
+      "key": "api-member:api.config.plugins",
+      "kind": "api-member",
+      "identity": "api.config.plugins",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 66,
+          "snippet": "      const selectedPluginId = normalizePluginsConfig(cfg.plugins).slots.memory;",
+          "note": "readActiveMemoryConfig returns api.config unchanged on its catch branch (config.ts:250–255); readCurrentConfig (index.ts:64) preserves that possible origin through initialConfig/liveConfig. Runtime config.current() return values remain opaque; no claim is made that the fallback branch executed. The initialConfig/liveConfig calls at index.ts:77 and :104 pass that value into the local cfg parameter."
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 383,
+          "snippet": "            const memorySlot = normalizePluginsConfig(liveConfig.plugins).slots.memory;",
+          "note": "readActiveMemoryConfig returns api.config unchanged on its catch branch (config.ts:250–255); readCurrentConfig (index.ts:64) preserves that possible origin through initialConfig/liveConfig. Runtime config.current() return values remain opaque; no claim is made that the fallback branch executed. Only liveConfig.plugins is attributed; normalizePluginsConfig return members are outside that identity."
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 118,
+          "snippet": "  const plugins = normalizePluginsConfig(cfg.plugins);",
+          "note": "readActiveMemoryConfig returns api.config unchanged on its catch branch (config.ts:250–255); readCurrentConfig (index.ts:64) preserves that possible origin through initialConfig/liveConfig. Runtime config.current() return values remain opaque; no claim is made that the fallback branch executed. index.ts:98 passes liveConfig unchanged to isActiveMemoryPluginEnabled. The SDK normalizer return is not an api.config alias."
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 322,
+          "snippet": "  const providerId = normalizePluginsConfig(params.cfg.plugins).slots.memory ?? \"memory\";",
+          "note": "readActiveMemoryConfig returns api.config unchanged on its catch branch (config.ts:250–255); readCurrentConfig (index.ts:64) preserves that possible origin through initialConfig/liveConfig. Runtime config.current() return values remain opaque; no claim is made that the fallback branch executed. index.ts:444–445 passes cfg: liveConfig through resolveTriggerRecall and local candidate-loading helpers to params.cfg."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.plugins.slots.memory",
+      "kind": "api-member",
+      "identity": "api.config.plugins.slots.memory",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 96,
+          "snippet": "  return cfg?.plugins?.slots?.memory === \"memory-lancedb\"",
+          "note": "readActiveMemoryConfig returns api.config unchanged on its catch branch (config.ts:250–255); readCurrentConfig (index.ts:64) preserves that possible origin through initialConfig/liveConfig. Runtime config.current() return values remain opaque; no claim is made that the fallback branch executed. index.ts:74–78 and :101–105 pass initialConfig/liveConfig as normalizePluginConfig cfg, which is forwarded unchanged to resolveDefaultToolsAllow at config.ts:188."
+        }
+      ]
+    },
+    {
       "key": "api-member:api.config.session.mainKey",
       "kind": "api-member",
       "identity": "api.config.session.mainKey",
@@ -229,6 +281,29 @@
           "path": "extensions/active-memory/index.ts",
           "line": 359,
           "snippet": "              mainKey: liveConfig.session?.mainKey ?? api.config.session?.mainKey,"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 252,
+          "snippet": "    const mainKey = ctx.mainKey?.trim().toLowerCase() || \"main\";",
+          "note": "index.ts:359 places liveConfig.session?.mainKey ?? api.config.session?.mainKey unchanged into destinationContext.mainKey, then index.ts:390 passes that container to resolveChatType. ctx.mainKey selects the same possible public field value. Standard String trim/toLowerCase methods add no API suffix or call kind."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.session.store",
+      "kind": "api-member",
+      "identity": "api.config.session.store",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 277,
+          "snippet": "              liveConfig.session?.store,",
+          "note": "readActiveMemoryConfig returns api.config unchanged on its catch branch (config.ts:250–255); readCurrentConfig (index.ts:64) preserves that possible origin through initialConfig/liveConfig. Runtime config.current() return values remain opaque; no claim is made that the fallback branch executed. The selected field is passed as an argument to runtime.agent.session.resolveStorePath; that call does not make the data field callable."
         }
       ]
     },
@@ -1083,13 +1158,38 @@
       "identity": "openclaw/plugin-sdk/agent-runtime#DEFAULT_PROVIDER",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
           "path": "extensions/active-memory/query.ts",
           "line": 2,
           "snippet": "  DEFAULT_PROVIDER,"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 238,
+          "snippet": "            provider: timeoutModelRef.provider,",
+          "note": "query.ts:227 selects DEFAULT_PROVIDER as an unchanged fallback, and query.ts:239 explicitly assigns defaultProvider to the local result object provider property. The SDK parseModelRef return branch is opaque; this finding follows only the local fallback property value. timeoutModelRef may receive that local object from getModelRef at index.ts:231; its provider selection is member-access, not a call of DEFAULT_PROVIDER."
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 153,
+          "snippet": "        modelProviderId: resolvedModelRef?.provider,",
+          "note": "query.ts:227 selects DEFAULT_PROVIDER as an unchanged fallback, and query.ts:239 explicitly assigns defaultProvider to the local result object provider property. The SDK parseModelRef return branch is opaque; this finding follows only the local fallback property value. resolvedModelRef receives getModelRef at recall.ts:136; its provider property is selected into a new modelProviderId container field."
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 284,
+          "snippet": "        provider: modelRef.provider,",
+          "note": "query.ts:227 selects DEFAULT_PROVIDER as an unchanged fallback, and query.ts:239 explicitly assigns defaultProvider to the local result object provider property. The SDK parseModelRef return branch is opaque; this finding follows only the local fallback property value. recall.ts:292–294 passes the result as modelRef; recall-run.ts:134 aliases that local object before selecting provider."
+        },
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 190,
+          "snippet": "        modelProviderId: params.modelProviderId,",
+          "note": "query.ts:227 selects DEFAULT_PROVIDER as an unchanged fallback, and query.ts:239 explicitly assigns defaultProvider to the local result object provider property. The SDK parseModelRef return branch is opaque; this finding follows only the local fallback property value. recall.ts:153 and :453 assign the selected provider unchanged to buildCacheKey params.modelProviderId, selected here. JSON serialization and string formatting do not call the SDK constant."
         }
       ]
     },
@@ -3451,6 +3551,7 @@
     "ActiveMemoryTranscriptSource is a direct type alias of SessionTranscriptTargetParams. Local type-import sites and downstream annotations retain that SDK-export provenance. Exported type declarations are not reexport specifiers. Projected ConversationRecallContext, MemoryAudience, ActiveRecallParams and other plugin-owned composites do not re-enumerate inferred SDK members.",
     "Callback ctx/event/toolAuthority objects, configuration objects without proven API provenance, provider/manager/capability values returned by SDK free functions, and keyed stores returned by runtime.state.openKeyedStore are not API/runtime handles. Their members do not become additional API/runtime or SDK-export reference kinds. SDK helper internals and plugin-owned forwarding wrapper invocations are not inferred.",
     "SDK function call sites retain call kinds, explicit imported types retain type-reference kinds, and ordinary imports retain runtime dependency classification even for bare value use such as DEFAULT_PROVIDER. Finding evidence is representative per file/kind; findingCount counts distinct identities occurring in each reviewed file.",
-    "Original-owner source reconciliation: an unknown annotation, type assertion, or conditional fallback does not erase an unchanged incoming value's provenance. index.ts:74–78 passes api.pluginConfig to normalizePluginConfig; config.ts:153 and its original-object branch at config.ts:157–159 preserve that provenance. The 28 explicitly read input fields therefore contribute runtime api.pluginConfig.<field> member-access findings, without claiming execution or propagating identity to the fallback object. The newly constructed normalized result at config.ts:166–247 and arbitrary SDK-return values do not inherit the original identity. In particular, hasDeprecatedModelFallbackPolicy crosses asOptionalRecord at config.ts:102, so its Object.hasOwn check adds no api.pluginConfig.modelFallbackPolicy finding. timeoutMsIsDefault is a constructed output field, not an input-field access. Standard array methods stop at the accessed input field."
+    "Original-owner source reconciliation: an unknown annotation, type assertion, or conditional fallback does not erase an unchanged incoming value's provenance. index.ts:74–78 passes api.pluginConfig to normalizePluginConfig; config.ts:153 and its original-object branch at config.ts:157–159 preserve that provenance. The 28 explicitly read input fields therefore contribute runtime api.pluginConfig.<field> member-access findings, without claiming execution or propagating identity to the fallback object. The newly constructed normalized result at config.ts:166–247 and arbitrary SDK-return values do not inherit the original identity. In particular, hasDeprecatedModelFallbackPolicy crosses asOptionalRecord at config.ts:102, so its Object.hasOwn check adds no api.pluginConfig.modelFallbackPolicy finding. timeoutMsIsDefault is a constructed output field, not an input-field access. Standard array methods stop at the accessed input field.",
+    "Original-owner source reconciliation of config fallback and DEFAULT_PROVIDER: readActiveMemoryConfig's api.config catch return, the readCurrentConfig wrapper, and unchanged initialConfig/liveConfig arguments preserve possible provenance. The consumed public paths api.config.plugins, api.config.plugins.slots.memory, and api.config.session.store are added; the existing session.mainKey identity also reaches destinationContext.mainKey and resolveChatType. isActiveMemoryGloballyEnabled instead receives the direct runtime.config.current() return (index.ts:129–132), and updateActiveMemoryGlobalEnabledInConfig receives the mutateConfigFile callback draft (index.ts:153–154); neither establishes api.config origin for its deeper reads. Arbitrary SDK-return and transformed-object boundaries remain intact. query.ts:239 explicitly stores the unchanged DEFAULT_PROVIDER fallback in a local provider property: subsequent provider/modelProviderId selections contribute member-access on that SDK export. Bare argument passing, string interpolation, JSON serialization, and standard String replace/trim methods do not add call kinds. The constant is not invoked, and no blanket transitive SDK calls are inferred."
   ]
 }

@@ -114,7 +114,7 @@
       "path": "extensions/memory-wiki/src/config.ts",
       "sha256": "342c8df5f0721a28fcdc6b1e909b355a2beba7872fff0e6d785224629abaadbb",
       "role": "production-source",
-      "findingCount": 5
+      "findingCount": 30
     },
     {
       "path": "extensions/memory-wiki/src/corpus-supplement.ts",
@@ -662,6 +662,406 @@
           "path": "extensions/memory-wiki/index.ts",
           "line": 82,
           "snippet": "const config = resolveMemoryWikiConfig(api.pluginConfig);"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.bridge.enabled",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.bridge.enabled",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 149,
+          "snippet": "enabled: safeConfig.bridge?.enabled ?? false,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.bridge.followMemoryEvents",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.bridge.followMemoryEvents",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 154,
+          "snippet": "followMemoryEvents: safeConfig.bridge?.followMemoryEvents ?? true,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.bridge.indexDailyNotes",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.bridge.indexDailyNotes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 152,
+          "snippet": "indexDailyNotes: safeConfig.bridge?.indexDailyNotes ?? true,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.bridge.indexDreamReports",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.bridge.indexDreamReports",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 151,
+          "snippet": "indexDreamReports: safeConfig.bridge?.indexDreamReports ?? true,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.bridge.indexMemoryRoot",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.bridge.indexMemoryRoot",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 153,
+          "snippet": "indexMemoryRoot: safeConfig.bridge?.indexMemoryRoot ?? true,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.bridge.readMemoryArtifacts",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.bridge.readMemoryArtifacts",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 150,
+          "snippet": "readMemoryArtifacts: safeConfig.bridge?.readMemoryArtifacts ?? true,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.context.includeCompiledDigestPrompt",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.context.includeCompiledDigestPrompt",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 170,
+          "snippet": "includeCompiledDigestPrompt: safeConfig.context?.includeCompiledDigestPrompt ?? false,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.ingest.allowUrlIngest",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.ingest.allowUrlIngest",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 163,
+          "snippet": "allowUrlIngest: safeConfig.ingest?.allowUrlIngest ?? true,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.ingest.autoCompile",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.ingest.autoCompile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 161,
+          "snippet": "autoCompile: safeConfig.ingest?.autoCompile ?? true,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.ingest.maxConcurrentJobs",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.ingest.maxConcurrentJobs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 162,
+          "snippet": "maxConcurrentJobs: safeConfig.ingest?.maxConcurrentJobs ?? 1,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.obsidian.enabled",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.obsidian.enabled",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 143,
+          "snippet": "enabled: safeConfig.obsidian?.enabled ?? false,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.obsidian.openAfterWrites",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.obsidian.openAfterWrites",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 146,
+          "snippet": "openAfterWrites: safeConfig.obsidian?.openAfterWrites ?? false,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.obsidian.useOfficialCli",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.obsidian.useOfficialCli",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 144,
+          "snippet": "useOfficialCli: safeConfig.obsidian?.useOfficialCli ?? false,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.obsidian.vaultName",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.obsidian.vaultName",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 145,
+          "snippet": "...(safeConfig.obsidian?.vaultName ? { vaultName: safeConfig.obsidian.vaultName } : {}),"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.render.createBacklinks",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.render.createBacklinks",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 174,
+          "snippet": "createBacklinks: safeConfig.render?.createBacklinks ?? true,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.render.createDashboards",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.render.createDashboards",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 175,
+          "snippet": "createDashboards: safeConfig.render?.createDashboards ?? true,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.render.preserveHumanBlocks",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.render.preserveHumanBlocks",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 173,
+          "snippet": "preserveHumanBlocks: safeConfig.render?.preserveHumanBlocks ?? true,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.search.backend",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.search.backend",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 166,
+          "snippet": "backend: safeConfig.search?.backend ?? \"shared\","
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.search.corpus",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.search.corpus",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 167,
+          "snippet": "corpus: safeConfig.search?.corpus ?? \"wiki\","
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.unsafeLocal.allowPrivateMemoryCoreAccess",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.unsafeLocal.allowPrivateMemoryCoreAccess",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 157,
+          "snippet": "allowPrivateMemoryCoreAccess: safeConfig.unsafeLocal?.allowPrivateMemoryCoreAccess ?? false,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.unsafeLocal.paths",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.unsafeLocal.paths",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 158,
+          "snippet": "paths: safeConfig.unsafeLocal?.paths ?? [],"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.vault.path",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.vault.path",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 128,
+          "snippet": "safeConfig.vault?.path ??"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.vault.renderMode",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.vault.renderMode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 140,
+          "snippet": "renderMode: safeConfig.vault?.renderMode ?? \"native\","
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.vault.scope",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.vault.scope",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 126,
+          "snippet": "const vaultScope = safeConfig.vault?.scope ?? \"global\";"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.vaultMode",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.vaultMode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 136,
+          "snippet": "vaultMode: safeConfig.vaultMode ?? \"isolated\","
         }
       ]
     },
@@ -3204,6 +3604,7 @@
     "runExec is invoked through the direct fallback alias exec in obsidian.ts. The Commander wiki.hook(preAction) call is not an OpenClaw API hook; no named API hooks occur.",
     "The @openclaw/memory-core/session-search-visibility-api.js import in query-shared-memory.ts is a separate workspace package dependency declared by package.json, not an openclaw/plugin-sdk module or a relative shared-source escape. Its transitive SDK dependencies are outside this plugin audit. No relative imports leave the plugin root.",
     "Manifest identities cover cliCommands.name, commandAliases.name, skills, and five contracts.tools entries. Doctor migrations, activation, categories, presentation/configuration and descriptive fields are reviewed metadata but are not agreed manifest-contract identities.",
-    "Seven helper modules were excluded after checking their test-only callers. Production-source import review found no filename/directory exclusion override. This is a source-phase fixture, not an assertion of published artifact contents."
+    "Seven helper modules were excluded after checking their test-only callers. Production-source import review found no filename/directory exclusion override. This is a source-phase fixture, not an assertion of published artifact contents.",
+    "Original-owner source-only reconciliation adds 25 api.pluginConfig leaf identities from config.ts:126-175. index.ts:82 passes api.pluginConfig unchanged to resolveMemoryWikiConfig; the config parameter and safeConfig = config ?? {} at config.ts:125 preserve the possible original-object branch. Each maximal leaf read is runtime/member-access, including both vaultName reads on line 145. The fresh outer and nested objects returned at lines 135-177 do not inherit whole-object API provenance. Standard string/array built-ins, including length, startsWith and slice, stop at the public data field and add no member paths or call kinds. Zod parsed/refinement results, CLI/Doctor config contexts and arbitrary SDK return values do not independently establish api.pluginConfig origin. The existing bare api.pluginConfig finding remains; intermediate leaf prefixes are incidental."
   ]
 }

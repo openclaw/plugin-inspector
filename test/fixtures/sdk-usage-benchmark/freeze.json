@@ -13,7 +13,7 @@
   "contractSha256": "10297e62af1d020743674ef1e8e0401a7d0fd8ded5d4b27b69b7aac2a2d23c0e",
   "readmeSha256": "1a4baa8fe631e8965931227affe237ae8d99562272ce48e836ba9d43886e46f1",
   "rosterSha256": "a24d28e28eb7d191bd4d9b7148bee984381767f403b5c9c78a847545b17ea43c",
-  "progressSha256": "0a7cf79d1c1066a4ec45987736a3eceabbfec5c12a2fd9c340b2bf33be259345",
+  "progressSha256": "9e6cef81c81bc22c228a49f7b19de584450686945c75f1057b97a232f3f03b2a",
   "fixtures": [
     {
       "pluginId": "a2a",
@@ -31,9 +31,9 @@
       "pluginId": "active-memory",
       "path": "active-memory.json",
       "agentId": "/root/audit_active_memory",
-      "sha256": "50242551e34d60f7d17a34367504c600ab608632390fc273916bba7051830c0f",
+      "sha256": "d3ea871743835fc8ff9d75e1d6b3aee5a36305a2103e5a240554ca0f7ab91ff6",
       "counts": {
-        "findings": 128,
+        "findings": 131,
         "reviewedFiles": 17,
         "excludedFiles": 16,
         "unknowns": 0
@@ -91,9 +91,9 @@
       "pluginId": "anthropic",
       "path": "anthropic.json",
       "agentId": "/root/sdk_benchmark_coordinator/audit_anthropic",
-      "sha256": "e83c13c28aa839716956d15f4f0bd0fcc7c16e317a9df5302a3d73266d75adae",
+      "sha256": "4ea18f12a67bf38af2459c892f41c2631a54010399eaa45f0b0b06b56bcbff4b",
       "counts": {
-        "findings": 242,
+        "findings": 243,
         "reviewedFiles": 57,
         "excludedFiles": 45,
         "unknowns": 0
@@ -223,9 +223,9 @@
       "pluginId": "crabbox",
       "path": "crabbox.json",
       "agentId": "/root/sdk_benchmark_coordinator/audit_crabbox",
-      "sha256": "0845ee3b3d7517c8c333a3b69296e096fa4394270d52c0d54cbd490bf030fae3",
+      "sha256": "04986d6a1ec792e6cd6ec7a6197b7a6354ff2cff57efb4dd9f97c1d64da0dfbe",
       "counts": {
-        "findings": 118,
+        "findings": 129,
         "reviewedFiles": 52,
         "excludedFiles": 57,
         "unknowns": 0
@@ -439,7 +439,7 @@
       "pluginId": "lmstudio",
       "path": "lmstudio.json",
       "agentId": "/root/audit_lmstudio",
-      "sha256": "3870008371daf7328cb5ca938f02d97f376bf2d69e54099546ee1890d8beba49",
+      "sha256": "cad3bcaa4863f9bd665372de501cd6063aca9593556fc91f21195a12da9c88e1",
       "counts": {
         "findings": 131,
         "reviewedFiles": 19,
@@ -475,9 +475,9 @@
       "pluginId": "mcp-relay",
       "path": "mcp-relay.json",
       "agentId": "/root/audit_mcp_relay",
-      "sha256": "0c7905a0e47a08a111c9be0fa378fddea2872bfa96d2fadf4037e7d35ae796e0",
+      "sha256": "954c8f5c03e11f02306fb3834c657899bf9deface7e203b2360a687f9e44375f",
       "counts": {
-        "findings": 59,
+        "findings": 61,
         "reviewedFiles": 19,
         "excludedFiles": 15,
         "unknowns": 0
@@ -487,9 +487,9 @@
       "pluginId": "memory-core",
       "path": "memory-core.json",
       "agentId": "/root/sdk_benchmark_coordinator/audit_memory_core",
-      "sha256": "fe83e949dd3520623d0dbb2bad92d881b60e163109862b8414e25cd65331d433",
+      "sha256": "a6d28ba087a97cb45597683de000e96ac822bd5aaa10f3163ea1f99e4c92ae2e",
       "counts": {
-        "findings": 526,
+        "findings": 528,
         "reviewedFiles": 203,
         "excludedFiles": 209,
         "unknowns": 0
@@ -499,9 +499,9 @@
       "pluginId": "memory-wiki",
       "path": "memory-wiki.json",
       "agentId": "/root/sdk_benchmark_coordinator/audit_memory_wiki",
-      "sha256": "5b26339cd32e4d7b1d6b2c743da752fafb16ac8d4f8234d4868bda5113a2891e",
+      "sha256": "77dbcba56df2609ac707add63eca28924e5aa6568b60bcf8b063971c590dc9ef",
       "counts": {
-        "findings": 123,
+        "findings": 148,
         "reviewedFiles": 50,
         "excludedFiles": 63,
         "unknowns": 0
@@ -595,9 +595,9 @@
       "pluginId": "ollama",
       "path": "ollama.json",
       "agentId": "/root/sdk_benchmark_coordinator/audit_ollama",
-      "sha256": "420cb8b3192e45b04f065112164bfa1dafcc450fe930b98b6e312ba5343491ea",
+      "sha256": "9d9b14e6d8d18cececcecef4f3c9f6e45bdbc61e0fcfe1b0b6c1d38dde59448c",
       "counts": {
-        "findings": 230,
+        "findings": 233,
         "reviewedFiles": 49,
         "excludedFiles": 47,
         "unknowns": 0
@@ -607,9 +607,9 @@
       "pluginId": "onepassword",
       "path": "onepassword.json",
       "agentId": "/root/audit_onepassword",
-      "sha256": "68dff819eec8705e913ed71b5700aa472c7b0e068013b502704132ad26fc6d82",
+      "sha256": "95f4cc38f56d0bf554655ad37e9d25391a51ed93dc272e743d521fa7baad5c4b",
       "counts": {
-        "findings": 58,
+        "findings": 65,
         "reviewedFiles": 16,
         "excludedFiles": 15,
         "unknowns": 0
@@ -619,9 +619,9 @@
       "pluginId": "openai",
       "path": "openai.json",
       "agentId": "/root/sdk_benchmark_coordinator/audit_openai",
-      "sha256": "6667e7513866c75f10a920f07872d501b5ba5fae857ed3d3b24fbebc2bac6b70",
+      "sha256": "96e0bbb6d7ff706493756b4653038192ddfd7751d77fc8c28a59707fd7f2dbf9",
       "counts": {
-        "findings": 408,
+        "findings": 409,
         "reviewedFiles": 89,
         "excludedFiles": 117,
         "unknowns": 0
@@ -667,7 +667,7 @@
       "pluginId": "reef",
       "path": "reef.json",
       "agentId": "/root/sdk_benchmark_coordinator/audit_reef",
-      "sha256": "d9acbbd3ef6db94bc285b8d53090d73a194683b4cd8eaefe71fdf618357fbac4",
+      "sha256": "f07e04cca17f6da400ef33167e3cf4a484a333c7f26a2d64a16d9ec7de6c09ad",
       "counts": {
         "findings": 107,
         "reviewedFiles": 67,
@@ -739,12 +739,12 @@
       "pluginId": "telegram",
       "path": "telegram.json",
       "agentId": "/root/sdk_benchmark_coordinator/audit_telegram",
-      "sha256": "fa7ee097ca141bec462e02441d390a015bff73a52ac127d94322f9ab5e98c407",
+      "sha256": "682190c362fdc7fc1f1c48bf4bfc8dc844fd8e97bfb8d1dd7fdbb2fc1da067a1",
       "counts": {
-        "findings": 877,
+        "findings": 890,
         "reviewedFiles": 298,
         "excludedFiles": 214,
-        "unknowns": 0
+        "unknowns": 1
       }
     },
     {
@@ -835,9 +835,9 @@
       "pluginId": "xai",
       "path": "xai.json",
       "agentId": "/root/sdk_benchmark_coordinator/audit_xai",
-      "sha256": "42eea0823b14cda1cf3deda1d2370109e0b521583ecb149d0f93f6d0f7106c4d",
+      "sha256": "1f6ade6171358550144e143263ed8e5be7cebc48ca43f3ab809a340d59fd2f5b",
       "counts": {
-        "findings": 276,
+        "findings": 277,
         "reviewedFiles": 66,
         "excludedFiles": 51,
         "unknowns": 0
@@ -845,10 +845,10 @@
     }
   ],
   "aggregateCounts": {
-    "findings": 6615,
+    "findings": 6684,
     "reviewedFiles": 2231,
     "excludedFiles": 2002,
-    "unknowns": 0
+    "unknowns": 1
   },
   "reconciliations": [
     {
@@ -874,6 +874,84 @@
       "agentId": "/root/sdk_benchmark_coordinator/audit_anthropic",
       "previousFreezeSha256": "0d6cf66b6383481b96c6f7a258ec952d152e17f447c9ae5f510e13c50e797953",
       "reason": "Original auditor independently added sessionCatalog and sessionCatalog.enabled through the unchanged local isClaudeSessionCatalogEnabled argument, guard and cast; boolean helper return has no object provenance."
+    },
+    {
+      "pluginId": "active-memory",
+      "agentId": "/root/audit_active_memory",
+      "previousFreezeSha256": "4655658f12c552eea5a7573409523a17a73c8c0638bdee73653465ad0ab47427",
+      "reason": "Original auditor traced three additional unchanged config paths and the unchanged DEFAULT_PROVIDER fallback selected from a local result; built-in string operations remain excluded. See original-owner source-only fixture notes and exact evidence; pinned population/file scope are unchanged."
+    },
+    {
+      "pluginId": "anthropic",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_anthropic",
+      "previousFreezeSha256": "4655658f12c552eea5a7573409523a17a73c8c0638bdee73653465ad0ab47427",
+      "reason": "Original auditor traced api.config.session.store through the unchanged config fallback; local lazy loader destinations do not create opaque-handle unknowns. See original-owner source-only fixture notes and exact evidence; pinned population/file scope are unchanged."
+    },
+    {
+      "pluginId": "crabbox",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_crabbox",
+      "previousFreezeSha256": "4655658f12c552eea5a7573409523a17a73c8c0638bdee73653465ad0ab47427",
+      "reason": "Original auditor enumerated ten unchanged pluginConfig leaves and the standalone runtime.state handle, plus runtime.gateway noncall evidence. See original-owner source-only fixture notes and exact evidence; pinned population/file scope are unchanged."
+    },
+    {
+      "pluginId": "lmstudio",
+      "agentId": "/root/audit_lmstudio",
+      "previousFreezeSha256": "4655658f12c552eea5a7573409523a17a73c8c0638bdee73653465ad0ab47427",
+      "reason": "Original auditor traced unchanged context-window/cost constants into local result fields; transformed fallback values remain excluded. See original-owner source-only fixture notes and exact evidence; pinned population/file scope are unchanged."
+    },
+    {
+      "pluginId": "mcp-relay",
+      "agentId": "/root/audit_mcp_relay",
+      "previousFreezeSha256": "4655658f12c552eea5a7573409523a17a73c8c0638bdee73653465ad0ab47427",
+      "reason": "Original auditor traced unchanged pluginConfig agentId/relayUrl through guards and fallback; runtime.version.length is standard string behavior. See original-owner source-only fixture notes and exact evidence; pinned population/file scope are unchanged."
+    },
+    {
+      "pluginId": "memory-core",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_memory_core",
+      "previousFreezeSha256": "4655658f12c552eea5a7573409523a17a73c8c0638bdee73653465ad0ab47427",
+      "reason": "Original auditor reconciled unchanged config/member aliases, three table constants selected from local containers, and explicit Pick namespace narrowing. Direct exported-array filter remains a call to the exported object; transformed values do not inherit identity. See original-owner source-only fixture notes and exact evidence; pinned population/file scope are unchanged."
+    },
+    {
+      "pluginId": "memory-wiki",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_memory_wiki",
+      "previousFreezeSha256": "4655658f12c552eea5a7573409523a17a73c8c0638bdee73653465ad0ab47427",
+      "reason": "Original auditor traced 25 pluginConfig leaves through the unchanged config branch; built-in array length is excluded. See original-owner source-only fixture notes and exact evidence; pinned population/file scope are unchanged."
+    },
+    {
+      "pluginId": "ollama",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_ollama",
+      "previousFreezeSha256": "4655658f12c552eea5a7573409523a17a73c8c0638bdee73653465ad0ab47427",
+      "reason": "Original auditor traced discovery.enabled and nodeInference.enabled plus standalone runtime.llm; other dynamic/type references are unchanged. See original-owner source-only fixture notes and exact evidence; pinned population/file scope are unchanged."
+    },
+    {
+      "pluginId": "onepassword",
+      "agentId": "/root/audit_onepassword",
+      "previousFreezeSha256": "4655658f12c552eea5a7573409523a17a73c8c0638bdee73653465ad0ab47427",
+      "reason": "Original auditor traced seven root config keys while preserving call-specific object/key pairing; item/field/description belong to item objects, not root config. See original-owner source-only fixture notes and exact evidence; pinned population/file scope are unchanged."
+    },
+    {
+      "pluginId": "openai",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_openai",
+      "previousFreezeSha256": "4655658f12c552eea5a7573409523a17a73c8c0638bdee73653465ad0ab47427",
+      "reason": "Original auditor reconciled explicit context Pick types, dynamic local-barrel constants, audio-format aliases and runtime.modelAuth. Direct import.then binding has no extra member-access; whole composite typeof remains unexpanded. See original-owner source-only fixture notes and exact evidence; pinned population/file scope are unchanged."
+    },
+    {
+      "pluginId": "reef",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_reef",
+      "previousFreezeSha256": "4655658f12c552eea5a7573409523a17a73c8c0638bdee73653465ad0ab47427",
+      "reason": "Original auditor traced PAIRING_APPROVED_MESSAGE unchanged through local body.text selections. Fresh container/normalized data and primitive builtins do not inherit extra SDK call identity. See original-owner source-only fixture notes and exact evidence; pinned population/file scope are unchanged."
+    },
+    {
+      "pluginId": "telegram",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_telegram",
+      "previousFreezeSha256": "4655658f12c552eea5a7573409523a17a73c8c0638bdee73653465ad0ab47427",
+      "reason": "Original auditor traced 13 config paths, one unresolved dynamic secret-provider key, local type reexports/dynamic imports and unchanged constant aliases. Direct local-import bindings do not add member-access; selection from a local rest tuple does. See original-owner source-only fixture notes and exact evidence; pinned population/file scope are unchanged."
+    },
+    {
+      "pluginId": "xai",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_xai",
+      "previousFreezeSha256": "4655658f12c552eea5a7573409523a17a73c8c0638bdee73653465ad0ab47427",
+      "reason": "Original auditor reconciled four explicit context Pick type dependencies, the proven injected realtime transcription helper in its focused facade, and unchanged stored G711 value selection. See original-owner source-only fixture notes and exact evidence; pinned population/file scope are unchanged."
     }
   ]
 }

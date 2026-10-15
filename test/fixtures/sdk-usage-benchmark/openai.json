@@ -108,7 +108,7 @@
       "path": "extensions/openai/index.ts",
       "sha256": "3a68cbcb1f1f81ad7a4da8dc8f5e2764d2f764e3ef2068633a69bc7e6748fd28",
       "role": "production-source",
-      "findingCount": 25
+      "findingCount": 26
     },
     {
       "path": "extensions/openai/media-understanding-provider.ts",
@@ -120,7 +120,7 @@
       "path": "extensions/openai/memory-embedding-adapter.ts",
       "sha256": "9f1d5399636595a1becaf0287ba78b522ed4ee81fecf127944404e0fd6853d90",
       "role": "production-source",
-      "findingCount": 5
+      "findingCount": 6
     },
     {
       "path": "extensions/openai/model-auth-policy.ts",
@@ -1582,6 +1582,23 @@
       ]
     },
     {
+      "key": "runtime-member:runtime.modelAuth",
+      "kind": "runtime-member",
+      "identity": "runtime.modelAuth",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openai/index.ts",
+          "line": 52,
+          "snippet": "    api.registerImageGenerationProvider(buildOpenAIImageGenerationProvider(api.runtime.modelAuth));",
+          "note": "This occurrence independently reads the maximal api.runtime.modelAuth member before passing it unchanged to image generation. Bare runtime-root suppression does not remove a standalone nested-member selection; the literal Pick definition separately records only its three selected methods."
+        }
+      ]
+    },
+    {
       "key": "runtime-member:runtime.modelAuth.ensureAuthProfileStoreAsync",
       "kind": "runtime-member",
       "identity": "runtime.modelAuth.ensureAuthProfileStoreAsync",
@@ -1676,11 +1693,12 @@
       "key": "sdk-export:openclaw/plugin-sdk/agent-scope-runtime#resolveAgentDir",
       "kind": "sdk-export",
       "identity": "openclaw/plugin-sdk/agent-scope-runtime#resolveAgentDir",
-      "classification": "runtime",
+      "classification": "mixed",
       "referenceKinds": [
         "call",
         "import",
-        "member-access"
+        "member-access",
+        "type-reference"
       ],
       "evidence": [
         {
@@ -1721,6 +1739,12 @@
           "line": 439,
           "snippet": "      ? { agentDir: resolveAgentDir(params.cfg, params.agentId) }",
           "note": "SDK export selected through the plugin-owned openAIRealtimeHost operation table (or its typed context equivalent); not a PluginRuntime member."
+        },
+        {
+          "path": "extensions/openai/realtime-voice-session-policy.ts",
+          "line": 502,
+          "snippet": "  }: Pick<PluginCapabilityCatalogContext, \"isProviderAuthProfileConfigured\" | \"resolveAgentDir\">,",
+          "note": "The explicit literal Pick selects resolveAgentDir from the capability context. Exact typeof declarations and unchanged host assignments establish this SDK function identity. This is narrowed type syntax, not expansion of a later whole projected-type annotation."
         }
       ]
     },
@@ -3062,6 +3086,7 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings#EMBEDDING_BATCH_ENDPOINT",
       "classification": "runtime",
       "referenceKinds": [
+        "dynamic-import",
         "import"
       ],
       "evidence": [
@@ -3069,6 +3094,24 @@
           "path": "extensions/openai/embedding-batch.ts",
           "line": 5,
           "snippet": "  EMBEDDING_BATCH_ENDPOINT,"
+        },
+        {
+          "path": "extensions/openai/embedding-batch.ts",
+          "line": 48,
+          "snippet": "export const OPENAI_BATCH_ENDPOINT = EMBEDDING_BATCH_ENDPOINT;",
+          "note": "The exported local declaration is an unchanged alias of EMBEDDING_BATCH_ENDPOINT. It preserves original SDK provenance without creating an export-specifier reexport kind."
+        },
+        {
+          "path": "extensions/openai/memory-embedding-adapter.ts",
+          "line": 56,
+          "snippet": "          const { OPENAI_BATCH_ENDPOINT, runOpenAiEmbeddingBatches } =",
+          "note": "OPENAI_BATCH_ENDPOINT is bound by the immediately following local dynamic import and resolves unchanged to the SDK EMBEDDING_BATCH_ENDPOINT export."
+        },
+        {
+          "path": "extensions/openai/memory-embedding-adapter.ts",
+          "line": 57,
+          "snippet": "            await import(\"./embedding-batch.js\");",
+          "note": "Local dynamic import supplying OPENAI_BATCH_ENDPOINT from embedding-batch.ts:48; no new SDK module site, synthetic namespace, or member-access is inferred from its import binding."
         }
       ]
     },
@@ -4482,11 +4525,12 @@
       "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isProviderAuthProfileConfigured",
       "kind": "sdk-export",
       "identity": "openclaw/plugin-sdk/provider-auth#isProviderAuthProfileConfigured",
-      "classification": "runtime",
+      "classification": "mixed",
       "referenceKinds": [
         "call",
         "import",
-        "member-access"
+        "member-access",
+        "type-reference"
       ],
       "evidence": [
         {
@@ -4508,6 +4552,12 @@
         },
         {
           "path": "extensions/openai/realtime-voice-session-policy.ts",
+          "line": 502,
+          "snippet": "  }: Pick<PluginCapabilityCatalogContext, \"isProviderAuthProfileConfigured\" | \"resolveAgentDir\">,",
+          "note": "The explicit literal Pick selects isProviderAuthProfileConfigured from the capability context. Exact typeof declarations and unchanged host assignments establish this SDK function identity. This is narrowed type syntax, not expansion of a later whole projected-type annotation."
+        },
+        {
+          "path": "extensions/openai/realtime-voice-session-policy.ts",
           "line": 508,
           "snippet": "    isProviderAuthProfileConfigured({",
           "note": "SDK export selected through the plugin-owned openAIRealtimeHost operation table (or its typed context equivalent); not a PluginRuntime member."
@@ -4518,11 +4568,12 @@
       "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isProviderAuthProfileConfiguredAsync",
       "kind": "sdk-export",
       "identity": "openclaw/plugin-sdk/provider-auth#isProviderAuthProfileConfiguredAsync",
-      "classification": "runtime",
+      "classification": "mixed",
       "referenceKinds": [
         "call",
         "import",
-        "member-access"
+        "member-access",
+        "type-reference"
       ],
       "evidence": [
         {
@@ -4541,6 +4592,12 @@
           "line": 547,
           "snippet": "    isProviderAuthProfileConfiguredAsync,",
           "note": "SDK export selected through the plugin-owned openAIRealtimeHost operation table (or its typed context equivalent); not a PluginRuntime member."
+        },
+        {
+          "path": "extensions/openai/realtime-voice-session-policy.ts",
+          "line": 551,
+          "snippet": "    \"isProviderAuthProfileConfiguredAsync\" | \"resolveAgentDir\"",
+          "note": "The explicit literal Pick selects isProviderAuthProfileConfiguredAsync from the capability context. Exact typeof declarations and unchanged host assignments establish this SDK function identity. This is narrowed type syntax, not expansion of a later whole projected-type annotation."
         },
         {
           "path": "extensions/openai/realtime-voice-session-policy.ts",
@@ -4870,7 +4927,6 @@
         "call",
         "dynamic-import",
         "import",
-        "member-access",
         "type-reference"
       ],
       "evidence": [
@@ -4878,7 +4934,7 @@
           "path": "extensions/openai/openai-chatgpt-oauth-flow.runtime.ts",
           "line": 30,
           "snippet": "    ({ startProviderOAuthLoopbackCallbackServer }) => startProviderOAuthLoopbackCallbackServer,",
-          "note": "The Promise.then destructuring selects the SDK export; the lazy getter preserves that direct callable."
+          "note": "This immediately narrowed import(...).then destructuring is the dynamic-import binding, which the frozen README explicitly excludes from member-access. The lazy getter returns the callable unchanged; no separate source occurrence proves a non-call member read."
         },
         {
           "path": "extensions/openai/openai-chatgpt-oauth-flow.runtime.ts",
@@ -8365,13 +8421,26 @@
       "identity": "openclaw/plugin-sdk/realtime-voice-provider#REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
           "path": "extensions/openai/realtime-voice-protocol.ts",
           "line": 9,
           "snippet": "  REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ,"
+        },
+        {
+          "path": "extensions/openai/realtime-voice-protocol.ts",
+          "line": 82,
+          "snippet": "    this.audioFormat = config.audioFormat ?? REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ;",
+          "note": "The SDK audio-format object is assigned unchanged to this.audioFormat on the fallback branch; the subsequent encoding read retains the exported-root identity."
+        },
+        {
+          "path": "extensions/openai/realtime-voice-protocol.ts",
+          "line": 148,
+          "snippet": "    const format = this.audioFormat.encoding === \"pcm16\" ? \"pcm16\" : \"g711_ulaw\";",
+          "note": "this.audioFormat aliases REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ on the constructor fallback branch. Reading its encoding property adds member-access to that SDK exported-object root."
         },
         {
           "path": "extensions/openai/realtime-voice-session-policy.ts",
@@ -8386,7 +8455,8 @@
       "identity": "openclaw/plugin-sdk/realtime-voice-provider#REALTIME_VOICE_AUDIO_FORMAT_PCM16_24KHZ",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
@@ -8395,9 +8465,21 @@
           "snippet": "  REALTIME_VOICE_AUDIO_FORMAT_PCM16_24KHZ,"
         },
         {
+          "path": "extensions/openai/realtime-voice-provider-factory.ts",
+          "line": 234,
+          "snippet": "      audioFormat: REALTIME_VOICE_AUDIO_FORMAT_PCM16_24KHZ,",
+          "note": "This local call passes the SDK audio-format constant unchanged as the audioFormat property; the callee selects that same value in realtime-voice-session-policy.ts:387."
+        },
+        {
           "path": "extensions/openai/realtime-voice-session-policy.ts",
           "line": 16,
           "snippet": "  REALTIME_VOICE_AUDIO_FORMAT_PCM16_24KHZ,"
+        },
+        {
+          "path": "extensions/openai/realtime-voice-session-policy.ts",
+          "line": 387,
+          "snippet": "    params.audioFormat ?? REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ,",
+          "note": "params.audioFormat can be the unchanged REALTIME_VOICE_AUDIO_FORMAT_PCM16_24KHZ value supplied at realtime-voice-provider-factory.ts:234. Selecting this proven SDK-valued local property adds member-access to the original export, not an API/runtime path."
         }
       ]
     },
@@ -12735,12 +12817,13 @@
     "All local shipped source is within extensions/openai. Production relative imports do not escape the plugin root. package.json explicitly ships the two realtime audio/socket worker entries; both are included. SDK implementation files were consulted only for provenance/contracts, not recursively inventoried. Installed jose, libopus-wasm, werift, ws, and zod stay separate dependency boundaries.",
     "Verified every nonstandard support exclusion against its callers. None is imported by production source. The cross-plugin facetime consumer of realtime-voice-test-support.ts is itself under tests.",
     "This is the source-phase benchmark: explicitly erased type syntax and all eligible production source count independently of runtime reachability. api.ts, setup-api.ts, capability-catalog.ts, lazy runtime modules, and worker entries were all reviewed.",
-    "definePluginEntry establishes the entry API. The runtime.modelAuth value passed into image generation is narrowed by a literal Pick to three methods, so only those selected paths are type consumers and calls. The propagated bare runtime/modelAuth handles do not create incidental prefix findings.",
+    "definePluginEntry establishes the entry API. The runtime.modelAuth value passed into image generation is narrowed by a literal Pick to three methods, so only those selected paths are type consumers and calls. Bare runtime handles do not create root findings. The standalone api.runtime.modelAuth selection is independently a maximal member-access; the literal Pick type contributes only its selected method paths.",
     "ProviderAuthContext.runtime is RuntimeEnv, not PluginRuntime. Provider descriptors, embedding adapter objects, native realtime gateway-control request data, local session stores, and arbitrary SDK return objects are not inferred as API/runtime handles.",
     "OpenAIRealtimeHost is a plugin-owned composite of unchanged SDK free functions. Direct selections, calls, and explicitly narrowed property types retain original SDK-export provenance without inventing runtime-member paths. Whole typeof openAIRealtimeHost and broad Omit contexts are not expanded transitively. The local API barrels reexport plugin-owned functions, not SDK exports.",
     "Direct callable aliases resolve to original exports: resolveSize to resolveClosestSize, createLogger to createSubsystemLogger, startCallbackServer to startProviderOAuthLoopbackCallbackServer, buildResult to buildOauthProviderAuthResult, and the streamSimple fallback to the original stream export. Wrapper calls do not acquire inferred transitive SDK kinds.",
     "Literal Pick<typeof import(provider-catalog-live-runtime), ...> selects the three named reader exports. Dynamic whole SDK namespaces retain * alongside their resolved named exports. Distinct later namespace/alias-container destructuring records member-access; calls record call without incidental prefixes.",
     "Logger warn/debug calls retain provenance through unchanged api.logger propagation into broker and bridge configuration. PluginLogger annotations alone do not create API paths. Direct SDK class construction counts as call to the exported class root; instance methods are not new API/runtime paths.",
-    "Provider object hook fields are not API on/registerHook registrations, so no named hook identity is inferred. Manifest findings cover providers and all eight contracts categories; descriptive metadata, activation, model catalogs, auth choices, configuration, and worker declarations do not create contract identities."
+    "Provider object hook fields are not API on/registerHook registrations, so no named hook identity is inferred. Manifest findings cover providers and all eight contracts categories; descriptive metadata, activation, model catalogs, auth choices, configuration, and worker declarations do not create contract identities.",
+    "Original-owner source-only reconciliation at the pinned commit adds the standalone runtime.modelAuth read, explicit capability-context Pick type references for resolveAgentDir and both isProviderAuthProfileConfigured helpers, the unchanged EMBEDDING_BATCH_ENDPOINT local dynamic-import alias, and proven PCM16/G711 audio-format member reads. Immediately narrowed import(...).then destructuring for startProviderOAuthLoopbackCallbackServer supplies dynamic-import only, not member-access; no distinct non-call member selection of that function was found. Existing explicit OpenAIRealtimeHost[\"warn\"] narrowing correctly retains warn type-reference. DEFAULT_CONTEXT_TOKENS remains import-only because its proven occurrences are bare identifier uses/property writes, and api.logger.warn remains call-only because its selectors occur in direct or immediate coalesced invocations. No Inspector implementation or candidate output informed this reconciliation."
   ]
 }

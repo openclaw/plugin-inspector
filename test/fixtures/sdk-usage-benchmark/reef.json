@@ -114,7 +114,7 @@
       "path": "extensions/reef/protocol/envelope.ts",
       "sha256": "3b76c92519c7d74a104efd8478fd73a7ff4a1b67e711d982329b5955bf6bf0ab",
       "role": "production-source",
-      "findingCount": 0
+      "findingCount": 1
     },
     {
       "path": "extensions/reef/protocol/guard-adapters.ts",
@@ -270,7 +270,7 @@
       "path": "extensions/reef/src/outbound-state-client.ts",
       "sha256": "27539773c4d7aefedb943728600cada51dbdb86516209c1f6bfc5dc9806c16fb",
       "role": "production-source",
-      "findingCount": 0
+      "findingCount": 1
     },
     {
       "path": "extensions/reef/src/outbound-state-operation.ts",
@@ -1309,13 +1309,44 @@
       "identity": "openclaw/plugin-sdk/channel-status#PAIRING_APPROVED_MESSAGE",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
+        {
+          "path": "extensions/reef/protocol/envelope.ts",
+          "line": 278,
+          "snippet": "    typeof value.text !== \"string\" ||",
+          "note": "Runtime typeof reads the unchanged SDK-valued text leaf. outbound-state-client.ts:159-163 passes body directly to seal; line 148 passes it to this validator despite its unknown parameter annotation."
+        },
+        {
+          "path": "extensions/reef/protocol/envelope.ts",
+          "line": 290,
+          "snippet": "  for (const field of [value.text, value.replyTo, value.thread]) {",
+          "note": "Non-call value.text selection on the same unchanged pairing-message body; array construction does not make the array itself an SDK export."
+        },
         {
           "path": "extensions/reef/src/channel.ts",
           "line": 7,
           "snippet": "import { PAIRING_APPROVED_MESSAGE } from \"openclaw/plugin-sdk/channel-status\";"
+        },
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 219,
+          "snippet": "      await active.flow.send(id, PAIRING_APPROVED_MESSAGE);",
+          "note": "Provenance: passes the SDK constant unchanged to ReefMessageFlow.send. flow.ts:86,108,127 forwards the text parameter into body.text and prepareReefOutboundComposition."
+        },
+        {
+          "path": "extensions/reef/src/outbound-state-client.ts",
+          "line": 145,
+          "snippet": "          text: body.text,",
+          "note": "Non-call selection of the unchanged SDK constant on the pairing path. The body shallow copy at line 80 preserves its text leaf from channel.ts:219 through flow.ts:86,108,127."
+        },
+        {
+          "path": "extensions/reef/src/outbound-state-client.ts",
+          "line": 179,
+          "snippet": "            textHash: reefMessageTextHash(body.text),",
+          "note": "Non-call body.text selection preserves the SDK constant before entering the plugin-owned hashing function; the hash result does not retain this provenance."
         }
       ]
     },
@@ -3272,6 +3303,7 @@
     "PluginRuntime[\"channel\"][\"routing\"][\"resolveAgentRoute\"] and the corresponding runtime call make that runtime member mixed. ReturnType<typeof getReefRuntime> preserves the handle used by the setup helper; its modelConfig.resolveModelRuntimePolicy call is recorded without adding SDK-return-value paths.",
     "The dynamic import of agent-scope-runtime in src/setup.ts resolves resolveSessionAgentIdStrict. The transport's asError import normalizes to the original toStringifiedError SDK export. Imported classes contribute call only where explicitly constructed; PluginStateOperationInvalidatedError is only imported and used in instanceof.",
     "Known SDK helper calls are recorded as SDK exports without inferring their internal API/runtime consumption. In particular defineBundledChannelEntry does not create an api.registerChannel source finding, and passing the runtime to createChannelPairingController does not invent pairing runtime members.",
-    "Manifest identities include channels, cliCommands.name and commandAliases.name. doctorContract, categories, activation, descriptive metadata and configSchema are outside the agreed manifest identity fields. No named hook registrations occur."
+    "Manifest identities include channels, cliCommands.name and commandAliases.name. doctorContract, categories, activation, descriptive metadata and configSchema are outside the agreed manifest identity fields. No named hook registrations occur.",
+    "Source-only reconciliation: PAIRING_APPROVED_MESSAGE passes unchanged through ReefMessageFlow.send into the body.text leaf. Reads in outbound-state-client.ts:145,179 and protocol/envelope.ts:278,290 contribute member-access to the original SDK export. This is a possible source dependency for the pairing path, not evidence that the path executed or that every send argument has SDK origin. Fresh containing objects do not inherit SDK identity; the known unchanged text leaf retains provenance. Normalized text, hashes, ciphertext and opaque return values do not retain it. Plugin-owned send/seal/hash calls and standard primitive methods such as trim/replace are not SDK calls."
   ]
 }

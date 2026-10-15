@@ -216,7 +216,7 @@
       "path": "extensions/anthropic/session-catalog-continue.ts",
       "sha256": "849db7ba434101a17a68a9cee74b2b77d06d7b93d51f9248c2134d4881c954e0",
       "role": "production-source",
-      "findingCount": 8
+      "findingCount": 9
     },
     {
       "path": "extensions/anthropic/session-catalog-cursor.ts",
@@ -607,6 +607,23 @@
           "path": "extensions/anthropic/session-catalog.ts",
           "line": 255,
           "snippet": "config: api.config,"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.config.session.store",
+      "kind": "api-member",
+      "identity": "api.config.session.store",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/anthropic/session-catalog-continue.ts",
+          "line": 160,
+          "snippet": "storePath: api.runtime.agent.session.resolveStorePath(config.session?.store, {",
+          "note": "session-catalog-runtime.ts:12–13 returns the unchanged api.config branch alongside runtime.config.current() and {} fallbacks; session-catalog-continue.ts:126 binds that result unchanged to config. This access preserves the original api.config branch provenance without attributing fields of the arbitrary runtime call result to runtime."
         }
       ],
       "classification": "runtime"
@@ -6831,6 +6848,8 @@
     "sessionCatalogPaging.boundTranscriptPage calls a member of the imported SDK object and contributes call to the sessionCatalogPaging export, without inventing a public API/runtime path.",
     "Claude UserPromptSubmit/PreToolUse protocol callbacks and provider hook properties are not api.on/registerHook registrations. Anthropic has no hook findings. Manifest identities are limited to providers and contracts.mediaUnderstandingProviders/contracts.usageProviders; cliBackends, setup metadata, catalog entries, and descriptive/config fields are outside the agreed manifest-contract identity set.",
     "Every finding's referenceKinds merges all manually reviewed source occurrence kinds; evidence includes representative dependency and call/type/member sites. No genuinely unresolved SDK/API/runtime reference remains.",
-    "Source-only reconciliation: session-catalog-registration.ts:163 passes api.pluginConfig unchanged to isClaudeSessionCatalogEnabled. The unknown parameter annotation, object guard, and assertion preserve that original object at line 35, which reads api.pluginConfig.sessionCatalog. The sessionCatalog local aliases that nested original value, and the guard/assertion at line 39 preserve provenance for api.pluginConfig.sessionCatalog.enabled. Both are member-access findings; the helper call and its boolean result add no API call or returned-object provenance. The separate api.pluginConfig access at line 163 remains."
+    "Source-only reconciliation: session-catalog-registration.ts:163 passes api.pluginConfig unchanged to isClaudeSessionCatalogEnabled. The unknown parameter annotation, object guard, and assertion preserve that original object at line 35, which reads api.pluginConfig.sessionCatalog. The sessionCatalog local aliases that nested original value, and the guard/assertion at line 39 preserve provenance for api.pluginConfig.sessionCatalog.enabled. Both are member-access findings; the helper call and its boolean result add no API call or returned-object provenance. The separate api.pluginConfig access at line 163 remains.",
+    "Source-only reconciliation: currentClaudeSessionCatalogConfig in session-catalog-runtime.ts:12–13 returns api.config unchanged on its nullish fallback branch. The cast and alternate runtime.config.current()/{} branches do not erase that provenance. session-catalog-continue.ts:126 retains the result as config, and line 160 reads the maximal api.config.session.store member path; no incidental api.config.session prefix or runtime-return member path is added.",
+    "The lazy local-module selector is statically resolvable: session-catalog-registration.ts:62–64 passes a literal import of ./session-catalog.js to createLazyRuntimeSurface and selects module.createClaudeSessionCatalogRuntime(api). The helper signature in src/shared/lazy-runtime.ts:5–7 ties the selector module to the importer result, and session-catalog.ts:170–172 exports that plugin-owned function with an OpenClawPluginApi parameter. This is no opaque API escape, so it adds no unknown or SDK-export identity for the local function."
   ]
 }

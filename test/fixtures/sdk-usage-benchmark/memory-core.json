@@ -270,7 +270,7 @@
       "path": "extensions/memory-core/src/dreaming-session-cleanup.ts",
       "sha256": "50f8a096f8a7e1f0658f38568b72200d0af6b4cf2d5afaf0d8f427847ef807a0",
       "role": "production-source",
-      "findingCount": 5
+      "findingCount": 6
     },
     {
       "path": "extensions/memory-core/src/dreaming-shared.ts",
@@ -312,7 +312,7 @@
       "path": "extensions/memory-core/src/memory-budget.ts",
       "sha256": "804003efd8b7fb5e826f934b4a72ff167df2ca1d325f9f7699ead9daa978d287",
       "role": "production-source",
-      "findingCount": 4
+      "findingCount": 5
     },
     {
       "path": "extensions/memory-core/src/memory-corpus.ts",
@@ -744,7 +744,7 @@
       "path": "extensions/memory-core/src/memory/manager-search-vector.ts",
       "sha256": "ff72fa7b79b5ed266fcbf4281769b831da5105dcff36eb87ef40670d668832f1",
       "role": "production-source",
-      "findingCount": 2
+      "findingCount": 3
     },
     {
       "path": "extensions/memory-core/src/memory/manager-search.ts",
@@ -846,7 +846,7 @@
       "path": "extensions/memory-core/src/memory/manager-vector-rebuild-state.ts",
       "sha256": "4acdb08be12fd657efacc504f2dbd3eb13524338ddb3d558a23773d5a8ef4c7f",
       "role": "production-source",
-      "findingCount": 6
+      "findingCount": 7
     },
     {
       "path": "extensions/memory-core/src/memory/manager-vector-warning.ts",
@@ -996,7 +996,7 @@
       "path": "extensions/memory-core/src/migration/dreaming-cron-classifier.ts",
       "sha256": "7db9904d1928f8c8b8c483675f1e13a5cd76e6db65b96f42df9626152af82886",
       "role": "production-source",
-      "findingCount": 14
+      "findingCount": 13
     },
     {
       "path": "extensions/memory-core/src/rem-evidence-files.ts",
@@ -1092,7 +1092,7 @@
       "path": "extensions/memory-core/src/short-term-promotion-apply.ts",
       "sha256": "8189a83c996f2a09dd77918fa2d1244d7ee5c2ab26db4acd3ee8102855540126",
       "role": "production-source",
-      "findingCount": 15
+      "findingCount": 19
     },
     {
       "path": "extensions/memory-core/src/short-term-promotion-artifacts.ts",
@@ -1152,7 +1152,7 @@
       "path": "extensions/memory-core/src/short-term-promotion.ts",
       "sha256": "823769e6cab38e85e295bd347d25d981c1610d727399bb5cb3ac342599a60bae",
       "role": "production-source",
-      "findingCount": 8
+      "findingCount": 11
     },
     {
       "path": "extensions/memory-core/src/standing-intents-kernel.ts",
@@ -2303,6 +2303,23 @@
       ]
     },
     {
+      "key": "api-member:api.config.agents.defaults.bootstrapMaxChars",
+      "kind": "api-member",
+      "identity": "api.config.agents.defaults.bootstrapMaxChars",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-core/src/memory-budget.ts",
+          "line": 26,
+          "snippet": "  const defaultBootstrapLimit = params.cfg?.agents?.defaults?.bootstrapMaxChars;",
+          "note": "The api.config fallback in dreaming.ts:380 passes unchanged through resolveCurrentConfig, currentConfig at line 594, runShortTermDreamingPromotion cfg at line 617, and resolveMemoryPromotionFileMaxChars cfg at line 220. This is the proven original-config branch; the separate resolveAgentConfig return value is not expanded."
+        }
+      ]
+    },
+    {
       "key": "api-member:api.config.plugins",
       "kind": "api-member",
       "identity": "api.config.plugins",
@@ -2315,6 +2332,23 @@
           "path": "extensions/memory-core/index.ts",
           "line": 262,
           "snippet": "    if (normalizePluginsConfig(api.config.plugins).slots.memory === api.id) {"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.session.store",
+      "kind": "api-member",
+      "identity": "api.config.session.store",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-core/src/dreaming-session-cleanup.ts",
+          "line": 19,
+          "snippet": "    sessionStore: params.config.session?.store,",
+          "note": "The api.config branch of ctx.config ?? api.config in dreaming.ts:578 passes unchanged into startDreamingSessionCleanup, scrubConfiguredAgents at line 509, and scrubDreamingNarrativeArtifacts config at line 496. The delayed cleanup also passes resolveCurrentConfig at line 524, whose fallback is api.config."
         }
       ]
     },
@@ -3036,8 +3070,9 @@
       "key": "runtime-member:runtime.subagent",
       "kind": "runtime-member",
       "identity": "runtime.subagent",
-      "classification": "type",
+      "classification": "mixed",
       "referenceKinds": [
+        "member-access",
         "type-reference"
       ],
       "evidence": [
@@ -3045,6 +3080,18 @@
           "path": "extensions/memory-core/src/dreaming.ts",
           "line": 81,
           "snippet": "  subagent?: OpenClawPluginApi[\"runtime\"][\"subagent\"];"
+        },
+        {
+          "path": "extensions/memory-core/src/dreaming.ts",
+          "line": 620,
+          "snippet": "          subagent: api.runtime.subagent,",
+          "note": "This standalone value read selects the public nested subagent handle. Bare runtime-root suppression does not suppress an independently selected runtime.subagent handle."
+        },
+        {
+          "path": "extensions/memory-core/src/short-term-promotion-apply.ts",
+          "line": 351,
+          "snippet": "    options.agentId && options.consolidation?.subagent && toAppend.length > 0",
+          "note": "The unchanged api.runtime.subagent handle from dreaming.ts:620 flows through runShortTermDreamingPromotion params.subagent and its consolidation.subagent field at line 224. This non-call selection reads that nested runtime handle from the plugin-owned options container."
         }
       ]
     },
@@ -6651,7 +6698,8 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-engine-schema#MEMORY_INDEX_CHUNKS_TABLE",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
@@ -6660,9 +6708,21 @@
           "snippet": "import {\n  MEMORY_INDEX_CHUNKS_TABLE,\n  MEMORY_INDEX_META_TABLE,\n  MEMORY_INDEX_SOURCES_TABLE,\n} from \"openclaw/plugin-sdk/memory-core-host-engine-schema\";"
         },
         {
+          "path": "extensions/memory-core/src/memory/manager-status-presence.ts",
+          "line": 35,
+          "snippet": "      for (const tableName of [tables.sources, tables.chunks]) {",
+          "note": "The first object in builtInMemoryTableSets at lines 18-25 stores MEMORY_INDEX_CHUNKS_TABLE unchanged as chunks; the loop at line 26 selects that object as one proven branch. This non-call tables.chunks selection reads the original SDK export through a plugin-owned container; the alternative legacy object does not erase that branch."
+        },
+        {
           "path": "extensions/memory-core/src/migration/doctor-memory-sidecar-import.ts",
           "line": 3,
           "snippet": "import {\n  ensureMemoryChunkFtsTriggers,\n  markInvalidImportedMemoryEmbeddings,\n  rebuildMemoryChunkFts,\n  registerMemoryEmbeddingMigrationFunctions,\n  MEMORY_EMBEDDING_CACHE_TABLE,\n  MEMORY_INDEX_CHUNKS_TABLE,\n  MEMORY_INDEX_FTS_TABLE,\n  MEMORY_INDEX_META_TABLE,\n  MEMORY_INDEX_SOURCES_TABLE,\n  MEMORY_INDEX_VECTOR_TABLE,\n} from \"openclaw/plugin-sdk/memory-core-host-engine-schema\";"
+        },
+        {
+          "path": "extensions/memory-core/src/migration/doctor-memory-sidecar-import.ts",
+          "line": 292,
+          "snippet": "  for (const [legacy, canonical, columns] of LEGACY_MEMORY_INDEX_TABLES) {",
+          "note": "LEGACY_MEMORY_INDEX_TABLES stores MEMORY_INDEX_CHUNKS_TABLE unchanged at tuple index 1 on line 33. Destructuring canonical selects that SDK-valued tuple property. The tuple array is plugin-owned; invoking its map method elsewhere does not call this primitive string export."
         }
       ]
     },
@@ -6709,13 +6769,20 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-engine-schema#MEMORY_INDEX_META_TABLE",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
           "path": "extensions/memory-core/src/memory/manager-status-presence.ts",
           "line": 3,
           "snippet": "import {\n  MEMORY_INDEX_CHUNKS_TABLE,\n  MEMORY_INDEX_META_TABLE,\n  MEMORY_INDEX_SOURCES_TABLE,\n} from \"openclaw/plugin-sdk/memory-core-host-engine-schema\";"
+        },
+        {
+          "path": "extensions/memory-core/src/memory/manager-status-presence.ts",
+          "line": 28,
+          "snippet": "        tableExists(db, tables.meta) &&",
+          "note": "The first object in builtInMemoryTableSets at lines 18-25 stores MEMORY_INDEX_META_TABLE unchanged as meta; the loop at line 26 selects that object as one proven branch. This non-call tables.meta selection reads the original SDK export through a plugin-owned container; the alternative legacy object does not erase that branch."
         },
         {
           "path": "extensions/memory-core/src/memory/manager-vector-rebuild-state.ts",
@@ -6726,6 +6793,12 @@
           "path": "extensions/memory-core/src/migration/doctor-memory-sidecar-import.ts",
           "line": 3,
           "snippet": "import {\n  ensureMemoryChunkFtsTriggers,\n  markInvalidImportedMemoryEmbeddings,\n  rebuildMemoryChunkFts,\n  registerMemoryEmbeddingMigrationFunctions,\n  MEMORY_EMBEDDING_CACHE_TABLE,\n  MEMORY_INDEX_CHUNKS_TABLE,\n  MEMORY_INDEX_FTS_TABLE,\n  MEMORY_INDEX_META_TABLE,\n  MEMORY_INDEX_SOURCES_TABLE,\n  MEMORY_INDEX_VECTOR_TABLE,\n} from \"openclaw/plugin-sdk/memory-core-host-engine-schema\";"
+        },
+        {
+          "path": "extensions/memory-core/src/migration/doctor-memory-sidecar-import.ts",
+          "line": 292,
+          "snippet": "  for (const [legacy, canonical, columns] of LEGACY_MEMORY_INDEX_TABLES) {",
+          "note": "LEGACY_MEMORY_INDEX_TABLES stores MEMORY_INDEX_META_TABLE unchanged at tuple index 1 on line 29. Destructuring canonical selects that SDK-valued tuple property. The tuple array is plugin-owned; invoking its map method elsewhere does not call this primitive string export."
         }
       ]
     },
@@ -6751,7 +6824,8 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-engine-schema#MEMORY_INDEX_SOURCES_TABLE",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
@@ -6760,9 +6834,21 @@
           "snippet": "import {\n  MEMORY_INDEX_CHUNKS_TABLE,\n  MEMORY_INDEX_META_TABLE,\n  MEMORY_INDEX_SOURCES_TABLE,\n} from \"openclaw/plugin-sdk/memory-core-host-engine-schema\";"
         },
         {
+          "path": "extensions/memory-core/src/memory/manager-status-presence.ts",
+          "line": 35,
+          "snippet": "      for (const tableName of [tables.sources, tables.chunks]) {",
+          "note": "The first object in builtInMemoryTableSets at lines 18-25 stores MEMORY_INDEX_SOURCES_TABLE unchanged as sources; the loop at line 26 selects that object as one proven branch. This non-call tables.sources selection reads the original SDK export through a plugin-owned container; the alternative legacy object does not erase that branch."
+        },
+        {
           "path": "extensions/memory-core/src/migration/doctor-memory-sidecar-import.ts",
           "line": 3,
           "snippet": "import {\n  ensureMemoryChunkFtsTriggers,\n  markInvalidImportedMemoryEmbeddings,\n  rebuildMemoryChunkFts,\n  registerMemoryEmbeddingMigrationFunctions,\n  MEMORY_EMBEDDING_CACHE_TABLE,\n  MEMORY_INDEX_CHUNKS_TABLE,\n  MEMORY_INDEX_FTS_TABLE,\n  MEMORY_INDEX_META_TABLE,\n  MEMORY_INDEX_SOURCES_TABLE,\n  MEMORY_INDEX_VECTOR_TABLE,\n} from \"openclaw/plugin-sdk/memory-core-host-engine-schema\";"
+        },
+        {
+          "path": "extensions/memory-core/src/migration/doctor-memory-sidecar-import.ts",
+          "line": 292,
+          "snippet": "  for (const [legacy, canonical, columns] of LEGACY_MEMORY_INDEX_TABLES) {",
+          "note": "LEGACY_MEMORY_INDEX_TABLES stores MEMORY_INDEX_SOURCES_TABLE unchanged at tuple index 1 on line 30. Destructuring canonical selects that SDK-valued tuple property. The tuple array is plugin-owned; invoking its map method elsewhere does not call this primitive string export."
         }
       ]
     },
@@ -7876,7 +7962,8 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-engine-storage#MEMORY_INDEX_VECTOR_TABLE",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
@@ -7893,6 +7980,18 @@
           "path": "extensions/memory-core/src/memory/manager-search-orchestration.ts",
           "line": 8,
           "snippet": "import {\n  readMemoryFile,\n  MEMORY_INDEX_VECTOR_TABLE as VECTOR_TABLE,\n  MEMORY_SEARCH_DEADLINE_CONTROL,\n  type MemoryReadResult,\n  type MemorySearchManager,\n  type MemorySearchResult,\n  type MemorySource,\n} from \"openclaw/plugin-sdk/memory-core-host-engine-storage\";"
+        },
+        {
+          "path": "extensions/memory-core/src/memory/manager-search-vector.ts",
+          "line": 47,
+          "snippet": "        vectorTable: params.vectorTable,",
+          "note": "manager-search-orchestration.ts imports the original SDK constant as VECTOR_TABLE and passes it unchanged to searchVector at line 649. Selecting params.vectorTable reads that SDK-valued field in a plugin-owned container; it is not a public runtime path."
+        },
+        {
+          "path": "extensions/memory-core/src/memory/manager-vector-rebuild-state.ts",
+          "line": 34,
+          "snippet": "    hasVectorTable: tableExists(params.db, params.vectorTable),",
+          "note": "manager-retrieval-read.ts:134 passes the imported SDK constant unchanged as vectorTable to resolvePersistedMemoryVectorIndexState. Selecting params.vectorTable reads the constant-valued field; tableExists is called, not the constant."
         }
       ]
     },
@@ -11635,21 +11734,15 @@
       "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-status#*",
       "kind": "sdk-export",
       "identity": "openclaw/plugin-sdk/memory-core-host-status#*",
-      "classification": "mixed",
+      "classification": "runtime",
       "referenceKinds": [
-        "dynamic-import",
-        "type-reference"
+        "dynamic-import"
       ],
       "evidence": [
         {
           "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
           "line": 18,
           "snippet": "  const constants = await import(\"openclaw/plugin-sdk/memory-core-host-status\");"
-        },
-        {
-          "path": "extensions/memory-core/src/migration/dreaming-cron-classifier.ts",
-          "line": 4,
-          "snippet": "type DreamingCronIdentifiers = Pick<\n  typeof import(\"openclaw/plugin-sdk/memory-core-host-status\"),\n  | \"MANAGED_MEMORY_DREAMING_CRON_NAME\"\n  | \"MANAGED_MEMORY_DREAMING_CRON_TAG\"\n  | \"MEMORY_DREAMING_SYSTEM_EVENT_TEXT\"\n  | \"LEGACY_MEMORY_LIGHT_DREAMING_CRON_NAME\"\n  | \"LEGACY_MEMORY_LIGHT_DREAMING_CRON_TAG\"\n  | \"LEGACY_MEMORY_LIGHT_DREAMING_EVENT_TEXT\"\n  | \"LEGACY_MEMORY_REM_DREAMING_CRON_NAME\"\n  | \"LEGACY_MEMORY_REM_DREAMING_CRON_TAG\"\n  | \"LEGACY_MEMORY_REM_DREAMING_EVENT_TEXT\"\n>;"
         }
       ]
     },
@@ -11685,13 +11778,20 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-status#DEFAULT_MEMORY_DEEP_DREAMING_MIN_RECALL_COUNT",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
           "path": "extensions/memory-core/src/cli.ts",
           "line": 20,
           "snippet": "import {\n  DEFAULT_PROMOTION_MIN_RECALL_COUNT,\n  DEFAULT_PROMOTION_MIN_SCORE,\n  DEFAULT_PROMOTION_MIN_UNIQUE_QUERIES,\n} from \"./short-term-promotion-types.js\";"
+        },
+        {
+          "path": "extensions/memory-core/src/short-term-promotion-apply.ts",
+          "line": 188,
+          "snippet": "  const { minScore, minRecallCount, minUniqueQueries, maxAgeDays } =\n    resolvePromotionThresholds(options);",
+          "note": "Destructuring selects the SDK-valued minRecallCount property from the plugin-owned resolvePromotionThresholds result. short-term-promotion-types.ts:17 preserves the SDK constant as DEFAULT_PROMOTION_MIN_RECALL_COUNT; short-term-promotion-utils.ts:65-68 passes it as the fallback to toFiniteNonNegativeInt, whose line 477 returns that fallback unchanged. The other branch may transform user input; it does not transform this fallback value."
         },
         {
           "path": "extensions/memory-core/src/short-term-promotion-types.ts",
@@ -11702,6 +11802,12 @@
           "path": "extensions/memory-core/src/short-term-promotion-utils.ts",
           "line": 20,
           "snippet": "import {\n  DEFAULT_PROMOTION_MIN_RECALL_COUNT,\n  DEFAULT_PROMOTION_MIN_SCORE,\n  DEFAULT_PROMOTION_MIN_UNIQUE_QUERIES,\n  type PromotionThresholdOptions,\n  type ShortTermRecallEntry,\n  type ShortTermRecallStore,\n} from \"./short-term-promotion-types.js\";"
+        },
+        {
+          "path": "extensions/memory-core/src/short-term-promotion.ts",
+          "line": 93,
+          "snippet": "  const { minScore, minRecallCount, minUniqueQueries, maxAgeDays } =\n    resolvePromotionThresholds(options);",
+          "note": "Destructuring selects the SDK-valued minRecallCount property from the plugin-owned resolvePromotionThresholds result. short-term-promotion-types.ts:17 preserves the SDK constant as DEFAULT_PROMOTION_MIN_RECALL_COUNT; short-term-promotion-utils.ts:65-68 passes it as the fallback to toFiniteNonNegativeInt, whose line 477 returns that fallback unchanged. The other branch may transform user input; it does not transform this fallback value."
         }
       ]
     },
@@ -11711,13 +11817,20 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-status#DEFAULT_MEMORY_DEEP_DREAMING_MIN_SCORE",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
           "path": "extensions/memory-core/src/cli.ts",
           "line": 20,
           "snippet": "import {\n  DEFAULT_PROMOTION_MIN_RECALL_COUNT,\n  DEFAULT_PROMOTION_MIN_SCORE,\n  DEFAULT_PROMOTION_MIN_UNIQUE_QUERIES,\n} from \"./short-term-promotion-types.js\";"
+        },
+        {
+          "path": "extensions/memory-core/src/short-term-promotion-apply.ts",
+          "line": 188,
+          "snippet": "  const { minScore, minRecallCount, minUniqueQueries, maxAgeDays } =\n    resolvePromotionThresholds(options);",
+          "note": "Destructuring selects the SDK-valued minScore property from the plugin-owned resolvePromotionThresholds result. short-term-promotion-types.ts:16 preserves the SDK constant as DEFAULT_PROMOTION_MIN_SCORE; short-term-promotion-utils.ts:62-64 returns it unchanged on the minScore fallback branch. The other branch may transform user input; it does not transform this fallback value."
         },
         {
           "path": "extensions/memory-core/src/short-term-promotion-types.ts",
@@ -11728,6 +11841,12 @@
           "path": "extensions/memory-core/src/short-term-promotion-utils.ts",
           "line": 20,
           "snippet": "import {\n  DEFAULT_PROMOTION_MIN_RECALL_COUNT,\n  DEFAULT_PROMOTION_MIN_SCORE,\n  DEFAULT_PROMOTION_MIN_UNIQUE_QUERIES,\n  type PromotionThresholdOptions,\n  type ShortTermRecallEntry,\n  type ShortTermRecallStore,\n} from \"./short-term-promotion-types.js\";"
+        },
+        {
+          "path": "extensions/memory-core/src/short-term-promotion.ts",
+          "line": 93,
+          "snippet": "  const { minScore, minRecallCount, minUniqueQueries, maxAgeDays } =\n    resolvePromotionThresholds(options);",
+          "note": "Destructuring selects the SDK-valued minScore property from the plugin-owned resolvePromotionThresholds result. short-term-promotion-types.ts:16 preserves the SDK constant as DEFAULT_PROMOTION_MIN_SCORE; short-term-promotion-utils.ts:62-64 returns it unchanged on the minScore fallback branch. The other branch may transform user input; it does not transform this fallback value."
         }
       ]
     },
@@ -11737,13 +11856,20 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-status#DEFAULT_MEMORY_DEEP_DREAMING_MIN_UNIQUE_QUERIES",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
           "path": "extensions/memory-core/src/cli.ts",
           "line": 20,
           "snippet": "import {\n  DEFAULT_PROMOTION_MIN_RECALL_COUNT,\n  DEFAULT_PROMOTION_MIN_SCORE,\n  DEFAULT_PROMOTION_MIN_UNIQUE_QUERIES,\n} from \"./short-term-promotion-types.js\";"
+        },
+        {
+          "path": "extensions/memory-core/src/short-term-promotion-apply.ts",
+          "line": 188,
+          "snippet": "  const { minScore, minRecallCount, minUniqueQueries, maxAgeDays } =\n    resolvePromotionThresholds(options);",
+          "note": "Destructuring selects the SDK-valued minUniqueQueries property from the plugin-owned resolvePromotionThresholds result. short-term-promotion-types.ts:18 preserves the SDK constant as DEFAULT_PROMOTION_MIN_UNIQUE_QUERIES; short-term-promotion-utils.ts:69-72 passes it as the fallback to toFiniteNonNegativeInt, whose line 477 returns that fallback unchanged. The other branch may transform user input; it does not transform this fallback value."
         },
         {
           "path": "extensions/memory-core/src/short-term-promotion-types.ts",
@@ -11754,6 +11880,12 @@
           "path": "extensions/memory-core/src/short-term-promotion-utils.ts",
           "line": 20,
           "snippet": "import {\n  DEFAULT_PROMOTION_MIN_RECALL_COUNT,\n  DEFAULT_PROMOTION_MIN_SCORE,\n  DEFAULT_PROMOTION_MIN_UNIQUE_QUERIES,\n  type PromotionThresholdOptions,\n  type ShortTermRecallEntry,\n  type ShortTermRecallStore,\n} from \"./short-term-promotion-types.js\";"
+        },
+        {
+          "path": "extensions/memory-core/src/short-term-promotion.ts",
+          "line": 93,
+          "snippet": "  const { minScore, minRecallCount, minUniqueQueries, maxAgeDays } =\n    resolvePromotionThresholds(options);",
+          "note": "Destructuring selects the SDK-valued minUniqueQueries property from the plugin-owned resolvePromotionThresholds result. short-term-promotion-types.ts:18 preserves the SDK constant as DEFAULT_PROMOTION_MIN_UNIQUE_QUERIES; short-term-promotion-utils.ts:69-72 passes it as the fallback to toFiniteNonNegativeInt, whose line 477 returns that fallback unchanged. The other branch may transform user input; it does not transform this fallback value."
         }
       ]
     },
@@ -21012,6 +21144,8 @@
     "The lazy tools.runtime.ts local barrel preserves readAgentMemoryFile dynamic-import provenance without inventing an SDK-module site for the local import.",
     "No eligible production file imports the excluded test helpers or fixture workers. Worker source entrypoints declared in package.json are included. Local imports remain within this plugin; external dependencies and SDK internals are not recursively audited.",
     "Manifest contract scope includes the memory CLI name, dreaming command alias, and intent/memory_get/memory_search tool contracts; doctor metadata, kind, configuration schema and UI labels are not contract identities.",
-    "Frozen-rule source reconciliation: doctor-dreaming-cron.ts:18 retains the whole memory-core-host-status namespace. Its eight directly selected exports and the two legacy EVENT_TEXT exports selected by dreaming-cron-classifier.ts after the unchanged namespace argument at line 38 also retain dynamic-import provenance. Added that missing reference kind and import-site evidence to those ten existing identities; preserved the namespace *, existing classifications and other reference kinds, and updated this file's distinct evidenced finding count from 21 to 23. This corrects the fixture to the frozen namespace/dynamic-import rule without changing the source population or contract."
+    "Frozen-rule source reconciliation: doctor-dreaming-cron.ts:18 retains the whole memory-core-host-status namespace. Its eight directly selected exports and the two legacy EVENT_TEXT exports selected by dreaming-cron-classifier.ts after the unchanged namespace argument at line 38 also retain dynamic-import provenance. Added that missing reference kind and import-site evidence to those ten existing identities; preserved the namespace *, existing classifications and other reference kinds, and updated this file's distinct evidenced finding count from 21 to 23. This corrects the fixture to the frozen namespace/dynamic-import rule without changing the source population or contract.",
+    "Frozen-rule source reconciliation: the unchanged api.config fallback flows through local dreaming helpers to agents.defaults.bootstrapMaxChars and session.store, so those two maximal API member paths are recorded. Standalone selections of api.runtime.subagent and its unchanged local-container alias add runtime member-access to the existing type dependency. Unchanged local-container selections also add member-access to memory-core-host-engine-storage#MEMORY_INDEX_VECTOR_TABLE and memory-core-host-status#DEFAULT_MEMORY_DEEP_DREAMING_MIN_SCORE, MIN_RECALL_COUNT, and MIN_UNIQUE_QUERIES; their local fallback branches preserve the imported values. DEFAULT_MEMORY_DEEP_DREAMING_MAX_PROMOTED_SNIPPET_TOKENS remains import-only: its bare defaults/forwarding and transformed numeric results do not establish an unchanged property selection. This original-owner source reconciliation applies the frozen provenance and exact-reference-kind rules without changing the source population, source identity, or unknowns.",
+    "Frozen-rule source reconciliation: memory-core-host-engine-schema#MEMORY_INDEX_CHUNKS_TABLE, MEMORY_INDEX_META_TABLE, and MEMORY_INDEX_SOURCES_TABLE are selected unchanged from plugin-owned table-set objects and tuple entries, so each gains member-access alongside import. memory-core-host-status#* retains only the independent whole dynamic namespace dependency in doctor-dreaming-cron.ts:18; the explicit literal Pick<typeof import(...)> in dreaming-cron-classifier.ts:4-15 narrows type references to its nine named exports, while the SDK module retains its syntactic type-query dependency. Removed only the redundant namespace type evidence and updated that file findingCount from 14 to 13. memory-core-host-engine-storage#MEMORY_INDEX_DERIVED_TABLES remains call plus import: its direct filter invocation is an exported-object member call under the frozen rule, and later operations on the freshly filtered result do not inherit that export identity. Source identity, population, and unknowns are unchanged."
   ]
 }

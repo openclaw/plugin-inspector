@@ -30,7 +30,7 @@
       "path": "extensions/ollama/index.ts",
       "sha256": "5ecd0758fc5a5023cd796a7d5f7b726083d3735319ddbf4c57086fde98876cb8",
       "role": "production-source",
-      "findingCount": 49
+      "findingCount": 51
     },
     {
       "path": "extensions/ollama/openclaw.plugin.json",
@@ -84,7 +84,7 @@
       "path": "extensions/ollama/src/discovery-shared.ts",
       "sha256": "6fe7603c89d8d4d27c5298abe136e79b277465384b0729b056ee305917a8c79b",
       "role": "production-source",
-      "findingCount": 13
+      "findingCount": 14
     },
     {
       "path": "extensions/ollama/src/embedding-provider.runtime.ts",
@@ -597,6 +597,40 @@
       ]
     },
     {
+      "key": "api-member:api.pluginConfig.discovery.enabled",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.discovery.enabled",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/ollama/src/discovery-shared.ts",
+          "line": 270,
+          "snippet": "params.pluginConfig.discovery?.enabled === false ||",
+          "note": "The original api.pluginConfig branch is retained as startupPluginConfig at index.ts:666, returned unchanged by resolveCurrentPluginConfig at index.ts:685, and supplied as pluginConfig to resolveOllamaDiscoveryResult at index.ts:840. This source-only dependency records the fallback branch without claiming that it executes; the alternative SDK helper result does not inherit API provenance."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.nodeInference.enabled",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.nodeInference.enabled",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/ollama/index.ts",
+          "line": 673,
+          "snippet": "if (startupPluginConfig.nodeInference?.enabled !== false) {",
+          "note": "startupPluginConfig preserves the original api.pluginConfig branch through the nullish fallback and cast at index.ts:666."
+        }
+      ]
+    },
+    {
       "key": "api-member:api.registerEmbeddingProvider",
       "kind": "api-member",
       "identity": "api.registerEmbeddingProvider",
@@ -817,6 +851,23 @@
           "path": "extensions/ollama/openclaw.plugin.json",
           "line": 11,
           "snippet": "\"providers\": [\"ollama\", \"ollama-cloud\"],"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.llm",
+      "kind": "runtime-member",
+      "identity": "runtime.llm",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/ollama/index.ts",
+          "line": 629,
+          "snippet": "const { acquireLocalService } = api.runtime.llm;",
+          "note": "api.runtime.llm is the standalone object read on the destructuring RHS; the separately selected acquireLocalService method retains its existing finding. This is not a prefix inside a longer member expression."
         }
       ]
     },
@@ -6386,6 +6437,7 @@
     "Imported aliases preserve their public export names: errorMessage is error-runtime#formatErrorMessage and buildStreamAssistantMessage is provider-transport-runtime#buildAssistantMessage. SDK public reexports remain identified by the module consumed by the plugin even when their underlying implementation is shared elsewhere.",
     "Bare value references and passing isImageWithMediaPayload as an Array.filter callback do not invent call or member-access sites. streamSimple is conditionally assigned unchanged to underlying and called, so its fallback invocation is an evidenced call.",
     "Manifest identities comprise two top-level providers and four contracts entries. Doctor flags, activation, providerAuthChoices, catalog/config/schema/UI metadata and category labels are not contract identities. No API on/registerHook registration occurs; provider hook-shaped properties do not create named hook findings.",
-    "ssrf-runtime-internal and memory-core-host-engine-storage are SDK-specifier dependencies present in package exports at the pinned source, notwithstanding their private-facade comments; the source inventory records their actual syntactic usage."
+    "ssrf-runtime-internal and memory-core-host-engine-storage are SDK-specifier dependencies present in package exports at the pinned source, notwithstanding their private-facade comments; the source inventory records their actual syntactic usage.",
+    "Original-owner source-only reconciliation adds api.pluginConfig.nodeInference.enabled and api.pluginConfig.discovery.enabled: unchanged local fallback/cast/parameter propagation preserves the original API config branch without asserting runtime reachability or assigning API identity to SDK helper return values. It also records runtime.llm as the standalone destructuring RHS read at index.ts:629, separately from the selected acquireLocalService method. Existing lazy provider-stream-shared findings remain unchanged: the actual whole runtime import retains namespace dynamic-import, the narrowed indexed type query contributes only the selected export type-reference, and the callback directly calls createPayloadPatchStreamWrapper."
   ]
 }
