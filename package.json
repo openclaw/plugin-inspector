@@ -59,6 +59,7 @@
     "release:local": "npm run check",
     "release:notes": "node scripts/release-notes.mjs --unreleased",
     "test": "node --test --test-concurrency=4 test/*.test.js",
+    "test:sdk-usage-benchmark": "node scripts/verify-sdk-usage-benchmark.mjs",
     "check:changed": "npm run check",
     "test:changed": "npm test",
     "crabbox:hydrate": "crabbox actions hydrate",
