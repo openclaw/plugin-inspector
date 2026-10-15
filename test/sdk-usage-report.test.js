@@ -526,3 +526,15 @@ message.trim();
   assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#tables")?.referenceKinds, ["call", "import"]);
   assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#message")?.referenceKinds, ["import"]);
 });
+
+test("SDK-declared methods keep their identities even when named like JavaScript builtins", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
+export function register(api: OpenClawPluginApi) { api.runtime.registry.map(); }
+`, { targetFiles: {
+    "src/plugin-sdk/core.ts": 'export type OpenClawPluginApi = { runtime: { registry: { map(): void } } };',
+  } });
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.deepEqual(entries.get("runtime-member:runtime.registry.map")?.referenceKinds, ["call"]);
+  assert.equal(entries.has("runtime-member:runtime.registry"), false);
+});

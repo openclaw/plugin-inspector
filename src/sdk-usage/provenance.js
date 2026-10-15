@@ -119,7 +119,7 @@ export function createProvenance({ checker, program, localSource, sources, targe
       // inherited host members. Ordinary API reads still retain removed names.
       if (value.restrictType && type && !(type.flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) && !property && !indexType) return undefined;
       if (value.kind === "api" && !value.path.length && key === "runtime") return { kind: "runtime", path: [], type: selectedType ?? indexType };
-      if (value.path.length && ["trim", "trimStart", "trimEnd", "toLowerCase", "toUpperCase", "map", "filter", "find", "includes", "startsWith", "endsWith", "replace", "split", "join", "slice", "push", "forEach"].includes(key)) return { ...value, builtin: true };
+      if (!property && value.path.length && ["trim", "trimStart", "trimEnd", "toLowerCase", "toUpperCase", "map", "filter", "find", "includes", "startsWith", "endsWith", "replace", "split", "join", "slice", "push", "forEach"].includes(key)) return { ...value, builtin: true };
       return { ...value, path: [...value.path, key], type: selectedType ?? indexType };
     }
     if (value.kind === "type-object") {
@@ -230,7 +230,7 @@ export function createProvenance({ checker, program, localSource, sources, targe
       return symbolValue(checker.getShorthandAssignmentValueSymbol(declaration));
     }
     if (ts.isParameter(declaration)) {
-      if (entryParameters.has(declaration)) return { kind: "api", path: [] };
+      if (entryParameters.has(declaration)) return { kind: "api", path: [], type: checker.getTypeAtLocation(declaration) };
       if (scope.bindings.has(declaration)) return scope.bindings.get(declaration);
       if (declaration.dotDotDotToken) return combine((restArgumentsByParameter.get(declaration) ?? []).map((args) => ({ kind: "values", values: args.map(resolve) })));
       const actual = combine((argumentsByParameter.get(declaration) ?? []).map(resolve));
