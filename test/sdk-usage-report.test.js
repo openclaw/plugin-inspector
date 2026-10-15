@@ -693,10 +693,28 @@ test("unresolved SDK import paths remain explicit unknowns", async (t) => {
     'await import(specifier);',
     'await import(`other-package/${name}`);',
     'function local(require) { require(`openclaw/plugin-sdk/${name}`); }',
+    'const prefix = "openclaw/plugin-sdk";',
+    'await import(`${prefix}/${name}`);',
+    'await import("openclaw/" + "plugin-sdk/" + name);',
   ].join("\n"));
   assert.equal(report.sdkUsage.status, "partial");
-  assert.equal(report.sdkUsage.unknowns.length, 3);
-  assert.deepEqual(report.sdkUsage.unknowns.map((unknown) => unknown.line), [2, 3, 5]);
+  assert.equal(report.sdkUsage.unknowns.length, 5);
+  assert.deepEqual(report.sdkUsage.unknowns.map((unknown) => unknown.line), [2, 3, 5, 9, 10]);
   assert.ok(report.sdkUsage.unknowns.every((unknown) => /SDK.*import|SDK.*module/.test(unknown.reason)));
   assert.equal(report.sdkUsage.entries.some((entry) => entry.kind === "sdk-module"), false);
+});
+
+test("fully resolved SDK string fragments produce concrete module inventories", async (t) => {
+  const report = await inspectPublishedJson(t, [
+    'const prefix = "openclaw/plugin-sdk";',
+    'const sdk = await import(`${prefix}/core`);',
+    'sdk.createLogger();',
+    'const other = require("openclaw/" + "plugin-sdk/example");',
+    'other.helper();',
+  ].join("\n"));
+  assert.equal(report.sdkUsage.status, "complete");
+  assert.deepEqual(report.sdkUsage.unknowns, []);
+  const keys = report.sdkUsage.entries.map((entry) => entry.key);
+  assert.ok(keys.includes("sdk-export:openclaw/plugin-sdk/core#createLogger"));
+  assert.ok(keys.includes("sdk-export:openclaw/plugin-sdk/example#helper"));
 });

@@ -1,5 +1,5 @@
 import ts from "typescript";
-import { inType, isDependencyDeclaration, isSdkSpecifier, nameText, referenceKind, walk } from "./syntax.js";
+import { inType, isDependencyDeclaration, isSdkSpecifier, nameText, referenceKind, stringExpressionPrefix, walk } from "./syntax.js";
 
 export function collectSdkImports({ sources, checker, report, provenance }) {
   const { resolve, select, moduleValue, typeValue } = provenance;
@@ -25,16 +25,6 @@ export function collectSdkImports({ sources, checker, report, provenance }) {
     while (expression && (ts.isAwaitExpression(expression) || ts.isParenthesizedExpression(expression))) expression = expression.expression;
     if (expression && ts.isCallExpression(expression) && expression.expression.getText() === "Promise.all" && ts.isArrayLiteralExpression(expression.arguments[0]) && arrayIndex !== undefined) expression = expression.arguments[0].elements[arrayIndex];
     return expression && ts.isCallExpression(expression) && (expression.expression.kind === ts.SyntaxKind.ImportKeyword || expression.expression.getText() === "require");
-  }
-  function modulePrefix(node, seen = new Set()) {
-    if (!node || seen.has(node)) return "";
-    seen.add(node);
-    if (ts.isStringLiteralLike(node)) return node.text;
-    if (ts.isTemplateExpression(node)) return node.head.text;
-    if (ts.isParenthesizedExpression(node) || ts.isAsExpression(node)) return modulePrefix(node.expression, seen);
-    if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.PlusToken) return modulePrefix(node.left, seen);
-    if (ts.isIdentifier(node)) return modulePrefix(checker.getSymbolAtLocation(node)?.valueDeclaration?.initializer, seen);
-    return "";
   }
   for (const source of sources) walk(source, (node) => {
     if (ts.isImportEqualsDeclaration(node) && ts.isExternalModuleReference(node.moduleReference)) {
@@ -67,7 +57,7 @@ export function collectSdkImports({ sources, checker, report, provenance }) {
     if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || ts.isIdentifier(node.expression) && node.expression.text === "require" && !checker.getSymbolAtLocation(node.expression)?.valueDeclaration)) {
       const namespace = resolve(node);
       if (namespace?.kind !== "namespace") {
-        if (isSdkSpecifier(modulePrefix(node.arguments[0]))) report.unknown(node, "SDK module import is not statically resolvable");
+        if (isSdkSpecifier(stringExpressionPrefix(node.arguments[0], checker).prefix)) report.unknown(node, "SDK module import is not statically resolvable");
         return;
       }
       const kind = node.expression.kind === ts.SyntaxKind.ImportKeyword ? "dynamic-import" : "require";

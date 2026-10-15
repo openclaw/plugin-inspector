@@ -1,5 +1,5 @@
 import ts from "typescript";
-import { isSdkSpecifier, nameText, walk } from "./syntax.js";
+import { isSdkSpecifier, nameText, stringExpressionPrefix, walk } from "./syntax.js";
 import { createTypeProvenance } from "./types.js";
 import { capabilityContextMember } from "./host-context.js";
 
@@ -405,7 +405,12 @@ export function createProvenance({ checker, program, localSource, sources, targe
     return types.every((member) => member.isStringLiteral() || member.isNumberLiteral()) ? types.map((member) => String(member.value)) : [];
   }
 
-  function literal(node) { const values = literals(node); return values.length === 1 ? values[0] : undefined; }
+  function literal(node) {
+    const values = literals(node);
+    if (values.length === 1) return values[0];
+    const value = stringExpressionPrefix(node, checker);
+    return value.complete ? value.prefix : undefined;
+  }
 
   for (const source of entrypoints) {
     let entry = exported(source, "default") ?? { kind: "namespace", source };
