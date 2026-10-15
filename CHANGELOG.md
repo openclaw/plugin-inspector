@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Add a versioned static SDK usage inventory to serialized plugin reports, including supported and deprecated references, runtime/type classifications, evidence, unresolved references and coverage. Preserve existing compatibility findings and author-facing filtering. Validate extraction against independently audited core-plugin source fixtures.
+
 ## 0.4.0 - 2026-10-14
 
 - Report deprecated SDK members from OpenClaw's delegated compatibility records, including shared metadata, with structured `deprecatedApi`, `replacement`, and `removeAfter` fields for calm, non-blocking retirement notices. Include the announced December 31, 2026 retirement inventory for packed npm targets used by ClawHub. The removal date is the final compatibility day; existing finding codes and fields are preserved.
