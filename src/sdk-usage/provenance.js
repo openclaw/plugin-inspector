@@ -130,10 +130,18 @@ export function createProvenance({ checker, program, localSource, sources, targe
     if (value.kind === "runtime-store" && ["getRuntime", "tryGetRuntime"].includes(key)) return { kind: "return", value: value.value };
     if (value.kind === "runtime-store" && key === "setRuntime") return { kind: "sdk-helper" };
     if (value.kind === "object") {
-      for (const item of value.node.properties ?? []) {
-        if (ts.isSpreadAssignment(item)) { const spread = select(resolve(item.expression), key); if (spread) return spread; }
-        if (nameText(item.name) === key) return ts.isShorthandPropertyAssignment(item) ? resolve(item.name) : resolve(item.initializer ?? item);
+      const alternatives = [];
+      for (const item of [...(value.node.properties ?? [])].reverse()) {
+        if (ts.isSpreadAssignment(item)) {
+          alternatives.push(select(resolve(item.expression), key));
+          const property = checker.getTypeAtLocation(item.expression).getProperty(key);
+          // A present non-SDK property also replaces an earlier SDK alias.
+          // Optional spread properties can leave the earlier value in place.
+          if (property && !(property.flags & ts.SymbolFlags.Optional)) return combine(alternatives);
+        }
+        if (nameText(item.name) === key) return combine([...alternatives, ts.isShorthandPropertyAssignment(item) ? resolve(item.name) : resolve(item.initializer ?? item)]);
       }
+      return combine(alternatives);
     }
     if (value.kind === "array") return resolve(value.node.elements[Number(key)]);
     if (value.kind === "values") return value.values[Number(key)];

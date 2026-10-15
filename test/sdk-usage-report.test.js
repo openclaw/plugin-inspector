@@ -644,3 +644,26 @@ export function register(api: OpenClawPluginApi) {
   assert.ok(entries[0].evidence.every((site) => /api\.pluginConfig\.paths|config\.paths\.length/.test(site.snippet)), "computed numbers must not be evidence of an unchanged SDK field alias");
   assert.equal(report.sdkUsage.status, "complete");
 });
+
+test("later object properties and spreads replace earlier SDK aliases", async (t) => {
+  const report = await inspectPublishedJson(t, `
+export default { register(api) {
+  const local = () => {};
+  const direct = { run: api.registerTool, run: local };
+  direct.run();
+  const replaced = { run: api.registerCommand, ...{ run: local } };
+  replaced.run();
+  const selected = { run: local, ...{ run: api.registerService } };
+  selected.run();
+  const primitive = { run: api.registerProvider, ...{ run: null } };
+  const read = primitive.run;
+} };
+`);
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.identity, entry]));
+  for (const identity of ["api.registerTool", "api.registerCommand", "api.registerProvider"]) {
+    assert.deepEqual(entries.get(identity)?.referenceKinds, ["member-access"], identity);
+    assert.equal(entries.get(identity)?.evidence.length, 1, identity);
+  }
+  assert.deepEqual(entries.get("api.registerService")?.referenceKinds, ["call", "member-access"]);
+  assert.equal(report.sdkUsage.status, "complete");
+});
