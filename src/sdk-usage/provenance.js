@@ -102,6 +102,7 @@ export function createProvenance({ checker, program, localSource, sources, targe
 
   function selectValue(value, key) {
     if (!value || key === undefined) return undefined;
+    if (value.builtin) return value;
     if (value.kind === "namespace") {
       const selected = value.module ? sdkExport(value.module, key) : exported(value.source, key);
       return selected && value.dependencyKind ? { ...selected, dependencyKind: value.dependencyKind } : selected;
@@ -276,6 +277,16 @@ export function createProvenance({ checker, program, localSource, sources, targe
     finally { resolvingSymbols.delete(symbol); }
   }
 
+  function directBuiltinReference(value, node) {
+    if (value?.kind === "union") return combine(value.values.map((item) => directBuiltinReference(item, node)));
+    if (!value?.builtin) return value;
+    const origin = value.builtinOrigin ?? node;
+    // A builtin access still reads the SDK field in this expression. Its
+    // computed result is not an unchanged SDK alias in a later expression.
+    if (origin.getSourceFile() !== node.getSourceFile() || origin.pos < node.pos || origin.end > node.end) return undefined;
+    return { ...value, builtinOrigin: origin };
+  }
+
   function resolve(node) {
     if (!node) return undefined;
     if (scope.cache.has(node)) return scope.cache.get(node);
@@ -338,6 +349,7 @@ export function createProvenance({ checker, program, localSource, sources, targe
       if (symbol?.declarations?.every((declaration) => sourceNames.has(declaration.getSourceFile().fileName))) value = symbolValue(symbol);
     }
     value ??= inferred(node);
+    value = directBuiltinReference(value, node);
     resolving.delete(node);
     scope.cache.set(node, value);
     return value;

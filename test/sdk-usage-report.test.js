@@ -620,3 +620,27 @@ export function register(api: OpenClawPluginApi) {
   assert.equal(entries.has("api-member:api.pluginConfig.paths"), true);
   assert.equal(entries.has("api-member:api.pluginConfig.paths.length"), false);
 });
+
+test("computed builtin results do not carry SDK field evidence into later container reads", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
+function statusFor(config) {
+  const label = config.paths.length.toString();
+  return { pathCount: config.paths.length, label };
+}
+function render(status) { return status.pathCount; }
+export function register(api: OpenClawPluginApi) {
+  const config = { paths: api.pluginConfig.paths ?? [] };
+  const status = statusFor(config);
+  const copied = { count: status.pathCount };
+  copied.count.toString();
+  render(status);
+}
+`);
+  const entries = report.sdkUsage.entries.filter((entry) => entry.kind === "api-member");
+  assert.deepEqual(entries.map((entry) => entry.identity), ["api.pluginConfig.paths"]);
+  assert.deepEqual(entries[0].referenceKinds, ["member-access"]);
+  assert.ok(entries[0].evidence.some((site) => site.snippet.includes("config.paths.length")));
+  assert.ok(entries[0].evidence.every((site) => /api\.pluginConfig\.paths|config\.paths\.length/.test(site.snippet)), "computed numbers must not be evidence of an unchanged SDK field alias");
+  assert.equal(report.sdkUsage.status, "complete");
+});
