@@ -23,8 +23,13 @@ export function referenceKind(node) {
   if (inType(node)) return "type-reference";
   let current = node;
   let member = false;
+  function forwarded(parent, child) {
+    if (ts.isParenthesizedExpression(parent) || ts.isAsExpression(parent) || ts.isTypeAssertionExpression(parent) || ts.isNonNullExpression(parent) || ts.isSatisfiesExpression(parent)) return parent.expression === child;
+    if (ts.isConditionalExpression(parent)) return parent.whenTrue === child || parent.whenFalse === child;
+    return ts.isBinaryExpression(parent) && [ts.SyntaxKind.QuestionQuestionToken, ts.SyntaxKind.BarBarToken].includes(parent.operatorToken.kind);
+  }
   while (current.parent && ((ts.isPropertyAccessExpression(current.parent) || ts.isElementAccessExpression(current.parent)) && current.parent.expression === current
-    || ts.isParenthesizedExpression(current.parent))) {
+    || forwarded(current.parent, current))) {
     member ||= ts.isPropertyAccessExpression(current.parent) || ts.isElementAccessExpression(current.parent);
     current = current.parent;
   }

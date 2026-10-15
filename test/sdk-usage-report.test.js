@@ -314,3 +314,103 @@ selected.call();
   assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#first")?.referenceKinds, ["call", "import"]);
   assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#second")?.referenceKinds, ["import"]);
 });
+
+test("declared local lazy loaders resolve their API destinations", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { createLazyRuntimeSurface } from "openclaw/plugin-sdk/lazy-runtime";
+import { loadBundledEntryExportSync } from "openclaw/plugin-sdk/channel-entry-contract";
+import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
+export function register(api: OpenClawPluginApi) {
+  const load = createLazyRuntimeSurface(() => import("./local.js"), mod => mod.setup(api));
+  loadBundledEntryExportSync(import.meta.url, { specifier: "./local.js", exportName: "setup" })(api);
+}
+`, { files: { "local.ts": 'import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core"; export function setup(api: OpenClawPluginApi) { api.registerTool({}); }' } });
+  assert.equal(report.sdkUsage.status, "complete");
+  assert.deepEqual(report.sdkUsage.unknowns, []);
+  assert.deepEqual(report.sdkUsage.entries.find((entry) => entry.key === "api-member:api.registerTool")?.referenceKinds, ["call"]);
+});
+
+test("typeof a concrete runtime member retains its type dependency", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
+export function register(api: OpenClawPluginApi) {
+  type Reader = ReturnType<typeof api.runtime.agent.session.createSessionEntryListReader>;
+  api.runtime.agent.session.createSessionEntryListReader({});
+}
+`);
+  const entry = report.sdkUsage.entries.find((entry) => entry.key === "runtime-member:runtime.agent.session.createSessionEntryListReader");
+  assert.equal(entry?.classification, "mixed");
+  assert.deepEqual(entry?.referenceKinds, ["call", "type-reference"]);
+});
+
+test("computed keys stay paired with their object through local helper calls", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
+function read(record: Record<string, unknown>, key: string) { return record[key]; }
+function optional(record: Record<string, unknown>, key: string) { return read(record, key); }
+export function register(api: OpenClawPluginApi) {
+  optional(api.pluginConfig, "rootSetting");
+  optional({ itemSetting: true }, "itemSetting");
+}
+`);
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.equal(entries.has("api-member:api.pluginConfig.rootSetting"), true);
+  assert.equal(entries.has("api-member:api.pluginConfig.itemSetting"), false);
+  assert.equal(report.sdkUsage.status, "complete");
+});
+
+test("a narrowed import type selects its export without adding namespace type use", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { createLazyRuntimeModule, createLazyRuntimeSurface } from "openclaw/plugin-sdk/lazy-runtime";
+const load = createLazyRuntimeModule(() => import("openclaw/plugin-sdk/example"));
+type Run = (typeof import("openclaw/plugin-sdk/example"))["run"];
+const result = createLazyRuntimeSurface(load, runtime => runtime.run());
+`);
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.equal(entries.get("sdk-export:openclaw/plugin-sdk/example#*")?.classification, "runtime");
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#run")?.referenceKinds, ["call", "dynamic-import", "type-reference"]);
+});
+
+test("Promise.all distinguishes direct imports from destructuring a local lazy namespace", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+const load = createLazyRuntimeModule(() => import("./barrel.js"));
+const [{ local }, { direct }] = await Promise.all([load(), import("openclaw/plugin-sdk/example")]);
+local(); direct();
+`, { files: { "barrel.ts": 'export { original as local } from "openclaw/plugin-sdk/example";' } });
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#original")?.referenceKinds, ["call", "dynamic-import", "member-access", "reexport"]);
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#direct")?.referenceKinds, ["call", "dynamic-import"]);
+});
+
+test("tuple iteration retains SDK-valued callable aliases", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { exists } from "openclaw/plugin-sdk/example";
+const checks = [["one", exists], ["two", exists]] as const;
+for (const [label, check] of checks) { check(label); }
+`);
+  assert.deepEqual(report.sdkUsage.entries.find((entry) => entry.key === "sdk-export:openclaw/plugin-sdk/example#exists")?.referenceKinds, ["call", "import", "member-access"]);
+});
+
+test("published CommonJS entrypoints receive API ownership through default wrappers", async (t) => {
+  const report = await inspectPublishedJson(t, 'function unrelated(api) { api.lookalike(); }', {
+    sdkUsageInputKind: "artifact",
+    files: {
+      "package.json": JSON.stringify({ name: "inventory", version: "1.0.0", openclaw: { extensions: ["./entry.cjs"] } }),
+      "entry.cjs": 'module.exports = { default: { register(api) { api.registerTool({}); } } };',
+    },
+  });
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.deepEqual(entries.get("api-member:api.registerTool")?.referenceKinds, ["call"]);
+  assert.equal(entries.has("api-member:api.lookalike"), false);
+});
+
+test("an immediately invoked callable fallback is a call rather than a separate member read", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
+export function register(api: OpenClawPluginApi) {
+  (api.logger.warn ?? console.warn)("example");
+}
+`);
+  assert.deepEqual(report.sdkUsage.entries.find((entry) => entry.key === "api-member:api.logger.warn")?.referenceKinds, ["call"]);
+});

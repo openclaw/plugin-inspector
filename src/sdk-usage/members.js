@@ -14,6 +14,7 @@ export function collectSdkMembers({ sources, report, provenance }) {
     return literals(node);
   }
   for (const source of sources) walk(source, (node) => {
+    if (ts.isQualifiedName(node) && !ts.isQualifiedName(node.parent)) record(resolve(node), "type-reference", node, "type");
     if (ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node)) {
       if (node.parent.expression === node && (ts.isPropertyAccessExpression(node.parent) || ts.isElementAccessExpression(node.parent))) return;
       const value = resolve(node);

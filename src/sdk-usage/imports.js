@@ -15,11 +15,16 @@ export function collectSdkImports({ sources, report, provenance }) {
   }
   function directDependencyBinding(binding) {
     let owner = binding.parent.parent;
-    while (ts.isBindingElement(owner)) owner = owner.parent.parent;
-    if (ts.isParameter(owner) && ts.isCallExpression(owner.parent.parent) && ts.isPropertyAccessExpression(owner.parent.parent.expression) && owner.parent.parent.expression.name.text === "then") return true;
+    let arrayIndex;
+    while (ts.isBindingElement(owner)) {
+      if (ts.isArrayBindingPattern(owner.parent)) arrayIndex = owner.parent.elements.indexOf(owner);
+      owner = owner.parent.parent;
+    }
     let expression = owner.initializer;
+    if (ts.isParameter(owner) && ts.isCallExpression(owner.parent.parent) && ts.isPropertyAccessExpression(owner.parent.parent.expression) && owner.parent.parent.expression.name.text === "then") expression = owner.parent.parent.expression.expression;
     while (expression && (ts.isAwaitExpression(expression) || ts.isParenthesizedExpression(expression))) expression = expression.expression;
-    return expression && ts.isCallExpression(expression) && (expression.expression.kind === ts.SyntaxKind.ImportKeyword || ["require", "Promise.all"].includes(expression.expression.getText()));
+    if (expression && ts.isCallExpression(expression) && expression.expression.getText() === "Promise.all" && ts.isArrayLiteralExpression(expression.arguments[0]) && arrayIndex !== undefined) expression = expression.arguments[0].elements[arrayIndex];
+    return expression && ts.isCallExpression(expression) && (expression.expression.kind === ts.SyntaxKind.ImportKeyword || expression.expression.getText() === "require");
   }
   for (const source of sources) walk(source, (node) => {
     if (ts.isImportDeclaration(node) && ts.isStringLiteralLike(node.moduleSpecifier)) {
@@ -66,7 +71,10 @@ export function collectSdkImports({ sources, report, provenance }) {
     }
     if (ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument) && ts.isStringLiteralLike(node.argument.literal)) {
       const namespace = moduleValue(node.argument.literal.text, source);
-      if (namespace) dependency(namespace, node.qualifier ? nameText(node.qualifier) : "*", "type-reference", true, node, Boolean(namespace.module));
+      let owner = node;
+      while (ts.isParenthesizedTypeNode(owner.parent)) owner = owner.parent;
+      const narrowed = ts.isIndexedAccessTypeNode(owner.parent) && owner.parent.objectType === owner;
+      if (namespace) dependency(namespace, node.qualifier ? nameText(node.qualifier) : narrowed ? null : "*", "type-reference", true, node, Boolean(namespace.module));
     }
     if (ts.isIndexedAccessTypeNode(node)) record(typeValue(node), "type-reference", node, true);
     if (ts.isTypeReferenceNode(node)) {
