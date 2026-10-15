@@ -77,6 +77,8 @@ export function collectSdkImports({ sources, report, provenance }) {
     if (ts.isBindingElement(node) && ts.isIdentifier(node.name) && !directDependencyBinding(node)) record(resolve(node.name), "member-access", node);
     if (ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.SuperKeyword) record(resolve(node.expression), "call", node);
     if (ts.isIdentifier(node)) {
+      // The complete access is handled below, including the built-in boundary.
+      if ((ts.isPropertyAccessExpression(node.parent) || ts.isElementAccessExpression(node.parent)) && node.parent.expression === node) return;
       if (ts.isPropertyAccessExpression(node.parent) && node.parent.name === node || ts.isQualifiedName(node.parent) && node.parent.right === node) return;
       if (node.parent.name === node && !ts.isShorthandPropertyAssignment(node.parent)) return;
       const value = resolve(node);

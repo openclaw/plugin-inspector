@@ -221,3 +221,96 @@ export function catalog({ formatErrorMessage }: Pick<PluginCapabilityCatalogCont
   assert.equal(entry?.classification, "mixed");
   assert.deepEqual(entry?.referenceKinds, ["call", "member-access", "type-reference"]);
 });
+
+test("published plain-function entrypoints establish API ownership without SDK imports", async (t) => {
+  const report = await inspectPublishedJson(t, `
+export default function plugin(api) {
+  api.logger.info("installed");
+  api.on("llm_input", () => {});
+}
+function unrelated(api) { api.lookalike(); }
+`, { sdkUsageInputKind: "artifact" });
+  assert.deepEqual(report.sdkUsage.entries.map((entry) => entry.key), [
+    "api-member:api.logger.info", "api-member:api.on", "hook:hook.llm_input",
+    "manifest-contract:manifest.contracts.tools:inventory_tool",
+  ]);
+  assert.equal(report.sdkUsage.status, "complete");
+});
+
+test("standard string operations stop at the SDK value rather than becoming SDK calls", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { MESSAGE } from "openclaw/plugin-sdk/example";
+import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
+function format(value: string) { return value.replace("x", "y").trim(); }
+format(MESSAGE);
+export function register(api: OpenClawPluginApi) {
+  function size(value: string) { return value.length; }
+  size(api.runtime.version);
+}
+`, { targetFiles: {
+    "package.json": JSON.stringify({ name: "openclaw", exports: { "./plugin-sdk/example": { types: "./dist/example.d.ts" } } }),
+    "dist/example.d.ts": 'export declare const MESSAGE: string;',
+  } });
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#MESSAGE")?.referenceKinds, ["import"]);
+  assert.deepEqual(entries.get("runtime-member:runtime.version")?.referenceKinds, ["member-access"]);
+  assert.equal(entries.has("runtime-member:runtime.version.length"), false);
+});
+
+test("class constructor properties retain declared API runtime ownership", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
+type Deps = { runtime: NonNullable<OpenClawPluginApi["runtime"]> };
+export class Worker {
+  constructor(private readonly deps: Pick<Deps, "runtime">) {}
+  run() { this.deps.runtime.nodes.list({}); }
+}
+`);
+  assert.deepEqual(report.sdkUsage.entries.find((entry) => entry.key === "runtime-member:runtime.nodes.list")?.referenceKinds, ["call"]);
+});
+
+test("indexed imported types name their real export rather than inventing field exports", async (t) => {
+  const report = await inspectPublishedJson(t, `
+type Text = import("openclaw/plugin-sdk/example").Payload["text"];
+type Register = import("openclaw/plugin-sdk/core").OpenClawPluginApi["registerTool"];
+`);
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.equal(entries.has("sdk-export:openclaw/plugin-sdk/example#text"), false);
+  assert.equal(entries.has("sdk-export:openclaw/plugin-sdk/core#registerTool"), false);
+  assert.deepEqual(entries.get("api-member:api.registerTool")?.referenceKinds, ["type-reference"]);
+  assert.equal(entries.get("sdk-export:openclaw/plugin-sdk/example#Payload")?.classification, "type");
+});
+
+test("runtime interfaces preserve inherited public members and exclude local augmentations", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import type { PluginRuntime } from "openclaw/plugin-sdk/core";
+import { createPluginRuntimeStore } from "openclaw/plugin-sdk/runtime-store";
+interface LocalRuntime extends PluginRuntime {
+  channel: PluginRuntime["channel"] & { local: { send(): void } };
+}
+const { getRuntime } = createPluginRuntimeStore<LocalRuntime>();
+getRuntime().channel.reply.dispatch();
+getRuntime().channel.local.send();
+getRuntime().state.open();
+`, { targetFiles: {
+    "package.json": JSON.stringify({ name: "openclaw", exports: { "./plugin-sdk/core": { types: "./dist/core.d.ts" } } }),
+    "dist/core.d.ts": 'export type PluginRuntime = { channel: { reply: { dispatch(): void } }; state: { open(): void } };',
+  } });
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.deepEqual(entries.get("runtime-member:runtime.channel.reply.dispatch")?.referenceKinds, ["call"]);
+  assert.deepEqual(entries.get("runtime-member:runtime.state.open")?.referenceKinds, ["call"]);
+  assert.equal(entries.has("runtime-member:runtime.channel.local.send"), false);
+});
+
+test("separate calls to a local helper do not exchange SDK return aliases", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { first, second } from "openclaw/plugin-sdk/example";
+function fallback(value, otherwise) { return value ?? otherwise; }
+const selected = { call: fallback(undefined, first) };
+const unused = fallback(undefined, second);
+selected.call();
+`);
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#first")?.referenceKinds, ["call", "import"]);
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#second")?.referenceKinds, ["import"]);
+});

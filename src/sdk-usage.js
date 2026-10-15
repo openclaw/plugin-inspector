@@ -7,6 +7,7 @@ import { readUsageFiles } from "./sdk-usage/source-files.js";
 import { createUsageProgram } from "./sdk-usage/program.js";
 import { createProvenance } from "./sdk-usage/provenance.js";
 import { collectSdkMembers } from "./sdk-usage/members.js";
+import { pluginEntrypointSources } from "./sdk-usage/entrypoints.js";
 
 /** Offline static inventory. Neither plugin modules nor target modules are imported. */
 export async function inspectSdkUsage({ root, inputKind = "source", targetRoot }) {
@@ -14,7 +15,7 @@ export async function inspectSdkUsage({ root, inputKind = "source", targetRoot }
   const files = await readUsageFiles(root, report);
   const context = createUsageProgram(files, targetRoot);
   const { sources, checker } = context;
-  const provenance = createProvenance(context);
+  const provenance = createProvenance({ ...context, entrypoints: pluginEntrypointSources({ root, files, sources, inputKind }) });
   for (const source of sources) {
     for (const diagnostic of source.parseDiagnostics) {
       report.unknown(source, `Source syntax could not be parsed: ${ts.flattenDiagnosticMessageText(diagnostic.messageText, " ")}`);
