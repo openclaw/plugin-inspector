@@ -136,7 +136,11 @@ export function createProvenance({ checker, program, localSource, sources, targe
     }
     if (value.kind === "array") return resolve(value.node.elements[Number(key)]);
     if (value.kind === "values") return value.values[Number(key)];
-    if (value.kind === "union") return combine(value.values.map((item) => select(item, key)));
+    if (value.kind === "union") {
+      const arrayFallback = value.values.some((item) => item.kind === "array");
+      return combine(value.values.map((item) => arrayFallback && key === "length" && ["api", "runtime"].includes(item.kind) && !item.type?.getProperty(key)
+        ? { ...item, builtin: true } : select(item, key)));
+    }
     return undefined;
   }
 

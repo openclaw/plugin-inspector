@@ -538,3 +538,16 @@ export function register(api: OpenClawPluginApi) { api.runtime.registry.map(); }
   assert.deepEqual(entries.get("runtime-member:runtime.registry.map")?.referenceKinds, ["call"]);
   assert.equal(entries.has("runtime-member:runtime.registry"), false);
 });
+
+test("array fallback lengths stay at the SDK data field boundary", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
+export function register(api: OpenClawPluginApi) {
+  const config = { paths: api.pluginConfig.paths ?? [] };
+  return config.paths.length;
+}
+`);
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.equal(entries.has("api-member:api.pluginConfig.paths"), true);
+  assert.equal(entries.has("api-member:api.pluginConfig.paths.length"), false);
+});
