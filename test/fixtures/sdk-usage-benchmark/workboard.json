@@ -1763,9 +1763,9 @@
       ]
     },
     {
-      "key": "manifest-contract:manifest.cliCommands:workboard",
+      "key": "manifest-contract:manifest.cliCommands.name:workboard",
       "kind": "manifest-contract",
-      "identity": "manifest.cliCommands:workboard",
+      "identity": "manifest.cliCommands.name:workboard",
       "classification": "declarative",
       "referenceKinds": [
         "manifest-declaration"
@@ -1779,9 +1779,9 @@
       ]
     },
     {
-      "key": "manifest-contract:manifest.commandAliases:workboard",
+      "key": "manifest-contract:manifest.commandAliases.name:workboard",
       "kind": "manifest-contract",
-      "identity": "manifest.commandAliases:workboard",
+      "identity": "manifest.commandAliases.name:workboard",
       "classification": "declarative",
       "referenceKinds": [
         "manifest-declaration"
@@ -5179,6 +5179,7 @@
     "Server runtime provenance is established by OpenClawPluginApi/PluginRuntime contracts and unchanged handle/callable propagation. Literal Pick and indexed type references select the maximal public members. The sandbox authority callables remain direct aliases through workspace-access.ts; plugin-owned forwarding wrappers are not treated as SDK symbols.",
     "Service contexts (logger/getCron/gatewayEvents), command/tool contexts, doctor migration contexts, worktree/config/database results and other SDK helper return objects do not become API/runtime handles. No calls are inferred from SDK helper implementation bodies.",
     "Manifest contracts cover cliCommands.name, commandAliases.name and all 38 contracts.tools declarations. backupResources, uiCapabilities, categories, doctorContract, activation, dashboard, catalog, toolMetadata, configSchema and controlUi are metadata outside the specified manifest identity fields.",
-    "ReferenceKinds include every established syntax/use category with representative evidence per kind. reviewedFiles.findingCount counts distinct findings evidenced in that file; zero does not mean the file was skipped."
+    "ReferenceKinds include every established syntax/use category with representative evidence per kind. reviewedFiles.findingCount counts distinct findings evidenced in that file; zero does not mean the file was skipped.",
+    "Original-owner canonicalization correction: the frozen contract names cliCommands.name and commandAliases.name as manifest fields. The object name declarations at openclaw.plugin.json:21 and :126 therefore use manifest.cliCommands.name:workboard and manifest.commandAliases.name:workboard. Only these two identities/keys are corrected; their evidence, classifications, reference kinds and all counts are unchanged."
   ]
 }

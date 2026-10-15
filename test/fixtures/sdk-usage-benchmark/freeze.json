@@ -811,7 +811,7 @@
       "pluginId": "workboard",
       "path": "workboard.json",
       "agentId": "/root/sdk_benchmark_coordinator/audit_workboard",
-      "sha256": "67364288af5ec04a4186dffd2187ff5846eaaed174d9e7192f7414d0da9421da",
+      "sha256": "9e753cb0320f8dd03f60c432a52298bc2225f6ba1dcc4a1fe1dd8617d7d5b857",
       "counts": {
         "findings": 183,
         "reviewedFiles": 133,
@@ -856,6 +856,12 @@
       "agentId": "/root/sdk_benchmark_coordinator/audit_memory_core",
       "previousFreezeSha256": "3769622d1ea7f7b54fc784306f7da3c82da3ca999d9acc776f040ae29a0adf3f",
       "reason": "Original auditor independently reconciled ten named dynamic-import references against doctor-dreaming-cron.ts:18 and unchanged namespace selections under the existing frozen rule. See the fixture note; population, identities, classifications and unknowns are unchanged."
+    },
+    {
+      "pluginId": "workboard",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_workboard",
+      "previousFreezeSha256": "c4fdaef57bac6ba073ec6b5ba48e69c1cc4f5fe91742ea2260a0a713d2a4e596",
+      "reason": "Original auditor independently reconciled cliCommands.name and commandAliases.name identities against the frozen contract and manifest object fields. Only the two canonical keys/identities and explanatory note changed; evidence, counts and other findings are unchanged."
     }
   ]
 }
