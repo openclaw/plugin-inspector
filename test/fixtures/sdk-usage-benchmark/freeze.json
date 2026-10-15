@@ -11,9 +11,9 @@
     "count": 69
   },
   "contractSha256": "10297e62af1d020743674ef1e8e0401a7d0fd8ded5d4b27b69b7aac2a2d23c0e",
-  "readmeSha256": "a2341be4bb48bc2b7cb560cc949922eaa75c77e24f768aae142e79bd9250a4ca",
+  "readmeSha256": "1a4baa8fe631e8965931227affe237ae8d99562272ce48e836ba9d43886e46f1",
   "rosterSha256": "a24d28e28eb7d191bd4d9b7148bee984381767f403b5c9c78a847545b17ea43c",
-  "progressSha256": "05a523f15f38e5e32d3c342d93ee15be03775d398bcbc5085c2bea720d2a573b",
+  "progressSha256": "0a7cf79d1c1066a4ec45987736a3eceabbfec5c12a2fd9c340b2bf33be259345",
   "fixtures": [
     {
       "pluginId": "a2a",
@@ -31,9 +31,9 @@
       "pluginId": "active-memory",
       "path": "active-memory.json",
       "agentId": "/root/audit_active_memory",
-      "sha256": "6f895a21ce8f955d31df483a807664afbf81e1aa7d63312e277cee7829905787",
+      "sha256": "50242551e34d60f7d17a34367504c600ab608632390fc273916bba7051830c0f",
       "counts": {
-        "findings": 100,
+        "findings": 128,
         "reviewedFiles": 17,
         "excludedFiles": 16,
         "unknowns": 0
@@ -91,9 +91,9 @@
       "pluginId": "anthropic",
       "path": "anthropic.json",
       "agentId": "/root/sdk_benchmark_coordinator/audit_anthropic",
-      "sha256": "f86f289ef86d9fdc72d79cd9a41e77f70ca3129075a2fe2a2c52929c5871feea",
+      "sha256": "e83c13c28aa839716956d15f4f0bd0fcc7c16e317a9df5302a3d73266d75adae",
       "counts": {
-        "findings": 240,
+        "findings": 242,
         "reviewedFiles": 57,
         "excludedFiles": 45,
         "unknowns": 0
@@ -845,7 +845,7 @@
     }
   ],
   "aggregateCounts": {
-    "findings": 6585,
+    "findings": 6615,
     "reviewedFiles": 2231,
     "excludedFiles": 2002,
     "unknowns": 0
@@ -862,6 +862,18 @@
       "agentId": "/root/sdk_benchmark_coordinator/audit_workboard",
       "previousFreezeSha256": "c4fdaef57bac6ba073ec6b5ba48e69c1cc4f5fe91742ea2260a0a713d2a4e596",
       "reason": "Original auditor independently reconciled cliCommands.name and commandAliases.name identities against the frozen contract and manifest object fields. Only the two canonical keys/identities and explanatory note changed; evidence, counts and other findings are unchanged."
+    },
+    {
+      "pluginId": "active-memory",
+      "agentId": "/root/audit_active_memory",
+      "previousFreezeSha256": "0d6cf66b6383481b96c6f7a258ec952d152e17f447c9ae5f510e13c50e797953",
+      "reason": "Original auditor independently added 28 source-proven configuration paths across normalizePluginConfig\u2019s unchanged incoming-object branch; unknown annotations, guards and casts do not erase provenance. Arbitrary SDK coercion results remain excluded."
+    },
+    {
+      "pluginId": "anthropic",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_anthropic",
+      "previousFreezeSha256": "0d6cf66b6383481b96c6f7a258ec952d152e17f447c9ae5f510e13c50e797953",
+      "reason": "Original auditor independently added sessionCatalog and sessionCatalog.enabled through the unchanged local isClaudeSessionCatalogEnabled argument, guard and cast; boolean helper return has no object provenance."
     }
   ]
 }

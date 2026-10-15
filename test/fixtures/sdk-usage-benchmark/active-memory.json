@@ -18,7 +18,7 @@
       "path": "extensions/active-memory/config.ts",
       "sha256": "4ba4c96648f4836698a0cf6c955ea96f46a2b1d46d49fe40ef8806bbbed5470d",
       "role": "production-source",
-      "findingCount": 18
+      "findingCount": 46
     },
     {
       "path": "extensions/active-memory/doctor-contract-api.ts",
@@ -370,6 +370,482 @@
           "path": "extensions/active-memory/index.ts",
           "line": 75,
           "snippet": "      api.pluginConfig,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.agents",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.agents",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 169,
+          "snippet": "    agents: Array.isArray(raw.agents) ? normalizeStringEntries(raw.agents) : [],",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.allowedChatIds",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.allowedChatIds",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 173,
+          "snippet": "    allowedChatIds: normalizeIdentifierList(raw.allowedChatIds),",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.allowedChatTypes",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.allowedChatTypes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 160,
+          "snippet": "  const allowedChatTypes = Array.isArray(raw.allowedChatTypes)",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.cacheTtlMs",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.cacheTtlMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 231,
+          "snippet": "    cacheTtlMs: resolveIntegerOption(raw.cacheTtlMs, DEFAULT_CACHE_TTL_MS, {",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.circuitBreakerCooldownMs",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.circuitBreakerCooldownMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 241,
+          "snippet": "      raw.circuitBreakerCooldownMs,",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.circuitBreakerMaxTimeouts",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.circuitBreakerMaxTimeouts",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 236,
+          "snippet": "      raw.circuitBreakerMaxTimeouts,",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.deniedChatIds",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.deniedChatIds",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 174,
+          "snippet": "    deniedChatIds: normalizeIdentifierList(raw.deniedChatIds),",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.enabled",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.enabled",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 167,
+          "snippet": "    enabled: raw.enabled !== false,",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.fastMode",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.fastMode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 180,
+          "snippet": "    fastMode: normalizeActiveMemoryFastMode(raw.fastMode),",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.logging",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.logging",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 230,
+          "snippet": "    logging: raw.logging === true,",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.maxSummaryChars",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.maxSummaryChars",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 202,
+          "snippet": "    maxSummaryChars: resolveIntegerOption(raw.maxSummaryChars, DEFAULT_MAX_SUMMARY_CHARS, {",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.mode",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.mode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 168,
+          "snippet": "    mode: resolveChoice(raw.mode, [\"always\", \"off\", \"escalate\"], DEFAULT_ACTIVE_MEMORY_MODE),",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.model",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.model",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 170,
+          "snippet": "    model: normalizeOptionalString(raw.model),",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.modelFallback",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.modelFallback",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 171,
+          "snippet": "    modelFallback: normalizeOptionalString(raw.modelFallback),",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.persistTranscripts",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.persistTranscripts",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 245,
+          "snippet": "    persistTranscripts: raw.persistTranscripts === true,",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.promptAppend",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.promptAppend",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 190,
+          "snippet": "    promptAppend: normalizeOptionalString(raw.promptAppend),",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.promptOverride",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.promptOverride",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 189,
+          "snippet": "    promptOverride: normalizeOptionalString(raw.promptOverride),",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.promptStyle",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.promptStyle",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 182,
+          "snippet": "      raw.promptStyle,",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.queryMode",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.queryMode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 201,
+          "snippet": "    queryMode: resolveChoice(raw.queryMode, [\"message\", \"recent\", \"full\"], DEFAULT_QUERY_MODE),",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.recentAssistantChars",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.recentAssistantChars",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 223,
+          "snippet": "      raw.recentAssistantChars,",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.recentAssistantTurns",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.recentAssistantTurns",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 211,
+          "snippet": "      raw.recentAssistantTurns,",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.recentUserChars",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.recentUserChars",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 218,
+          "snippet": "    recentUserChars: resolveIntegerOption(raw.recentUserChars, DEFAULT_RECENT_USER_CHARS, {",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.recentUserTurns",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.recentUserTurns",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 206,
+          "snippet": "    recentUserTurns: resolveIntegerOption(raw.recentUserTurns, DEFAULT_RECENT_USER_TURNS, {",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.setupGraceTimeoutMs",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.setupGraceTimeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 197,
+          "snippet": "    setupGraceTimeoutMs: resolveIntegerOption(raw.setupGraceTimeoutMs, setupGraceTimeoutMs, {",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.thinking",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.thinking",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 176,
+          "snippet": "      raw.thinking,",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.timeoutMs",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.timeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 192,
+          "snippet": "      parseOptionalPositiveInt(raw.timeoutMs, DEFAULT_TIMEOUT_MS),",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.toolsAllow",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.toolsAllow",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 187,
+          "snippet": "      normalizeConfiguredToolsAllow(raw.toolsAllow) ??",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.transcriptDir",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.transcriptDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 246,
+          "snippet": "    transcriptDir: normalizeTranscriptDir(raw.transcriptDir),",
+          "note": "The startup call at index.ts:74–78 passes api.pluginConfig unchanged. config.ts:153 accepts that value; the object branch at config.ts:157–159 preserves its identity despite the unknown annotation, cast, and fallback. This records a possible source dependency, not execution."
         }
       ]
     },
@@ -2973,7 +3449,8 @@
     "api aliases inside typed helper parameter objects normalize to api; api.runtime members normalize to runtime. api.config.session.mainKey is independently observed alongside bare api.config; prefixes of longer member paths are not invented.",
     "OpenClawPluginApi[\"runtime\"][\"agent\"][\"runEmbeddedAgent\"] supplies type references in recall.ts and recall-run.ts. Its runtime invocation makes that member mixed. readSessionTranscriptRawDelta is also mixed because transcript.ts uses a direct typeof type query, while its module receives runtime classification only at that file import site.",
     "ActiveMemoryTranscriptSource is a direct type alias of SessionTranscriptTargetParams. Local type-import sites and downstream annotations retain that SDK-export provenance. Exported type declarations are not reexport specifiers. Projected ConversationRecallContext, MemoryAudience, ActiveRecallParams and other plugin-owned composites do not re-enumerate inferred SDK members.",
-    "Callback ctx/event/toolAuthority objects, config objects, provider/manager/capability values returned by SDK free functions, and keyed stores returned by runtime.state.openKeyedStore are not API/runtime handles. Their members do not become additional API/runtime or SDK-export reference kinds. SDK helper internals and plugin-owned forwarding wrapper invocations are not inferred.",
-    "SDK function call sites retain call kinds, explicit imported types retain type-reference kinds, and ordinary imports retain runtime dependency classification even for bare value use such as DEFAULT_PROVIDER. Finding evidence is representative per file/kind; findingCount counts distinct identities occurring in each reviewed file."
+    "Callback ctx/event/toolAuthority objects, configuration objects without proven API provenance, provider/manager/capability values returned by SDK free functions, and keyed stores returned by runtime.state.openKeyedStore are not API/runtime handles. Their members do not become additional API/runtime or SDK-export reference kinds. SDK helper internals and plugin-owned forwarding wrapper invocations are not inferred.",
+    "SDK function call sites retain call kinds, explicit imported types retain type-reference kinds, and ordinary imports retain runtime dependency classification even for bare value use such as DEFAULT_PROVIDER. Finding evidence is representative per file/kind; findingCount counts distinct identities occurring in each reviewed file.",
+    "Original-owner source reconciliation: an unknown annotation, type assertion, or conditional fallback does not erase an unchanged incoming value's provenance. index.ts:74–78 passes api.pluginConfig to normalizePluginConfig; config.ts:153 and its original-object branch at config.ts:157–159 preserve that provenance. The 28 explicitly read input fields therefore contribute runtime api.pluginConfig.<field> member-access findings, without claiming execution or propagating identity to the fallback object. The newly constructed normalized result at config.ts:166–247 and arbitrary SDK-return values do not inherit the original identity. In particular, hasDeprecatedModelFallbackPolicy crosses asOptionalRecord at config.ts:102, so its Object.hasOwn check adds no api.pluginConfig.modelFallbackPolicy finding. timeoutMsIsDefault is a constructed output field, not an input-field access. Standard array methods stop at the accessed input field."
   ]
 }

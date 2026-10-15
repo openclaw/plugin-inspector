@@ -28,7 +28,7 @@
       "agentId": "/root/audit_active_memory",
       "fixture": "active-memory.json",
       "counts": {
-        "findings": 100,
+        "findings": 128,
         "reviewedFiles": 17,
         "excludedFiles": 16,
         "unknowns": 0
@@ -103,7 +103,7 @@
       "agentId": "/root/sdk_benchmark_coordinator/audit_anthropic",
       "fixture": "anthropic.json",
       "counts": {
-        "findings": 240,
+        "findings": 242,
         "reviewedFiles": 57,
         "excludedFiles": 45,
         "unknowns": 0

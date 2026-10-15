@@ -282,7 +282,7 @@
       "path": "extensions/anthropic/session-catalog-registration.ts",
       "sha256": "05da9c756957fb95880c0e8e8e1f03459edcd2550e83a51f63983523f1648759",
       "role": "production-source",
-      "findingCount": 17
+      "findingCount": 19
     },
     {
       "path": "extensions/anthropic/session-catalog-runtime.ts",
@@ -644,6 +644,38 @@
           "path": "extensions/anthropic/session-catalog-registration.ts",
           "line": 163,
           "snippet": "if (!isClaudeSessionCatalogEnabled(api.pluginConfig)) {"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.pluginConfig.sessionCatalog",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.sessionCatalog",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/anthropic/session-catalog-registration.ts",
+          "line": 35,
+          "snippet": "const sessionCatalog = (pluginConfig as { sessionCatalog?: unknown }).sessionCatalog;"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.pluginConfig.sessionCatalog.enabled",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.sessionCatalog.enabled",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/anthropic/session-catalog-registration.ts",
+          "line": 39,
+          "snippet": "(sessionCatalog as { enabled?: unknown }).enabled === false"
         }
       ],
       "classification": "runtime"
@@ -6798,6 +6830,7 @@
     "createDeferred and createProviderUsageDailyAccumulator are mixed SDK-export dependencies because explicit typeof type queries coexist with their value imports/calls. Later type usage does not add type-import to their modules.",
     "sessionCatalogPaging.boundTranscriptPage calls a member of the imported SDK object and contributes call to the sessionCatalogPaging export, without inventing a public API/runtime path.",
     "Claude UserPromptSubmit/PreToolUse protocol callbacks and provider hook properties are not api.on/registerHook registrations. Anthropic has no hook findings. Manifest identities are limited to providers and contracts.mediaUnderstandingProviders/contracts.usageProviders; cliBackends, setup metadata, catalog entries, and descriptive/config fields are outside the agreed manifest-contract identity set.",
-    "Every finding's referenceKinds merges all manually reviewed source occurrence kinds; evidence includes representative dependency and call/type/member sites. No genuinely unresolved SDK/API/runtime reference remains."
+    "Every finding's referenceKinds merges all manually reviewed source occurrence kinds; evidence includes representative dependency and call/type/member sites. No genuinely unresolved SDK/API/runtime reference remains.",
+    "Source-only reconciliation: session-catalog-registration.ts:163 passes api.pluginConfig unchanged to isClaudeSessionCatalogEnabled. The unknown parameter annotation, object guard, and assertion preserve that original object at line 35, which reads api.pluginConfig.sessionCatalog. The sessionCatalog local aliases that nested original value, and the guard/assertion at line 39 preserve provenance for api.pluginConfig.sessionCatalog.enabled. Both are member-access findings; the helper call and its boolean result add no API call or returned-object provenance. The separate api.pluginConfig access at line 163 remains."
   ]
 }
