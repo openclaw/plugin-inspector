@@ -1,0 +1,53 @@
+import path from "node:path";
+import ts from "typescript";
+
+function publicTypePaths(targetRoot) {
+  if (!targetRoot) return undefined;
+  const paths = { "openclaw/plugin-sdk": [path.join(targetRoot, "src/plugin-sdk/index.ts")], "openclaw/plugin-sdk/*": [path.join(targetRoot, "src/plugin-sdk/*.ts")] };
+  const packageText = ts.sys.readFile(path.join(targetRoot, "package.json"));
+  if (!packageText) return paths;
+  let metadata;
+  try { metadata = JSON.parse(packageText); } catch { return paths; }
+  function typeCondition(value) {
+    if (!value || typeof value !== "object") return undefined;
+    if (typeof value.types === "string") return value.types;
+    for (const nested of Object.values(value)) { const found = typeCondition(nested); if (found) return found; }
+  }
+  for (const [key, value] of Object.entries(metadata.exports ?? {})) {
+    if (key !== "./plugin-sdk" && !key.startsWith("./plugin-sdk/")) continue;
+    const types = typeCondition(value);
+    if (!types) continue;
+    const resolved = path.resolve(targetRoot, types);
+    if (path.relative(targetRoot, resolved).startsWith("..") || !ts.sys.fileExists(resolved)) continue;
+    paths[`openclaw/${key.slice(2)}`] = [resolved];
+  }
+  return paths;
+}
+
+/** Only resolve local source and the explicitly supplied host. Never load dependencies. */
+export function createUsageProgram(files, targetRoot) {
+  const sources = files.filter((file) => !file.metadata).map((file) => ts.createSourceFile(file.path, file.text, ts.ScriptTarget.Latest, true));
+  const byPath = new Map(sources.map((source) => [source.fileName, source]));
+  const options = {
+    allowJs: true, lib: ["lib.es2023.d.ts"], noEmit: true, skipLibCheck: true,
+    target: ts.ScriptTarget.Latest, module: ts.ModuleKind.ESNext,
+    moduleResolution: ts.ModuleResolutionKind.Bundler,
+    ...(targetRoot ? { paths: publicTypePaths(targetRoot) } : {}),
+  };
+  const host = ts.createCompilerHost(options);
+  const readSource = host.getSourceFile.bind(host);
+  host.getSourceFile = (name, languageVersion) => byPath.get(name) ?? readSource(name, languageVersion);
+  host.resolveModuleNames = (names, containingFile) => names.map((name) => {
+    if (!name.startsWith(".") && !(targetRoot && name.startsWith("openclaw/plugin-sdk"))) return undefined;
+    const resolved = ts.resolveModuleName(name, containingFile, options, host).resolvedModule;
+    return resolved?.resolvedFileName.includes(`${path.sep}node_modules${path.sep}`) ? undefined : resolved;
+  });
+  host.writeFile = () => {};
+  const program = ts.createProgram(sources.map((source) => source.fileName), options, host);
+  const checker = program.getTypeChecker();
+  function localSource(specifier, from) {
+    const resolved = host.resolveModuleNames([specifier], from.fileName)[0];
+    return resolved && program.getSourceFile(resolved.resolvedFileName);
+  }
+  return { sources, checker, program, localSource };
+}

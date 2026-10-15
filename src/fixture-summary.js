@@ -52,6 +52,7 @@ export async function buildCompatibilityFixtureReport({ fixture, inspection, che
     sdkImports,
     sdkImportDetails: inspection.sdkImports ?? [],
     sdkDeprecations: inspection.sdkDeprecations ?? [],
+    sdkUsage: inspection.sdkUsage,
   };
 }
 

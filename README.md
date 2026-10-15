@@ -503,6 +503,7 @@ Important report sections:
 | `summary` | Counts for fixtures, breakages, warnings, suggestions, issues, issue classes, and contract probes. |
 | `targetOpenClaw` | Exact resolved version, source metadata, cache state, and public compatibility data for the selected OpenClaw target. |
 | `fixtures` | Per-plugin metadata, hooks, registrations, manifest contracts, package data, SDK imports, and SDK deprecation evidence. |
+| `sdkUsage` | Versioned static SDK inventory for a single-plugin report; every fixture also has its own `sdkUsage`. |
 | `breakages` | Blocking compatibility failures. |
 | `warnings` / `suggestions` | Non-blocking compatibility findings. |
 | `issues` | Normalized issue rows with severity and class. |
@@ -539,6 +540,43 @@ An explicit source checkout uses its own registry instead of the snapshot.
 Conditional prose surfaces and untyped instance-method calls are
 not inferred from method names alone. The reader resolves literal data and
 spreads, not computed registry builders.
+
+### SDK usage inventory
+
+`sdkUsage` is additive. Existing `warnings`, `issues`, deprecation codes,
+remediation, and author-facing filtering retain their meanings. Inventory entries
+include supported APIs as well as deprecated ones; filter
+`entry.deprecationCodes.length > 0` for the deprecated subset.
+
+The inventory records six identity kinds: `sdk-module`, `sdk-export`,
+`api-member`, `runtime-member`, `hook`, and `manifest-contract`. For example,
+`sdk-export:openclaw/plugin-sdk/core#OpenClawPluginApi` identifies the original
+public export even when a plugin gives it a local alias. API/runtime identities
+record the accessed member path, such as
+`runtime-member:runtime.channel.reply.dispatchReplyFromConfig`.
+
+Each entry includes its stable key, identity, classification (`runtime`, `type`,
+`mixed`, or `declarative`), reference kinds, source evidence, and deprecation
+codes. Imports count as source dependencies even when unused. A `call` means a
+call expression exists in the inspected code; it is not execution telemetry.
+
+The envelope includes `schemaVersion`, `analysisVersion`, `inputKind`, `status`,
+file coverage, entries, and unresolved references in `unknowns`. Treat a missing,
+failed, or partial inventory differently from a complete inventory with no
+entries. A zero count describes the inspected population and cannot establish
+that an API is safe to remove or that a security finding can be ignored.
+
+The public `pluginRoot.runCheck` and fixture-suite APIs accept
+`sdkUsageInputKind: "source" | "artifact"` (default `"source"`). Source analysis
+includes explicit type syntax; artifact analysis describes the supplied
+published files. Erased types are not inferred back into JavaScript. Installed
+third-party dependencies are outside the inventory. Inspection does not execute
+plugin code.
+
+Callers that supply precomputed `targetOpenClaw` metadata can also provide
+`sdkUsageTargetPath` pointing to its verified local package/source directory.
+The inventory can use published `exports` type declarations without host
+implementation files. This analysis input is not added to the report.
 
 ## CI Policy And Shared Reporting Primitives
 

@@ -27,6 +27,7 @@ export function buildReport({ config, inspections, failures = [], generatedAt = 
       manifestContracts: inspection.manifestContracts,
       sdkImports: inspection.sdkImports,
       sdkDeprecations: inspection.sdkDeprecations,
+      sdkUsage: inspection.sdkUsage,
       sourceFiles: inspection.sourceFiles,
       manifestFiles: inspection.manifestFiles,
       packageFiles: inspection.packageFiles,
@@ -77,6 +78,7 @@ export function buildReport({ config, inspections, failures = [], generatedAt = 
       logCount: logs.length,
     },
     fixtures,
+    ...(fixtures.length === 1 && fixtures[0].sdkUsage ? { sdkUsage: fixtures[0].sdkUsage } : {}),
     breakages,
     warnings: [],
     suggestions: [],
@@ -201,6 +203,7 @@ export async function buildCompatibilityReport(options = {}) {
     },
     fixtures: fixtureReports,
     breakages: visibleBreakages,
+    ...(fixtureReports.length === 1 && fixtureReports[0].sdkUsage ? { sdkUsage: fixtureReports[0].sdkUsage } : {}),
     warnings: visibleWarnings,
     suggestions: visibleSuggestions,
     issues,
@@ -496,6 +499,7 @@ function defaultCompatibilityFixtureReport({ fixture, inspection }) {
     sdkImports: inspection.sdkImports.map((sdkImport) => sdkImport.specifier).filter(Boolean),
     sdkImportDetails: inspection.sdkImports,
     sdkDeprecations: inspection.sdkDeprecations,
+    sdkUsage: inspection.sdkUsage,
   };
 }
 

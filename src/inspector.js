@@ -13,6 +13,7 @@ import { resolveProcessLimits, startOwnedProcess } from "./process-profile.js";
 import { buildCompatibilityReport, buildReport } from "./report.js";
 import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
 import { inspectRegistryDeprecations } from "./registry-deprecations.js";
+import { inspectSdkUsage } from "./sdk-usage.js";
 import { collectRuntimeModuleImports } from "./runtime-imports.js";
 
 const pluginFactoryNames = "defineBundledChannelEntry|defineChannelPluginEntry|createChatChannelPlugin|definePluginEntry";
@@ -44,7 +45,8 @@ export async function inspectCompatibilityFixtureSet(config, options = {}) {
           manifest: config,
           rootDir: config.rootDir,
         }));
-  const { inspections, failures } = await inspectConfiguredFixtures(config, { ...options, targetOpenClaw });
+  const sdkTargetRoot = options.sdkUsageTargetPath ?? (!options.targetOpenClaw && targetOpenClaw.checkoutPath ? path.resolve(config.rootDir ?? process.cwd(), targetOpenClaw.checkoutPath) : undefined);
+  const { inspections, failures } = await inspectConfiguredFixtures(config, { ...options, targetOpenClaw, sdkTargetRoot });
 
   return buildCompatibilityReport({
     config: reportConfig,
@@ -170,6 +172,7 @@ export async function inspectPlugin(fixture, options = {}) {
     packageEntrypoints: packageInspection.entrypoints,
     sdkImports: uniqueDetails(sdkImportDetails),
     sdkDeprecations: uniqueSdkDeprecations(sdkDeprecationDetails),
+    sdkUsage: await inspectSdkUsage({ root: checkoutPath, inputKind: options.sdkUsageInputKind, targetRoot: options.sdkTargetRoot }),
     sourceFiles: sourceFiles.map((filePath) => path.relative(config.rootDir ?? process.cwd(), filePath)).sort(),
   };
 }

@@ -49,12 +49,14 @@ export async function inspectPluginRoot(options = {}) {
     openclawVersion: options.openclawVersion,
     executionResults: options.executionResults,
     targetOpenClaw: options.targetOpenClaw,
+    sdkUsageInputKind: options.sdkUsageInputKind,
+    sdkUsageTargetPath: options.sdkUsageTargetPath,
   });
 }
 
 export async function inspectFixtureSetConfig(options = {}) {
   const config = options.config ?? (await loadInspectorConfig(options.configPath, { cwd: options.cwd }));
-  return inspectFixtureSet(config, { generatedAt: options.generatedAt });
+  return inspectFixtureSet(config, { generatedAt: options.generatedAt, sdkUsageInputKind: options.sdkUsageInputKind, sdkTargetRoot: options.sdkUsageTargetPath });
 }
 
 export async function inspectCompatibilityFixtureSetConfig(options = {}) {
@@ -66,6 +68,8 @@ export async function inspectCompatibilityFixtureSetConfig(options = {}) {
     openclawVersion: options.openclawVersion,
     executionResults: options.executionResults,
     targetOpenClaw: options.targetOpenClaw,
+    sdkUsageInputKind: options.sdkUsageInputKind,
+    sdkUsageTargetPath: options.sdkUsageTargetPath,
   });
 }
 

@@ -63,6 +63,17 @@ export function inspectSdkDeprecations(text, filePath = "source.js", rules = plu
     .map(({ offset, ...finding }) => finding);
 }
 
+/** The positive inventory shares the existing deprecation catalog and stable codes. */
+export function sdkUsageDeprecationCodes(kind, identity) {
+  let symbol;
+  if (kind === "sdk-export") {
+    const [specifier, name] = identity.split("#");
+    if (sdkSessionSpecifiers.has(specifier)) symbol = name;
+  }
+  if (kind === "runtime-member" && /^runtime\.(?:agent|channel)\.session\./.test(identity)) symbol = identity.split(".").slice(3).join(".");
+  return pluginSdkDeprecationRules.filter((rule) => rule.symbols.has(symbol)).map((rule) => rule.code);
+}
+
 function collectSdkHelperDeprecations(findings, context) {
   collectNamedImportDeprecations(findings, context);
   collectNamedReexportDeprecations(findings, context);
