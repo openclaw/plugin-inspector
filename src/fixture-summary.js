@@ -728,6 +728,25 @@ function hasActiveTargetContractTests(targetOpenClaw, compatRecord) {
 function classifySdkDeprecations({ fixture, inspection, fixtureReport, warnings, decisions }) {
   const grouped = new Map();
   for (const finding of fixtureReport.sdkDeprecations ?? inspection.sdkDeprecations ?? []) {
+    if (finding.code === "sdk-deprecated-api") {
+      warnings.push({
+        fixture: fixture.id,
+        code: finding.code,
+        level: "warning",
+        message: finding.message,
+        evidence: [`${finding.surface} @ ${finding.ref}`],
+        compatRecord: finding.compatRecord,
+        deprecatedApi: finding.deprecatedApi,
+        replacement: finding.replacement,
+        ...(finding.removeAfter ? { removeAfter: finding.removeAfter } : {}),
+        authorRemediation: {
+          summary: finding.message,
+          ...(finding.docsPath?.startsWith("/plugins/") ? { docsUrl: `https://docs.openclaw.ai${finding.docsPath}` } : {}),
+        },
+        authorRemediationDocs: false,
+      });
+      continue;
+    }
     const existing = grouped.get(finding.code) ?? [];
     existing.push(finding);
     grouped.set(finding.code, existing);

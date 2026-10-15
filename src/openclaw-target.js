@@ -2,6 +2,8 @@ import { existsSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { resolveJailedPluginPath } from "./path-utils.js";
+import { readCompatRegistryRecords } from "./compat-registry.js";
+import sdkRetirements from "./sdk-retirements.json" with { type: "json" };
 
 export const defaultOpenClawCheckoutPaths = ["./openclaw", "../openclaw"];
 
@@ -58,10 +60,7 @@ export async function readOpenClawTargetSurface(options = {}) {
   const registryPath = importsCompatRecords(registryEntrySource)
     ? path.join(path.dirname(registryEntryPath), "registry-records.ts")
     : registryEntryPath;
-  const registrySource = registryPath === registryEntryPath
-    ? registryEntrySource
-    : await readFile(registryPath, "utf8");
-  const compatRecordEntries = parseCompatRecordEntries(registrySource);
+  const compatRecordEntries = await readCompatRegistryRecords(registryPath);
   const compatRecordTests = Object.fromEntries(
     compatRecordEntries.map((record) => [record.code, record.tests]),
   );
@@ -136,6 +135,7 @@ export async function readOpenClawTargetSurface(options = {}) {
     compatRecordCount: compatRecordEntries.length,
     compatRecords: compatRecordEntries.map((record) => record.code).sort(),
     compatRecordStatuses: Object.fromEntries(compatRecordEntries.map((record) => [record.code, record.status])),
+    compatDeprecations: compatRecordEntries.filter((record) => record.status === "deprecated"),
     compatRecordTests,
     compatRecordMissingTests,
     hookTypesPath: existsSync(hookTypesPath) ? relativePath(rootDir, hookTypesPath) : null,
@@ -481,9 +481,11 @@ async function readPackedOpenClawTargetSurface({ rootDir, requestedPaths, reques
     status: "ok",
     version: packageJson.version ?? null,
     compatRegistryPath: null,
-    compatRecordCount: 0,
-    compatRecords: [],
-    compatRecordStatuses: {},
+    compatRecordCount: sdkRetirements.records.length,
+    compatRecords: sdkRetirements.records.map((record) => record.code),
+    compatRecordStatuses: Object.fromEntries(sdkRetirements.records.map((record) => [record.code, record.status])),
+    compatDeprecations: sdkRetirements.records,
+    compatDeprecationsSource: sdkRetirements.source,
     compatRecordTests: {},
     compatRecordMissingTests: {},
     hookTypesPath: hookDeclaration ? relativePath(rootDir, hookDeclaration.filePath) : null,
@@ -637,6 +639,7 @@ function emptyTargetSurface({ configuredPath, searchedPaths = undefined, status,
     message,
     compatRecords: [],
     compatRecordStatuses: {},
+    compatDeprecations: [],
     compatRecordTests: {},
     compatRecordMissingTests: {},
     hookNames: [],

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.4.0 - 2026-10-14
+
+- Report deprecated SDK members from OpenClaw's delegated compatibility records, including shared metadata, with structured `deprecatedApi`, `replacement`, and `removeAfter` fields for calm, non-blocking retirement notices. Include the announced December 31, 2026 retirement inventory for packed npm targets used by ClawHub. The removal date is the final compatibility day; existing finding codes and fields are preserved.
+
 - Assert explicit method-scoped Gateway response contracts without skipping handlers or exposing mismatched payloads; preserve default rejection, wire validation, and settlement failures.
 
 - Let registration and retained callbacks read the supplied capture config through `runtime.config.current()` without loading host configuration.

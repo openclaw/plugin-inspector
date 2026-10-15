@@ -1,0 +1,760 @@
+{
+  "source": {
+    "repository": "openclaw/openclaw",
+    "commit": "c525b86a79b07070b67feca692bf1a6c49c933a0"
+  },
+  "records": [
+    {
+      "code": "acp-session-sync-read",
+      "status": "deprecated",
+      "surfaces": [
+        "AcpSessionManager.resolveSession",
+        "openclaw/plugin-sdk/acp-runtime.readAcpSessionEntry"
+      ],
+      "replacement": "Await readAcpSessionEntryAsync. Bundled consumers use the existing worker-backed reader; the released synchronous reader keeps its result contract through 2026-12-31; removal ships in the first January 2027 stable release.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/compatibility-policy#acp-metadata-binding-compatibility"
+    },
+    {
+      "code": "agent-end-sync-side-effects",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/agent-harness-runtime.runAgentEndSideEffects"
+      ],
+      "replacement": "Await runAgentEndSideEffectsAsync before releasing the turn lease. The released runAgentEndSideEffects helper retains its synchronous void result and scheduling behavior through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-agent-harness/attempt-runtime#agent-end-side-effects"
+    },
+    {
+      "code": "agent-harness-sync-tool-construction",
+      "status": "deprecated",
+      "surfaces": [
+        "AgentHarnessHostCapabilities.createToolSurface",
+        "openclaw/plugin-sdk/agent-harness-tool-runtime.createAgentHarnessToolSurfaceRuntime",
+        "openclaw/plugin-sdk/agent-harness.createOpenClawCodingTools"
+      ],
+      "replacement": "Await hostCapabilities.createToolSurfaceAsync, createOpenClawCodingToolsAsync, or createAgentHarnessToolSurfaceRuntimeAsync with the existing arguments. Released synchronous factories retain their array results and completion timing through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/compatibility-policy#harness-tool-construction"
+    },
+    {
+      "code": "approval-event-sync-publication",
+      "status": "deprecated",
+      "surfaces": [
+        "GatewayRequestHandlerOptions.context.approvalEvents.publishRequested"
+      ],
+      "replacement": "Await approvalEvents.publishRequestedAsync. The legacy publisher retains synchronous delivery counts for synchronous subscribers and refuses async eligibility before delivery; removed in the first January 2027 stable release after the final compatibility day, 2026-12-31.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-gateway-approval-publication"
+    },
+    {
+      "code": "approval-routing-sync-preparation",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/approval-client-runtime.createChannelExecApprovalProfile",
+        "openclaw/plugin-sdk/approval-delivery-runtime.createApproverRestrictedNativeApprovalCapability",
+        "openclaw/plugin-sdk/approval-delivery-runtime.createApproverRestrictedNativeApprovalCapabilityFromForwardingRoutes",
+        "openclaw/plugin-sdk/approval-handler-adapter-runtime.createLazyChannelApprovalNativeRuntimeAdapter",
+        "openclaw/plugin-sdk/approval-handler-runtime.createChannelApprovalNativeRuntimeAdapter",
+        "openclaw/plugin-sdk/approval-native-runtime.createChannelApproverDmTargetResolver",
+        "openclaw/plugin-sdk/approval-native-runtime.createChannelNativeOriginTargetResolver",
+        "openclaw/plugin-sdk/approval-native-runtime.createNativeApprovalChannelRouteGates",
+        "openclaw/plugin-sdk/approval-native-runtime.createNativeApprovalForwardingFallbackSuppressor",
+        "openclaw/plugin-sdk/approval-native-runtime.doesApprovalRequestSelectChannelAccount",
+        "openclaw/plugin-sdk/approval-native-runtime.resolveApprovalRequestAccountId",
+        "openclaw/plugin-sdk/approval-native-runtime.resolveApprovalRequestChannelAccountId",
+        "openclaw/plugin-sdk/approval-runtime.doesApprovalRequestMatchChannelAccount",
+        "openclaw/plugin-sdk/approval-runtime.resolveApprovalRequestOriginTarget",
+        "openclaw/plugin-sdk/approval-runtime.resolveApprovalRequestSessionTarget",
+        "openclaw/plugin-sdk/approval-runtime.resolveExecApprovalSessionTarget"
+      ],
+      "replacement": "Use the Async-suffixed approval factories and resolvers, then await their returned eligibility and routing callbacks. Reuse resolveApprovalRequestSessionDeliveryAsync facts for one route decision. Factories remain synchronous; Async names describe their awaited callbacks. Keep live approval and delivery authority at the effect boundary.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#migrate-inspection-authorization-and-approval-factories"
+    },
+    {
+      "code": "auth-profile-sync-operations",
+      "status": "deprecated",
+      "surfaces": [
+        "ImageGenerationProvider.isConfigured",
+        "InternalRealtimeVoiceProviderApi.isBrowserSessionConfigured",
+        "InternalRealtimeVoiceProviderApi.isGatewayRelayConfigured",
+        "InternalRealtimeVoiceProviderApi.resolveBrowserSessionCapabilities",
+        "MusicGenerationProvider.isConfigured",
+        "PluginRuntime.agent.resolveCliBackendDispatchEligibility",
+        "PluginRuntime.modelAuth.ensureAuthProfileStore",
+        "PluginRuntime.modelAuth.isProviderApiKeyConfigured",
+        "RealtimeTranscriptionProviderPlugin.isConfigured",
+        "RealtimeVoiceProviderPlugin.isConfigured",
+        "RealtimeVoiceProviderPlugin.resolveConfig",
+        "SpeechProviderPlugin.isConfigured",
+        "VideoGenerationProvider.isConfigured",
+        "openclaw/plugin-sdk/agent-harness-runtime resolveModelAuthMode",
+        "openclaw/plugin-sdk/agent-runtime ensureAuthProfileStore",
+        "openclaw/plugin-sdk/agent-runtime findPersistedAuthProfileCredential",
+        "openclaw/plugin-sdk/agent-runtime getTtsProvider",
+        "openclaw/plugin-sdk/agent-runtime loadAuthProfileStoreForRuntime",
+        "openclaw/plugin-sdk/agent-runtime loadAuthProfileStoreForSecretsRuntime",
+        "openclaw/plugin-sdk/agent-runtime loadAuthProfileStoreWithoutExternalProfiles",
+        "openclaw/plugin-sdk/agent-runtime replaceRuntimeAuthProfileStoreSnapshots",
+        "openclaw/plugin-sdk/agent-runtime resolveAuthStorePathForDisplay",
+        "openclaw/plugin-sdk/agent-runtime resolvePersistedAuthProfileOwnerAgentDir",
+        "openclaw/plugin-sdk/agent-runtime saveAuthProfileStore",
+        "openclaw/plugin-sdk/agent-sessions AuthStorage.create",
+        "openclaw/plugin-sdk/agent-sessions AuthStorage.forAgent",
+        "openclaw/plugin-sdk/agent-sessions AuthStorage.logout",
+        "openclaw/plugin-sdk/agent-sessions AuthStorage.reload",
+        "openclaw/plugin-sdk/agent-sessions AuthStorage.remove",
+        "openclaw/plugin-sdk/agent-sessions AuthStorage.set",
+        "openclaw/plugin-sdk/agent-sessions ModelRegistry.create",
+        "openclaw/plugin-sdk/agent-sessions ModelRegistry.refresh",
+        "openclaw/plugin-sdk/agent-sessions ModelRegistry.unregisterProvider",
+        "openclaw/plugin-sdk/image-generation-core resolveCapabilityModelCandidates",
+        "openclaw/plugin-sdk/models-provider-runtime formatModelsAvailableHeader",
+        "openclaw/plugin-sdk/provider-auth ensureAuthProfileStore",
+        "openclaw/plugin-sdk/provider-auth ensureAuthProfileStoreForLocalUpdate",
+        "openclaw/plugin-sdk/provider-auth isProviderApiKeyConfigured",
+        "openclaw/plugin-sdk/provider-auth isProviderAuthProfileConfigured",
+        "openclaw/plugin-sdk/provider-auth listUsableProviderAuthProfileIds",
+        "openclaw/plugin-sdk/provider-auth upsertApiKeyProfile",
+        "openclaw/plugin-sdk/provider-auth upsertAuthProfile",
+        "openclaw/plugin-sdk/provider-auth-api-key upsertApiKeyProfile",
+        "openclaw/plugin-sdk/provider-auth-runtime resolveProviderAuthProfileMetadata",
+        "openclaw/plugin-sdk/provider-selection-runtime resolveConfiguredCapabilityProvider",
+        "openclaw/plugin-sdk/realtime-voice resolveConfiguredRealtimeVoiceProvider",
+        "openclaw/plugin-sdk/tts-runtime getTtsProvider",
+        "openclaw/plugin-sdk/tts-runtime isTtsProviderConfigured",
+        "openclaw/plugin-sdk/tts-runtime resolveExplicitTtsOverrides"
+      ],
+      "replacement": "Await the Async-suffixed auth-store, snapshot-publication, AuthStorage, profile-upsert, provider-availability, profile-metadata, model-auth, model-header, provider-selection, and TTS methods. For secret-read preparation, use loadAuthProfileStoreForRuntimeAsync from agent-runtime with readOnly: true and allowKeychainPrompt: false. Replace saveAuthProfileStore with the owner-backed updateAuthProfileStoreWithLock from provider-auth. Public database-path displays retire after 2026-12-31 with no public async path replacement; display provider/profile identifiers instead. Bundled callers use AuthStorage.resolvePathForDisplayAsync from the private agent-sessions surface for exact selected paths. Use resolveProviderAuthProfileMetadataAsync from provider-auth-runtime for profile metadata. Implement isConfiguredAsync for media, speech, and realtime providers, and resolveConfigAsync for realtime voice providers. For internal realtime hooks, implement isBrowserSessionConfiguredAsync, isGatewayRelayConfiguredAsync, and resolveBrowserSessionCapabilitiesAsync. Released synchronous methods retain their signatures, immediate results, and completion timing through 2026-12-31; removal ships in the first January 2027 stable release.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-auth-profile-and-provider-availability-operations"
+    },
+    {
+      "code": "channel-inbound-sync-envelope-timestamps",
+      "status": "deprecated",
+      "surfaces": [
+        "api.runtime.channel.session.readSessionUpdatedAt",
+        "openclaw/plugin-sdk/channel-inbound.createChannelInboundEnvelopeBuilder",
+        "openclaw/plugin-sdk/channel-inbound.dispatchInboundDirectDmWithRuntime",
+        "openclaw/plugin-sdk/channel-inbound.resolveChannelInboundRouteEnvelope",
+        "openclaw/plugin-sdk/channel-inbound.resolveInboundSessionEnvelopeContext",
+        "openclaw/plugin-sdk/inbound-envelope.createInboundEnvelopeBuilder",
+        "openclaw/plugin-sdk/inbound-envelope.resolveInboundRouteEnvelopeBuilder",
+        "openclaw/plugin-sdk/inbound-envelope.resolveInboundRouteEnvelopeBuilderWithRuntime",
+        "openclaw/plugin-sdk/session-store-runtime.readSessionUpdatedAt"
+      ],
+      "replacement": "Await readSessionUpdatedAtAsync, createChannelInboundEnvelopeBuilderAsync, or resolveInboundSessionEnvelopeContextAsync at each message's formatting boundary. Resolve routes through resolveAgentRoute and use dispatchInboundDirectDm. Retain the synchronous signatures and callback timing shipped in 2026.9.8 through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/compatibility-policy#inbound-envelope-timestamps"
+    },
+    {
+      "code": "channel-pairing-sync-allowlist",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/channel-pairing.readChannelAllowFromStoreSync"
+      ],
+      "replacement": "Await readChannelAllowFromStore from channel-pairing. The released synchronous reader retains its signature and native behavior through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/compatibility-policy#channel-pairing-allowlists"
+    },
+    {
+      "code": "channel-policy-sync-preparation",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/command-auth-native.resolveCommandArgMenu",
+        "openclaw/plugin-sdk/command-auth-native.resolveCommandAuthorization",
+        "openclaw/plugin-sdk/command-auth-native.resolveStoredModelOverride",
+        "openclaw/plugin-sdk/conversation-binding-inspection-runtime.inspectConversationBinding",
+        "openclaw/plugin-sdk/exec-approvals-runtime.loadExecApprovals"
+      ],
+      "replacement": "Await resolveCommandAuthorizationAsync, resolveStoredModelOverrideAsync, resolveCommandArgMenuAsync, inspectConversationBindingAsync, and loadExecApprovalsReadOnlyAsync. Prepared results never replace live authorization at command execution or external side effects.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#migrate-inspection-authorization-and-approval-factories"
+    },
+    {
+      "code": "codex-transcript-sync-validation",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/codex-session-transcript-runtime.validateCodexSessionTranscriptContextVersion",
+        "openclaw/plugin-sdk/codex-session-transcript-runtime.validateCodexSessionTranscriptReadAdmission"
+      ],
+      "replacement": "Await readCodexSessionContextProjection for retained worker projection and final validation. Keep the released synchronous validators through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major. readCodexSessionContext remains a supported synchronous worker reader with its released three-argument generic result contract.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-session-transcript-persistence"
+    },
+    {
+      "code": "conversation-binding-sync-mutations",
+      "status": "deprecated",
+      "surfaces": [
+        "@openclaw/discord.setThreadBindingIdleTimeoutBySessionKey",
+        "@openclaw/discord.setThreadBindingMaxAgeBySessionKey",
+        "@openclaw/matrix.setMatrixThreadBindingIdleTimeoutBySessionKey",
+        "@openclaw/matrix.setMatrixThreadBindingMaxAgeBySessionKey",
+        "@openclaw/telegram.setTelegramThreadBindingIdleTimeoutBySessionKey",
+        "@openclaw/telegram.setTelegramThreadBindingMaxAgeBySessionKey",
+        "ChannelConversationBindingSupport.setIdleTimeoutBySessionKey",
+        "ChannelConversationBindingSupport.setMaxAgeBySessionKey",
+        "SessionBindingAdapter.resolveByConversation",
+        "SessionBindingAdapter.touch",
+        "SessionBindingService.resolveByConversation",
+        "SessionBindingService.touch",
+        "api.runtime.channel.threadBindings.setIdleTimeoutBySessionKey",
+        "api.runtime.channel.threadBindings.setMaxAgeBySessionKey",
+        "resolveRuntimeConversationBindingRoute"
+      ],
+      "replacement": "Await getSessionBindingService().bind, unbind, inspectByConversationAsync, resolveByConversationAsync, touchAsync, resolveRuntimeConversationBindingRouteAsync, and the Async-suffixed thread-binding lifecycle setters. Bundled current-conversation mutations and session listings use the existing worker owner. Project prepared inspection facts with inspectRuntimeConversationBindingRoute. Legacy external adapters retain their synchronous projection contract.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-runtime/channel#awaited-conversation-binding-mutations"
+    },
+    {
+      "code": "conversation-binding-sync-persistence",
+      "status": "deprecated",
+      "surfaces": [
+        "@openclaw/imessage api.createIMessageConversationBindingManager",
+        "AccountScopedConversationBindingManager.bindConversation",
+        "AccountScopedConversationBindingManager.getByConversationId",
+        "AccountScopedConversationBindingManager.listBySessionKey",
+        "AccountScopedConversationBindingManager.touchConversation",
+        "AccountScopedConversationBindingManager.unbindBySessionKey",
+        "AccountScopedConversationBindingManager.unbindConversation",
+        "SessionBindingAdapter.inspectByConversation",
+        "SessionBindingAdapter.listBySession",
+        "SessionBindingService.listBySession",
+        "SessionBindingService.resolveByConversation",
+        "SessionBindingService.touch",
+        "openclaw/plugin-sdk/conversation-runtime.registerSessionBindingAdapter",
+        "openclaw/plugin-sdk/conversation-runtime.resolveRuntimeConversationBindingRoute",
+        "openclaw/plugin-sdk/session-binding-runtime.inspectSessionBindingByConversation",
+        "openclaw/plugin-sdk/thread-bindings-runtime.createAccountScopedConversationBindingManager"
+      ],
+      "replacement": "Use createAccountScopedConversationBindingManagerV2, iMessage createIMessageConversationBindingManagerV2, registerSessionBindingAdapterV2, and awaited service list/resolve/touch methods. V2 adapters supply a coherent inspection snapshot with its current-source assertion. Legacy synchronous operations preserve completion and expiry semantics through 2026-12-31; removal ships in the first January 2027 stable release.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-plugin-state-and-conversation-bindings"
+    },
+    {
+      "code": "cron-store-sync-path",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/cron-store-runtime resolveCronStorePath"
+      ],
+      "replacement": "Await resolveCronStorePathAsync(storePath) from openclaw/plugin-sdk/cron-store-runtime. The synchronous resolveCronStorePath(storePath) retains its existing return value through 2026-12-31; removal ships in the first January 2027 stable release.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/compatibility-policy#cron-store-path-resolution"
+    },
+    {
+      "code": "debug-proxy-sync-capture",
+      "status": "deprecated",
+      "surfaces": [
+        "DebugProxyCaptureContext.captureWsEvent",
+        "openclaw/plugin-sdk/proxy-capture.DebugProxyCaptureReader",
+        "openclaw/plugin-sdk/proxy-capture.DebugProxyCaptureStore",
+        "openclaw/plugin-sdk/proxy-capture.acquireDebugProxyCaptureStore",
+        "openclaw/plugin-sdk/proxy-capture.captureHttpExchange",
+        "openclaw/plugin-sdk/proxy-capture.captureWsEvent",
+        "openclaw/plugin-sdk/proxy-capture.closeDebugProxyCaptureStore",
+        "openclaw/plugin-sdk/proxy-capture.createDebugProxyCaptureReader",
+        "openclaw/plugin-sdk/proxy-capture.finalizeDebugProxyCapture",
+        "openclaw/plugin-sdk/proxy-capture.getDebugProxyCaptureStore",
+        "openclaw/plugin-sdk/proxy-capture.initializeDebugProxyCapture"
+      ],
+      "replacement": "Acquire acquireDebugProxyCaptureStoreAsync, await store operations, and await lease.release in finally. Use createDebugProxyCaptureReaderAsync and await reads. Use initializeDebugProxyCaptureAsync, captureHttpExchangeAsync, captureWsEventAsync, and finalizeDebugProxyCaptureAsync, including the context captureWsEventAsync companion. Do not fire and forget persistence or fall back after an async failure.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-debug-proxy-capture"
+    },
+    {
+      "code": "extension-session-sync-persistence",
+      "status": "deprecated",
+      "surfaces": [
+        "AgentSession.setSessionName",
+        "ExtensionAPI.appendEntry",
+        "ExtensionAPI.setLabel",
+        "ExtensionAPI.setSessionName"
+      ],
+      "replacement": "Await ExtensionAPI.appendEntryAsync, setSessionNameAsync, and setLabelAsync, and AgentSession.setSessionNameAsync. Existing synchronous third-party methods retain their void return contract through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-extension-session-changes"
+    },
+    {
+      "code": "github-publication-native-callbacks",
+      "status": "deprecated",
+      "surfaces": [
+        "GatewayRequestHandlerOptions.context.githubOAuthService.cancelAuthorization",
+        "GatewayRequestHandlerOptions.context.githubOAuthService.personal.cancelAuthorization",
+        "GatewayRequestHandlerOptions.context.githubOAuthService.personal.disconnect",
+        "GatewayRequestHandlerOptions.context.githubOAuthService.retireProfile",
+        "GatewayRequestHandlerOptions.context.githubPublicationService.confirmPersonal",
+        "GatewayRequestHandlerOptions.context.githubPublicationService.deferClaimPreparation",
+        "GatewayRequestHandlerOptions.context.githubPublicationService.deferOrphanedRequests",
+        "GatewayRequestHandlerOptions.context.githubPublicationService.listUnreportedResults",
+        "GatewayRequestHandlerOptions.context.githubPublicationService.markReported",
+        "GatewayRequestHandlerOptions.context.githubPublicationService.personalStatus",
+        "GatewayRequestHandlerOptions.context.githubPublicationService.requestForClaim",
+        "GatewayRequestHandlerOptions.context.githubPublicationService.requestForSession",
+        "GatewayRequestHandlerOptions.context.githubPublicationService.requestPersonalForSession",
+        "GitHubPublicationRequester",
+        "GitHubPublicationRequesterPolicy",
+        "PersonalGitHubSessionAction",
+        "getPluginRuntimeGatewayRequestScope().context.githubOAuthService.personal",
+        "getPluginRuntimeGatewayRequestScope().context.githubPublicationService"
+      ],
+      "replacement": "Use requestForSessionV2 and requestForClaimV2 with the host-provided GitHubPublicationRequesterV2, and requestPersonalForSessionV2 and confirmPersonalV2 with PersonalGitHubSessionActionV2. Await deferClaimPreparationAsync, deferOrphanedRequestsAsync, listUnreportedResultsAsync, markReportedAsync, readAsync, and personalStatusAsync. Legacy publication methods retain their signatures but fail at invocation. On githubOAuthService, await cancelAuthorizationAsync and retireProfileAsync; on its personal service, await cancelAuthorizationAsync and disconnectAsync. These OAuth compatibility methods retain synchronous completion. Deprecated signatures will be removed in the first January 2027 stable release after the final compatibility day, 2026-12-31.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-github-publication-operations"
+    },
+    {
+      "code": "memory-session-sync-inventory",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/memory-core-host-engine-sessions.loadArchivedSessions",
+        "openclaw/plugin-sdk/memory-core-host-engine-sessions.resolveMemorySessionTargets"
+      ],
+      "replacement": "Await loadArchivedSessionsAsync and resolveMemorySessionTargetsAsync from memory-core-host-engine-sessions. Synchronous readers retain their existing signatures and results through 2026-12-31.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/compatibility-policy#memory-session-inventory-readers"
+    },
+    {
+      "code": "memory-session-sync-metadata",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/memory-core-host-engine-sessions.loadMemorySessionMetadata"
+      ],
+      "replacement": "Await loadMemorySessionMetadataAsync and loadMemorySessionMetadataBatchAsync from memory-core-host-engine-sessions. Bundled ingestion uses the history worker; the synchronous metadata reader retains its signature through 2026-12-31.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/compatibility-policy#memory-session-inventory-readers"
+    },
+    {
+      "code": "model-account-connect-sync-persistence",
+      "status": "deprecated",
+      "surfaces": [
+        "GatewayRequestHandlerOptions.context.modelAccountConnectService.cancel",
+        "GatewayRequestHandlerOptions.context.modelAccountConnectService.link",
+        "GatewayRequestHandlerOptions.context.modelAccountConnectService.list",
+        "GatewayRequestHandlerOptions.context.modelAccountConnectService.listLinks",
+        "GatewayRequestHandlerOptions.context.modelAccountConnectService.select",
+        "GatewayRequestHandlerOptions.context.modelAccountConnectService.status",
+        "GatewayRequestHandlerOptions.context.modelAccountConnectService.unlink",
+        "getPluginRuntimeGatewayRequestScope().context.modelAccountConnectService"
+      ],
+      "replacement": "Await modelAccountConnectService.listLinksAsync, linkAsync, unlinkAsync, listAsync, selectAsync, statusAsync, and cancelAsync with the existing arguments. Retain synchronous methods and their completion timing for shipped third-party contracts through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-personal-model-account-operations"
+    },
+    {
+      "code": "native-session-binding-sync-persistence",
+      "status": "deprecated",
+      "surfaces": [
+        "AgentHarness.resolveSessionRuntimeOwnership",
+        "openclaw/plugin-sdk/agent-harness-session-runtime.NativeSessionBindingStateStore",
+        "openclaw/plugin-sdk/agent-harness-session-runtime.createNativeSessionBindingLifecycle",
+        "openclaw/plugin-sdk/agent-harness-session-runtime.resolveNativeSessionBindingWithAuthority"
+      ],
+      "replacement": "Use createNativeSessionBindingLifecycleV2 and resolvePreparedNativeSessionBinding with the worker-backed binding store, and release the prepared capture after terminal cleanup. Implement AgentHarness.resolveSessionRuntimeOwnershipAsync for preparation. Released synchronous authority factories remain deprecated compatibility adapters.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-plugin-state-and-conversation-bindings"
+    },
+    {
+      "code": "native-session-deletion-unbound-callbacks",
+      "status": "deprecated",
+      "surfaces": [
+        "AgentHarness.withSessionContextReset unbound mutation argument",
+        "AgentHarness.withSessionDeletion unbound mutation argument",
+        "AgentHarnessSessionDeletionMutation unbound commit/rollback callbacks"
+      ],
+      "replacement": "Pass participants from createNativeSessionBindingLifecycleV2.withDeletion for reversible stored bindings or createNativeSessionCommitFinalizer for commit-only cleanup. Factory-produced participants and the existing harness hooks remain supported; direct unbound callbacks retain synchronous commit and rollback through 2026-12-31.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#replace-unbound-native-session-deletion-callbacks"
+    },
+    {
+      "code": "native-session-generation-sync-authority",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/agent-harness-session-runtime.NativeSessionGenerationOperations",
+        "openclaw/plugin-sdk/agent-harness-session-runtime.captureNativeSessionGenerationAuthority",
+        "openclaw/plugin-sdk/agent-harness-session-runtime.reclaimNativeSessionGeneration",
+        "openclaw/plugin-sdk/agent-harness-session-runtime.resolveNativeSessionBinding"
+      ],
+      "replacement": "Await retainNativeSessionGenerationAuthority, resolvePreparedNativeSessionBinding, and reclaimNativeSessionGenerationWithAuthority. Release prepared captures after terminal cleanup. Released synchronous capture and two-argument mutation callbacks remain deprecated while published official harness readers migrate.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/compatibility-policy#native-session-generation-authority"
+    },
+    {
+      "code": "node-workspace-sync-acquisition",
+      "status": "deprecated",
+      "surfaces": [
+        "OpenClawPluginNodeHostCommandContext.acquireManagedWorkspace"
+      ],
+      "replacement": "Await context.acquireManagedWorkspaceAsync(request) and release the returned lease in finally. Retain synchronous acquisition for supported external plugins through 2026-12-31; removal ships in the first January 2027 stable release.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#managed-node-workspace-acquisition"
+    },
+    {
+      "code": "pending-input-sync-completion",
+      "status": "deprecated",
+      "surfaces": [
+        "SessionPendingInputReceipt.complete",
+        "UserTurnTranscriptRecorder.completeProcessing"
+      ],
+      "replacement": "Await SessionPendingInputReceipt.completeAsync or UserTurnTranscriptRecorder.completeProcessingAsync before publishing completion. Await waitForPendingInputSettlement when supplied before releasing session admission. Bundled plugins target the current host and use the async companions directly; do not retry async failures synchronously.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-session-transcript-persistence"
+    },
+    {
+      "code": "plugin-state-sync-keyed-store",
+      "status": "deprecated",
+      "surfaces": [
+        "PluginStateKeyedStore.deleteIf",
+        "PluginStateKeyedStore.update",
+        "PluginStateSyncKeyedStore",
+        "PluginStateSyncKeyedStore.clear",
+        "PluginStateSyncKeyedStore.consume",
+        "PluginStateSyncKeyedStore.count",
+        "PluginStateSyncKeyedStore.delete",
+        "PluginStateSyncKeyedStore.deleteIf",
+        "PluginStateSyncKeyedStore.entries",
+        "PluginStateSyncKeyedStore.lookup",
+        "PluginStateSyncKeyedStore.lookupMany",
+        "PluginStateSyncKeyedStore.register",
+        "PluginStateSyncKeyedStore.registerIfAbsent",
+        "PluginStateSyncKeyedStore.update",
+        "api.runtime.state.openSyncKeyedStore",
+        "createPluginStateSyncKeyedStore"
+      ],
+      "replacement": "Use api.runtime.state.openKeyedStoreV2 or createPluginStateKeyedStoreV2, await data-only operations, and replace update/deleteIf closures with observe/compareAndApply. Synchronous methods retain commit-before-return through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-runtime/state-and-system#synchronous-keyed-store-migration"
+    },
+    {
+      "code": "provider-model-capabilities-sync-read",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/provider-stream-family.getOpenRouterModelCapabilities",
+        "openclaw/plugin-sdk/provider-stream.getOpenRouterModelCapabilities"
+      ],
+      "replacement": "Await loadOpenRouterModelCapabilities(modelId), then read getLoadedOpenRouterModelCapabilities(modelId). The synchronous getter remains compatible through 2026-12-31; removal ships in the first January 2027 stable release.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/sqlite-async"
+    },
+    {
+      "code": "provider-replay-sync-persistence",
+      "status": "deprecated",
+      "surfaces": [
+        "ProviderPlugin.sanitizeReplayHistory",
+        "ProviderReplaySessionState",
+        "ProviderReplaySessionState.appendCustomEntry",
+        "ProviderSanitizeReplayHistoryContext",
+        "openclaw/plugin-sdk/provider-model-shared.sanitizeGoogleGeminiReplayHistory"
+      ],
+      "replacement": "Use ProviderPlugin.sanitizeReplayHistoryAsync with ProviderSanitizeReplayHistoryContextV2 and await ProviderReplaySessionStateV2.appendCustomEntryAsync; use sanitizeGoogleGeminiReplayHistoryAsync for the shared Gemini implementation. Retain legacy third-party contexts and hooks through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-provider-replay-metadata"
+    },
+    {
+      "code": "reply-run-start-unprepared-transcript",
+      "status": "deprecated",
+      "surfaces": [
+        "PluginHookReplyDispatchContext.onAgentRunStart",
+        "openclaw/plugin-sdk/reply-runtime.GetReplyOptions.onAgentRunStart"
+      ],
+      "replacement": "Use onPreparedAgentRunStart with a required transcriptStart field, forwarding the complete notification and synchronous return value. Bundled runtimes prepare the facts asynchronously; retain the released onAgentRunStart callback and omitted-facts synchronous read through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/compatibility-policy#reply-run-start-transcript-facts"
+    },
+    {
+      "code": "reply-tool-authority-sync-preparation",
+      "status": "deprecated",
+      "surfaces": [
+        "AgentHarnessAttemptParams.replyOperation",
+        "AgentHarnessAttemptParamsV2.replyOperation",
+        "AgentQuestionDispatcher.authority.assertCurrent",
+        "EmbeddedRunAttemptParams.replyOperation",
+        "EmbeddedRunAttemptParamsV2.replyOperation",
+        "ReplyBackendMessageInjectionV2.queueMessage, claimPendingUserInputAnswer, and cancelPendingUserInput",
+        "ReplyToolAuthoritySnapshot.fingerprint and project"
+      ],
+      "replacement": "Await the Async reply-operation, fingerprint, and V2 queue companions. Question dispatchers await authority.assertCurrentAsync after transport preparation and assert current authority immediately before I/O. Released synchronous contracts remain through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-reply-tool-authority"
+    },
+    {
+      "code": "runtime-config-sync-load",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/memory-core-host-runtime-core.getRuntimeConfig",
+        "openclaw/plugin-sdk/runtime-config-snapshot.getRuntimeConfig"
+      ],
+      "replacement": "Use readRuntimeConfig for the already prepared runtime snapshot. At a cold preparation boundary, await captureRuntimeConfigAsyncReader()() first or use its returned config. The released getRuntimeConfig keeps its synchronous cold-load behavior through 2026-12-31; removal ships in the first January 2027 stable release.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#read-prepared-runtime-config"
+    },
+    {
+      "code": "session-catalog-sync-preparation",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/session-transcript-runtime.createSessionCatalogGitHubLinker",
+        "openclaw/plugin-sdk/session-transcript-runtime.createSessionCatalogSourceActorProjector",
+        "openclaw/plugin-sdk/session-transcript-runtime.readSessionTranscriptCatalogTitle"
+      ],
+      "replacement": "Await readSessionTranscriptCatalogTitleAsync, prepareSessionCatalogSourceActorProjector, and prepareSessionCatalogGitHubLinker from session-transcript-runtime. Project the prepared facts synchronously and retain current disclosure authority at publication.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#prepare-session-catalog-identities"
+    },
+    {
+      "code": "session-manager-sync-context-read",
+      "status": "deprecated",
+      "surfaces": [
+        "SessionManager.readSessionContext"
+      ],
+      "replacement": "Await SessionManager.readSessionContextAsync for full-fidelity context consumption. The synchronous reader retains its shipped result through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-session-transcript-persistence"
+    },
+    {
+      "code": "session-manager-sync-persistence",
+      "status": "deprecated",
+      "surfaces": [
+        "SessionManager.appendCompaction",
+        "SessionManager.appendCustomEntry",
+        "SessionManager.appendCustomMessageEntry",
+        "SessionManager.appendLabelChange",
+        "SessionManager.appendLeafControl",
+        "SessionManager.appendMessage",
+        "SessionManager.appendMessageToTranscript",
+        "SessionManager.appendMessageWithTranscriptAnchor",
+        "SessionManager.appendResetBoundary",
+        "SessionManager.appendSessionInfo",
+        "SessionManager.branch",
+        "SessionManager.branchWithSummary",
+        "SessionManager.open",
+        "SessionManager.openBounded",
+        "SessionManager.openDetachedBounded",
+        "SessionManager.openModelContext",
+        "SessionManager.persist",
+        "SessionManager.prepareTranscriptRewrite",
+        "SessionManager.reloadPersistedTranscript",
+        "SessionManager.removeTrailingEntries",
+        "SessionManager.resolveCurrentTurnEntryId.includeOmittedCustomMessages",
+        "SessionManager.setSessionTarget"
+      ],
+      "replacement": "Await the matching Async-suffixed SessionManager method, including the returned rewrite commit. For resolveCurrentTurnEntryId with includeOmittedCustomMessages, await openAsync and traverse the complete view without that option. Shipped synchronous adapters remain compatible during their deprecation period and will be removed in the first January 2027 stable release after the final compatibility day, 2026-12-31.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-session-transcript-persistence"
+    },
+    {
+      "code": "session-observer-progress-sync-reads",
+      "status": "deprecated",
+      "surfaces": [
+        "GatewayRequestHandlerOptions.context.sessionObserver.dispose",
+        "GatewayRequestHandlerOptions.context.sessionObserver.getCompanionSnapshot",
+        "GatewayRequestHandlerOptions.context.sessionObserver.handleEvent",
+        "GetReplyOptions.onVerboseProgressVisibility",
+        "PluginHookReplyDispatchEvent.shouldSendFullToolDetails",
+        "PluginHookReplyDispatchEvent.shouldSendToolSummaries",
+        "tryDispatchAcpReplyHook boolean-only event inputs"
+      ],
+      "replacement": "Await sessionObserver.handleEventAsync, getCompanionSnapshotAsync, and disposeAsync. Use reply_dispatch shouldSendToolSummariesAsync/shouldSendFullToolDetailsAsync and onVerboseProgressVisibilityAsync. Retain synchronous contracts through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-session-observer-and-progress-visibility"
+    },
+    {
+      "code": "session-reset-freshness-sync-read",
+      "status": "deprecated",
+      "surfaces": [
+        "api.runtime.channel.session.resolveEntryResetFreshness"
+      ],
+      "replacement": "Await runtime.channel.session.resolveEntryResetFreshnessAsync. The released synchronous resolveEntryResetFreshness method retains its parameters and result through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration#session-reset-freshness"
+    },
+    {
+      "code": "session-store-opaque-mutations",
+      "status": "deprecated",
+      "surfaces": [
+        "api.runtime.agent.session.patchSessionEntry",
+        "api.runtime.agent.session.updateSessionStoreEntry",
+        "api.runtime.channel.session.updateLastRoute.assertCommitAllowed",
+        "openclaw/plugin-sdk/session-store-runtime.patchSessionEntry",
+        "openclaw/plugin-sdk/session-store-runtime.updateLastRoute.assertCommitAllowed",
+        "openclaw/plugin-sdk/session-store-runtime.updateSessionStoreEntry"
+      ],
+      "replacement": "Use prepareSessionEntryPatch for host preparation followed by an exact-snapshot conditional commit, applySessionEntryPatch for data-only patches, and updateLastRouteWithAuthority for guarded route updates. Legacy opaque transaction guards retain their ordering and will be removed in the first January 2027 stable release after the final compatibility day, 2026-12-31.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#prepare-session-entry-changes"
+    },
+    {
+      "code": "session-store-sync-listing",
+      "status": "deprecated",
+      "surfaces": [
+        "api.runtime.agent.session.listSessionEntries",
+        "openclaw/plugin-sdk/session-store-runtime.listSessionEntries"
+      ],
+      "replacement": "Await listSessionEntriesAsync with an explicit agentId for read-only metadata; use getSessionEntryAsync for complete entries. Retain final deletion and disclosure authority at the effect boundary. The synchronous listing remains compatible through 2026-12-31.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-session-metadata-listings"
+    },
+    {
+      "code": "session-store-sync-readers",
+      "status": "deprecated",
+      "surfaces": [
+        "api.runtime.agent.session.getConversationSession",
+        "api.runtime.agent.session.getSessionEntry",
+        "openclaw/plugin-sdk/session-store-runtime.getConversationSession",
+        "openclaw/plugin-sdk/session-store-runtime.getSessionEntry",
+        "openclaw/plugin-sdk/session-store-runtime.loadTranscriptEventsSync",
+        "openclaw/plugin-sdk/session-store-runtime.readAmbientTranscriptWatermark"
+      ],
+      "replacement": "Await getSessionEntryAsync, getConversationSessionAsync, readAmbientTranscriptWatermarkAsync, and loadTranscriptEvents. Synchronous readers retain their results during the stable deprecation period. Current entry lookup is not a substitute for historical transcript-key resolution.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-session-and-transcript-readers"
+    },
+    {
+      "code": "session-transcript-sync-statistics",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/memory-core-host-engine-sessions.readTranscriptStatsBatchReadOnlySync",
+        "openclaw/plugin-sdk/memory-core-host-engine-sessions.statSessionEntrySync",
+        "openclaw/plugin-sdk/session-store-runtime.readTranscriptStatsSync"
+      ],
+      "replacement": "Await readTranscriptStatsAsync from session-store-runtime, or readTranscriptStatsBatchReadOnlyAsync and statSessionEntry from memory-core-host-engine-sessions. Batch reads preserve input order, duplicate IDs, and null results for unavailable stores through the existing history worker. Worker-local kernels and supplied statistics may retain direct synchronous reads; legacy main-thread SDK calls remain compatible through 2026-12-31.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-transcript-statistics"
+    },
+    {
+      "code": "session-transcript-sync-view",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/session-transcript-hit loadCombinedSessionStoreForGateway"
+      ],
+      "replacement": "Await loadCombinedSessionStoreForGatewayAsync from openclaw/plugin-sdk/session-transcript-hit. The synchronous export retains its complete, non-incognito view through 2026-12-31; removal ships in the first January 2027 stable release.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/compatibility-policy#session-transcript-search-views"
+    },
+    {
+      "code": "session-upstream-links-sync-persistence",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/agent-harness-session-runtime.createNativeSessionInitializationOwner().prepare().link",
+        "openclaw/plugin-sdk/session-catalog.deleteSessionUpstreamLink",
+        "openclaw/plugin-sdk/session-catalog.upsertSessionUpstreamLink"
+      ],
+      "replacement": "Await upsertSessionUpstreamLinkAsync and deleteSessionUpstreamLinkAsync from session-catalog. Official harnesses await the native initializer's linkAsync method. Retain the synchronous signatures and completion timing shipped in v2026.9.8 through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-session-upstream-links"
+    },
+    {
+      "code": "skill-command-discovery-sync",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/command-auth-native.listSkillCommandsForAgents",
+        "openclaw/plugin-sdk/skill-commands-runtime.listSkillCommandsForAgents",
+        "openclaw/plugin-sdk/skill-commands-runtime.listSkillCommandsForWorkspace"
+      ],
+      "replacement": "Await prepareSkillCommandsForAgents or prepareSkillCommandsForWorkspace. Synchronous list methods retain their array results through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-skill-command-discovery"
+    },
+    {
+      "code": "sqlite-runtime-native-access",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/sqlite-runtime.borrowOpenClawAgentDatabase",
+        "openclaw/plugin-sdk/sqlite-runtime.executeSqliteQuerySync",
+        "openclaw/plugin-sdk/sqlite-runtime.executeSqliteQueryTakeFirstSync",
+        "openclaw/plugin-sdk/sqlite-runtime.getNodeSqliteKysely",
+        "openclaw/plugin-sdk/sqlite-runtime.iterateSqliteQuerySync",
+        "openclaw/plugin-sdk/sqlite-runtime.openNodeSqliteDatabase writable handles",
+        "openclaw/plugin-sdk/sqlite-runtime.openOpenClawAgentDatabase",
+        "openclaw/plugin-sdk/sqlite-runtime.openOpenClawAgentSqliteWorkerStore publicationSource.DatabaseSync",
+        "openclaw/plugin-sdk/sqlite-runtime.prepareSqliteQuerySync",
+        "openclaw/plugin-sdk/sqlite-runtime.runOpenClawAgentWriteAdmission",
+        "openclaw/plugin-sdk/sqlite-runtime.runSqliteImmediateTransaction",
+        "openclaw/plugin-sdk/sqlite-runtime.runSqliteImmediateTransactionSync",
+        "openclaw/plugin-sdk/sqlite-runtime.withOpenClawAgentDatabaseAsync",
+        "openclaw/plugin-sdk/sqlite-runtime.withOpenClawAgentDatabaseWrite"
+      ],
+      "replacement": "Use openOpenClawAgentSqliteWorkerStoreV2 with required live authority and serializable domain commands. Worker backends use sqlite-worker-runtime primitives; explicit readOnly inspection and offline Doctor maintenance retain their native contracts. Native callbacks are not serialized or moved by adding await. Released calls retain their signatures and synchronous transaction ordering through the deprecation period and are removed in the first January 2027 stable release after the final compatibility day, 2026-12-31.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#replace-native-sqlite-runtime-writes"
+    },
+    {
+      "code": "transcript-lock-sync-message-preparation",
+      "status": "deprecated",
+      "surfaces": [
+        "CodexSessionTranscriptMirrorWriteLockContext.appendMessageWithMessageSequence.beforeFreshMessageCommit",
+        "CodexSessionTranscriptMirrorWriteLockContext.appendMessageWithMessageSequence.prepareMessageAfterIdempotencyCheck",
+        "SessionTranscriptWriteLockContext.appendMessage.beforeFreshMessageCommit",
+        "SessionTranscriptWriteLockContext.appendMessage.prepareMessageAfterIdempotencyCheck",
+        "openclaw/plugin-sdk/codex-session-transcript-runtime.withCodexSessionTranscriptMirrorWriteLock",
+        "openclaw/plugin-sdk/session-transcript-runtime.withSessionTranscriptWriteLock"
+      ],
+      "replacement": "Use withSessionTranscriptWrite (or withCodexSessionTranscriptMirrorWrite) with preparation.prepareMessage and preparation.source. Legacy lock and opaque callback forms retain durable transaction ordering through 2026-12-31; incognito targets reject them with migration guidance.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-locked-transcript-preparation"
+    },
+    {
+      "code": "transcript-session-key-sync-resolution",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/session-store-runtime.resolveTranscriptSessionKeyBySessionId"
+      ],
+      "replacement": "Await resolveTranscriptSessionKeyBySessionIdAsync from session-store-runtime. It preserves exact historical session-window resolution, including session IDs no longer selected by the current entry.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/async-transcript-and-tts"
+    },
+    {
+      "code": "transcript-strict-sync-message-preparation",
+      "status": "deprecated",
+      "surfaces": [
+        "appendSessionTranscriptMessageByIdentity.beforeFreshMessageCommit",
+        "appendSessionTranscriptMessageByIdentity.prepareMessageAfterIdempotencyCheck",
+        "appendSessionTranscriptMessageByIdentityStrict.beforeFreshMessageCommit",
+        "appendSessionTranscriptMessageByIdentityStrict.prepareMessageAfterIdempotencyCheck"
+      ],
+      "replacement": "Use preparation.prepareMessage and preparation.source with appendSessionTranscriptMessageByIdentityStrict or appendSessionTranscriptMessageByIdentity. Legacy opaque callbacks retain durable transaction ordering through 2026-12-31; incognito targets reject them with migration guidance.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#await-strict-transcript-message-preparation"
+    },
+    {
+      "code": "tts-preferences-sync-resolution",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/agent-runtime resolveTtsPrefsPath",
+        "openclaw/plugin-sdk/tts-runtime buildTtsSystemPromptHint",
+        "openclaw/plugin-sdk/tts-runtime resolveTtsPrefsPath"
+      ],
+      "replacement": "Await resolveTtsPrefsPathAsync(config) for the machine-owned path. For prompt hints, await the public api.runtime.tts.buildSystemPromptHintAsync method. Bundled plugins can also await private prepareTtsPreferences and pass preparedTtsPreferences to the supported synchronous hint overload. The unprepared synchronous hint and preference-path calls remain compatible through 2026-12-31; removal ships in the first January 2027 stable release.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/async-transcript-and-tts"
+    },
+    {
+      "code": "watched-sessions-sync-harness-context",
+      "status": "deprecated",
+      "surfaces": [
+        "openclaw/plugin-sdk/agent-harness-runtime.buildWatchedSessionsHarnessContext"
+      ],
+      "replacement": "Await prepareWatchedSessionsHarnessContext with an assertCurrent callback bound to the current host capability. The released buildWatchedSessionsHarnessContext retains its synchronous string-or-undefined result through 2026-12-31; removal ships in the first January 2027 stable release without an SDK major.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/compatibility-policy#watched-session-harness-context"
+    },
+    {
+      "code": "web-search-sync-provider-list",
+      "status": "deprecated",
+      "surfaces": [
+        "PluginRuntime.webSearch.listProviders"
+      ],
+      "replacement": "Await runtime.webSearch.listProvidersAsync(params). The synchronous listProviders(params) retains its return shape through 2026-12-31; removal ships in the first January 2027 stable release.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/compatibility-policy#web-search-provider-lists"
+    },
+    {
+      "code": "workspace-mutation-guard-callback",
+      "status": "deprecated",
+      "surfaces": [
+        "api.runtime.agent.ensureAgentWorkspace.beforePersistentApply"
+      ],
+      "replacement": "Await database preparation before ensureAgentWorkspace and use SQL-free guard.assertHost for live authority. Internal recovery predicates run on the worker transaction connection.",
+      "removeAfter": "2026-12-31",
+      "docsPath": "/plugins/sdk-migration/how-to-migrate#workspace-mutation-guards"
+    }
+  ]
+}

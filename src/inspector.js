@@ -12,6 +12,7 @@ import { isWithinPluginRoot, resolveJailedPluginPath } from "./path-utils.js";
 import { resolveProcessLimits, startOwnedProcess } from "./process-profile.js";
 import { buildCompatibilityReport, buildReport } from "./report.js";
 import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
+import { inspectRegistryDeprecations } from "./registry-deprecations.js";
 import { collectRuntimeModuleImports } from "./runtime-imports.js";
 
 const pluginFactoryNames = "defineBundledChannelEntry|defineChannelPluginEntry|createChatChannelPlugin|definePluginEntry";
@@ -27,7 +28,6 @@ export async function inspectFixtureSet(config, options = {}) {
 }
 
 export async function inspectCompatibilityFixtureSet(config, options = {}) {
-  const { inspections, failures } = await inspectConfiguredFixtures(config, options);
   const reportConfig = {
     ...config,
     fixtures: config.fixtures.map((fixture) => ({
@@ -44,6 +44,7 @@ export async function inspectCompatibilityFixtureSet(config, options = {}) {
           manifest: config,
           rootDir: config.rootDir,
         }));
+  const { inspections, failures } = await inspectConfiguredFixtures(config, { ...options, targetOpenClaw });
 
   return buildCompatibilityReport({
     config: reportConfig,
@@ -135,7 +136,7 @@ export async function inspectPlugin(fixture, options = {}) {
   for (const filePath of sourceFiles) {
     const text = await readFile(filePath, "utf8");
     const relativePath = path.relative(config.rootDir ?? process.cwd(), filePath);
-    const sourceInspection = inspectSourceText(text, relativePath);
+    const sourceInspection = inspectSourceText(text, relativePath, options);
 
     for (const hook of sourceInspection.hooks) {
       hooks.add(hook.name);
@@ -173,7 +174,7 @@ export async function inspectPlugin(fixture, options = {}) {
   };
 }
 
-export function inspectSourceText(text, filePath = "source.js") {
+export function inspectSourceText(text, filePath = "source.js", options = {}) {
   const searchableText = stripComments(text);
   const hooks = collectDetailedMatches(searchableText, /\bapi\.on\(\s*["'`]([^"'`]+)["'`]/g, filePath, "name");
   const registrations = [
@@ -182,7 +183,10 @@ export function inspectSourceText(text, filePath = "source.js") {
     ...collectDetailedMatches(searchableText, compiledFactoryCall, filePath, "name"),
   ];
   const sdkImports = collectSdkImports(searchableText, filePath, text);
-  const sdkDeprecations = inspectSdkDeprecations(searchableText, filePath);
+  const sdkDeprecations = [
+    ...inspectSdkDeprecations(searchableText, filePath),
+    ...inspectRegistryDeprecations(text, filePath, options.targetOpenClaw?.compatDeprecations),
+  ];
 
   return {
     hooks,

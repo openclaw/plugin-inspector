@@ -8,6 +8,7 @@ export const deprecatedCompatRecords = new Set([
 ]);
 
 export const knownIssueCodes = new Set([
+  "sdk-deprecated-api",
   "before-tool-call-probe",
   "channel-contract-probe",
   "channel-env-vars",
@@ -57,6 +58,12 @@ const authorRemediation = (summary, ..._details) => ({ summary });
 const migrationRemediation = authorRemediation;
 
 export const issueMetadataByCode = {
+  "sdk-deprecated-api": {
+    severity: "P2",
+    owner: "plugin",
+    decision: "plugin-upstream-fix",
+    title: "deprecated SDK API is still used",
+  },
   "before-tool-call-probe": {
     severity: "P1",
     owner: "inspector",
@@ -515,6 +522,11 @@ export function buildIssues({ breakages = [], warnings = [], suggestions = [], t
       title: issueTitle(finding),
       evidence: finding.evidence ?? [],
       compatRecord: finding.compatRecord ?? null,
+      ...(finding.deprecatedApi ? {
+        deprecatedApi: finding.deprecatedApi,
+        replacement: finding.replacement,
+        ...(finding.removeAfter ? { removeAfter: finding.removeAfter } : {}),
+      } : {}),
       runtimeCoverage: finding.runtimeCoverage ?? null,
       ...(finding.authorRemediation
         ? {
@@ -623,6 +635,7 @@ function issueClassFor(code, options) {
       "legacy-root-sdk-import",
       "provider-auth-env-vars",
       "sdk-load-session-store",
+      "sdk-deprecated-api",
       "sdk-session-file-helper",
       "sdk-session-store-write",
       "sdk-session-transcript-file-target",

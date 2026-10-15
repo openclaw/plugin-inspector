@@ -519,6 +519,27 @@ Current author-facing deprecation warnings include deprecated SDK helpers such
 as `loadSessionStore(...)` when a plugin still depends on the legacy whole-store
 session shape.
 
+When inspecting a source checkout with `--openclaw`, the inspector also reads
+deprecated records from the target's compatibility registry, including imported
+literal record modules and shared record metadata. Individual SDK member imports,
+re-exports, namespace accesses, and literal CommonJS/dynamic imports are matched
+against those records, as are direct `api.runtime` member accesses; importing a
+supported sibling member does not warn.
+Registry findings use code `sdk-deprecated-api` and include `deprecatedApi`,
+`replacement` (the target's migration guidance), and `removeAfter` when declared,
+in `fixtures[].sdkDeprecations`, `warnings`, and `issues`. For example,
+`removeAfter: "2026-12-31"` means the **final compatibility day**, not that the API
+is already removed. These are non-blocking, author-facing deprecation warnings.
+The replacement text is preserved verbatim because some migrations require more
+than renaming a function. Packed npm targets, including ClawHub's compact target,
+use the bundled December 31, 2026 retirement inventory in `src/sdk-retirements.json`.
+Its upstream commit is exposed as `targetOpenClaw.compatDeprecationsSource`;
+these notices describe the announced retirement policy even for older packages.
+An explicit source checkout uses its own registry instead of the snapshot.
+Conditional prose surfaces and untyped instance-method calls are
+not inferred from method names alone. The reader resolves literal data and
+spreads, not computed registry builders.
+
 ## CI Policy And Shared Reporting Primitives
 
 `plugin-inspector` owns the shared CI policy and report rendering primitives.

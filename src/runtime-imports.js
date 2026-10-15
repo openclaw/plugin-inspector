@@ -4,15 +4,17 @@ import { analyze } from "eslint-scope";
 
 const literalModuleImport = /(?<![$\w.])(?<kind>[$A-Z_a-z][$\w]*)\s*\(\s*(?<quote>["'`])(?<specifier>[^"'`\\\r\n]+)\k<quote>/dg;
 
-export function collectRuntimeModuleImports(text, { includeStaticNamespaces = false } = {}) {
+export function collectRuntimeModuleImports(text, { includeStaticNamespaces = false, includeStaticMembers = false, includeRuntimeMembers = false } = {}) {
   // Preserve possible-import offsets through erasure; AST and scopes classify them.
   // Named factories use createRequire or a \u escape. Avoid parsing unrelated
   // calls, which can dominate whole-plugin inspection.
   const mayUseCreateRequire = text.includes("createRequire") || text.includes("\\u");
   const entries = [...text.matchAll(literalModuleImport)].map(moduleImportEntry)
     .filter((entry) => entry && (mayUseCreateRequire || ["require", "import"].includes(entry.kind)));
-  if (entries.length === 0 && !includeStaticNamespaces) return entries;
-  const { runtimeText, imports } = classifyRuntimeImports(text, entries);
+  if (entries.length === 0 && !includeStaticNamespaces && !includeStaticMembers && !includeRuntimeMembers) return entries;
+  const { runtimeText, imports, sourceOffset } = classifyRuntimeImports(text, entries, {
+    preservePositions: includeStaticMembers || includeRuntimeMembers,
+  });
   let ast;
   let scopes;
   try {
@@ -74,6 +76,28 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
   const byMarker = new Map(imports.map(({ marker, entry }) => [marker, entry]));
   const result = [];
   for (const node of nodes) {
+    if (includeRuntimeMembers && node.type === "MemberExpression") {
+      const parts = [];
+      let receiver = node;
+      while (receiver?.type === "MemberExpression" && !receiver.computed) {
+        parts.unshift(receiver.property.name);
+        receiver = receiver.object;
+      }
+      if (receiver?.type === "Identifier" && receiver.name === "api" && parts[0] === "runtime" && parts.length > 1) {
+        result.push({ specifier: "api.runtime", index: sourceOffset(node.start),
+          names: new Set([parts.slice(1).join(".")]), kind: "runtime-member" });
+      }
+    }
+    if (includeStaticMembers && ["ImportDeclaration", "ExportNamedDeclaration", "ExportAllDeclaration"].includes(node.type) && node.source) {
+      const names = new Set();
+      for (const binding of node.specifiers ?? []) {
+        if (binding.type === "ImportSpecifier") names.add(binding.imported.name ?? binding.imported.value);
+        if (binding.type === "ExportSpecifier") names.add(binding.local.name ?? binding.local.value);
+        if (binding.type === "ImportNamespaceSpecifier") collectBindingNames(binding.local, node, names);
+      }
+      result.push({ specifier: node.source.value, specifierStart: sourceOffset(node.source.start + 1),
+        kind: "static", index: sourceOffset(node.start), names });
+    }
     if (includeStaticNamespaces && node.type === "ImportDeclaration") {
       for (const binding of node.specifiers) {
         if (binding.type !== "ImportNamespaceSpecifier") continue;
@@ -185,7 +209,7 @@ function moduleImportEntry(match) {
   };
 }
 
-function classifyRuntimeImports(text, entries) {
+function classifyRuntimeImports(text, entries, { preservePositions = false } = {}) {
   const markedImports = entries.map((entry, index) => {
     const { specifier, specifierStart } = entry;
     return {
@@ -206,7 +230,9 @@ function classifyRuntimeImports(text, entries) {
 
   let runtimeText = null;
   try {
-    runtimeText = eraseTypeScript(markedText);
+    runtimeText = preservePositions && typeof nodeModule.stripTypeScriptTypes === "function"
+      ? nodeModule.stripTypeScriptTypes(markedText, { mode: "strip" })
+      : eraseTypeScript(markedText);
   } catch {
     // Unsupported or incomplete TypeScript cannot prove an import is type-only.
   }
@@ -224,6 +250,25 @@ function classifyRuntimeImports(text, entries) {
   return {
     runtimeText: runtimeText ?? markedText,
     imports: runtimeText === null ? markedImports : markedImports.filter((entry) => retained.has(entry)),
+    sourceOffset: sourceOffsetMapper(markedImports),
+  };
+}
+
+function sourceOffsetMapper(markedImports) {
+  let extra = 0;
+  const boundaries = markedImports.map(({ marker, entry, specifierEnd }) => {
+    extra += marker.length - entry.specifier.length;
+    return { end: specifierEnd + extra, extra };
+  });
+  return (offset) => {
+    let low = 0;
+    let high = boundaries.length;
+    while (low < high) {
+      const mid = (low + high) >>> 1;
+      if (boundaries[mid].end <= offset) low = mid + 1;
+      else high = mid;
+    }
+    return offset - (boundaries[low - 1]?.extra ?? 0);
   };
 }
 
