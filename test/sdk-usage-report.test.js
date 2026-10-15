@@ -22,7 +22,7 @@ async function inspectPublishedJson(t, source, options = {}) {
     await writeFile(path.join(input, name), text);
   }
   if (options.targetFiles) {
-    options.sdkUsageTargetPath = path.join(directory, "target");
+    options.sdkUsageTargetPath = options.nestedUnderTarget ? directory : path.join(directory, "target");
     for (const [name, text] of Object.entries(options.targetFiles)) {
       await mkdir(path.dirname(path.join(options.sdkUsageTargetPath, name)), { recursive: true });
       await writeFile(path.join(options.sdkUsageTargetPath, name), text);
@@ -167,11 +167,17 @@ sdk[process.env.METHOD]();
 });
 
 test("relative imports cannot attribute SDK usage from outside the inspected package", async (t) => {
-  const report = await inspectPublishedJson(t, `
+  for (const nestedUnderTarget of [false, true]) {
+    const report = await inspectPublishedJson(t, `
 import { helper } from "../outside.js";
 helper();
-`, { files: { "../outside.ts": 'export { helper } from "openclaw/plugin-sdk/outside";' }, sdkUsageInputKind: "artifact" });
-  assert.deepEqual(report.sdkUsage.entries.filter((entry) => entry.kind === "sdk-export"), []);
+`, {
+      files: { "../outside.ts": 'export { helper } from "openclaw/plugin-sdk/outside";' },
+      sdkUsageInputKind: "artifact", nestedUnderTarget,
+      ...(nestedUnderTarget ? { targetFiles: { "package.json": '{"name":"openclaw"}' } } : {}),
+    });
+    assert.deepEqual(report.sdkUsage.entries.filter((entry) => entry.kind === "sdk-export"), []);
+  }
 });
 
 test("published declarations establish an unannotated registration API without host implementation files", async (t) => {

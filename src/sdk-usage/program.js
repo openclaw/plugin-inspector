@@ -51,7 +51,7 @@ export function createUsageProgram(files, targetRoot) {
     // Only the explicit public host target may add files outside the inspected
     // set. A plugin-relative import must not crawl neighboring source trees.
     if (!insideTarget(resolved.resolvedFileName)) return undefined;
-    if (name === "openclaw/plugin-sdk" || name.startsWith("openclaw/plugin-sdk/") || name.startsWith(".") && insideTarget(containingFile)) return resolved;
+    if (name === "openclaw/plugin-sdk" || name.startsWith("openclaw/plugin-sdk/") || name.startsWith(".") && !byPath.has(containingFile) && insideTarget(containingFile)) return resolved;
     return undefined;
   });
   host.writeFile = () => {};
