@@ -13,13 +13,17 @@ export function collectSdkMembers({ sources, report, provenance }) {
     if (ts.isArrayLiteralExpression(node)) return node.elements.flatMap(hookNames);
     return literals(node);
   }
+  function unresolvedSdkReceiver(value) {
+    if (value?.kind === "union") return value.values.some(unresolvedSdkReceiver);
+    return ["api", "runtime"].includes(value?.kind) || value?.kind === "namespace" && Boolean(value.module);
+  }
   for (const source of sources) walk(source, (node) => {
     if (ts.isQualifiedName(node) && !ts.isQualifiedName(node.parent)) record(resolve(node), "type-reference", node, "type");
     if (ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node)) {
       if (node.parent.expression === node && (ts.isPropertyAccessExpression(node.parent) || ts.isElementAccessExpression(node.parent))) return;
       const value = resolve(node);
       record(value, referenceKind(node) ?? "member-access", node);
-      if (ts.isElementAccessExpression(node) && !literals(node.argumentExpression).length && ["api", "runtime"].includes(resolve(node.expression)?.kind)) report.unknown(node, "Computed SDK member is not statically resolvable");
+      if (ts.isElementAccessExpression(node) && !literals(node.argumentExpression).length && unresolvedSdkReceiver(resolve(node.expression))) report.unknown(node, "Computed SDK member is not statically resolvable");
     }
     if (ts.isCallExpression(node)) {
       const value = resolve(node.expression);

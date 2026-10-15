@@ -28,6 +28,11 @@ function publicTypePaths(targetRoot) {
 export function createUsageProgram(files, targetRoot) {
   const sources = files.filter((file) => !file.metadata).map((file) => ts.createSourceFile(file.path, file.text, ts.ScriptTarget.Latest, true));
   const byPath = new Map(sources.map((source) => [source.fileName, source]));
+  function insideTarget(file) {
+    if (!targetRoot) return false;
+    const relative = path.relative(targetRoot, file);
+    return relative !== ".." && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative) && !relative.split(path.sep).includes("node_modules");
+  }
   const options = {
     allowJs: true, lib: ["lib.es2023.d.ts"], noEmit: true, skipLibCheck: true,
     target: ts.ScriptTarget.Latest, module: ts.ModuleKind.ESNext,
@@ -43,8 +48,11 @@ export function createUsageProgram(files, targetRoot) {
     const resolved = ts.resolveModuleName(name, containingFile, options, host).resolvedModule;
     if (!resolved) return undefined;
     if (byPath.has(resolved.resolvedFileName)) return resolved;
-    if (!name.startsWith(".") && !(targetRoot && name.startsWith("openclaw/plugin-sdk"))) return undefined;
-    return resolved.resolvedFileName.includes(`${path.sep}node_modules${path.sep}`) ? undefined : resolved;
+    // Only the explicit public host target may add files outside the inspected
+    // set. A plugin-relative import must not crawl neighboring source trees.
+    if (!insideTarget(resolved.resolvedFileName)) return undefined;
+    if (name === "openclaw/plugin-sdk" || name.startsWith("openclaw/plugin-sdk/") || name.startsWith(".") && insideTarget(containingFile)) return resolved;
+    return undefined;
   });
   host.writeFile = () => {};
   const program = ts.createProgram(sources.map((source) => source.fileName), options, host);

@@ -155,6 +155,25 @@ export function register(api: OpenClawPluginApi) {
   assert.ok(report.sdkUsage.unknowns.some((unknown) => unknown.expression.includes("DYNAMIC_METHOD")));
 });
 
+test("dynamic SDK namespace selection remains an explicit unresolved dependency", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import * as sdk from "openclaw/plugin-sdk/core";
+sdk[process.env.METHOD]();
+`);
+  assert.equal(report.sdkUsage.status, "partial");
+  assert.equal(report.sdkUsage.unknowns.length, 1);
+  assert.equal(report.sdkUsage.unknowns[0].expression, "sdk[process.env.METHOD]");
+  assert.ok(report.sdkUsage.entries.some((entry) => entry.key === "sdk-export:openclaw/plugin-sdk/core#*"));
+});
+
+test("relative imports cannot attribute SDK usage from outside the inspected package", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { helper } from "../outside.js";
+helper();
+`, { files: { "../outside.ts": 'export { helper } from "openclaw/plugin-sdk/outside";' }, sdkUsageInputKind: "artifact" });
+  assert.deepEqual(report.sdkUsage.entries.filter((entry) => entry.kind === "sdk-export"), []);
+});
+
 test("published declarations establish an unannotated registration API without host implementation files", async (t) => {
   const report = await inspectPublishedJson(t, `
 import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
