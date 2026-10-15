@@ -14,6 +14,7 @@ export function createProvenance({ checker, program, localSource, sources, targe
   const { typeValue, inferred } = createTypeProvenance({ checker, program, resolve, select, moduleValue, targetRoot });
   const sourceNames = new Set(sources.map((source) => source.fileName));
   const argumentsByParameter = new Map();
+  const restArgumentsByParameter = new Map();
   const callsByFunction = new Map();
   const assignments = new Map();
   const entryParameters = new Set();
@@ -28,20 +29,25 @@ export function createProvenance({ checker, program, localSource, sources, targe
       if (declaration && sourceNames.has(declaration.getSourceFile().fileName)) {
         callsByFunction.set(declaration, [...(callsByFunction.get(declaration) ?? []), node]);
         for (const [index, parameter] of declaration.parameters.entries()) {
+          if (parameter.dotDotDotToken) {
+            restArgumentsByParameter.set(parameter, [...(restArgumentsByParameter.get(parameter) ?? []), [...(node.arguments ?? [])].slice(index)]);
+            continue;
+          }
           const argument = node.arguments?.[index];
           if (argument) argumentsByParameter.set(parameter, [...(argumentsByParameter.get(parameter) ?? []), argument]);
         }
       }
     }
-    if (ts.isBinaryExpression(node) && [ts.SyntaxKind.EqualsToken, ts.SyntaxKind.QuestionQuestionEqualsToken, ts.SyntaxKind.BarBarEqualsToken].includes(node.operatorToken.kind) && ts.isIdentifier(node.left)) {
+    if (ts.isBinaryExpression(node) && [ts.SyntaxKind.EqualsToken, ts.SyntaxKind.QuestionQuestionEqualsToken, ts.SyntaxKind.BarBarEqualsToken].includes(node.operatorToken.kind) && (ts.isIdentifier(node.left) || ts.isPropertyAccessExpression(node.left) && node.left.expression.kind === ts.SyntaxKind.ThisKeyword)) {
       const symbol = checker.getSymbolAtLocation(node.left);
       assignments.set(symbol, [...(assignments.get(symbol) ?? []), node.right]);
     }
   });
 
   function moduleValue(specifier, source, dependencyKind) {
-    return isSdkSpecifier(specifier) ? { kind: "namespace", module: specifier, dependencyKind }
-      : specifier?.startsWith(".") ? { kind: "namespace", source: localSource(specifier, source), dependencyKind } : undefined;
+    if (isSdkSpecifier(specifier)) return { kind: "namespace", module: specifier, dependencyKind };
+    const resolved = specifier && localSource(specifier, source);
+    return resolved ? { kind: "namespace", source: resolved, dependencyKind } : undefined;
   }
 
   function exported(source, name) {
@@ -129,6 +135,7 @@ export function createProvenance({ checker, program, localSource, sources, targe
       }
     }
     if (value.kind === "array") return resolve(value.node.elements[Number(key)]);
+    if (value.kind === "values") return value.values[Number(key)];
     if (value.kind === "union") return combine(value.values.map((item) => select(item, key)));
     return undefined;
   }
@@ -140,9 +147,13 @@ export function createProvenance({ checker, program, localSource, sources, targe
     return { kind: "union", values: defined };
   }
 
-  function builtinBoundary(value) {
-    if (value?.kind === "union") return combine(value.values.map(builtinBoundary));
+  function builtinBoundary(value, receiver) {
+    if (value?.kind === "union") return combine(value.values.map((item) => builtinBoundary(item, receiver)));
     if (["api", "runtime"].includes(value?.kind)) return { ...value, builtin: true };
+    if (value?.kind === "export") {
+      const type = checker.getTypeAtLocation(receiver);
+      if ((type.isUnion() ? type.types : [type]).some((member) => member.flags & ts.TypeFlags.Object)) return { ...value, selected: true };
+    }
     return { kind: "builtin" };
   }
 
@@ -161,6 +172,11 @@ export function createProvenance({ checker, program, localSource, sources, targe
     const bindings = new Map(lexicalScope.bindings);
     const literalBindings = new Map(lexicalScope.literalBindings);
     for (const [index, parameter] of fn.parameters.entries()) {
+      if (parameter.dotDotDotToken) {
+        bindings.set(parameter, { kind: "values", values: values.slice(index) });
+        literalBindings.set(parameter, []);
+        continue;
+      }
       bindings.set(parameter, index < args.length ? values[index] : resolve(parameter.initializer));
       literalBindings.set(parameter, index < args.length ? literalValues[index] : literals(parameter.initializer));
     }
@@ -180,9 +196,12 @@ export function createProvenance({ checker, program, localSource, sources, targe
   }
 
   function elementValue(node) {
-    const evaluate = () => isBuiltinProperty(node) ? builtinBoundary(resolve(node.expression)) : combine(literals(node.argumentExpression).map((key) => select(resolve(node.expression), key)));
+    const evaluate = () => isBuiltinProperty(node) ? builtinBoundary(resolve(node.expression), node.expression) : combine(literals(node.argumentExpression).map((key) => select(resolve(node.expression), key)));
     const fn = enclosingFunction(node);
-    return fn && !scope.functions.has(fn) && callsByFunction.has(fn)
+    // Call correlation only matters when callers supply different known keys.
+    // A fixed key needs no call graph expansion; an unknown key cannot become
+    // a concrete SDK identity by enumerating unrelated caller contexts.
+    return literals(node.argumentExpression).length > 1 && fn && !scope.functions.has(fn) && callsByFunction.has(fn)
       ? combine(invocationScopes(fn).map((context) => inScope(context, evaluate))) : evaluate();
   }
 
@@ -213,6 +232,7 @@ export function createProvenance({ checker, program, localSource, sources, targe
     if (ts.isParameter(declaration)) {
       if (entryParameters.has(declaration)) return { kind: "api", path: [] };
       if (scope.bindings.has(declaration)) return scope.bindings.get(declaration);
+      if (declaration.dotDotDotToken) return combine((restArgumentsByParameter.get(declaration) ?? []).map((args) => ({ kind: "values", values: args.map(resolve) })));
       const actual = combine((argumentsByParameter.get(declaration) ?? []).map(resolve));
       if (actual) return actual;
       const callback = declaration.parent;
@@ -240,7 +260,7 @@ export function createProvenance({ checker, program, localSource, sources, targe
     if (declaration.initializer) return resolve(declaration.initializer);
     if (declaration.type) {
       const value = typeValue(declaration.type);
-      return ["api", "runtime"].includes(value?.kind) && checker.getTypeFromTypeNode(declaration.type).getCallSignatures().length ? { kind: "signature", value } : value;
+      return ["export", "namespace"].includes(value?.kind) || ["api", "runtime"].includes(value?.kind) && checker.getTypeFromTypeNode(declaration.type).getCallSignatures().length ? { kind: "signature", value } : value;
     }
     return undefined;
   }
@@ -258,7 +278,13 @@ export function createProvenance({ checker, program, localSource, sources, targe
     if (resolving.has(node)) return undefined;
     resolving.add(node);
     let value;
-    if (ts.isParenthesizedExpression(node) || ts.isAsExpression(node) || ts.isTypeAssertionExpression(node) || ts.isNonNullExpression(node) || ts.isSatisfiesExpression(node) || ts.isAwaitExpression(node)) value = resolve(node.expression);
+    if (ts.isParenthesizedExpression(node) || ts.isAsExpression(node) || ts.isTypeAssertionExpression(node) || ts.isNonNullExpression(node) || ts.isSatisfiesExpression(node) || ts.isAwaitExpression(node)) {
+      value = resolve(node.expression);
+      if (ts.isAsExpression(node) || ts.isTypeAssertionExpression(node)) {
+        const declared = typeValue(node.type);
+        if (["api", "runtime"].includes(declared?.kind)) value = declared;
+      }
+    }
     else if (ts.isIdentifier(node)) value = symbolValue(checker.getSymbolAtLocation(node));
     else if (node.kind === ts.SyntaxKind.SuperKeyword) {
       let parent = node.parent;
@@ -266,7 +292,7 @@ export function createProvenance({ checker, program, localSource, sources, targe
       const base = parent?.heritageClauses?.find((clause) => clause.token === ts.SyntaxKind.ExtendsKeyword)?.types[0];
       value = base && resolve(base.expression);
     }
-    else if (ts.isPropertyAccessExpression(node) || ts.isQualifiedName(node)) value = ts.isPropertyAccessExpression(node) && isBuiltinProperty(node) ? builtinBoundary(resolve(node.expression)) : select(resolve(node.expression ?? node.left), nameText(node.name ?? node.right));
+    else if (ts.isPropertyAccessExpression(node) || ts.isQualifiedName(node)) value = ts.isPropertyAccessExpression(node) && isBuiltinProperty(node) ? builtinBoundary(resolve(node.expression), node.expression) : select(resolve(node.expression ?? node.left), nameText(node.name ?? node.right));
     else if (ts.isElementAccessExpression(node)) value = elementValue(node);
     else if (ts.isObjectLiteralExpression(node)) value = { kind: "object", node, scope };
     else if (ts.isArrayLiteralExpression(node)) value = { kind: "array", node, scope };
@@ -277,6 +303,10 @@ export function createProvenance({ checker, program, localSource, sources, targe
       if (node.expression.kind === ts.SyntaxKind.ImportKeyword || ts.isIdentifier(node.expression) && node.expression.text === "require" && !checker.getSymbolAtLocation(node.expression)?.valueDeclaration) value = moduleValue(literal(node.arguments[0]), node.getSourceFile(), node.expression.kind === ts.SyntaxKind.ImportKeyword ? "dynamic-import" : "require");
       else {
         const callee = resolve(node.expression);
+        if (ts.isPropertyAccessExpression(node.expression) && node.expression.name.text === "then" && resolve(node.expression.expression)?.kind === "namespace") {
+          const callback = resolve(node.arguments[0]);
+          if (callback?.kind === "function") value = returned(callback, [node.expression.expression]);
+        }
         if (ts.isPropertyAccessExpression(node.expression) && ts.isIdentifier(node.expression.expression) && node.expression.expression.text === "Promise" && node.expression.name.text === "all") value = resolve(node.arguments[0]);
         if (callee?.kind === "export" && callee.name === "createPluginRuntimeStore") value = { kind: "runtime-store", value: typeValue(node.typeArguments?.[0]) };
         if (callee?.kind === "export" && callee.name === "createLazyRuntimeModule") {

@@ -569,9 +569,15 @@ that an API is safe to remove or that a security finding can be ignored.
 The public `pluginRoot.runCheck` and fixture-suite APIs accept
 `sdkUsageInputKind: "source" | "artifact"` (default `"source"`). Source analysis
 includes explicit type syntax; artifact analysis describes the supplied
-published files. Erased types are not inferred back into JavaScript. Installed
-third-party dependencies are outside the inventory. Inspection does not execute
-plugin code.
+published files, including embedded vendor code and dependencies actually
+bundled inside that artifact. Source scans exclude separately installed
+`node_modules`; neither mode downloads or crawls external dependencies. Erased
+types are not inferred back into JavaScript. Inspection does not execute code.
+
+Declared `openclaw.extensions` entrypoints establish the host API parameter for
+plain registration functions and default/CommonJS wrappers. Source mode can
+resolve a unique source equivalent of a compiled entrypoint. A missing or
+ambiguous declared entrypoint is an explicit unknown, so the report is partial.
 
 Callers that supply precomputed `targetOpenClaw` metadata can also provide
 `sdkUsageTargetPath` pointing to its verified local package/source directory.

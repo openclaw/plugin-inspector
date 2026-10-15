@@ -24,7 +24,7 @@ function publicTypePaths(targetRoot) {
   return paths;
 }
 
-/** Only resolve local source and the explicitly supplied host. Never load dependencies. */
+/** Resolve inspected files and the explicit host; never crawl installed dependencies. */
 export function createUsageProgram(files, targetRoot) {
   const sources = files.filter((file) => !file.metadata).map((file) => ts.createSourceFile(file.path, file.text, ts.ScriptTarget.Latest, true));
   const byPath = new Map(sources.map((source) => [source.fileName, source]));
@@ -35,12 +35,16 @@ export function createUsageProgram(files, targetRoot) {
     ...(targetRoot ? { paths: publicTypePaths(targetRoot) } : {}),
   };
   const host = ts.createCompilerHost(options);
+  const realpath = host.realpath?.bind(host);
+  host.realpath = (name) => byPath.has(name) ? name : realpath?.(name) ?? name;
   const readSource = host.getSourceFile.bind(host);
   host.getSourceFile = (name, languageVersion) => byPath.get(name) ?? readSource(name, languageVersion);
   host.resolveModuleNames = (names, containingFile) => names.map((name) => {
-    if (!name.startsWith(".") && !(targetRoot && name.startsWith("openclaw/plugin-sdk"))) return undefined;
     const resolved = ts.resolveModuleName(name, containingFile, options, host).resolvedModule;
-    return resolved?.resolvedFileName.includes(`${path.sep}node_modules${path.sep}`) ? undefined : resolved;
+    if (!resolved) return undefined;
+    if (byPath.has(resolved.resolvedFileName)) return resolved;
+    if (!name.startsWith(".") && !(targetRoot && name.startsWith("openclaw/plugin-sdk"))) return undefined;
+    return resolved.resolvedFileName.includes(`${path.sep}node_modules${path.sep}`) ? undefined : resolved;
   });
   host.writeFile = () => {};
   const program = ts.createProgram(sources.map((source) => source.fileName), options, host);

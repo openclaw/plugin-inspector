@@ -15,7 +15,7 @@ export async function inspectSdkUsage({ root, inputKind = "source", targetRoot }
   const files = await readUsageFiles(root, report);
   const context = createUsageProgram(files, targetRoot);
   const { sources, checker } = context;
-  const provenance = createProvenance({ ...context, entrypoints: pluginEntrypointSources({ root, files, sources, inputKind }) });
+  const provenance = createProvenance({ ...context, entrypoints: pluginEntrypointSources({ root, files, sources, inputKind, report }) });
   for (const source of sources) {
     for (const diagnostic of source.parseDiagnostics) {
       report.unknown(source, `Source syntax could not be parsed: ${ts.flattenDiagnosticMessageText(diagnostic.messageText, " ")}`);

@@ -4,7 +4,7 @@ import ts from "typescript";
 
 const sourceExtension = /\.(?:[cm]?[jt]s|[jt]sx)$/i;
 const testFile = /(?:\.(?:test|spec)[.-]|(?:^|[-.])test-(?:support|helpers)|^test-|^vitest\.|^jest\.|^(?:bench|benchmark)[-.])/i;
-const excludedDirectory = /^(?:__tests__|__fixtures__|fixtures|test|tests|test-utils|test-support|test-helpers|coverage|vendor)$/;
+const excludedDirectory = /^(?:__tests__|__fixtures__|fixtures|test|tests|test-utils|test-support|test-helpers|coverage)$/;
 
 /** Every file is accounted for. A production import overrides a test-directory/name exclusion. */
 export async function readUsageFiles(root, report) {
@@ -13,8 +13,8 @@ export async function readUsageFiles(root, report) {
     for (const entry of (await readdir(directory, { withFileTypes: true })).sort((a, b) => a.name.localeCompare(b.name))) {
       const file = path.join(directory, entry.name);
       if (entry.isDirectory()) {
-        if (entry.name === "node_modules" || entry.name === ".git") continue;
-        await walk(file, excluded || excludedDirectory.test(entry.name) || report.inputKind === "source" && /^(?:dist|build)$/.test(entry.name));
+        if (entry.name === ".git" || entry.name === "node_modules" && report.inputKind === "source") continue;
+        await walk(file, excluded || excludedDirectory.test(entry.name) || report.inputKind === "source" && /^(?:dist|build|vendor)$/.test(entry.name));
         continue;
       }
       report.coverage.filesDiscovered++;

@@ -22,7 +22,8 @@ export function createTypeProvenance({ checker, program, resolve, select, module
       if (origin?.kind === "export" && capabilityContextTypes.has(origin.name)) value = { kind: "capability-context", type: checker.getTypeFromTypeNode(node) };
       if (!value && nameText(node.typeName) === "Pick" && builtinUtility(node) && node.typeArguments?.length === 2) {
         const [baseNode, keyNode] = node.typeArguments;
-        const base = ts.isTypeQueryNode(baseNode) ? resolve(baseNode.exprName) : typeValue(baseNode);
+        const declared = ts.isTypeQueryNode(baseNode) ? resolve(baseNode.exprName) : typeValue(baseNode);
+        const base = declared?.kind === "signature" ? declared.value : declared;
         const keyType = checker.getTypeFromTypeNode(keyNode);
         const alternatives = keyType.isUnion() ? keyType.types : [keyType];
         if (alternatives.every((type) => type.isStringLiteral())) value = { kind: "projection", base, keys: alternatives.map((type) => type.value) };
@@ -41,7 +42,8 @@ export function createTypeProvenance({ checker, program, resolve, select, module
       if (origin?.kind === "export" && roots.has(origin.name)) value = { kind: roots.get(origin.name), path: [], type: checker.getTypeAtLocation(node) };
     } else if (ts.isIndexedAccessTypeNode(node)) {
       const key = ts.isLiteralTypeNode(node.indexType) ? node.indexType.literal.text : undefined;
-      value = select(typeValue(node.objectType), key);
+      const declared = typeValue(node.objectType);
+      value = select(declared?.kind === "signature" ? declared.value : declared, key);
     } else if (ts.isParenthesizedTypeNode(node) || ts.isTypeOperatorNode(node)) value = typeValue(node.type);
     else if (ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument) && ts.isStringLiteralLike(node.argument.literal)) {
       // The module itself is a type dependency, never a runtime load.

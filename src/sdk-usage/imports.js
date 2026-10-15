@@ -73,7 +73,8 @@ export function collectSdkImports({ sources, report, provenance }) {
       const namespace = moduleValue(node.argument.literal.text, source);
       let owner = node;
       while (ts.isParenthesizedTypeNode(owner.parent)) owner = owner.parent;
-      const narrowed = ts.isIndexedAccessTypeNode(owner.parent) && owner.parent.objectType === owner;
+      const narrowed = ts.isIndexedAccessTypeNode(owner.parent) && owner.parent.objectType === owner
+        || ts.isTypeReferenceNode(owner.parent) && owner.parent.typeArguments?.[0] === owner && typeValue(owner.parent)?.kind === "projection";
       if (namespace) dependency(namespace, node.qualifier ? nameText(node.qualifier) : narrowed ? null : "*", "type-reference", true, node, Boolean(namespace.module));
     }
     if (ts.isIndexedAccessTypeNode(node)) record(typeValue(node), "type-reference", node, true);

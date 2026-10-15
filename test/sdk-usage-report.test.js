@@ -414,3 +414,115 @@ export function register(api: OpenClawPluginApi) {
 `);
   assert.deepEqual(report.sdkUsage.entries.find((entry) => entry.key === "api-member:api.logger.warn")?.referenceKinds, ["call"]);
 });
+
+test("indexed local typeof containers retain selected SDK type dependencies", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { warn, unrelated } from "openclaw/plugin-sdk/example";
+const host = { warn, unrelated };
+type Host = typeof host;
+type Warn = Host["warn"];
+`);
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#warn")?.referenceKinds, ["import", "type-reference"]);
+  assert.equal(entries.get("sdk-export:openclaw/plugin-sdk/example#unrelated")?.classification, "runtime");
+});
+
+test("Pick narrows an imported module type without implying namespace type use", async (t) => {
+  const report = await inspectPublishedJson(t, `
+const load = () => import("openclaw/plugin-sdk/example");
+type Chosen = Pick<typeof import("openclaw/plugin-sdk/example"), "run">;
+`);
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#*")?.referenceKinds, ["dynamic-import"]);
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#run")?.referenceKinds, ["type-reference"]);
+});
+
+test("a lazy import selector preserves its callable result and explicit type query", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+const load = createLazyRuntimeModule(() => import("openclaw/plugin-sdk/example").then(({ run }) => run));
+const run = await load();
+type Run = typeof run;
+run();
+`);
+  assert.deepEqual(report.sdkUsage.entries.find((entry) => entry.key === "sdk-export:openclaw/plugin-sdk/example#run")?.referenceKinds, ["call", "dynamic-import", "type-reference"]);
+});
+
+test("an explicit public runtime cast establishes member ownership", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import type { PluginRuntime } from "openclaw/plugin-sdk/core";
+export function configure(value: unknown) {
+  const channel = value as PluginRuntime["channel"] | undefined;
+  return { dispatch: channel?.reply.dispatchReplyFromConfig };
+}
+`);
+  assert.deepEqual(report.sdkUsage.entries.find((entry) => entry.key === "runtime-member:runtime.channel.reply.dispatchReplyFromConfig")?.referenceKinds, ["member-access"]);
+});
+
+test("an SDK result type does not turn arbitrary local values into exported implementations", async (t) => {
+  const report = await inspectPublishedJson(t, `
+type Result = import("openclaw/plugin-sdk/example").Result;
+export function consume(value: Result) { return value.text; }
+`);
+  const entry = report.sdkUsage.entries.find((entry) => entry.key === "sdk-export:openclaw/plugin-sdk/example#Result");
+  assert.equal(entry?.classification, "type");
+  assert.deepEqual(entry?.referenceKinds, ["type-reference"]);
+});
+
+test("rest parameters preserve argument positions rather than spreading one SDK value", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { text } from "openclaw/plugin-sdk/example";
+function show(...args) { const [message, actions] = args; actions.run(); return message; }
+show(text, { run() {} });
+`);
+  assert.deepEqual(report.sdkUsage.entries.find((entry) => entry.key === "sdk-export:openclaw/plugin-sdk/example#text")?.referenceKinds, ["import", "member-access"]);
+});
+
+test("a local class retains unchanged SDK values assigned to its own properties", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { format } from "openclaw/plugin-sdk/example";
+class Session {
+  audio;
+  constructor() { this.audio = format; }
+  encode() { return this.audio.encoding; }
+}
+`);
+  assert.deepEqual(report.sdkUsage.entries.find((entry) => entry.key === "sdk-export:openclaw/plugin-sdk/example#format")?.referenceKinds, ["import", "member-access"]);
+});
+
+test("published bundled packages and vendor code contribute SDK usage without installed dependency crawling", async (t) => {
+  const options = { files: {
+    "node_modules/bundled-helper/package.json": JSON.stringify({ name: "bundled-helper", main: "index.js" }),
+    "node_modules/bundled-helper/index.js": 'export { bundled } from "openclaw/plugin-sdk/example";',
+    "vendor/embedded.js": 'import { embedded } from "openclaw/plugin-sdk/example"; embedded();',
+  } };
+  const source = 'import { bundled } from "bundled-helper"; bundled();';
+  const artifact = await inspectPublishedJson(t, source, { ...options, sdkUsageInputKind: "artifact" });
+  const entries = new Map(artifact.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#bundled")?.referenceKinds, ["call", "import", "reexport"]);
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#embedded")?.referenceKinds, ["call", "import"]);
+  const checkout = await inspectPublishedJson(t, source, options);
+  assert.equal(checkout.sdkUsage.entries.some((entry) => entry.kind === "sdk-export"), false);
+});
+
+test("a missing declared artifact entrypoint is partial rather than an audited empty inventory", async (t) => {
+  const report = await inspectPublishedJson(t, "", {
+    sdkUsageInputKind: "artifact",
+    files: { "package.json": JSON.stringify({ name: "inventory", version: "1.0.0", openclaw: { extensions: ["./missing.js"] } }) },
+  });
+  assert.equal(report.sdkUsage.status, "partial");
+  assert.ok(report.sdkUsage.unknowns.some((unknown) => unknown.path === "package.json" && /entrypoint/.test(unknown.reason)));
+});
+
+test("direct SDK-exported objects retain member operations while primitive builtins stop", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { tables, message } from "openclaw/plugin-sdk/example";
+tables.filter(Boolean);
+message.trim();
+`, { targetFiles: {
+    "src/plugin-sdk/example.ts": 'export declare const tables: readonly string[]; export declare const message: string;',
+  } });
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#tables")?.referenceKinds, ["call", "import"]);
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#message")?.referenceKinds, ["import"]);
+});

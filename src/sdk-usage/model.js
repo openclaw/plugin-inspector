@@ -30,7 +30,7 @@ export function createUsageReport({ root, inputKind = "source" }) {
 
   function unknown(node, reason) {
     const evidence = site(node);
-    const value = { path: evidence.path, line: evidence.line, expression: evidence.snippet, reason };
+    const value = { path: evidence.path, line: evidence.line, expression: node.getText().trim() || evidence.snippet, reason };
     unknowns.set(`${value.path}:${value.line}:${reason}`, value);
   }
 
