@@ -565,6 +565,9 @@ file coverage, entries, and unresolved references in `unknowns`. Treat a missing
 failed, or partial inventory differently from a complete inventory with no
 entries. A zero count describes the inspected population and cannot establish
 that an API is safe to remove or that a security finding can be ignored.
+Each entry retains at most 12 evidence sites with source excerpts of at most
+500 UTF-16 code units. Long or minified lines are excerpted around the reference;
+the path and line identify the full source. These bounds never truncate identities.
 
 The public `pluginRoot.runCheck` and fixture-suite APIs accept
 `sdkUsageInputKind: "source" | "artifact"` (default `"source"`). Source analysis

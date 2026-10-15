@@ -10,8 +10,17 @@ export function createUsageReport({ root, inputKind = "source" }) {
   function site(node, source = node.getSourceFile()) {
     const start = node.getStart(source);
     const { line } = source.getLineAndCharacterOfPosition(start);
-    const text = source.text.split(/\r?\n/)[line];
-    return { path: path.relative(root, source.fileName).replaceAll("\\", "/"), line: line + 1, snippet: text.trim() };
+    const lines = source.getLineStarts();
+    const end = lines[line + 1] ?? source.text.length;
+    let excerptStart = end - lines[line] > 500 ? Math.max(lines[line], start - 80) : lines[line];
+    const first = source.text.charCodeAt(excerptStart);
+    if (first >= 0xdc00 && first <= 0xdfff) excerptStart++;
+    let excerptEnd = Math.min(end, excerptStart + 500);
+    // Keep excerpts valid Unicode when the bound lands inside a surrogate pair.
+    const last = source.text.charCodeAt(excerptEnd - 1);
+    if (last >= 0xd800 && last <= 0xdbff) excerptEnd--;
+    const snippet = source.text.slice(excerptStart, excerptEnd).trim();
+    return { path: path.relative(root, source.fileName).replaceAll("\\", "/"), line: line + 1, snippet };
   }
 
   function add(kind, identity, referenceKind, classification, node) {

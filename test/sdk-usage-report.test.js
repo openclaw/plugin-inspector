@@ -66,6 +66,21 @@ throw new Error("Inspection must not execute this plugin");
   assert.deepEqual(report.fixtures[0].sdkUsage, report.sdkUsage);
 });
 
+test("minified bundles retain every SDK identity without repeating an unbounded source line", async (t) => {
+  const source = `/*${"😀".repeat(400)}*/ ` + 'import * as sdk from "openclaw/plugin-sdk/example";' + Array.from({ length: 1000 }, (_, index) => `sdk.method${index}();`).join("");
+  const report = await inspectPublishedJson(t, source, { sdkUsageInputKind: "artifact" });
+  const exports = report.sdkUsage.entries.filter((entry) => entry.kind === "sdk-export" && entry.identity.endsWith("#*") === false);
+  assert.equal(exports.length, 1000);
+  assert.ok(Buffer.byteLength(JSON.stringify(report.sdkUsage)) < 2 * 1024 * 1024, "bounded evidence must keep this 1,003-entry inventory below 2 MiB");
+  for (const entry of exports) for (const evidence of entry.evidence) {
+    assert.equal(evidence.line, 1);
+    assert.ok(evidence.snippet.length <= 500);
+    assert.ok(source.includes(evidence.snippet));
+    assert.ok(evidence.snippet.includes(entry.identity.split("#")[1]), entry.key);
+    assert.ok([...evidence.snippet].every((character) => character.codePointAt(0) < 0xd800 || character.codePointAt(0) > 0xdfff), "excerpt must not split a surrogate pair");
+  }
+});
+
 test("inventory follows local barrels, direct aliases, namespaces and dynamic imports", async (t) => {
   const report = await inspectPublishedJson(t, `
 import { renamed } from "./barrel.js";
