@@ -355,7 +355,7 @@
       "pluginId": "google",
       "path": "google.json",
       "agentId": "/root/sdk_benchmark_coordinator/audit_google",
-      "sha256": "bc54b49cf3825c7ed71d9f1c1d6d891484eb20458c92144891df1430d1cd5e56",
+      "sha256": "9e602c67285d2664a6b3627b6c72e7f56e2374f3dda4f09ee4bb2593dd716aa0",
       "counts": {
         "findings": 303,
         "reviewedFiles": 57,
@@ -952,6 +952,12 @@
       "agentId": "/root/sdk_benchmark_coordinator/audit_xai",
       "previousFreezeSha256": "4655658f12c552eea5a7573409523a17a73c8c0638bdee73653465ad0ab47427",
       "reason": "Original auditor reconciled four explicit context Pick type dependencies, the proven injected realtime transcription helper in its focused facade, and unchanged stored G711 value selection. See original-owner source-only fixture notes and exact evidence; pinned population/file scope are unchanged."
+    },
+    {
+      "pluginId": "google",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_google",
+      "previousFreezeSha256": "342af048276029fe861845a54c04b478f0db85884621c38ad79bdc562fd3e5af",
+      "reason": "Original auditor independently traced REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ through unchanged this.audioFormat storage and later encoding/sampleRateHz reads before viewing the candidate report. Added member-access alongside import with exact source evidence; identities, classifications, counts, coverage and unknowns are unchanged."
     }
   ]
 }

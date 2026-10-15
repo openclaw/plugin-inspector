@@ -5878,13 +5878,32 @@
       "identity": "openclaw/plugin-sdk/realtime-voice-provider#REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
           "path": "extensions/google/realtime-voice-provider.ts",
           "line": 42,
           "snippet": "REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ,"
+        },
+        {
+          "path": "extensions/google/realtime-voice-provider.ts",
+          "line": 410,
+          "snippet": "this.audioFormat = config.audioFormat ?? REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ;",
+          "note": "The unchanged SDK constant is a possible value of the readonly plugin-owned audioFormat property through the fallback branch."
+        },
+        {
+          "path": "extensions/google/realtime-voice-provider.ts",
+          "line": 587,
+          "snippet": "realtimeVoiceAudioDurationMs(this.audioFormat, audio.length),",
+          "note": "Selecting the local audioFormat property forwards its proven SDK-valued fallback; this contributes member-access on the original export without inferring the called helper implementation."
+        },
+        {
+          "path": "extensions/google/realtime-voice-provider.ts",
+          "line": 770,
+          "snippet": "if (this.audioFormat.encoding === \"g711_ulaw\" && this.audioFormat.sampleRateHz === 8_000) {",
+          "note": "Actual encoding and sampleRateHz reads retain the exported-root identity on the unchanged fallback branch; the source dependency does not claim that branch executes."
         }
       ]
     },
@@ -8483,6 +8502,7 @@
     "Speech SDK dynamic imports destructure named exports directly; they add dynamic-import without a synthetic namespace/star export or local-container member-access. createLazyRuntimeSurface/createLazyRuntimeModule wrap plugin-local modules, not SDK modules; no transitive helper-internal SDK calls are inferred.",
     "The manifest contributes three providers and eight contracts entries. cliBackends, capabilityCatalogEntry, providerCatalogEntry, setup, model catalog, configContracts, descriptive/configuration fields and capability metadata are reviewed metadata but outside the frozen manifest-contract identity fields.",
     "Three ambiguous test helper filenames were individually read and caller-verified as test-only. vertex-adc.ts remains production source despite its conditional VITEST reset hook; the source-phase contract is file-scoped.",
-    "findingCount counts distinct fixture findings evidenced in each reviewed file. Evidence samples represent all observed reference kinds; classification describes source syntax, not whether a helper executes or appears in a published artifact."
+    "findingCount counts distinct fixture findings evidenced in each reviewed file. Evidence samples represent all observed reference kinds; classification describes source syntax, not whether a helper executes or appears in a published artifact.",
+    "Final source-only reconciliation: REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ is retained unchanged as the fallback of the readonly GoogleRealtimeVoiceBridge.audioFormat property (realtime-voice-provider.ts:410). Later property selection/forwarding at line 587 and direct encoding/sampleRateHz reads at line 770 establish member-access on that original exported-root identity. This records the possible fallback branch without claiming execution or inferring internal behavior of SDK helpers; classification, identities and file coverage remain unchanged."
   ]
 }
