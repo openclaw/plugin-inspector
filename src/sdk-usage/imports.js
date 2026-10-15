@@ -1,7 +1,7 @@
 import ts from "typescript";
 import { inType, isDependencyDeclaration, isSdkSpecifier, nameText, referenceKind, walk } from "./syntax.js";
 
-export function collectSdkImports({ sources, report, provenance }) {
+export function collectSdkImports({ sources, checker, report, provenance }) {
   const { resolve, select, moduleValue, typeValue } = provenance;
   function record(value, kind, node, typeOnly = inType(node)) {
     if (value?.kind === "union") { for (const item of value.values) record(item, kind, node, typeOnly); return; }
@@ -26,7 +26,21 @@ export function collectSdkImports({ sources, report, provenance }) {
     if (expression && ts.isCallExpression(expression) && expression.expression.getText() === "Promise.all" && ts.isArrayLiteralExpression(expression.arguments[0]) && arrayIndex !== undefined) expression = expression.arguments[0].elements[arrayIndex];
     return expression && ts.isCallExpression(expression) && (expression.expression.kind === ts.SyntaxKind.ImportKeyword || expression.expression.getText() === "require");
   }
+  function modulePrefix(node, seen = new Set()) {
+    if (!node || seen.has(node)) return "";
+    seen.add(node);
+    if (ts.isStringLiteralLike(node)) return node.text;
+    if (ts.isTemplateExpression(node)) return node.head.text;
+    if (ts.isParenthesizedExpression(node) || ts.isAsExpression(node)) return modulePrefix(node.expression, seen);
+    if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.PlusToken) return modulePrefix(node.left, seen);
+    if (ts.isIdentifier(node)) return modulePrefix(checker.getSymbolAtLocation(node)?.valueDeclaration?.initializer, seen);
+    return "";
+  }
   for (const source of sources) walk(source, (node) => {
+    if (ts.isImportEqualsDeclaration(node) && ts.isExternalModuleReference(node.moduleReference)) {
+      const namespace = resolve(node.name);
+      if (namespace) dependency(namespace, "*", node.isTypeOnly ? "type-import" : "require", node.isTypeOnly, node, Boolean(namespace.module));
+    }
     if (ts.isImportDeclaration(node) && ts.isStringLiteralLike(node.moduleSpecifier)) {
       const namespace = moduleValue(node.moduleSpecifier.text, source);
       if (!namespace) return;
@@ -50,9 +64,12 @@ export function collectSdkImports({ sources, report, provenance }) {
       }
       else if (namespace) dependency(namespace, "*", node.isTypeOnly ? "type-reexport" : "reexport", node.isTypeOnly, node, direct);
     }
-    if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || ts.isIdentifier(node.expression) && node.expression.text === "require")) {
+    if (ts.isCallExpression(node) && (node.expression.kind === ts.SyntaxKind.ImportKeyword || ts.isIdentifier(node.expression) && node.expression.text === "require" && !checker.getSymbolAtLocation(node.expression)?.valueDeclaration)) {
       const namespace = resolve(node);
-      if (namespace?.kind !== "namespace") return;
+      if (namespace?.kind !== "namespace") {
+        if (isSdkSpecifier(modulePrefix(node.arguments[0]))) report.unknown(node, "SDK module import is not statically resolvable");
+        return;
+      }
       const kind = node.expression.kind === ts.SyntaxKind.ImportKeyword ? "dynamic-import" : "require";
       let owner = node;
       while (ts.isAwaitExpression(owner.parent) || ts.isParenthesizedExpression(owner.parent)) owner = owner.parent;

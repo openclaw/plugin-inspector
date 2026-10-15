@@ -667,3 +667,36 @@ export default { register(api) {
   assert.deepEqual(entries.get("api.registerService")?.referenceKinds, ["call", "member-access"]);
   assert.equal(report.sdkUsage.status, "complete");
 });
+
+test("TypeScript import-equals records SDK namespaces and their members", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import sdk = require("openclaw/plugin-sdk/core");
+sdk.createLogger();
+import type types = require("openclaw/plugin-sdk/types");
+type Options = types.Options;
+`);
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.deepEqual(entries.get("sdk-module:openclaw/plugin-sdk/core")?.referenceKinds, ["require"]);
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/core#createLogger")?.referenceKinds, ["call", "require"]);
+  assert.equal(entries.get("sdk-export:openclaw/plugin-sdk/core#*")?.classification, "runtime");
+  assert.equal(entries.get("sdk-module:openclaw/plugin-sdk/types")?.classification, "type");
+  assert.equal(entries.get("sdk-export:openclaw/plugin-sdk/types#Options")?.classification, "type");
+  assert.equal(report.sdkUsage.status, "complete");
+});
+
+test("unresolved SDK import paths remain explicit unknowns", async (t) => {
+  const report = await inspectPublishedJson(t, [
+    'const name = process.env.SDK_MODULE;',
+    'await import(`openclaw/plugin-sdk/${name}`);',
+    'require("openclaw/plugin-sdk/" + name);',
+    'const specifier = `openclaw/plugin-sdk/${name}`;',
+    'await import(specifier);',
+    'await import(`other-package/${name}`);',
+    'function local(require) { require(`openclaw/plugin-sdk/${name}`); }',
+  ].join("\n"));
+  assert.equal(report.sdkUsage.status, "partial");
+  assert.equal(report.sdkUsage.unknowns.length, 3);
+  assert.deepEqual(report.sdkUsage.unknowns.map((unknown) => unknown.line), [2, 3, 5]);
+  assert.ok(report.sdkUsage.unknowns.every((unknown) => /SDK.*import|SDK.*module/.test(unknown.reason)));
+  assert.equal(report.sdkUsage.entries.some((entry) => entry.kind === "sdk-module"), false);
+});

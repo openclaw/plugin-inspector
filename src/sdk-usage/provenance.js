@@ -228,6 +228,12 @@ export function createProvenance({ checker, program, localSource, sources, targe
       return select(moduleValue(node.moduleSpecifier.text, node.getSourceFile()), (declaration.propertyName ?? declaration.name).text);
     }
     if (ts.isNamespaceImport(declaration)) return moduleValue(declaration.parent.parent.moduleSpecifier.text, declaration.getSourceFile());
+    if (ts.isImportEqualsDeclaration(declaration)) {
+      const reference = declaration.moduleReference;
+      return ts.isExternalModuleReference(reference)
+        ? moduleValue(literal(reference.expression), declaration.getSourceFile(), declaration.isTypeOnly ? undefined : "require")
+        : resolve(reference);
+    }
     if (ts.isImportClause(declaration)) return select(moduleValue(declaration.parent.moduleSpecifier.text, declaration.getSourceFile()), "default");
     if (ts.isExportSpecifier(declaration)) {
       const node = declaration.parent.parent;
