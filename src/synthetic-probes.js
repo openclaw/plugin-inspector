@@ -1,5 +1,6 @@
 import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { resolveProcessLimits } from "./process-profile.js";
+import { isDeepStrictEqual } from "node:util";
 
 export const syntheticRegistrationExecutionProfiles = {
   createChatChannelPlugin: {
@@ -648,6 +649,7 @@ async function runCapturedProbes(capture, options) {
   const { hookEvents, hookContexts, timeoutMs, controller, signal } = options;
   const captured = capture.captured ?? [];
   const retained = new Map((capture.retained ?? []).map((item) => [item.captureIndex, item]));
+  const expectations = prepareGatewayExpectations(captured, retained, options);
   const resultsByCaptureIndex = new Map();
   const executionEntries = captured
     .map((entry, captureIndex) => ({ entry, captureIndex }))
@@ -676,13 +678,28 @@ async function runCapturedProbes(capture, options) {
     if (entry.kind === "registration") {
       resultsByCaptureIndex.set(
         captureIndex,
-        await runRegistrationProbes(entry, retainedEntry, captureIndex, options),
+        await runRegistrationProbes(entry, retainedEntry, captureIndex, {
+          ...options, gatewayExpectation: expectations.get(captureIndex),
+        }),
       );
     }
   }
   // Execute in lifecycle order, but keep report rows and captureIndex values
   // stable for downstream consumers that compare artifacts across runs.
   const results = captured.flatMap((_, captureIndex) => resultsByCaptureIndex.get(captureIndex) ?? []);
+  for (const [captureIndex, expectation] of expectations) {
+    for (const row of resultsByCaptureIndex.get(captureIndex) ?? []) {
+      if (row.status === "blocked") {
+        row.status = "fail";
+        row.error = "Declared Gateway response expectation was not executed";
+        delete row.reason;
+      }
+      row.gatewayResponse = {
+        method: expectation.method, expectedOk: expectation.frame.ok,
+        observedOk: expectation.observedOk ?? null, matched: expectation.matched ?? false,
+      };
+    }
+  }
 
   return {
     entrypoint: capture.entrypoint,
@@ -695,6 +712,45 @@ async function runCapturedProbes(capture, options) {
     },
     results,
   };
+}
+
+function prepareGatewayExpectations(captured, retained, options) {
+  const declarations = options.gatewayMethodExpectations === undefined ? {} : options.gatewayMethodExpectations;
+  if (!declarations || typeof declarations !== "object" || Array.isArray(declarations)) {
+    throw new TypeError("Gateway response expectations must be a method map");
+  }
+  const expectations = new Map();
+  for (const [method, expected] of Object.entries(declarations)) {
+    let frame;
+    try {
+      if (!method.trim() || method.length > 256 || !expected || typeof expected !== "object" ||
+          Array.isArray(expected) || Object.keys(expected).some((key) => !["ok", "payload", "error"].includes(key))) {
+        throw new Error();
+      }
+      frame = gatewayResponseFrame(expected.ok, expected.payload, expected.error);
+    } catch {
+      throw new TypeError("Invalid Gateway response expectation");
+    }
+    if (Object.hasOwn(options.gatewayMethodPrerequisites ?? {}, method)) {
+      throw new TypeError("Gateway response expectation conflicts with a prerequisite");
+    }
+    const indexes = captured.flatMap((entry, index) => {
+      if (entry.kind !== "registration" || entry.name !== "registerGatewayMethod" || !retained.has(index)) return [];
+      const descriptor = registrationDescriptor(entry, retained.get(index));
+      return (descriptor?.method ?? descriptor?.name) === method ? [index] : [];
+    });
+    if (indexes.length !== 1) {
+      throw new TypeError("Gateway response expectation requires one retained method");
+    }
+    expectations.set(indexes[0], { method, frame });
+  }
+  return expectations;
+}
+
+function registrationDescriptor(entry, retainedEntry) {
+  return entry.name === "registerGatewayMethod" && typeof retainedEntry.arguments?.[0] === "string"
+    ? retainedEntry.returnValue
+    : retainedEntry.arguments?.find((value) => value && typeof value === "object") ?? retainedEntry.returnValue;
 }
 
 function syntheticLifecyclePhase(entry) {
@@ -798,10 +854,7 @@ async function runRegistrationProbes(entry, retainedEntry, captureIndex, options
     return [metadataOnlyResult(entry, captureIndex, profile.reason)];
   }
 
-  const descriptor =
-    entry.name === "registerGatewayMethod" && typeof retainedEntry.arguments?.[0] === "string"
-      ? retainedEntry.returnValue
-      : retainedEntry.arguments?.find((value) => value && typeof value === "object") ?? retainedEntry.returnValue;
+  const descriptor = registrationDescriptor(entry, retainedEntry);
   if (!descriptor || typeof descriptor !== "object") {
     return [blockedResult(entry, captureIndex, "captured registration has no object descriptor")];
   }
@@ -918,7 +971,14 @@ async function invokeGatewayCallable(callable, property, descriptor, options) {
     // observation as well as handler settlement; it owns timeout/cancellation.
     const outcome = await response;
     if (outcome.error) throw outcome.error;
-    if (!outcome.frame.ok) {
+    const expectation = options.gatewayExpectation;
+    if (expectation) {
+      expectation.observedOk = outcome.frame.ok;
+      expectation.matched = isDeepStrictEqual(outcome.frame, expectation.frame);
+      // Assert the actual first frame without exporting plugin payloads through
+      // assertion diffs. A declared negative contract never changes the reply.
+      if (!expectation.matched) throw new Error("Gateway response did not match the declared expectation");
+    } else if (!outcome.frame.ok) {
       throw new Error(`Gateway response error: ${outcome.frame.error?.message ?? "request failed"}`);
     }
     return outcome.frame;

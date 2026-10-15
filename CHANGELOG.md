@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Assert explicit method-scoped Gateway response contracts without skipping handlers or exposing mismatched payloads; preserve default rejection, wire validation, and settlement failures.
+
 - Let registration and retained callbacks read the supplied capture config through `runtime.config.current()` without loading host configuration.
 
 - Avoid type erasure and scope analysis for unrelated literal calls, and process runtime-import markers in linear passes so large plugin sources do not amplify inspection cost.

@@ -397,8 +397,16 @@ the required inputs and runtime, omit that method from the prerequisite map;
 rejected or malformed responses still fail. This option never reports a
 missing prerequisite as a passing runtime check.
 
+For a known negative contract, pass `gatewayMethodExpectations` with exact method
+keys and response values, for example `{ "fixture.account": { ok: false,
+payload: { error: "not configured" } } }`. The actual serialized first response
+must match `ok`, `payload`, and `error` exactly. A missing or unexecuted method,
+conflicting prerequisite, malformed response, or mismatch fails. Reports add
+bounded `gatewayResponse` method/boolean evidence without including payloads.
+This proves the declared response contract, not successful live operations.
+
 The first emitted response is authoritative, even when malformed. Probes check
-its JSON-serialized response/error shape: `ok: true` passes, `ok: false` fails,
+its JSON-serialized response/error shape: by default `ok: true` passes, `ok: false` fails,
 and later responses cannot overwrite the outcome. Logging `meta` is not a wire
 field. Without an explicit response, a non-`undefined` return is adapted into a
 successful payload, including `false`, `null`, and `{ ok: false }`, matching the
