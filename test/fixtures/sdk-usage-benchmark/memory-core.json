@@ -954,7 +954,7 @@
       "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
       "sha256": "21a9ad4d3bd326e6e605100b3c1214a7546c5f6a2bb20e324894e269ddcd2e7a",
       "role": "production-source",
-      "findingCount": 21
+      "findingCount": 23
     },
     {
       "path": "extensions/memory-core/src/migration/doctor-dreaming-state.ts",
@@ -11828,6 +11828,7 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-status#LEGACY_MEMORY_LIGHT_DREAMING_CRON_NAME",
       "classification": "mixed",
       "referenceKinds": [
+        "dynamic-import",
         "import",
         "member-access",
         "type-reference"
@@ -11837,6 +11838,12 @@
           "path": "extensions/memory-core/src/dreaming-cron.ts",
           "line": 2,
           "snippet": "import {\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_LIGHT_DREAMING_EVENT_TEXT,\n  LEGACY_MEMORY_REM_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_REM_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_REM_DREAMING_EVENT_TEXT,\n  MANAGED_MEMORY_DREAMING_CRON_NAME,\n  MANAGED_MEMORY_DREAMING_CRON_TAG,\n  MEMORY_DREAMING_SYSTEM_EVENT_TEXT,\n  type resolveMemoryDeepDreamingConfig,\n} from \"openclaw/plugin-sdk/memory-core-host-status\";"
+        },
+        {
+          "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
+          "line": 18,
+          "snippet": "  const constants = await import(\"openclaw/plugin-sdk/memory-core-host-status\");",
+          "note": "The direct dynamic SDK import retains the whole namespace and the resolved named export's dynamic-import provenance. Selected through constants.LEGACY_MEMORY_LIGHT_DREAMING_CRON_NAME at line 103."
         },
         {
           "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
@@ -11861,6 +11868,7 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-status#LEGACY_MEMORY_LIGHT_DREAMING_CRON_TAG",
       "classification": "mixed",
       "referenceKinds": [
+        "dynamic-import",
         "import",
         "member-access",
         "type-reference"
@@ -11870,6 +11878,12 @@
           "path": "extensions/memory-core/src/dreaming-cron.ts",
           "line": 2,
           "snippet": "import {\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_LIGHT_DREAMING_EVENT_TEXT,\n  LEGACY_MEMORY_REM_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_REM_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_REM_DREAMING_EVENT_TEXT,\n  MANAGED_MEMORY_DREAMING_CRON_NAME,\n  MANAGED_MEMORY_DREAMING_CRON_TAG,\n  MEMORY_DREAMING_SYSTEM_EVENT_TEXT,\n  type resolveMemoryDeepDreamingConfig,\n} from \"openclaw/plugin-sdk/memory-core-host-status\";"
+        },
+        {
+          "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
+          "line": 18,
+          "snippet": "  const constants = await import(\"openclaw/plugin-sdk/memory-core-host-status\");",
+          "note": "The direct dynamic SDK import retains the whole namespace and the resolved named export's dynamic-import provenance. Selected through constants.LEGACY_MEMORY_LIGHT_DREAMING_CRON_TAG at line 111."
         },
         {
           "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
@@ -11894,6 +11908,7 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-status#LEGACY_MEMORY_LIGHT_DREAMING_EVENT_TEXT",
       "classification": "mixed",
       "referenceKinds": [
+        "dynamic-import",
         "import",
         "member-access",
         "type-reference"
@@ -11903,6 +11918,12 @@
           "path": "extensions/memory-core/src/dreaming-cron.ts",
           "line": 2,
           "snippet": "import {\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_LIGHT_DREAMING_EVENT_TEXT,\n  LEGACY_MEMORY_REM_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_REM_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_REM_DREAMING_EVENT_TEXT,\n  MANAGED_MEMORY_DREAMING_CRON_NAME,\n  MANAGED_MEMORY_DREAMING_CRON_TAG,\n  MEMORY_DREAMING_SYSTEM_EVENT_TEXT,\n  type resolveMemoryDeepDreamingConfig,\n} from \"openclaw/plugin-sdk/memory-core-host-status\";"
+        },
+        {
+          "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
+          "line": 18,
+          "snippet": "  const constants = await import(\"openclaw/plugin-sdk/memory-core-host-status\");",
+          "note": "The direct dynamic SDK import retains the whole namespace and the resolved named export's dynamic-import provenance. The unchanged constants namespace is passed to classifyDreamingCronJob at line 38 and selected as constants.LEGACY_MEMORY_LIGHT_DREAMING_EVENT_TEXT in dreaming-cron-classifier.ts:42."
         },
         {
           "path": "extensions/memory-core/src/migration/dreaming-cron-classifier.ts",
@@ -11922,6 +11943,7 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-status#LEGACY_MEMORY_REM_DREAMING_CRON_NAME",
       "classification": "mixed",
       "referenceKinds": [
+        "dynamic-import",
         "import",
         "member-access",
         "type-reference"
@@ -11931,6 +11953,12 @@
           "path": "extensions/memory-core/src/dreaming-cron.ts",
           "line": 2,
           "snippet": "import {\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_LIGHT_DREAMING_EVENT_TEXT,\n  LEGACY_MEMORY_REM_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_REM_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_REM_DREAMING_EVENT_TEXT,\n  MANAGED_MEMORY_DREAMING_CRON_NAME,\n  MANAGED_MEMORY_DREAMING_CRON_TAG,\n  MEMORY_DREAMING_SYSTEM_EVENT_TEXT,\n  type resolveMemoryDeepDreamingConfig,\n} from \"openclaw/plugin-sdk/memory-core-host-status\";"
+        },
+        {
+          "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
+          "line": 18,
+          "snippet": "  const constants = await import(\"openclaw/plugin-sdk/memory-core-host-status\");",
+          "note": "The direct dynamic SDK import retains the whole namespace and the resolved named export's dynamic-import provenance. Selected through constants.LEGACY_MEMORY_REM_DREAMING_CRON_NAME at line 104."
         },
         {
           "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
@@ -11955,6 +11983,7 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-status#LEGACY_MEMORY_REM_DREAMING_CRON_TAG",
       "classification": "mixed",
       "referenceKinds": [
+        "dynamic-import",
         "import",
         "member-access",
         "type-reference"
@@ -11964,6 +11993,12 @@
           "path": "extensions/memory-core/src/dreaming-cron.ts",
           "line": 2,
           "snippet": "import {\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_LIGHT_DREAMING_EVENT_TEXT,\n  LEGACY_MEMORY_REM_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_REM_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_REM_DREAMING_EVENT_TEXT,\n  MANAGED_MEMORY_DREAMING_CRON_NAME,\n  MANAGED_MEMORY_DREAMING_CRON_TAG,\n  MEMORY_DREAMING_SYSTEM_EVENT_TEXT,\n  type resolveMemoryDeepDreamingConfig,\n} from \"openclaw/plugin-sdk/memory-core-host-status\";"
+        },
+        {
+          "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
+          "line": 18,
+          "snippet": "  const constants = await import(\"openclaw/plugin-sdk/memory-core-host-status\");",
+          "note": "The direct dynamic SDK import retains the whole namespace and the resolved named export's dynamic-import provenance. Selected through constants.LEGACY_MEMORY_REM_DREAMING_CRON_TAG at line 115."
         },
         {
           "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
@@ -11988,6 +12023,7 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-status#LEGACY_MEMORY_REM_DREAMING_EVENT_TEXT",
       "classification": "mixed",
       "referenceKinds": [
+        "dynamic-import",
         "import",
         "member-access",
         "type-reference"
@@ -11997,6 +12033,12 @@
           "path": "extensions/memory-core/src/dreaming-cron.ts",
           "line": 2,
           "snippet": "import {\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_LIGHT_DREAMING_EVENT_TEXT,\n  LEGACY_MEMORY_REM_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_REM_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_REM_DREAMING_EVENT_TEXT,\n  MANAGED_MEMORY_DREAMING_CRON_NAME,\n  MANAGED_MEMORY_DREAMING_CRON_TAG,\n  MEMORY_DREAMING_SYSTEM_EVENT_TEXT,\n  type resolveMemoryDeepDreamingConfig,\n} from \"openclaw/plugin-sdk/memory-core-host-status\";"
+        },
+        {
+          "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
+          "line": 18,
+          "snippet": "  const constants = await import(\"openclaw/plugin-sdk/memory-core-host-status\");",
+          "note": "The direct dynamic SDK import retains the whole namespace and the resolved named export's dynamic-import provenance. The unchanged constants namespace is passed to classifyDreamingCronJob at line 38 and selected as constants.LEGACY_MEMORY_REM_DREAMING_EVENT_TEXT in dreaming-cron-classifier.ts:47."
         },
         {
           "path": "extensions/memory-core/src/migration/dreaming-cron-classifier.ts",
@@ -12016,6 +12058,7 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-status#MANAGED_MEMORY_DREAMING_CRON_NAME",
       "classification": "mixed",
       "referenceKinds": [
+        "dynamic-import",
         "import",
         "member-access",
         "type-reference"
@@ -12025,6 +12068,12 @@
           "path": "extensions/memory-core/src/dreaming-cron.ts",
           "line": 2,
           "snippet": "import {\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_LIGHT_DREAMING_EVENT_TEXT,\n  LEGACY_MEMORY_REM_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_REM_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_REM_DREAMING_EVENT_TEXT,\n  MANAGED_MEMORY_DREAMING_CRON_NAME,\n  MANAGED_MEMORY_DREAMING_CRON_TAG,\n  MEMORY_DREAMING_SYSTEM_EVENT_TEXT,\n  type resolveMemoryDeepDreamingConfig,\n} from \"openclaw/plugin-sdk/memory-core-host-status\";"
+        },
+        {
+          "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
+          "line": 18,
+          "snippet": "  const constants = await import(\"openclaw/plugin-sdk/memory-core-host-status\");",
+          "note": "The direct dynamic SDK import retains the whole namespace and the resolved named export's dynamic-import provenance. Selected through constants.MANAGED_MEMORY_DREAMING_CRON_NAME at line 106."
         },
         {
           "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
@@ -12049,6 +12098,7 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-status#MANAGED_MEMORY_DREAMING_CRON_TAG",
       "classification": "mixed",
       "referenceKinds": [
+        "dynamic-import",
         "import",
         "member-access",
         "type-reference"
@@ -12058,6 +12108,12 @@
           "path": "extensions/memory-core/src/dreaming-cron.ts",
           "line": 2,
           "snippet": "import {\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_LIGHT_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_LIGHT_DREAMING_EVENT_TEXT,\n  LEGACY_MEMORY_REM_DREAMING_CRON_NAME,\n  LEGACY_MEMORY_REM_DREAMING_CRON_TAG,\n  LEGACY_MEMORY_REM_DREAMING_EVENT_TEXT,\n  MANAGED_MEMORY_DREAMING_CRON_NAME,\n  MANAGED_MEMORY_DREAMING_CRON_TAG,\n  MEMORY_DREAMING_SYSTEM_EVENT_TEXT,\n  type resolveMemoryDeepDreamingConfig,\n} from \"openclaw/plugin-sdk/memory-core-host-status\";"
+        },
+        {
+          "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
+          "line": 18,
+          "snippet": "  const constants = await import(\"openclaw/plugin-sdk/memory-core-host-status\");",
+          "note": "The direct dynamic SDK import retains the whole namespace and the resolved named export's dynamic-import provenance. Selected through constants.MANAGED_MEMORY_DREAMING_CRON_TAG at line 112."
         },
         {
           "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
@@ -12082,6 +12138,7 @@
       "identity": "openclaw/plugin-sdk/memory-core-host-status#MEMORY_DREAMING_SYSTEM_EVENT_TEXT",
       "classification": "mixed",
       "referenceKinds": [
+        "dynamic-import",
         "import",
         "member-access",
         "type-reference"
@@ -12096,6 +12153,12 @@
           "path": "extensions/memory-core/src/dreaming.ts",
           "line": 6,
           "snippet": "import {\n  MEMORY_DREAMING_SYSTEM_EVENT_TEXT as DREAMING_SYSTEM_EVENT_TEXT,\n  resolveMemoryDeepDreamingConfig,\n  resolveMemoryDreamingWorkspaces,\n} from \"openclaw/plugin-sdk/memory-core-host-status\";"
+        },
+        {
+          "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
+          "line": 18,
+          "snippet": "  const constants = await import(\"openclaw/plugin-sdk/memory-core-host-status\");",
+          "note": "The direct dynamic SDK import retains the whole namespace and the resolved named export's dynamic-import provenance. Selected through constants.MEMORY_DREAMING_SYSTEM_EVENT_TEXT at line 94."
         },
         {
           "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
@@ -12535,6 +12598,7 @@
       "classification": "mixed",
       "referenceKinds": [
         "call",
+        "dynamic-import",
         "import",
         "type-import",
         "type-reference"
@@ -12594,6 +12658,12 @@
           "path": "extensions/memory-core/src/memory-search-operation.ts",
           "line": 54,
           "snippet": "    const dreaming = resolveMemoryDeepDreamingConfig({ cfg, pluginConfig });"
+        },
+        {
+          "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
+          "line": 18,
+          "snippet": "  const constants = await import(\"openclaw/plugin-sdk/memory-core-host-status\");",
+          "note": "The direct dynamic SDK import retains the whole namespace and the resolved named export's dynamic-import provenance. Selected and called through constants.resolveMemoryDeepDreamingConfig at line 21."
         },
         {
           "path": "extensions/memory-core/src/migration/doctor-dreaming-cron.ts",
@@ -20941,6 +21011,7 @@
     "The imported defaultRuntime and theme objects contribute export-root calls/member selections, not public PluginRuntime members. Literal Pick and indexed public API/runtime type paths are recorded at the maximal selected path.",
     "The lazy tools.runtime.ts local barrel preserves readAgentMemoryFile dynamic-import provenance without inventing an SDK-module site for the local import.",
     "No eligible production file imports the excluded test helpers or fixture workers. Worker source entrypoints declared in package.json are included. Local imports remain within this plugin; external dependencies and SDK internals are not recursively audited.",
-    "Manifest contract scope includes the memory CLI name, dreaming command alias, and intent/memory_get/memory_search tool contracts; doctor metadata, kind, configuration schema and UI labels are not contract identities."
+    "Manifest contract scope includes the memory CLI name, dreaming command alias, and intent/memory_get/memory_search tool contracts; doctor metadata, kind, configuration schema and UI labels are not contract identities.",
+    "Frozen-rule source reconciliation: doctor-dreaming-cron.ts:18 retains the whole memory-core-host-status namespace. Its eight directly selected exports and the two legacy EVENT_TEXT exports selected by dreaming-cron-classifier.ts after the unchanged namespace argument at line 38 also retain dynamic-import provenance. Added that missing reference kind and import-site evidence to those ten existing identities; preserved the namespace *, existing classifications and other reference kinds, and updated this file's distinct evidenced finding count from 21 to 23. This corrects the fixture to the frozen namespace/dynamic-import rule without changing the source population or contract."
   ]
 }

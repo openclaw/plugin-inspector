@@ -487,7 +487,7 @@
       "pluginId": "memory-core",
       "path": "memory-core.json",
       "agentId": "/root/sdk_benchmark_coordinator/audit_memory_core",
-      "sha256": "1ee7bda7f60dff9579d04eed15dfa92b35fdeb23c6b52a85349c83bf12e26331",
+      "sha256": "fe83e949dd3520623d0dbb2bad92d881b60e163109862b8414e25cd65331d433",
       "counts": {
         "findings": 526,
         "reviewedFiles": 203,
@@ -849,5 +849,13 @@
     "reviewedFiles": 2231,
     "excludedFiles": 2002,
     "unknowns": 0
-  }
+  },
+  "reconciliations": [
+    {
+      "pluginId": "memory-core",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_memory_core",
+      "previousFreezeSha256": "3769622d1ea7f7b54fc784306f7da3c82da3ca999d9acc776f040ae29a0adf3f",
+      "reason": "Original auditor independently reconciled ten named dynamic-import references against doctor-dreaming-cron.ts:18 and unchanged namespace selections under the existing frozen rule. See the fixture note; population, identities, classifications and unknowns are unchanged."
+    }
+  ]
 }
