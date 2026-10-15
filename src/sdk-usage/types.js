@@ -1,10 +1,12 @@
+import path from "node:path";
 import ts from "typescript";
 import { nameText } from "./syntax.js";
+import { capabilityContextTypes } from "./host-context.js";
 
 const roots = new Map([["OpenClawPluginApi", "api"], ["PluginRuntime", "runtime"]]);
 
 /** Type syntax establishes ownership; it never means that a method executes. */
-export function createTypeProvenance({ checker, resolve, select }) {
+export function createTypeProvenance({ checker, resolve, select, targetRoot }) {
   const visiting = new Set();
   function typeValue(node) {
     if (!node || visiting.has(node)) return undefined;
@@ -13,6 +15,7 @@ export function createTypeProvenance({ checker, resolve, select }) {
     if (ts.isTypeReferenceNode(node)) {
       const origin = resolve(node.typeName);
       if (origin?.kind === "export" && roots.has(origin.name)) value = { kind: roots.get(origin.name), path: [] };
+      if (origin?.kind === "export" && capabilityContextTypes.has(origin.name)) value = { kind: "capability-context", type: checker.getTypeFromTypeNode(node) };
       if (!value && nameText(node.typeName) === "Pick" && node.typeArguments?.length === 2) {
         const [baseNode, keyNode] = node.typeArguments;
         const base = ts.isTypeQueryNode(baseNode) ? resolve(baseNode.exprName) : typeValue(baseNode);
@@ -50,7 +53,10 @@ export function createTypeProvenance({ checker, resolve, select }) {
       // Only host definitions reached through the public SDK can infer an unannotated API handle.
       const symbol = type.aliasSymbol ?? type.symbol;
       const root = roots.get(symbol?.name);
-      if (root && symbol.declarations?.some((declaration) => /[/\\](?:plugins|plugin-sdk)[/\\]/.test(declaration.getSourceFile().fileName))) return { kind: root, path: [] };
+      if (root && targetRoot && symbol.declarations?.some((declaration) => {
+        const relative = path.relative(targetRoot, declaration.getSourceFile().fileName);
+        return relative !== ".." && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
+      })) return { kind: root, path: [] };
       if (type.isUnion()) {
         for (const member of type.types) { const value = fromType(member); if (value) return value; }
       }

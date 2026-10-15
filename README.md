@@ -575,6 +575,13 @@ plugin code.
 
 Callers that supply precomputed `targetOpenClaw` metadata can also provide
 `sdkUsageTargetPath` pointing to its verified local package/source directory.
+Targets returned directly by `openClawTargets.prepare` retain that path privately
+and need no additional option. The filesystem path is not serialized.
+
+Host capability-catalog context helpers have a small contract adapter mapping
+selected injected helpers to their public export identities. This requires
+provenance from the SDK context type; arbitrary matching function signatures do
+not establish SDK implementation identity.
 The inventory can use published `exports` type declarations without host
 implementation files. This analysis input is not added to the report.
 

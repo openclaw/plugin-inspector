@@ -7,7 +7,7 @@ import { captureApiOptionsForPlugin } from "./capture-config.js";
 import { fixtureCheckoutPath, fixtureSourceRoot, isPluginRootConfig } from "./config.js";
 import { buildCompatibilityFixtureReport } from "./fixture-summary.js";
 import { readOpenClawTargetSurface } from "./openclaw-target.js";
-import { prepareOpenClawTarget, resolveOpenClawTargetVersion } from "./openclaw-version.js";
+import { preparedOpenClawTargetPath, prepareOpenClawTarget, resolveOpenClawTargetVersion } from "./openclaw-version.js";
 import { isWithinPluginRoot, resolveJailedPluginPath } from "./path-utils.js";
 import { resolveProcessLimits, startOwnedProcess } from "./process-profile.js";
 import { buildCompatibilityReport, buildReport } from "./report.js";
@@ -45,7 +45,7 @@ export async function inspectCompatibilityFixtureSet(config, options = {}) {
           manifest: config,
           rootDir: config.rootDir,
         }));
-  const sdkTargetRoot = options.sdkUsageTargetPath ?? (!options.targetOpenClaw && targetOpenClaw.checkoutPath ? path.resolve(config.rootDir ?? process.cwd(), targetOpenClaw.checkoutPath) : undefined);
+  const sdkTargetRoot = options.sdkUsageTargetPath ?? preparedOpenClawTargetPath(targetOpenClaw) ?? (!options.targetOpenClaw && targetOpenClaw.checkoutPath ? path.resolve(config.rootDir ?? process.cwd(), targetOpenClaw.checkoutPath) : undefined);
   const { inspections, failures } = await inspectConfiguredFixtures(config, { ...options, targetOpenClaw, sdkTargetRoot });
 
   return buildCompatibilityReport({

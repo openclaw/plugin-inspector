@@ -13,6 +13,12 @@ const defaultMaxArchiveBytes = 256 * 1024 * 1024;
 const defaultMaxMetadataBytes = 16 * 1024 * 1024;
 const supportedTags = new Set(["latest", "beta"]);
 const downloadUrls = new WeakMap();
+const preparedPaths = new WeakMap();
+
+// Filesystem inputs stay process-local; target metadata is safe to serialize.
+export function preparedOpenClawTargetPath(target) {
+  return preparedPaths.get(target);
+}
 
 export async function resolveOpenClawTargetVersion(requestedVersion, options = {}) {
   const requested = requestedVersion ?? "latest";
@@ -96,7 +102,7 @@ export async function prepareOpenClawTarget(resolvedTarget, options = {}) {
     throw new Error(`prepared OpenClaw ${resolvedTarget.version} package has no readable public plugin surface`);
   }
 
-  return {
+  const preparedTarget = {
     ...surface,
     configuredPath: `npm:openclaw@${resolvedTarget.version}`,
     searchedPaths: [`npm:openclaw@${resolvedTarget.version}`],
@@ -106,6 +112,8 @@ export async function prepareOpenClawTarget(resolvedTarget, options = {}) {
     source: resolvedTarget.source,
     cache: { hit: cacheHit, key: cacheKey },
   };
+  preparedPaths.set(preparedTarget, packageDir);
+  return preparedTarget;
 }
 
 export function openClawEligibilityVersion(version) {

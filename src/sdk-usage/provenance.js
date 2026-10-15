@@ -1,15 +1,16 @@
 import ts from "typescript";
 import { isSdkSpecifier, nameText, walk } from "./syntax.js";
 import { createTypeProvenance } from "./types.js";
+import { capabilityContextMember } from "./host-context.js";
 
 const sdkExport = (module, name) => ({ kind: "export", module, name });
 
 /** Follow unchanged values; wrappers and arbitrary SDK return values do not inherit identity. */
-export function createProvenance({ checker, localSource, sources }) {
+export function createProvenance({ checker, localSource, sources, targetRoot }) {
   const resolving = new Set();
   const cached = new Map();
   const exporting = new Set();
-  const { typeValue, inferred } = createTypeProvenance({ checker, resolve, select });
+  const { typeValue, inferred } = createTypeProvenance({ checker, resolve, select, targetRoot });
   const sourceNames = new Set(sources.map((source) => source.fileName));
   const argumentsByParameter = new Map();
   const assignments = new Map();
@@ -59,13 +60,24 @@ export function createProvenance({ checker, localSource, sources }) {
     return result;
   }
 
+  const selecting = new WeakMap();
   function select(value, key) {
+    if (!value || key === undefined) return undefined;
+    const activeKeys = selecting.get(value) ?? new Set();
+    if (activeKeys.has(key)) return undefined;
+    selecting.set(value, activeKeys);
+    activeKeys.add(key);
+    try { return selectValue(value, key); } finally { activeKeys.delete(key); }
+  }
+
+  function selectValue(value, key) {
     if (!value || key === undefined) return undefined;
     if (value.kind === "namespace") {
       const selected = value.module ? sdkExport(value.module, key) : exported(value.source, key);
       return selected && value.dependencyKind ? { ...selected, dependencyKind: value.dependencyKind } : selected;
     }
     if (value.kind === "export") return { ...value, selected: true };
+    if (value.kind === "capability-context") return capabilityContextMember(value, key);
     if (value.kind === "projection") return value.keys.includes(key) ? select(value.base, key) : undefined;
     if (value.kind === "import-type") return select(moduleValue(value.node.argument.literal.text, value.node.getSourceFile()), key);
     if (value.kind === "api" || value.kind === "runtime") {
@@ -135,12 +147,12 @@ export function createProvenance({ checker, localSource, sources }) {
         if (helper?.kind === "export" && helper.name === "createLazyRuntimeMethod") return resolve(call.arguments[0])?.value;
       }
     }
+    if (ts.isFunctionDeclaration(declaration) || ts.isFunctionExpression(declaration) || ts.isArrowFunction(declaration) || ts.isMethodDeclaration(declaration)) return { kind: "function", node: declaration };
     if (declaration.initializer) return resolve(declaration.initializer);
     if (declaration.type) {
       const value = typeValue(declaration.type);
       return ["api", "runtime"].includes(value?.kind) && checker.getTypeFromTypeNode(declaration.type).getCallSignatures().length ? { kind: "signature", value } : value;
     }
-    if (ts.isFunctionDeclaration(declaration) || ts.isFunctionExpression(declaration) || ts.isArrowFunction(declaration) || ts.isMethodDeclaration(declaration)) return { kind: "function", node: declaration };
     return undefined;
   }
 
@@ -180,7 +192,7 @@ export function createProvenance({ checker, localSource, sources }) {
           const loader = resolve(node.arguments[0]);
           if (loader?.kind === "function") value = { kind: "lazy-module", value: returned(loader.node) };
         }
-        if (callee?.kind === "return") value = callee.value;
+        if (callee?.kind === "return" || callee?.kind === "lazy-module") value = callee.value;
         if (callee?.kind === "function") {
           value = returned(callee.node) ?? typeValue(callee.node.type);
         }

@@ -49,5 +49,5 @@ export function createUsageProgram(files, targetRoot) {
     const resolved = host.resolveModuleNames([specifier], from.fileName)[0];
     return resolved && program.getSourceFile(resolved.resolvedFileName);
   }
-  return { sources, checker, program, localSource };
+  return { sources, checker, program, localSource, targetRoot };
 }

@@ -170,3 +170,54 @@ export declare function definePluginEntry(options: { register(api: OpenClawPlugi
   assert.deepEqual(report.sdkUsage.entries.find((entry) => entry.key === "api-member:api.registerTool")?.referenceKinds, ["call"]);
   assert.ok(!JSON.stringify(report).includes("sdkUsageTargetPath"));
 });
+
+test("packed shared declarations retain API ownership through public reexports", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
+export default definePluginEntry({ register(api) { api.registerTool({}); } });
+`, { sdkUsageInputKind: "artifact", targetFiles: {
+    "package.json": JSON.stringify({name: "openclaw", exports: { "./plugin-sdk/plugin-entry": {types: "./dist/plugin-sdk/plugin-entry.d.ts"} }}),
+    "dist/plugin-sdk/plugin-entry.d.ts": 'export { definePluginEntry } from "../shared-types.js";',
+    "dist/shared-types.d.ts": `
+export type OpenClawPluginApi = { registerTool(tool: unknown): void };
+export declare function definePluginEntry(options: { register(api: OpenClawPluginApi): void }): unknown;
+`,
+  } });
+  assert.deepEqual(report.sdkUsage.entries.find((entry) => entry.key === "api-member:api.registerTool")?.referenceKinds, ["call"]);
+});
+
+test("local functions, lazy local modules and cyclic spread aliases preserve direct provenance", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
+import { createLazyRuntimeModule } from "openclaw/plugin-sdk/lazy-runtime";
+import { helper } from "openclaw/plugin-sdk/example";
+let deps = { helper };
+deps = { ...deps };
+deps.helper();
+function install(api: OpenClawPluginApi): void { api.registerTool({}); }
+export function register(api: OpenClawPluginApi) { install(api); }
+const load = createLazyRuntimeModule(() => import("./barrel.js"));
+const { local } = await load();
+local();
+`, { files: { "barrel.ts": 'export { original as local } from "openclaw/plugin-sdk/example";' } });
+  const entries = new Map(report.sdkUsage.entries.map((entry) => [entry.key, entry]));
+  assert.equal(report.sdkUsage.status, "complete");
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#helper")?.referenceKinds, ["call", "import"]);
+  assert.deepEqual(entries.get("sdk-export:openclaw/plugin-sdk/example#original")?.referenceKinds, ["call", "dynamic-import", "member-access", "reexport"]);
+  assert.deepEqual(entries.get("api-member:api.registerTool")?.referenceKinds, ["call"]);
+});
+
+test("documented host capability helpers retain export identity", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import type { PluginCapabilityCatalogContext } from "openclaw/plugin-sdk/plugin-entry";
+export function catalog({ formatErrorMessage }: Pick<PluginCapabilityCatalogContext, "formatErrorMessage">) {
+  return formatErrorMessage(new Error("example"));
+}
+`, { targetFiles: {
+    "package.json": JSON.stringify({name:"openclaw",exports:{"./plugin-sdk/plugin-entry":{types:"./dist/plugin-sdk/plugin-entry.d.ts"}}}),
+    "dist/plugin-sdk/plugin-entry.d.ts": 'export type PluginCapabilityCatalogContext = { formatErrorMessage(error: unknown): string };',
+  } });
+  const entry = report.sdkUsage.entries.find((entry) => entry.key === "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage");
+  assert.equal(entry?.classification, "mixed");
+  assert.deepEqual(entry?.referenceKinds, ["call", "member-access", "type-reference"]);
+});

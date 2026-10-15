@@ -68,6 +68,7 @@ export function collectSdkImports({ sources, report, provenance }) {
       const namespace = moduleValue(node.argument.literal.text, source);
       if (namespace) dependency(namespace, node.qualifier ? nameText(node.qualifier) : "*", "type-reference", true, node, Boolean(namespace.module));
     }
+    if (ts.isIndexedAccessTypeNode(node)) record(typeValue(node), "type-reference", node, true);
     if (ts.isTypeReferenceNode(node)) {
       const projected = typeValue(node);
       if (projected?.kind === "projection") for (const key of projected.keys) record(select(projected.base, key), "type-reference", node, true);

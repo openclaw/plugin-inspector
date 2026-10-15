@@ -19,6 +19,8 @@ import {
   satisfiesOpenClawVersionRange,
 } from "../src/advanced.js";
 
+import { pluginRoot as pluginRootApi, openClawTargets } from "../src/index.js";
+
 const execFileAsync = promisify(execFile);
 const affectedBeta = "2026.7.2-beta.4";
 
@@ -63,6 +65,19 @@ test("official OpenClaw tags resolve to exact versions and prepared targets reus
   assert.equal(second.cache.hit, true);
   assert.equal(fixture.requests.filter((request) => request.startsWith(`/openclaw/-/openclaw-${affectedBeta}.tgz`)).length, 1);
   assert.ok(responses.every((response) => response.bodyUsed && !response.body.locked));
+});
+
+test("prepared npm targets retain private declaration paths for serialized SDK inventories", async (t) => {
+  const fixture = await createRegistryFixture(t, { typedEntry: true });
+  const root = await createHonchoPlugin(t, ">=2026.3.22");
+  await writeFile(path.join(root, "index.js"), 'import { definePluginEntry } from "openclaw/plugin-sdk"; export default definePluginEntry({ register(api) { api.registerTool({}); } });');
+  const target = await openClawTargets.prepare(await openClawTargets.resolveVersion("beta", { registryUrl: fixture.registryUrl }), { cacheDir: fixture.cacheDir });
+  const run = await pluginRootApi.runCheck({pluginRoot: root, targetOpenClaw: target, openclawPath: false, outDir: path.join(root, "reports"), sdkUsageInputKind: "artifact", capture: false, allowExecution: false});
+  const serialized = await readFile(run.paths.jsonPath, "utf8");
+  const report = JSON.parse(serialized);
+  assert.deepEqual(report.sdkUsage.entries.find((entry) => entry.key === "api-member:api.registerTool")?.referenceKinds, ["call"]);
+  assert.equal(serialized.includes(fixture.cacheDir), false);
+  assert.equal(JSON.stringify(target).includes(fixture.cacheDir), false);
 });
 
 test("targets without verifiable npm integrity metadata are rejected", async (t) => {
@@ -474,7 +489,7 @@ async function createRegistryFixture(t, options = {}) {
   );
   await writeFile(
     path.join(packageRoot, "dist", "plugin-sdk", "index.d.ts"),
-    'type PluginHookName = "before_prompt_build" | "agent_end"; type OpenClawPluginApi = { id: string; /** compact declaration */ registerTool: (tool: unknown) => void; registerCli: (registrar: { registerNested: () => void }) => void; };',
+    'type PluginHookName = "before_prompt_build" | "agent_end"; type OpenClawPluginApi = { id: string; /** compact declaration */ registerTool: (tool: unknown) => void; registerCli: (registrar: { registerNested: () => void }) => void; };' + (options.typedEntry ? 'export { OpenClawPluginApi }; export declare function definePluginEntry(options: {register(api: OpenClawPluginApi): void}): unknown;' : ''),
     "utf8",
   );
   await createTar({ cwd: path.join(rootDir, "archive"), file: tarballPath, gzip: true }, ["package"]);
