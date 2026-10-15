@@ -34,7 +34,7 @@ export function createUsageProgram(files, targetRoot) {
     return relative !== ".." && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative) && !relative.split(path.sep).includes("node_modules");
   }
   const options = {
-    allowJs: true, lib: ["lib.es2023.d.ts"], noEmit: true, skipLibCheck: true,
+    allowJs: true, lib: ["lib.es2023.d.ts"], types: [], noEmit: true, skipLibCheck: true,
     target: ts.ScriptTarget.Latest, module: ts.ModuleKind.ESNext,
     moduleResolution: ts.ModuleResolutionKind.Bundler,
     ...(targetRoot ? { paths: publicTypePaths(targetRoot) } : {}),
@@ -43,7 +43,21 @@ export function createUsageProgram(files, targetRoot) {
   const realpath = host.realpath?.bind(host);
   host.realpath = (name) => byPath.has(name) ? name : realpath?.(name) ?? name;
   const readSource = host.getSourceFile.bind(host);
-  host.getSourceFile = (name, languageVersion) => byPath.get(name) ?? readSource(name, languageVersion);
+  const hostFiles = new Set();
+  const libraryDirectory = path.dirname(ts.getDefaultLibFilePath(options));
+  host.getSourceFile = (name, languageVersion) => {
+    if (byPath.has(name)) return byPath.get(name);
+    const library = path.dirname(name) === libraryDirectory && /^lib(?:\..+)?\.d\.ts$/.test(path.basename(name));
+    if (!library && !hostFiles.has(name)) return undefined;
+    const source = readSource(name, languageVersion);
+    // Public host declarations may reference their own declaration files.
+    // Plugin reference directives never authorize files outside the input set.
+    if (source && hostFiles.has(name)) for (const reference of source.referencedFiles) {
+      const referenced = path.resolve(path.dirname(name), reference.fileName);
+      if (insideTarget(referenced)) hostFiles.add(referenced);
+    }
+    return source;
+  };
   host.resolveModuleNames = (names, containingFile) => names.map((name) => {
     const resolved = ts.resolveModuleName(name, containingFile, options, host).resolvedModule;
     if (!resolved) return undefined;
@@ -51,7 +65,10 @@ export function createUsageProgram(files, targetRoot) {
     // Only the explicit public host target may add files outside the inspected
     // set. A plugin-relative import must not crawl neighboring source trees.
     if (!insideTarget(resolved.resolvedFileName)) return undefined;
-    if (name === "openclaw/plugin-sdk" || name.startsWith("openclaw/plugin-sdk/") || name.startsWith(".") && !byPath.has(containingFile) && insideTarget(containingFile)) return resolved;
+    if (name === "openclaw/plugin-sdk" || name.startsWith("openclaw/plugin-sdk/") || name.startsWith(".") && !byPath.has(containingFile) && insideTarget(containingFile)) {
+      hostFiles.add(resolved.resolvedFileName);
+      return resolved;
+    }
     return undefined;
   });
   host.writeFile = () => {};

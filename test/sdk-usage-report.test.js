@@ -180,6 +180,16 @@ helper();
   }
 });
 
+test("ambient SDK declarations must be part of the inspected files", async (t) => {
+  const declaration = 'import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core"; declare global { const externalHost: OpenClawPluginApi; }';
+  for (const file of ["../outside.d.ts", "node_modules/@types/ambient/index.d.ts", "./included.d.ts"]) {
+    const report = await inspectPublishedJson(t, `/// <reference path="${file}" />\nexternalHost.registerTool({});`, {
+      files: { [file]: declaration }, sdkUsageInputKind: "source",
+    });
+    assert.equal(report.sdkUsage.entries.some((entry) => entry.key === "api-member:api.registerTool"), file === "./included.d.ts", file);
+  }
+});
+
 test("published declarations establish an unannotated registration API without host implementation files", async (t) => {
   const report = await inspectPublishedJson(t, `
 import { definePluginEntry } from "openclaw/plugin-sdk/plugin-entry";
