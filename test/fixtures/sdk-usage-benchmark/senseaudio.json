@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "senseaudio",
+    "path": "extensions/senseaudio"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_senseaudio",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/senseaudio/index.ts",
+      "sha256": "5106ecaefbd713e815f062d79ff3a188de5701f2d34ad26b89bd0e9c6ece7f96",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/senseaudio/media-understanding-provider.ts",
+      "sha256": "e1570342928dcae814b207c2e8385a2c92537c2e3c8cd1006f52412265d2313d",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/senseaudio/openclaw.plugin.json",
+      "sha256": "b8b66145b7f01377a415ab5fcedcb4a978dc03e93fab2aae94ee2dfa66dbcabf",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/senseaudio/package.json",
+      "sha256": "9cec98abb61411866b6d7da84723c80254572b5a0cd99a21ffab6c91c150ecf9",
+      "role": "package-metadata",
+      "findingCount": 0
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/senseaudio/README.md",
+      "rule": "non-source",
+      "reason": "Plugin usage documentation; Markdown is outside the source-extension scope."
+    },
+    {
+      "path": "extensions/senseaudio/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork is outside the source-extension scope."
+    },
+    {
+      "path": "extensions/senseaudio/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG artwork is outside the source-extension scope."
+    },
+    {
+      "path": "extensions/senseaudio/media-understanding-provider.live.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. basename; neither production source file imports this live test."
+    },
+    {
+      "path": "extensions/senseaudio/media-understanding-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. basename; neither production source file imports this unit test."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerMediaUnderstandingProvider",
+      "kind": "api-member",
+      "identity": "api.registerMediaUnderstandingProvider",
+      "classification": "runtime",
+      "referenceKinds": ["call"],
+      "evidence": [
+        {
+          "path": "extensions/senseaudio/index.ts",
+          "line": 9,
+          "snippet": "    api.registerMediaUnderstandingProvider(senseaudioMediaUnderstandingProvider);",
+          "note": "definePluginEntry's register callback receives OpenClawPluginApi: src/plugin-sdk/plugin-entry.ts:227 and src/plugins/plugin-definition.types.ts:27; the public method is declared in src/plugins/plugin-api.types.ts:351."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.mediaUnderstandingProviders:senseaudio",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.mediaUnderstandingProviders:senseaudio",
+      "classification": "declarative",
+      "referenceKinds": ["manifest-declaration"],
+      "evidence": [
+        {
+          "path": "extensions/senseaudio/openclaw.plugin.json",
+          "line": 17,
+          "snippet": "    \"mediaUnderstandingProviders\": [\"senseaudio\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-understanding#MediaUnderstandingProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-understanding#MediaUnderstandingProvider",
+      "classification": "type",
+      "referenceKinds": ["type-import", "type-reference"],
+      "evidence": [
+        {
+          "path": "extensions/senseaudio/media-understanding-provider.ts",
+          "line": 3,
+          "snippet": "  type MediaUnderstandingProvider,",
+          "note": "Inline type import from openclaw/plugin-sdk/media-understanding, whose specifier is on line 4."
+        },
+        {
+          "path": "extensions/senseaudio/media-understanding-provider.ts",
+          "line": 9,
+          "snippet": "export const senseaudioMediaUnderstandingProvider: MediaUnderstandingProvider = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-understanding#transcribeOpenAiCompatibleAudio",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-understanding#transcribeOpenAiCompatibleAudio",
+      "classification": "runtime",
+      "referenceKinds": ["call", "import"],
+      "evidence": [
+        {
+          "path": "extensions/senseaudio/media-understanding-provider.ts",
+          "line": 2,
+          "snippet": "  transcribeOpenAiCompatibleAudio,",
+          "note": "Value import from openclaw/plugin-sdk/media-understanding, whose specifier is on line 4."
+        },
+        {
+          "path": "extensions/senseaudio/media-understanding-provider.ts",
+          "line": 15,
+          "snippet": "    transcribeOpenAiCompatibleAudio({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": ["call", "import"],
+      "evidence": [
+        {
+          "path": "extensions/senseaudio/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/senseaudio/index.ts",
+          "line": 4,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-understanding",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-understanding",
+      "classification": "mixed",
+      "referenceKinds": ["import", "type-import"],
+      "evidence": [
+        {
+          "path": "extensions/senseaudio/media-understanding-provider.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/media-understanding\";",
+          "note": "One declaration imports runtime transcribeOpenAiCompatibleAudio (line 2) and inline type MediaUnderstandingProvider (line 3)."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "runtime",
+      "referenceKinds": ["import"],
+      "evidence": [
+        {
+          "path": "extensions/senseaudio/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Manually read both production source files and both metadata files. All nine files under extensions/senseaudio are partitioned into four reviewed and five excluded records. Production files match the pinned commit; only authorized instruction/skill changes existed outside this plugin.",
+    "The only relative production import is index.ts -> media-understanding-provider.ts. No local import leaves the plugin root, no additional shared shipped source is reached, and no ambiguous test-only helper exists.",
+    "The package openclaw.extensions entry selects index.ts and declares no generated-source exception. Public package exports and the plugin-entry/media-understanding facades confirm the exact SDK specifiers and named exports; SDK internals and installed dependencies are outside the audited population.",
+    "The provider descriptor and transcribeAudio callback params are plugin/provider values, not OpenClawPluginApi or PluginRuntime handles. Calls inside SDK helpers are not inferred as plugin API/runtime usage. There are no runtime-member accesses or hook registrations.",
+    "The manifest contracts.mediaUnderstandingProviders item is the sole agreed manifest identity. setup.providers is setup/auth metadata, not a top-level providers contract; categories, activation, enabledByDefault and configSchema are outside the contract identity fields.",
+    "The media-understanding module is mixed because its import declaration contains both a value import and an explicit inline type import. The provider annotation additionally establishes type-reference on MediaUnderstandingProvider without inventing another module import site."
+  ]
+}

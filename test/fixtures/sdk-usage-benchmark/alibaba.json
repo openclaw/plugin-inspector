@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "alibaba",
+    "path": "extensions/alibaba"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/sdk_benchmark_coordinator/audit_alibaba",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/alibaba/index.ts",
+      "sha256": "571cee9940c17633cc2240035917698e73f14b6bd2bf2a0752a2e076926dbec9",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/alibaba/openclaw.plugin.json",
+      "sha256": "0ade77c7fa2a210df126e8a075892a869f6a02ec83eb63185904e9c5890902fe",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/alibaba/package.json",
+      "sha256": "ccecd7177ad1d251068dc561e2110f06bffad60fb2c0ff1cfbfbe2ce097ab8b8",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/alibaba/video-generation-provider.ts",
+      "sha256": "9c44f5a396cbaa63231467ad0413b068ba7a2cf7fe9bbfa04656774fed0ff1a5",
+      "role": "production-source",
+      "findingCount": 2
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/alibaba/README.md",
+      "rule": "non-source",
+      "reason": "Markdown documentation is outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/alibaba/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork is outside the eligible source extensions."
+    },
+    {
+      "path": "extensions/alibaba/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG artwork is outside the eligible source extensions."
+    },
+    {
+      "path": "extensions/alibaba/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript configuration is JSON, not production JS/TS-family source or designated package/manifest metadata."
+    },
+    {
+      "path": "extensions/alibaba/video-generation-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test suite with describe/it and test mocks; neither production file imports it."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerProvider",
+      "kind": "api-member",
+      "identity": "api.registerProvider",
+      "classification": "runtime",
+      "referenceKinds": ["call"],
+      "evidence": [
+        {
+          "path": "extensions/alibaba/index.ts",
+          "line": 10,
+          "snippet": "    api.registerProvider({",
+          "note": "api is the register callback parameter of definePluginEntry; its register option uses OpenClawPluginDefinition.register in src/plugin-sdk/plugin-entry.ts:227."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerVideoGenerationProvider",
+      "kind": "api-member",
+      "identity": "api.registerVideoGenerationProvider",
+      "classification": "runtime",
+      "referenceKinds": ["call"],
+      "evidence": [
+        {
+          "path": "extensions/alibaba/index.ts",
+          "line": 35,
+          "snippet": "    api.registerVideoGenerationProvider(alibabaVideoGenerationProvider);",
+          "note": "Same proven plugin API callback parameter; provider value comes from the local video-generation-provider.ts module."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.videoGenerationProviders:alibaba",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.videoGenerationProviders:alibaba",
+      "classification": "declarative",
+      "referenceKinds": ["manifest-declaration"],
+      "evidence": [
+        {
+          "path": "extensions/alibaba/openclaw.plugin.json",
+          "line": 33,
+          "snippet": "    \"videoGenerationProviders\": [\"alibaba\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": ["call", "import"],
+      "evidence": [
+        {
+          "path": "extensions/alibaba/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/alibaba/index.ts",
+          "line": 5,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-entry#createProviderApiKeyAuthMethod",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-entry#createProviderApiKeyAuthMethod",
+      "classification": "runtime",
+      "referenceKinds": ["call", "import"],
+      "evidence": [
+        {
+          "path": "extensions/alibaba/index.ts",
+          "line": 2,
+          "snippet": "import { createProviderApiKeyAuthMethod } from \"openclaw/plugin-sdk/provider-entry\";"
+        },
+        {
+          "path": "extensions/alibaba/index.ts",
+          "line": 16,
+          "snippet": "        createProviderApiKeyAuthMethod({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#buildDashscopeVideoGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#buildDashscopeVideoGenerationProvider",
+      "classification": "runtime",
+      "referenceKinds": ["call", "import"],
+      "evidence": [
+        {
+          "path": "extensions/alibaba/video-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { buildDashscopeVideoGenerationProvider } from \"openclaw/plugin-sdk/video-generation\";"
+        },
+        {
+          "path": "extensions/alibaba/video-generation-provider.ts",
+          "line": 12,
+          "snippet": "export const alibabaVideoGenerationProvider = buildDashscopeVideoGenerationProvider({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "runtime",
+      "referenceKinds": ["import"],
+      "evidence": [
+        {
+          "path": "extensions/alibaba/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-entry",
+      "classification": "runtime",
+      "referenceKinds": ["import"],
+      "evidence": [
+        {
+          "path": "extensions/alibaba/index.ts",
+          "line": 2,
+          "snippet": "import { createProviderApiKeyAuthMethod } from \"openclaw/plugin-sdk/provider-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/video-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/video-generation",
+      "classification": "runtime",
+      "referenceKinds": ["import"],
+      "evidence": [
+        {
+          "path": "extensions/alibaba/video-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { buildDashscopeVideoGenerationProvider } from \"openclaw/plugin-sdk/video-generation\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Manually reviewed both production TypeScript files and both designated metadata files. The sole local source import remains inside the plugin root; no additional plugin-owned/shared source boundary was found.",
+    "SDK public export provenance was checked in src/plugin-sdk/plugin-entry.ts, provider-entry.ts and video-generation.ts, and package.json confirms all three public subpaths. SDK implementation dependencies are outside this plugin audit.",
+    "The manifest declares contracts.videoGenerationProviders. setup.providers, providerAuthChoices and videoGenerationProviderMetadata describe setup/auth metadata and are not additional contract identities under the frozen contract.",
+    "Package metadata names index.ts as the extension entry and declares a workspace SDK development dependency; package dependencies are not syntactic SDK-module findings.",
+    "No type-only SDK dependencies, runtime handles, named hooks, namespace imports, destructured API aliases or dynamically computed API/runtime accesses occur in eligible production source.",
+    "Reference-kind reconciliation: index.ts:10 and index.ts:35 only call the two API registration methods; there are no distinct non-call reads, so their referenceKinds are call only. All three imported SDK functions have separate import and call occurrences, with no type references, so their exact referenceKinds remain call and import."
+  ]
+}

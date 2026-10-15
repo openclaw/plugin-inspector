@@ -1,0 +1,159 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "sglang",
+    "path": "extensions/sglang"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/sdk_benchmark_coordinator/audit_sglang",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/sglang/api.ts",
+      "sha256": "f2b36001028b6f424e3b5116eca295ad2f9db9756d0c9f018fb3911db8a19bc1",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/sglang/defaults.ts",
+      "sha256": "1fc1ae8b36c5ad482d21a59326d865c7e2fb2f2e5a020d54678ed8158879376c",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/sglang/index.ts",
+      "sha256": "feb15bb54b5df09bf2a75d980a18ffd20868f60f54d3b20ddb812d03a2f23c5b",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/sglang/openclaw.plugin.json",
+      "sha256": "de8a57e8b65ab5705c8cb5a8d87c4f205f9a64f34539a960036cb4aaa156b345",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/sglang/package.json",
+      "sha256": "b6310839ead572b8043798073953a5e49e20fe3317ddaa87f4cfda93d06211d7",
+      "role": "package-metadata",
+      "findingCount": 0
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/sglang/README.md",
+      "rule": "non-source",
+      "reason": "Markdown plugin description, outside the eligible source extensions."
+    },
+    {
+      "path": "extensions/sglang/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG image asset, outside the eligible source extensions."
+    },
+    {
+      "path": "extensions/sglang/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG image asset, outside the eligible source extensions."
+    },
+    {
+      "path": "extensions/sglang/index.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest replay-policy test using plugin-test-runtime; not imported by production source."
+    },
+    {
+      "path": "extensions/sglang/provider-discovery.contract.test.ts",
+      "rule": "test-file",
+      "reason": "Provider discovery contract test using provider-test-contracts; not imported by production source."
+    },
+    {
+      "path": "extensions/sglang/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript configuration JSON, outside eligible source extensions and neither package metadata nor plugin manifest."
+    }
+  ],
+  "findings": [
+    {
+      "key": "manifest-contract:manifest.providers:sglang",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:sglang",
+      "classification": "declarative",
+      "referenceKinds": ["manifest-declaration"],
+      "evidence": [
+        {
+          "path": "extensions/sglang/openclaw.plugin.json",
+          "line": 8,
+          "snippet": "  \"providers\": [\"sglang\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#buildProviderReplayFamilyHooks",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#buildProviderReplayFamilyHooks",
+      "classification": "runtime",
+      "referenceKinds": ["call", "import"],
+      "evidence": [
+        {
+          "path": "extensions/sglang/index.ts",
+          "line": 2,
+          "snippet": "  buildProviderReplayFamilyHooks,",
+          "note": "Named import from openclaw/plugin-sdk/provider-model-shared at line 4; the public SDK facade exports this original name."
+        },
+        {
+          "path": "extensions/sglang/index.ts",
+          "line": 20,
+          "snippet": "  overrides: buildProviderReplayFamilyHooks({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#defineSelfHostedOpenAICompatibleProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#defineSelfHostedOpenAICompatibleProvider",
+      "classification": "runtime",
+      "referenceKinds": ["call", "import"],
+      "evidence": [
+        {
+          "path": "extensions/sglang/index.ts",
+          "line": 3,
+          "snippet": "  defineSelfHostedOpenAICompatibleProvider,",
+          "note": "Named import from openclaw/plugin-sdk/provider-model-shared at line 4; the public SDK facade exports this original name."
+        },
+        {
+          "path": "extensions/sglang/index.ts",
+          "line": 12,
+          "snippet": "export default defineSelfHostedOpenAICompatibleProvider({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-shared",
+      "classification": "runtime",
+      "referenceKinds": ["import"],
+      "evidence": [
+        {
+          "path": "extensions/sglang/index.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-model-shared\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "All three production source files and both metadata files were read. The local api.ts barrel reexports only plugin-owned constants from defaults.ts; no production source import leaves the plugin root except the public SDK dependency.",
+    "The public module specifier is confirmed by root package.json exports. src/plugin-sdk/provider-model-shared.ts declares both imported functions under their original names.",
+    "The SDK helper defineSelfHostedOpenAICompatibleProvider internally calls api.registerProvider, but SDK implementations are outside this plugin source audit. The plugin itself contains no API/runtime handle or member access, and buildProviderReplayFamilyHooks is not an api.on/registerHook registration.",
+    "The manifest provider declaration is counted once. Nested setup/providerRequest/modelCatalog/modelPricing/providerAuthChoices fields are metadata outside the contract's manifest identity fields.",
+    "Test-only SDK imports in the two .test.ts files are excluded; production imports do not target those files. Package metadata declares ./index.ts as the plugin entry and does not introduce an eligible build-output exception."
+  ]
+}

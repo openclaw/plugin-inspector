@@ -1,0 +1,1692 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "fal",
+    "path": "extensions/fal"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_fal",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/fal/http-config.ts",
+      "sha256": "b1811b42c4571d8524ef0b93d5c2fd3b766194a25e0a80c0562a2fecefccb259",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/fal/image-generation-provider.ts",
+      "sha256": "47386b4186f056841246945f8a6c4bac9f74d8e950c1e298a08cbe4a6b2b9e23",
+      "role": "production-source",
+      "findingCount": 26
+    },
+    {
+      "path": "extensions/fal/index.ts",
+      "sha256": "864ac444ce9af40c68a0257f13f5bb27592b2b3585128168b90270c175dcb864",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/fal/music-generation-provider.ts",
+      "sha256": "62ef1921e20d1a0a31db520de33e1f5c362dcbf78cf5683e9824ae86f77fae0d",
+      "role": "production-source",
+      "findingCount": 16
+    },
+    {
+      "path": "extensions/fal/onboard.ts",
+      "sha256": "16b04ae9653b2aed6fd89357254dced04aeaa146db5b968113f1812ac087e501",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/fal/openclaw.plugin.json",
+      "sha256": "9b9332089b2c115f85a3e880294a420b676e43d63a940f58c03ec91ccf50e608",
+      "role": "manifest",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/fal/package.json",
+      "sha256": "5657ebf365dae982efb3422b58faa77b4eefb89054df0762a5e005878c7c322d",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/fal/provider-contract-api.ts",
+      "sha256": "3ac8175e4d320e0599ecef867d45d515a72bceef7b86b064a76af1dcf5cef3ef",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/fal/provider-registration.ts",
+      "sha256": "40e1cb5915c91adbed1148079e1f5ee974fe5316563568bfea4ef025fa30f105",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/fal/video-generation-provider.ts",
+      "sha256": "68640b812d33efa9c40904776b88b4c7f156d4c0319a2ce9f1bec737148769fd",
+      "role": "production-source",
+      "findingCount": 24
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/fal/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation; not a listed JS/TS-family source extension."
+    },
+    {
+      "path": "extensions/fal/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork; not a listed JS/TS-family source extension."
+    },
+    {
+      "path": "extensions/fal/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG artwork; not a listed JS/TS-family source extension."
+    },
+    {
+      "path": "extensions/fal/image-generation-provider.gpt-image-25.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file with .test. in its basename; no eligible production source imports it."
+    },
+    {
+      "path": "extensions/fal/image-generation-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file with .test. in its basename; no eligible production source imports it."
+    },
+    {
+      "path": "extensions/fal/music-generation-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file with .test. in its basename; no eligible production source imports it."
+    },
+    {
+      "path": "extensions/fal/onboard.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file with .test. in its basename; no eligible production source imports it."
+    },
+    {
+      "path": "extensions/fal/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript project configuration; not a listed JS/TS-family source extension or separately reviewed package/manifest metadata."
+    },
+    {
+      "path": "extensions/fal/video-generation-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file with .test. in its basename; no eligible production source imports it."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerImageGenerationProvider",
+      "kind": "api-member",
+      "identity": "api.registerImageGenerationProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/index.ts",
+          "line": 15,
+          "snippet": "    api.registerImageGenerationProvider(buildFalImageGenerationProvider());",
+          "note": "The register callback is contextually typed by definePluginEntry as the public OpenClaw plugin registration function."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerMusicGenerationProvider",
+      "kind": "api-member",
+      "identity": "api.registerMusicGenerationProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/index.ts",
+          "line": 16,
+          "snippet": "    api.registerMusicGenerationProvider(buildFalMusicGenerationProvider());",
+          "note": "The register callback is contextually typed by definePluginEntry as the public OpenClaw plugin registration function."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerProvider",
+      "kind": "api-member",
+      "identity": "api.registerProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/index.ts",
+          "line": 14,
+          "snippet": "    api.registerProvider(createFalProvider());",
+          "note": "The register callback is contextually typed by definePluginEntry as the public OpenClaw plugin registration function."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerVideoGenerationProvider",
+      "kind": "api-member",
+      "identity": "api.registerVideoGenerationProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/index.ts",
+          "line": 17,
+          "snippet": "    api.registerVideoGenerationProvider(buildFalVideoGenerationProvider());",
+          "note": "The register callback is contextually typed by definePluginEntry as the public OpenClaw plugin registration function."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.imageGenerationProviders:fal",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.imageGenerationProviders:fal",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/openclaw.plugin.json",
+          "line": 34,
+          "snippet": "    \"imageGenerationProviders\": [\"fal\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.musicGenerationProviders:fal",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.musicGenerationProviders:fal",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/openclaw.plugin.json",
+          "line": 35,
+          "snippet": "    \"musicGenerationProviders\": [\"fal\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.videoGenerationProviders:fal",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.videoGenerationProviders:fal",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/openclaw.plugin.json",
+          "line": 36,
+          "snippet": "    \"videoGenerationProviders\": [\"fal\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.providers:fal",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:fal",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/openclaw.plugin.json",
+          "line": 8,
+          "snippet": "  \"providers\": [\"fal\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#GeneratedImageAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#GeneratedImageAsset",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 2,
+          "snippet": "  GeneratedImageAsset,",
+          "note": "Named type import from openclaw/plugin-sdk/image-generation."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 721,
+          "snippet": "        const images: GeneratedImageAsset[] = [];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#ImageGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#ImageGenerationProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 3,
+          "snippet": "  ImageGenerationProvider,",
+          "note": "Named type import from openclaw/plugin-sdk/image-generation."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 532,
+          "snippet": "export function buildFalImageGenerationProvider(): ImageGenerationProvider {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#ImageGenerationRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#ImageGenerationRequest",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 4,
+          "snippet": "  ImageGenerationRequest,",
+          "note": "Named type import from openclaw/plugin-sdk/image-generation."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 329,
+          "snippet": "  req: ImageGenerationRequest,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#ImageGenerationSourceImage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#ImageGenerationSourceImage",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 5,
+          "snippet": "  ImageGenerationSourceImage,",
+          "note": "Named type import from openclaw/plugin-sdk/image-generation."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 474,
+          "snippet": "  inputImages: ImageGenerationSourceImage[],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#imageFileExtensionForMimeType",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#imageFileExtensionForMimeType",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 8,
+          "snippet": "  imageFileExtensionForMimeType,",
+          "note": "Named value import from openclaw/plugin-sdk/image-generation."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 733,
+          "snippet": "            fileName: `image-${imageIndex}.${imageFileExtensionForMimeType(downloaded.mimeType)}`,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#toImageDataUrl",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#toImageDataUrl",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 9,
+          "snippet": "  toImageDataUrl,",
+          "note": "Named value import from openclaw/plugin-sdk/image-generation."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 476,
+          "snippet": "  const encoded = inputImages.map(toImageDataUrl);",
+          "note": "Bare callback passing does not add call or member-access under the source-syntax contract."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-generation-runtime#readGeneratedVideoAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime#readGeneratedVideoAsset",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 2,
+          "snippet": "  readGeneratedVideoAsset,",
+          "note": "Named value import from openclaw/plugin-sdk/media-generation-runtime."
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 162,
+          "snippet": "      ...(await readGeneratedVideoAsset(response, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-generation-runtime#resolveGeneratedMediaMaxBytes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime#resolveGeneratedMediaMaxBytes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 11,
+          "snippet": "import { resolveGeneratedMediaMaxBytes } from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 680,
+          "snippet": "      const maxImageBytes = resolveGeneratedMediaMaxBytes(req.cfg, \"image\");"
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { resolveGeneratedMediaMaxBytes } from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 146,
+          "snippet": "          maxBytes: resolveGeneratedMediaMaxBytes(req.cfg, \"audio\"),"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 3,
+          "snippet": "  resolveGeneratedMediaMaxBytes,",
+          "note": "Named value import from openclaw/plugin-sdk/media-generation-runtime."
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 535,
+          "snippet": "      const video = await downloadFalVideo(url, resolveGeneratedMediaMaxBytes(req.cfg, \"video\"));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/music-generation#MusicGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/music-generation#MusicGenerationProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 5,
+          "snippet": "  type MusicGenerationProvider,",
+          "note": "Inline type import from openclaw/plugin-sdk/music-generation."
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 82,
+          "snippet": "export function buildFalMusicGenerationProvider(): MusicGenerationProvider {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/music-generation#MusicGenerationRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/music-generation#MusicGenerationRequest",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 6,
+          "snippet": "  type MusicGenerationRequest,",
+          "note": "Inline type import from openclaw/plugin-sdk/music-generation."
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 29,
+          "snippet": "  req: MusicGenerationRequest,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/music-generation#downloadGeneratedMusicAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/music-generation#downloadGeneratedMusicAsset",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 3,
+          "snippet": "  downloadGeneratedMusicAsset,",
+          "note": "Named value import from openclaw/plugin-sdk/music-generation."
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 140,
+          "snippet": "        const track = await downloadGeneratedMusicAsset({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/music-generation#extractGeneratedMusicFileCandidates",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/music-generation#extractGeneratedMusicFileCandidates",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 4,
+          "snippet": "  extractGeneratedMusicFileCandidates,",
+          "note": "Named value import from openclaw/plugin-sdk/music-generation."
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 136,
+          "snippet": "        const [candidate] = extractGeneratedMusicFileCandidates(payload);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolvePositiveTimerTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolvePositiveTimerTimeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 5,
+          "snippet": "import { resolvePositiveTimerTimeoutMs } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 427,
+          "snippet": "  const defaultMs = resolvePositiveTimerTimeoutMs(defaultTimeoutMs, 1);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/fal/index.ts",
+          "line": 9,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#AuthProfileStore",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#AuthProfileStore",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 1,
+          "snippet": "import type { AuthProfileStore, OpenClawConfig } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 14,
+          "snippet": "  authStore?: AuthProfileStore;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 1,
+          "snippet": "import type { AuthProfileStore, OpenClawConfig } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 12,
+          "snippet": "  cfg?: OpenClawConfig;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isProviderApiKeyConfiguredAsync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#isProviderApiKeyConfiguredAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 12,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 544,
+          "snippet": "    isConfiguredAsync: (ctx) => isProviderApiKeyConfiguredAsync({ provider: \"fal\", ...ctx }),"
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 8,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 88,
+          "snippet": "    isConfiguredAsync: (ctx) => isProviderApiKeyConfiguredAsync({ provider: \"fal\", ...ctx }),"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 6,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 464,
+          "snippet": "    isConfiguredAsync: (ctx) => isProviderApiKeyConfiguredAsync({ provider: \"fal\", ...ctx }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 2,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        },
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 21,
+          "snippet": "  const auth = await resolveApiKeyForProvider({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-entry#createProviderApiKeyAuthMethod",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-entry#createProviderApiKeyAuthMethod",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/provider-registration.ts",
+          "line": 1,
+          "snippet": "import { createProviderApiKeyAuthMethod } from \"openclaw/plugin-sdk/provider-entry\";"
+        },
+        {
+          "path": "extensions/fal/provider-registration.ts",
+          "line": 15,
+          "snippet": "      createProviderApiKeyAuthMethod({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#ProviderOperationDeadline",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#ProviderOperationDeadline",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 19,
+          "snippet": "  type ProviderOperationDeadline,",
+          "note": "Inline type import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 506,
+          "snippet": "  deadline: ProviderOperationDeadline,"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 11,
+          "snippet": "  type ProviderOperationDeadline,",
+          "note": "Inline type import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 360,
+          "snippet": "  deadline: ProviderOperationDeadline;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#ProviderRequestCapability",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#ProviderRequestCapability",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 5,
+          "snippet": "  type ProviderRequestCapability,",
+          "note": "Inline type import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 19,
+          "snippet": "  capability: ProviderRequestCapability;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#assertOkOrThrowHttpError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#assertOkOrThrowHttpError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 14,
+          "snippet": "  assertOkOrThrowHttpError,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 716,
+          "snippet": "        await assertOkOrThrowHttpError(response, \"fal image generation failed\");"
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 10,
+          "snippet": "  assertOkOrThrowHttpError,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 134,
+          "snippet": "        await assertOkOrThrowHttpError(response, \"fal music generation failed\");"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 8,
+          "snippet": "  assertOkOrThrowHttpError,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 159,
+          "snippet": "    await assertOkOrThrowHttpError(response, \"fal generated video download failed\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#assertOkOrThrowProviderError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#assertOkOrThrowProviderError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 15,
+          "snippet": "  assertOkOrThrowProviderError,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 518,
+          "snippet": "    await assertOkOrThrowProviderError(response, \"fal image download failed\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#createProviderOperationDeadline",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#createProviderOperationDeadline",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 16,
+          "snippet": "  createProviderOperationDeadline,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 630,
+          "snippet": "      const deadline = createProviderOperationDeadline({"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 9,
+          "snippet": "  createProviderOperationDeadline,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 516,
+          "snippet": "      const operationDeadline = createProviderOperationDeadline({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#postJsonRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#postJsonRequest",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 11,
+          "snippet": "  postJsonRequest,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 123,
+          "snippet": "      const { response, release } = await postJsonRequest({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 17,
+          "snippet": "  readProviderJsonResponse,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 719,
+          "snippet": "          await readProviderJsonResponse(response, \"fal.image-generation\"),"
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 12,
+          "snippet": "  readProviderJsonResponse,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 135,
+          "snippet": "        const payload = await readProviderJsonResponse<unknown>(response, \"fal music generation\");"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 10,
+          "snippet": "  readProviderJsonResponse,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 344,
+          "snippet": "      return await readProviderJsonResponse<unknown>(response, errorContext);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderHttpRequestConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderHttpRequestConfig",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 4,
+          "snippet": "  resolveProviderHttpRequestConfig,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 20,
+          "snippet": "}): Promise<ReturnType<typeof resolveProviderHttpRequestConfig>> {"
+        },
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 31,
+          "snippet": "  return resolveProviderHttpRequestConfig({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderOperationTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderOperationTimeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 18,
+          "snippet": "  resolveProviderOperationTimeoutMs,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 511,
+          "snippet": "    timeoutMs: resolveProviderOperationTimeoutMs({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ProviderPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/provider-contract-api.ts",
+          "line": 1,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/fal/provider-contract-api.ts",
+          "line": 18,
+          "snippet": "  } satisfies Pick<ProviderPlugin[\"auth\"][number], \"label\" | \"hint\" | \"wizard\">;"
+        },
+        {
+          "path": "extensions/fal/provider-contract-api.ts",
+          "line": 21,
+          "snippet": "export function createFalProvider(): ProviderPlugin {"
+        },
+        {
+          "path": "extensions/fal/provider-registration.ts",
+          "line": 2,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/fal/provider-registration.ts",
+          "line": 11,
+          "snippet": "export function createFalProvider(): ProviderPlugin {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/onboard.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/provider-onboard\";"
+        },
+        {
+          "path": "extensions/fal/onboard.ts",
+          "line": 5,
+          "snippet": "export function applyFalConfig(cfg: OpenClawConfig): OpenClawConfig {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/response-limit-runtime#readResponseWithLimit",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/response-limit-runtime#readResponseWithLimit",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 21,
+          "snippet": "import { readResponseWithLimit } from \"openclaw/plugin-sdk/response-limit-runtime\";"
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 521,
+          "snippet": "      buffer: await readResponseWithLimit(response, maxBytes, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-env#sleep",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-env#sleep",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 13,
+          "snippet": "import { sleep } from \"openclaw/plugin-sdk/runtime-env\";"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 418,
+          "snippet": "    await sleep(pollDelayMs);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 22,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 509,
+          "snippet": "  const { response, release } = await fetchWithSsrFGuard({"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 14,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 153,
+          "snippet": "  const { response, release } = await fetchWithSsrFGuard({"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 335,
+          "snippet": "  dispatcherPolicy: Parameters<typeof fetchWithSsrFGuard>[0][\"dispatcherPolicy\"];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 24,
+          "snippet": "  isRecord,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 145,
+          "snippet": "  if (!isRecord(payload)) {"
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 14,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 69,
+          "snippet": "  if (!isRecord(payload)) {"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 16,
+          "snippet": "  isRecord,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 79,
+          "snippet": "  if (!isRecord(payload)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 25,
+          "snippet": "  normalizeLowercaseStringOrEmpty,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 405,
+          "snippet": "  const normalized = normalizeLowercaseStringOrEmpty(falOptions?.creativity);"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 17,
+          "snippet": "  normalizeLowercaseStringOrEmpty,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 289,
+          "snippet": "  const normalizedModel = normalizeLowercaseStringOrEmpty(model);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 7,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 32,
+          "snippet": "    baseUrl: normalizeOptionalString(params.req.cfg?.models?.providers?.fal?.baseUrl),"
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 26,
+          "snippet": "  normalizeOptionalString,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 152,
+          "snippet": "  return { images, prompt: normalizeOptionalString(payload.prompt) };"
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 14,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 32,
+          "snippet": "  const lyrics = normalizeOptionalString(req.lyrics);"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 18,
+          "snippet": "  normalizeOptionalString,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 71,
+          "snippet": "  const normalized = normalizeOptionalString(value);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#GeneratedVideoAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#GeneratedVideoAsset",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 21,
+          "snippet": "  GeneratedVideoAsset,",
+          "note": "Named type import from openclaw/plugin-sdk/video-generation."
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 152,
+          "snippet": "async function downloadFalVideo(url: string, maxBytes: number): Promise<GeneratedVideoAsset> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 22,
+          "snippet": "  VideoGenerationProvider,",
+          "note": "Named type import from openclaw/plugin-sdk/video-generation."
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 451,
+          "snippet": "export function buildFalVideoGenerationProvider(): VideoGenerationProvider {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationRequest",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 23,
+          "snippet": "  VideoGenerationRequest,",
+          "note": "Named type import from openclaw/plugin-sdk/video-generation."
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 216,
+          "snippet": "  asset: NonNullable<VideoGenerationRequest[\"inputImages\"]>[number] | undefined,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/image-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/image-generation",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 1,
+          "snippet": "import type {\n  GeneratedImageAsset,\n  ImageGenerationProvider,\n  ImageGenerationRequest,\n  ImageGenerationSourceImage,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 7,
+          "snippet": "import {\n  imageFileExtensionForMimeType,\n  toImageDataUrl,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-generation-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 11,
+          "snippet": "import { resolveGeneratedMediaMaxBytes } from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { resolveGeneratedMediaMaxBytes } from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 1,
+          "snippet": "import {\n  readGeneratedVideoAsset,\n  resolveGeneratedMediaMaxBytes,\n} from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/music-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/music-generation",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 2,
+          "snippet": "import {\n  downloadGeneratedMusicAsset,\n  extractGeneratedMusicFileCandidates,\n  type MusicGenerationProvider,\n  type MusicGenerationRequest,\n} from \"openclaw/plugin-sdk/music-generation\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 5,
+          "snippet": "import { resolvePositiveTimerTimeoutMs } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 1,
+          "snippet": "import type { AuthProfileStore, OpenClawConfig } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 12,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 8,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 6,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 2,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/provider-registration.ts",
+          "line": 1,
+          "snippet": "import { createProviderApiKeyAuthMethod } from \"openclaw/plugin-sdk/provider-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-http",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-http",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 3,
+          "snippet": "import {\n  resolveProviderHttpRequestConfig,\n  type ProviderRequestCapability,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 13,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  assertOkOrThrowProviderError,\n  createProviderOperationDeadline,\n  readProviderJsonResponse,\n  resolveProviderOperationTimeoutMs,\n  type ProviderOperationDeadline,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 9,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  postJsonRequest,\n  readProviderJsonResponse,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 7,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  readProviderJsonResponse,\n  type ProviderOperationDeadline,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-shared",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/provider-contract-api.ts",
+          "line": 1,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/fal/provider-registration.ts",
+          "line": 2,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-onboard",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-onboard",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/onboard.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/provider-onboard\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/response-limit-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/response-limit-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 21,
+          "snippet": "import { readResponseWithLimit } from \"openclaw/plugin-sdk/response-limit-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-env",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-env",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 13,
+          "snippet": "import { sleep } from \"openclaw/plugin-sdk/runtime-env\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 22,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 14,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/http-config.ts",
+          "line": 7,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/fal/image-generation-provider.ts",
+          "line": 23,
+          "snippet": "import {\n  isRecord,\n  normalizeLowercaseStringOrEmpty,\n  normalizeOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/fal/music-generation-provider.ts",
+          "line": 14,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 15,
+          "snippet": "import {\n  isRecord,\n  normalizeLowercaseStringOrEmpty,\n  normalizeOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/video-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/video-generation",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/fal/video-generation-provider.ts",
+          "line": 20,
+          "snippet": "import type {\n  GeneratedVideoAsset,\n  VideoGenerationProvider,\n  VideoGenerationRequest,\n} from \"openclaw/plugin-sdk/video-generation\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all eight eligible production TypeScript files in full, package.json and openclaw.plugin.json; all 19 plugin-root files match the pinned commit byte-for-byte. Root, extensions and SDK AGENTS.md were read; no plugin-local AGENTS.md exists. The source checkout has separately authorized instruction/skill edits outside this plugin.",
+    "All production local imports remain inside extensions/fal. No additional plugin-owned/shared shipped source boundary, local SDK reexport barrel, declaration file, dynamic import, require, namespace import, hook registration or API/runtime escape exists. The package extension entry is ./index.ts and metadata declares no built-output exception.",
+    "provider-contract-api.ts is production code imported by provider-registration.ts. Its ProviderPlugin Pick/indexed type expression refers to a provider contract, not OpenClawPluginApi or PluginRuntime, and therefore creates no public API/runtime-member identity.",
+    "The only proven API handle is definePluginEntry register(api), which calls four registration members. Provider request/config/context objects and SDK helper return values are not API/runtime handles; deadline.timeoutMs, deadline.deadlineAtMs, response/release, track.metadata and HTTP config fields do not create runtime members.",
+    "Explicit typeof resolveProviderHttpRequestConfig and typeof fetchWithSsrFGuard make those SDK-export identities mixed. Their later type references do not add a type-import site or change the SDK-module classification by themselves.",
+    "toImageDataUrl is imported as a runtime value and only passed bare to Array.map. That preserves the syntactic dependency without inventing a direct call/member-access reference. Other imported helpers have explicit calls; all imported types have explicit type-reference sites.",
+    "Only top-level providers and contracts imageGenerationProviders/musicGenerationProviders/videoGenerationProviders contribute manifest contracts. Activation, categories, setup, providerAuthChoices, videoGenerationProviderMetadata and configSchema are descriptive/config metadata outside the agreed manifest identity fields.",
+    "Reviewed findingCount is the number of distinct findings with representative evidence in that file. Every dependency-bearing source file has evidence for each local dependency identity, with additional representative evidence for all established reference kinds."
+  ]
+}

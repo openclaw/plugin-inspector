@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "status": "frozen-before-audits",
+  "phase": "source",
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "population": {
+    "distribution": "core",
+    "count": 69
+  },
+  "scope": {
+    "extensions": [
+      ".js",
+      ".jsx",
+      ".mjs",
+      ".cjs",
+      ".ts",
+      ".tsx",
+      ".mts",
+      ".cts"
+    ],
+    "include": "Every production-source file under the canonical plugin root, including local API barrels, onboarding, CLI and shared shipped code; include declaration files. Follow local imports leaving the root only to identify additional plugin-owned/shared shipped source and record that boundary explicitly. Do not recursively audit SDK implementations or separately installed dependencies.",
+    "excludeRules": {
+      "test-file": "basename contains .test. or .spec., or begins test-; test runners/configs and explicit test-only helpers are excluded after verifying use",
+      "test-directory": "path segment __tests__, __fixtures__, fixtures, test, tests, test-utils, test-support, or test-helpers, unless production source imports it (then include and explain)",
+      "build-output": "dist, build, coverage, node_modules, vendor and generated bundle output; inspect package metadata for exceptions",
+      "non-source": "files outside the listed source extensions; review package.json and openclaw.plugin.json separately as metadata",
+      "test-helper": "other files proved solely test support through callers, with individual explanation"
+    },
+    "artifactDistinction": "This source benchmark includes erased type dependencies and eligible source outside runtime reachability. Published-artifact scope must enumerate the actual artifact separately; do not claim identical source/package expectations."
+  },
+  "canonicalization": {
+    "sdk-module": "The exact public openclaw/plugin-sdk or openclaw/plugin-sdk/<subpath> specifier; normalize known source .js/.ts suffix only when public exports prove same specifier. Include a module finding for each syntactic SDK dependency.",
+    "sdk-export": "<module>#<original exported name>; preserve default as default and namespace/star as * when not narrowed. Imports/reexports count even unused; resolve local aliases and barrel provenance. Named namespace property access may add the original named export.",
+    "api-member": "api.<maximal accessed member path>; API entry parameters/aliases normalize to api. Registration methods are api-member findings, not a duplicate category. Do not enumerate incidental prefixes of a longer access.",
+    "runtime-member": "runtime.<maximal accessed member path>; proven api.runtime handles, PluginRuntime parameters, createPluginRuntimeStore/getRuntime handles and their aliases normalize to runtime. Do not emit api.runtime prefixes for runtime-member findings.",
+    "hook": "Literal/resolved hook name registered with API on/registerHook; identity hook.<name>. Legacy registerHook arrays produce one per name; still include corresponding api-member.",
+    "manifest-contract": "manifest.<field>:<value> for channels, providers, skills, commandAliases.name, cliCommands.name and each contracts.<category> item; contracts object leaf values retain key path. Metadata kind and descriptive/config fields are not contract identities.",
+    "identityKey": "<kind>:<identity>",
+    "scopeBoundaries": "Do not attribute logger/config/context/provider/plugin object lookalikes to API/runtime without source/type provenance. Do not enumerate members of arbitrary SDK return values as API/runtime."
+  },
+  "findingKinds": [
+    "sdk-module",
+    "sdk-export",
+    "api-member",
+    "runtime-member",
+    "hook",
+    "manifest-contract"
+  ],
+  "classifications": [
+    "runtime",
+    "type",
+    "mixed",
+    "declarative"
+  ],
+  "referenceKinds": [
+    "import",
+    "type-import",
+    "reexport",
+    "type-reexport",
+    "side-effect-import",
+    "dynamic-import",
+    "require",
+    "member-access",
+    "call",
+    "type-reference",
+    "hook-registration",
+    "manifest-declaration"
+  ],
+  "fixtureShape": {
+    "schemaVersion": 1,
+    "plugin": {
+      "id": "<canonical id>",
+      "path": "<canonical path>"
+    },
+    "source": "same source object as contract",
+    "auditor": {
+      "agentId": "<agent identity>",
+      "independent": true
+    },
+    "reviewedFiles": [
+      {
+        "path": "<repo-relative path>",
+        "sha256": "<file content sha256>",
+        "role": "production-source|package-metadata|manifest",
+        "findingCount": 0
+      }
+    ],
+    "excludedFiles": [
+      {
+        "path": "<repo-relative path>",
+        "rule": "<exclude rule key>",
+        "reason": "<concrete reason>"
+      }
+    ],
+    "findings": [
+      {
+        "key": "<kind>:<identity>",
+        "kind": "<kind>",
+        "identity": "<canonical identity>",
+        "classification": "runtime|type|mixed|declarative",
+        "referenceKinds": [
+          "<reference kind>"
+        ],
+        "evidence": [
+          {
+            "path": "<repo-relative path>",
+            "line": 1,
+            "snippet": "<short exact source>",
+            "note": "<optional provenance explanation>"
+          }
+        ]
+      }
+    ],
+    "unknowns": [
+      {
+        "path": "<repo-relative path>",
+        "line": 1,
+        "expression": "<unresolved construct>",
+        "reason": "<why static resolution genuinely impossible>"
+      }
+    ],
+    "auditedEmpty": false,
+    "notes": [
+      "<source-backed decisions/boundaries>"
+    ]
+  },
+  "auditRequirements": [
+    "Read root and applicable scoped AGENTS.md, metadata, and every eligible source file, not only import grep results.",
+    "No Inspector implementation, helpers, sourceFiles, detector output or generic extractor may generate expected findings. rg/find may navigate and hashes/inventory scripts may enumerate files.",
+    "All files beneath plugin root must have reviewed or excluded records. No duplicate paths or finding keys. Evidence points to actual source lines.",
+    "Resolve API/runtime aliases, destructuring, local barrels, reexports, type imports, hook names and registration provenance. Track a static constant/alias when resolvable; record unknown only for genuinely nonstatic constructs.",
+    "Use one independently dispatched new subagent per plugin; each exclusively owns its fixture.",
+    "Audited-empty means no findings after full review; zero counts never substitute for an audit.",
+    "Sort file records by path and findings by key; each finding needs source evidence. Explain source-backed corrections in notes."
+  ]
+}

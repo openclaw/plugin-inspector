@@ -1,0 +1,1048 @@
+{
+  "schemaVersion": 1,
+  "status": "frozen",
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "plugins": [
+    {
+      "id": "a2a",
+      "path": "extensions/a2a",
+      "status": "validated",
+      "agentId": "/root/audit_a2a",
+      "fixture": "a2a.json",
+      "counts": {
+        "findings": 75,
+        "reviewedFiles": 23,
+        "excludedFiles": 13,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "active-memory",
+      "path": "extensions/active-memory",
+      "status": "validated",
+      "agentId": "/root/audit_active_memory",
+      "fixture": "active-memory.json",
+      "counts": {
+        "findings": 100,
+        "reviewedFiles": 17,
+        "excludedFiles": 16,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "admin-http-rpc",
+      "path": "extensions/admin-http-rpc",
+      "status": "validated",
+      "agentId": "/root/audit_admin_http_rpc",
+      "fixture": "admin-http-rpc.json",
+      "counts": {
+        "findings": 16,
+        "reviewedFiles": 5,
+        "excludedFiles": 6,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "advisor",
+      "path": "extensions/advisor",
+      "status": "validated",
+      "agentId": "/root/audit_advisor",
+      "fixture": "advisor.json",
+      "counts": {
+        "findings": 20,
+        "reviewedFiles": 5,
+        "excludedFiles": 3,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "agentsapi",
+      "path": "extensions/agentsapi",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_agentsapi",
+      "fixture": "agentsapi.json",
+      "counts": {
+        "findings": 179,
+        "reviewedFiles": 30,
+        "excludedFiles": 22,
+        "unknowns": 0
+      },
+      "issues": [],
+      "progress": {
+        "candidateFiles": 28,
+        "fullReadThrough": 28,
+        "note": "Independent full source audit complete; structural, exact source evidence, SHA256, and pinned Git blob validation passed."
+      }
+    },
+    {
+      "id": "alibaba",
+      "path": "extensions/alibaba",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_alibaba",
+      "fixture": "alibaba.json",
+      "counts": {
+        "findings": 9,
+        "reviewedFiles": 4,
+        "excludedFiles": 5,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "anthropic",
+      "path": "extensions/anthropic",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_anthropic",
+      "fixture": "anthropic.json",
+      "counts": {
+        "findings": 240,
+        "reviewedFiles": 57,
+        "excludedFiles": 45,
+        "unknowns": 0
+      },
+      "issues": [],
+      "progress": {
+        "candidateFiles": 55,
+        "fullReadThrough": 55,
+        "note": "Independent full source audit complete; structural, exact source evidence, SHA256, and pinned Git blob validation passed."
+      }
+    },
+    {
+      "id": "apple-fm",
+      "path": "extensions/apple-fm",
+      "status": "validated",
+      "agentId": "/root/audit_apple_fm",
+      "fixture": "apple-fm.json",
+      "counts": {
+        "findings": 39,
+        "reviewedFiles": 7,
+        "excludedFiles": 9,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "azure-speech",
+      "path": "extensions/azure-speech",
+      "status": "validated",
+      "agentId": "/root/audit_azure_speech",
+      "fixture": "azure-speech.json",
+      "counts": {
+        "findings": 30,
+        "reviewedFiles": 6,
+        "excludedFiles": 8,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "beam",
+      "path": "extensions/beam",
+      "status": "validated",
+      "agentId": "/root/audit_beam",
+      "fixture": "beam.json",
+      "counts": {
+        "findings": 41,
+        "reviewedFiles": 8,
+        "excludedFiles": 10,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "bonjour",
+      "path": "extensions/bonjour",
+      "status": "validated",
+      "agentId": "/root/audit_bonjour",
+      "fixture": "bonjour.json",
+      "counts": {
+        "findings": 17,
+        "reviewedFiles": 6,
+        "excludedFiles": 8,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "browser",
+      "path": "extensions/browser",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_browser",
+      "fixture": "browser.json",
+      "counts": {
+        "findings": 316,
+        "reviewedFiles": 339,
+        "excludedFiles": 331,
+        "unknowns": 0
+      },
+      "issues": [],
+      "progress": {
+        "candidateFiles": 341,
+        "fullReadThrough": 341,
+        "note": "Independent full source audit and original-owner reconciliation complete; structural, source evidence, SHA256, and pinned Git blob validation passed."
+      }
+    },
+    {
+      "id": "canvas",
+      "path": "extensions/canvas",
+      "status": "validated",
+      "agentId": "/root/audit_canvas",
+      "fixture": "canvas.json",
+      "counts": {
+        "findings": 83,
+        "reviewedFiles": 28,
+        "excludedFiles": 15,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "clawrouter",
+      "path": "extensions/clawrouter",
+      "status": "validated",
+      "agentId": "/root/audit_clawrouter",
+      "fixture": "clawrouter.json",
+      "counts": {
+        "findings": 50,
+        "reviewedFiles": 11,
+        "excludedFiles": 11,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "cloudflare",
+      "path": "extensions/cloudflare",
+      "status": "validated",
+      "agentId": "/root/audit_cloudflare",
+      "fixture": "cloudflare.json",
+      "counts": {
+        "findings": 11,
+        "reviewedFiles": 7,
+        "excludedFiles": 7,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "code-mode-quickjs",
+      "path": "extensions/code-mode-quickjs",
+      "status": "validated",
+      "agentId": "/root/audit_code_mode_quickjs",
+      "fixture": "code-mode-quickjs.json",
+      "counts": {
+        "findings": 48,
+        "reviewedFiles": 7,
+        "excludedFiles": 7,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "copilot-proxy",
+      "path": "extensions/copilot-proxy",
+      "status": "validated",
+      "agentId": "/root/audit_copilot_proxy",
+      "fixture": "copilot-proxy.json",
+      "counts": {
+        "findings": 10,
+        "reviewedFiles": 4,
+        "excludedFiles": 4,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "crabbox",
+      "path": "extensions/crabbox",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_crabbox",
+      "fixture": "crabbox.json",
+      "counts": {
+        "findings": 118,
+        "reviewedFiles": 52,
+        "excludedFiles": 57,
+        "unknowns": 0
+      },
+      "issues": [],
+      "progress": {
+        "candidateFiles": 50,
+        "fullReadThrough": 50,
+        "note": "Independent full source audit complete; structural, exact source evidence, SHA256, and pinned Git blob validation passed."
+      }
+    },
+    {
+      "id": "cua-computer",
+      "path": "extensions/cua-computer",
+      "status": "validated",
+      "agentId": "/root/audit_cua_computer",
+      "fixture": "cua-computer.json",
+      "counts": {
+        "findings": 43,
+        "reviewedFiles": 20,
+        "excludedFiles": 20,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "deepgram",
+      "path": "extensions/deepgram",
+      "status": "validated",
+      "agentId": "/root/audit_deepgram",
+      "fixture": "deepgram.json",
+      "counts": {
+        "findings": 42,
+        "reviewedFiles": 8,
+        "excludedFiles": 10,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "device-pair",
+      "path": "extensions/device-pair",
+      "status": "validated",
+      "agentId": "/root/audit_device_pair",
+      "fixture": "device-pair.json",
+      "counts": {
+        "findings": 48,
+        "reviewedFiles": 8,
+        "excludedFiles": 6,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "document-extract",
+      "path": "extensions/document-extract",
+      "status": "validated",
+      "agentId": "/root/audit_document_extract",
+      "fixture": "document-extract.json",
+      "counts": {
+        "findings": 19,
+        "reviewedFiles": 7,
+        "excludedFiles": 6,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "elevenlabs",
+      "path": "extensions/elevenlabs",
+      "status": "validated",
+      "agentId": "/root/audit_elevenlabs",
+      "fixture": "elevenlabs.json",
+      "counts": {
+        "findings": 72,
+        "reviewedFiles": 14,
+        "excludedFiles": 11,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "fal",
+      "path": "extensions/fal",
+      "status": "validated",
+      "agentId": "/root/audit_fal",
+      "fixture": "fal.json",
+      "counts": {
+        "findings": 63,
+        "reviewedFiles": 10,
+        "excludedFiles": 9,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "file-transfer",
+      "path": "extensions/file-transfer",
+      "status": "validated",
+      "agentId": "/root/audit_file_transfer",
+      "fixture": "file-transfer.json",
+      "counts": {
+        "findings": 105,
+        "reviewedFiles": 58,
+        "excludedFiles": 40,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "geolocation",
+      "path": "extensions/geolocation",
+      "status": "validated",
+      "agentId": "/root/audit_geolocation",
+      "fixture": "geolocation.json",
+      "counts": {
+        "findings": 29,
+        "reviewedFiles": 8,
+        "excludedFiles": 8,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "github",
+      "path": "extensions/github",
+      "status": "validated",
+      "agentId": "/root/audit_github",
+      "fixture": "github.json",
+      "counts": {
+        "findings": 33,
+        "reviewedFiles": 15,
+        "excludedFiles": 9,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "github-copilot",
+      "path": "extensions/github-copilot",
+      "status": "validated",
+      "agentId": "/root/audit_github_copilot",
+      "fixture": "github-copilot.json",
+      "counts": {
+        "findings": 102,
+        "reviewedFiles": 22,
+        "excludedFiles": 25,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "google",
+      "path": "extensions/google",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_google",
+      "fixture": "google.json",
+      "counts": {
+        "findings": 303,
+        "reviewedFiles": 57,
+        "excludedFiles": 46,
+        "unknowns": 0
+      },
+      "issues": [],
+      "progress": {
+        "candidateFiles": 55,
+        "fullReadThrough": 55,
+        "note": "Independent full source audit complete; structural, exact source evidence, SHA256, and pinned Git blob validation passed."
+      }
+    },
+    {
+      "id": "huggingface",
+      "path": "extensions/huggingface",
+      "status": "validated",
+      "agentId": "/root/audit_huggingface",
+      "fixture": "huggingface.json",
+      "counts": {
+        "findings": 24,
+        "reviewedFiles": 7,
+        "excludedFiles": 7,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "imap",
+      "path": "extensions/imap",
+      "status": "validated",
+      "agentId": "/root/audit_imap",
+      "fixture": "imap.json",
+      "counts": {
+        "findings": 23,
+        "reviewedFiles": 8,
+        "excludedFiles": 9,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "kie",
+      "path": "extensions/kie",
+      "status": "validated",
+      "agentId": "/root/audit_kie",
+      "fixture": "kie.json",
+      "counts": {
+        "findings": 34,
+        "reviewedFiles": 5,
+        "excludedFiles": 3,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "linux-node",
+      "path": "extensions/linux-node",
+      "status": "validated",
+      "agentId": "/root/audit_linux_node",
+      "fixture": "linux-node.json",
+      "counts": {
+        "findings": 21,
+        "reviewedFiles": 8,
+        "excludedFiles": 8,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "litellm",
+      "path": "extensions/litellm",
+      "status": "validated",
+      "agentId": "/root/audit_litellm",
+      "fixture": "litellm.json",
+      "counts": {
+        "findings": 31,
+        "reviewedFiles": 7,
+        "excludedFiles": 8,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "llm-task",
+      "path": "extensions/llm-task",
+      "status": "validated",
+      "agentId": "/root/audit_llm_task",
+      "fixture": "llm-task.json",
+      "counts": {
+        "findings": 44,
+        "reviewedFiles": 6,
+        "excludedFiles": 7,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "lmstudio",
+      "path": "extensions/lmstudio",
+      "status": "validated",
+      "agentId": "/root/audit_lmstudio",
+      "fixture": "lmstudio.json",
+      "counts": {
+        "findings": 131,
+        "reviewedFiles": 19,
+        "excludedFiles": 22,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "logbook",
+      "path": "extensions/logbook",
+      "status": "validated",
+      "agentId": "/root/audit_logbook",
+      "fixture": "logbook.json",
+      "counts": {
+        "findings": 65,
+        "reviewedFiles": 16,
+        "excludedFiles": 16,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "mcp-events",
+      "path": "extensions/mcp-events",
+      "status": "validated",
+      "agentId": "/root/audit_mcp_events",
+      "fixture": "mcp-events.json",
+      "counts": {
+        "findings": 33,
+        "reviewedFiles": 11,
+        "excludedFiles": 2,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "mcp-relay",
+      "path": "extensions/mcp-relay",
+      "status": "validated",
+      "agentId": "/root/audit_mcp_relay",
+      "fixture": "mcp-relay.json",
+      "counts": {
+        "findings": 59,
+        "reviewedFiles": 19,
+        "excludedFiles": 15,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "memory-core",
+      "path": "extensions/memory-core",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_memory_core",
+      "fixture": "memory-core.json",
+      "counts": {
+        "findings": 526,
+        "reviewedFiles": 203,
+        "excludedFiles": 209,
+        "unknowns": 0
+      },
+      "issues": [],
+      "progress": {
+        "candidateFiles": 201,
+        "fullReadThrough": 201,
+        "note": "Independent full source audit and original-owner reconciliation complete; structural, source evidence, SHA256, and pinned Git blob validation passed."
+      }
+    },
+    {
+      "id": "memory-wiki",
+      "path": "extensions/memory-wiki",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_memory_wiki",
+      "fixture": "memory-wiki.json",
+      "counts": {
+        "findings": 123,
+        "reviewedFiles": 50,
+        "excludedFiles": 63,
+        "unknowns": 0
+      },
+      "issues": [],
+      "progress": {
+        "candidateFiles": 48,
+        "fullReadThrough": 48,
+        "note": "Independent full source audit complete; structural, exact source evidence, SHA256, and pinned Git blob validation passed."
+      }
+    },
+    {
+      "id": "microsoft",
+      "path": "extensions/microsoft",
+      "status": "validated",
+      "agentId": "/root/audit_microsoft",
+      "fixture": "microsoft.json",
+      "counts": {
+        "findings": 34,
+        "reviewedFiles": 6,
+        "excludedFiles": 8,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "microsoft-foundry",
+      "path": "extensions/microsoft-foundry",
+      "status": "validated",
+      "agentId": "/root/audit_microsoft_foundry",
+      "fixture": "microsoft-foundry.json",
+      "counts": {
+        "findings": 84,
+        "reviewedFiles": 10,
+        "excludedFiles": 7,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "migrate-claude",
+      "path": "extensions/migrate-claude",
+      "status": "validated",
+      "agentId": "/root/audit_migrate_claude",
+      "fixture": "migrate-claude.json",
+      "counts": {
+        "findings": 45,
+        "reviewedFiles": 11,
+        "excludedFiles": 5,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "migrate-hermes",
+      "path": "extensions/migrate-hermes",
+      "status": "validated",
+      "agentId": "/root/audit_migrate_hermes",
+      "fixture": "migrate-hermes.json",
+      "counts": {
+        "findings": 79,
+        "reviewedFiles": 22,
+        "excludedFiles": 16,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "minimax",
+      "path": "extensions/minimax",
+      "status": "validated",
+      "agentId": "/root/audit_minimax",
+      "fixture": "minimax.json",
+      "counts": {
+        "findings": 187,
+        "reviewedFiles": 28,
+        "excludedFiles": 19,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "nvidia",
+      "path": "extensions/nvidia",
+      "status": "validated",
+      "agentId": "/root/audit_nvidia",
+      "fixture": "nvidia.json",
+      "counts": {
+        "findings": 22,
+        "reviewedFiles": 6,
+        "excludedFiles": 8,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "oc-path",
+      "path": "extensions/oc-path",
+      "status": "validated",
+      "agentId": "/root/audit_oc_path",
+      "fixture": "oc-path.json",
+      "counts": {
+        "findings": 13,
+        "reviewedFiles": 34,
+        "excludedFiles": 36,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "ollama",
+      "path": "extensions/ollama",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_ollama",
+      "fixture": "ollama.json",
+      "counts": {
+        "findings": 230,
+        "reviewedFiles": 49,
+        "excludedFiles": 47,
+        "unknowns": 0
+      },
+      "issues": [],
+      "progress": {
+        "candidateFiles": 47,
+        "fullReadThrough": 47,
+        "note": "Independent full source audit complete; structural, exact source evidence, SHA256, and pinned Git blob validation passed."
+      }
+    },
+    {
+      "id": "onepassword",
+      "path": "extensions/onepassword",
+      "status": "validated",
+      "agentId": "/root/audit_onepassword",
+      "fixture": "onepassword.json",
+      "counts": {
+        "findings": 58,
+        "reviewedFiles": 16,
+        "excludedFiles": 15,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "openai",
+      "path": "extensions/openai",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_openai",
+      "fixture": "openai.json",
+      "counts": {
+        "findings": 408,
+        "reviewedFiles": 89,
+        "excludedFiles": 117,
+        "unknowns": 0
+      },
+      "issues": [],
+      "progress": {
+        "candidateFiles": 87,
+        "fullReadThrough": 87,
+        "note": "Independent full source audit and original-owner reconciliation complete; structural, source evidence, SHA256, and pinned Git blob validation passed."
+      }
+    },
+    {
+      "id": "opencode-go",
+      "path": "extensions/opencode-go",
+      "status": "validated",
+      "agentId": "/root/audit_opencode_go",
+      "fixture": "opencode-go.json",
+      "counts": {
+        "findings": 47,
+        "reviewedFiles": 11,
+        "excludedFiles": 8,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "openrouter",
+      "path": "extensions/openrouter",
+      "status": "validated",
+      "agentId": "/root/audit_openrouter",
+      "fixture": "openrouter.json",
+      "counts": {
+        "findings": 158,
+        "reviewedFiles": 25,
+        "excludedFiles": 24,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "policy",
+      "path": "extensions/policy",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_policy",
+      "fixture": "policy.json",
+      "counts": {
+        "findings": 64,
+        "reviewedFiles": 60,
+        "excludedFiles": 25,
+        "unknowns": 0
+      },
+      "issues": [],
+      "progress": {
+        "note": "Independent full source audit and original-owner reconciliation complete; structural, source evidence, SHA256, and pinned Git blob validation passed.",
+        "candidateFiles": 58,
+        "fullReadThrough": 58
+      }
+    },
+    {
+      "id": "reef",
+      "path": "extensions/reef",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_reef",
+      "fixture": "reef.json",
+      "counts": {
+        "findings": 107,
+        "reviewedFiles": 67,
+        "excludedFiles": 40,
+        "unknowns": 0
+      },
+      "issues": [],
+      "progress": {
+        "candidateFiles": 65,
+        "fullReadThrough": 65,
+        "note": "Independent full source audit complete; structural, exact source evidence, SHA256, and pinned Git blob validation passed."
+      }
+    },
+    {
+      "id": "runway",
+      "path": "extensions/runway",
+      "status": "validated",
+      "agentId": "/root/audit_runway",
+      "fixture": "runway.json",
+      "counts": {
+        "findings": 34,
+        "reviewedFiles": 4,
+        "excludedFiles": 5,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "senseaudio",
+      "path": "extensions/senseaudio",
+      "status": "validated",
+      "agentId": "/root/audit_senseaudio",
+      "fixture": "senseaudio.json",
+      "counts": {
+        "findings": 7,
+        "reviewedFiles": 4,
+        "excludedFiles": 5,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "session-share",
+      "path": "extensions/session-share",
+      "status": "validated",
+      "agentId": "/root/audit_session_share",
+      "fixture": "session-share.json",
+      "counts": {
+        "findings": 45,
+        "reviewedFiles": 7,
+        "excludedFiles": 5,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "sglang",
+      "path": "extensions/sglang",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_sglang",
+      "fixture": "sglang.json",
+      "counts": {
+        "findings": 4,
+        "reviewedFiles": 5,
+        "excludedFiles": 6,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "talk-voice",
+      "path": "extensions/talk-voice",
+      "status": "validated",
+      "agentId": "/root/audit_talk_voice",
+      "fixture": "talk-voice.json",
+      "counts": {
+        "findings": 36,
+        "reviewedFiles": 4,
+        "excludedFiles": 3,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "telegram",
+      "path": "extensions/telegram",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_telegram",
+      "fixture": "telegram.json",
+      "counts": {
+        "findings": 877,
+        "reviewedFiles": 298,
+        "excludedFiles": 214,
+        "unknowns": 0
+      },
+      "issues": [],
+      "progress": {
+        "candidateFiles": 296,
+        "fullReadThrough": 296,
+        "note": "Independent full source audit and original-owner reconciliation complete; structural, source evidence, SHA256, and pinned Git blob validation passed.",
+        "referenceKindsReviewedExports": 720
+      }
+    },
+    {
+      "id": "together",
+      "path": "extensions/together",
+      "status": "validated",
+      "agentId": "/root/audit_together",
+      "fixture": "together.json",
+      "counts": {
+        "findings": 40,
+        "reviewedFiles": 8,
+        "excludedFiles": 7,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "tts-local-cli",
+      "path": "extensions/tts-local-cli",
+      "status": "validated",
+      "agentId": "/root/audit_tts_local_cli",
+      "fixture": "tts-local-cli.json",
+      "counts": {
+        "findings": 25,
+        "reviewedFiles": 5,
+        "excludedFiles": 6,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "vault",
+      "path": "extensions/vault",
+      "status": "validated",
+      "agentId": "/root/audit_vault",
+      "fixture": "vault.json",
+      "counts": {
+        "findings": 15,
+        "reviewedFiles": 7,
+        "excludedFiles": 5,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "vllm",
+      "path": "extensions/vllm",
+      "status": "validated",
+      "agentId": "/root/audit_vllm",
+      "fixture": "vllm.json",
+      "counts": {
+        "findings": 23,
+        "reviewedFiles": 9,
+        "excludedFiles": 10,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "web-readability",
+      "path": "extensions/web-readability",
+      "status": "validated",
+      "agentId": "/root/audit_web_readability",
+      "fixture": "web-readability.json",
+      "counts": {
+        "findings": 12,
+        "reviewedFiles": 4,
+        "excludedFiles": 4,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "workboard",
+      "path": "extensions/workboard",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_workboard",
+      "fixture": "workboard.json",
+      "counts": {
+        "findings": 183,
+        "reviewedFiles": 133,
+        "excludedFiles": 140,
+        "unknowns": 0
+      },
+      "issues": [],
+      "progress": {
+        "candidateFiles": 131,
+        "fullReadThrough": 131,
+        "note": "Independent full source audit and original-owner reconciliation complete; structural, source evidence, SHA256, and pinned Git blob validation passed."
+      }
+    },
+    {
+      "id": "x",
+      "path": "extensions/x",
+      "status": "validated",
+      "agentId": "/root/audit_x",
+      "fixture": "x.json",
+      "counts": {
+        "findings": 97,
+        "reviewedFiles": 41,
+        "excludedFiles": 30,
+        "unknowns": 0
+      },
+      "issues": []
+    },
+    {
+      "id": "xai",
+      "path": "extensions/xai",
+      "status": "validated",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_xai",
+      "fixture": "xai.json",
+      "counts": {
+        "findings": 276,
+        "reviewedFiles": 66,
+        "excludedFiles": 51,
+        "unknowns": 0
+      },
+      "issues": [],
+      "progress": {
+        "note": "Independent full source audit complete; structural, exact source evidence, SHA256, and pinned Git blob validation passed.",
+        "candidateFiles": 64,
+        "fullReadThrough": 64
+      }
+    }
+  ]
+}

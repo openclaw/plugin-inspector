@@ -1,0 +1,1108 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "beam",
+    "path": "extensions/beam"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_beam",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/beam/index.ts",
+      "sha256": "e810c9d30b680c9a8dd26daea1ac1c6630c835861bf6ed5e43544311ddcefbb4",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/beam/openclaw.plugin.json",
+      "sha256": "e8d18c089b7c2f2260a8a3ddf896d71a961611a46c321e6d03978034d6c89253",
+      "role": "manifest",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/beam/package.json",
+      "sha256": "9a54a3dd6edad8376aad7687ffb84807c7a41c705716d398a08a11c26d116a96",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/beam/src/http.ts",
+      "sha256": "38d1d1449842f23194c64a152b7eec1133fd89ab5a2f10abc871acb410e29cbf",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/beam/src/mirror.ts",
+      "sha256": "4529ecb764266d8cdaaedae3ccc7419b82a07d9d0d512c6cbd246fa19ffd66d3",
+      "role": "production-source",
+      "findingCount": 26
+    },
+    {
+      "path": "extensions/beam/src/session-catalog.ts",
+      "sha256": "7b9812fb34c9d8e0afc5fdbad7584d6d8ed8798579b8b59be524606f6b7aac0f",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/beam/src/store.ts",
+      "sha256": "073bb466ec8635ea07057697ca83b035978ed479961af6ae42154d1e572d38a4",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/beam/src/types.ts",
+      "sha256": "d3a2f1a6fcbf4ed913da77eff7f1f677dbae2b4c500d802bc6d1d4bbc453b874",
+      "role": "production-source",
+      "findingCount": 5
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/beam/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation."
+    },
+    {
+      "path": "extensions/beam/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Static asset outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/beam/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Static asset outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/beam/src/beam-store.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Read in full; exports in-memory keyed-store mocks and upload fixtures using Vitest. Repository-wide caller search finds only beam.test.ts, http-authority.test.ts and store.test.ts; no production importer."
+    },
+    {
+      "path": "extensions/beam/src/beam.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Read in full; exports synthetic runtime/catalog/config fixtures and a test scheduler using Vitest. Repository-wide caller search finds only beam.test.ts, mirror.test.ts and mirror-retry.test.ts; no production importer."
+    },
+    {
+      "path": "extensions/beam/src/beam.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/beam/src/http-authority.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/beam/src/mirror-retry.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/beam/src/mirror.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/beam/src/store.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename contains .test.; no production source imports this file."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerHttpRoute",
+      "kind": "api-member",
+      "identity": "api.registerHttpRoute",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/index.ts",
+          "line": 15,
+          "snippet": "api.registerHttpRoute({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerService",
+      "kind": "api-member",
+      "identity": "api.registerService",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/index.ts",
+          "line": 14,
+          "snippet": "api.registerService(store.catalogService);"
+        },
+        {
+          "path": "extensions/beam/index.ts",
+          "line": 24,
+          "snippet": "api.registerService(createBeamMirrorService({ runtime: api.runtime }));"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerSessionCatalog",
+      "kind": "api-member",
+      "identity": "api.registerSessionCatalog",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/index.ts",
+          "line": 13,
+          "snippet": "api.registerSessionCatalog(createBeamSessionCatalog(store));",
+          "note": "api is the register callback parameter accepted by definePluginEntry; its public OpenClawPluginDefinition register contract supplies OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.config.current",
+      "kind": "runtime-member",
+      "identity": "runtime.config.current",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/index.ts",
+          "line": 21,
+          "snippet": "resolveControlUiBasePath: () => api.runtime.config.current().gateway?.controlUi?.basePath,",
+          "note": "Proven api.runtime call; property access on its returned config does not extend the runtime member path."
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 64,
+          "snippet": "export function parseBeamMirrorConfig(config: ReturnType<PluginRuntime[\"config\"][\"current\"]>) {",
+          "note": "Maximal direct indexed PluginRuntime member type."
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 206,
+          "snippet": "runtime: { config: Pick<PluginRuntime[\"config\"], \"current\"> };",
+          "note": "Built-in Pick selects current from PluginRuntime config; no independent runtime.config prefix is added."
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 369,
+          "snippet": "const config = params.runtime.config.current();",
+          "note": "params.runtime carries the projected public config.current capability."
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 547,
+          "snippet": "const mirror = parseBeamMirrorConfig(params.runtime.config.current());",
+          "note": "params.runtime is explicitly PluginRuntime at line 541."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.openKeyedStore",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openKeyedStore",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/store.ts",
+          "line": 56,
+          "snippet": "const store = runtime.state.openKeyedStore<BeamStoredSession>({",
+          "note": "runtime is a PluginRuntime parameter at line 55, called with api.runtime by index.ts line 12. Methods of the returned keyed store are outside the runtime path."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-scope-runtime#resolveSessionAgentIdsStrict",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-scope-runtime#resolveSessionAgentIdsStrict",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 2,
+          "snippet": "import { resolveSessionAgentIdsStrict } from \"openclaw/plugin-sdk/agent-scope-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 386,
+          "snippet": "agentId = resolveSessionAgentIdsStrict({ config: config as OpenClawConfig }).defaultAgentId;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 386,
+          "snippet": "agentId = resolveSessionAgentIdsStrict({ config: config as OpenClawConfig }).defaultAgentId;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginServiceV2",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginServiceV2",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 4,
+          "snippet": "import type { OpenClawPluginServiceV2 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 542,
+          "snippet": "}): OpenClawPluginServiceV2 {"
+        },
+        {
+          "path": "extensions/beam/src/store.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginServiceV2 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/beam/src/store.ts",
+          "line": 11,
+          "snippet": "catalogService: OpenClawPluginServiceV2;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/beam/index.ts",
+          "line": 7,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-runtime#PluginRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-runtime#PluginRuntime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 5,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 64,
+          "snippet": "export function parseBeamMirrorConfig(config: ReturnType<PluginRuntime[\"config\"][\"current\"]>) {"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 206,
+          "snippet": "runtime: { config: Pick<PluginRuntime[\"config\"], \"current\"> };"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 541,
+          "snippet": "runtime: PluginRuntime;"
+        },
+        {
+          "path": "extensions/beam/src/store.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/store.ts",
+          "line": 55,
+          "snippet": "export function createBeamStore(runtime: PluginRuntime): BeamStore {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-runtime#getPluginRuntimeGatewayRequestScope",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-runtime#getPluginRuntimeGatewayRequestScope",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 2,
+          "snippet": "import { getPluginRuntimeGatewayRequestScope } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 27,
+          "snippet": "const client = getPluginRuntimeGatewayRequestScope()?.client;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input-runtime#resolveConfiguredSecretInputString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input-runtime#resolveConfiguredSecretInputString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 6,
+          "snippet": "import { resolveConfiguredSecretInputString } from \"openclaw/plugin-sdk/secret-input-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 393,
+          "snippet": "const resolved = await resolveConfiguredSecretInputString({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-catalog#SessionCatalogProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-catalog#SessionCatalogProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/session-catalog.ts",
+          "line": 2,
+          "snippet": "import type { SessionCatalogProvider } from \"openclaw/plugin-sdk/session-catalog\";"
+        },
+        {
+          "path": "extensions/beam/src/session-catalog.ts",
+          "line": 52,
+          "snippet": "export function createBeamSessionCatalog(store: BeamStore): SessionCatalogProvider {"
+        },
+        {
+          "path": "extensions/beam/src/types.ts",
+          "line": 1,
+          "snippet": "import type { SessionCatalogProvider } from \"openclaw/plugin-sdk/session-catalog\";"
+        },
+        {
+          "path": "extensions/beam/src/types.ts",
+          "line": 17,
+          "snippet": "} as const satisfies NonNullable<SessionCatalogProvider[\"shareRoute\"]>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-catalog#SessionCatalogTranscriptItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-catalog#SessionCatalogTranscriptItem",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 7,
+          "snippet": "import type { SessionCatalogTranscriptItem } from \"openclaw/plugin-sdk/session-catalog\";"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 120,
+          "snippet": "export function buildBeamMirrorItems(items: readonly SessionCatalogTranscriptItem[]) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-catalog-runtime#ActiveSessionCatalog",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-catalog-runtime#ActiveSessionCatalog",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 10,
+          "snippet": "type ActiveSessionCatalog,",
+          "note": "Inline type specifier from openclaw/plugin-sdk/session-catalog-runtime."
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 211,
+          "snippet": "listCatalogs?: () => ActiveSessionCatalog[];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-catalog-runtime#buildControlUiCatalogSharePath",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-catalog-runtime#buildControlUiCatalogSharePath",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 3,
+          "snippet": "import { buildControlUiCatalogSharePath } from \"openclaw/plugin-sdk/session-catalog-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 103,
+          "snippet": "url: buildControlUiCatalogSharePath({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-catalog-runtime#isControlUiCatalogShareId",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-catalog-runtime#isControlUiCatalogShareId",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/session-catalog.ts",
+          "line": 3,
+          "snippet": "import { isControlUiCatalogShareId } from \"openclaw/plugin-sdk/session-catalog-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/session-catalog.ts",
+          "line": 62,
+          "snippet": "search && isControlUiCatalogShareId(BEAM_SESSION_SHARE_ROUTE, search) ? search : undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-catalog-runtime#listActiveSessionCatalogs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-catalog-runtime#listActiveSessionCatalogs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 9,
+          "snippet": "listActiveSessionCatalogs,",
+          "note": "Value specifier from openclaw/plugin-sdk/session-catalog-runtime."
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 216,
+          "snippet": "const listCatalogs = params.listCatalogs ?? listActiveSessionCatalogs;",
+          "note": "listCatalogs retains this unchanged SDK callable as the default when no override is supplied."
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 410,
+          "snippet": "const catalogs = listCatalogs().filter(",
+          "note": "Invokes listCatalogs, the unchanged fallback alias assigned at line 216."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#GuardedFetchRedirectError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#GuardedFetchRedirectError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 14,
+          "snippet": "GuardedFetchRedirectError,",
+          "note": "Value specifier from openclaw/plugin-sdk/ssrf-runtime; line 302 uses the constructor as an instanceof operand, without constructing or accessing its members."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 13,
+          "snippet": "fetchWithSsrFGuard,",
+          "note": "Value specifier from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 279,
+          "snippet": "let guarded: Awaited<ReturnType<typeof fetchWithSsrFGuard>>;"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 281,
+          "snippet": "guarded = await fetchWithSsrFGuard({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedOrigin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedOrigin",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 15,
+          "snippet": "ssrfPolicyFromHttpBaseUrlAllowedOrigin,",
+          "note": "Value specifier from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 286,
+          "snippet": "policy: ssrfPolicyFromHttpBaseUrlAllowedOrigin(endpoint),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 17,
+          "snippet": "import { asFiniteNumber, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 99,
+          "snippet": "pollSeconds: clampNumber(asFiniteNumber(mirror.pollSeconds) ?? DEFAULT_POLL_SECONDS, 10, 3_600),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 17,
+          "snippet": "import { asFiniteNumber, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 69,
+          "snippet": "if (!isRecord(mirror) || !Object.keys(mirror).every((key) => MIRROR_KEYS.has(key))) {"
+        },
+        {
+          "path": "extensions/beam/src/session-catalog.ts",
+          "line": 4,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/session-catalog.ts",
+          "line": 37,
+          "snippet": "isRecord(parsed) &&"
+        },
+        {
+          "path": "extensions/beam/src/types.ts",
+          "line": 3,
+          "snippet": "isRecord,",
+          "note": "Value specifier from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/beam/src/types.ts",
+          "line": 97,
+          "snippet": "if (!isRecord(value) || !hasOnlyKeys(value, TOP_LEVEL_KEYS)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeBoundedOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeBoundedOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/types.ts",
+          "line": 4,
+          "snippet": "normalizeBoundedOptionalString as readBoundedString,",
+          "note": "Original SDK export is normalizeBoundedOptionalString; local import alias is readBoundedString."
+        },
+        {
+          "path": "extensions/beam/src/types.ts",
+          "line": 103,
+          "snippet": "const beamId = readBoundedString(value.beamId, 64);",
+          "note": "Calls the unchanged readBoundedString import alias."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#clampNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#clampNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 18,
+          "snippet": "import { clampNumber, truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 99,
+          "snippet": "pollSeconds: clampNumber(asFiniteNumber(mirror.pollSeconds) ?? DEFAULT_POLL_SECONDS, 10, 3_600),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 18,
+          "snippet": "import { clampNumber, truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 140,
+          "snippet": "const clipped = truncateUtf16Safe(text, BEAM_MAX_ITEM_CHARS);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/webhook-ingress#beginWebhookRequestPipelineOrReject",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/webhook-ingress#beginWebhookRequestPipelineOrReject",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 5,
+          "snippet": "beginWebhookRequestPipelineOrReject,",
+          "note": "Value specifier from openclaw/plugin-sdk/webhook-ingress."
+        },
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 61,
+          "snippet": "const pipeline = beginWebhookRequestPipelineOrReject({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/webhook-ingress#createFixedWindowRateLimiter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/webhook-ingress#createFixedWindowRateLimiter",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 6,
+          "snippet": "createFixedWindowRateLimiter,",
+          "note": "Value specifier from openclaw/plugin-sdk/webhook-ingress."
+        },
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 45,
+          "snippet": "const rateLimiter = createFixedWindowRateLimiter({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/webhook-ingress#createWebhookInFlightLimiter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/webhook-ingress#createWebhookInFlightLimiter",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 7,
+          "snippet": "createWebhookInFlightLimiter,",
+          "note": "Value specifier from openclaw/plugin-sdk/webhook-ingress."
+        },
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 50,
+          "snippet": "const inFlightLimiter = createWebhookInFlightLimiter({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/webhook-ingress#readJsonWebhookBodyOrReject",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/webhook-ingress#readJsonWebhookBodyOrReject",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 8,
+          "snippet": "readJsonWebhookBodyOrReject,",
+          "note": "Value specifier from openclaw/plugin-sdk/webhook-ingress."
+        },
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 76,
+          "snippet": "const body = await readJsonWebhookBodyOrReject({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-scope-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-scope-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 2,
+          "snippet": "import { resolveSessionAgentIdsStrict } from \"openclaw/plugin-sdk/agent-scope-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-contracts",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-contracts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 4,
+          "snippet": "import type { OpenClawPluginServiceV2 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/beam/src/store.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginServiceV2 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 2,
+          "snippet": "import { getPluginRuntimeGatewayRequestScope } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 5,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/store.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/secret-input-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/secret-input-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 6,
+          "snippet": "import { resolveConfiguredSecretInputString } from \"openclaw/plugin-sdk/secret-input-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/session-catalog",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/session-catalog",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 7,
+          "snippet": "import type { SessionCatalogTranscriptItem } from \"openclaw/plugin-sdk/session-catalog\";"
+        },
+        {
+          "path": "extensions/beam/src/session-catalog.ts",
+          "line": 2,
+          "snippet": "import type { SessionCatalogProvider } from \"openclaw/plugin-sdk/session-catalog\";"
+        },
+        {
+          "path": "extensions/beam/src/types.ts",
+          "line": 1,
+          "snippet": "import type { SessionCatalogProvider } from \"openclaw/plugin-sdk/session-catalog\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/session-catalog-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/session-catalog-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 3,
+          "snippet": "import { buildControlUiCatalogSharePath } from \"openclaw/plugin-sdk/session-catalog-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/session-catalog.ts",
+          "line": 3,
+          "snippet": "import { isControlUiCatalogShareId } from \"openclaw/plugin-sdk/session-catalog-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 11,
+          "snippet": "} from \"openclaw/plugin-sdk/session-catalog-runtime\";",
+          "note": "The import at lines 8-11 contains value listActiveSessionCatalogs and inline type ActiveSessionCatalog."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 16,
+          "snippet": "} from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "Value import of fetchWithSsrFGuard, GuardedFetchRedirectError and ssrfPolicyFromHttpBaseUrlAllowedOrigin at lines 12-16; later typeof usage does not add a module import site."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 17,
+          "snippet": "import { asFiniteNumber, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/session-catalog.ts",
+          "line": 4,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/beam/src/types.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Value imports isRecord and normalizeBoundedOptionalString as readBoundedString at lines 2-5."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/text-utility-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/mirror.ts",
+          "line": 18,
+          "snippet": "import { clampNumber, truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/webhook-ingress",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/webhook-ingress",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/beam/src/http.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/webhook-ingress\";",
+          "note": "The named value import at lines 4-9 includes the four webhook ingress helpers."
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all six eligible production source files (1,243 lines), package.json and openclaw.plugin.json at the pinned source identity; each reviewed file was byte-compared with the pinned commit. Only scoped instruction/skill edits exist outside this production scope.",
+    "All plugin-local imports stay within extensions/beam. Package metadata declares ./index.ts as its sole extension entry and no shipped generated-source exception; no additional shared shipped source boundary was discovered. SDK facades/public contract declarations were consulted for provenance, without recursively auditing their implementations or installed dependencies.",
+    "No hook registrations exist. BeamUpload.hookEvent is local payload data, not an API hook registration. The manifest has no channels, providers, skills, commandAliases, cliCommands or contracts fields; activation, categories and config/UI metadata do not create manifest-contract identities.",
+    "Bare api.runtime propagation resolves through createBeamStore and createBeamMirrorService/createBeamMirrorRunner to state.openKeyedStore and config.current. No runtime root or api.runtime prefix is emitted. Direct indexed types and literal Pick select runtime.config.current only.",
+    "OpenClawPluginServiceV2 start callback ctx values are service contexts, not OpenClawPluginApi/PluginRuntime handles. Their scheduler/logger members and the structurally typed runner logger are not API/runtime findings.",
+    "Returned keyed stores, request-scope clients/revalidate callbacks, guarded-fetch responses/release functions, webhook pipeline/limiter objects, config.current snapshots and active session catalogs are SDK return objects, not API/runtime handles. Their member operations do not extend public runtime paths or create transitive SDK-export calls.",
+    "listCatalogs is an unchanged conditional alias of listActiveSessionCatalogs (mirror.ts:216), called at line 410. readBoundedString is the import alias of normalizeBoundedOptionalString. Both calls retain original SDK-export identity; neither introduces a synthetic member path.",
+    "fetchWithSsrFGuard is mixed because its ordinary value import/call coexist with an explicit typeof type query. The ssrf-runtime module remains runtime because that later type reference is not a new module import site. GuardedFetchRedirectError is imported and used with instanceof, with no constructor invocation or member access.",
+    "The two .test-support.ts helpers were read and their callers checked across the repository before excluding them as test-only helpers. All five .test.ts files and three non-source assets/documentation files are individually partitioned."
+  ]
+}

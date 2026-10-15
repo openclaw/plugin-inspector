@@ -1,0 +1,1891 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "elevenlabs",
+    "path": "extensions/elevenlabs"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_elevenlabs",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/elevenlabs/capability-catalog.ts",
+      "sha256": "6d1985b384cbc8e29100a0d8d16e780054e795fa4d7fec8b0b8a364a56dd6caf",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/elevenlabs/config-api.ts",
+      "sha256": "c6483b8177b658ffb7fef7fb7aeb0fc2bfc054b0a13ca6180b13abf3c8443135",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/elevenlabs/config-compat.ts",
+      "sha256": "63d35a6b811bc5cc83a8b36daa0158b89f109ceff27c3f7e1bf5d2b74ca1ef6b",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/elevenlabs/doctor-contract-api.ts",
+      "sha256": "0515f5bc48ec5f92225bb74f60d7e00ed5b9002b429f3fbd35704e094f998877",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/elevenlabs/doctor-contract.ts",
+      "sha256": "30f20aa8493960dd2bad8796e46d76d827785877b55c1b05f757059334d06643",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/elevenlabs/index.ts",
+      "sha256": "418580ec3524a1fbe7f5b4405d5b62bc80929fbacea76776323f1598c4b39fd6",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/elevenlabs/media-understanding-provider.ts",
+      "sha256": "04f68736dfb6c71d56b0dc4230a087860115375b3f8e2ce0463676b5a8d30777",
+      "role": "production-source",
+      "findingCount": 11
+    },
+    {
+      "path": "extensions/elevenlabs/openclaw.plugin.json",
+      "sha256": "61e8bc572f083f88a856924028694883b3198fe541fc83c0cb91149f600410cb",
+      "role": "manifest",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/elevenlabs/package.json",
+      "sha256": "9876a082b0728b701d574e32a73eba8ade20c59ee24a7b84b17ed9a5cec165a6",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+      "sha256": "f9ae571cdc647c17e495e335d9ed565e593468bd9f6ac4baa8642cdd9e0a01fd",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/elevenlabs/setup-api.ts",
+      "sha256": "b65fe49263ff2476a4e6ba8b2ba192bf986d04d0d306cf5327a713ac1381b6d6",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/elevenlabs/shared.ts",
+      "sha256": "1d6e1f2fd0400ae6a45898cdba92d249d429b198f101281ff13977e53e094702",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/elevenlabs/speech-provider-factory.ts",
+      "sha256": "64838e3c92c49eacef4e58c78ef315294dea6f4db4b88e1faa901f5d3118dcd7",
+      "role": "production-source",
+      "findingCount": 35
+    },
+    {
+      "path": "extensions/elevenlabs/tts.ts",
+      "sha256": "1236be353676bae48f4a0caac2e5ed7bb0cb1bc093804055faa4a33ee1af255c",
+      "role": "production-source",
+      "findingCount": 15
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/elevenlabs/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation, outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/elevenlabs/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork, outside the eligible source extensions."
+    },
+    {
+      "path": "extensions/elevenlabs/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG artwork, outside the eligible source extensions."
+    },
+    {
+      "path": "extensions/elevenlabs/config-compat.test.ts",
+      "rule": "test-file",
+      "reason": "Config migration and profile fallback tests; basename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/elevenlabs/elevenlabs.live.test.ts",
+      "rule": "test-file",
+      "reason": "Live speech provider tests; basename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/elevenlabs/media-understanding-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Audio transcription provider tests; basename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/elevenlabs/realtime-transcription-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Realtime transcription session tests; basename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/elevenlabs/shared.test.ts",
+      "rule": "test-file",
+      "reason": "Plugin-owned URL and voice helper tests; basename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/elevenlabs/speech-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Speech provider tests; basename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/elevenlabs/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript configuration, outside the eligible source extensions; its parent extends path is build configuration, not shipped executable source."
+    },
+    {
+      "path": "extensions/elevenlabs/tts.test.ts",
+      "rule": "test-file",
+      "reason": "TTS tests; basename contains .test.; no production source imports this file. Its ../test-support import remains within excluded test scope."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerConfigMigration",
+      "kind": "api-member",
+      "identity": "api.registerConfigMigration",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/setup-api.ts",
+          "line": 9,
+          "snippet": "api.registerConfigMigration((config) => migrateElevenLabsLegacyTalkConfig(config));",
+          "note": "definePluginEntry types register as OpenClawPluginDefinition.register, whose parameter is OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerMediaUnderstandingProvider",
+      "kind": "api-member",
+      "identity": "api.registerMediaUnderstandingProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/index.ts",
+          "line": 12,
+          "snippet": "api.registerMediaUnderstandingProvider(elevenLabsMediaUnderstandingProvider);",
+          "note": "definePluginEntry types register as OpenClawPluginDefinition.register, whose parameter is OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerRealtimeTranscriptionProvider",
+      "kind": "api-member",
+      "identity": "api.registerRealtimeTranscriptionProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/index.ts",
+          "line": 13,
+          "snippet": "api.registerRealtimeTranscriptionProvider(buildElevenLabsRealtimeTranscriptionProvider);",
+          "note": "definePluginEntry types register as OpenClawPluginDefinition.register, whose parameter is OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerSpeechProvider",
+      "kind": "api-member",
+      "identity": "api.registerSpeechProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/index.ts",
+          "line": 11,
+          "snippet": "api.registerSpeechProvider(buildElevenLabsSpeechProvider);",
+          "note": "definePluginEntry types register as OpenClawPluginDefinition.register, whose parameter is OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.mediaUnderstandingProviders:elevenlabs",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.mediaUnderstandingProviders:elevenlabs",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/openclaw.plugin.json",
+          "line": 22,
+          "snippet": "\"mediaUnderstandingProviders\": [\"elevenlabs\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.realtimeTranscriptionProviders:elevenlabs",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.realtimeTranscriptionProviders:elevenlabs",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/openclaw.plugin.json",
+          "line": 23,
+          "snippet": "\"realtimeTranscriptionProviders\": [\"elevenlabs\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.speechProviders:elevenlabs",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.speechProviders:elevenlabs",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/openclaw.plugin.json",
+          "line": 21,
+          "snippet": "\"speechProviders\": [\"elevenlabs\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-contract#ChannelDoctorLegacyConfigRule",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-contract#ChannelDoctorLegacyConfigRule",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/doctor-contract.ts",
+          "line": 1,
+          "snippet": "import type { ChannelDoctorLegacyConfigRule } from \"openclaw/plugin-sdk/channel-contract\";"
+        },
+        {
+          "path": "extensions/elevenlabs/doctor-contract.ts",
+          "line": 11,
+          "snippet": "export const legacyConfigRules: ChannelDoctorLegacyConfigRule[] = ["
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/doctor-contract.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/elevenlabs/doctor-contract.ts",
+          "line": 22,
+          "snippet": "export function normalizeCompatibilityConfig({ cfg }: { cfg: OpenClawConfig }): {"
+        },
+        {
+          "path": "extensions/elevenlabs/doctor-contract.ts",
+          "line": 23,
+          "snippet": "config: OpenClawConfig;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "member-access",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 339,
+          "snippet": "formatErrorMessage,",
+          "note": "Parameter destructuring selects the SDK function from PluginCapabilityCatalogContext. Its declaration uses typeof ../infra/errors.js formatErrorMessage; src/plugins/capability-catalog-context.ts passes that unchanged function and src/plugin-sdk/error-runtime.ts publicly reexports it."
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 340,
+          "snippet": "}: Pick<PluginCapabilityCatalogContext, \"formatErrorMessage\">): SpeechProviderPlugin {",
+          "note": "Literal Pick explicitly selects the proven SDK-valued context property."
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 158,
+          "snippet": "formatErrorMessage: PluginCapabilityCatalogContext[\"formatErrorMessage\"],",
+          "note": "Direct indexed type access explicitly selects the same SDK-valued context property."
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 252,
+          "snippet": "warnings: [formatErrorMessage(error)],",
+          "note": "The unchanged callable parameter alias invokes the context-provided SDK export."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-understanding#AudioTranscriptionRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-understanding#AudioTranscriptionRequest",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 2,
+          "snippet": "AudioTranscriptionRequest,"
+        },
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 19,
+          "snippet": "req: AudioTranscriptionRequest,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-understanding#AudioTranscriptionResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-understanding#AudioTranscriptionResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 3,
+          "snippet": "AudioTranscriptionResult,"
+        },
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 20,
+          "snippet": "): Promise<AudioTranscriptionResult> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-understanding#MediaUnderstandingProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-understanding#MediaUnderstandingProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 4,
+          "snippet": "MediaUnderstandingProvider,"
+        },
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 80,
+          "snippet": "export const elevenLabsMediaUnderstandingProvider: MediaUnderstandingProvider = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#parseStrictFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#parseStrictFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 1,
+          "snippet": "import { parseStrictFiniteNumber, parseStrictInteger } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 195,
+          "snippet": "const value = parseStrictFiniteNumber(ctx.value);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#parseStrictInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#parseStrictInteger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 1,
+          "snippet": "import { parseStrictFiniteNumber, parseStrictInteger } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 243,
+          "snippet": "overrides.seed = normalizeSeed(parseStrictInteger(ctx.value) ?? Number.NaN);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginCapabilityCatalogContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginCapabilityCatalogContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 2,
+          "snippet": "import type { PluginCapabilityCatalogContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 158,
+          "snippet": "formatErrorMessage: PluginCapabilityCatalogContext[\"formatErrorMessage\"],"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 340,
+          "snippet": "}: Pick<PluginCapabilityCatalogContext, \"formatErrorMessage\">): SpeechProviderPlugin {"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 1,
+          "snippet": "import type { PluginCapabilityCatalogContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 112,
+          "snippet": "PluginCapabilityCatalogContext,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginCapabilityCatalogEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginCapabilityCatalogEntry",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/capability-catalog.ts",
+          "line": 1,
+          "snippet": "import type { PluginCapabilityCatalogEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/elevenlabs/capability-catalog.ts",
+          "line": 8,
+          "snippet": "})) satisfies PluginCapabilityCatalogEntry;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/elevenlabs/index.ts",
+          "line": 6,
+          "snippet": "export default definePluginEntry({"
+        },
+        {
+          "path": "extensions/elevenlabs/setup-api.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/elevenlabs/setup-api.ts",
+          "line": 4,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-binary-stream#createBoundedProviderBinaryStream",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-binary-stream#createBoundedProviderBinaryStream",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 168,
+          "snippet": "const { createBoundedProviderBinaryStream } =",
+          "note": "Immediately destructured from the literal dynamic SDK import on line 169."
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 178,
+          "snippet": "const boundedStream = createBoundedProviderBinaryStream(response.body, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#assertOkOrThrowHttpError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#assertOkOrThrowHttpError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 7,
+          "snippet": "assertOkOrThrowHttpError,"
+        },
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 65,
+          "snippet": "await assertOkOrThrowHttpError(response, \"ElevenLabs audio transcription failed\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#assertOkOrThrowProviderError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#assertOkOrThrowProviderError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 263,
+          "snippet": "const { assertOkOrThrowProviderError, readProviderJsonResponse } =",
+          "note": "Immediately destructured from the literal dynamic SDK import on line 264."
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 279,
+          "snippet": "await assertOkOrThrowProviderError(response, \"ElevenLabs voices API error\");"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 127,
+          "snippet": "const { assertOkOrThrowProviderError } = await import(\"openclaw/plugin-sdk/provider-http\");"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 146,
+          "snippet": "await assertOkOrThrowProviderError(result.response, \"ElevenLabs API error\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#assertProviderBinaryResponseContent",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#assertProviderBinaryResponseContent",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 170,
+          "snippet": "const { assertProviderBinaryResponseContent } = await import(\"openclaw/plugin-sdk/provider-http\");"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 174,
+          "snippet": "assertProviderBinaryResponseContent(response, \"ElevenLabs API error\", \"audio\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#buildAudioTranscriptionFormData",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#buildAudioTranscriptionFormData",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 8,
+          "snippet": "buildAudioTranscriptionFormData,"
+        },
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 42,
+          "snippet": "const form = buildAudioTranscriptionFormData({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#postTranscriptionRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#postTranscriptionRequest",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 9,
+          "snippet": "postTranscriptionRequest,"
+        },
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 52,
+          "snippet": "const { response, release } = await postTranscriptionRequest({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderBinaryResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderBinaryResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 155,
+          "snippet": "const { readProviderBinaryResponse } = await import(\"openclaw/plugin-sdk/provider-http\");"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 158,
+          "snippet": "return await readProviderBinaryResponse(response, \"ElevenLabs API error\", \"audio\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonObjectResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonObjectResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 10,
+          "snippet": "readProviderJsonObjectResponse,"
+        },
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 66,
+          "snippet": "const payload = await readProviderJsonObjectResponse("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 263,
+          "snippet": "const { assertOkOrThrowProviderError, readProviderJsonResponse } =",
+          "note": "Immediately destructured from the literal dynamic SDK import on line 264."
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 280,
+          "snippet": "const json = await readProviderJsonResponse<{"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#requireTranscriptionText",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#requireTranscriptionText",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 12,
+          "snippet": "requireTranscriptionText,"
+        },
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 70,
+          "snippet": "const text = requireTranscriptionText("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderHttpRequestConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderHttpRequestConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 11,
+          "snippet": "resolveProviderHttpRequestConfig,"
+        },
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 29,
+          "snippet": "resolveProviderHttpRequestConfig({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/realtime-transcription-session#RealtimeTranscriptionProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/realtime-transcription-session#RealtimeTranscriptionProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 3,
+          "snippet": "RealtimeTranscriptionProviderConfig,"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 30,
+          "snippet": "function readNestedElevenLabsConfig(rawConfig: RealtimeTranscriptionProviderConfig) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/realtime-transcription-session#RealtimeTranscriptionProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/realtime-transcription-session#RealtimeTranscriptionProviderPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 4,
+          "snippet": "RealtimeTranscriptionProviderPlugin,"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 114,
+          "snippet": ">): RealtimeTranscriptionProviderPlugin {"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 115,
+          "snippet": "const isConfigured: NonNullable<RealtimeTranscriptionProviderPlugin[\"isConfigured\"]> = ({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/realtime-transcription-session#createRealtimeTranscriptionWebSocketSession",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/realtime-transcription-session#createRealtimeTranscriptionWebSocketSession",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "member-access",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 110,
+          "snippet": "createRealtimeTranscriptionWebSocketSession,",
+          "note": "Parameter destructuring selects the SDK function from PluginCapabilityCatalogContext. Its declaration uses typeof ../realtime-transcription/websocket-session.js createRealtimeTranscriptionWebSocketSession; src/plugins/capability-catalog-context.ts passes that unchanged function and src/plugin-sdk/realtime-transcription-session.ts publicly reexports it."
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 113,
+          "snippet": "\"createRealtimeTranscriptionWebSocketSession\"",
+          "note": "Literal Pick explicitly selects the proven SDK-valued context property."
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 140,
+          "snippet": "return createRealtimeTranscriptionWebSocketSession<ElevenLabsRealtimeTranscriptionEvent>({",
+          "note": "The unchanged destructured callable invokes the context-provided SDK export."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-doctor-migrations#mergeMissing",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations#mergeMissing",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/config-compat.ts",
+          "line": 4,
+          "snippet": "import { mergeMissing } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";"
+        },
+        {
+          "path": "extensions/elevenlabs/config-compat.ts",
+          "line": 103,
+          "snippet": "mergeMissing(migratedProvider, legacyFields);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input#normalizeResolvedSecretInputString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input#normalizeResolvedSecretInputString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 3,
+          "snippet": "import { normalizeResolvedSecretInputString } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 114,
+          "snippet": "apiKey: normalizeResolvedSecretInputString({"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 6,
+          "snippet": "import { normalizeResolvedSecretInputString } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 65,
+          "snippet": "apiKey: normalizeResolvedSecretInputString({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech#SpeechDirectiveTokenParseContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech#SpeechDirectiveTokenParseContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 5,
+          "snippet": "SpeechDirectiveTokenParseContext,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 157,
+          "snippet": "ctx: SpeechDirectiveTokenParseContext,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech#SpeechProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech#SpeechProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 6,
+          "snippet": "SpeechProviderConfig,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 132,
+          "snippet": "function readElevenLabsProviderConfig(config: SpeechProviderConfig) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech#SpeechProviderOverrides",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech#SpeechProviderOverrides",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 7,
+          "snippet": "SpeechProviderOverrides,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 161,
+          "snippet": "const overrides: SpeechProviderOverrides = { ...ctx.currentOverrides };"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech#SpeechProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech#SpeechProviderPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 8,
+          "snippet": "SpeechProviderPlugin,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 340,
+          "snippet": "}: Pick<PluginCapabilityCatalogContext, \"formatErrorMessage\">): SpeechProviderPlugin {"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 341,
+          "snippet": "const isConfigured: NonNullable<SpeechProviderPlugin[\"isConfigured\"]> = ({ providerConfig }) =>"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech#SpeechSynthesisRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech#SpeechSynthesisRequest",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 9,
+          "snippet": "SpeechSynthesisRequest,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 71,
+          "snippet": "function resolveElevenLabsOutputPlan(req: SpeechSynthesisRequest): {"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 304,
+          "snippet": "SpeechSynthesisRequest,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech#SpeechVoiceOption",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech#SpeechVoiceOption",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 10,
+          "snippet": "SpeechVoiceOption,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 261,
+          "snippet": "}): Promise<SpeechVoiceOption[]> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-provider#MAX_AUDIO_BYTES",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-provider#MAX_AUDIO_BYTES",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 2,
+          "snippet": "MAX_AUDIO_BYTES,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-provider#normalizeApplyTextNormalization",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-provider#normalizeApplyTextNormalization",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 13,
+          "snippet": "normalizeApplyTextNormalization,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 229,
+          "snippet": "overrides.applyTextNormalization = normalizeApplyTextNormalization(ctx.value);"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 3,
+          "snippet": "normalizeApplyTextNormalization,"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 86,
+          "snippet": "const normalizedNormalization = normalizeApplyTextNormalization(applyTextNormalization);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-provider#normalizeLanguageCode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-provider#normalizeLanguageCode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 14,
+          "snippet": "normalizeLanguageCode,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 237,
+          "snippet": "overrides.languageCode = normalizeLanguageCode(ctx.value);"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 4,
+          "snippet": "normalizeLanguageCode,"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 85,
+          "snippet": "const normalizedLanguage = normalizeLanguageCode(languageCode);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-provider#normalizeSeed",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-provider#normalizeSeed",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 15,
+          "snippet": "normalizeSeed,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 243,
+          "snippet": "overrides.seed = normalizeSeed(parseStrictInteger(ctx.value) ?? Number.NaN);"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 5,
+          "snippet": "normalizeSeed,"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 87,
+          "snippet": "const normalizedSeed = normalizeSeed(seed);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-provider#requireInRange",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-provider#requireInRange",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 16,
+          "snippet": "requireInRange,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 199,
+          "snippet": "requireInRange(value, setting === \"speed\" ? 0.5 : 0, setting === \"speed\" ? 2 : 1, setting);"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 6,
+          "snippet": "requireInRange,"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 17,
+          "snippet": "requireInRange(settings.stability, 0, 1, \"stability\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-provider#resolveSpeechProviderApiKey",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-provider#resolveSpeechProviderApiKey",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 17,
+          "snippet": "resolveSpeechProviderApiKey,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 139,
+          "snippet": "return resolveSpeechProviderApiKey("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 265,
+          "snippet": "const { fetchWithSsrFGuard, ssrfPolicyFromHttpBaseUrlAllowedHostname } =",
+          "note": "Immediately destructured from the literal dynamic SDK import on line 266."
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 267,
+          "snippet": "const { response, release } = await fetchWithSsrFGuard({"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 128,
+          "snippet": "const { fetchWithSsrFGuard, ssrfPolicyFromHttpBaseUrlAllowedHostname } =",
+          "note": "Immediately destructured from the literal dynamic SDK import on line 129."
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 130,
+          "snippet": "const result = await fetchWithSsrFGuard({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 265,
+          "snippet": "const { fetchWithSsrFGuard, ssrfPolicyFromHttpBaseUrlAllowedHostname } =",
+          "note": "Immediately destructured from the literal dynamic SDK import on line 266."
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 275,
+          "snippet": "policy: ssrfPolicyFromHttpBaseUrlAllowedHostname(normalizedBaseUrl),"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 128,
+          "snippet": "const { fetchWithSsrFGuard, ssrfPolicyFromHttpBaseUrlAllowedHostname } =",
+          "note": "Immediately destructured from the literal dynamic SDK import on line 129."
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 142,
+          "snippet": "policy: ssrfPolicyFromHttpBaseUrlAllowedHostname(normalizedBaseUrl),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asBoolean",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asBoolean",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 20,
+          "snippet": "asBoolean,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 104,
+          "snippet": "useSpeakerBoost: asBoolean(raw?.useSpeakerBoost),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumberInRange",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumberInRange",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 21,
+          "snippet": "asFiniteNumberInRange,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 101,
+          "snippet": "stability: asFiniteNumberInRange(raw?.stability, { min: 0, max: 1 }),"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 8,
+          "snippet": "asFiniteNumberInRange,"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 54,
+          "snippet": "return asFiniteNumberInRange(parsed, { min, max });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asNullableRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asNullableRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/config-compat.ts",
+          "line": 5,
+          "snippet": "import { asNullableRecord, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/elevenlabs/config-compat.ts",
+          "line": 22,
+          "snippet": "const existing = asNullableRecord(root[key]);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 22,
+          "snippet": "asOptionalRecord,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 110,
+          "snippet": "const providers = asOptionalRecord(rawConfig.providers);"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 9,
+          "snippet": "asOptionalRecord as readRecord,",
+          "note": "The original SDK export is imported under the local alias readRecord."
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 31,
+          "snippet": "const raw = readRecord(rawConfig);",
+          "note": "readRecord is the unchanged import alias of asOptionalRecord."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asSafeIntegerInRange",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asSafeIntegerInRange",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 23,
+          "snippet": "asSafeIntegerInRange,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 62,
+          "snippet": "return asSafeIntegerInRange(value, { min: 0, max: 4_294_967_295 });"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 10,
+          "snippet": "asSafeIntegerInRange,"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 49,
+          "snippet": "return asSafeIntegerInRange(parsed, { min: 1 });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/config-compat.ts",
+          "line": 5,
+          "snippet": "import { asNullableRecord, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/elevenlabs/config-compat.ts",
+          "line": 67,
+          "snippet": "if (!isRecord(raw)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 25,
+          "snippet": "normalizeLowercaseStringOrEmpty,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 378,
+          "snippet": "const language = normalizeLowercaseStringOrEmpty(trimToUndefined(params.language));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 24,
+          "snippet": "normalizeOptionalString as trimToUndefined,",
+          "note": "The original SDK export is imported under the local alias trimToUndefined."
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 77,
+          "snippet": "trimToUndefined(req.providerOverrides?.outputFormat) ??",
+          "note": "trimToUndefined is the unchanged import alias of normalizeOptionalString."
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 11,
+          "snippet": "normalizeOptionalString,"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 37,
+          "snippet": "const normalized = normalizeOptionalString(value)?.toLowerCase();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#parseBooleanValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#parseBooleanValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 26,
+          "snippet": "parseBooleanValue,"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 213,
+          "snippet": "const value = parseBooleanValue(ctx.value);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#parseFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#parseFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 12,
+          "snippet": "parseFiniteNumber as readFiniteNumber,",
+          "note": "The original SDK export is imported under the local alias readFiniteNumber."
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 48,
+          "snippet": "const parsed = readFiniteNumber(value);",
+          "note": "readFiniteNumber is the unchanged import alias of parseFiniteNumber."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-contract",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-contract",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/doctor-contract.ts",
+          "line": 1,
+          "snippet": "import type { ChannelDoctorLegacyConfigRule } from \"openclaw/plugin-sdk/channel-contract\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-contracts",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-contracts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/doctor-contract.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-understanding",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-understanding",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/media-understanding\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 1,
+          "snippet": "import { parseStrictFiniteNumber, parseStrictInteger } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/elevenlabs/setup-api.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/elevenlabs/capability-catalog.ts",
+          "line": 1,
+          "snippet": "import type { PluginCapabilityCatalogEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 2,
+          "snippet": "import type { PluginCapabilityCatalogContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 1,
+          "snippet": "import type { PluginCapabilityCatalogContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-binary-stream",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-binary-stream",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 169,
+          "snippet": "await import(\"openclaw/plugin-sdk/provider-binary-stream\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-http",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-http",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/media-understanding-provider.ts",
+          "line": 13,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 264,
+          "snippet": "await import(\"openclaw/plugin-sdk/provider-http\");"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 127,
+          "snippet": "const { assertOkOrThrowProviderError } = await import(\"openclaw/plugin-sdk/provider-http\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/realtime-transcription-session",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/realtime-transcription-session",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/realtime-transcription-session\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-doctor-migrations",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/config-compat.ts",
+          "line": 4,
+          "snippet": "import { mergeMissing } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/secret-input",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/secret-input",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 3,
+          "snippet": "import { normalizeResolvedSecretInputString } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 6,
+          "snippet": "import { normalizeResolvedSecretInputString } from \"openclaw/plugin-sdk/secret-input\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/speech",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/speech",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 11,
+          "snippet": "} from \"openclaw/plugin-sdk/speech\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/speech-provider",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/speech-provider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 18,
+          "snippet": "} from \"openclaw/plugin-sdk/speech-provider\";"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/speech-provider\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 266,
+          "snippet": "await import(\"openclaw/plugin-sdk/ssrf-runtime\");"
+        },
+        {
+          "path": "extensions/elevenlabs/tts.ts",
+          "line": 129,
+          "snippet": "await import(\"openclaw/plugin-sdk/ssrf-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/elevenlabs/config-compat.ts",
+          "line": 5,
+          "snippet": "import { asNullableRecord, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/elevenlabs/speech-provider-factory.ts",
+          "line": 27,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/elevenlabs/realtime-transcription-provider-factory.ts",
+          "line": 13,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read the complete benchmark contract and README, Inspector root AGENTS.md, source root/extensions/plugin-sdk/plugins AGENTS.md, all 12 eligible production TypeScript files, and package/manifest metadata. No Inspector implementation, helpers, detector output, other fixtures, or generic expectation extractor was read or used.",
+    "All 25 files beneath extensions/elevenlabs are partitioned into 14 reviewed files and 11 excluded files. Production source is unchanged from the pinned commit; authorized instruction-document edits outside the plugin do not alter its source.",
+    "The source-phase scope includes config-api.ts, setup-api.ts, doctor-contract-api.ts, doctor-contract.ts, and capability-catalog.ts regardless of index.ts reachability. The two API barrels reexport only plugin-owned functions/constants, not SDK aliases; shared.ts defines plugin-owned URL and voice helpers.",
+    "Every production local import/reexport stays inside the ElevenLabs root. There is no additional shared shipped source boundary. The parent tsconfig reference is non-executable configuration, and only excluded tts.test.ts imports ../test-support.",
+    "definePluginEntry provides register with an OpenClawPluginApi parameter. The four registration calls are API members; the provider descriptors, request/config objects, transport callbacks, and capability context are not API or PluginRuntime handles. There are no named hook registrations or runtime-member findings.",
+    "PluginCapabilityCatalogContext gives formatErrorMessage and createRealtimeTranscriptionWebSocketSession the exact typeof original functions. src/plugins/capability-catalog-context.ts supplies those unchanged functions; src/plugin-sdk/error-runtime.ts and src/plugin-sdk/realtime-transcription-session.ts prove public export identity. Explicit Pick/index projections add type-reference, parameter destructuring adds member-access, and direct alias invocation adds call. This does not create an error-runtime SDK-module import site or make the realtime-transcription-session type-import module mixed.",
+    "Context-export canonicalization: pinned docs/plugins/sdk-migration/how-to-migrate.md:1525 explicitly maps formatErrorMessage to error-runtime; docs/plugins/sdk-subpaths.md:551 directs provider implementations to realtime-transcription-session. The context declarations/construction prove the same underlying functions, so these documented focused facades identify the implicit dependencies. Equivalent reexports in ssrf-runtime, security-runtime, agent-harness-runtime, or realtime-transcription do not establish additional plugin references. Retain one focused export identity per context-provided function, with no invented import kind/module site and no enumeration of equivalent barrel aliases. Explicit plugin imports elsewhere retain their actual specifier identity.",
+    "All dynamic imports are immediately narrowed by destructuring. Record their original named SDK exports and dynamic-import/call kinds without a synthetic namespace-star export. Aliases readRecord, readFiniteNumber, and trimToUndefined resolve to asOptionalRecord, parseFiniteNumber, and normalizeOptionalString.",
+    "SDK helper return objects (HTTP response/release records and bounded binary streams), realtime transport callback objects, and plugin-owned wrappers do not create API/runtime members or transitive SDK calls. MAX_AUDIO_BYTES has its syntactic import dependency; a bare value read adds no reference kind.",
+    "The agreed manifest identities are the three contracts categories. setup.providers, capabilityCatalogEntry, doctorContract, configContracts, activation, mediaUnderstandingProviderMetadata, categories, and configSchema are not the agreed top-level provider/contract identities.",
+    "No genuinely unresolved dynamic SDK specifier, hook name, public member, or opaque API/runtime escape remains. reviewedFiles findingCount counts distinct findings with evidence in that reviewed file."
+  ]
+}

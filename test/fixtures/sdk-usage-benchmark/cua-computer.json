@@ -1,0 +1,1308 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "cua-computer",
+    "path": "extensions/cua-computer"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_cua_computer",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/cua-computer/api.ts",
+      "sha256": "b9aaf847561a5651b825f257bf5c1a0fed4bfdb59d17dfc1141edb1cc9f124d2",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/cua-computer/index.ts",
+      "sha256": "ffa988c848cc06a505eb19967e7b8543509836ebf230e7d5e611239431f53439",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/cua-computer/openclaw.plugin.json",
+      "sha256": "1e29b19576fd9c6957f10842d6223c2fa1419968fd9ed17a320de4a97f246211",
+      "role": "manifest",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/cua-computer/package.json",
+      "sha256": "2e94f87cb4f449a2096a45e5083cabe211ec7a991919540b353bef1e98a52aed",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/cua-computer/src/action-targets.ts",
+      "sha256": "a09a08895c3c2b94b5d1868d2f1965f7e270e27f828a193d7205e404e7f5c7dc",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/cua-computer/src/actions.ts",
+      "sha256": "b6ec1d30c9bb4e2e2a3a9331d08cc82ee273c991ac923ae9186dc6a436ad0c26",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/cua-computer/src/browser-actions.ts",
+      "sha256": "3081fc7decbe2d39e7b63280c5f99ce35e03a29451384e48cdb7bc30db3489de",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/cua-computer/src/commands.ts",
+      "sha256": "6bc9aaccb19b1e3db311e0df3f80c335bd6afce86a36f1cfa682ca55b27ad3d9",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/cua-computer/src/doctor.ts",
+      "sha256": "5ff138b9af31155be722e394959318c40a73d147354002d591ad8fe9f3d3aa79",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/cua-computer/src/driver-artifact-verification.ts",
+      "sha256": "510e99146de71eea9ba43e7d40efecdafc24d4849fbae034c2a9146571940a12",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/cua-computer/src/driver-artifacts.ts",
+      "sha256": "2d833a4f08a7e57837704739cd1fb71e9d3fdc380809a6412c9beca843537f57",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/cua-computer/src/driver-client.ts",
+      "sha256": "cc1e61694bf9113a4c174d9b7516d4229946c4c4ddb9c7ec5eaa424adf3eee72",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/cua-computer/src/driver-result.ts",
+      "sha256": "4d538c382f23f36eaa80f5c65f548561bf0423f5875c40c1608770fe92158967",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/cua-computer/src/execution-resources.ts",
+      "sha256": "5fb29f36f0deb1f295fbabf197624ce600cec93867abcb9c723b0f542162380a",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/cua-computer/src/execution-state.ts",
+      "sha256": "13d770f04e18c91ebf73e3b97109e3f69490c68138a94b76c4c6002cee331901",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/cua-computer/src/frame.ts",
+      "sha256": "5d5dd473e666b2e1dceb8e14369464a17b0d4b2aa52b287a851a39e02d114a6a",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/cua-computer/src/mcp-driver-client.ts",
+      "sha256": "32968d9c535583c2967cd3fe8d79b502b6fb480b5c34d4f339773795d2f5996e",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/cua-computer/src/node-invoke-policy.ts",
+      "sha256": "306d502d45fda70b74f7e481f471b32900efd774502291b85d28759280e60069",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/cua-computer/src/recording-actions.ts",
+      "sha256": "25a891fad82e4592434131369dfff4512b1196ff9d6eb69cafe4624927002ae2",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/cua-computer/src/window-actions.ts",
+      "sha256": "aa21926755ee9f7267172b65aa24237d0372dd2dc971b283b340c75b4353c760",
+      "role": "production-source",
+      "findingCount": 3
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/cua-computer/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/cua-computer/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Static image asset outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/cua-computer/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Static image asset outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/cua-computer/index.test.ts",
+      "rule": "test-file",
+      "reason": "Dedicated test file; basename contains .test.; no production source imports it."
+    },
+    {
+      "path": "extensions/cua-computer/src/actions.test.ts",
+      "rule": "test-file",
+      "reason": "Dedicated test file; basename contains .test.; no production source imports it."
+    },
+    {
+      "path": "extensions/cua-computer/src/browser-actions.test.ts",
+      "rule": "test-file",
+      "reason": "Dedicated test file; basename contains .test.; no production source imports it."
+    },
+    {
+      "path": "extensions/cua-computer/src/commands.session-lifecycle.test.ts",
+      "rule": "test-file",
+      "reason": "Dedicated test file; basename contains .test.; no production source imports it."
+    },
+    {
+      "path": "extensions/cua-computer/src/commands.test-helpers.ts",
+      "rule": "test-helper",
+      "reason": "Vitest fake-driver/provider helpers; repository-wide caller search finds only commands, session-lifecycle, browser-actions, recording-actions, mcp-driver-client, driver-client and ref-lifecycle .test.ts consumers; no production import."
+    },
+    {
+      "path": "extensions/cua-computer/src/commands.test.ts",
+      "rule": "test-file",
+      "reason": "Dedicated test file; basename contains .test.; no production source imports it."
+    },
+    {
+      "path": "extensions/cua-computer/src/cua-driver-contract.test-fixtures.ts",
+      "rule": "test-helper",
+      "reason": "Synthetic driver contract payloads and result factory; repository-wide callers are only commands, browser-actions, recording-actions, mcp-driver-client, driver-client and driver-result .test.ts files; no production import."
+    },
+    {
+      "path": "extensions/cua-computer/src/doctor.test.ts",
+      "rule": "test-file",
+      "reason": "Dedicated test file; basename contains .test.; no production source imports it."
+    },
+    {
+      "path": "extensions/cua-computer/src/driver-artifacts-resolution.test.ts",
+      "rule": "test-file",
+      "reason": "Dedicated test file; basename contains .test.; no production source imports it."
+    },
+    {
+      "path": "extensions/cua-computer/src/driver-artifacts.test.ts",
+      "rule": "test-file",
+      "reason": "Dedicated test file; basename contains .test.; no production source imports it."
+    },
+    {
+      "path": "extensions/cua-computer/src/driver-client.test.ts",
+      "rule": "test-file",
+      "reason": "Dedicated test file; basename contains .test.; no production source imports it."
+    },
+    {
+      "path": "extensions/cua-computer/src/driver-result.test.ts",
+      "rule": "test-file",
+      "reason": "Dedicated test file; basename contains .test.; no production source imports it."
+    },
+    {
+      "path": "extensions/cua-computer/src/mcp-driver-client.test.ts",
+      "rule": "test-file",
+      "reason": "Dedicated test file; basename contains .test.; no production source imports it."
+    },
+    {
+      "path": "extensions/cua-computer/src/node-invoke-policy.test.ts",
+      "rule": "test-file",
+      "reason": "Dedicated test file; basename contains .test.; no production source imports it."
+    },
+    {
+      "path": "extensions/cua-computer/src/recording-actions.test.ts",
+      "rule": "test-file",
+      "reason": "Dedicated test file; basename contains .test.; no production source imports it."
+    },
+    {
+      "path": "extensions/cua-computer/src/ref-lifecycle.contract.test.ts",
+      "rule": "test-file",
+      "reason": "Dedicated test file; basename contains .test.; no production source imports it."
+    },
+    {
+      "path": "extensions/cua-computer/test/fixtures/mcp-proxy.cjs",
+      "rule": "test-directory",
+      "reason": "Executable test socket proxy referenced only by src/mcp-driver-client.test.ts:45; no production import or package entry."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.config.plugins",
+      "kind": "api-member",
+      "identity": "api.config.plugins",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 35,
+          "snippet": "      normalizePluginsConfig(api.config.plugins).entries[api.id]?.enabled !== true",
+          "note": "The register parameter is contextualized by definePluginEntry as OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.id",
+      "kind": "api-member",
+      "identity": "api.id",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 35,
+          "snippet": "      normalizePluginsConfig(api.config.plugins).entries[api.id]?.enabled !== true",
+          "note": "The register parameter is contextualized by definePluginEntry as OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.error",
+      "kind": "api-member",
+      "identity": "api.logger.error",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 42,
+          "snippet": "      api.logger?.error(artifactVerification.diagnostic);",
+          "note": "The register parameter is contextualized by definePluginEntry as OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig",
+      "kind": "api-member",
+      "identity": "api.pluginConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 24,
+          "snippet": "    const parsed = CuaComputerConfigSchema.safeParse(api.pluginConfig ?? {});",
+          "note": "The register parameter is contextualized by definePluginEntry as OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerNodeInvokePolicy",
+      "kind": "api-member",
+      "identity": "api.registerNodeInvokePolicy",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 30,
+          "snippet": "    api.registerNodeInvokePolicy(createCuaComputerNodeInvokePolicy());",
+          "note": "The register parameter is contextualized by definePluginEntry as OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#mcpStdioRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#mcpStdioRuntime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/mcp-driver-client.ts",
+          "line": 179,
+          "snippet": "  return import(\"openclaw/plugin-sdk/agent-harness-runtime\")",
+          "note": "The immediately following then callback destructures the named export."
+        },
+        {
+          "path": "extensions/cua-computer/src/mcp-driver-client.ts",
+          "line": 180,
+          "snippet": "    .then(({ mcpStdioRuntime }) => mcpStdioRuntime.load())",
+          "note": "The load member call is rooted directly in the exported mcpStdioRuntime object. Members of its returned object and created client are not API/runtime members."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/computer-use#COMPUTER_USE_V2_ACTION_NAMES",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/computer-use#COMPUTER_USE_V2_ACTION_NAMES",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 5,
+          "snippet": "  COMPUTER_USE_V2_ACTION_NAMES,"
+        },
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 42,
+          "snippet": "const CUA_WIRE_ACTION_NAMES = COMPUTER_USE_V2_ACTION_NAMES.slice(1, 14);",
+          "note": "Direct call to a member of the imported SDK array."
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 2,
+          "snippet": "  COMPUTER_USE_V2_ACTION_NAMES,"
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 25,
+          "snippet": "const CUA_WIRE_ACTION_NAMES = COMPUTER_USE_V2_ACTION_NAMES.slice(1, 14);"
+        },
+        {
+          "path": "extensions/cua-computer/src/window-actions.ts",
+          "line": 2,
+          "snippet": "  COMPUTER_USE_V2_ACTION_NAMES,"
+        },
+        {
+          "path": "extensions/cua-computer/src/window-actions.ts",
+          "line": 34,
+          "snippet": "const CUA_WIRE_ACTION_NAMES = COMPUTER_USE_V2_ACTION_NAMES.slice(1, 14);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/computer-use#ComputerActParams",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/computer-use#ComputerActParams",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/action-targets.ts",
+          "line": 1,
+          "snippet": "import type { ComputerActParams } from \"openclaw/plugin-sdk/computer-use\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/action-targets.ts",
+          "line": 23,
+          "snippet": "  action: ComputerActParams[\"action\"];"
+        },
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 8,
+          "snippet": "  type ComputerActParams,"
+        },
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 250,
+          "snippet": "  params: ComputerActParams,"
+        },
+        {
+          "path": "extensions/cua-computer/src/node-invoke-policy.ts",
+          "line": 3,
+          "snippet": "  type ComputerActParams,"
+        },
+        {
+          "path": "extensions/cua-computer/src/node-invoke-policy.ts",
+          "line": 14,
+          "snippet": "  ComputerActParams[\"action\"],"
+        },
+        {
+          "path": "extensions/cua-computer/src/window-actions.ts",
+          "line": 3,
+          "snippet": "  type ComputerActParams,"
+        },
+        {
+          "path": "extensions/cua-computer/src/window-actions.ts",
+          "line": 200,
+          "snippet": "  params: ComputerActParams,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/computer-use#ComputerActResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/computer-use#ComputerActResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 3,
+          "snippet": "  type ComputerActResult,"
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 134,
+          "snippet": "function driverEffect(result: CuaToolResult): ComputerActResult[\"effect\"] | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/computer-use#ComputerUseProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/computer-use#ComputerUseProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 9,
+          "snippet": "  type ComputerUseProvider,"
+        },
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 395,
+          "snippet": "): ComputerUseProvider {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/computer-use#ComputerUseV2ActionName",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/computer-use#ComputerUseV2ActionName",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 4,
+          "snippet": "  type ComputerUseV2ActionName,"
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 120,
+          "snippet": "export function platformActions(platform: NodeJS.Platform): ComputerUseV2ActionName[] {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/computer-use#parseComputerActParamsJSON",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/computer-use#parseComputerActParamsJSON",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 6,
+          "snippet": "  parseComputerActParamsJSON,"
+        },
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 570,
+          "snippet": "            const params = parseComputerActParamsJSON(paramsJSON);"
+        },
+        {
+          "path": "extensions/cua-computer/src/node-invoke-policy.ts",
+          "line": 2,
+          "snippet": "  parseComputerActParamsJSON,"
+        },
+        {
+          "path": "extensions/cua-computer/src/node-invoke-policy.ts",
+          "line": 49,
+          "snippet": "  const parsed = parseComputerActParamsJSON(serialized);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/computer-use#parseScreenSnapshotParamsJSON",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/computer-use#parseScreenSnapshotParamsJSON",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 7,
+          "snippet": "  parseScreenSnapshotParamsJSON,"
+        },
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 517,
+          "snippet": "            const params = parseScreenSnapshotParamsJSON(paramsJSON);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/computer-use#registerComputerUseProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/computer-use#registerComputerUseProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 1,
+          "snippet": "import { registerComputerUseProvider } from \"openclaw/plugin-sdk/computer-use\";"
+        },
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 44,
+          "snippet": "    registerComputerUseProvider(api, createCuaComputerProvider());",
+          "note": "API handle is passed to a known SDK helper; its internal registrations are outside plugin source scope."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#removePathWithinRoot",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#removePathWithinRoot",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/execution-resources.ts",
+          "line": 4,
+          "snippet": "  removePathWithinRoot,"
+        },
+        {
+          "path": "extensions/cua-computer/src/execution-resources.ts",
+          "line": 185,
+          "snippet": "      await removePathWithinRoot({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#resolvePreferredOpenClawTmpDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#resolvePreferredOpenClawTmpDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/execution-resources.ts",
+          "line": 5,
+          "snippet": "  resolvePreferredOpenClawTmpDir,"
+        },
+        {
+          "path": "extensions/cua-computer/src/execution-resources.ts",
+          "line": 82,
+          "snippet": "  const preferredTmpRoot = await root(resolvePreferredOpenClawTmpDir(), {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#root",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#root",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/execution-resources.ts",
+          "line": 6,
+          "snippet": "  root,"
+        },
+        {
+          "path": "extensions/cua-computer/src/execution-resources.ts",
+          "line": 21,
+          "snippet": "type SafeRoot = Awaited<ReturnType<typeof root>>;",
+          "note": "Explicit typeof of the imported SDK function adds type-reference; the module import remains runtime."
+        },
+        {
+          "path": "extensions/cua-computer/src/execution-resources.ts",
+          "line": 82,
+          "snippet": "  const preferredTmpRoot = await root(resolvePreferredOpenClawTmpDir(), {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/health#HealthCheck",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/health#HealthCheck",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/doctor.ts",
+          "line": 4,
+          "snippet": "  type HealthCheck,"
+        },
+        {
+          "path": "extensions/cua-computer/src/doctor.ts",
+          "line": 10,
+          "snippet": "const cuaDriverArtifactCheck: HealthCheck = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/health#getHealthCheck",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/health#getHealthCheck",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/doctor.ts",
+          "line": 2,
+          "snippet": "  getHealthCheck,"
+        },
+        {
+          "path": "extensions/cua-computer/src/doctor.ts",
+          "line": 47,
+          "snippet": "    getHealthCheck(CUA_DRIVER_ARTIFACT_CHECK_ID) === cuaDriverArtifactCheck"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/health#registerHealthCheck",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/health#registerHealthCheck",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/doctor.ts",
+          "line": 3,
+          "snippet": "  registerHealthCheck as registerPluginHealthCheck,"
+        },
+        {
+          "path": "extensions/cua-computer/src/doctor.ts",
+          "line": 41,
+          "snippet": "  const registerHealthCheck = host?.registerHealthCheck ?? registerPluginHealthCheck;",
+          "note": "With no injected host, the local alias selects the original SDK registerHealthCheck unchanged; production entry calls without a host."
+        },
+        {
+          "path": "extensions/cua-computer/src/doctor.ts",
+          "line": 51,
+          "snippet": "  registerHealthCheck(cuaDriverArtifactCheck);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/keyed-async-queue#KeyedAsyncQueue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/keyed-async-queue#KeyedAsyncQueue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 11,
+          "snippet": "import { KeyedAsyncQueue } from \"openclaw/plugin-sdk/keyed-async-queue\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 478,
+          "snippet": "      const queue = new KeyedAsyncQueue();",
+          "note": "Construction calls the imported SDK class."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeMethodBinder",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeMethodBinder",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/driver-client.ts",
+          "line": 2,
+          "snippet": "import { createLazyRuntimeMethodBinder } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-client.ts",
+          "line": 427,
+          "snippet": "  private readonly bindRuntime = createLazyRuntimeMethodBinder(() => this.requireRuntime());",
+          "note": "Binder receives a plugin-owned DirectCuaDriverSession, not PluginRuntime."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-runtime#canonicalizeBase64",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-runtime#canonicalizeBase64",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 12,
+          "snippet": "import { canonicalizeBase64 } from \"openclaw/plugin-sdk/media-runtime\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 164,
+          "snippet": "  const canonicalPng = canonicalizeBase64(image.dataBase64);"
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 6,
+          "snippet": "import { canonicalizeBase64 } from \"openclaw/plugin-sdk/media-runtime\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 367,
+          "snippet": "  const base64 = image ? canonicalizeBase64(image.dataBase64) : undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-config-runtime#normalizePluginsConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-config-runtime#normalizePluginsConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 2,
+          "snippet": "import { normalizePluginsConfig } from \"openclaw/plugin-sdk/plugin-config-runtime\";"
+        },
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 35,
+          "snippet": "      normalizePluginsConfig(api.config.plugins).entries[api.id]?.enabled !== true"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeInvokePolicy",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeInvokePolicy",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/node-invoke-policy.ts",
+          "line": 6,
+          "snippet": "  OpenClawPluginNodeInvokePolicy,"
+        },
+        {
+          "path": "extensions/cua-computer/src/node-invoke-policy.ts",
+          "line": 67,
+          "snippet": "export function createCuaComputerNodeInvokePolicy(): OpenClawPluginNodeInvokePolicy {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeInvokePolicyContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeInvokePolicyContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/node-invoke-policy.ts",
+          "line": 7,
+          "snippet": "  OpenClawPluginNodeInvokePolicyContext,"
+        },
+        {
+          "path": "extensions/cua-computer/src/node-invoke-policy.ts",
+          "line": 15,
+          "snippet": "  NonNullable<OpenClawPluginNodeInvokePolicyContext[\"risk\"]>[\"family\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#buildPluginConfigSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#buildPluginConfigSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 3,
+          "snippet": "import { buildPluginConfigSchema, definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 16,
+          "snippet": "const configSchema = buildPluginConfigSchema(CuaComputerConfigSchema);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 3,
+          "snippet": "import { buildPluginConfigSchema, definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 18,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/driver-artifact-verification.ts",
+          "line": 4,
+          "snippet": "import { asOptionalRecord, readStringField } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-artifact-verification.ts",
+          "line": 80,
+          "snippet": "  const record = asOptionalRecord(JSON.parse(fs.readFileSync(pathname, \"utf8\")));"
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 7,
+          "snippet": "import { asOptionalRecord, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 538,
+          "snippet": "  const page = asOptionalRecord(structured.page);"
+        },
+        {
+          "path": "extensions/cua-computer/src/mcp-driver-client.ts",
+          "line": 4,
+          "snippet": "  asOptionalRecord as record,"
+        },
+        {
+          "path": "extensions/cua-computer/src/mcp-driver-client.ts",
+          "line": 73,
+          "snippet": "  const value = record(structured);",
+          "note": "The local record alias resolves to the original asOptionalRecord export."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 7,
+          "snippet": "import { asOptionalRecord, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 283,
+          "snippet": "    if (isRecord(value)) {"
+        },
+        {
+          "path": "extensions/cua-computer/src/node-invoke-policy.ts",
+          "line": 9,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/node-invoke-policy.ts",
+          "line": 42,
+          "snippet": "  if (isRecord(params) && params.action === \"__close_execution\") {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#readStringField",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#readStringField",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/driver-artifact-verification.ts",
+          "line": 4,
+          "snippet": "import { asOptionalRecord, readStringField } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-artifact-verification.ts",
+          "line": 85,
+          "snippet": "    name: readStringField(record, \"name\"),"
+        },
+        {
+          "path": "extensions/cua-computer/src/mcp-driver-client.ts",
+          "line": 5,
+          "snippet": "  readStringField,"
+        },
+        {
+          "path": "extensions/cua-computer/src/mcp-driver-client.ts",
+          "line": 157,
+          "snippet": "    readStringField(structured, \"code\") ?? readStringField(record(structured?.refusal), \"code\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 13,
+          "snippet": "import { resolvePreferredOpenClawTmpDir } from \"openclaw/plugin-sdk/temp-path\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 206,
+          "snippet": "    temp: { rootDir: resolvePreferredOpenClawTmpDir(), prefix: \"openclaw-cua-computer-\" },"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-harness-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/mcp-driver-client.ts",
+          "line": 179,
+          "snippet": "  return import(\"openclaw/plugin-sdk/agent-harness-runtime\")"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/computer-use",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/computer-use",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 1,
+          "snippet": "import { registerComputerUseProvider } from \"openclaw/plugin-sdk/computer-use\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/action-targets.ts",
+          "line": 1,
+          "snippet": "import type { ComputerActParams } from \"openclaw/plugin-sdk/computer-use\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 8,
+          "snippet": "  type ComputerActParams,",
+          "note": "The computer-use import at lines 4\u201310 includes value and explicit type specifiers."
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 3,
+          "snippet": "  type ComputerActResult,",
+          "note": "The computer-use import at lines 1\u20135 includes value and explicit type specifiers."
+        },
+        {
+          "path": "extensions/cua-computer/src/node-invoke-policy.ts",
+          "line": 3,
+          "snippet": "  type ComputerActParams,",
+          "note": "The computer-use import at lines 1\u20134 includes value and explicit type specifiers."
+        },
+        {
+          "path": "extensions/cua-computer/src/window-actions.ts",
+          "line": 3,
+          "snippet": "  type ComputerActParams,",
+          "note": "The computer-use import at lines 1\u20134 includes value and explicit type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/file-access-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/file-access-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/execution-resources.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/file-access-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/health",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/health",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/doctor.ts",
+          "line": 2,
+          "snippet": "  getHealthCheck,",
+          "note": "Value import from health at lines 1\u20135."
+        },
+        {
+          "path": "extensions/cua-computer/src/doctor.ts",
+          "line": 4,
+          "snippet": "  type HealthCheck,",
+          "note": "Inline type specifier in the same health import."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/keyed-async-queue",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/keyed-async-queue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 11,
+          "snippet": "import { KeyedAsyncQueue } from \"openclaw/plugin-sdk/keyed-async-queue\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/lazy-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/lazy-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/driver-client.ts",
+          "line": 2,
+          "snippet": "import { createLazyRuntimeMethodBinder } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 12,
+          "snippet": "import { canonicalizeBase64 } from \"openclaw/plugin-sdk/media-runtime\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 6,
+          "snippet": "import { canonicalizeBase64 } from \"openclaw/plugin-sdk/media-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-config-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-config-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 2,
+          "snippet": "import { normalizePluginsConfig } from \"openclaw/plugin-sdk/plugin-config-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/index.ts",
+          "line": 3,
+          "snippet": "import { buildPluginConfigSchema, definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/node-invoke-policy.ts",
+          "line": 5,
+          "snippet": "import type {",
+          "note": "Explicit type import closes at line 8 with openclaw/plugin-sdk/plugin-entry."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/driver-artifact-verification.ts",
+          "line": 4,
+          "snippet": "import { asOptionalRecord, readStringField } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/driver-result.ts",
+          "line": 7,
+          "snippet": "import { asOptionalRecord, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/mcp-driver-client.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/cua-computer/src/node-invoke-policy.ts",
+          "line": 9,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/temp-path",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/temp-path",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cua-computer/src/commands.ts",
+          "line": 13,
+          "snippet": "import { resolvePreferredOpenClawTmpDir } from \"openclaw/plugin-sdk/temp-path\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all 18 production TypeScript files, package metadata and manifest. Read source root/extensions/SDK instructions and the Inspector root instructions, frozen contract and entire benchmark README; no Inspector implementation, detector output, other fixtures or extraction helper was used.",
+    "All 40 files under extensions/cua-computer are partitioned into 20 reviewed and 20 excluded records. Helper and fixture exclusions were confirmed through full helper reads and repository-wide caller searches; production source imports no excluded test file.",
+    "Every relative production import remains inside extensions/cua-computer, including ../package.json from src/driver-artifacts.ts. No additional plugin-owned/shared shipped source leaves this boundary. api.ts reexports plugin-owned doctor declarations, not SDK exports.",
+    "Public subpath/export identity was checked against package.json and the corresponding src/plugin-sdk facades. The source is pinned to d912f0c06e7af29a4a40c4211bec0bb76d473f10; pre-existing instruction/skill edits outside production do not affect this audit.",
+    "The manifest declares no channels, providers, skills, commandAliases, cliCommands or contracts values. Its computer-use category, activation, display/config fields and package install/build metadata are not manifest-contract identities.",
+    "Only definePluginEntry register(api) proves an OpenClawPluginApi handle. The five maximal direct member paths are recorded. registerComputerUseProvider receives that handle as a known SDK helper; no internal SDK registrations or runtime effects are inferred.",
+    "DirectCuaDriverSession.runtime, LazyCuaDriverSession.runtime and binder callback runtime variables are plugin-owned/native @trycua/cua-driver sessions, not public PluginRuntime handles. ComputerUseProvider/node-policy contexts are distinct contracts; their members are not OpenClawPluginApi members. There are no runtime-member or named-hook findings.",
+    "Third-party @trycua/cua-driver (including dynamic imports and native artifacts), @openclaw/fs-safe, rastermill and zod remain installed dependency boundaries. Driver package resolution does not discover plugin-owned shipped source or an unresolved OpenClaw SDK import.",
+    "SafeRoot is the return type of the SDK root function, and mcpStdioRuntime.load returns a client factory; their object/client members are not public API/runtime paths. Explicit typeof root makes that export mixed while file-access-runtime remains a runtime module dependency.",
+    "Ordinary imports, explicit inline/type imports and SDK calls are retained separately. The imported COMPUTER_USE_V2_ACTION_NAMES array has direct slice calls. record and registerPluginHealthCheck resolve to asOptionalRecord and registerHealthCheck respectively. The local health registration fallback calls the unchanged SDK function in the no-host production path; the optional injected host is not a public API handle.",
+    "CuaComputerActParams and CuaExecutionResources are plugin-owned projected/composite types. Their later local imports do not re-enumerate inferred SDK members. The source benchmark includes eligible zero-finding modules regardless of runtime reachability.",
+    "The immediate destructuring of the dynamic agent-harness-runtime import resolves mcpStdioRuntime; its load call contributes call to that exported object. No synthetic SDK export is invented for createMcpStdioClient, which is supplied by the object returned from load."
+  ]
+}

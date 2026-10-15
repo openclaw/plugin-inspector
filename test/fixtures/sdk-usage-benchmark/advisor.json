@@ -1,0 +1,460 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "advisor",
+    "path": "extensions/advisor"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_advisor",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/advisor/index.ts",
+      "sha256": "401fe84e3166510716660c129133e9f63bbd0a9c7384815e764aa68612503ac7",
+      "role": "production-source",
+      "findingCount": 20
+    },
+    {
+      "path": "extensions/advisor/openclaw.plugin.json",
+      "sha256": "4408a597ac09600d79fb567fe6cfa209aa48dab420b9459ad2f0c782558385d1",
+      "role": "manifest",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/advisor/package.json",
+      "sha256": "408fb0ced89ec2a178a471a7959b34edd0f59dc4cf4c7cfd9cdd786c0f3f3bc6",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/advisor/src/controller.ts",
+      "sha256": "31c8670265b22f5a310fa9b0ce694485ea2e2a38c172a2a83b8d290fd718683f",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/advisor/src/review.ts",
+      "sha256": "e76e06882c9dc4b3a7d438099febfe9ac23ab57c9117baa404f9aa5c49cadb17",
+      "role": "production-source",
+      "findingCount": 0
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/advisor/README.md",
+      "rule": "non-source",
+      "reason": "Plugin usage and behavior documentation; Markdown is outside the source extension set."
+    },
+    {
+      "path": "extensions/advisor/index.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test suite (.test.ts basename), importing the production entry and SDK test helpers; no production source imports this test file."
+    },
+    {
+      "path": "extensions/advisor/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript package-boundary configuration JSON; not an eligible source file or package/manifest metadata."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.agent.events.registerAgentEventSubscription",
+      "kind": "api-member",
+      "identity": "api.agent.events.registerAgentEventSubscription",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 173,
+          "snippet": "api.agent.events.registerAgentEventSubscription({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger",
+      "kind": "api-member",
+      "identity": "api.logger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 61,
+          "snippet": "logger: api.logger,",
+          "note": "The logger is passed unchanged into the plugin-owned controller dependency object."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.info",
+      "kind": "api-member",
+      "identity": "api.logger.info",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 92,
+          "snippet": "api.logger.info("
+        },
+        {
+          "path": "extensions/advisor/src/controller.ts",
+          "line": 133,
+          "snippet": "deps.logger.info(`advisor: no correction for session ${sessionKey}`);",
+          "note": "createAdvisorController receives deps.logger = api.logger at index.ts:61; its sole production caller proves this alias."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.warn",
+      "kind": "api-member",
+      "identity": "api.logger.warn",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 52,
+          "snippet": "api.logger.warn("
+        },
+        {
+          "path": "extensions/advisor/src/controller.ts",
+          "line": 157,
+          "snippet": "deps.logger.warn(`advisor: review failed for session ${sessionKey}: ${reason}`);",
+          "note": "createAdvisorController receives deps.logger = api.logger at index.ts:61; its sole production caller proves this alias."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.on",
+      "kind": "api-member",
+      "identity": "api.on",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 150,
+          "snippet": "api.on("
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig",
+      "kind": "api-member",
+      "identity": "api.pluginConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 50,
+          "snippet": "const schedule = resolveSchedule(api.pluginConfig);",
+          "note": "definePluginEntry register parameter is OpenClawPluginApi; the configuration object is passed unchanged into the sole production resolveSchedule call."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.everyMinutes",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.everyMinutes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 50,
+          "snippet": "const schedule = resolveSchedule(api.pluginConfig);",
+          "note": "Proven API pluginConfig value becomes resolveSchedule parameter config."
+        },
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 38,
+          "snippet": "const value = config?.[key];",
+          "note": "The key parameter resolves from the two literal calls on line 41; this occurrence reads everyMinutes."
+        },
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 41,
+          "snippet": "return { everyToolCalls: read(\"everyToolCalls\"), everyMinutes: read(\"everyMinutes\") };"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.everyToolCalls",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.everyToolCalls",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 50,
+          "snippet": "const schedule = resolveSchedule(api.pluginConfig);",
+          "note": "Proven API pluginConfig value becomes resolveSchedule parameter config."
+        },
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 38,
+          "snippet": "const value = config?.[key];",
+          "note": "The key parameter resolves from the two literal calls on line 41; this occurrence reads everyToolCalls."
+        },
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 41,
+          "snippet": "return { everyToolCalls: read(\"everyToolCalls\"), everyMinutes: read(\"everyMinutes\") };"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerRuntimeLifecycle",
+      "kind": "api-member",
+      "identity": "api.registerRuntimeLifecycle",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 258,
+          "snippet": "api.registerRuntimeLifecycle({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerService",
+      "kind": "api-member",
+      "identity": "api.registerService",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 138,
+          "snippet": "api.registerService({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.runContext.getRunContext",
+      "kind": "api-member",
+      "identity": "api.runContext.getRunContext",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 158,
+          "snippet": "!api.runContext.getRunContext({ runId: ctx.runId, namespace: RUN_CONTEXT_NAMESPACE })"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.runContext.setRunContext",
+      "kind": "api-member",
+      "identity": "api.runContext.setRunContext",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 162,
+          "snippet": "api.runContext.setRunContext({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.session.workflow.enqueueNextTurnInjection",
+      "kind": "api-member",
+      "identity": "api.session.workflow.enqueueNextTurnInjection",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 125,
+          "snippet": "const fallback = await api.session.workflow.enqueueNextTurnInjection({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.session.workflow.steerActiveRun",
+      "kind": "api-member",
+      "identity": "api.session.workflow.steerActiveRun",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 113,
+          "snippet": "const result = await api.session.workflow.steerActiveRun({"
+        }
+      ]
+    },
+    {
+      "key": "hook:hook.before_agent_reply",
+      "kind": "hook",
+      "identity": "hook.before_agent_reply",
+      "classification": "runtime",
+      "referenceKinds": [
+        "hook-registration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 150,
+          "snippet": "api.on("
+        },
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 151,
+          "snippet": "\"before_agent_reply\",",
+          "note": "Literal hook name registered with the proven plugin API on method."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.config.current",
+      "kind": "runtime-member",
+      "identity": "runtime.config.current",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 97,
+          "snippet": "const config = api.runtime.config.current().plugins?.entries?.advisor?.config;",
+          "note": "Record the actual runtime call, not arbitrary paths through its returned configuration object."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.subagent.forkSession",
+      "kind": "runtime-member",
+      "identity": "runtime.subagent.forkSession",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 78,
+          "snippet": "api.runtime.subagent.forkSession({",
+          "note": "api.runtime is the public PluginRuntime; fork results are not runtime handles."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginServiceSchedulerV1",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginServiceSchedulerV1",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry, type PluginServiceSchedulerV1 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 58,
+          "snippet": "let scheduler: PluginServiceSchedulerV1 | undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry, type PluginServiceSchedulerV1 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 44,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/advisor/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry, type PluginServiceSchedulerV1 } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Ordinary definePluginEntry import and explicit inline type import share this public SDK module site."
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Manually read every eligible production file: index.ts (265 lines), src/controller.ts (276 lines), and src/review.ts (68 lines), plus package.json and openclaw.plugin.json. All eight files under the plugin root are partitioned and their working-tree bytes match the pinned commit.",
+    "All production relative imports stay inside extensions/advisor. The only external production imports are the public openclaw/plugin-sdk/plugin-entry module and node:crypto; there is no additional plugin-owned/shared shipped source outside this root and no installed-dependency or SDK-implementation crawl.",
+    "SDK public package exports and plugin-entry.ts establish the public specifier and imported exports. Its register option resolves through OpenClawPluginDefinition.register to OpenClawPluginApi; api.runtime is typed PluginRuntime. Those contract reads establish provenance only, not extra plugin-scope source records.",
+    "The sole production createAdvisorController caller passes api.logger unchanged. Calls through deps.logger.info and deps.logger.warn therefore retain the API logger provenance; other controller-owned dependency functions and returned controller methods do not become public API/runtime paths.",
+    "resolveSchedule has one production call with api.pluginConfig. Its config[key] read is statically resolved by the two literal read calls to everyToolCalls and everyMinutes. The standalone api.pluginConfig passing occurrence independently establishes that shorter member path.",
+    "PluginServiceSchedulerV1 is explicitly imported as a type and used as a scheduler annotation. The service callback ctx.scheduler, its AbortSignal, scheduler methods, event callback ctx methods and hook context values are their own public/context contracts, not aliases of OpenClawPluginApi or PluginRuntime; no lookalike API/runtime paths are invented.",
+    "The runtime.config.current return value and forkSession result are not runtime handles. Result/config fields, plugin-owned object members, built-in AbortSignal operations and controller wrappers are not expanded into runtime-member findings.",
+    "The manifest declares descriptive metadata, activation, configuration schema/groups and UI hints, but no channels, providers, skills, commandAliases, cliCommands or contracts entries; it contributes no manifest-contract identities.",
+    "Source-phase classifications preserve the ordinary runtime import and explicit inline type import at the same SDK module site. The module is mixed; definePluginEntry is runtime; PluginServiceSchedulerV1 is type. Test-only SDK imports do not enter the answer key."
+  ]
+}

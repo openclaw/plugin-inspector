@@ -1,0 +1,670 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "vllm",
+    "path": "extensions/vllm"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_vllm",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/vllm/api.ts",
+      "sha256": "655c0d674de36d108508511104a288a5c176378f1f2feee77f12c0f34bd84a18",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/vllm/defaults.ts",
+      "sha256": "36b7d46ebbb8445fa458a3fa3f2734b93fcadbfcd13e137900a6a3258a9de4e9",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/vllm/index.ts",
+      "sha256": "f5d22dec4b6d78264453de801aea0cc8f1cf7de78a3a27aec9957bc562a60dd2",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/vllm/openclaw.plugin.json",
+      "sha256": "2568d6e0cf1eccac433c8981aa5ec32ac2800107eb288d00005e6b5ab77c8541",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/vllm/package.json",
+      "sha256": "a6a82a898844fbebe64e2346549691727154b40e6a288ca835ba952ffdbd7a59",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/vllm/priority.ts",
+      "sha256": "7418245116b658d850f446608352f1525b97b1f27c760cc48cf7d572e1f029bb",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/vllm/provider-policy-api.ts",
+      "sha256": "082e21022f52cd9899796734b052ffd29d31262b05aa9123ed39f734ff14964c",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/vllm/stream.ts",
+      "sha256": "d4a7ca9687db8be8724631fb0a7c93bf310b2ba9c0d7abcda52f6eb2e689cb10",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/vllm/thinking-policy.ts",
+      "sha256": "b0282e6513d53b7235702a21492410df1b4b9b62c2c3d022a3109a23c504e236",
+      "role": "production-source",
+      "findingCount": 7
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/vllm/AGENTS.md",
+      "rule": "non-source",
+      "reason": "Scoped contributor instructions; Markdown is outside source extensions."
+    },
+    {
+      "path": "extensions/vllm/CLAUDE.md",
+      "rule": "non-source",
+      "reason": "Tracked symlink to AGENTS.md; Markdown instructions are outside source extensions."
+    },
+    {
+      "path": "extensions/vllm/README.md",
+      "rule": "non-source",
+      "reason": "Plugin description in Markdown; outside source extensions."
+    },
+    {
+      "path": "extensions/vllm/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG image asset, outside source extensions."
+    },
+    {
+      "path": "extensions/vllm/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG image asset, outside source extensions."
+    },
+    {
+      "path": "extensions/vllm/priority.test.ts",
+      "rule": "test-file",
+      "reason": "Test file by .test. basename; no eligible production file imports it."
+    },
+    {
+      "path": "extensions/vllm/provider-discovery.contract.test.ts",
+      "rule": "test-file",
+      "reason": "Discovery contract test by .test. basename; no eligible production file imports it."
+    },
+    {
+      "path": "extensions/vllm/provider-policy-api.test.ts",
+      "rule": "test-file",
+      "reason": "Provider policy API test by .test. basename; no eligible production file imports it."
+    },
+    {
+      "path": "extensions/vllm/stream.test.ts",
+      "rule": "test-file",
+      "reason": "Stream behavior test by .test. basename; no eligible production file imports it."
+    },
+    {
+      "path": "extensions/vllm/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript configuration JSON; not package metadata or manifest, and outside source extensions."
+    }
+  ],
+  "findings": [
+    {
+      "key": "manifest-contract:manifest.providers:vllm",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:vllm",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/openclaw.plugin.json",
+          "line": 8,
+          "snippet": "  \"providers\": [\"vllm\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-core#StreamFn",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-core#StreamFn",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/priority.ts",
+          "line": 1,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";"
+        },
+        {
+          "path": "extensions/vllm/priority.ts",
+          "line": 6,
+          "snippet": "export function wrapVllmPriorityStream(ctx: ProviderWrapStreamFnContext): StreamFn | undefined {"
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 1,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";"
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 76,
+          "snippet": "  baseStreamFn: StreamFn | undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#Model",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#Model",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 2,
+          "snippet": "import { resolveOpenAIRequestReasoning, type Model } from \"openclaw/plugin-sdk/llm\";"
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 23,
+          "snippet": "function isCompletionsModel(model: Model): model is Model<\"openai-completions\"> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#resolveOpenAIRequestReasoning",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#resolveOpenAIRequestReasoning",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 2,
+          "snippet": "import { resolveOpenAIRequestReasoning, type Model } from \"openclaw/plugin-sdk/llm\";"
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 53,
+          "snippet": "    const { effort } = resolveOpenAIRequestReasoning(model, id);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderDefaultThinkingPolicyContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderDefaultThinkingPolicyContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/thinking-policy.ts",
+          "line": 2,
+          "snippet": "  ProviderDefaultThinkingPolicyContext,",
+          "note": "Named binding of the explicit SDK import type declaration at lines 1\u20134."
+        },
+        {
+          "path": "extensions/vllm/thinking-policy.ts",
+          "line": 16,
+          "snippet": "  model: Pick<ProviderDefaultThinkingPolicyContext, \"compat\" | \"thinkingLevelMap\">,",
+          "note": "The Pick selects members of a provider context, not OpenClawPluginApi or PluginRuntime."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderNormalizeResolvedModelContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderNormalizeResolvedModelContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 4,
+          "snippet": "  ProviderNormalizeResolvedModelContext,",
+          "note": "Named binding of the explicit SDK import type declaration at lines 3\u20136."
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 33,
+          "snippet": "}: ProviderNormalizeResolvedModelContext):"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderThinkingProfile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderThinkingProfile",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/thinking-policy.ts",
+          "line": 3,
+          "snippet": "  ProviderThinkingProfile,",
+          "note": "Named binding of the explicit SDK import type declaration at lines 1\u20134."
+        },
+        {
+          "path": "extensions/vllm/thinking-policy.ts",
+          "line": 13,
+          "snippet": "} satisfies ProviderThinkingProfile;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderWrapStreamFnContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderWrapStreamFnContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/priority.ts",
+          "line": 2,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/vllm/priority.ts",
+          "line": 6,
+          "snippet": "export function wrapVllmPriorityStream(ctx: ProviderWrapStreamFnContext): StreamFn | undefined {"
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 5,
+          "snippet": "  ProviderWrapStreamFnContext,",
+          "note": "Named binding of the explicit SDK import type declaration at lines 3\u20136."
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 21,
+          "snippet": "type VllmThinkingLevel = ProviderWrapStreamFnContext[\"thinkingLevel\"];",
+          "note": "Indexed access selects a provider context field, not a public API/runtime path."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-metadata#normalizeProviderId",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-metadata#normalizeProviderId",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/priority.ts",
+          "line": 3,
+          "snippet": "import { normalizeProviderId } from \"openclaw/plugin-sdk/provider-model-metadata\";"
+        },
+        {
+          "path": "extensions/vllm/priority.ts",
+          "line": 10,
+          "snippet": "    normalizeProviderId(ctx.provider) !== \"vllm\" ||"
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 7,
+          "snippet": "import { normalizeProviderId } from \"openclaw/plugin-sdk/provider-model-metadata\";"
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 113,
+          "snippet": "    normalizeProviderId(ctx.provider) !== \"vllm\" ||"
+        },
+        {
+          "path": "extensions/vllm/thinking-policy.ts",
+          "line": 5,
+          "snippet": "import { normalizeProviderId } from \"openclaw/plugin-sdk/provider-model-metadata\";"
+        },
+        {
+          "path": "extensions/vllm/thinking-policy.ts",
+          "line": 56,
+          "snippet": "  if (normalizeProviderId(ctx.provider) !== \"vllm\" || ctx.reasoning === false) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#defineSelfHostedOpenAICompatibleProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#defineSelfHostedOpenAICompatibleProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/index.ts",
+          "line": 1,
+          "snippet": "import { defineSelfHostedOpenAICompatibleProvider } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/vllm/index.ts",
+          "line": 12,
+          "snippet": "export default defineSelfHostedOpenAICompatibleProvider({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#composeProviderStreamWrappers",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#composeProviderStreamWrappers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 9,
+          "snippet": "  composeProviderStreamWrappers,",
+          "note": "Named binding from openclaw/plugin-sdk/provider-stream-shared in lines 8\u201312."
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 123,
+          "snippet": "  return composeProviderStreamWrappers("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#createPayloadPatchStreamWrapper",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#createPayloadPatchStreamWrapper",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 10,
+          "snippet": "  createPayloadPatchStreamWrapper,",
+          "note": "Named binding from openclaw/plugin-sdk/provider-stream-shared in lines 8\u201312."
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 80,
+          "snippet": "  return createPayloadPatchStreamWrapper("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#setQwenChatTemplateThinking",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#setQwenChatTemplateThinking",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 11,
+          "snippet": "  setQwenChatTemplateThinking,",
+          "note": "Named binding from openclaw/plugin-sdk/provider-stream-shared in lines 8\u201312."
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 95,
+          "snippet": "        const kwargs = setQwenChatTemplateThinking(payloadObj, enableThinking);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-thinking-runtime#resolveEffortThinkingProfile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-thinking-runtime#resolveEffortThinkingProfile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/thinking-policy.ts",
+          "line": 6,
+          "snippet": "import { resolveEffortThinkingProfile } from \"openclaw/plugin-sdk/provider-thinking-runtime\";"
+        },
+        {
+          "path": "extensions/vllm/thinking-policy.ts",
+          "line": 29,
+          "snippet": "  const profile = resolveEffortThinkingProfile([...efforts, ...mappedLevels]);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalObjectRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalObjectRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/priority.ts",
+          "line": 4,
+          "snippet": "import { asOptionalObjectRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/vllm/priority.ts",
+          "line": 31,
+          "snippet": "        const body = asOptionalObjectRecord(result);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/priority.ts",
+          "line": 1,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";"
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 1,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/llm",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/llm",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 2,
+          "snippet": "import { resolveOpenAIRequestReasoning, type Model } from \"openclaw/plugin-sdk/llm\";",
+          "note": "The same declaration has an ordinary value import and the explicit inline type import Model."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/priority.ts",
+          "line": 2,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "This closes the explicit import type declaration at lines 3\u20136."
+        },
+        {
+          "path": "extensions/vllm/thinking-policy.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "This closes the explicit import type declaration at lines 1\u20134."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-metadata",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-metadata",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/priority.ts",
+          "line": 3,
+          "snippet": "import { normalizeProviderId } from \"openclaw/plugin-sdk/provider-model-metadata\";"
+        },
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 7,
+          "snippet": "import { normalizeProviderId } from \"openclaw/plugin-sdk/provider-model-metadata\";"
+        },
+        {
+          "path": "extensions/vllm/thinking-policy.ts",
+          "line": 5,
+          "snippet": "import { normalizeProviderId } from \"openclaw/plugin-sdk/provider-model-metadata\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-shared",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/index.ts",
+          "line": 1,
+          "snippet": "import { defineSelfHostedOpenAICompatibleProvider } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-stream-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/stream.ts",
+          "line": 12,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-stream-shared\";",
+          "note": "Ordinary named value import declaration at lines 8\u201312."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-thinking-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-thinking-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/thinking-policy.ts",
+          "line": 6,
+          "snippet": "import { resolveEffortThinkingProfile } from \"openclaw/plugin-sdk/provider-thinking-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/vllm/priority.ts",
+          "line": 4,
+          "snippet": "import { asOptionalObjectRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Manually reviewed all seven eligible production TypeScript files, including api.ts and provider-policy-api.ts local barrels, plus package.json and openclaw.plugin.json. All 19 files under extensions/vllm are partitioned into reviewed/excluded records, including the CLAUDE.md symlink.",
+    "Every local production import/reexport stays within extensions/vllm; there is no additional plugin-owned/shared shipped source outside this root. The four .test.ts files have no production importers. No installed dependency or SDK implementation graph was recursively audited.",
+    "The package openclaw.extensions entry points to index.ts. There is no metadata exception requiring generated/build output. Public SDK module specifiers and exported names were checked against package exports and the corresponding SDK facades.",
+    "defineSelfHostedOpenAICompatibleProvider is an imported SDK factory called by index.ts. Registration performed inside that factory is outside this plugin source boundary; provider overrides are not literal api.on/registerHook registrations and do not yield API-member or hook findings.",
+    "ProviderWrapStreamFnContext, ProviderNormalizeResolvedModelContext, ProviderDefaultThinkingPolicyContext, Model and StreamFn are provider/LLM data and callable contracts, not OpenClawPluginApi or PluginRuntime handles. Their fields, indexed accesses, Pick projection, and stream callbacks do not establish API/runtime-member provenance.",
+    "SDK helper return values such as the reasoning object, payload record, Qwen kwargs and thinking profile remain ordinary returned values; accesses to their fields do not create API/runtime members. Local wrapper functions and their barrel exports preserve plugin-local ownership rather than becoming reexports of SDK helpers.",
+    "All explicit imported types are retained as source dependencies with type-reference evidence. The llm module is mixed because its declaration contains resolveOpenAIRequestReasoning as a value import and Model as an inline type import; the two export identities retain separate runtime/type classifications.",
+    "The manifest contract whitelist contributes only manifest.providers:vllm. Categories, activation, modelCatalog, providerRequest, modelPricing, setup, providerAuthChoices and configSchema are metadata/configuration, not additional agreed manifest contract identities.",
+    "The checkout HEAD matches the pinned commit and every reviewed production/metadata file was byte-compared against that commit. Existing authorized AGENTS/skill documentation edits are outside production and were left untouched."
+  ]
+}

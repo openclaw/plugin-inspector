@@ -1,0 +1,357 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "cloudflare",
+    "path": "extensions/cloudflare"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_cloudflare",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/cloudflare/api.ts",
+      "sha256": "90e4600fca14dedb14201879f71e5a568427232b767e661c49dc24d54eefe7cb",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/cloudflare/index.ts",
+      "sha256": "5eb2e103b7d122f7fee5dd6d8a870a0d47248c54043b644694bdd5fee4c23b6b",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/cloudflare/openclaw.plugin.json",
+      "sha256": "5eb259d749dd053d87e2d600ae40b2bd210b30be2fb59b08e380504eebf21517",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/cloudflare/package.json",
+      "sha256": "16f9311a7f6314e3c1e4528078d175739a26a66b3d971ec8b384bc9eebd8dcee",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/cloudflare/runtime-api.ts",
+      "sha256": "d4bfa12d883b3c8d21e73226ed737fa5d3742a71e9fdd6527a3bb316e8cf6138",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/cloudflare/s3-backend.ts",
+      "sha256": "31aaaa6884fe87654264d79ee77938d27a4a0e17df3353d724e7c64c188ee17e",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/cloudflare/settings.ts",
+      "sha256": "6912d3d4d3bfab0ac8b6408967b3572eb2025c82f049c2878689f6d8a0a3f3f4",
+      "role": "production-source",
+      "findingCount": 4
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/cloudflare/README.md",
+      "rule": "non-source",
+      "reason": "Markdown documentation outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/cloudflare/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG image asset; not eligible production source."
+    },
+    {
+      "path": "extensions/cloudflare/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG image asset; not eligible production source."
+    },
+    {
+      "path": "extensions/cloudflare/cloudflare.live.test.ts",
+      "rule": "test-file",
+      "reason": "Live test with .test. basename; no production source imports this test."
+    },
+    {
+      "path": "extensions/cloudflare/s3-backend.test.ts",
+      "rule": "test-file",
+      "reason": "Backend test with .test. basename; no production source imports this test."
+    },
+    {
+      "path": "extensions/cloudflare/settings.test.ts",
+      "rule": "test-file",
+      "reason": "Settings test with .test. basename; no production source imports this test."
+    },
+    {
+      "path": "extensions/cloudflare/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript configuration JSON, outside eligible source extensions; its shared base is configuration, not shipped source."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerStorageProvider",
+      "kind": "api-member",
+      "identity": "api.registerStorageProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cloudflare/index.ts",
+          "line": 9,
+          "snippet": "api.registerStorageProvider(r2StorageProvider);",
+          "note": "definePluginEntry register is OpenClawPluginDefinition.register, whose parameter is OpenClawPluginApi; registerStorageProvider is a declared API method."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.storageProviders:r2",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.storageProviders:r2",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cloudflare/openclaw.plugin.json",
+          "line": 7,
+          "snippet": "\"contracts\": { \"storageProviders\": [\"r2\"] },"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#StorageBackend",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#StorageBackend",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cloudflare/runtime-api.ts",
+          "line": 2,
+          "snippet": "import type { StorageBackend, StorageProviderOpenParams } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/cloudflare/runtime-api.ts",
+          "line": 6,
+          "snippet": "export async function openR2Backend(params: StorageProviderOpenParams): Promise<StorageBackend> {"
+        },
+        {
+          "path": "extensions/cloudflare/s3-backend.ts",
+          "line": 17,
+          "snippet": "import type { StorageBackend } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/cloudflare/s3-backend.ts",
+          "line": 148,
+          "snippet": "): StorageBackend {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#StorageProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#StorageProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cloudflare/api.ts",
+          "line": 1,
+          "snippet": "import type { StorageProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/cloudflare/api.ts",
+          "line": 4,
+          "snippet": "export const r2StorageProvider: StorageProvider = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#StorageProviderOpenParams",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#StorageProviderOpenParams",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cloudflare/runtime-api.ts",
+          "line": 2,
+          "snippet": "import type { StorageBackend, StorageProviderOpenParams } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/cloudflare/runtime-api.ts",
+          "line": 6,
+          "snippet": "export async function openR2Backend(params: StorageProviderOpenParams): Promise<StorageBackend> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cloudflare/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/cloudflare/index.ts",
+          "line": 4,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input#SecretInput",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input#SecretInput",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cloudflare/settings.ts",
+          "line": 1,
+          "snippet": "import { isSecretRef, isValidSecretRef, type SecretInput } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/cloudflare/settings.ts",
+          "line": 8,
+          "snippet": "accessKeyId: SecretInput;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input#isSecretRef",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input#isSecretRef",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cloudflare/settings.ts",
+          "line": 1,
+          "snippet": "import { isSecretRef, isValidSecretRef, type SecretInput } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/cloudflare/settings.ts",
+          "line": 31,
+          "snippet": "if (!isSecretRef(value) || !isValidSecretRef(value)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input#isValidSecretRef",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input#isValidSecretRef",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cloudflare/settings.ts",
+          "line": 1,
+          "snippet": "import { isSecretRef, isValidSecretRef, type SecretInput } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/cloudflare/settings.ts",
+          "line": 31,
+          "snippet": "if (!isSecretRef(value) || !isValidSecretRef(value)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cloudflare/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/cloudflare/api.ts",
+          "line": 1,
+          "snippet": "import type { StorageProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/cloudflare/runtime-api.ts",
+          "line": 2,
+          "snippet": "import type { StorageBackend, StorageProviderOpenParams } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/cloudflare/s3-backend.ts",
+          "line": 17,
+          "snippet": "import type { StorageBackend } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/secret-input",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/secret-input",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/cloudflare/settings.ts",
+          "line": 1,
+          "snippet": "import { isSecretRef, isValidSecretRef, type SecretInput } from \"openclaw/plugin-sdk/secret-input\";",
+          "note": "Value and inline type specifiers create both source dependency categories."
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all five eligible production source files and both metadata files; all 14 plugin-root files are partitioned. Every file matches the pinned commit byte-for-byte. No plugin-local AGENTS.md exists; root, extensions, plugins and plugin-sdk instructions were read.",
+    "All production relative imports remain within extensions/cloudflare: index.ts -> api.ts -> settings.ts/runtime-api.ts, and runtime-api.ts -> settings.ts/s3-backend.ts. There is no additional plugin-owned/shared shipped source outside the root. Package metadata points to index.ts and declares @aws-sdk/client-s3; installed dependency implementations were not audited.",
+    "Public plugin-entry exports and DefinePluginEntryOptions.register establish the registration callback as OpenClawPluginApi; the only observed API member is registerStorageProvider. No API/runtime handles escape; no hooks are registered and no runtime members are consumed.",
+    "StorageProvider, StorageProviderOpenParams and StorageBackend remain source type dependencies. StorageProviderOpenParams.settings/resolveSecret/signal, backend opts, AWS S3 clients/response objects and AbortSignal methods are not OpenClawPluginApi or PluginRuntime members. Plugin-owned provider/backend implementations are not SDK runtime handles.",
+    "The dynamic import of ./runtime-api.js resolves to plugin-owned openR2Backend, not an SDK export or SDK module. It creates no synthetic SDK namespace or dynamic-import dependency.",
+    "settings.ts has ordinary value imports for isSecretRef/isValidSecretRef plus inline type SecretInput, so secret-input is mixed; the function exports are runtime and the explicit type export is type-only. Type usages contribute type-reference, calls contribute call.",
+    "Manifest storageProviders:r2 is the sole agreed contract identity. id/name/description/categories/activation/configSchema and package installation/build/compatibility fields are metadata rather than contract identities. SDK implementation contracts were consulted only for provenance and are outside plugin file coverage."
+  ]
+}

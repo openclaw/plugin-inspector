@@ -1,0 +1,700 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "geolocation",
+    "path": "extensions/geolocation"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_geolocation",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/geolocation/index.ts",
+      "sha256": "746e38e7c6007fc3cd7a94a7edbe33137a3846e28742d9263134ada8efd81328",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/geolocation/openclaw.plugin.json",
+      "sha256": "b6df184b37bbdf4ce7204006df6186131328d020d47a3d2646c51bf5977a2205",
+      "role": "manifest",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/geolocation/package.json",
+      "sha256": "4acc022dceaff5cc09f7a946b82182413e8b1eda419d819c3e2b1d7a102d951a",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/geolocation/src/config.ts",
+      "sha256": "23fe2bb0dd429f2d4f05847d58473f1994afc5491c3353b0666d24ede7018bb8",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/geolocation/src/database-store.ts",
+      "sha256": "cf0c45a071dc2354d8fe6f4434e05684f68f747fed03ac3acf8b60d93450bb5d",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/geolocation/src/gateway-methods.ts",
+      "sha256": "db0c36c64a9081c01a2ddad720e0c99afde753a634ab01360a00d3231a5c7609",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/geolocation/src/lookup-route.ts",
+      "sha256": "92375fdc4dc340fbbf35e0f1ab7ca9a25e69be158fd0cdbc2f9106a7b09a2141",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/geolocation/src/lookup.ts",
+      "sha256": "df63ac4e44d359ac4cc42cac2817ee971653e2cc304b5f622db1e92b19384988",
+      "role": "production-source",
+      "findingCount": 5
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/geolocation/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation, outside eligible source extensions."
+    },
+    {
+      "path": "extensions/geolocation/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Static SVG asset, outside eligible source extensions."
+    },
+    {
+      "path": "extensions/geolocation/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Static image asset, outside eligible source extensions."
+    },
+    {
+      "path": "extensions/geolocation/index.test.ts",
+      "rule": "test-file",
+      "reason": "Entrypoint test file; no production file imports it."
+    },
+    {
+      "path": "extensions/geolocation/src/config.test.ts",
+      "rule": "test-file",
+      "reason": "Configuration test file; no production file imports it."
+    },
+    {
+      "path": "extensions/geolocation/src/database-store.test.ts",
+      "rule": "test-file",
+      "reason": "Database-store test file; no production file imports it."
+    },
+    {
+      "path": "extensions/geolocation/src/lookup-route.test.ts",
+      "rule": "test-file",
+      "reason": "HTTP and lookup test file; no production file imports it."
+    },
+    {
+      "path": "extensions/geolocation/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript compiler configuration, outside eligible source extensions; extends the shared compiler configuration but does not ship executable source."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.logger",
+      "kind": "api-member",
+      "identity": "api.logger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/index.ts",
+          "line": 24,
+          "snippet": "logger: api.logger,",
+          "note": "Direct read passes the API logger unchanged into createGeolocationDatabaseStore; line 29 does the same for createGeolocationLookup."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.info",
+      "kind": "api-member",
+      "identity": "api.logger.info",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/database-store.ts",
+          "line": 99,
+          "snippet": "deps.logger?.info(`geolocation: downloaded ${body.byteLength} bytes from ${url}`);",
+          "note": "index.ts:24 supplies api.logger unchanged to createGeolocationDatabaseStore; its deps object reaches downloadDatabase unchanged at lines 121 and 124."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.warn",
+      "kind": "api-member",
+      "identity": "api.logger.warn",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/database-store.ts",
+          "line": 95,
+          "snippet": "deps.logger?.warn(",
+          "note": "index.ts:24 supplies api.logger unchanged to createGeolocationDatabaseStore; its deps object reaches downloadDatabase unchanged at lines 121 and 124."
+        },
+        {
+          "path": "extensions/geolocation/src/lookup.ts",
+          "line": 45,
+          "snippet": "deps.logger?.warn(`geolocation: lookup unavailable: ${coerceErrorMessage(error)}`);",
+          "note": "index.ts:29 supplies api.logger unchanged to createGeolocationLookup."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig",
+      "kind": "api-member",
+      "identity": "api.pluginConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/index.ts",
+          "line": 18,
+          "snippet": "const settings = resolveGeolocationSettings(api.pluginConfig);"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerGatewayMethod",
+      "kind": "api-member",
+      "identity": "api.registerGatewayMethod",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/gateway-methods.ts",
+          "line": 9,
+          "snippet": "api.registerGatewayMethod(",
+          "note": "The parameter is explicitly OpenClawPluginApi at line 6 and receives the entry register API at index.ts:31."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerHttpRoute",
+      "kind": "api-member",
+      "identity": "api.registerHttpRoute",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/index.ts",
+          "line": 32,
+          "snippet": "api.registerHttpRoute({",
+          "note": "definePluginEntry supplies an OpenClawPluginApi to register."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#coerceErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#coerceErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/database-store.ts",
+          "line": 11,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/geolocation/src/database-store.ts",
+          "line": 102,
+          "snippet": "failures.push(`${url} -> ${coerceErrorMessage(err)}`);"
+        },
+        {
+          "path": "extensions/geolocation/src/lookup.ts",
+          "line": 3,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/geolocation/src/lookup.ts",
+          "line": 45,
+          "snippet": "deps.logger?.warn(`geolocation: lookup unavailable: ${coerceErrorMessage(error)}`);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#tempFile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#tempFile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/database-store.ts",
+          "line": 12,
+          "snippet": "import { tempFile } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/geolocation/src/database-store.ts",
+          "line": 85,
+          "snippet": "await using staged = await tempFile({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#ErrorCodes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#ErrorCodes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import",
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/gateway-methods.ts",
+          "line": 19,
+          "snippet": "const { ErrorCodes, errorShape } = await import(\"openclaw/plugin-sdk/gateway-runtime\");"
+        },
+        {
+          "path": "extensions/geolocation/src/gateway-methods.ts",
+          "line": 24,
+          "snippet": "ErrorCodes.INVALID_REQUEST,",
+          "note": "Non-call property selection on the imported SDK object contributes member-access to the exported root."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#errorShape",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#errorShape",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/gateway-methods.ts",
+          "line": 19,
+          "snippet": "const { ErrorCodes, errorShape } = await import(\"openclaw/plugin-sdk/gateway-runtime\");"
+        },
+        {
+          "path": "extensions/geolocation/src/gateway-methods.ts",
+          "line": 23,
+          "snippet": "errorShape("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#asPositiveFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#asPositiveFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/config.ts",
+          "line": 1,
+          "snippet": "import { asPositiveFiniteNumber } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/geolocation/src/config.ts",
+          "line": 19,
+          "snippet": "const refreshDays = asPositiveFiniteNumber(config?.refreshDays) ?? DEFAULT_REFRESH_DAYS;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/gateway-methods.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/geolocation/src/gateway-methods.ts",
+          "line": 6,
+          "snippet": "api: OpenClawPluginApi,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/index.ts",
+          "line": 5,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/geolocation/index.ts",
+          "line": 13,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-runtime#getPluginRuntimeGatewayRequestScope",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-runtime#getPluginRuntimeGatewayRequestScope",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/lookup-route.ts",
+          "line": 4,
+          "snippet": "import { getPluginRuntimeGatewayRequestScope } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/geolocation/src/lookup-route.ts",
+          "line": 27,
+          "snippet": "const scope = getPluginRuntimeGatewayRequestScope();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/response-limit-runtime#readByteStreamWithLimit",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/response-limit-runtime#readByteStreamWithLimit",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/database-store.ts",
+          "line": 13,
+          "snippet": "import { readByteStreamWithLimit } from \"openclaw/plugin-sdk/response-limit-runtime\";"
+        },
+        {
+          "path": "extensions/geolocation/src/database-store.ts",
+          "line": 69,
+          "snippet": "const raw = await readByteStreamWithLimit(response.body.values(), {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#isPrivateOrLoopbackHost",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#isPrivateOrLoopbackHost",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/lookup.ts",
+          "line": 4,
+          "snippet": "import { isPrivateOrLoopbackHost } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/geolocation/src/lookup.ts",
+          "line": 41,
+          "snippet": "if (ips.some((ip) => !isPrivateOrLoopbackHost(ip))) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/state-paths#resolveStateDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/state-paths#resolveStateDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/index.ts",
+          "line": 6,
+          "snippet": "import { resolveStateDir } from \"openclaw/plugin-sdk/state-paths\";"
+        },
+        {
+          "path": "extensions/geolocation/index.ts",
+          "line": 20,
+          "snippet": "stateDir: resolveStateDir(),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/config.ts",
+          "line": 3,
+          "snippet": "asOptionalRecord,",
+          "note": "Named import from openclaw/plugin-sdk/string-coerce-runtime, whose specifier is on line 5."
+        },
+        {
+          "path": "extensions/geolocation/src/config.ts",
+          "line": 18,
+          "snippet": "const config = asOptionalRecord(pluginConfig);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/config.ts",
+          "line": 4,
+          "snippet": "normalizeOptionalString,",
+          "note": "Named import from openclaw/plugin-sdk/string-coerce-runtime, whose specifier is on line 5."
+        },
+        {
+          "path": "extensions/geolocation/src/config.ts",
+          "line": 21,
+          "snippet": "databaseUrl: normalizeOptionalString(config?.databaseUrl) ?? DEFAULT_DATABASE_URL,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/database-store.ts",
+          "line": 11,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/geolocation/src/lookup.ts",
+          "line": 3,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/file-access-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/file-access-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/database-store.ts",
+          "line": 12,
+          "snippet": "import { tempFile } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/gateway-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/gateway-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/gateway-methods.ts",
+          "line": 19,
+          "snippet": "const { ErrorCodes, errorShape } = await import(\"openclaw/plugin-sdk/gateway-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/config.ts",
+          "line": 1,
+          "snippet": "import { asPositiveFiniteNumber } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/index.ts",
+          "line": 5,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/geolocation/src/gateway-methods.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/lookup-route.ts",
+          "line": 4,
+          "snippet": "import { getPluginRuntimeGatewayRequestScope } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/response-limit-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/response-limit-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/database-store.ts",
+          "line": 13,
+          "snippet": "import { readByteStreamWithLimit } from \"openclaw/plugin-sdk/response-limit-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/lookup.ts",
+          "line": 4,
+          "snippet": "import { isPrivateOrLoopbackHost } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/state-paths",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/state-paths",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/index.ts",
+          "line": 6,
+          "snippet": "import { resolveStateDir } from \"openclaw/plugin-sdk/state-paths\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/geolocation/src/config.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all six production TypeScript files and both metadata files. All 16 files under the plugin root are partitioned into reviewed or excluded records. No declaration files or ambiguous test-only helpers are present.",
+    "All production relative imports remain within extensions/geolocation. package.json declares index.ts as its sole extension entry, maxmind as an installed dependency, and no build-output exception. The shared tsconfig is compiler configuration only; no additional shared shipped source is included. Installed dependencies and SDK implementation dependencies are not recursively audited.",
+    "Confirmed HEAD and plugin production/metadata contents match the pinned commit. Root, extensions, src/plugins and src/plugin-sdk AGENTS.md were read; observed authorized instruction/skill work elsewhere is outside this audit.",
+    "Public package exports and focused SDK facades establish all ten exact module specifiers and thirteen original exports. OpenClawPluginApi has an explicit type import/reference; the plugin-entry module is mixed because definePluginEntry is ordinarily imported at the entrypoint.",
+    "The immediately destructured dynamic gateway-runtime import contributes only ErrorCodes and errorShape exports, without a synthetic namespace export or destructuring member-access. The later ErrorCodes.INVALID_REQUEST selection establishes member-access; errorShape invocation establishes call.",
+    "api.logger is read as a whole at index.ts:24 and :29, then passed unchanged into the only production callers of the store and lookup helpers. Downstream deps.logger.info/warn calls therefore preserve API provenance. Structural local logger annotations do not create SDK type dependencies.",
+    "The API pluginConfig read is recorded; asOptionalRecord returns a coercion result whose subsequent config fields are not additional public API members. Likewise tempFile result staged.path and getPluginRuntimeGatewayRequestScope result scope.revalidate are SDK helper return objects, not proven PluginRuntime handles.",
+    "Gateway handler options/params/respond and plugin-owned settings, store, lookup and MaxMind objects do not become API/runtime handles. No api.runtime or PluginRuntime member consumption occurs.",
+    "The manifest declares activation, configuration and descriptive metadata but none of channels, providers, skills, commandAliases, cliCommands or contracts. Consequently there are no agreed manifest-contract findings; no hooks are registered."
+  ]
+}

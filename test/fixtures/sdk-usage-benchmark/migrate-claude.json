@@ -1,0 +1,1404 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "migrate-claude",
+    "path": "extensions/migrate-claude"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_migrate_claude",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/migrate-claude/apply.ts",
+      "sha256": "157ad1913c7749e263ab42b54f149476b47a50cf0301c56be233b28206b9fd7e",
+      "role": "production-source",
+      "findingCount": 16
+    },
+    {
+      "path": "extensions/migrate-claude/config.ts",
+      "sha256": "fc948a4c0e35f686052a0aa644ff071a1e660159daac30d64bd465cba34a5728",
+      "role": "production-source",
+      "findingCount": 11
+    },
+    {
+      "path": "extensions/migrate-claude/helpers.ts",
+      "sha256": "ec047989db541312f2e5968bb37b1958d74372873f951b84e05aec4ed0efe76d",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/migrate-claude/index.ts",
+      "sha256": "88505236eb8bbc0f020cc0762e4b18d1cd786834e5c0fe132774027f1d5f8bf5",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/migrate-claude/memory.ts",
+      "sha256": "36df5b36bd9498277075025e1c15cceb69db566bfeab12df53ac9d96028eade4",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/migrate-claude/openclaw.plugin.json",
+      "sha256": "ff6a188bed180944f5141a4cff9e437747b8bc3f5bd4367e7d61b2ea8aeef714",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/migrate-claude/package.json",
+      "sha256": "f3f0afb1975146bd070cd8574d15ffed74eab5d19af45ff5b48ed4a77eb5cc39",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/migrate-claude/plan.ts",
+      "sha256": "d11712cd59b3e59b4a9fe3d0722735bdfa11adc1516a2531d25580e94049f355",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/migrate-claude/provider.ts",
+      "sha256": "d2997493f9c041063d82c20f6a8743ad03913e2558b2c518e189688f02c4cd61",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/migrate-claude/skills.ts",
+      "sha256": "6eda41ce6f2cdc28548b5b2125d83d5fcc5887d21cbd1ca839581d052e75bc4e",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/migrate-claude/source.ts",
+      "sha256": "af7d2254b49b6a800ef5babad63677d679605a2aa479fed9de1c7b0e8a1c633b",
+      "role": "production-source",
+      "findingCount": 3
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/migrate-claude/README.md",
+      "rule": "non-source",
+      "reason": "Markdown usage documentation; outside the contract source extensions."
+    },
+    {
+      "path": "extensions/migrate-claude/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork; outside the contract source extensions."
+    },
+    {
+      "path": "extensions/migrate-claude/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG artwork; outside the contract source extensions."
+    },
+    {
+      "path": "extensions/migrate-claude/provider.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file with .test. basename; not imported by production source."
+    },
+    {
+      "path": "extensions/migrate-claude/test/provider-helpers.ts",
+      "rule": "test-directory",
+      "reason": "Test-only context, mock runtime and file-writing helpers. Its sole plugin caller is provider.test.ts:17; all production imports were read and no production file imports it."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerMigrationProvider",
+      "kind": "api-member",
+      "identity": "api.registerMigrationProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/index.ts",
+          "line": 9,
+          "snippet": "    api.registerMigrationProvider(buildClaudeMigrationProvider({ runtime: api.runtime }));",
+          "note": "definePluginEntry gives register an OpenClawPluginApi; api.runtime is forwarded unchanged via provider.ts to a known SDK migration helper, without a direct concrete runtime member access."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.migrationProviders:claude",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.migrationProviders:claude",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/openclaw.plugin.json",
+          "line": 10,
+          "snippet": "    \"migrationProviders\": [\"claude\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#extractErrorCode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#extractErrorCode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 3,
+          "snippet": "import { extractErrorCode } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 24,
+          "snippet": "    const code = extractErrorCode(error);"
+        },
+        {
+          "path": "extensions/migrate-claude/source.ts",
+          "line": 6,
+          "snippet": "import { extractErrorCode } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/source.ts",
+          "line": 87,
+          "snippet": "    const code = extractErrorCode(error);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#canonicalPathFromExistingAncestor",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#canonicalPathFromExistingAncestor",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 5,
+          "snippet": "  canonicalPathFromExistingAncestor,",
+          "note": "Named value import from openclaw/plugin-sdk/file-access-runtime."
+        },
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 118,
+          "snippet": "    workspace: await canonicalPathFromExistingAncestor(workspaceDir),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#isPathInside",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#isPathInside",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 6,
+          "snippet": "  isPathInside,",
+          "note": "Named value import from openclaw/plugin-sdk/file-access-runtime."
+        },
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 127,
+          "snippet": "  if (!isPathInside(boundary.workspace, canonicalTarget)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#MIGRATION_REASON_MISSING_SOURCE_OR_TARGET",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#MIGRATION_REASON_MISSING_SOURCE_OR_TARGET",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 7,
+          "snippet": "  MIGRATION_REASON_MISSING_SOURCE_OR_TARGET,",
+          "note": "Named value import from openclaw/plugin-sdk/migration; later bare argument passing adds no reference kind."
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 8,
+          "snippet": "  MIGRATION_REASON_MISSING_SOURCE_OR_TARGET,",
+          "note": "Named value import from openclaw/plugin-sdk/migration."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#MIGRATION_REASON_TARGET_EXISTS",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#MIGRATION_REASON_TARGET_EXISTS",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 5,
+          "snippet": "  MIGRATION_REASON_TARGET_EXISTS,",
+          "note": "Named value import from openclaw/plugin-sdk/migration; bare value uses add no reference kind."
+        },
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 8,
+          "snippet": "import { createMigrationItem, MIGRATION_REASON_TARGET_EXISTS } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 9,
+          "snippet": "  MIGRATION_REASON_TARGET_EXISTS,",
+          "note": "Named value import from openclaw/plugin-sdk/migration."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#applyMigrationConfigPatchItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#applyMigrationConfigPatchItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 3,
+          "snippet": "  applyMigrationConfigPatchItem,",
+          "note": "Named value import from openclaw/plugin-sdk/migration."
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 45,
+          "snippet": "      items.push(await applyMigrationConfigPatchItem(applyCtx, item));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#applyMigrationManualItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#applyMigrationManualItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 4,
+          "snippet": "  applyMigrationManualItem,",
+          "note": "Named value import from openclaw/plugin-sdk/migration."
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 47,
+          "snippet": "      items.push(applyMigrationManualItem(item));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#createMigrationConfigPatchItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#createMigrationConfigPatchItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 2,
+          "snippet": "  createMigrationConfigPatchItem,",
+          "note": "Named value import from openclaw/plugin-sdk/migration."
+        },
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 114,
+          "snippet": "        createMigrationConfigPatchItem({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#createMigrationItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#createMigrationItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 1,
+          "snippet": "import { createMigrationItem, summarizeMigrationItems } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 21,
+          "snippet": "    createMigrationItem({"
+        },
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 8,
+          "snippet": "import { createMigrationItem, MIGRATION_REASON_TARGET_EXISTS } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 44,
+          "snippet": "    createMigrationItem({"
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 5,
+          "snippet": "  createMigrationItem,",
+          "note": "Named value import from openclaw/plugin-sdk/migration."
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 111,
+          "snippet": "      createMigrationItem({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#createMigrationManualItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#createMigrationManualItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 3,
+          "snippet": "  createMigrationManualItem,",
+          "note": "Named value import from openclaw/plugin-sdk/migration."
+        },
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 157,
+          "snippet": "          createMigrationManualItem({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#hasMigrationConfigPatchConflict",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#hasMigrationConfigPatchConflict",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 4,
+          "snippet": "  hasMigrationConfigPatchConflict,",
+          "note": "Named value import from openclaw/plugin-sdk/migration."
+        },
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 112,
+          "snippet": "          hasMigrationConfigPatchConflict(params.ctx.config, [\"mcp\", \"servers\"], patch));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#markMigrationItemConflict",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#markMigrationItemConflict",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 6,
+          "snippet": "  markMigrationItemConflict,",
+          "note": "Named value import from openclaw/plugin-sdk/migration."
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 171,
+          "snippet": "      return markMigrationItemConflict(item, MIGRATION_REASON_TARGET_EXISTS);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#markMigrationItemError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#markMigrationItemError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 5,
+          "snippet": "  markMigrationItemError,",
+          "note": "Named value import from openclaw/plugin-sdk/migration."
+        },
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 59,
+          "snippet": "    return markMigrationItemError(item, MIGRATION_REASON_MISSING_SOURCE_OR_TARGET);"
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 7,
+          "snippet": "  markMigrationItemError,",
+          "note": "Named value import from openclaw/plugin-sdk/migration."
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 165,
+          "snippet": "    return markMigrationItemError(item, MIGRATION_REASON_MISSING_SOURCE_OR_TARGET);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#markMigrationItemSkipped",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#markMigrationItemSkipped",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 6,
+          "snippet": "  markMigrationItemSkipped,",
+          "note": "Named value import from openclaw/plugin-sdk/migration."
+        },
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 69,
+          "snippet": "      return markMigrationItemSkipped(item, \"source file is empty\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#summarizeMigrationItems",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#summarizeMigrationItems",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 5,
+          "snippet": "  summarizeMigrationItems,",
+          "note": "Named value import from openclaw/plugin-sdk/migration."
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 70,
+          "snippet": "    summary: summarizeMigrationItems(items),"
+        },
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 1,
+          "snippet": "import { createMigrationItem, summarizeMigrationItems } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 108,
+          "snippet": "    summary: summarizeMigrationItems(items),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#PlannedMigrationTargets",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#PlannedMigrationTargets",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 9,
+          "snippet": "import type { PlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 142,
+          "snippet": "  targets: PlannedMigrationTargets;"
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 12,
+          "snippet": "import type { PlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 29,
+          "snippet": "  targets: PlannedMigrationTargets,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#archiveMigrationItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#archiveMigrationItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 8,
+          "snippet": "  archiveMigrationItem,",
+          "note": "Named value import from openclaw/plugin-sdk/migration-runtime."
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 49,
+          "snippet": "      items.push(await archiveMigrationItem(item, reportDir));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#backupMigrationItemTarget",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#backupMigrationItemTarget",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 11,
+          "snippet": "import { backupMigrationItemTarget } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 185,
+          "snippet": "      ? await backupMigrationItemTarget(item.target, reportDir, { dereference: true })"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#copyMemoryMigrationFileItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#copyMemoryMigrationFileItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 9,
+          "snippet": "  copyMemoryMigrationFileItem,",
+          "note": "Named value import from openclaw/plugin-sdk/migration-runtime."
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 58,
+          "snippet": "        await copyMemoryMigrationFileItem(item, reportDir, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#copyMigrationFileItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#copyMigrationFileItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 10,
+          "snippet": "  copyMigrationFileItem,",
+          "note": "Named value import from openclaw/plugin-sdk/migration-runtime."
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 64,
+          "snippet": "      items.push(await copyMigrationFileItem(item, reportDir, { overwrite: params.ctx.overwrite }));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#resolvePlannedMigrationTargets",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#resolvePlannedMigrationTargets",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 11,
+          "snippet": "  resolvePlannedMigrationTargets,",
+          "note": "Named value import from openclaw/plugin-sdk/migration-runtime."
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 36,
+          "snippet": "  const targets = resolvePlannedMigrationTargets(params.ctx);"
+        },
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 2,
+          "snippet": "import { resolvePlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 41,
+          "snippet": "  const targets = resolvePlannedMigrationTargets(ctx);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#withCachedMigrationConfigRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#withCachedMigrationConfigRuntime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 12,
+          "snippet": "  withCachedMigrationConfigRuntime,",
+          "note": "Named value import from openclaw/plugin-sdk/migration-runtime."
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 32,
+          "snippet": "  const runtime = withCachedMigrationConfigRuntime(\n    params.ctx.runtime ?? params.runtime,\n    params.ctx.config,\n  );",
+          "note": "Known SDK helper receives the forwarded runtime handle; its internals and returned object do not create plugin runtime-member findings."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#writeMigrationReport",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#writeMigrationReport",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 13,
+          "snippet": "  writeMigrationReport,",
+          "note": "Named value import from openclaw/plugin-sdk/migration-runtime."
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 74,
+          "snippet": "  await writeMigrationReport(result, { title: \"Claude Migration Report\" });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#MigrationApplyResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#MigrationApplyResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 15,
+          "snippet": "import type {\n  MigrationApplyResult,\n  MigrationItem,\n  MigrationPlan,\n  MigrationProviderContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 29,
+          "snippet": "}): Promise<MigrationApplyResult> {"
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 67,
+          "snippet": "  const result: MigrationApplyResult = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#MigrationItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#MigrationItem",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 15,
+          "snippet": "import type {\n  MigrationApplyResult,\n  MigrationItem,\n  MigrationPlan,\n  MigrationProviderContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 38,
+          "snippet": "  const items: MigrationItem[] = [];"
+        },
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 9,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 57,
+          "snippet": "export async function appendItem(item: MigrationItem): Promise<MigrationItem> {"
+        },
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 3,
+          "snippet": "import type {\n  MigrationItem,\n  MigrationPlan,\n  MigrationProviderContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 14,
+          "snippet": "  items: MigrationItem[],"
+        },
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 7,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 96,
+          "snippet": "}): Promise<MigrationItem[]> {"
+        },
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 10,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 33,
+          "snippet": "  items: MigrationItem[];"
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 13,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 160,
+          "snippet": "  item: MigrationItem,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#MigrationPlan",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#MigrationPlan",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/provider.ts",
+          "line": 1,
+          "snippet": "import type {\n  MigrationPlan,\n  MigrationProviderContext,\n  MigrationProviderPlugin,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/provider.ts",
+          "line": 33,
+          "snippet": "    async apply(ctx, plan?: MigrationPlan) {"
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 15,
+          "snippet": "import type {\n  MigrationApplyResult,\n  MigrationItem,\n  MigrationPlan,\n  MigrationProviderContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 27,
+          "snippet": "  plan?: MigrationPlan;"
+        },
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 3,
+          "snippet": "import type {\n  MigrationItem,\n  MigrationPlan,\n  MigrationProviderContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 34,
+          "snippet": "export async function buildClaudePlan(ctx: MigrationProviderContext): Promise<MigrationPlan> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#MigrationProviderContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#MigrationProviderContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/provider.ts",
+          "line": 1,
+          "snippet": "import type {\n  MigrationPlan,\n  MigrationProviderContext,\n  MigrationProviderPlugin,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/provider.ts",
+          "line": 12,
+          "snippet": "    runtime?: MigrationProviderContext[\"runtime\"];",
+          "note": "Indexed access selects the whole PluginRuntime handle from this context type; no concrete runtime member is selected."
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 15,
+          "snippet": "import type {\n  MigrationApplyResult,\n  MigrationItem,\n  MigrationPlan,\n  MigrationProviderContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 26,
+          "snippet": "  ctx: MigrationProviderContext;\n  plan?: MigrationPlan;\n  runtime?: MigrationProviderContext[\"runtime\"];"
+        },
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 3,
+          "snippet": "import type {\n  MigrationItem,\n  MigrationPlan,\n  MigrationProviderContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 34,
+          "snippet": "export async function buildClaudePlan(ctx: MigrationProviderContext): Promise<MigrationPlan> {"
+        },
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 7,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 94,
+          "snippet": "  ctx: MigrationProviderContext;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#MigrationProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#MigrationProviderPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/provider.ts",
+          "line": 1,
+          "snippet": "import type {\n  MigrationPlan,\n  MigrationProviderContext,\n  MigrationProviderPlugin,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/provider.ts",
+          "line": 14,
+          "snippet": "): MigrationProviderPlugin {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/index.ts",
+          "line": 4,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#appendRegularFile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#appendRegularFile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 11,
+          "snippet": "  appendRegularFile,",
+          "note": "Named value import from openclaw/plugin-sdk/security-runtime."
+        },
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 79,
+          "snippet": "    await appendRegularFile({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#pathExists",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#pathExists",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import",
+        "member-access",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 12,
+          "snippet": "  pathExists,",
+          "note": "Original SDK export imported from openclaw/plugin-sdk/security-runtime."
+        },
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 25,
+          "snippet": "export { pathExists as exists };",
+          "note": "Explicit local reexport preserves the original SDK export under the alias exists."
+        },
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 72,
+          "snippet": "    const existing = (await pathExists(item.target))",
+          "note": "Direct SDK function invocation."
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 15,
+          "snippet": "import { exists, sanitizeName } from \"./helpers.js\";",
+          "note": "Local-barrel import of exists resolves through helpers.ts to SDK pathExists."
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 41,
+          "snippet": "    if (!(await exists(path.join(source, \"SKILL.md\")))) {",
+          "note": "Unchanged local alias invocation of pathExists."
+        },
+        {
+          "path": "extensions/migrate-claude/source.ts",
+          "line": 7,
+          "snippet": "import { exists, isDirectory, readJsonObject, resolveHomePath } from \"./helpers.js\";",
+          "note": "Local-barrel import of exists resolves through helpers.ts to SDK pathExists."
+        },
+        {
+          "path": "extensions/migrate-claude/source.ts",
+          "line": 78,
+          "snippet": "  if ((await exists(candidate)) || (await isDirectory(candidate))) {",
+          "note": "Unchanged local alias invocation of pathExists."
+        },
+        {
+          "path": "extensions/migrate-claude/source.ts",
+          "line": 253,
+          "snippet": "  for (const [key, candidate, probe] of [\n    [\"userSettingsPath\", userSettingsPath, exists],\n    [\"userLocalSettingsPath\", userLocalSettingsPath, exists],\n    [\"userClaudeJsonPath\", userClaudeJsonPath, exists],\n    [\"userMemoryPath\", userMemoryPath, exists],\n    [\"userSkillsDir\", userSkillsDir, isDirectory],\n    [\"userCommandsDir\", userCommandsDir, isDirectory],\n    [\"userAgentsDir\", userAgentsDir, isDirectory],\n    [\"desktopConfigPath\", desktopConfigPath, exists],\n  ] as const) {\n    if (candidate && (await probe(candidate))) {",
+          "note": "The closed literal tuples include known SDK-valued third slots (exists). Destructuring probe selects pathExists for those rows: member-access; invoking the unchanged probe supplies call. Distinct isDirectory rows remain plugin-owned."
+        },
+        {
+          "path": "extensions/migrate-claude/source.ts",
+          "line": 269,
+          "snippet": "    for (const [key, candidate, probe] of [\n      [\"projectSettingsPath\", path.join(projectDir, \".claude\", \"settings.json\"), exists],\n      [\"projectLocalSettingsPath\", path.join(projectDir, \".claude\", \"settings.local.json\"), exists],\n      [\"projectMcpPath\", path.join(projectDir, \".mcp.json\"), exists],\n      [\"projectMemoryPath\", path.join(projectDir, \"CLAUDE.md\"), exists],\n      [\"projectDotClaudeMemoryPath\", path.join(projectDir, \".claude\", \"CLAUDE.md\"), exists],\n      [\"projectLocalMemoryPath\", path.join(projectDir, \"CLAUDE.local.md\"), exists],\n      [\"projectRulesDir\", path.join(projectDir, \".claude\", \"rules\"), isDirectory],\n      [\"projectSkillsDir\", path.join(projectDir, \".claude\", \"skills\"), isDirectory],\n      [\"projectCommandsDir\", path.join(projectDir, \".claude\", \"commands\"), isDirectory],\n      [\"projectAgentsDir\", path.join(projectDir, \".claude\", \"agents\"), isDirectory],\n    ] as const) {\n      if (await probe(candidate)) {\n        source[key] = candidate;",
+          "note": "The second closed tuple array likewise selects and invokes the unchanged SDK exists alias on its known SDK-valued rows; insertion of the bare alias alone adds no reference kind."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#readRegularFile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#readRegularFile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 13,
+          "snippet": "  readRegularFile,",
+          "note": "Named value import from openclaw/plugin-sdk/security-runtime."
+        },
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 73,
+          "snippet": "      ? (await readRegularFile({ filePath: item.target })).buffer.toString(\"utf8\")"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asNonArrayRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asNonArrayRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 8,
+          "snippet": "import { asNonArrayRecord, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 77,
+          "snippet": "    const projectRecord = asNonArrayRecord(\n      asNonArrayRecord(claudeJson.projects)[source.projectDir],\n    );"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 15,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 51,
+          "snippet": "    return isRecord(parsed) ? parsed : {};"
+        },
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 8,
+          "snippet": "import { asNonArrayRecord, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 20,
+          "snippet": "  if (!isRecord(raw)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 14,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 148,
+          "snippet": "    `description: ${JSON.stringify(truncateUtf16Safe(description, 180))}`,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 3,
+          "snippet": "import { extractErrorCode } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/source.ts",
+          "line": 6,
+          "snippet": "import { extractErrorCode } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/file-access-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/file-access-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 4,
+          "snippet": "import {\n  canonicalPathFromExistingAncestor,\n  isPathInside,\n} from \"openclaw/plugin-sdk/file-access-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/migration",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/migration",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 2,
+          "snippet": "import {\n  applyMigrationConfigPatchItem,\n  applyMigrationManualItem,\n  summarizeMigrationItems,\n} from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 4,
+          "snippet": "import {\n  markMigrationItemError,\n  markMigrationItemSkipped,\n  MIGRATION_REASON_MISSING_SOURCE_OR_TARGET,\n} from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 1,
+          "snippet": "import { createMigrationItem, summarizeMigrationItems } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 1,
+          "snippet": "import {\n  createMigrationConfigPatchItem,\n  createMigrationManualItem,\n  hasMigrationConfigPatchConflict,\n  MIGRATION_REASON_TARGET_EXISTS,\n} from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 8,
+          "snippet": "import { createMigrationItem, MIGRATION_REASON_TARGET_EXISTS } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 4,
+          "snippet": "import {\n  createMigrationItem,\n  markMigrationItemConflict,\n  markMigrationItemError,\n  MIGRATION_REASON_MISSING_SOURCE_OR_TARGET,\n  MIGRATION_REASON_TARGET_EXISTS,\n} from \"openclaw/plugin-sdk/migration\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/migration-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/migration-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 7,
+          "snippet": "import {\n  archiveMigrationItem,\n  copyMemoryMigrationFileItem,\n  copyMigrationFileItem,\n  resolvePlannedMigrationTargets,\n  withCachedMigrationConfigRuntime,\n  writeMigrationReport,\n} from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 2,
+          "snippet": "import { resolvePlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 9,
+          "snippet": "import type { PlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 11,
+          "snippet": "import { backupMigrationItemTarget } from \"openclaw/plugin-sdk/migration-runtime\";\nimport type { PlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/provider.ts",
+          "line": 1,
+          "snippet": "import type {\n  MigrationPlan,\n  MigrationProviderContext,\n  MigrationProviderPlugin,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/apply.ts",
+          "line": 15,
+          "snippet": "import type {\n  MigrationApplyResult,\n  MigrationItem,\n  MigrationPlan,\n  MigrationProviderContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/plan.ts",
+          "line": 3,
+          "snippet": "import type {\n  MigrationItem,\n  MigrationPlan,\n  MigrationProviderContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 7,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 9,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/memory.ts",
+          "line": 10,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 13,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/security-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/security-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 10,
+          "snippet": "import {\n  appendRegularFile,\n  pathExists,\n  readRegularFile,\n} from \"openclaw/plugin-sdk/security-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/helpers.ts",
+          "line": 15,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-claude/config.ts",
+          "line": 8,
+          "snippet": "import { asNonArrayRecord, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/text-utility-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-claude/skills.ts",
+          "line": 14,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all nine eligible production TypeScript files, both metadata files, root/extensions/SDK/plugins AGENTS.md, and the complete benchmark contract and README. Expectations were manually derived without Inspector implementation, helpers, output or other fixtures.",
+    "All 16 files under extensions/migrate-claude are partitioned into 11 reviewed and five excluded records. Package metadata exposes only ./index.ts; there are no build-output exceptions or declaration files. Production and metadata bytes were compared with the pinned source commit.",
+    "All production relative imports remain within this plugin root; there is no additional plugin-owned or shared shipped source boundary. Node built-ins and separately installed @openclaw/fs-safe/walk are outside this SDK benchmark; their implementations were not audited.",
+    "helpers.ts explicitly reexports SDK pathExists as exists. Local imports in source.ts and skills.ts preserve its original SDK identity and import/reexport/call provenance. Closed literal probe tuples also establish member-access for their known exists rows; isDirectory remains a separate plugin-owned function.",
+    "The API runtime handle is passed from index.ts through buildClaudeMigrationProvider and applyClaudePlan into the known SDK helper withCachedMigrationConfigRuntime. MigrationProviderContext.runtime is PluginRuntime, but this plugin selects no concrete runtime member; no runtime root or api.runtime prefix is emitted, and known SDK helper internals are not inferred.",
+    "Migration contexts, planned targets and SDK helper return values are not plugin API objects. Their config, source, workspaceDir and other data properties do not create API/runtime member findings. MigrationProviderContext[\"runtime\"] selects the whole runtime handle and creates only its SDK type dependency.",
+    "There are no named API hook registrations. Claude configuration keys called hooks are imported user data, not API hook declarations. The only manifest contract is contracts.migrationProviders = claude; descriptive and configuration metadata are not contracts.",
+    "Source-syntax classification retains explicit type imports and type references. plugin-entry and migration-runtime module identities are mixed due to independent value and type import sites. SDK constants passed as bare values gain no additional member-access kind. No genuine unresolved dependency construct remains."
+  ]
+}

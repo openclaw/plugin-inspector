@@ -1,0 +1,335 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "web-readability",
+    "path": "extensions/web-readability"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_web_readability",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/web-readability/index.ts",
+      "sha256": "d57d6f3417054856edb0069efee23159b53978d927e4c9907ef538a7c1fa801d",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/web-readability/openclaw.plugin.json",
+      "sha256": "b938ea43b1b74fdf90fa5b1395c136935757f108f2a428d86449a3c6a2fb1fdc",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/web-readability/package.json",
+      "sha256": "1a205149420247851d44ecbc6d4708b9a9c4c7d3cee5f9ef277f1b4dd8ee04a4",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/web-readability/web-content-extractor.ts",
+      "sha256": "f3b6b465fe636de519481a675abd7f870ee23828b2cf4d9735d34357e71bbad0",
+      "role": "production-source",
+      "findingCount": 9
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/web-readability/README.md",
+      "rule": "non-source",
+      "reason": "Plugin user documentation; not a JS/TS-family source file or package/manifest metadata."
+    },
+    {
+      "path": "extensions/web-readability/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Static SVG artwork; not a JS/TS-family source file."
+    },
+    {
+      "path": "extensions/web-readability/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Static PNG icon; not a JS/TS-family source file."
+    },
+    {
+      "path": "extensions/web-readability/web-content-extractor.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest extraction regression tests; basename contains .test. and neither production file imports the test."
+    }
+  ],
+  "findings": [
+    {
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.webContentExtractors:readability",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/web-readability/openclaw.plugin.json",
+          "line": 11,
+          "snippet": "    \"webContentExtractors\": [\"readability\"]"
+        }
+      ],
+      "key": "manifest-contract:manifest.contracts.webContentExtractors:readability"
+    },
+    {
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 1,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        },
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 34,
+          "snippet": "const loadReadabilityDeps = createLazyRuntimeModule(() =>"
+        }
+      ],
+      "key": "sdk-export:openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule"
+    },
+    {
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/web-readability/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/web-readability/index.ts",
+          "line": 3,
+          "snippet": "export default definePluginEntry({"
+        }
+      ],
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry"
+    },
+    {
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/web-content-extractor#WebContentExtractionRequest",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 7,
+          "snippet": "  type WebContentExtractionRequest,",
+          "note": "Inline type import from openclaw/plugin-sdk/web-content-extractor (specifier at line 9)."
+        },
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 111,
+          "snippet": "async function extractWithReadability(request: WebContentExtractionRequest) {"
+        }
+      ],
+      "key": "sdk-export:openclaw/plugin-sdk/web-content-extractor#WebContentExtractionRequest"
+    },
+    {
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/web-content-extractor#WebContentExtractorPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 8,
+          "snippet": "  type WebContentExtractorPlugin,",
+          "note": "Inline type import from openclaw/plugin-sdk/web-content-extractor (specifier at line 9)."
+        },
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 140,
+          "snippet": "export function createReadabilityWebContentExtractor(): WebContentExtractorPlugin {"
+        }
+      ],
+      "key": "sdk-export:openclaw/plugin-sdk/web-content-extractor#WebContentExtractorPlugin"
+    },
+    {
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/web-content-extractor#htmlToMarkdown",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 3,
+          "snippet": "  htmlToMarkdown,",
+          "note": "Named value import from openclaw/plugin-sdk/web-content-extractor (specifier at line 9)."
+        },
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 132,
+          "snippet": "      : htmlToMarkdown(parsed.content ?? \"\");"
+        }
+      ],
+      "key": "sdk-export:openclaw/plugin-sdk/web-content-extractor#htmlToMarkdown"
+    },
+    {
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/web-content-extractor#normalizeWhitespace",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 4,
+          "snippet": "  normalizeWhitespace,",
+          "note": "Named value import from openclaw/plugin-sdk/web-content-extractor (specifier at line 9)."
+        },
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 131,
+          "snippet": "      ? { text: normalizeWhitespace(parsed.textContent ?? \"\"), title }"
+        }
+      ],
+      "key": "sdk-export:openclaw/plugin-sdk/web-content-extractor#normalizeWhitespace"
+    },
+    {
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/web-content-extractor#sanitizeHtml",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 5,
+          "snippet": "  sanitizeHtml,",
+          "note": "Named value import from openclaw/plugin-sdk/web-content-extractor (specifier at line 9)."
+        },
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 112,
+          "snippet": "  const cleanHtml = await sanitizeHtml(request.html);"
+        }
+      ],
+      "key": "sdk-export:openclaw/plugin-sdk/web-content-extractor#sanitizeHtml"
+    },
+    {
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/web-content-extractor#stripInvisibleUnicode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 6,
+          "snippet": "  stripInvisibleUnicode,",
+          "note": "Named value import from openclaw/plugin-sdk/web-content-extractor (specifier at line 9)."
+        },
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 133,
+          "snippet": "    const text = stripInvisibleUnicode(rendered.text);"
+        }
+      ],
+      "key": "sdk-export:openclaw/plugin-sdk/web-content-extractor#stripInvisibleUnicode"
+    },
+    {
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/lazy-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 1,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        }
+      ],
+      "key": "sdk-module:openclaw/plugin-sdk/lazy-runtime"
+    },
+    {
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/web-readability/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ],
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry"
+    },
+    {
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/web-content-extractor",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/web-content-extractor\";",
+          "note": "The import block at lines 2\u20139 combines four ordinary value specifiers and two explicit inline type specifiers."
+        },
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 3,
+          "snippet": "  htmlToMarkdown,"
+        },
+        {
+          "path": "extensions/web-readability/web-content-extractor.ts",
+          "line": 7,
+          "snippet": "  type WebContentExtractionRequest,"
+        }
+      ],
+      "key": "sdk-module:openclaw/plugin-sdk/web-content-extractor"
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Manually read both production TypeScript files in full, package.json, openclaw.plugin.json, and the test used to confirm the exclusion. All eight files beneath the plugin root are partitioned. Every plugin file matches the pinned commit byte-for-byte.",
+    "The package declares index.ts as its plugin entry. web-content-extractor.ts is the narrow production extractor artifact identified by index.ts:8\u20139; it is included even though the entry does not import it. Neither production file has a local import leaving the root; there is no additional plugin-owned/shared shipped source boundary to follow.",
+    "Verified the three exact public module specifiers in root package.json and their named exports in src/plugin-sdk/plugin-entry.ts, lazy-runtime.ts and web-content-extractor.ts. SDK facade/helper implementation dependencies are not part of the plugin audit.",
+    "The web-content-extractor import combines value syntax with two explicit inline type imports, so its module is mixed. The request parameter and extractor return annotations contribute type-reference to the two imported type exports.",
+    "createLazyRuntimeModule is called as an SDK function. Its returned loader and the third-party Readability/parseHTML values are not SDK API/runtime handles. The two constant-resolved dynamic imports load @mozilla/readability and linkedom/worker, both package-owned installed dependencies; no dependency internals were audited.",
+    "The parameterless register method consumes no OpenClawPluginApi members. request, parsed, rendered, document, and the returned extractor descriptor are ordinary request/result/plugin-owned values, not proven API/runtime handles. No API members, runtime members, hooks, or genuine unresolved SDK constructs occur.",
+    "Only contracts.webContentExtractors supplies an agreed manifest identity. Manifest id, categories, activation, enabledByDefault, name, description, and configSchema, plus package dependencies and extension entrypoint metadata, do not add contract identities."
+  ]
+}

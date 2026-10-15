@@ -1,0 +1,4275 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "openrouter",
+    "path": "extensions/openrouter"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_openrouter",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/openrouter/api.ts",
+      "sha256": "9f5354f225b7cf284ec6ada6f9e7f4cd6388324861a50c446cece619aef91a03",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/openrouter/capability-catalog.ts",
+      "sha256": "a4a7ffbb1b13b71c3d1559b57574817ac5086b8d3727a556ae9aa2fcaa8dbbd1",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/openrouter/generation-request-context.ts",
+      "sha256": "f81b4d0b1eef6bb9dd920f0cbde804b1e77b8fcd6e4cee31c73b1e178155897e",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/openrouter/image-generation-provider.ts",
+      "sha256": "38a5f55427ad52c0e417d254cb3341cb2fc00462ccb53bf59981d0ed372f9fa3",
+      "role": "production-source",
+      "findingCount": 22
+    },
+    {
+      "path": "extensions/openrouter/index.ts",
+      "sha256": "6013640b73f6e205ea5c674d420d26ad6294a65efddf9e9ae6438f82aaedceee",
+      "role": "production-source",
+      "findingCount": 30
+    },
+    {
+      "path": "extensions/openrouter/media-understanding-provider.ts",
+      "sha256": "2e7a2b343e1161277b26cfb1282ef549fe386b2c72221ae50a8d8fc54ad4a43c",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/openrouter/models.ts",
+      "sha256": "8a33708047b46e7c6df2a9f776db1a8b8c34cc8f0e3913ce3cde8e5d1825dd76",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/openrouter/music-generation-provider.ts",
+      "sha256": "5279b2608d2c9b540fa892ab2d0508c5bf366849afe999ecdf4b1f87632300d0",
+      "role": "production-source",
+      "findingCount": 27
+    },
+    {
+      "path": "extensions/openrouter/oauth.ts",
+      "sha256": "b7aa3a9b7d65ca02c4514309a317e08256fe4671847d024e89e4accf15144159",
+      "role": "production-source",
+      "findingCount": 20
+    },
+    {
+      "path": "extensions/openrouter/onboard.ts",
+      "sha256": "0eebdb1141433b9cdfbb08494cb8415cd94603ecbb36072f3c235fd73a824eb8",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/openrouter/openclaw.plugin.json",
+      "sha256": "9eef6818cdb58ad09e6628aa598f72ed88e9a48d7aa9baecd46ed447543d1c3b",
+      "role": "manifest",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/openrouter/package.json",
+      "sha256": "7bbbb8e7ede27564869df1814182d611ac2ac04e9e6d8463c46e2544c25f9b53",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/openrouter/provider-catalog.ts",
+      "sha256": "5fd7690603bcf30f416c0d38da8639b41e83cf58535f8b92bf07cb0dce55f51d",
+      "role": "production-source",
+      "findingCount": 22
+    },
+    {
+      "path": "extensions/openrouter/provider-contract-api.ts",
+      "sha256": "d6cadc0d83cd702031ca37ec3255b14abdf91ed19fb14dabbe2c6cc034cf00dd",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/openrouter/provider-defaults.ts",
+      "sha256": "4679f1d4c6856ed26ae072724f0638fac7c425bbb5859d3f15dc0716bc93b8b3",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/openrouter/provider-policy-api.ts",
+      "sha256": "60fa0c3376d070c1788890980426aff45afc943154716a8e360275194615d8a9",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/openrouter/provider-routing.ts",
+      "sha256": "d47cf185cbf630fd81e9c58f94c39f3cff71cc63f7b99b0cc5f0fb16b5589b5e",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/openrouter/speech-provider.ts",
+      "sha256": "4492aecc72420d86079d613deed68710e95df2bc0b3f10fc3e627ba90fd4b0da",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/openrouter/stream.ts",
+      "sha256": "a233acbfdecb02dd2ba97a248077b311f93fae51b651a9af6ccfca6dc875010c",
+      "role": "production-source",
+      "findingCount": 16
+    },
+    {
+      "path": "extensions/openrouter/thinking-policy.ts",
+      "sha256": "5e504d2604f4dffdfad0516ca26d7e694ecc44d38f16897edb5099b470f89db8",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/openrouter/tool-schemas.ts",
+      "sha256": "1806a234f60893b943a00dfa7339aafb0dc6bb367d1ec32cb81112c2d9dafe6b",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/openrouter/usage.ts",
+      "sha256": "396c7e90cd5722c9440c4d13550bf9af8060a7a3347d84749e50c53948f540ab",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/openrouter/video-generation-provider.ts",
+      "sha256": "2dbf22b49a830ca73d348fd9404684df56027c29b819681d3d57ebac953ea5ba",
+      "role": "production-source",
+      "findingCount": 24
+    },
+    {
+      "path": "extensions/openrouter/video-http.ts",
+      "sha256": "f84e59499e48a044838f663f81db54e51887466d9bfae01134e0eca277a4e694",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/openrouter/video-model-catalog.ts",
+      "sha256": "a84ee988606ba09c9a2c8cea62c88e1622e9ab95e9dde611ce98bf0766117968",
+      "role": "production-source",
+      "findingCount": 21
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/openrouter/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation; not a production JS/TS source extension."
+    },
+    {
+      "path": "extensions/openrouter/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG activity artwork; non-source asset."
+    },
+    {
+      "path": "extensions/openrouter/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG icon artwork; non-source asset."
+    },
+    {
+      "path": "extensions/openrouter/chat-owner-regression.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/failover.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/image-generation-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/index.fusion.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/index.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/media-understanding-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/models.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/music-generation-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/music-generation-provider.transport.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/oauth.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/onboard.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/openrouter.live.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/prefer-runtime-model.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/provider-catalog.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/provider-runtime.contract.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/speech-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/static-catalog.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/tool-schemas.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript project configuration, not a production JS/TS source file or package/manifest metadata."
+    },
+    {
+      "path": "extensions/openrouter/usage.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    },
+    {
+      "path": "extensions/openrouter/video-generation-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Test module with .test. in its basename; no eligible production module imports it."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerImageGenerationProvider",
+      "kind": "api-member",
+      "identity": "api.registerImageGenerationProvider",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 408,
+          "snippet": "    api.registerImageGenerationProvider(buildOpenRouterImageGenerationProvider());",
+          "note": "register(api) is the companion registration callback of defineSingleProviderPluginEntry, typed as OpenClawPluginApi in src/plugin-sdk/provider-entry.ts:245."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.registerMediaUnderstandingProvider",
+      "kind": "api-member",
+      "identity": "api.registerMediaUnderstandingProvider",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 407,
+          "snippet": "    api.registerMediaUnderstandingProvider(openrouterMediaUnderstandingProvider);",
+          "note": "register(api) is the companion registration callback of defineSingleProviderPluginEntry, typed as OpenClawPluginApi in src/plugin-sdk/provider-entry.ts:245."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.registerModelCatalogProvider",
+      "kind": "api-member",
+      "identity": "api.registerModelCatalogProvider",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 411,
+          "snippet": "    api.registerModelCatalogProvider({",
+          "note": "register(api) is the companion registration callback of defineSingleProviderPluginEntry, typed as OpenClawPluginApi in src/plugin-sdk/provider-entry.ts:245."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.registerMusicGenerationProvider",
+      "kind": "api-member",
+      "identity": "api.registerMusicGenerationProvider",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 409,
+          "snippet": "    api.registerMusicGenerationProvider(buildOpenRouterMusicGenerationProvider());",
+          "note": "register(api) is the companion registration callback of defineSingleProviderPluginEntry, typed as OpenClawPluginApi in src/plugin-sdk/provider-entry.ts:245."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.registerSpeechProvider",
+      "kind": "api-member",
+      "identity": "api.registerSpeechProvider",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 416,
+          "snippet": "    api.registerSpeechProvider(buildOpenRouterSpeechProvider());",
+          "note": "register(api) is the companion registration callback of defineSingleProviderPluginEntry, typed as OpenClawPluginApi in src/plugin-sdk/provider-entry.ts:245."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.registerVideoGenerationProvider",
+      "kind": "api-member",
+      "identity": "api.registerVideoGenerationProvider",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 410,
+          "snippet": "    api.registerVideoGenerationProvider(buildOpenRouterVideoGenerationProvider());",
+          "note": "register(api) is the companion registration callback of defineSingleProviderPluginEntry, typed as OpenClawPluginApi in src/plugin-sdk/provider-entry.ts:245."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.imageGenerationProviders:openrouter",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.imageGenerationProviders:openrouter",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/openclaw.plugin.json",
+          "line": 89,
+          "snippet": "    \"imageGenerationProviders\": [\"openrouter\"],"
+        }
+      ],
+      "classification": "declarative"
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.mediaUnderstandingProviders:openrouter",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.mediaUnderstandingProviders:openrouter",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/openclaw.plugin.json",
+          "line": 88,
+          "snippet": "    \"mediaUnderstandingProviders\": [\"openrouter\"],"
+        }
+      ],
+      "classification": "declarative"
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.musicGenerationProviders:openrouter",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.musicGenerationProviders:openrouter",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/openclaw.plugin.json",
+          "line": 90,
+          "snippet": "    \"musicGenerationProviders\": [\"openrouter\"],"
+        }
+      ],
+      "classification": "declarative"
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.speechProviders:openrouter",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.speechProviders:openrouter",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/openclaw.plugin.json",
+          "line": 92,
+          "snippet": "    \"speechProviders\": [\"openrouter\"],"
+        }
+      ],
+      "classification": "declarative"
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.usageProviders:openrouter",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.usageProviders:openrouter",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/openclaw.plugin.json",
+          "line": 93,
+          "snippet": "    \"usageProviders\": [\"openrouter\"]"
+        }
+      ],
+      "classification": "declarative"
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.videoGenerationProviders:openrouter",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.videoGenerationProviders:openrouter",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/openclaw.plugin.json",
+          "line": 91,
+          "snippet": "    \"videoGenerationProviders\": [\"openrouter\"],"
+        }
+      ],
+      "classification": "declarative"
+    },
+    {
+      "key": "manifest-contract:manifest.providers:openrouter",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:openrouter",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/openclaw.plugin.json",
+          "line": 10,
+          "snippet": "  \"providers\": [\"openrouter\"],"
+        }
+      ],
+      "classification": "declarative"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-core#StreamFn",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-core#StreamFn",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 1,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";"
+        },
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 26,
+          "snippet": "function isVerifiedOpenRouterRoute(model: Parameters<StreamFn>[0]): boolean {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-scope-runtime#resolveAgentConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-scope-runtime#resolveAgentConfig",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 1,
+          "snippet": "import { resolveAgentConfig } from \"openclaw/plugin-sdk/agent-scope-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 194,
+          "snippet": "    ...(ctx.agentId ? readRecord(resolveAgentConfig(ctx.config ?? {}, ctx.agentId)?.params) : {}),"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/generation-request-context.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/openrouter/generation-request-context.ts",
+          "line": 12,
+          "snippet": "  cfg: OpenClawConfig;"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 101,
+          "snippet": "  config?: OpenClawConfig;"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 2,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 231,
+          "snippet": "        return formatErrorMessage(error);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#GeneratedImageAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#GeneratedImageAsset",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 1,
+          "snippet": "import type {\n  GeneratedImageAsset,\n  ImageGenerationProvider,\n  ImageGenerationRequest,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 66,
+          "snippet": "function pushDataUrlImage(images: GeneratedImageAsset[], dataUrl: string, strict = true): void {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#ImageGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#ImageGenerationProvider",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 1,
+          "snippet": "import type {\n  GeneratedImageAsset,\n  ImageGenerationProvider,\n  ImageGenerationRequest,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 252,
+          "snippet": "export function buildOpenRouterImageGenerationProvider(): ImageGenerationProvider {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#ImageGenerationRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#ImageGenerationRequest",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 1,
+          "snippet": "import type {\n  GeneratedImageAsset,\n  ImageGenerationProvider,\n  ImageGenerationRequest,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 176,
+          "snippet": "function buildInputReferences(req: ImageGenerationRequest) {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#generatedImageAssetFromBase64",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#generatedImageAssetFromBase64",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 6,
+          "snippet": "import {\n  generatedImageAssetFromBase64,\n  generatedImageAssetFromDataUrl,\n  parseOpenAiCompatibleImageResponse,\n  resolveInlineImageJsonResponseMaxBytes,\n  toImageDataUrl,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 89,
+          "snippet": "    const image = generatedImageAssetFromBase64({ base64: rawBase64, index: images.length });"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#generatedImageAssetFromDataUrl",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#generatedImageAssetFromDataUrl",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 6,
+          "snippet": "import {\n  generatedImageAssetFromBase64,\n  generatedImageAssetFromDataUrl,\n  parseOpenAiCompatibleImageResponse,\n  resolveInlineImageJsonResponseMaxBytes,\n  toImageDataUrl,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 67,
+          "snippet": "  const image = generatedImageAssetFromDataUrl({ dataUrl, index: images.length });"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#parseOpenAiCompatibleImageResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#parseOpenAiCompatibleImageResponse",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 6,
+          "snippet": "import {\n  generatedImageAssetFromBase64,\n  generatedImageAssetFromDataUrl,\n  parseOpenAiCompatibleImageResponse,\n  resolveInlineImageJsonResponseMaxBytes,\n  toImageDataUrl,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 330,
+          "snippet": "              ? parseOpenAiCompatibleImageResponse(normalizeDedicatedImageResponse(payload), {"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#resolveInlineImageJsonResponseMaxBytes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#resolveInlineImageJsonResponseMaxBytes",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 6,
+          "snippet": "import {\n  generatedImageAssetFromBase64,\n  generatedImageAssetFromDataUrl,\n  parseOpenAiCompatibleImageResponse,\n  resolveInlineImageJsonResponseMaxBytes,\n  toImageDataUrl,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 323,
+          "snippet": "                maxBytes: resolveInlineImageJsonResponseMaxBytes("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#toImageDataUrl",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#toImageDataUrl",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 6,
+          "snippet": "import {\n  generatedImageAssetFromBase64,\n  generatedImageAssetFromDataUrl,\n  parseOpenAiCompatibleImageResponse,\n  resolveInlineImageJsonResponseMaxBytes,\n  toImageDataUrl,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 179,
+          "snippet": "    image_url: { url: toImageDataUrl(image) },"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { toImageDataUrl } from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 48,
+          "snippet": "      ? toImageDataUrl({ ...image, buffer: image.buffer, defaultMimeType: \"image/png\" })"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { toImageDataUrl } from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 121,
+          "snippet": "    return toImageDataUrl({ ...asset, buffer: asset.buffer, defaultMimeType: \"image/png\" });"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-generation-runtime#readGeneratedVideoAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime#readGeneratedVideoAsset",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 2,
+          "snippet": "import {\n  readGeneratedVideoAsset,\n  resolveGeneratedMediaMaxBytes,\n} from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 333,
+          "snippet": "    return await readGeneratedVideoAsset(response, {"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-generation-runtime#resolveGeneratedMediaMaxBytes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime#resolveGeneratedMediaMaxBytes",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 13,
+          "snippet": "import { resolveGeneratedMediaMaxBytes } from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 325,
+          "snippet": "                  resolveGeneratedMediaMaxBytes(req.cfg, \"image\"),"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 2,
+          "snippet": "import { resolveGeneratedMediaMaxBytes } from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 360,
+          "snippet": "          resolveGeneratedMediaMaxBytes(req.cfg, \"audio\"),"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 2,
+          "snippet": "import {\n  readGeneratedVideoAsset,\n  resolveGeneratedMediaMaxBytes,\n} from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 462,
+          "snippet": "          maxBytes: resolveGeneratedMediaMaxBytes(req.cfg, \"video\"),"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-mime#normalizeMimeType",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-mime#normalizeMimeType",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 2,
+          "snippet": "import { normalizeMimeType } from \"openclaw/plugin-sdk/media-mime\";"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 60,
+          "snippet": "    AUDIO_FORMAT_BY_MIME.get(normalizeMimeType(params.mime) ?? \"\") ??"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-runtime#canonicalizeBase64",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-runtime#canonicalizeBase64",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 3,
+          "snippet": "import { canonicalizeBase64, estimateBase64DecodedBytes } from \"openclaw/plugin-sdk/media-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 116,
+          "snippet": "  const canonicalAudio = canonicalizeBase64(base64);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-runtime#estimateBase64DecodedBytes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-runtime#estimateBase64DecodedBytes",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 3,
+          "snippet": "import { canonicalizeBase64, estimateBase64DecodedBytes } from \"openclaw/plugin-sdk/media-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 113,
+          "snippet": "  if (estimateBase64DecodedBytes(base64) > remainingBytes) {"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-understanding#AudioTranscriptionRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-understanding#AudioTranscriptionRequest",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 3,
+          "snippet": "import type {\n  AudioTranscriptionRequest,\n  AudioTranscriptionResult,\n  MediaUnderstandingProvider,\n} from \"openclaw/plugin-sdk/media-understanding\";"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 71,
+          "snippet": "  params: AudioTranscriptionRequest,"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-understanding#AudioTranscriptionResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-understanding#AudioTranscriptionResult",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 3,
+          "snippet": "import type {\n  AudioTranscriptionRequest,\n  AudioTranscriptionResult,\n  MediaUnderstandingProvider,\n} from \"openclaw/plugin-sdk/media-understanding\";"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 72,
+          "snippet": "): Promise<AudioTranscriptionResult> {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-understanding#MediaUnderstandingProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-understanding#MediaUnderstandingProvider",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 3,
+          "snippet": "import type {\n  AudioTranscriptionRequest,\n  AudioTranscriptionResult,\n  MediaUnderstandingProvider,\n} from \"openclaw/plugin-sdk/media-understanding\";"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 131,
+          "snippet": "export const openrouterMediaUnderstandingProvider: MediaUnderstandingProvider = {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/model-catalog-pricing#normalizeOpenRouterModelPricing",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/model-catalog-pricing#normalizeOpenRouterModelPricing",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 1,
+          "snippet": "import { normalizeOpenRouterModelPricing } from \"openclaw/plugin-sdk/model-catalog-pricing\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 181,
+          "snippet": "    cost: normalizeOpenRouterModelPricing(record?.pricing) ?? { ...OPENROUTER_DEFAULT_COST },"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/music-generation#MusicGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/music-generation#MusicGenerationProvider",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 4,
+          "snippet": "import type {\n  MusicGenerationProvider,\n  MusicGenerationRequest,\n  MusicGenerationSourceImage,\n} from \"openclaw/plugin-sdk/music-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 290,
+          "snippet": "export function buildOpenRouterMusicGenerationProvider(): MusicGenerationProvider {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/music-generation#MusicGenerationRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/music-generation#MusicGenerationRequest",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 4,
+          "snippet": "import type {\n  MusicGenerationProvider,\n  MusicGenerationRequest,\n  MusicGenerationSourceImage,\n} from \"openclaw/plugin-sdk/music-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 59,
+          "snippet": "function buildOpenRouterMusicPrompt(req: MusicGenerationRequest): string {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/music-generation#MusicGenerationSourceImage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/music-generation#MusicGenerationSourceImage",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 4,
+          "snippet": "import type {\n  MusicGenerationProvider,\n  MusicGenerationRequest,\n  MusicGenerationSourceImage,\n} from \"openclaw/plugin-sdk/music-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 44,
+          "snippet": "function imageToContentPart(image: MusicGenerationSourceImage) {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolveIntegerOption",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolveIntegerOption",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 14,
+          "snippet": "import { resolveIntegerOption } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 293,
+          "snippet": "      const count = resolveIntegerOption(req.count, 1, { min: 1, max: MAX_IMAGE_RESULTS });"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolvePositiveTimerTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolvePositiveTimerTimeoutMs",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 9,
+          "snippet": "import { resolvePositiveTimerTimeoutMs } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 333,
+          "snippet": "      const requestedTimeoutMs = resolvePositiveTimerTimeoutMs(req.timeoutMs, DEFAULT_TIMEOUT_MS);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginCapabilityCatalog",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginCapabilityCatalog",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/capability-catalog.ts",
+          "line": 1,
+          "snippet": "import type { PluginCapabilityCatalog } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/capability-catalog.ts",
+          "line": 6,
+          "snippet": "} satisfies PluginCapabilityCatalog;"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthContext",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 3,
+          "snippet": "import type { ProviderAuthContext, ProviderAuthMethod } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 220,
+          "snippet": "  ctx: ProviderAuthContext,"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthMethod",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthMethod",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 3,
+          "snippet": "import type { ProviderAuthContext, ProviderAuthMethod } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 388,
+          "snippet": "export function createOpenRouterOAuthAuthMethod(): ProviderAuthMethod {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderDefaultThinkingPolicyContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderDefaultThinkingPolicyContext",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 3,
+          "snippet": "import type {\n  ProviderDefaultThinkingPolicyContext,\n  ProviderResolveDynamicModelContext,\n  ProviderRuntimeModel,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 75,
+          "snippet": "  ctx: ProviderDefaultThinkingPolicyContext,\n): ProviderDefaultThinkingPolicyContext {"
+        },
+        {
+          "path": "extensions/openrouter/provider-policy-api.ts",
+          "line": 1,
+          "snippet": "import type { ProviderDefaultThinkingPolicyContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-policy-api.ts",
+          "line": 4,
+          "snippet": "export function resolveThinkingProfile(params: ProviderDefaultThinkingPolicyContext) {"
+        },
+        {
+          "path": "extensions/openrouter/thinking-policy.ts",
+          "line": 1,
+          "snippet": "import type {\n  ProviderDefaultThinkingPolicyContext,\n  ProviderThinkingProfile,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/thinking-policy.ts",
+          "line": 15,
+          "snippet": "  context?: ProviderDefaultThinkingPolicyContext,"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderNormalizeToolSchemasContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderNormalizeToolSchemasContext",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/tool-schemas.ts",
+          "line": 1,
+          "snippet": "import type { ProviderNormalizeToolSchemasContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/tool-schemas.ts",
+          "line": 114,
+          "snippet": "  normalizeToolSchemas: (ctx: ProviderNormalizeToolSchemasContext) =>"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderPlugin",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/provider-routing.ts",
+          "line": 1,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-routing.ts",
+          "line": 35,
+          "snippet": "  ctx: Parameters<NonNullable<ProviderPlugin[\"extraParamsForTransport\"]>>[0],",
+          "note": "ProviderPlugin is a provider descriptor type, not OpenClawPluginApi; its indexed member does not create api-member."
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderResolveDynamicModelContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderResolveDynamicModelContext",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 3,
+          "snippet": "import type {\n  ProviderDefaultThinkingPolicyContext,\n  ProviderResolveDynamicModelContext,\n  ProviderRuntimeModel,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 241,
+          "snippet": "      ctx: ProviderResolveDynamicModelContext,"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderRuntimeModel",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderRuntimeModel",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 3,
+          "snippet": "import type {\n  ProviderDefaultThinkingPolicyContext,\n  ProviderResolveDynamicModelContext,\n  ProviderRuntimeModel,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 110,
+          "snippet": "function normalizeOpenRouterResolvedModel<T extends ProviderRuntimeModel>(model: T): T | undefined {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderThinkingProfile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderThinkingProfile",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/thinking-policy.ts",
+          "line": 1,
+          "snippet": "import type {\n  ProviderDefaultThinkingPolicyContext,\n  ProviderThinkingProfile,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/thinking-policy.ts",
+          "line": 11,
+          "snippet": "} satisfies ProviderThinkingProfile;"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderWrapStreamFnContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderWrapStreamFnContext",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 2,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 37,
+          "snippet": "  sourceApi?: ProviderWrapStreamFnContext[\"sourceApi\"],"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#UnifiedModelCatalogEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#UnifiedModelCatalogEntry",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 1,
+          "snippet": "import type {\n  UnifiedModelCatalogEntry,\n  UnifiedModelCatalogProviderContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 161,
+          "snippet": "): Array<UnifiedModelCatalogEntry<OpenRouterVideoModelCatalogCapabilities>> {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#UnifiedModelCatalogProviderContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#UnifiedModelCatalogProviderContext",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 1,
+          "snippet": "import type {\n  UnifiedModelCatalogEntry,\n  UnifiedModelCatalogProviderContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 233,
+          "snippet": "  ctx: UnifiedModelCatalogProviderContext,"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#ProviderAuthResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#ProviderAuthResult",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 4,
+          "snippet": "import {\n  buildApiKeyCredential,\n  generatePkceVerifierChallenge,\n  type ProviderAuthResult,\n} from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 342,
+          "snippet": "async function loginOpenRouterOAuth(ctx: ProviderAuthContext): Promise<ProviderAuthResult> {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#buildApiKeyCredential",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#buildApiKeyCredential",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 4,
+          "snippet": "import {\n  buildApiKeyCredential,\n  generatePkceVerifierChallenge,\n  type ProviderAuthResult,\n} from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 369,
+          "snippet": "      ...buildApiKeyCredential(PROVIDER_ID, token.key, metadata),"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#findNormalizedProviderValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#findNormalizedProviderValue",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 8,
+          "snippet": "import { findNormalizedProviderValue } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 320,
+          "snippet": "        const configuredProvider = findNormalizedProviderValue("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#generatePkceVerifierChallenge",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#generatePkceVerifierChallenge",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 4,
+          "snippet": "import {\n  buildApiKeyCredential,\n  generatePkceVerifierChallenge,\n  type ProviderAuthResult,\n} from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 345,
+          "snippet": "    const pkce = generatePkceVerifierChallenge();"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isProviderApiKeyConfiguredAsync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#isProviderApiKeyConfiguredAsync",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 15,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 258,
+          "snippet": "    isConfiguredAsync: (ctx) => isProviderApiKeyConfiguredAsync({ provider: \"openrouter\", ...ctx }),"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 10,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 296,
+          "snippet": "    isConfiguredAsync: (ctx) => isProviderApiKeyConfiguredAsync({ provider: \"openrouter\", ...ctx }),"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 6,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 351,
+          "snippet": "    isConfiguredAsync: (ctx) => isProviderApiKeyConfiguredAsync({ provider: \"openrouter\", ...ctx }),"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth-runtime#generateOAuthState",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime#generateOAuthState",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 9,
+          "snippet": "import {\n  generateOAuthState,\n  startProviderOAuthLoopbackCallbackServer,\n} from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 346,
+          "snippet": "    const state = generateOAuthState();"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/generation-request-context.ts",
+          "line": 2,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/generation-request-context.ts",
+          "line": 9,
+          "snippet": "type OpenRouterAuthStore = Parameters<typeof resolveApiKeyForProvider>[0][\"store\"];"
+        },
+        {
+          "path": "extensions/openrouter/generation-request-context.ts",
+          "line": 18,
+          "snippet": "  const auth = await resolveApiKeyForProvider({"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 5,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 251,
+          "snippet": "  const auth = await resolveApiKeyForProvider({"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth-runtime#startProviderOAuthLoopbackCallbackServer",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime#startProviderOAuthLoopbackCallbackServer",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 9,
+          "snippet": "import {\n  generateOAuthState,\n  startProviderOAuthLoopbackCallbackServer,\n} from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 43,
+          "snippet": "  ReturnType<typeof startProviderOAuthLoopbackCallbackServer>"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 287,
+          "snippet": "      callback = await startProviderOAuthLoopbackCallbackServer({"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#LiveModelCatalogFetchGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#LiveModelCatalogFetchGuard",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 2,
+          "snippet": "import {\n  buildLiveModelProviderConfig,\n  type LiveModelCatalogFetchGuard,\n} from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 199,
+          "snippet": "  fetchGuard?: LiveModelCatalogFetchGuard;"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#buildLiveModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#buildLiveModelProviderConfig",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 2,
+          "snippet": "import {\n  buildLiveModelProviderConfig,\n  type LiveModelCatalogFetchGuard,\n} from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 219,
+          "snippet": "  return await buildLiveModelProviderConfig({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#runLiveProviderCatalog",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#runLiveProviderCatalog",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 9,
+          "snippet": "import { runLiveProviderCatalog } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 294,
+          "snippet": "          return await runLiveProviderCatalog({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-shared#getCachedLiveCatalogValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared#getCachedLiveCatalogValue",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 6,
+          "snippet": "import { getCachedLiveCatalogValue } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 205,
+          "snippet": "  return await getCachedLiveCatalogValue({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-shared#normalizeOpenRouterModelReasoning",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared#normalizeOpenRouterModelReasoning",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 6,
+          "snippet": "import { normalizeOpenRouterModelReasoning } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 169,
+          "snippet": "  const reasoning = normalizeOpenRouterModelReasoning(record?.reasoning);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-entry#defineSingleProviderPluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-entry#defineSingleProviderPluginEntry",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 10,
+          "snippet": "import { defineSingleProviderPluginEntry } from \"openclaw/plugin-sdk/provider-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 234,
+          "snippet": "export default defineSingleProviderPluginEntry({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#ProviderOperationDeadline",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#ProviderOperationDeadline",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 11,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  postJsonRequest,\n  resolveProviderOperationTimeoutMs,\n  type ProviderOperationDeadline,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 188,
+          "snippet": "function resolveOpenRouterStreamRemainingMs(deadline: ProviderOperationDeadline): number {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#assertOkOrThrowHttpError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#assertOkOrThrowHttpError",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 16,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  postJsonRequest,\n  readProviderJsonResponse,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 318,
+          "snippet": "            await assertOkOrThrowHttpError(response, \"OpenRouter image generation failed\");"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 8,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  postJsonRequest,\n  readProviderJsonObjectResponse,\n  requireTranscriptionText,\n  resolveProviderHttpRequestConfig,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 117,
+          "snippet": "    await assertOkOrThrowHttpError(response, \"OpenRouter audio transcription failed\");"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 11,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  postJsonRequest,\n  resolveProviderOperationTimeoutMs,\n  type ProviderOperationDeadline,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 356,
+          "snippet": "        await assertOkOrThrowHttpError(response, \"OpenRouter music generation failed\");"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 7,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  pollProviderOperation,\n  postJsonRequest,\n  readProviderJsonResponse,\n  resolveProviderOperationTimeoutMs,\n  waitProviderOperationPollInterval,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 294,
+          "snippet": "        await assertOkOrThrowHttpError(response, \"OpenRouter video status request failed\");"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 7,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  readProviderJsonArrayFieldResponse,\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 219,
+          "snippet": "        await assertOkOrThrowHttpError(response, \"OpenRouter video models request failed\");"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#createProviderOperationDeadline",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#createProviderOperationDeadline",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 11,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  postJsonRequest,\n  resolveProviderOperationTimeoutMs,\n  type ProviderOperationDeadline,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 334,
+          "snippet": "      const streamDeadline = createProviderOperationDeadline({"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 7,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  pollProviderOperation,\n  postJsonRequest,\n  readProviderJsonResponse,\n  resolveProviderOperationTimeoutMs,\n  waitProviderOperationPollInterval,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 271,
+          "snippet": "  const deadline = createProviderOperationDeadline({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#fetchWithTimeoutGuarded",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#fetchWithTimeoutGuarded",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-http.ts",
+          "line": 1,
+          "snippet": "import { fetchWithTimeoutGuarded } from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-http.ts",
+          "line": 3,
+          "snippet": "type GuardedFetchResult = Awaited<ReturnType<typeof fetchWithTimeoutGuarded>>;\ntype FetchGuardOptions = NonNullable<Parameters<typeof fetchWithTimeoutGuarded>[4]>;"
+        },
+        {
+          "path": "extensions/openrouter/video-http.ts",
+          "line": 31,
+          "snippet": "  return await fetchWithTimeoutGuarded("
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#normalizeBaseUrl",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#normalizeBaseUrl",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 7,
+          "snippet": "import {\n  normalizeBaseUrl,\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 68,
+          "snippet": "    normalizeOpenRouterBaseUrl(baseUrl) ?? normalizeBaseUrl(baseUrl, OPENROUTER_BASE_URL);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#pollProviderOperation",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#pollProviderOperation",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 7,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  pollProviderOperation,\n  postJsonRequest,\n  readProviderJsonResponse,\n  resolveProviderOperationTimeoutMs,\n  waitProviderOperationPollInterval,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 276,
+          "snippet": "  return await pollProviderOperation({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#postJsonRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#postJsonRequest",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 16,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  postJsonRequest,\n  readProviderJsonResponse,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 299,
+          "snippet": "          const { response, release } = await postJsonRequest({"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 8,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  postJsonRequest,\n  readProviderJsonObjectResponse,\n  requireTranscriptionText,\n  resolveProviderHttpRequestConfig,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 96,
+          "snippet": "  const { response, release } = await postJsonRequest({"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 11,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  postJsonRequest,\n  resolveProviderOperationTimeoutMs,\n  type ProviderOperationDeadline,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 339,
+          "snippet": "      const { response, release } = await postJsonRequest({"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 7,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  pollProviderOperation,\n  postJsonRequest,\n  readProviderJsonResponse,\n  resolveProviderOperationTimeoutMs,\n  waitProviderOperationPollInterval,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 402,
+          "snippet": "      const { response, release } = await postJsonRequest({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonArrayFieldResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonArrayFieldResponse",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 7,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  readProviderJsonArrayFieldResponse,\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 220,
+          "snippet": "        return await readProviderJsonArrayFieldResponse("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonObjectResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonObjectResponse",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 8,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  postJsonRequest,\n  readProviderJsonObjectResponse,\n  requireTranscriptionText,\n  resolveProviderHttpRequestConfig,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 118,
+          "snippet": "    const payload = await readProviderJsonObjectResponse(response, \"openrouter.stt\");"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 16,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  postJsonRequest,\n  readProviderJsonResponse,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 319,
+          "snippet": "            const payload = await readProviderJsonResponse("
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 13,
+          "snippet": "import {\n  readProviderJsonResponse,\n  readResponseTextLimited,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 78,
+          "snippet": "    return await readProviderJsonResponse(response, \"OpenRouter OAuth key exchange\");"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 1,
+          "snippet": "import {\n  readProviderJsonResponse,\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 101,
+          "snippet": "        await readProviderJsonResponse(response, \"OpenRouter usage\", {"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 7,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  pollProviderOperation,\n  postJsonRequest,\n  readProviderJsonResponse,\n  resolveProviderOperationTimeoutMs,\n  waitProviderOperationPollInterval,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 72,
+          "snippet": "    payload = await readProviderJsonResponse<unknown>(response, \"OpenRouter video generation\");"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readResponseTextLimited",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readResponseTextLimited",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 13,
+          "snippet": "import {\n  readProviderJsonResponse,\n  readResponseTextLimited,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 80,
+          "snippet": "  const text = await readResponseTextLimited("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#requireTranscriptionText",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#requireTranscriptionText",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 8,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  postJsonRequest,\n  readProviderJsonObjectResponse,\n  requireTranscriptionText,\n  resolveProviderHttpRequestConfig,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 120,
+          "snippet": "      text: requireTranscriptionText("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderHttpRequestConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderHttpRequestConfig",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/generation-request-context.ts",
+          "line": 3,
+          "snippet": "import {\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/generation-request-context.ts",
+          "line": 28,
+          "snippet": "  return resolveProviderHttpRequestConfig({"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 8,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  postJsonRequest,\n  readProviderJsonObjectResponse,\n  requireTranscriptionText,\n  resolveProviderHttpRequestConfig,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 80,
+          "snippet": "    resolveProviderHttpRequestConfig({"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 7,
+          "snippet": "import {\n  normalizeBaseUrl,\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 85,
+          "snippet": "    ReturnType<typeof resolveProviderHttpRequestConfig>,"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 206,
+          "snippet": "    resolveProviderHttpRequestConfig({"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 1,
+          "snippet": "import {\n  readProviderJsonResponse,\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 65,
+          "snippet": "  dispatcherPolicy: ReturnType<typeof resolveProviderHttpRequestConfig>[\"dispatcherPolicy\"];"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 126,
+          "snippet": "  const requestConfig = resolveProviderHttpRequestConfig({"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 7,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  readProviderJsonArrayFieldResponse,\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 197,
+          "snippet": "    resolveProviderHttpRequestConfig({"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderOperationTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderOperationTimeoutMs",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 11,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  postJsonRequest,\n  resolveProviderOperationTimeoutMs,\n  type ProviderOperationDeadline,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 189,
+          "snippet": "  return resolveProviderOperationTimeoutMs({"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 7,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  pollProviderOperation,\n  postJsonRequest,\n  readProviderJsonResponse,\n  resolveProviderOperationTimeoutMs,\n  waitProviderOperationPollInterval,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 285,
+          "snippet": "        timeoutMs: resolveProviderOperationTimeoutMs({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#sanitizeConfiguredModelProviderRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#sanitizeConfiguredModelProviderRequest",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/generation-request-context.ts",
+          "line": 3,
+          "snippet": "import {\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/generation-request-context.ts",
+          "line": 36,
+          "snippet": "    request: sanitizeConfiguredModelProviderRequest("
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 7,
+          "snippet": "import {\n  normalizeBaseUrl,\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 204,
+          "snippet": "  const request = sanitizeConfiguredModelProviderRequest(params.request);"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 1,
+          "snippet": "import {\n  readProviderJsonResponse,\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 135,
+          "snippet": "    request: sanitizeConfiguredModelProviderRequest(params.request),"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 7,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  readProviderJsonArrayFieldResponse,\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 37,
+          "snippet": "type OpenRouterVideoRequestConfig = Parameters<typeof sanitizeConfiguredModelProviderRequest>[0];"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 195,
+          "snippet": "  const request = sanitizeConfiguredModelProviderRequest(params.request);"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#waitProviderOperationPollInterval",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#waitProviderOperationPollInterval",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 7,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  pollProviderOperation,\n  postJsonRequest,\n  readProviderJsonResponse,\n  resolveProviderOperationTimeoutMs,\n  waitProviderOperationPollInterval,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 279,
+          "snippet": "    wait: () => waitProviderOperationPollInterval({ deadline, pollIntervalMs: POLL_INTERVAL_MS }),"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#DEFAULT_CONTEXT_TOKENS",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#DEFAULT_CONTEXT_TOKENS",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 11,
+          "snippet": "import {\n  buildPassthroughGeminiSanitizingReplayPolicy,\n  DEFAULT_CONTEXT_TOKENS,\n} from \"openclaw/plugin-sdk/provider-model-shared\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 12,
+          "snippet": "import type {\n  ModelDefinitionConfig,\n  ModelProviderConfig,\n} from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 158,
+          "snippet": "function buildOpenRouterLiveModel(row: unknown): ModelDefinitionConfig | undefined {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 12,
+          "snippet": "import type {\n  ModelDefinitionConfig,\n  ModelProviderConfig,\n} from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 88,
+          "snippet": "  request?: ModelProviderConfig[\"request\"],"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 6,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 121,
+          "snippet": "  request?: ModelProviderConfig[\"request\"];"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ProviderPlugin",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/provider-contract-api.ts",
+          "line": 1,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-contract-api.ts",
+          "line": 3,
+          "snippet": "export function createOpenrouterProvider(): ProviderPlugin {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#buildPassthroughGeminiSanitizingReplayPolicy",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#buildPassthroughGeminiSanitizingReplayPolicy",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 11,
+          "snippet": "import {\n  buildPassthroughGeminiSanitizingReplayPolicy,\n  DEFAULT_CONTEXT_TOKENS,\n} from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 369,
+          "snippet": "        ...buildPassthroughGeminiSanitizingReplayPolicy(modelId),"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#createAliasOnlyPresetAppliers",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#createAliasOnlyPresetAppliers",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/onboard.ts",
+          "line": 1,
+          "snippet": "import { createAliasOnlyPresetAppliers } from \"openclaw/plugin-sdk/provider-onboard\";"
+        },
+        {
+          "path": "extensions/openrouter/onboard.ts",
+          "line": 7,
+          "snippet": "} = createAliasOnlyPresetAppliers({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-family#buildProviderStreamFamilyHooks",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-family#buildProviderStreamFamilyHooks",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 3,
+          "snippet": "import { buildProviderStreamFamilyHooks } from \"openclaw/plugin-sdk/provider-stream-family\";"
+        },
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 20,
+          "snippet": "const openRouterThinkingStreamHooks = buildProviderStreamFamilyHooks(\"openrouter-thinking\");"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-family#getLoadedOpenRouterModelCapabilities",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-family#getLoadedOpenRouterModelCapabilities",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 15,
+          "snippet": "import {\n  getLoadedOpenRouterModelCapabilities,\n  loadOpenRouterModelCapabilities,\n} from \"openclaw/plugin-sdk/provider-stream-family\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 87,
+          "snippet": "  const capabilities = getLoadedOpenRouterModelCapabilities("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-family#loadOpenRouterModelCapabilities",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-family#loadOpenRouterModelCapabilities",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 15,
+          "snippet": "import {\n  getLoadedOpenRouterModelCapabilities,\n  loadOpenRouterModelCapabilities,\n} from \"openclaw/plugin-sdk/provider-stream-family\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 312,
+          "snippet": "            await loadOpenRouterModelCapabilities(OPENROUTER_DEFAULT_MODEL_REF);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#composeProviderStreamWrappers",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#composeProviderStreamWrappers",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 4,
+          "snippet": "import {\n  composeProviderStreamWrappers,\n  createPayloadPatchStreamWrapper,\n  normalizeOpenAICompatibleReasoningReplay,\n  stripTrailingAssistantPrefillMessages,\n} from \"openclaw/plugin-sdk/provider-stream-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 206,
+          "snippet": "  return composeProviderStreamWrappers("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#createPayloadPatchStreamWrapper",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#createPayloadPatchStreamWrapper",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 4,
+          "snippet": "import {\n  composeProviderStreamWrappers,\n  createPayloadPatchStreamWrapper,\n  normalizeOpenAICompatibleReasoningReplay,\n  stripTrailingAssistantPrefillMessages,\n} from \"openclaw/plugin-sdk/provider-stream-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 117,
+          "snippet": "  return createPayloadPatchStreamWrapper("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#normalizeOpenAICompatibleReasoningReplay",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#normalizeOpenAICompatibleReasoningReplay",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 4,
+          "snippet": "import {\n  composeProviderStreamWrappers,\n  createPayloadPatchStreamWrapper,\n  normalizeOpenAICompatibleReasoningReplay,\n  stripTrailingAssistantPrefillMessages,\n} from \"openclaw/plugin-sdk/provider-stream-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 180,
+          "snippet": "      normalizeOpenAICompatibleReasoningReplay(payload, {"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#stripTrailingAssistantPrefillMessages",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#stripTrailingAssistantPrefillMessages",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 4,
+          "snippet": "import {\n  composeProviderStreamWrappers,\n  createPayloadPatchStreamWrapper,\n  normalizeOpenAICompatibleReasoningReplay,\n  stripTrailingAssistantPrefillMessages,\n} from \"openclaw/plugin-sdk/provider-stream-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 140,
+          "snippet": "      const stripped = stripTrailingAssistantPrefillMessages(payload);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-thinking-runtime#resolveEffortThinkingProfile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-thinking-runtime#resolveEffortThinkingProfile",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/thinking-policy.ts",
+          "line": 5,
+          "snippet": "import { resolveEffortThinkingProfile } from \"openclaw/plugin-sdk/provider-thinking-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/thinking-policy.ts",
+          "line": 28,
+          "snippet": "  const profile = resolveEffortThinkingProfile(context?.compat?.supportedReasoningEfforts);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-tools#buildProviderToolCompatFamilyHooks",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-tools#buildProviderToolCompatFamilyHooks",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/tool-schemas.ts",
+          "line": 2,
+          "snippet": "import { buildProviderToolCompatFamilyHooks } from \"openclaw/plugin-sdk/provider-tools\";"
+        },
+        {
+          "path": "extensions/openrouter/tool-schemas.ts",
+          "line": 6,
+          "snippet": "const openAiTools = buildProviderToolCompatFamilyHooks(\"openai\");"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-usage#ProviderUsageSnapshot",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-usage#ProviderUsageSnapshot",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 7,
+          "snippet": "import {\n  buildUsageHttpErrorSnapshot,\n  parseProviderUsageNonNegativeNumber,\n  type ProviderUsageSnapshot,\n} from \"openclaw/plugin-sdk/provider-usage\";"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 125,
+          "snippet": "}): Promise<ProviderUsageSnapshot> {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-usage#buildUsageHttpErrorSnapshot",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-usage#buildUsageHttpErrorSnapshot",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 7,
+          "snippet": "import {\n  buildUsageHttpErrorSnapshot,\n  parseProviderUsageNonNegativeNumber,\n  type ProviderUsageSnapshot,\n} from \"openclaw/plugin-sdk/provider-usage\";"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 158,
+          "snippet": "      return buildUsageHttpErrorSnapshot({ provider: \"openrouter\", status });"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-usage#parseProviderUsageNonNegativeNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-usage#parseProviderUsageNonNegativeNumber",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 7,
+          "snippet": "import {\n  buildUsageHttpErrorSnapshot,\n  parseProviderUsageNonNegativeNumber,\n  type ProviderUsageSnapshot,\n} from \"openclaw/plugin-sdk/provider-usage\";"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 36,
+          "snippet": "  const limit = parseProviderUsageNonNegativeNumber(data?.limit);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-env#createSubsystemLogger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-env#createSubsystemLogger",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 10,
+          "snippet": "import { createSubsystemLogger } from \"openclaw/plugin-sdk/runtime-env\";"
+        },
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 19,
+          "snippet": "const log = createSubsystemLogger(\"openrouter-stream\");"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-provider#SpeechProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-provider#SpeechProviderPlugin",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/speech-provider.ts",
+          "line": 1,
+          "snippet": "import {\n  createOpenAiCompatibleSpeechProvider,\n  type SpeechProviderPlugin,\n} from \"openclaw/plugin-sdk/speech-provider\";"
+        },
+        {
+          "path": "extensions/openrouter/speech-provider.ts",
+          "line": 18,
+          "snippet": "export function buildOpenRouterSpeechProvider(): SpeechProviderPlugin {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-provider#createOpenAiCompatibleSpeechProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-provider#createOpenAiCompatibleSpeechProvider",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/speech-provider.ts",
+          "line": 1,
+          "snippet": "import {\n  createOpenAiCompatibleSpeechProvider,\n  type SpeechProviderPlugin,\n} from \"openclaw/plugin-sdk/speech-provider\";"
+        },
+        {
+          "path": "extensions/openrouter/speech-provider.ts",
+          "line": 19,
+          "snippet": "  return createOpenAiCompatibleSpeechProvider({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 17,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 183,
+          "snippet": "  const { response, release } = await fetchWithSsrFGuard({"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 16,
+          "snippet": "import {\n  fetchWithSsrFGuard,\n  ssrfPolicyFromHttpBaseUrlAllowedOrigin,\n} from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 232,
+          "snippet": "      await (params.fetchGuard ?? fetchWithSsrFGuard)({",
+          "note": "The callable fallback is the imported SDK function; calling the coalesced value can invoke it."
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 12,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 70,
+          "snippet": "  let guardedResponse: Awaited<ReturnType<typeof fetchWithSsrFGuard>>;"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 72,
+          "snippet": "    guardedResponse = await fetchWithSsrFGuard({"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedOrigin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedOrigin",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 16,
+          "snippet": "import {\n  fetchWithSsrFGuard,\n  ssrfPolicyFromHttpBaseUrlAllowedOrigin,\n} from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 95,
+          "snippet": "      : ssrfPolicyFromHttpBaseUrlAllowedOrigin(requestConfig.baseUrl);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 15,
+          "snippet": "import { asFiniteNumber } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 94,
+          "snippet": "  const temperature = asFiniteNumber(params.query?.temperature);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asNonArrayRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asNonArrayRecord",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 11,
+          "snippet": "import { asNonArrayRecord, readStringValue } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 165,
+          "snippet": "      const compat = asNonArrayRecord(model.compat);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 19,
+          "snippet": "import { asOptionalRecord as readRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 163,
+          "snippet": "    const params = readRecord(configuredModels[key]?.params);",
+          "note": "readRecord is the direct import alias of asOptionalRecord."
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 18,
+          "snippet": "import {\n  asOptionalRecord,\n  isRecord,\n  normalizeOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 84,
+          "snippet": "  const choices = asOptionalRecord(part)?.choices;"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 20,
+          "snippet": "import {\n  asOptionalRecord,\n  asPositiveSafeInteger,\n  filterStringEntries,\n  normalizeOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 159,
+          "snippet": "  const record = asOptionalRecord(row);"
+        },
+        {
+          "path": "extensions/openrouter/speech-provider.ts",
+          "line": 5,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/speech-provider.ts",
+          "line": 35,
+          "snippet": "    readExtraConfig: (raw) => ({ provider: asOptionalRecord(raw?.provider) }),"
+        },
+        {
+          "path": "extensions/openrouter/tool-schemas.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord as readRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/tool-schemas.ts",
+          "line": 47,
+          "snippet": "      const record = readRecord(branch);",
+          "note": "readRecord is the direct import alias of asOptionalRecord."
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 13,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 100,
+          "snippet": "      const root = asOptionalRecord("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asPositiveSafeInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asPositiveSafeInteger",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 20,
+          "snippet": "import {\n  asOptionalRecord,\n  asPositiveSafeInteger,\n  filterStringEntries,\n  normalizeOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 183,
+          "snippet": "      asPositiveSafeInteger(topProvider?.context_length) ??"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#filterStringEntries",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#filterStringEntries",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 20,
+          "snippet": "import {\n  asOptionalRecord,\n  asPositiveSafeInteger,\n  filterStringEntries,\n  normalizeOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 146,
+          "snippet": "  const explicit = filterStringEntries(architecture?.[`${direction}_modalities`]);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 21,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 52,
+          "snippet": "  if (!isRecord(value)) {"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 18,
+          "snippet": "import {\n  asOptionalRecord,\n  isRecord,\n  normalizeOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 156,
+          "snippet": "  if (!isRecord(part) || !isRecord(part.error)) {"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 18,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 58,
+          "snippet": "  if (!isRecord(value)) {"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 16,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 79,
+          "snippet": "  if (!isRecord(payload)) {"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 13,
+          "snippet": "import {\n  isRecord,\n  normalizeOptionalString,\n  normalizeTrimmedStringList,\n  normalizeUniqueTrimmedStringList,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 165,
+          "snippet": "    if (!isRecord(model)) {"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/models.ts",
+          "line": 1,
+          "snippet": "import { normalizeLowercaseStringOrEmpty } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/models.ts",
+          "line": 27,
+          "snippet": "  const normalized = normalizeLowercaseStringOrEmpty(modelId);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 21,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 59,
+          "snippet": "  const url = normalizeOptionalString(requireOpenRouterImageRecord(value).url);"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 18,
+          "snippet": "import {\n  asOptionalRecord,\n  isRecord,\n  normalizeOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 46,
+          "snippet": "    normalizeOptionalString(image.url) ??"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 18,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 62,
+          "snippet": "    normalizeOptionalString(value.message) ?? normalizeOptionalString(value.error_description);"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 20,
+          "snippet": "import {\n  asOptionalRecord,\n  asPositiveSafeInteger,\n  filterStringEntries,\n  normalizeOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 150,
+          "snippet": "  const modality = normalizeOptionalString(architecture?.modality);"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 16,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 95,
+          "snippet": "    id: normalizeOptionalString(payload.id),"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 13,
+          "snippet": "import {\n  isRecord,\n  normalizeOptionalString,\n  normalizeTrimmedStringList,\n  normalizeUniqueTrimmedStringList,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 63,
+          "snippet": "    const normalized = normalizeOptionalString(raw);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeTrimmedStringList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeTrimmedStringList",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 13,
+          "snippet": "import {\n  isRecord,\n  normalizeOptionalString,\n  normalizeTrimmedStringList,\n  normalizeUniqueTrimmedStringList,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 46,
+          "snippet": "  return normalizeTrimmedStringList(value).map("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeUniqueTrimmedStringList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeUniqueTrimmedStringList",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 13,
+          "snippet": "import {\n  isRecord,\n  normalizeOptionalString,\n  normalizeTrimmedStringList,\n  normalizeUniqueTrimmedStringList,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 52,
+          "snippet": "  return normalizeUniqueTrimmedStringList(value).filter("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#readStringValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#readStringValue",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 11,
+          "snippet": "import { asNonArrayRecord, readStringValue } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 23,
+          "snippet": "  return readStringValue(value)?.trim();"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 20,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 133,
+          "snippet": "  const normalized = truncateUtf16Safe("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/time-runtime#withTimeout",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/time-runtime#withTimeout",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 23,
+          "snippet": "import { withTimeout } from \"openclaw/plugin-sdk/time-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 200,
+          "snippet": "  return await withTimeout(reader.read(), timeoutMs, {"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#GeneratedVideoAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#GeneratedVideoAsset",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 17,
+          "snippet": "import {\n  selectSupportedVideoDuration,\n  type GeneratedVideoAsset,\n  type VideoGenerationProvider,\n  type VideoGenerationRequest,\n  type VideoGenerationSourceAsset,\n} from \"openclaw/plugin-sdk/video-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 326,
+          "snippet": "}): Promise<GeneratedVideoAsset> {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationModelCapabilitiesContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationModelCapabilitiesContext",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 19,
+          "snippet": "import type {\n  VideoGenerationModelCapabilitiesContext,\n  VideoGenerationProviderCapabilities,\n  VideoGenerationResolution,\n} from \"openclaw/plugin-sdk/video-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 249,
+          "snippet": "  ctx: VideoGenerationModelCapabilitiesContext,"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationProvider",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 17,
+          "snippet": "import {\n  selectSupportedVideoDuration,\n  type GeneratedVideoAsset,\n  type VideoGenerationProvider,\n  type VideoGenerationRequest,\n  type VideoGenerationSourceAsset,\n} from \"openclaw/plugin-sdk/video-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 345,
+          "snippet": "export function buildOpenRouterVideoGenerationProvider(): VideoGenerationProvider {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationProviderCapabilities",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationProviderCapabilities",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 19,
+          "snippet": "import type {\n  VideoGenerationModelCapabilitiesContext,\n  VideoGenerationProviderCapabilities,\n  VideoGenerationResolution,\n} from \"openclaw/plugin-sdk/video-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 29,
+          "snippet": "type OpenRouterVideoModelCatalogCapabilities = VideoGenerationProviderCapabilities & {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationRequest",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 17,
+          "snippet": "import {\n  selectSupportedVideoDuration,\n  type GeneratedVideoAsset,\n  type VideoGenerationProvider,\n  type VideoGenerationRequest,\n  type VideoGenerationSourceAsset,\n} from \"openclaw/plugin-sdk/video-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 198,
+          "snippet": "function buildRequestBody(req: VideoGenerationRequest, model: string): Record<string, unknown> {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationResolution",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationResolution",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 19,
+          "snippet": "import type {\n  VideoGenerationModelCapabilitiesContext,\n  VideoGenerationProviderCapabilities,\n  VideoGenerationResolution,\n} from \"openclaw/plugin-sdk/video-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 45,
+          "snippet": "function normalizeResolutionArray(value: unknown): VideoGenerationResolution[] {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationSourceAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationSourceAsset",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 17,
+          "snippet": "import {\n  selectSupportedVideoDuration,\n  type GeneratedVideoAsset,\n  type VideoGenerationProvider,\n  type VideoGenerationRequest,\n  type VideoGenerationSourceAsset,\n} from \"openclaw/plugin-sdk/video-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 119,
+          "snippet": "function toDataUrl(asset: VideoGenerationSourceAsset): string {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#selectSupportedVideoDuration",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#selectSupportedVideoDuration",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 17,
+          "snippet": "import {\n  selectSupportedVideoDuration,\n  type GeneratedVideoAsset,\n  type VideoGenerationProvider,\n  type VideoGenerationRequest,\n  type VideoGenerationSourceAsset,\n} from \"openclaw/plugin-sdk/video-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 185,
+          "snippet": "  return selectSupportedVideoDuration(rounded, effectiveDurations);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-core",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 1,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-scope-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-scope-runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 1,
+          "snippet": "import { resolveAgentConfig } from \"openclaw/plugin-sdk/agent-scope-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-contracts",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-contracts",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/generation-request-context.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 2,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/image-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/image-generation",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 1,
+          "snippet": "import type {\n  GeneratedImageAsset,\n  ImageGenerationProvider,\n  ImageGenerationRequest,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 6,
+          "snippet": "import {\n  generatedImageAssetFromBase64,\n  generatedImageAssetFromDataUrl,\n  parseOpenAiCompatibleImageResponse,\n  resolveInlineImageJsonResponseMaxBytes,\n  toImageDataUrl,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { toImageDataUrl } from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { toImageDataUrl } from \"openclaw/plugin-sdk/image-generation\";"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-generation-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 13,
+          "snippet": "import { resolveGeneratedMediaMaxBytes } from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 2,
+          "snippet": "import { resolveGeneratedMediaMaxBytes } from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 2,
+          "snippet": "import {\n  readGeneratedVideoAsset,\n  resolveGeneratedMediaMaxBytes,\n} from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-mime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-mime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 2,
+          "snippet": "import { normalizeMimeType } from \"openclaw/plugin-sdk/media-mime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 3,
+          "snippet": "import { canonicalizeBase64, estimateBase64DecodedBytes } from \"openclaw/plugin-sdk/media-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-understanding",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-understanding",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 3,
+          "snippet": "import type {\n  AudioTranscriptionRequest,\n  AudioTranscriptionResult,\n  MediaUnderstandingProvider,\n} from \"openclaw/plugin-sdk/media-understanding\";"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/model-catalog-pricing",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/model-catalog-pricing",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 1,
+          "snippet": "import { normalizeOpenRouterModelPricing } from \"openclaw/plugin-sdk/model-catalog-pricing\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/music-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/music-generation",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 4,
+          "snippet": "import type {\n  MusicGenerationProvider,\n  MusicGenerationRequest,\n  MusicGenerationSourceImage,\n} from \"openclaw/plugin-sdk/music-generation\";"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 14,
+          "snippet": "import { resolveIntegerOption } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 9,
+          "snippet": "import { resolvePositiveTimerTimeoutMs } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/capability-catalog.ts",
+          "line": 1,
+          "snippet": "import type { PluginCapabilityCatalog } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 3,
+          "snippet": "import type {\n  ProviderDefaultThinkingPolicyContext,\n  ProviderResolveDynamicModelContext,\n  ProviderRuntimeModel,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 3,
+          "snippet": "import type { ProviderAuthContext, ProviderAuthMethod } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-policy-api.ts",
+          "line": 1,
+          "snippet": "import type { ProviderDefaultThinkingPolicyContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-routing.ts",
+          "line": 1,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 2,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/thinking-policy.ts",
+          "line": 1,
+          "snippet": "import type {\n  ProviderDefaultThinkingPolicyContext,\n  ProviderThinkingProfile,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/tool-schemas.ts",
+          "line": 1,
+          "snippet": "import type { ProviderNormalizeToolSchemasContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 1,
+          "snippet": "import type {\n  UnifiedModelCatalogEntry,\n  UnifiedModelCatalogProviderContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 15,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 8,
+          "snippet": "import { findNormalizedProviderValue } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 10,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 4,
+          "snippet": "import {\n  buildApiKeyCredential,\n  generatePkceVerifierChallenge,\n  type ProviderAuthResult,\n} from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 6,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/generation-request-context.ts",
+          "line": 2,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 9,
+          "snippet": "import {\n  generateOAuthState,\n  startProviderOAuthLoopbackCallbackServer,\n} from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 5,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 9,
+          "snippet": "import { runLiveProviderCatalog } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 2,
+          "snippet": "import {\n  buildLiveModelProviderConfig,\n  type LiveModelCatalogFetchGuard,\n} from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 6,
+          "snippet": "import { normalizeOpenRouterModelReasoning } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 6,
+          "snippet": "import { getCachedLiveCatalogValue } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-entry",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 10,
+          "snippet": "import { defineSingleProviderPluginEntry } from \"openclaw/plugin-sdk/provider-entry\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-http",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-http",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/generation-request-context.ts",
+          "line": 3,
+          "snippet": "import {\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 16,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  postJsonRequest,\n  readProviderJsonResponse,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 8,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  postJsonRequest,\n  readProviderJsonObjectResponse,\n  requireTranscriptionText,\n  resolveProviderHttpRequestConfig,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 11,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  postJsonRequest,\n  resolveProviderOperationTimeoutMs,\n  type ProviderOperationDeadline,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 13,
+          "snippet": "import {\n  readProviderJsonResponse,\n  readResponseTextLimited,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 7,
+          "snippet": "import {\n  normalizeBaseUrl,\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 1,
+          "snippet": "import {\n  readProviderJsonResponse,\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 7,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  pollProviderOperation,\n  postJsonRequest,\n  readProviderJsonResponse,\n  resolveProviderOperationTimeoutMs,\n  waitProviderOperationPollInterval,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-http.ts",
+          "line": 1,
+          "snippet": "import { fetchWithTimeoutGuarded } from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 7,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  readProviderJsonArrayFieldResponse,\n  resolveProviderHttpRequestConfig,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-shared",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 11,
+          "snippet": "import {\n  buildPassthroughGeminiSanitizingReplayPolicy,\n  DEFAULT_CONTEXT_TOKENS,\n} from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 12,
+          "snippet": "import type {\n  ModelDefinitionConfig,\n  ModelProviderConfig,\n} from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-contract-api.ts",
+          "line": 1,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 6,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-onboard",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-onboard",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/onboard.ts",
+          "line": 1,
+          "snippet": "import { createAliasOnlyPresetAppliers } from \"openclaw/plugin-sdk/provider-onboard\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-stream-family",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-stream-family",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 15,
+          "snippet": "import {\n  getLoadedOpenRouterModelCapabilities,\n  loadOpenRouterModelCapabilities,\n} from \"openclaw/plugin-sdk/provider-stream-family\";"
+        },
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 3,
+          "snippet": "import { buildProviderStreamFamilyHooks } from \"openclaw/plugin-sdk/provider-stream-family\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-stream-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 4,
+          "snippet": "import {\n  composeProviderStreamWrappers,\n  createPayloadPatchStreamWrapper,\n  normalizeOpenAICompatibleReasoningReplay,\n  stripTrailingAssistantPrefillMessages,\n} from \"openclaw/plugin-sdk/provider-stream-shared\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-thinking-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-thinking-runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/thinking-policy.ts",
+          "line": 5,
+          "snippet": "import { resolveEffortThinkingProfile } from \"openclaw/plugin-sdk/provider-thinking-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-tools",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-tools",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/tool-schemas.ts",
+          "line": 2,
+          "snippet": "import { buildProviderToolCompatFamilyHooks } from \"openclaw/plugin-sdk/provider-tools\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-usage",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-usage",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 7,
+          "snippet": "import {\n  buildUsageHttpErrorSnapshot,\n  parseProviderUsageNonNegativeNumber,\n  type ProviderUsageSnapshot,\n} from \"openclaw/plugin-sdk/provider-usage\";"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-env",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-env",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 10,
+          "snippet": "import { createSubsystemLogger } from \"openclaw/plugin-sdk/runtime-env\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/speech-provider",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/speech-provider",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/speech-provider.ts",
+          "line": 1,
+          "snippet": "import {\n  createOpenAiCompatibleSpeechProvider,\n  type SpeechProviderPlugin,\n} from \"openclaw/plugin-sdk/speech-provider\";"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 17,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 16,
+          "snippet": "import {\n  fetchWithSsrFGuard,\n  ssrfPolicyFromHttpBaseUrlAllowedOrigin,\n} from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 12,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/image-generation-provider.ts",
+          "line": 21,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 19,
+          "snippet": "import { asOptionalRecord as readRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/media-understanding-provider.ts",
+          "line": 15,
+          "snippet": "import { asFiniteNumber } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/models.ts",
+          "line": 1,
+          "snippet": "import { normalizeLowercaseStringOrEmpty } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 18,
+          "snippet": "import {\n  asOptionalRecord,\n  isRecord,\n  normalizeOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/oauth.ts",
+          "line": 18,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/provider-catalog.ts",
+          "line": 20,
+          "snippet": "import {\n  asOptionalRecord,\n  asPositiveSafeInteger,\n  filterStringEntries,\n  normalizeOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/speech-provider.ts",
+          "line": 5,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/stream.ts",
+          "line": 11,
+          "snippet": "import { asNonArrayRecord, readStringValue } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/tool-schemas.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord as readRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/usage.ts",
+          "line": 13,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 16,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 13,
+          "snippet": "import {\n  isRecord,\n  normalizeOptionalString,\n  normalizeTrimmedStringList,\n  normalizeUniqueTrimmedStringList,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/text-utility-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/index.ts",
+          "line": 20,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/time-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/time-runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/music-generation-provider.ts",
+          "line": 23,
+          "snippet": "import { withTimeout } from \"openclaw/plugin-sdk/time-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/video-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/video-generation",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/openrouter/video-generation-provider.ts",
+          "line": 17,
+          "snippet": "import {\n  selectSupportedVideoDuration,\n  type GeneratedVideoAsset,\n  type VideoGenerationProvider,\n  type VideoGenerationRequest,\n  type VideoGenerationSourceAsset,\n} from \"openclaw/plugin-sdk/video-generation\";"
+        },
+        {
+          "path": "extensions/openrouter/video-model-catalog.ts",
+          "line": 19,
+          "snippet": "import type {\n  VideoGenerationModelCapabilitiesContext,\n  VideoGenerationProviderCapabilities,\n  VideoGenerationResolution,\n} from \"openclaw/plugin-sdk/video-generation\";"
+        }
+      ],
+      "classification": "mixed"
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all 23 eligible production TS modules in full, plus package.json and openclaw.plugin.json. The 49 plugin files partition into 25 reviewed and 24 excluded records. Source production files match the pinned commit; source AGENTS/skill documentation edits are outside this production audit.",
+    "All plugin-local imports and reexports resolve inside extensions/openrouter. No additional plugin-owned/shared shipped source lies outside this root. node:path is a Node built-in. Public SDK facade exports and package export keys were checked to establish provenance without adding SDK implementation dependencies.",
+    "provider-contract-api.ts is shipped production source: src/plugins/provider-contract-public-artifacts.ts loads provider-contract-api.js through its generic artifact candidate. provider-policy-api.ts is likewise loaded through PROVIDER_POLICY_ARTIFACT in src/plugins/provider-policy-surface.ts. They are included despite sparse direct local runtime imports. capability-catalog.ts is the manifest-declared capabilityCatalogEntry.",
+    "api.ts reexports plugin-owned provider factories and onboarding bindings. applyOpenrouterConfig/applyOpenrouterProviderConfig are fields returned by createAliasOnlyPresetAppliers, not unchanged imported SDK exports; their local import/reexport sites add no synthetic SDK provenance. provider-defaults.ts contains only a plugin-owned URL constant.",
+    "Only the six explicit calls in index.ts register(api) contribute api-member findings. defineSingleProviderPluginEntry may register the model provider internally; those SDK-helper internals are not plugin source calls and do not imply api.registerProvider.",
+    "ProviderAuthContext.runtime is RuntimeEnv (src/plugins/provider-authentication.types.ts:62), not PluginRuntime. OAuth ctx.runtime.log, ctx.prompter, ctx.oauth and provider catalog/usage contexts therefore do not produce public API/runtime paths. The stream logger returned by createSubsystemLogger is likewise not a PluginRuntime handle.",
+    "Provider-family hooks and HTTP/OAuth helper result objects are SDK return values, not OpenClawPluginApi/PluginRuntime. Their member calls/selections and local wrapper calls do not add transitive SDK-export or API/runtime references. No runtime-member or named API hook registrations occur.",
+    "Explicit typeof references to resolveApiKeyForProvider, startProviderOAuthLoopbackCallbackServer, resolveProviderHttpRequestConfig, sanitizeConfiguredModelProviderRequest, fetchWithTimeoutGuarded and fetchWithSsrFGuard make those SDK-export records mixed. They do not change their SDK modules to mixed absent actual type-import sites. Imported types have type-reference evidence as well as type-import.",
+    "asOptionalRecord is locally imported as readRecord in index.ts and tool-schemas.ts; findings retain the original public export. DEFAULT_CONTEXT_TOKENS is a value import used as a scalar, with import only. Bare value passing is not an invented member-access.",
+    "Manifest contracts are the top-level providers entry and six contracts categories. Setup/providerAuthChoices/modelCatalog/providerRequest/provider metadata, categories and config schema are descriptive/configuration metadata under the frozen benchmark and create no additional contract identities.",
+    "All 20 .test. modules are excluded by basename after verifying the full eligible source imports do not reference tests; there are no ambiguous test-only helper exclusions, build outputs or declaration files. This is source-phase coverage, not a published-artifact inventory."
+  ]
+}

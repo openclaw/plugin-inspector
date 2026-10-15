@@ -1,0 +1,532 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "document-extract",
+    "path": "extensions/document-extract"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_document_extract",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/document-extract/document-extractor-worker-entrypoint.ts",
+      "sha256": "61c081804ab687a26e5161bae1bb543c50bf5160fce39f485f6ed2ff797b6a20",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/document-extract/document-extractor.runtime.ts",
+      "sha256": "5fcc15c645adb6ff63e74cb3c6d04991c7fe9fa745e295e9be496be89a46692d",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/document-extract/document-extractor.ts",
+      "sha256": "1e21129e3bf4c37c666e1bde714aa44c73e79b7f0a205b48d62187a1965a54b5",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/document-extract/document-extractor.worker.ts",
+      "sha256": "27a6ac71ed6f411bc68df5055653adc633bf743ec180479751d72b92a5024fa5",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/document-extract/index.ts",
+      "sha256": "548ba980570d41e5dd51995a95fb8f7b524828f5470339db0722aef02f4280b3",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/document-extract/openclaw.plugin.json",
+      "sha256": "274d128d59cc3a758a391cb2ec388fb4cb4ea7385ffa9813a54adb411546a33a",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/document-extract/package.json",
+      "sha256": "8659d562d6f10a9dcc173cd9381ce9e90fd44f36213e16da0d1f1a9c0fc3a962",
+      "role": "package-metadata",
+      "findingCount": 0
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/document-extract/README.md",
+      "rule": "non-source",
+      "reason": "User documentation; outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/document-extract/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork; outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/document-extract/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG artwork; outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/document-extract/document-extractor.runtime.test.ts",
+      "rule": "test-file",
+      "reason": "Runtime extraction tests; basename contains .test.; its fixture helper import is test-only."
+    },
+    {
+      "path": "extensions/document-extract/document-extractor.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Read the helper in full. createPdfFixture only constructs synthetic PDF test inputs; repository-wide caller search finds imports only in document-extractor.runtime.test.ts:3 and document-extractor.test.ts:3, with no production caller."
+    },
+    {
+      "path": "extensions/document-extract/document-extractor.test.ts",
+      "rule": "test-file",
+      "reason": "Worker extraction tests; basename contains .test.; its fixture helper import is test-only."
+    }
+  ],
+  "findings": [
+    {
+      "key": "manifest-contract:manifest.contracts.documentExtractors:pdf",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.documentExtractors:pdf",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/openclaw.plugin.json",
+          "line": 11,
+          "snippet": "\"documentExtractors\": [\"pdf\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/document-extractor#DocumentExtractedImage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/document-extractor#DocumentExtractedImage",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 3,
+          "snippet": "DocumentExtractedImage,",
+          "note": "Named specifier in the explicit import type from openclaw/plugin-sdk/document-extractor on lines 2\u20136."
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 30,
+          "snippet": "function toDocumentImage(bytes: Uint8Array): DocumentExtractedImage {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/document-extractor#DocumentExtractionRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/document-extractor#DocumentExtractionRequest",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 4,
+          "snippet": "DocumentExtractionRequest,",
+          "note": "Named specifier in the explicit import type from openclaw/plugin-sdk/document-extractor on lines 2\u20136."
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 78,
+          "snippet": "request: DocumentExtractionRequest,"
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.worker.ts",
+          "line": 2,
+          "snippet": "DocumentExtractionRequest,",
+          "note": "Named specifier in the explicit import type from openclaw/plugin-sdk/document-extractor on lines 1\u20134."
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.worker.ts",
+          "line": 10,
+          "snippet": "DocumentExtractionRequest,",
+          "note": "SDK request type is the Omit input; the resulting worker request is a plugin-owned projected type."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/document-extractor#DocumentExtractionResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/document-extractor#DocumentExtractionResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 5,
+          "snippet": "DocumentExtractionResult,",
+          "note": "Named specifier in the explicit import type from openclaw/plugin-sdk/document-extractor on lines 2\u20136."
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 80,
+          "snippet": "): Promise<DocumentExtractionResult> {"
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.worker.ts",
+          "line": 3,
+          "snippet": "DocumentExtractionResult,",
+          "note": "Named specifier in the explicit import type from openclaw/plugin-sdk/document-extractor on lines 1\u20134."
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.worker.ts",
+          "line": 14,
+          "snippet": "| { status: \"ok\"; result: DocumentExtractionResult }"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/document-extractor#DocumentExtractorPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/document-extractor#DocumentExtractorPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.ts",
+          "line": 1,
+          "snippet": "import type { DocumentExtractorPlugin } from \"openclaw/plugin-sdk/document-extractor\";"
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.ts",
+          "line": 16,
+          "snippet": "export function createPdfDocumentExtractor(): DocumentExtractorPlugin {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#extractErrorCode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#extractErrorCode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 7,
+          "snippet": "import { extractErrorCode } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 89,
+          "snippet": "if (extractErrorCode(err) === \"password\") {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#toStringifiedError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#toStringifiedError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.worker.ts",
+          "line": 5,
+          "snippet": "import { toStringifiedError } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.worker.ts",
+          "line": 26,
+          "snippet": "onImageExtractionError: (error) => imageErrors.push(toStringifiedError(error)),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/index.ts",
+          "line": 2,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/document-extract/index.ts",
+          "line": 4,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#WorkerTaskPool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#WorkerTaskPool",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.ts",
+          "line": 2,
+          "snippet": "import { resolveRuntimeWorkerUrl, WorkerTaskPool } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.ts",
+          "line": 9,
+          "snippet": "const pool = new WorkerTaskPool<DocumentExtractorWorkerRequest, DocumentExtractorWorkerReply>({",
+          "note": "Construction invokes the imported SDK class. The resulting pool is not a PluginRuntime handle."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#resolveRuntimeWorkerUrl",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#resolveRuntimeWorkerUrl",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.ts",
+          "line": 2,
+          "snippet": "import { resolveRuntimeWorkerUrl, WorkerTaskPool } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.ts",
+          "line": 10,
+          "snippet": "workerUrl: resolveRuntimeWorkerUrl(documentExtractorWorkerEntrypoint),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#truncateUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#truncateUtf16Safe",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 8,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 128,
+          "snippet": "const prefix = truncateUtf16Safe(pageText, Math.max(0, remaining));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/worker-task-server#WorkerTaskControl",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/worker-task-server#WorkerTaskControl",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 9,
+          "snippet": "import type { WorkerTaskControl } from \"openclaw/plugin-sdk/worker-task-server\";"
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 79,
+          "snippet": "control: WorkerTaskControl,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/worker-task-server#serveWorkerTasks",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/worker-task-server#serveWorkerTasks",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.worker.ts",
+          "line": 6,
+          "snippet": "import { serveWorkerTasks } from \"openclaw/plugin-sdk/worker-task-server\";"
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.worker.ts",
+          "line": 18,
+          "snippet": "serveWorkerTasks<DocumentExtractorWorkerReply>(async (input, _progress, control) => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/document-extractor",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/document-extractor",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/document-extractor\";",
+          "note": "Completes the explicit import type declaration on lines 2\u20136."
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.worker.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/document-extractor\";",
+          "note": "Completes the explicit import type declaration on lines 1\u20134."
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.ts",
+          "line": 1,
+          "snippet": "import type { DocumentExtractorPlugin } from \"openclaw/plugin-sdk/document-extractor\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 7,
+          "snippet": "import { extractErrorCode } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.worker.ts",
+          "line": 5,
+          "snippet": "import { toStringifiedError } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/index.ts",
+          "line": 2,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/process-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/process-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.ts",
+          "line": 2,
+          "snippet": "import { resolveRuntimeWorkerUrl, WorkerTaskPool } from \"openclaw/plugin-sdk/process-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 8,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/worker-task-server",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/worker-task-server",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/document-extract/document-extractor.runtime.ts",
+          "line": 9,
+          "snippet": "import type { WorkerTaskControl } from \"openclaw/plugin-sdk/worker-task-server\";"
+        },
+        {
+          "path": "extensions/document-extract/document-extractor.worker.ts",
+          "line": 6,
+          "snippet": "import { serveWorkerTasks } from \"openclaw/plugin-sdk/worker-task-server\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all five eligible production source files, both metadata files, the test-support helper, and applicable root/extensions/SDK instructions. Working source HEAD and tree match the frozen source identity; plugin production files are unchanged from the pin.",
+    "Package metadata declares index.ts as the extension and document-extractor.worker.ts as a worker entry. document-extractor.ts is the narrow extractor artifact described by index.ts:9\u201310. Include all five production files regardless of runtime entry reachability.",
+    "All plugin local source imports stay within extensions/document-extract; the worker entrypoint descriptor names the same plugin-owned worker. There is no additional shared shipped source outside the canonical root. SDK facade reexports and the separately installed clawpdf package are contract/dependency boundaries, not recursively audited source.",
+    "Public package exports and the six corresponding src/plugin-sdk facade files confirm every exact SDK module and original exported name. Ordinary imported values remain runtime dependencies; explicit type imports and annotations remain type dependencies. The worker-task-server module has both source categories.",
+    "index.ts register() is empty and has no API parameter or member consumption. The extractor object, DocumentExtractionRequest data, WorkerTaskControl cancellation/native-section methods, and WorkerTaskPool instance are not OpenClawPluginApi or PluginRuntime handles; they produce no API/runtime-member findings. No hooks are registered.",
+    "The local DocumentExtractorWorkerRequest and DocumentExtractorWorkerReply types are plugin-owned composites; downstream imports of those composites do not add synthetic SDK import sites or transitive member dependencies.",
+    "The manifest declares only the documentExtractors contract identity pdf. Its metadata fields and package worker/build/extension declarations are not manifest-contract identities under the frozen schema.",
+    "Coverage partitions all 13 plugin files: seven reviewed source/metadata files and six excluded files. Test helper ownership was checked against all repository callers. No genuine unresolved SDK/API/runtime references remain."
+  ]
+}

@@ -1,0 +1,3475 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "lmstudio",
+    "path": "extensions/lmstudio"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_lmstudio",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/lmstudio/api.ts",
+      "sha256": "cfe67a971701d2cf7037785f8b8a51c9d9bc9c4268f62274148106fdc6f3693c",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/lmstudio/index.ts",
+      "sha256": "36d99e89b5d3452a4ffa7eefb98589283746d413c4a1adc51b255a0a3df83993",
+      "role": "production-source",
+      "findingCount": 16
+    },
+    {
+      "path": "extensions/lmstudio/memory-embedding-adapter.ts",
+      "sha256": "15245cbed63413d881c2bed90c26e5f857812118926daf4b8ad2fd5a60ecb9a8",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/lmstudio/openclaw.plugin.json",
+      "sha256": "d1287f379344e82927b6f19d366c1d2e10d80bd23b112242aa30fb7985cfa953",
+      "role": "manifest",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/lmstudio/package.json",
+      "sha256": "c055ad7a12487dc31e7adc0975e4b21c6847511264a7104bdefcfe7cea0ad0e8",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/lmstudio/provider-discovery.ts",
+      "sha256": "9edb9246a02e2c8c758731b7bb2b81923a7cdb48f59458faaaaeda9af50fb64f",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/lmstudio/provider-policy-api.ts",
+      "sha256": "78f09980b9699c36cfe6d22513f8914eee22d162b320626d1116bc52f16df17b",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/lmstudio/runtime-api.ts",
+      "sha256": "99d6e2d964800efc8579b55957ffabd9113e3db5f750bb190b692ea5ea3e8fbe",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/lmstudio/src/catalog.ts",
+      "sha256": "6484cb976daa1aea97a630821ade82cc6740ae04b5a939dee9662f1ee02f858a",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/lmstudio/src/defaults.ts",
+      "sha256": "48b04e7469e2dafefd6ef5ee0dca006178850669f76971613fedb7fef5a7b7c6",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/lmstudio/src/embedding-provider.ts",
+      "sha256": "b7f4da8f04b6ebff97f24403f24505b892ddfc0369e61001a14b86f94ba9bf40",
+      "role": "production-source",
+      "findingCount": 23
+    },
+    {
+      "path": "extensions/lmstudio/src/model-reasoning.ts",
+      "sha256": "0372d45ec5e5c993a5bfcbbde1e2bbe5ca46c94888fadb5712693b99ff2c6acd",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/lmstudio/src/models.fetch.ts",
+      "sha256": "e65fcce765c4d3edf1a0c33b3d5da35858363b9266649dca5b5daafc763f8a99",
+      "role": "production-source",
+      "findingCount": 20
+    },
+    {
+      "path": "extensions/lmstudio/src/models.ts",
+      "sha256": "5975a4a6b0df87c931e39c6f100194c0bf34c124708fc24514faba7d19ef82b0",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/lmstudio/src/provider-auth.ts",
+      "sha256": "3e40519ab836e9ae509594ff9cc2c285eee3160fa4fe098c5b8a93132dc7235c",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/lmstudio/src/runtime.ts",
+      "sha256": "b44269d57ed31e5b6ca77dd6c95319b9feb644b5b58f3130476a0dd8de2a1c47",
+      "role": "production-source",
+      "findingCount": 15
+    },
+    {
+      "path": "extensions/lmstudio/src/setup-prompts.ts",
+      "sha256": "9e606fdce6868c1ea2c1f994cab17e32cc6a3cd2f6d72e869a00357fb3f3fa3c",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/lmstudio/src/setup.ts",
+      "sha256": "07e9222c68acff77dad272976c98a62d79d3334c137d531f6ddb6a623cd0e0ee",
+      "role": "production-source",
+      "findingCount": 34
+    },
+    {
+      "path": "extensions/lmstudio/src/stream.ts",
+      "sha256": "793f9496e46fd46efe02ab3d6019ad922445d323c1e9b31f40ac99ef26ff1b99",
+      "role": "production-source",
+      "findingCount": 30
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/lmstudio/AGENTS.md",
+      "rule": "non-source",
+      "reason": "Scoped audit instructions; Markdown is outside the production source extension set."
+    },
+    {
+      "path": "extensions/lmstudio/CLAUDE.md",
+      "rule": "non-source",
+      "reason": "Symlink to AGENTS.md; instruction Markdown is outside the production source extension set."
+    },
+    {
+      "path": "extensions/lmstudio/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation; Markdown is outside the production source extension set."
+    },
+    {
+      "path": "extensions/lmstudio/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork asset, not eligible JS/TS source."
+    },
+    {
+      "path": "extensions/lmstudio/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG artwork asset, not eligible JS/TS source."
+    },
+    {
+      "path": "extensions/lmstudio/index.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/provider-discovery.catalog-warning.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/provider-discovery.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/provider-policy-api.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/src/embedding-credentials.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/src/embedding-provider.integration.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/src/embedding-provider.network.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/src/embedding-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/src/models.fetch.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/src/models.load-error.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/src/models.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/src/runtime.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/src/setup-url.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/src/setup.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/src/stream.instances.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/src/stream.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    },
+    {
+      "path": "extensions/lmstudio/tool-capabilities.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. source file; full production import review found no production import of this test file."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerEmbeddingProvider",
+      "kind": "api-member",
+      "identity": "api.registerEmbeddingProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 46,
+          "snippet": "api.registerEmbeddingProvider(lmstudioMemoryEmbeddingProviderAdapter);",
+          "note": "api is the register parameter explicitly typed OpenClawPluginApi at line 45."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerProvider",
+      "kind": "api-member",
+      "identity": "api.registerProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 47,
+          "snippet": "api.registerProvider({",
+          "note": "api is the register parameter explicitly typed OpenClawPluginApi at line 45."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.embeddingProviders:lmstudio",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.embeddingProviders:lmstudio",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/openclaw.plugin.json",
+          "line": 64,
+          "snippet": "\"embeddingProviders\": [\"lmstudio\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.providers:lmstudio",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:lmstudio",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/openclaw.plugin.json",
+          "line": 8,
+          "snippet": "\"providers\": [\"lmstudio\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-core#StreamFn",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-core#StreamFn",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 1,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";",
+          "note": "Imported original export from openclaw/plugin-sdk/agent-core."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 38,
+          "snippet": "type StreamOptions = Parameters<StreamFn>[2];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/async-lock-runtime#createAsyncLock",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/async-lock-runtime#createAsyncLock",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 1,
+          "snippet": "import { createAsyncLock } from \"openclaw/plugin-sdk/async-lock-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/async-lock-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 263,
+          "snippet": "const withPreloadLock = createAsyncLock();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/embedding-provider-adapter#sanitizeEmbeddingCacheHeaders",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/embedding-provider-adapter#sanitizeEmbeddingCacheHeaders",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/memory-embedding-adapter.ts",
+          "line": 2,
+          "snippet": "import { sanitizeEmbeddingCacheHeaders } from \"openclaw/plugin-sdk/embedding-provider-adapter\";",
+          "note": "Imported original export from openclaw/plugin-sdk/embedding-provider-adapter."
+        },
+        {
+          "path": "extensions/lmstudio/memory-embedding-adapter.ts",
+          "line": 31,
+          "snippet": "headers: sanitizeEmbeddingCacheHeaders(client.headers, [\"authorization\", \"x-api-key\"]),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#toErrorObject",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#toErrorObject",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 2,
+          "snippet": "import { toErrorObject } from \"openclaw/plugin-sdk/error-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/error-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 318,
+          "snippet": "reject(toErrorObject(signal.reason, \"LM Studio preload aborted\"));"
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 2,
+          "snippet": "import { toErrorObject } from \"openclaw/plugin-sdk/error-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/error-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 219,
+          "snippet": "(signal) => toErrorObject(signal.reason, \"LM Studio preload aborted\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeMethodBinder",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeMethodBinder",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 2,
+          "snippet": "createLazyRuntimeMethodBinder,",
+          "note": "Imported original export from openclaw/plugin-sdk/lazy-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 28,
+          "snippet": "const setupMethod = createLazyRuntimeMethodBinder(loadSetup);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 3,
+          "snippet": "createLazyRuntimeModule,",
+          "note": "Imported original export from openclaw/plugin-sdk/lazy-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 27,
+          "snippet": "const loadSetup = createLazyRuntimeModule(() => import(\"./src/setup.js\"));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#createAssistantMessageEventStream",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#createAssistantMessageEventStream",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 3,
+          "snippet": "import { createAssistantMessageEventStream, streamSimple } from \"openclaw/plugin-sdk/llm\";",
+          "note": "Imported original export from openclaw/plugin-sdk/llm."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 233,
+          "snippet": "const stream = createAssistantMessageEventStream();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#streamSimple",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#streamSimple",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 3,
+          "snippet": "import { createAssistantMessageEventStream, streamSimple } from \"openclaw/plugin-sdk/llm\";",
+          "note": "Imported original export from openclaw/plugin-sdk/llm."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 143,
+          "snippet": "const underlying = ctx.streamFn ?? streamSimple;",
+          "note": "The fallback arm preserves the imported streamSimple callable unchanged."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 154,
+          "snippet": "return underlying(model, context, options);",
+          "note": "Direct invocation of unchanged fallback alias underlying, assigned ctx.streamFn ?? streamSimple at line 143. SDK-created wrapper invocations do not add calls to streamSimple."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/logging-core#createSubsystemLogger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/logging-core#createSubsystemLogger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 3,
+          "snippet": "import { createSubsystemLogger } from \"openclaw/plugin-sdk/logging-core\";",
+          "note": "Imported original export from openclaw/plugin-sdk/logging-core."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 40,
+          "snippet": "const log = createSubsystemLogger(\"memory/embeddings\");"
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 1,
+          "snippet": "import { createSubsystemLogger } from \"openclaw/plugin-sdk/logging-core\";",
+          "note": "Imported original export from openclaw/plugin-sdk/logging-core."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 23,
+          "snippet": "const log = createSubsystemLogger(\"extensions/lmstudio/models\");"
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 4,
+          "snippet": "import { createSubsystemLogger } from \"openclaw/plugin-sdk/logging-core\";",
+          "note": "Imported original export from openclaw/plugin-sdk/logging-core."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 36,
+          "snippet": "const log = createSubsystemLogger(\"extensions/lmstudio/stream\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-embeddings#MemoryEmbeddingProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings#MemoryEmbeddingProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 9,
+          "snippet": "type MemoryEmbeddingProvider,",
+          "note": "Imported original export from openclaw/plugin-sdk/memory-core-host-engine-embeddings."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 156,
+          "snippet": "): Promise<{ provider: MemoryEmbeddingProvider; client: LmstudioEmbeddingClient }> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-embeddings#MemoryEmbeddingProviderAdapter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings#MemoryEmbeddingProviderAdapter",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/memory-embedding-adapter.ts",
+          "line": 3,
+          "snippet": "import type { MemoryEmbeddingProviderAdapter } from \"openclaw/plugin-sdk/memory-core-host-engine-embeddings\";",
+          "note": "Imported original export from openclaw/plugin-sdk/memory-core-host-engine-embeddings."
+        },
+        {
+          "path": "extensions/lmstudio/memory-embedding-adapter.ts",
+          "line": 9,
+          "snippet": "export const lmstudioMemoryEmbeddingProviderAdapter: MemoryEmbeddingProviderAdapter = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-embeddings#MemoryEmbeddingProviderCreateOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings#MemoryEmbeddingProviderCreateOptions",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 10,
+          "snippet": "type MemoryEmbeddingProviderCreateOptions,",
+          "note": "Imported original export from openclaw/plugin-sdk/memory-core-host-engine-embeddings."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 53,
+          "snippet": "type LocalServiceAwareEmbeddingOptions = MemoryEmbeddingProviderCreateOptions & {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-embeddings#RemoteEmbeddingClient",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings#RemoteEmbeddingClient",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 11,
+          "snippet": "type RemoteEmbeddingClient,",
+          "note": "Imported original export from openclaw/plugin-sdk/memory-core-host-engine-embeddings."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 42,
+          "snippet": "type LmstudioEmbeddingClient = Omit<RemoteEmbeddingClient, \"fetchImpl\">;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-embeddings#createRemoteEmbeddingProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings#createRemoteEmbeddingProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 5,
+          "snippet": "createRemoteEmbeddingProvider,",
+          "note": "Imported original export from openclaw/plugin-sdk/memory-core-host-engine-embeddings."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 363,
+          "snippet": "const remoteProvider = createRemoteEmbeddingProvider({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-embeddings#embeddingProviderOwnsDestination",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings#embeddingProviderOwnsDestination",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 6,
+          "snippet": "embeddingProviderOwnsDestination,",
+          "note": "Imported original export from openclaw/plugin-sdk/memory-core-host-engine-embeddings."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 170,
+          "snippet": "embeddingProviderOwnsDestination({ baseUrl, providerBaseUrl: providerOwnedBaseUrl });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-embeddings#normalizeEmbeddingModelWithPrefixes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings#normalizeEmbeddingModelWithPrefixes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 8,
+          "snippet": "normalizeEmbeddingModelWithPrefixes,",
+          "note": "Imported original export from openclaw/plugin-sdk/memory-core-host-engine-embeddings."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 60,
+          "snippet": "return normalizeEmbeddingModelWithPrefixes({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-embeddings#resolveEmbeddingProviderSsrFPolicy",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings#resolveEmbeddingProviderSsrFPolicy",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 7,
+          "snippet": "resolveEmbeddingProviderSsrFPolicy,",
+          "note": "Imported original export from openclaw/plugin-sdk/memory-core-host-engine-embeddings."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 209,
+          "snippet": "resolveEmbeddingProviderSsrFPolicy({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-storage#MEMORY_SEARCH_DEADLINE_CONTROL",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-storage#MEMORY_SEARCH_DEADLINE_CONTROL",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 14,
+          "snippet": "MEMORY_SEARCH_DEADLINE_CONTROL,",
+          "note": "Imported original export from openclaw/plugin-sdk/memory-core-host-engine-storage."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-storage#MemorySearchDeadlineControl",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-storage#MemorySearchDeadlineControl",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 15,
+          "snippet": "type MemorySearchDeadlineControl,",
+          "note": "Imported original export from openclaw/plugin-sdk/memory-core-host-engine-storage."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 237,
+          "snippet": "deadlineControl?: MemorySearchDeadlineControl,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-secret#resolveMemorySecretInputString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-secret#resolveMemorySecretInputString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 17,
+          "snippet": "import { resolveMemorySecretInputString } from \"openclaw/plugin-sdk/memory-core-host-secret\";",
+          "note": "Imported original export from openclaw/plugin-sdk/memory-core-host-secret."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 161,
+          "snippet": "const remoteApiKey = resolveMemorySecretInputString({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#clampPositiveTimerTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#clampPositiveTimerTimeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 6,
+          "snippet": "clampPositiveTimerTimeoutMs,",
+          "note": "Imported original export from openclaw/plugin-sdk/number-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 187,
+          "snippet": "clampPositiveTimerTimeoutMs("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#finiteSecondsToTimerSafeMilliseconds",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#finiteSecondsToTimerSafeMilliseconds",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 7,
+          "snippet": "finiteSecondsToTimerSafeMilliseconds,",
+          "note": "Imported original export from openclaw/plugin-sdk/number-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 189,
+          "snippet": ") ?? finiteSecondsToTimerSafeMilliseconds(providerConfig?.timeoutSeconds),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#parseStrictPositiveInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#parseStrictPositiveInteger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 1,
+          "snippet": "import { parseStrictPositiveInteger } from \"openclaw/plugin-sdk/number-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/number-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 118,
+          "snippet": "return parseStrictPositiveInteger(trimmed);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolveTimerTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolveTimerTimeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 2,
+          "snippet": "import { resolveTimerTimeoutMs } from \"openclaw/plugin-sdk/number-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/number-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 86,
+          "snippet": "const timeoutMs = resolveTimerTimeoutMs(params.timeoutMs, 1);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 7,
+          "snippet": "type OpenClawConfig,",
+          "note": "Imported original export from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 30,
+          "snippet": "function resolveLmstudioAugmentedCatalogEntries(config: OpenClawConfig | undefined) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 8,
+          "snippet": "type OpenClawPluginApi,",
+          "note": "Imported original export from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 45,
+          "snippet": "register(api: OpenClawPluginApi) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAppGuidedSetupContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAppGuidedSetupContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 2,
+          "snippet": "import type { ProviderAppGuidedSetupContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Imported original export from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 304,
+          "snippet": "async function resolveAppGuidedLmstudioConnection(ctx: ProviderAppGuidedSetupContext) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 9,
+          "snippet": "type ProviderAuthContext,",
+          "note": "Imported original export from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 71,
+          "snippet": "run: async (ctx: ProviderAuthContext): Promise<ProviderAuthResult> => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 10,
+          "snippet": "type ProviderAuthResult,",
+          "note": "Imported original export from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 71,
+          "snippet": "run: async (ctx: ProviderAuthContext): Promise<ProviderAuthResult> => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderNormalizeConfigContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderNormalizeConfigContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/provider-policy-api.ts",
+          "line": 1,
+          "snippet": "import type { ProviderNormalizeConfigContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Imported original export from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/lmstudio/provider-policy-api.ts",
+          "line": 10,
+          "snippet": "export function normalizeConfig({ provider, providerConfig }: ProviderNormalizeConfigContext) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderWrapStreamFnContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderWrapStreamFnContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 9,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Imported original export from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 109,
+          "snippet": "ctx: ProviderWrapStreamFnContext;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 6,
+          "snippet": "definePluginEntry,",
+          "note": "Imported original export from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 41,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#CUSTOM_LOCAL_AUTH_MARKER",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#CUSTOM_LOCAL_AUTH_MARKER",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 13,
+          "snippet": "CUSTOM_LOCAL_AUTH_MARKER,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/provider-discovery.ts",
+          "line": 1,
+          "snippet": "import { CUSTOM_LOCAL_AUTH_MARKER } from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/provider-auth.ts",
+          "line": 2,
+          "snippet": "CUSTOM_LOCAL_AUTH_MARKER,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 2,
+          "snippet": "CUSTOM_LOCAL_AUTH_MARKER,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 7,
+          "snippet": "type OpenClawConfig,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 75,
+          "snippet": "config?: OpenClawConfig;"
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 8,
+          "snippet": "type OpenClawConfig,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 88,
+          "snippet": "function stripLmstudioStoredAuthConfig(cfg: OpenClawConfig): OpenClawConfig {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#SecretInput",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#SecretInput",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 9,
+          "snippet": "type SecretInput,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 439,
+          "snippet": "let credentialInput: SecretInput | undefined = params.suppliedApiKey;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#SecretInputMode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#SecretInputMode",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 10,
+          "snippet": "type SecretInputMode,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 413,
+          "snippet": "secretInputMode?: SecretInputMode;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#buildApiKeyCredential",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#buildApiKeyCredential",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 4,
+          "snippet": "buildApiKeyCredential,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 482,
+          "snippet": "? buildApiKeyCredential("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#ensureApiKeyFromEnvOrPrompt",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#ensureApiKeyFromEnvOrPrompt",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 5,
+          "snippet": "ensureApiKeyFromEnvOrPrompt,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 448,
+          "snippet": "? await ensureApiKeyFromEnvOrPrompt({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#hasConfiguredSecretInput",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#hasConfiguredSecretInput",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/provider-auth.ts",
+          "line": 3,
+          "snippet": "hasConfiguredSecretInput,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/provider-auth.ts",
+          "line": 13,
+          "snippet": "name.trim().toLowerCase() === \"authorization\" && hasConfiguredSecretInput(value),"
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 6,
+          "snippet": "hasConfiguredSecretInput,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 478,
+          "snippet": "? credentialMode === \"ref\" || hasConfiguredSecretInput(credentialSource)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isKnownEnvApiKeyMarker",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#isKnownEnvApiKeyMarker",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 3,
+          "snippet": "isKnownEnvApiKeyMarker,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 108,
+          "snippet": "if (directApiKey !== undefined && isKnownEnvApiKeyMarker(trimmed)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isNonSecretApiKeyMarker",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#isNonSecretApiKeyMarker",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 1,
+          "snippet": "import { isNonSecretApiKeyMarker } from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 79,
+          "snippet": "!hasAuthorizationHeader && discoveryApiKey && !isNonSecretApiKeyMarker(discoveryApiKey)"
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 4,
+          "snippet": "isNonSecretApiKeyMarker,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 35,
+          "snippet": "if (apiKey && !isSyntheticLocalKey && !isNonSecretApiKeyMarker(apiKey)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#normalizeApiKeyConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#normalizeApiKeyConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 5,
+          "snippet": "normalizeApiKeyConfig,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 104,
+          "snippet": "const trimmed = resolvedValue ? normalizeApiKeyConfig(resolvedValue).trim() : \"\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#normalizeOptionalSecretInput",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#normalizeOptionalSecretInput",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 14,
+          "snippet": "normalizeOptionalSecretInput,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 75,
+          "snippet": "? normalizeOptionalSecretInput(ctx.opts.token)"
+        },
+        {
+          "path": "extensions/lmstudio/src/provider-auth.ts",
+          "line": 4,
+          "snippet": "normalizeOptionalSecretInput,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/provider-auth.ts",
+          "line": 20,
+          "snippet": "const normalized = normalizeOptionalSecretInput(apiKey);"
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 6,
+          "snippet": "normalizeOptionalSecretInput,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 89,
+          "snippet": "const directApiKey = normalizeOptionalSecretInput(apiKeyInput);"
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 7,
+          "snippet": "normalizeOptionalSecretInput,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 473,
+          "snippet": "const normalizedApiKey = normalizeOptionalSecretInput(apiKey);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth-runtime#removeProviderAuthProfilesWithLock",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime#removeProviderAuthProfilesWithLock",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 12,
+          "snippet": "import { removeProviderAuthProfilesWithLock } from \"openclaw/plugin-sdk/provider-auth-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 599,
+          "snippet": "await removeProviderAuthProfilesWithLock({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 9,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-auth-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 227,
+          "snippet": "let resolved: Awaited<ReturnType<typeof resolveApiKeyForProvider>>;"
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 229,
+          "snippet": "resolved = await resolveApiKeyForProvider({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#LiveModelCatalogHttpError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#LiveModelCatalogHttpError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 3,
+          "snippet": "import { LiveModelCatalogHttpError } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-catalog-live-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 198,
+          "snippet": ": new LiveModelCatalogHttpError(\"lmstudio\", fetched.status);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#runLiveProviderCatalog",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#runLiveProviderCatalog",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 2,
+          "snippet": "import { runLiveProviderCatalog } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-catalog-live-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 147,
+          "snippet": "? await runLiveProviderCatalog({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-shared#ProviderCatalogContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared#ProviderCatalogContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 4,
+          "snippet": "ProviderCatalogContext,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-catalog-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 28,
+          "snippet": "export function discoverLmstudioProvider(ctx: ProviderCatalogContext): Promise<{"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-shared#ProviderCatalogOutcome",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared#ProviderCatalogOutcome",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 5,
+          "snippet": "ProviderCatalogOutcome,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-catalog-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 83,
+          "snippet": "let modelIdCatalog: ProviderCatalogOutcome[\"modelIdCatalog\"];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-shared#ProviderCatalogResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared#ProviderCatalogResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 6,
+          "snippet": "ProviderCatalogResult,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-catalog-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 34,
+          "snippet": "): Promise<ProviderCatalogResult>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonArrayFieldResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonArrayFieldResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 5,
+          "snippet": "readProviderJsonArrayFieldResponse,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 158,
+          "snippet": "const models = await readProviderJsonArrayFieldResponse("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 6,
+          "snippet": "readProviderJsonResponse,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 327,
+          "snippet": "const payload = await readProviderJsonResponse<LmstudioLoadResponse>("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#redactProviderResponseErrorText",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#redactProviderResponseErrorText",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 7,
+          "snippet": "redactProviderResponseErrorText,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 27,
+          "snippet": "return redactProviderResponseErrorText("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-metadata#findNormalizedProviderKey",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-metadata#findNormalizedProviderKey",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 18,
+          "snippet": "import { findNormalizedProviderKey } from \"openclaw/plugin-sdk/provider-model-metadata\";",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-model-metadata."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 112,
+          "snippet": ": (findNormalizedProviderKey(providers, requestedId) ?? LMSTUDIO_PROVIDER_ID);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/model-reasoning.ts",
+          "line": 1,
+          "snippet": "import type { ModelDefinitionConfig } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/model-reasoning.ts",
+          "line": 32,
+          "snippet": "compat: NonNullable<ModelDefinitionConfig[\"compat\"]>,"
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 9,
+          "snippet": "import type { ModelDefinitionConfig } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 186,
+          "snippet": "): Promise<ModelDefinitionConfig[]> {"
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 2,
+          "snippet": "ModelDefinitionConfig,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 59,
+          "snippet": "compat?: ModelDefinitionConfig[\"compat\"];"
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 15,
+          "snippet": "type ModelDefinitionConfig,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 70,
+          "snippet": "models: ModelDefinitionConfig[];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 8,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 29,
+          "snippet": "provider: ModelProviderConfig;"
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 3,
+          "snippet": "ModelProviderConfig,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 320,
+          "snippet": "provider: ModelProviderConfig,"
+        },
+        {
+          "path": "extensions/lmstudio/src/provider-auth.ts",
+          "line": 6,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/provider-auth.ts",
+          "line": 18,
+          "snippet": "apiKey: ModelProviderConfig[\"apiKey\"] | undefined,"
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 16,
+          "snippet": "type ModelProviderConfig,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 122,
+          "snippet": "existingProvider: ModelProviderConfig | undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ProviderPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/provider-discovery.ts",
+          "line": 2,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/lmstudio/provider-discovery.ts",
+          "line": 38,
+          "snippet": "} satisfies ProviderPlugin;"
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 4,
+          "snippet": "ProviderPlugin,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 535,
+          "snippet": "NonNullable<ProviderPlugin[\"catalog\"]>[\"getUnlistedConfiguredModelIds\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#selectPreferredLocalModelId",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#selectPreferredLocalModelId",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 14,
+          "snippet": "selectPreferredLocalModelId,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 244,
+          "snippet": ": (selectPreferredLocalModelId(ids) ?? ids[0]);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#withAgentModelAliases",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#withAgentModelAliases",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 18,
+          "snippet": "import { withAgentModelAliases } from \"openclaw/plugin-sdk/provider-onboard\";",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-onboard."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 572,
+          "snippet": "const allowlistEntries = withAgentModelAliases("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-setup#ProviderAuthMethodNonInteractiveContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-setup#ProviderAuthMethodNonInteractiveContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 22,
+          "snippet": "type ProviderAuthMethodNonInteractiveContext,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-setup."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 639,
+          "snippet": "ctx: Omit<ProviderAuthMethodNonInteractiveContext, \"toApiKeyCredential\">,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-setup#ProviderAuthResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-setup#ProviderAuthResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 23,
+          "snippet": "type ProviderAuthResult,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-setup."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 339,
+          "snippet": "): Promise<ProviderAuthResult | null> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-setup#ProviderPrepareDynamicModelContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-setup#ProviderPrepareDynamicModelContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 24,
+          "snippet": "type ProviderPrepareDynamicModelContext,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-setup."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 860,
+          "snippet": "ctx: ProviderPrepareDynamicModelContext,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-setup#ProviderRuntimeModel",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-setup#ProviderRuntimeModel",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 25,
+          "snippet": "type ProviderRuntimeModel,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-setup."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 861,
+          "snippet": "): Promise<ProviderRuntimeModel | undefined> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-setup#SELF_HOSTED_DEFAULT_CONTEXT_WINDOW",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-setup#SELF_HOSTED_DEFAULT_CONTEXT_WINDOW",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 7,
+          "snippet": "SELF_HOSTED_DEFAULT_CONTEXT_WINDOW,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-setup."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-setup#SELF_HOSTED_DEFAULT_COST",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-setup#SELF_HOSTED_DEFAULT_COST",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 8,
+          "snippet": "SELF_HOSTED_DEFAULT_COST,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-setup."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-setup#SELF_HOSTED_DEFAULT_MAX_TOKENS",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-setup#SELF_HOSTED_DEFAULT_MAX_TOKENS",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 9,
+          "snippet": "SELF_HOSTED_DEFAULT_MAX_TOKENS,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-setup."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-setup#applyProviderDefaultModel",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-setup#applyProviderDefaultModel",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 20,
+          "snippet": "applyProviderDefaultModel,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-setup."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 773,
+          "snippet": "return applyProviderDefaultModel("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-setup#configureOpenAICompatibleSelfHostedProviderNonInteractive",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-setup#configureOpenAICompatibleSelfHostedProviderNonInteractive",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 21,
+          "snippet": "configureOpenAICompatibleSelfHostedProviderNonInteractive,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-setup."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 806,
+          "snippet": "const configured = await configureOpenAICompatibleSelfHostedProviderNonInteractive({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#createOpenAICompatibleCompletionsThinkingOffWrapper",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#createOpenAICompatibleCompletionsThinkingOffWrapper",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 11,
+          "snippet": "createOpenAICompatibleCompletionsThinkingOffWrapper,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-stream-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 148,
+          "snippet": "const streamWithThinkingLevel = createOpenAICompatibleCompletionsThinkingOffWrapper("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#createPlainTextToolCallCompatWrapper",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#createPlainTextToolCallCompatWrapper",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 12,
+          "snippet": "createPlainTextToolCallCompatWrapper,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-stream-shared."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 149,
+          "snippet": "createPlainTextToolCallCompatWrapper(underlying),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-tools#buildProviderToolCompatFamilyHooks",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-tools#buildProviderToolCompatFamilyHooks",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 16,
+          "snippet": "import { buildProviderToolCompatFamilyHooks } from \"openclaw/plugin-sdk/provider-tools\";",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-tools."
+        },
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 105,
+          "snippet": "...buildProviderToolCompatFamilyHooks(\"llamacpp-gbnf\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-transport-runtime#buildAssistantMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-transport-runtime#buildAssistantMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 15,
+          "snippet": "buildAssistantMessage,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-transport-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 238,
+          "snippet": "...buildAssistantMessage({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-transport-runtime#createEmptyTransportUsage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-transport-runtime#createEmptyTransportUsage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 16,
+          "snippet": "createEmptyTransportUsage,",
+          "note": "Imported original export from openclaw/plugin-sdk/provider-transport-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 242,
+          "snippet": "usage: createEmptyTransportUsage(),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/response-limit-runtime#readResponseTextPrefix",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/response-limit-runtime#readResponseTextPrefix",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 10,
+          "snippet": "import { readResponseTextPrefix } from \"openclaw/plugin-sdk/response-limit-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/response-limit-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 313,
+          "snippet": "const bodyRead = await readResponseTextPrefix(response, LMSTUDIO_ERROR_BODY_LIMIT_BYTES, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-env#isTruthyEnvValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-env#isTruthyEnvValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 27,
+          "snippet": "import { isTruthyEnvValue } from \"openclaw/plugin-sdk/runtime-env\";",
+          "note": "Imported original export from openclaw/plugin-sdk/runtime-env."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 77,
+          "snippet": "return isTruthyEnvValue(process.env.OPENCLAW_DOCKER_SETUP)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input-runtime#resolveConfiguredSecretInputString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input-runtime#resolveConfiguredSecretInputString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 10,
+          "snippet": "import { resolveConfiguredSecretInputString } from \"openclaw/plugin-sdk/secret-input-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/secret-input-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 90,
+          "snippet": "const resolved = await resolveConfiguredSecretInputString({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/setup#WizardCancelledError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/setup#WizardCancelledError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 28,
+          "snippet": "import { WizardCancelledError, type WizardPrompter } from \"openclaw/plugin-sdk/setup\";",
+          "note": "Imported original export from openclaw/plugin-sdk/setup."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 537,
+          "snippet": "throw new WizardCancelledError(setupDiscovery.failure.reason);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/setup#WizardPrompter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/setup#WizardPrompter",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 28,
+          "snippet": "import { WizardCancelledError, type WizardPrompter } from \"openclaw/plugin-sdk/setup\";",
+          "note": "Imported original export from openclaw/plugin-sdk/setup."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 412,
+          "snippet": "prompter?: WizardPrompter;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/setup-tools#formatCliCommand",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/setup-tools#formatCliCommand",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 11,
+          "snippet": "import { formatCliCommand } from \"openclaw/plugin-sdk/setup-tools\";",
+          "note": "Imported original export from openclaw/plugin-sdk/setup-tools."
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 223,
+          "snippet": "`or run \"${formatCliCommand(\"openclaw models auth login --provider lmstudio\")}\".`,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#SsrFPolicy",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#SsrFPolicy",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 11,
+          "snippet": "import { fetchWithSsrFGuard, type SsrFPolicy } from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 81,
+          "snippet": "ssrfPolicy?: SsrFPolicy;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 11,
+          "snippet": "import { fetchWithSsrFGuard, type SsrFPolicy } from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 90,
+          "snippet": "const guarded = await fetchWithSsrFGuard({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#formatErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 19,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 87,
+          "snippet": "if (/LM Studio API key is required/i.test(formatErrorMessage(error))) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 18,
+          "snippet": "import { ssrfPolicyFromHttpBaseUrlAllowedHostname } from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 135,
+          "snippet": "ssrfPolicy: ssrfPolicyFromHttpBaseUrlAllowedHostname(params.baseUrl),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/provider-auth.ts",
+          "line": 7,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/provider-auth.ts",
+          "line": 11,
+          "snippet": "return Object.entries(asOptionalRecord(headers) ?? {}).some("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asPositiveSafeInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asPositiveSafeInteger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 12,
+          "snippet": "import { asPositiveSafeInteger, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 266,
+          "snippet": "const advertisedContextLimit = asPositiveSafeInteger(matchingModel?.max_context_length) ?? null;"
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 12,
+          "snippet": "asPositiveSafeInteger,",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 155,
+          "snippet": "const normalized = asPositiveSafeInteger(instance?.config?.context_length);"
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 20,
+          "snippet": "asPositiveSafeInteger,",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 171,
+          "snippet": "asPositiveSafeInteger(model.contextTokens) ?? asPositiveSafeInteger(model.contextWindow);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 21,
+          "snippet": "asRecord,",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 163,
+          "snippet": "if (asRecord(providerConfig?.params).preload === false) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#filterStringEntries",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#filterStringEntries",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 22,
+          "snippet": "filterStringEntries,",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 88,
+          "snippet": "? filterStringEntries(compat.unsupportedToolSchemaKeywords)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 12,
+          "snippet": "import { asPositiveSafeInteger, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 23,
+          "snippet": "isRecord,",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 192,
+          "snippet": "modelHeaders: isRecord(model.headers) ? model.headers : undefined,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalLowercaseString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalLowercaseString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 13,
+          "snippet": "normalizeOptionalLowercaseString,",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 144,
+          "snippet": "const defaultOption = normalizeOptionalLowercaseString(reasoning.default);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 12,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 55,
+          "snippet": "const normalized = normalizeOptionalString(headerValue);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeStringEntries",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeStringEntries",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 29,
+          "snippet": "import { normalizeStringEntries } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 238,
+          "snippet": "const ids = normalizeStringEntries(discoveredModels.map((model) => model.id));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeTrimmedStringList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeTrimmedStringList",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 14,
+          "snippet": "normalizeTrimmedStringList,",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 94,
+          "snippet": "return uniqueStrings(normalizeTrimmedStringList(value).map((option) => option.toLowerCase()));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeUniqueTrimmedStringList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeUniqueTrimmedStringList",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 9,
+          "snippet": "import { normalizeUniqueTrimmedStringList } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 91,
+          "snippet": "modelIds: normalizeUniqueTrimmedStringList("
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 15,
+          "snippet": "normalizeUniqueTrimmedStringList,",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 192,
+          "snippet": "const variants = normalizeUniqueTrimmedStringList(entry.variants);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#uniqueStrings",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#uniqueStrings",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 16,
+          "snippet": "uniqueStrings,",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 94,
+          "snippet": "return uniqueStrings(normalizeTrimmedStringList(value).map((option) => option.toLowerCase()));"
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 24,
+          "snippet": "uniqueStrings,",
+          "note": "Imported original export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 95,
+          "snippet": "unsupportedToolSchemaKeywords: uniqueStrings([...unsupportedToolSchemaKeywords, \"pattern\"]),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/time-runtime#racePromiseWithAbortSignal",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/time-runtime#racePromiseWithAbortSignal",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 26,
+          "snippet": "import { racePromiseWithAbortSignal } from \"openclaw/plugin-sdk/time-runtime\";",
+          "note": "Imported original export from openclaw/plugin-sdk/time-runtime."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 216,
+          "snippet": "preparedModel = await racePromiseWithAbortSignal("
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 1,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/async-lock-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/async-lock-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 1,
+          "snippet": "import { createAsyncLock } from \"openclaw/plugin-sdk/async-lock-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/embedding-provider-adapter",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/embedding-provider-adapter",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/memory-embedding-adapter.ts",
+          "line": 2,
+          "snippet": "import { sanitizeEmbeddingCacheHeaders } from \"openclaw/plugin-sdk/embedding-provider-adapter\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 2,
+          "snippet": "import { toErrorObject } from \"openclaw/plugin-sdk/error-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 2,
+          "snippet": "import { toErrorObject } from \"openclaw/plugin-sdk/error-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/lazy-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/lazy-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/lazy-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/llm",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/llm",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 3,
+          "snippet": "import { createAssistantMessageEventStream, streamSimple } from \"openclaw/plugin-sdk/llm\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/logging-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/logging-core",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 3,
+          "snippet": "import { createSubsystemLogger } from \"openclaw/plugin-sdk/logging-core\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 1,
+          "snippet": "import { createSubsystemLogger } from \"openclaw/plugin-sdk/logging-core\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 4,
+          "snippet": "import { createSubsystemLogger } from \"openclaw/plugin-sdk/logging-core\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/memory-core-host-engine-embeddings",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/memory-embedding-adapter.ts",
+          "line": 3,
+          "snippet": "import type { MemoryEmbeddingProviderAdapter } from \"openclaw/plugin-sdk/memory-core-host-engine-embeddings\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 12,
+          "snippet": "} from \"openclaw/plugin-sdk/memory-core-host-engine-embeddings\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/memory-core-host-engine-storage",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-storage",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 16,
+          "snippet": "} from \"openclaw/plugin-sdk/memory-core-host-engine-storage\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/memory-core-host-secret",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/memory-core-host-secret",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 17,
+          "snippet": "import { resolveMemorySecretInputString } from \"openclaw/plugin-sdk/memory-core-host-secret\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 2,
+          "snippet": "import { resolveTimerTimeoutMs } from \"openclaw/plugin-sdk/number-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 1,
+          "snippet": "import { parseStrictPositiveInteger } from \"openclaw/plugin-sdk/number-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/number-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 11,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/provider-policy-api.ts",
+          "line": 1,
+          "snippet": "import type { ProviderNormalizeConfigContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 2,
+          "snippet": "import type { ProviderAppGuidedSetupContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 9,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 15,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/provider-discovery.ts",
+          "line": 1,
+          "snippet": "import { CUSTOM_LOCAL_AUTH_MARKER } from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 1,
+          "snippet": "import { isNonSecretApiKeyMarker } from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/provider-auth.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 11,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 9,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 12,
+          "snippet": "import { removeProviderAuthProfilesWithLock } from \"openclaw/plugin-sdk/provider-auth-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 2,
+          "snippet": "import { runLiveProviderCatalog } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 3,
+          "snippet": "import { LiveModelCatalogHttpError } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-catalog-shared\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-http",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-http",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-http\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-metadata",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-metadata",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 18,
+          "snippet": "import { findNormalizedProviderKey } from \"openclaw/plugin-sdk/provider-model-metadata\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-shared",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/provider-discovery.ts",
+          "line": 2,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 8,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/model-reasoning.ts",
+          "line": 1,
+          "snippet": "import type { ModelDefinitionConfig } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 9,
+          "snippet": "import type { ModelDefinitionConfig } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/provider-auth.ts",
+          "line": 6,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 17,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-onboard",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-onboard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 18,
+          "snippet": "import { withAgentModelAliases } from \"openclaw/plugin-sdk/provider-onboard\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-setup",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-setup",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 10,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-setup\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 26,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-setup\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-stream-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 13,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-stream-shared\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-tools",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-tools",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/index.ts",
+          "line": 16,
+          "snippet": "import { buildProviderToolCompatFamilyHooks } from \"openclaw/plugin-sdk/provider-tools\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-transport-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-transport-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 17,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-transport-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/response-limit-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/response-limit-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 10,
+          "snippet": "import { readResponseTextPrefix } from \"openclaw/plugin-sdk/response-limit-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-env",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-env",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 27,
+          "snippet": "import { isTruthyEnvValue } from \"openclaw/plugin-sdk/runtime-env\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/secret-input-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/secret-input-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 10,
+          "snippet": "import { resolveConfiguredSecretInputString } from \"openclaw/plugin-sdk/secret-input-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/setup",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/setup",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 28,
+          "snippet": "import { WizardCancelledError, type WizardPrompter } from \"openclaw/plugin-sdk/setup\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/setup-tools",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/setup-tools",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 11,
+          "snippet": "import { formatCliCommand } from \"openclaw/plugin-sdk/setup-tools\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/embedding-provider.ts",
+          "line": 19,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 11,
+          "snippet": "import { fetchWithSsrFGuard, type SsrFPolicy } from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 18,
+          "snippet": "import { ssrfPolicyFromHttpBaseUrlAllowedHostname } from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/catalog.ts",
+          "line": 9,
+          "snippet": "import { normalizeUniqueTrimmedStringList } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.fetch.ts",
+          "line": 12,
+          "snippet": "import { asPositiveSafeInteger, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/models.ts",
+          "line": 17,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/provider-auth.ts",
+          "line": 7,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/runtime.ts",
+          "line": 12,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/setup.ts",
+          "line": 29,
+          "snippet": "import { normalizeStringEntries } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        },
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 25,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/time-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/time-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/lmstudio/src/stream.ts",
+          "line": 26,
+          "snippet": "import { racePromiseWithAbortSignal } from \"openclaw/plugin-sdk/time-runtime\";",
+          "note": "SDK import site; inline type specifiers, when present, retain type-import classification."
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independent manual full-file review covered all 17 production JS/TS source files, package.json, and openclaw.plugin.json. The complete filesystem enumeration includes the CLAUDE.md instruction alias; 19 reviewed and 22 excluded records partition all 41 files.",
+    "All local imports and reexports resolve within extensions/lmstudio. api.ts and runtime-api.ts reexport plugin-owned implementations and local types, not unchanged SDK exports. setup-prompts.ts is production code imported by setup.ts. No shared shipped source leaves the plugin root and no production file imports a test file.",
+    "Public SDK module names and original exported names were checked against root package.json exports and their src/plugin-sdk facades. The plugin production source and consulted facades match the pinned commit; the separately authorized scoped AGENTS edits were treated only as instructions.",
+    "Only index.ts register(api: OpenClawPluginApi) proves an API handle: registerEmbeddingProvider and registerProvider are direct calls. Provider catalog/auth/setup/stream contexts, model config objects, returned loggers, embedding provider objects, and the adapter runtime descriptor are not OpenClawPluginApi or PluginRuntime handles. There are no runtime-member or named-hook findings.",
+    "buildProviderToolCompatFamilyHooks returns provider callback properties, not api.on/registerHook registrations. Known SDK helper internals, including returned stream wrappers, remote embedding providers, async locks, logger methods and lazy setup loaders, were not expanded into additional SDK/API/runtime consumption.",
+    "stream.ts underlying is the unchanged fallback alias ctx.streamFn ?? streamSimple; its direct invocations preserve streamSimple call provenance. Bare fallback selection adds no member-access, and calls through SDK-created wrappers add no transitive call to streamSimple.",
+    "Runtime resolveApiKeyForProvider has an ordinary import and direct invocation plus explicit typeof in ReturnType at runtime.ts:227; its export classification is mixed, while provider-auth-runtime module dependency sites remain runtime.",
+    "Explicit inline type imports retain type-import. All imported SDK types used in annotations/indexed access carry type-reference; indexed config/provider/embedding types are not API/runtime public member handles. The local barrels do not reexport their inferred SDK constituent types.",
+    "Only top-level providers and contracts.embeddingProviders establish agreed manifest-contract identities. Categories, providerCatalogEntry, modelCatalog, providerRequest, modelPricing, auth markers, setup/providerAuthChoices and configSchema metadata do not add contracts under the frozen schema."
+  ]
+}

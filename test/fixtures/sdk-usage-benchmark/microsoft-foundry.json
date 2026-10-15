@@ -1,0 +1,2108 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "microsoft-foundry",
+    "path": "extensions/microsoft-foundry"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_microsoft_foundry",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/microsoft-foundry/auth.ts",
+      "sha256": "fd649f3ae0142477ca1662c6372f13e79732321810e8fec055db29760fe73844",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/microsoft-foundry/cli.ts",
+      "sha256": "3f44295d5fd5635309c4df7abb7d8b5f7b25801dfeb26d89d2d1420bfc3e400f",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+      "sha256": "9ed7491cb6bb28751345d068d97133736d6859f5c6c48103ee811305152d33d1",
+      "role": "production-source",
+      "findingCount": 34
+    },
+    {
+      "path": "extensions/microsoft-foundry/index.ts",
+      "sha256": "10dbf22d4e4292f3008d7f15986cdd5e5725488396b9c236e8d9c552356501f9",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/microsoft-foundry/onboard.ts",
+      "sha256": "8eff7e75ea8fcf0aa1da6046d2939433ae2f9052e5631a48adc6fe0aab69de17",
+      "role": "production-source",
+      "findingCount": 15
+    },
+    {
+      "path": "extensions/microsoft-foundry/openclaw.plugin.json",
+      "sha256": "63cd5a425ed493213fd0cb02bb46af963c9927da5addf56e328c6261678f6aa7",
+      "role": "manifest",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/microsoft-foundry/package.json",
+      "sha256": "e1afdf013d2ab5d36bd1985409c8785302a874524163403a795477886e3243a2",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/microsoft-foundry/provider.ts",
+      "sha256": "76454f88d57537a6ebc262c94dec0446b643ad45ff85dc4511842034e79bf930",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/microsoft-foundry/runtime.ts",
+      "sha256": "501c1e042db9fac6a889b6d0693394db73d93f9c94f33025b588142cd673848e",
+      "role": "production-source",
+      "findingCount": 15
+    },
+    {
+      "path": "extensions/microsoft-foundry/shared.ts",
+      "sha256": "282fd186b831896f3131d0722a5a9cb836190fbd041580077c76730156bf2070",
+      "role": "production-source",
+      "findingCount": 15
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/microsoft-foundry/README.md",
+      "rule": "non-source",
+      "reason": "Markdown documentation, outside the eligible source extensions."
+    },
+    {
+      "path": "extensions/microsoft-foundry/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG image asset, outside the eligible source extensions."
+    },
+    {
+      "path": "extensions/microsoft-foundry/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG image asset, outside the eligible source extensions."
+    },
+    {
+      "path": "extensions/microsoft-foundry/image-generation-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts suite; no production source imports this file."
+    },
+    {
+      "path": "extensions/microsoft-foundry/index.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts suite; no production source imports this file."
+    },
+    {
+      "path": "extensions/microsoft-foundry/onboard.connection.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts connection suite; production calls the onboard.ts connection probe directly, not this suite."
+    },
+    {
+      "path": "extensions/microsoft-foundry/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript package-boundary configuration, outside eligible source extensions; package metadata introduces no build-output exception."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerImageGenerationProvider",
+      "kind": "api-member",
+      "identity": "api.registerImageGenerationProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/index.ts",
+          "line": 12,
+          "snippet": "    api.registerImageGenerationProvider(buildMicrosoftFoundryImageGenerationProvider());",
+          "note": "Same proven OpenClawPluginApi registration parameter as registerProvider."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerProvider",
+      "kind": "api-member",
+      "identity": "api.registerProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/index.ts",
+          "line": 11,
+          "snippet": "    api.registerProvider(buildMicrosoftFoundryProvider());",
+          "note": "definePluginEntry register is typed as OpenClawPluginDefinition.register, whose api parameter is OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.imageGenerationProviders:microsoft-foundry",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.imageGenerationProviders:microsoft-foundry",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/openclaw.plugin.json",
+          "line": 18,
+          "snippet": "    \"imageGenerationProviders\": [\"microsoft-foundry\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.providers:microsoft-foundry",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:microsoft-foundry",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/openclaw.plugin.json",
+          "line": 8,
+          "snippet": "  \"providers\": [\"microsoft-foundry\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/blob-runtime#bufferToBlobPart",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/blob-runtime#bufferToBlobPart",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { bufferToBlobPart } from \"openclaw/plugin-sdk/blob-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 200,
+          "snippet": "    new Blob([bufferToBlobPart(params.image.buffer)], {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/collection-runtime#pruneMapToMaxSize",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/collection-runtime#pruneMapToMaxSize",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 1,
+          "snippet": "import { pruneMapToMaxSize } from \"openclaw/plugin-sdk/collection-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 60,
+          "snippet": "  pruneMapToMaxSize(cachedTokens, FOUNDRY_TOKEN_CACHE_MAX_ENTRIES);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-contracts#AuthConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-contracts#AuthConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 1,
+          "snippet": "import type { AuthConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 114,
+          "snippet": "  auth?: AuthConfig;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 51,
+          "snippet": "type ModelProviderConfig = NonNullable<NonNullable<OpenClawConfig[\"models\"]>[\"providers\"]>[string];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#ProviderAuthContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#ProviderAuthContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 2,
+          "snippet": "  ProviderAuthContext,",
+          "note": "Explicit import type from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 47,
+          "snippet": "  run: async (ctx: ProviderAuthContext): Promise<ProviderAuthResult> => {"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 1,
+          "snippet": "import type { ProviderAuthContext } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 130,
+          "snippet": "  ctx: ProviderAuthContext,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#ProviderAuthMethod",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#ProviderAuthMethod",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 3,
+          "snippet": "  ProviderAuthMethod,",
+          "note": "Explicit import type from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 33,
+          "snippet": "export const entraIdAuthMethod: ProviderAuthMethod = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#ProviderAuthResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#ProviderAuthResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 4,
+          "snippet": "  ProviderAuthResult,",
+          "note": "Explicit import type from openclaw/plugin-sdk/core; shared.ts separately imports the same name from provider-auth."
+        },
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 47,
+          "snippet": "  run: async (ctx: ProviderAuthContext): Promise<ProviderAuthResult> => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#ProviderNormalizeResolvedModelContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#ProviderNormalizeResolvedModelContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 1,
+          "snippet": "import type { ProviderNormalizeResolvedModelContext } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 196,
+          "snippet": "    normalizeResolvedModel: ({ modelId, model }: ProviderNormalizeResolvedModelContext) => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#ProviderPrepareRuntimeAuthContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#ProviderPrepareRuntimeAuthContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 4,
+          "snippet": "  ProviderPrepareRuntimeAuthContext,",
+          "note": "Explicit import type from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 65,
+          "snippet": "  ctx: ProviderPrepareRuntimeAuthContext,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#ProviderPreparedRuntimeAuth",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#ProviderPreparedRuntimeAuth",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 3,
+          "snippet": "  ProviderPreparedRuntimeAuth,",
+          "note": "Explicit import type from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 66,
+          "snippet": "): Promise<ProviderPreparedRuntimeAuth> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#ProviderRuntimeModel",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#ProviderRuntimeModel",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 3,
+          "snippet": "import type { ProviderRuntimeModel } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 119,
+          "snippet": "}): ProviderRuntimeModel {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 2,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 528,
+          "snippet": "    const message = formatErrorMessage(error);"
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 6,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 152,
+          "snippet": "    const details = formatErrorMessage(err);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/expect-runtime#expectDefined",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/expect-runtime#expectDefined",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 4,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 325,
+          "snippet": "                image: expectDefined(inputImages[0], \"Microsoft Foundry edit source image\"),"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 3,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 138,
+          "snippet": "    const only = expectDefined(resources[0], \"single Microsoft Foundry resource\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#ImageGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#ImageGenerationProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 6,
+          "snippet": "  ImageGenerationProvider,",
+          "note": "Explicit import type from openclaw/plugin-sdk/image-generation."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 225,
+          "snippet": "export function buildMicrosoftFoundryImageGenerationProvider(): ImageGenerationProvider {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#ImageGenerationRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#ImageGenerationRequest",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 7,
+          "snippet": "  ImageGenerationRequest,",
+          "note": "Explicit import type from openclaw/plugin-sdk/image-generation."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 138,
+          "snippet": "  req: ImageGenerationRequest;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#ImageGenerationResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#ImageGenerationResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 8,
+          "snippet": "  ImageGenerationResult,",
+          "note": "Explicit import type from openclaw/plugin-sdk/image-generation."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 247,
+          "snippet": "    async generateImage(req): Promise<ImageGenerationResult> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#ImageGenerationSourceImage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#ImageGenerationSourceImage",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 9,
+          "snippet": "  ImageGenerationSourceImage,",
+          "note": "Explicit import type from openclaw/plugin-sdk/image-generation."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 188,
+          "snippet": "  image: ImageGenerationSourceImage;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#imageSourceUploadFileName",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#imageSourceUploadFileName",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 12,
+          "snippet": "  imageSourceUploadFileName,",
+          "note": "Named value import from openclaw/plugin-sdk/image-generation."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 203,
+          "snippet": "    imageSourceUploadFileName({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#parseOpenAiCompatibleImageResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#parseOpenAiCompatibleImageResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 13,
+          "snippet": "  parseOpenAiCompatibleImageResponse,",
+          "note": "Named value import from openclaw/plugin-sdk/image-generation."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 213,
+          "snippet": "  const images = parseOpenAiCompatibleImageResponse(payload, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#resolveInlineImageJsonResponseMaxBytes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#resolveInlineImageJsonResponseMaxBytes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 14,
+          "snippet": "  resolveInlineImageJsonResponseMaxBytes,",
+          "note": "Named value import from openclaw/plugin-sdk/image-generation."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 345,
+          "snippet": "            maxBytes: resolveInlineImageJsonResponseMaxBytes("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-generation-runtime#resolveGeneratedMediaMaxBytes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime#resolveGeneratedMediaMaxBytes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 16,
+          "snippet": "import { resolveGeneratedMediaMaxBytes } from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 347,
+          "snippet": "              resolveGeneratedMediaMaxBytes(req.cfg, \"image\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#asDateTimestampMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#asDateTimestampMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 8,
+          "snippet": "  asDateTimestampMs,",
+          "note": "Named value import from openclaw/plugin-sdk/number-runtime."
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 50,
+          "snippet": "    asDateTimestampMs(rawExpiry) ??"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolveDateTimestampMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolveDateTimestampMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 9,
+          "snippet": "  resolveDateTimestampMs,",
+          "note": "Named value import from openclaw/plugin-sdk/number-runtime."
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 48,
+          "snippet": "  const now = resolveDateTimestampMs(Date.now());"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolveExpiresAtMsFromDurationMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolveExpiresAtMsFromDurationMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 10,
+          "snippet": "  resolveExpiresAtMsFromDurationMs,",
+          "note": "Named value import from openclaw/plugin-sdk/number-runtime."
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 51,
+          "snippet": "    resolveExpiresAtMsFromDurationMs(FOUNDRY_TOKEN_FALLBACK_LIFETIME_MS, { nowMs: now }) ??"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/index.ts",
+          "line": 2,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/index.ts",
+          "line": 6,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#runCommandWithTimeout",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#runCommandWithTimeout",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/cli.ts",
+          "line": 3,
+          "snippet": "import { runCommandWithTimeout, runExec } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/cli.ts",
+          "line": 176,
+          "snippet": "  const result = await runCommandWithTimeout([\"az\", ...args], {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#runExec",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#runExec",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/cli.ts",
+          "line": 3,
+          "snippet": "import { runCommandWithTimeout, runExec } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/cli.ts",
+          "line": 62,
+          "snippet": "    const { stdout } = await runExec(\"az\", args, { logOutput: false, timeoutMs: 30_000 });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#ProviderAuthResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#ProviderAuthResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 4,
+          "snippet": "  type ProviderAuthResult,",
+          "note": "Inline type import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 474,
+          "snippet": "}): ProviderAuthResult {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#SecretInput",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#SecretInput",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 5,
+          "snippet": "  type SecretInput,",
+          "note": "Inline type import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 459,
+          "snippet": "  apiKey: SecretInput;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#applyAuthProfileConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#applyAuthProfileConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 2,
+          "snippet": "import { applyAuthProfileConfig } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 177,
+          "snippet": "        ctx.config.auth = applyAuthProfileConfig(ctx.config, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#buildApiKeyCredential",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#buildApiKeyCredential",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 3,
+          "snippet": "  buildApiKeyCredential,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 502,
+          "snippet": "        credential: buildApiKeyCredential("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#ensureAuthProfileStoreAsync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#ensureAuthProfileStoreAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 7,
+          "snippet": "  ensureAuthProfileStoreAsync,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 206,
+          "snippet": "    const authStore = await ensureAuthProfileStoreAsync(ctx.agentDir, {"
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 12,
+          "snippet": "import { ensureAuthProfileStoreAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 80,
+          "snippet": "    const authStore = await ensureAuthProfileStoreAsync(ctx.agentDir, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isProviderApiKeyConfiguredAsync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#isProviderApiKeyConfiguredAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 17,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 231,
+          "snippet": "    isConfiguredAsync: (ctx) => isProviderApiKeyConfiguredAsync({ provider: PROVIDER_ID, ...ctx }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#normalizeOptionalSecretInput",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#normalizeOptionalSecretInput",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 8,
+          "snippet": "  normalizeOptionalSecretInput,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 212,
+          "snippet": "      token: normalizeOptionalSecretInput(ctx.opts?.azureOpenaiApiKey),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth-api-key#captureProviderApiKey",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth-api-key#captureProviderApiKey",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 10,
+          "snippet": "import { captureProviderApiKey } from \"openclaw/plugin-sdk/provider-auth-api-key\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 211,
+          "snippet": "    const { input, mode } = await captureProviderApiKey(ctx, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 18,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 143,
+          "snippet": "  const auth = await resolveApiKeyForProvider({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#assertOkOrThrowHttpError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#assertOkOrThrowHttpError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 20,
+          "snippet": "  assertOkOrThrowHttpError,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 340,
+          "snippet": "        await assertOkOrThrowHttpError(response, `${label} failed`);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#createProviderOperationDeadline",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#createProviderOperationDeadline",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 21,
+          "snippet": "  createProviderOperationDeadline,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 296,
+          "snippet": "      const deadline = createProviderOperationDeadline({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#postJsonRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#postJsonRequest",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 22,
+          "snippet": "  postJsonRequest,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 329,
+          "snippet": "          : postJsonRequest({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#postMultipartRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#postMultipartRequest",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 23,
+          "snippet": "  postMultipartRequest,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 321,
+          "snippet": "          ? postMultipartRequest({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 24,
+          "snippet": "  readProviderJsonResponse,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 341,
+          "snippet": "        const payload = await readProviderJsonResponse("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readResponseTextLimited",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readResponseTextLimited",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 4,
+          "snippet": "import { readResponseTextLimited } from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 585,
+          "snippet": "        const body = await readResponseTextLimited("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderHttpRequestConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderHttpRequestConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 25,
+          "snippet": "  resolveProviderHttpRequestConfig,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 282,
+          "snippet": "        resolveProviderHttpRequestConfig({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderOperationTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderOperationTimeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 26,
+          "snippet": "  resolveProviderOperationTimeoutMs,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 300,
+          "snippet": "      const timeoutMs = resolveProviderOperationTimeoutMs({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#sanitizeConfiguredModelProviderRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#sanitizeConfiguredModelProviderRequest",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 27,
+          "snippet": "  sanitizeConfiguredModelProviderRequest,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 287,
+          "snippet": "          request: sanitizeConfiguredModelProviderRequest(providerConfig?.request),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 11,
+          "snippet": "  type ModelApi,",
+          "note": "Inline type import from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 328,
+          "snippet": "  configuredApi?: ModelApi | null,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 6,
+          "snippet": "  type ModelDefinitionConfig,",
+          "note": "Inline type import from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 59,
+          "snippet": "  T extends Pick<ModelDefinitionConfig, \"reasoning\" | \"thinkingLevelMap\" | \"params\" | \"compat\">,"
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 12,
+          "snippet": "  type ModelDefinitionConfig,",
+          "note": "Inline type import from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 429,
+          "snippet": "): ModelDefinitionConfig {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 7,
+          "snippet": "  type ModelProviderConfig,",
+          "note": "Inline type import; public facade exports ModelProviderDeclarationConfig under the public name ModelProviderConfig. The similarly named local type in image-generation-provider.ts is an OpenClawConfig projection."
+        },
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 164,
+          "snippet": "      const nextProviderConfig: ModelProviderConfig = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ProviderPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 8,
+          "snippet": "  type ProviderPlugin,",
+          "note": "Inline type import from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 28,
+          "snippet": "const wrapMicrosoftFoundryStreamFn: NonNullable<ProviderPlugin[\"wrapStreamFn\"]> = (ctx) => {"
+        },
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 108,
+          "snippet": "export function buildMicrosoftFoundryProvider(): ProviderPlugin {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#resolveClaudeFable5ModelIdentity",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#resolveClaudeFable5ModelIdentity",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 8,
+          "snippet": "  resolveClaudeFable5ModelIdentity,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 182,
+          "snippet": "    ? resolveClaudeFable5ModelIdentity({ id: normalized }) !== undefined ||"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#resolveClaudeThinkingProfile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#resolveClaudeThinkingProfile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 4,
+          "snippet": "  resolveClaudeThinkingProfile,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 192,
+          "snippet": "      return resolveClaudeThinkingProfile(capabilities.modelName, undefined, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#supportsClaudeAdaptiveThinking",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#supportsClaudeAdaptiveThinking",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 9,
+          "snippet": "  supportsClaudeAdaptiveThinking,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 224,
+          "snippet": "    (supportsClaudeAdaptiveThinking({ id: normalized }) ||"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#supportsClaudeNativeMaxEffort",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#supportsClaudeNativeMaxEffort",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 5,
+          "snippet": "  supportsClaudeNativeMaxEffort,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 193,
+          "snippet": "        includeNativeMax: supportsClaudeNativeMaxEffort({ id: capabilities.modelName }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#supportsClaudeNativeXhighEffort",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#supportsClaudeNativeXhighEffort",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 10,
+          "snippet": "  supportsClaudeNativeXhighEffort,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 382,
+          "snippet": "    isAnthropic && supportsClaudeNativeXhighEffort({ id: modelName });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-family#buildProviderStreamFamilyHooks",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-family#buildProviderStreamFamilyHooks",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 10,
+          "snippet": "import { buildProviderStreamFamilyHooks } from \"openclaw/plugin-sdk/provider-stream-family\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 24,
+          "snippet": "const { wrapStreamFn: wrapOpenAIResponsesStreamFn } = buildProviderStreamFamilyHooks(",
+          "note": "The destructured wrapOpenAIResponsesStreamFn belongs to this helper return value; it is not a direct SDK-export alias or public API/runtime handle."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 5,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 570,
+          "snippet": "    const { response: res, release } = await fetchWithSsrFGuard({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalLowercaseString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalLowercaseString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 30,
+          "snippet": "  normalizeOptionalLowercaseString,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 59,
+          "snippet": "  const normalizedModel = normalizeOptionalLowercaseString(model);"
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 15,
+          "snippet": "  normalizeOptionalLowercaseString,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 118,
+          "snippet": "  const normalized = normalizeOptionalLowercaseString(modelName);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/cli.ts",
+          "line": 5,
+          "snippet": "  normalizeOptionalString,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/microsoft-foundry/cli.ts",
+          "line": 49,
+          "snippet": "    normalizeOptionalString("
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 31,
+          "snippet": "  normalizeOptionalString,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 249,
+          "snippet": "      const model = normalizeOptionalString(req.model);"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 7,
+          "snippet": "  normalizeOptionalString,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 62,
+          "snippet": "          ? normalizeOptionalString(account.customSubdomain)"
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 13,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 86,
+          "snippet": "      normalizeOptionalString(ctx.modelId) ??"
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 16,
+          "snippet": "  normalizeOptionalString,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 310,
+          "snippet": "  const trimmed = normalizeOptionalString(endpoint) ?? \"\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeStringifiedOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeStringifiedOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/cli.ts",
+          "line": 6,
+          "snippet": "  normalizeStringifiedOptionalString,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/microsoft-foundry/cli.ts",
+          "line": 63,
+          "snippet": "    return normalizeStringifiedOptionalString(stdout) ?? \"\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 8,
+          "snippet": "  normalizeStringifiedOptionalString,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 306,
+          "snippet": "        const val = normalizeStringifiedOptionalString(v) ?? \"\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/cli.ts",
+          "line": 8,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/cli.ts",
+          "line": 39,
+          "snippet": "  return truncateUtf16Safe(normalized, 300);"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 10,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 591,
+          "snippet": "            ? `Endpoint is reachable but returned 400 Bad Request - check your deployment name and API version.\\n${truncateUtf16Safe(body, 200)}`"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/blob-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/blob-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { bufferToBlobPart } from \"openclaw/plugin-sdk/blob-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/collection-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/collection-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 1,
+          "snippet": "import { pruneMapToMaxSize } from \"openclaw/plugin-sdk/collection-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-contracts",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-contracts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 1,
+          "snippet": "import type { AuthConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 1,
+          "snippet": "import type {\n  ProviderAuthContext,\n  ProviderAuthMethod,\n  ProviderAuthResult,\n} from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 3,
+          "snippet": "import type { ProviderRuntimeModel } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 1,
+          "snippet": "import type { ProviderAuthContext } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 1,
+          "snippet": "import type { ProviderNormalizeResolvedModelContext } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 2,
+          "snippet": "import type {\n  ProviderPreparedRuntimeAuth,\n  ProviderPrepareRuntimeAuthContext,\n} from \"openclaw/plugin-sdk/core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 2,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 6,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/expect-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/expect-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 4,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 3,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/image-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/image-generation",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 5,
+          "snippet": "import type {\n  ImageGenerationProvider,\n  ImageGenerationRequest,\n  ImageGenerationResult,\n  ImageGenerationSourceImage,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 11,
+          "snippet": "import {\n  imageSourceUploadFileName,\n  parseOpenAiCompatibleImageResponse,\n  resolveInlineImageJsonResponseMaxBytes,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-generation-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 16,
+          "snippet": "import { resolveGeneratedMediaMaxBytes } from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 7,
+          "snippet": "import {\n  asDateTimestampMs,\n  resolveDateTimestampMs,\n  resolveExpiresAtMsFromDurationMs,\n} from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/index.ts",
+          "line": 2,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/process-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/process-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/cli.ts",
+          "line": 3,
+          "snippet": "import { runCommandWithTimeout, runExec } from \"openclaw/plugin-sdk/process-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 6,
+          "snippet": "import {\n  ensureAuthProfileStoreAsync,\n  normalizeOptionalSecretInput,\n} from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 17,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 2,
+          "snippet": "import { applyAuthProfileConfig } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 12,
+          "snippet": "import { ensureAuthProfileStoreAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 2,
+          "snippet": "import {\n  buildApiKeyCredential,\n  type ProviderAuthResult,\n  type SecretInput,\n} from \"openclaw/plugin-sdk/provider-auth\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth-api-key",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth-api-key",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/auth.ts",
+          "line": 10,
+          "snippet": "import { captureProviderApiKey } from \"openclaw/plugin-sdk/provider-auth-api-key\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 18,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-http",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-http",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 19,
+          "snippet": "import {\n  assertOkOrThrowHttpError,\n  createProviderOperationDeadline,\n  postJsonRequest,\n  postMultipartRequest,\n  readProviderJsonResponse,\n  resolveProviderHttpRequestConfig,\n  resolveProviderOperationTimeoutMs,\n  sanitizeConfiguredModelProviderRequest,\n} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 4,
+          "snippet": "import { readResponseTextLimited } from \"openclaw/plugin-sdk/provider-http\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-shared",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 3,
+          "snippet": "import {\n  resolveClaudeThinkingProfile,\n  supportsClaudeNativeMaxEffort,\n  type ModelDefinitionConfig,\n  type ModelProviderConfig,\n  type ProviderPlugin,\n} from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 7,
+          "snippet": "import {\n  resolveClaudeFable5ModelIdentity,\n  supportsClaudeAdaptiveThinking,\n  supportsClaudeNativeXhighEffort,\n  type ModelApi,\n  type ModelDefinitionConfig,\n} from \"openclaw/plugin-sdk/provider-model-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-stream-family",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-stream-family",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/provider.ts",
+          "line": 10,
+          "snippet": "import { buildProviderStreamFamilyHooks } from \"openclaw/plugin-sdk/provider-stream-family\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 5,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/cli.ts",
+          "line": 4,
+          "snippet": "import {\n  normalizeOptionalString,\n  normalizeStringifiedOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/image-generation-provider.ts",
+          "line": 29,
+          "snippet": "import {\n  normalizeOptionalLowercaseString,\n  normalizeOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 6,
+          "snippet": "import {\n  normalizeOptionalString,\n  normalizeStringifiedOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/runtime.ts",
+          "line": 13,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/shared.ts",
+          "line": 14,
+          "snippet": "import {\n  normalizeOptionalLowercaseString,\n  normalizeOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/text-utility-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft-foundry/cli.ts",
+          "line": 8,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft-foundry/onboard.ts",
+          "line": 10,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all eight production TypeScript files, package.json and openclaw.plugin.json. The 17 plugin-root files are exhaustively partitioned into 10 reviewed and seven excluded files. Source bytes under this plugin root match pinned commit d912f0c06e7af29a4a40c4211bec0bb76d473f10.",
+    "Read root, extensions and src/plugin-sdk AGENTS.md; consulted src/plugins AGENTS.md for public API type provenance. Authorized AGENTS/skill edits outside this plugin root are not source changes to the audited plugin.",
+    "Package openclaw.extensions points to index.ts. All production local imports resolve within this plugin root; no local barrel reexports, additional shared shipped source, declaration files, dynamic imports or requires exist. Node built-ins and SDK implementations are outside plugin-owned source coverage.",
+    "onboard.ts is production onboarding code despite testFoundryConnection and buildFoundryConnectionTest names: auth.ts calls testFoundryConnection at line 156. cli.ts and shared.ts are production dependencies of auth.ts, onboard.ts, provider.ts, runtime.ts and image-generation-provider.ts, not test-only helpers.",
+    "The public package exports and relevant src/plugin-sdk facades confirm every recorded module/export. Original public export names are preserved, including ModelProviderConfig, a public facade alias of the underlying ModelProviderDeclarationConfig. No transitive implementation/package imports are attributed to this plugin.",
+    "index.ts register(api) is the sole OpenClawPluginApi handle and only calls registerProvider and registerImageGenerationProvider. ProviderAuthContext, ProviderPrepareRuntimeAuthContext, model-selection contexts, image requests, config values and provider objects are not PluginRuntime/OpenClawPluginApi handles. Thus their ctx/config/model fields produce no api-member or runtime-member findings.",
+    "ProviderPlugin[\"wrapStreamFn\"] and Pick<ModelDefinitionConfig,...> are type references to those SDK exports, not public API/runtime member types. The local ModelProviderConfig projection in image-generation-provider.ts references OpenClawConfig; it does not alias the separately imported provider-model-shared ModelProviderConfig.",
+    "buildProviderStreamFamilyHooks is imported and called. Its wrapStreamFn return property, auth-profile stores, HTTP response/release handles, parsed image results, and other arbitrary SDK function results are not public API/runtime handles; helper internals and calls of helper-returned functions are not expanded.",
+    "All named value imports have direct call sites; explicit and inline type imports have explicit type-reference sites. Module mixed classifications reflect actual import/type-import syntax, not inferred usage. No syntactic dependency was dropped for runtime reachability.",
+    "The manifest contributes providers and contracts.imageGenerationProviders. Setup/providerAuthChoices/imageGenerationProviderMetadata and descriptive/config fields add no agreed manifest-contract identities. No api.on or registerHook registration occurs; provider callback property names are not named API hook registrations.",
+    "No genuinely unresolved SDK/API/runtime references remain. Evidence is representative of each required reference kind and includes each file containing the dependency; findingCount counts distinct finding identities evidenced in that file."
+  ]
+}

@@ -1,0 +1,911 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "apple-fm",
+    "path": "extensions/apple-fm"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_apple_fm",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/apple-fm/defaults.ts",
+      "sha256": "996a747eaa5308f99774337c34d21f6ea828404c5ba8180de4024af5ae79337c",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/apple-fm/index.ts",
+      "sha256": "c07921cba92effecca75a4850dcc536cc915e94898410e65d0dec267e55339a6",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/apple-fm/native.ts",
+      "sha256": "447fa7a176fdbd8f758d01d4e61319323221ae58d238d5f8d24668a54491874f",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/apple-fm/openclaw.plugin.json",
+      "sha256": "444c60e2cd0b7e38cfaea485572c7d23dff6b8065f32b8f21c21f5625c44d612",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/apple-fm/package.json",
+      "sha256": "2b85e9fa3ca88450b7a650511a71aa005468fda33f80a36b5d259abe6cc513c9",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/apple-fm/setup.ts",
+      "sha256": "14396cafc768ec74c8a53d7926c4dfc0a305fe30899d4461232391cfdd528804",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/apple-fm/stream.ts",
+      "sha256": "41bda57201b32325bd56b2e777c8b5352099ddbf4852fd2f796f4088eb70f92e",
+      "role": "production-source",
+      "findingCount": 13
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/apple-fm/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation; Markdown is outside the source extension set."
+    },
+    {
+      "path": "extensions/apple-fm/apple-fm.live.test.ts",
+      "rule": "test-file",
+      "reason": "Live test basename contains .test.; none of the five production source files imports this file."
+    },
+    {
+      "path": "extensions/apple-fm/assets/AppleFoundationModels.swift",
+      "rule": "non-source",
+      "reason": "Shipped native helper explicitly listed in package.json staticAssets and loaded by native.ts; Swift is outside the frozen JS/TS-family source extension set."
+    },
+    {
+      "path": "extensions/apple-fm/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG image asset, outside the source extension set."
+    },
+    {
+      "path": "extensions/apple-fm/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG image asset, outside the source extension set."
+    },
+    {
+      "path": "extensions/apple-fm/index.test.ts",
+      "rule": "test-file",
+      "reason": "Test basename contains .test.; none of the five production source files imports this file."
+    },
+    {
+      "path": "extensions/apple-fm/native.test.ts",
+      "rule": "test-file",
+      "reason": "Test basename contains .test.; none of the five production source files imports this file."
+    },
+    {
+      "path": "extensions/apple-fm/stream.test.ts",
+      "rule": "test-file",
+      "reason": "Test basename contains .test.; none of the five production source files imports this file."
+    },
+    {
+      "path": "extensions/apple-fm/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript compiler configuration; JSON is outside the source extension set and this is not package or plugin manifest metadata."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.rootDir",
+      "kind": "api-member",
+      "identity": "api.rootDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/index.ts",
+          "line": 17,
+          "snippet": "const pluginRoot = api.rootDir ?? path.dirname(api.source);",
+          "note": "The provider factory parameter is OpenClawPluginApi by SingleProviderPluginOptions.provider in src/plugin-sdk/provider-entry.ts; this is a direct API field read."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.source",
+      "kind": "api-member",
+      "identity": "api.source",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/index.ts",
+          "line": 17,
+          "snippet": "const pluginRoot = api.rootDir ?? path.dirname(api.source);",
+          "note": "The provider factory parameter is OpenClawPluginApi by SingleProviderPluginOptions.provider in src/plugin-sdk/provider-entry.ts; this is a direct API field read."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.providers:apple-fm",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:apple-fm",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/openclaw.plugin.json",
+          "line": 9,
+          "snippet": "\"providers\": [\"apple-fm\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-core#StreamFn",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-core#StreamFn",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/index.ts",
+          "line": 2,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";"
+        },
+        {
+          "path": "extensions/apple-fm/index.ts",
+          "line": 21,
+          "snippet": "const nativeStream: StreamFn = async (...args) =>"
+        },
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 1,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";"
+        },
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 13,
+          "snippet": "export function createAppleFmStream(native: Pick<AppleFmNative, \"run\">): StreamFn {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#extractErrorCode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#extractErrorCode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 5,
+          "snippet": "import { extractErrorCode } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 73,
+          "snippet": "if (extractErrorCode(error) === \"ENOENT\") {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/json-schema-runtime#validateJsonSchemaValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/json-schema-runtime#validateJsonSchemaValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 2,
+          "snippet": "import { validateJsonSchemaValue } from \"openclaw/plugin-sdk/json-schema-runtime\";"
+        },
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 74,
+          "snippet": "const validation = validateJsonSchemaValue({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/json-unsafe-integers#parseJsonPreservingUnsafeIntegers",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/json-unsafe-integers#parseJsonPreservingUnsafeIntegers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 6,
+          "snippet": "import { parseJsonPreservingUnsafeIntegers } from \"openclaw/plugin-sdk/json-unsafe-integers\";"
+        },
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 101,
+          "snippet": "const value: unknown = parseJsonPreservingUnsafeIntegers(result.stdout.toString(\"utf8\"));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/json-unsafe-integers#quoteUnsafeIntegerLiterals",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/json-unsafe-integers#quoteUnsafeIntegerLiterals",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 3,
+          "snippet": "import { quoteUnsafeIntegerLiterals } from \"openclaw/plugin-sdk/json-unsafe-integers\";"
+        },
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 47,
+          "snippet": "if (quoteUnsafeIntegerLiterals(result.text) !== result.text) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/index.ts",
+          "line": 3,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        },
+        {
+          "path": "extensions/apple-fm/index.ts",
+          "line": 8,
+          "snippet": "const loadSetup = createLazyRuntimeModule(() => import(\"./setup.js\"));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#AssistantMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#AssistantMessage",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 4,
+          "snippet": "import { createAssistantMessageEventStream, type AssistantMessage } from \"openclaw/plugin-sdk/llm\";"
+        },
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 16,
+          "snippet": "const message: AssistantMessage = buildAssistantMessage({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#createAssistantMessageEventStream",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#createAssistantMessageEventStream",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 4,
+          "snippet": "import { createAssistantMessageEventStream, type AssistantMessage } from \"openclaw/plugin-sdk/llm\";"
+        },
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 15,
+          "snippet": "const stream = createAssistantMessageEventStream();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/setup.ts",
+          "line": 2,
+          "snippet": "OpenClawConfig,",
+          "note": "Named specifier in the import type from openclaw/plugin-sdk/plugin-entry at lines 1\u20137."
+        },
+        {
+          "path": "extensions/apple-fm/setup.ts",
+          "line": 108,
+          "snippet": "): Promise<OpenClawConfig> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAppGuidedSetupContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAppGuidedSetupContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/setup.ts",
+          "line": 3,
+          "snippet": "ProviderAppGuidedSetupContext,",
+          "note": "Named specifier in the import type from openclaw/plugin-sdk/plugin-entry at lines 1\u20137."
+        },
+        {
+          "path": "extensions/apple-fm/setup.ts",
+          "line": 55,
+          "snippet": "ctx: ProviderAppGuidedSetupContext,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/setup.ts",
+          "line": 4,
+          "snippet": "ProviderAuthContext,",
+          "note": "Named specifier in the import type from openclaw/plugin-sdk/plugin-entry at lines 1\u20137."
+        },
+        {
+          "path": "extensions/apple-fm/setup.ts",
+          "line": 79,
+          "snippet": "ctx: ProviderAuthContext,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthMethodNonInteractiveContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthMethodNonInteractiveContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/setup.ts",
+          "line": 5,
+          "snippet": "ProviderAuthMethodNonInteractiveContext,",
+          "note": "Named specifier in the import type from openclaw/plugin-sdk/plugin-entry at lines 1\u20137."
+        },
+        {
+          "path": "extensions/apple-fm/setup.ts",
+          "line": 86,
+          "snippet": "ctx: Pick<ProviderAuthMethodNonInteractiveContext, \"runtime\">,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/setup.ts",
+          "line": 6,
+          "snippet": "ProviderAuthResult,",
+          "note": "Named specifier in the import type from openclaw/plugin-sdk/plugin-entry at lines 1\u20137."
+        },
+        {
+          "path": "extensions/apple-fm/setup.ts",
+          "line": 37,
+          "snippet": "function setupResult(facts: AppleFmFacts): ProviderAuthResult {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#runCommandBuffered",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#runCommandBuffered",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 7,
+          "snippet": "import { runCommandBuffered } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 87,
+          "snippet": "const result = await runCommandBuffered([command, ...args], {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-entry#defineSingleProviderPluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-entry#defineSingleProviderPluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/index.ts",
+          "line": 4,
+          "snippet": "import { defineSingleProviderPluginEntry } from \"openclaw/plugin-sdk/provider-entry\";"
+        },
+        {
+          "path": "extensions/apple-fm/index.ts",
+          "line": 11,
+          "snippet": "export default defineSingleProviderPluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/defaults.ts",
+          "line": 1,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/apple-fm/defaults.ts",
+          "line": 10,
+          "snippet": "export function buildAppleFmProviderConfig(facts: AppleFmFacts): ModelProviderConfig {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#ensureModelAllowlistEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#ensureModelAllowlistEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/setup.ts",
+          "line": 8,
+          "snippet": "import { ensureModelAllowlistEntry } from \"openclaw/plugin-sdk/provider-onboard\";"
+        },
+        {
+          "path": "extensions/apple-fm/setup.ts",
+          "line": 111,
+          "snippet": "return ensureModelAllowlistEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-transport-runtime#buildAssistantMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-transport-runtime#buildAssistantMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 6,
+          "snippet": "buildAssistantMessage,",
+          "note": "Named specifier in the ordinary import from openclaw/plugin-sdk/provider-transport-runtime at lines 5\u20139."
+        },
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 16,
+          "snippet": "const message: AssistantMessage = buildAssistantMessage({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-transport-runtime#createEmptyTransportUsage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-transport-runtime#createEmptyTransportUsage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 7,
+          "snippet": "createEmptyTransportUsage,",
+          "note": "Named specifier in the ordinary import from openclaw/plugin-sdk/provider-transport-runtime at lines 5\u20139."
+        },
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 19,
+          "snippet": "usage: createEmptyTransportUsage(),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-transport-runtime#failTransportStream",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-transport-runtime#failTransportStream",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 8,
+          "snippet": "failTransportStream,",
+          "note": "Named specifier in the ordinary import from openclaw/plugin-sdk/provider-transport-runtime at lines 5\u20139."
+        },
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 129,
+          "snippet": "failTransportStream({ stream, output: message, error, signal: options?.signal });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/state-paths#resolveStateDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/state-paths#resolveStateDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 8,
+          "snippet": "import { resolveStateDir } from \"openclaw/plugin-sdk/state-paths\";"
+        },
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 60,
+          "snippet": "resolveStateDir(env),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 9,
+          "snippet": "import { resolvePreferredOpenClawTmpDir } from \"openclaw/plugin-sdk/temp-path\";"
+        },
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 121,
+          "snippet": "path.join(resolvePreferredOpenClawTmpDir(), \"openclaw-apple-fm-probe-\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/index.ts",
+          "line": 2,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";"
+        },
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 1,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 5,
+          "snippet": "import { extractErrorCode } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/json-schema-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/json-schema-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 2,
+          "snippet": "import { validateJsonSchemaValue } from \"openclaw/plugin-sdk/json-schema-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/json-unsafe-integers",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/json-unsafe-integers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 6,
+          "snippet": "import { parseJsonPreservingUnsafeIntegers } from \"openclaw/plugin-sdk/json-unsafe-integers\";"
+        },
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 3,
+          "snippet": "import { quoteUnsafeIntegerLiterals } from \"openclaw/plugin-sdk/json-unsafe-integers\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/lazy-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/lazy-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/index.ts",
+          "line": 3,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/llm",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/llm",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 4,
+          "snippet": "import { createAssistantMessageEventStream, type AssistantMessage } from \"openclaw/plugin-sdk/llm\";",
+          "note": "One ordinary value specifier and one inline type specifier establish both source categories."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/setup.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "The import type declaration at lines 1\u20137 imports five explicit SDK types."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/process-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/process-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 7,
+          "snippet": "import { runCommandBuffered } from \"openclaw/plugin-sdk/process-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/index.ts",
+          "line": 4,
+          "snippet": "import { defineSingleProviderPluginEntry } from \"openclaw/plugin-sdk/provider-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-shared",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/defaults.ts",
+          "line": 1,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-onboard",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-onboard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/setup.ts",
+          "line": 8,
+          "snippet": "import { ensureModelAllowlistEntry } from \"openclaw/plugin-sdk/provider-onboard\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-transport-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-transport-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/stream.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-transport-runtime\";",
+          "note": "The ordinary import declaration at lines 5\u20139 imports three SDK functions."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/state-paths",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/state-paths",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 8,
+          "snippet": "import { resolveStateDir } from \"openclaw/plugin-sdk/state-paths\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/temp-path",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/temp-path",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/apple-fm/native.ts",
+          "line": 9,
+          "snippet": "import { resolvePreferredOpenClawTmpDir } from \"openclaw/plugin-sdk/temp-path\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read every eligible production source file (defaults.ts, index.ts, native.ts, setup.ts, stream.ts) plus package.json and openclaw.plugin.json. The 16 files beneath the canonical root are partitioned into seven reviewed and nine excluded records; every file was byte-compared with the pinned commit.",
+    "All plugin-local static and dynamic imports stay within extensions/apple-fm and resolve to reviewed production files or the reviewed manifest. There are no additional plugin-owned/shared shipped JS/TS source files outside the root and no ambiguous test helpers.",
+    "index.ts provider(api) has OpenClawPluginApi provenance from src/plugin-sdk/provider-entry.ts SingleProviderPluginOptions.provider. Only direct reads api.rootDir and api.source are counted; helper-internal provider registration is not plugin-authored API access.",
+    "setup.ts ctx.runtime.error is a RuntimeEnv logger-like facility: src/plugins/provider-authentication.types.ts declares ProviderAuthMethodNonInteractiveContext.runtime as RuntimeEnv. It is not PluginRuntime or api.runtime, so neither that call nor Pick<ProviderAuthMethodNonInteractiveContext, \"runtime\"> creates a runtime-member identity. Other provider context/config accesses likewise do not establish API provenance.",
+    "The native helper object, lazy-loader functions, event stream, validation result, command result, AssistantMessage fields, and other SDK function return values are not API/runtime handles. Their members are not expanded into public-member findings.",
+    "The Swift helper is shipped via package staticAssets and read/compiled by native.ts but is non-source under the frozen JS/TS-family scope. Node built-ins and installed zod are outside SDK dependency identities; installed dependencies and SDK helper implementations are not audited as plugin source.",
+    "Manifest providers declares apple-fm. Activation, authentication/setup choices, modelPricing, categories, configSchema, and descriptive fields do not create additional identities under the frozen manifest-contract categories.",
+    "All explicit type imports, inline type imports, and representative type references are preserved. The llm module is mixed because its single import combines a value and an inline type specifier. No hooks, public PluginRuntime members, or genuinely unresolved SDK/API constructs occur."
+  ]
+}

@@ -1,0 +1,1254 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "device-pair",
+    "path": "extensions/device-pair"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_device_pair",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/device-pair/api.ts",
+      "sha256": "42e53f1b5742ad9caa75e401309b37271897dc81f2ec2bf757afb1a69058cf12",
+      "role": "production-source",
+      "findingCount": 19
+    },
+    {
+      "path": "extensions/device-pair/doctor-contract-api.ts",
+      "sha256": "5f5b8bf9d65994b3a42afce952513c501c5c63dd5035cd08a75c0fac0bab8785",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/device-pair/index.ts",
+      "sha256": "8a10d5fbd470d00e9d51cd72a6bde50a63ccc5197cdec9f6bcf077cc2345294c",
+      "role": "production-source",
+      "findingCount": 26
+    },
+    {
+      "path": "extensions/device-pair/notify-state.ts",
+      "sha256": "7bdcb9cb323b21e4cc669418906a96ddf70da2f69b35040ed619c73e1380472e",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/device-pair/notify.ts",
+      "sha256": "f2881f92026c3a94b8f68038244038e970643d6683cac1b3e0b051dfc33b8d31",
+      "role": "production-source",
+      "findingCount": 11
+    },
+    {
+      "path": "extensions/device-pair/openclaw.plugin.json",
+      "sha256": "764dbf19c7691d2fc2ac6e7642fae877aa7ea5fcf7c2caf5fd77328573abe62b",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/device-pair/pair-command-approve.ts",
+      "sha256": "de0c349877f4ca5262444cf1f2f6e4a45778cc66ffe0ff54c2bfc3fc8bed1bc2",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/device-pair/pair-command-auth.ts",
+      "sha256": "fa7533438ca3a41ae18bb4c12dc0ca351b45d030c64d4c5d0b00473aac3a21e7",
+      "role": "production-source",
+      "findingCount": 6
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/device-pair/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation is outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/device-pair/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork is non-source metadata/asset content."
+    },
+    {
+      "path": "extensions/device-pair/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG icon asset is outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/device-pair/index.test.ts",
+      "rule": "test-file",
+      "reason": "The .test.ts basename identifies test-only source; no production file imports this test."
+    },
+    {
+      "path": "extensions/device-pair/notify-cas.test.ts",
+      "rule": "test-file",
+      "reason": "The .test.ts basename identifies test-only source; no production file imports this test."
+    },
+    {
+      "path": "extensions/device-pair/notify.test.ts",
+      "rule": "test-file",
+      "reason": "The .test.ts basename identifies test-only source; no production file imports this test."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.config",
+      "kind": "api-member",
+      "identity": "api.config",
+      "classification": "mixed",
+      "referenceKinds": [
+        "member-access",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 186,
+          "snippet": "  const result = await resolvePairingGatewayUrl(api.config, {"
+        },
+        {
+          "path": "extensions/device-pair/pair-command-auth.ts",
+          "line": 20,
+          "snippet": "export function resolveAuthLabel(cfg: OpenClawPluginApi[\"config\"]): ResolveAuthLabelResult {",
+          "note": "Direct indexed access selects the public API config member in type syntax."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.gateway.auth.mode",
+      "kind": "api-member",
+      "identity": "api.config.gateway.auth.mode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/pair-command-auth.ts",
+          "line": 21,
+          "snippet": "  const mode = cfg.gateway?.auth?.mode;",
+          "note": "cfg is OpenClawPluginApi[\"config\"] at line 20 and receives api.config from index.ts:510."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.gateway.auth.password",
+      "kind": "api-member",
+      "identity": "api.config.gateway.auth.password",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/pair-command-auth.ts",
+          "line": 27,
+          "snippet": "    normalizeOptionalString(cfg.gateway?.auth?.password);",
+          "note": "cfg is OpenClawPluginApi[\"config\"] at line 20 and receives api.config from index.ts:510."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.gateway.auth.token",
+      "kind": "api-member",
+      "identity": "api.config.gateway.auth.token",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/pair-command-auth.ts",
+          "line": 24,
+          "snippet": "    normalizeOptionalString(cfg.gateway?.auth?.token);",
+          "note": "cfg is OpenClawPluginApi[\"config\"] at line 20 and receives api.config from index.ts:510."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.debug",
+      "kind": "api-member",
+      "identity": "api.logger.debug",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 653,
+          "snippet": "            api.logger.debug?.("
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.info",
+      "kind": "api-member",
+      "identity": "api.logger.info",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 438,
+          "snippet": "        api.logger.info?.("
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.warn",
+      "kind": "api-member",
+      "identity": "api.logger.warn",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 248,
+          "snippet": "          params.api.logger.warn("
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig",
+      "kind": "api-member",
+      "identity": "api.pluginConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 185,
+          "snippet": "  const pluginCfg = (api.pluginConfig ?? {}) as DevicePairPluginConfig;"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.publicUrl",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.publicUrl",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 188,
+          "snippet": "    publicUrl: pluginCfg.publicUrl,",
+          "note": "pluginCfg directly aliases api.pluginConfig (with an empty fallback) at line 185; its local type asserts the publicUrl property."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerCommand",
+      "kind": "api-member",
+      "identity": "api.registerCommand",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 411,
+          "snippet": "    api.registerCommand({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerService",
+      "kind": "api-member",
+      "identity": "api.registerService",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 402,
+          "snippet": "    api.registerService({"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.commandAliases.name:pair",
+      "kind": "manifest-contract",
+      "identity": "manifest.commandAliases.name:pair",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/openclaw.plugin.json",
+          "line": 13,
+          "snippet": "  \"commandAliases\": [\n    {\n      \"name\": \"pair\",\n      \"kind\": \"runtime-slash\""
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.channel",
+      "kind": "runtime-member",
+      "identity": "runtime.channel",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 652,
+          "snippet": "            const channelKeys = Object.keys(api.runtime?.channel ?? {});",
+          "note": "The independently read api.runtime.channel is the maximal path here; Object.keys is a standard built-in, not an SDK member."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.channel.outbound.loadAdapter",
+      "kind": "runtime-member",
+      "identity": "runtime.channel.outbound.loadAdapter",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 371,
+          "snippet": "  const adapter = await params.api.runtime.channel.outbound.loadAdapter(params.ctx.channel);"
+        },
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 245,
+          "snippet": "        const adapter = await params.api.runtime.channel.outbound.loadAdapter(\"telegram\");"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.openKeyedStore",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openKeyedStore",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 83,
+          "snippet": "  const store = api.runtime.state.openKeyedStore<NotifySubscription>({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/device-bootstrap#DeviceBootstrapProfile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/device-bootstrap#DeviceBootstrapProfile",
+      "classification": "type",
+      "referenceKinds": [
+        "type-reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 10,
+          "snippet": "  type DeviceBootstrapProfile,\n} from \"openclaw/plugin-sdk/device-bootstrap\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/device-bootstrap#PAIRING_SETUP_BOOTSTRAP_PROFILE",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/device-bootstrap#PAIRING_SETUP_BOOTSTRAP_PROFILE",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import",
+        "member-access",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 6,
+          "snippet": "  PAIRING_SETUP_BOOTSTRAP_PROFILE,"
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 16,
+          "snippet": "const loadDevicePairApiModule = createLazyRuntimeModule(() => import(\"./api.js\"));",
+          "note": "Dynamic local api.ts barrel provenance for PAIRING_SETUP_BOOTSTRAP_PROFILE."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 337,
+          "snippet": "  const { issueDeviceBootstrapToken, PAIRING_SETUP_BOOTSTRAP_PROFILE } =\n    await loadDevicePairApiModule();",
+          "note": "Destructuring selects the SDK constant from the loaded local barrel."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 347,
+          "snippet": "          roles: [...PAIRING_SETUP_BOOTSTRAP_PROFILE.roles],\n          scopes: [\"operator.admin\", ...PAIRING_SETUP_BOOTSTRAP_PROFILE.scopes],",
+          "note": "Member reads remain attributed to the exported SDK constant root."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/device-bootstrap#approveDevicePairing",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/device-bootstrap#approveDevicePairing",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "reexport",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 3,
+          "snippet": "  approveDevicePairing,",
+          "note": "Original named export from device-bootstrap at line 11."
+        },
+        {
+          "path": "extensions/device-pair/pair-command-approve.ts",
+          "line": 6,
+          "snippet": "import { approveDevicePairing, listDevicePairing } from \"./api.js\";"
+        },
+        {
+          "path": "extensions/device-pair/pair-command-approve.ts",
+          "line": 10,
+          "snippet": "type ApprovePairingResult = Awaited<ReturnType<typeof approveDevicePairing>>;"
+        },
+        {
+          "path": "extensions/device-pair/pair-command-approve.ts",
+          "line": 76,
+          "snippet": "      ? await approveDevicePairing(params.requestId)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/device-bootstrap#clearDeviceBootstrapTokens",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/device-bootstrap#clearDeviceBootstrapTokens",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import",
+        "member-access",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 4,
+          "snippet": "  clearDeviceBootstrapTokens,",
+          "note": "Named reexport from openclaw/plugin-sdk/device-bootstrap."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 16,
+          "snippet": "const loadDevicePairApiModule = createLazyRuntimeModule(() => import(\"./api.js\"));",
+          "note": "The local api.ts barrel dynamically imported here preserves the selected original SDK export clearDeviceBootstrapTokens."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 494,
+          "snippet": "          const { clearDeviceBootstrapTokens } = await loadDevicePairApiModule();",
+          "note": "Destructuring the resolved local barrel namespace selects the unchanged SDK export."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 495,
+          "snippet": "          const cleared = await clearDeviceBootstrapTokens({ assertCurrent: assertOwnerCurrent });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/device-bootstrap#issueDeviceBootstrapToken",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/device-bootstrap#issueDeviceBootstrapToken",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import",
+        "member-access",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 5,
+          "snippet": "  issueDeviceBootstrapToken,",
+          "note": "Named reexport from openclaw/plugin-sdk/device-bootstrap."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 16,
+          "snippet": "const loadDevicePairApiModule = createLazyRuntimeModule(() => import(\"./api.js\"));",
+          "note": "The local api.ts barrel dynamically imported here preserves the selected original SDK export issueDeviceBootstrapToken."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 337,
+          "snippet": "  const { issueDeviceBootstrapToken, PAIRING_SETUP_BOOTSTRAP_PROFILE } =\n    await loadDevicePairApiModule();",
+          "note": "Destructuring the resolved local barrel namespace selects the unchanged SDK export."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 343,
+          "snippet": "  const issuedBootstrap = await issueDeviceBootstrapToken({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/device-bootstrap#listDevicePairing",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/device-bootstrap#listDevicePairing",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "dynamic-import",
+        "import",
+        "member-access",
+        "reexport",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 7,
+          "snippet": "  listDevicePairing,"
+        },
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 2,
+          "snippet": "import { listDevicePairing } from \"openclaw/plugin-sdk/device-bootstrap\";"
+        },
+        {
+          "path": "extensions/device-pair/pair-command-approve.ts",
+          "line": 6,
+          "snippet": "import { approveDevicePairing, listDevicePairing } from \"./api.js\";"
+        },
+        {
+          "path": "extensions/device-pair/pair-command-approve.ts",
+          "line": 9,
+          "snippet": "type PendingPairingEntry = Awaited<ReturnType<typeof listDevicePairing>>[\"pending\"][number];"
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 16,
+          "snippet": "const loadDevicePairApiModule = createLazyRuntimeModule(() => import(\"./api.js\"));",
+          "note": "Dynamic local api.ts barrel provenance for listDevicePairing."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 450,
+          "snippet": "          const [{ listDevicePairing }, { formatPendingRequests }] = await Promise.all([\n            loadDevicePairApiModule(),\n            loadNotifyModule(),\n          ]);",
+          "note": "Destructuring the resolved local barrel namespace selects the SDK export."
+        },
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 209,
+          "snippet": "  const pairing = await listDevicePairing();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/device-bootstrap#resolvePairingGatewayUrl",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/device-bootstrap#resolvePairingGatewayUrl",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import",
+        "member-access",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 8,
+          "snippet": "  resolvePairingGatewayUrl,",
+          "note": "Named reexport from openclaw/plugin-sdk/device-bootstrap."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 16,
+          "snippet": "const loadDevicePairApiModule = createLazyRuntimeModule(() => import(\"./api.js\"));",
+          "note": "The local api.ts barrel dynamically imported here preserves the selected original SDK export resolvePairingGatewayUrl."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 184,
+          "snippet": "  const { resolvePairingGatewayUrl, runPluginCommandWithTimeout } = await loadDevicePairApiModule();",
+          "note": "Destructuring the resolved local barrel namespace selects the unchanged SDK export."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 186,
+          "snippet": "  const result = await resolvePairingGatewayUrl(api.config, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/device-bootstrap#revokeDeviceBootstrapToken",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/device-bootstrap#revokeDeviceBootstrapToken",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import",
+        "member-access",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 9,
+          "snippet": "  revokeDeviceBootstrapToken,",
+          "note": "Named reexport from openclaw/plugin-sdk/device-bootstrap."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 16,
+          "snippet": "const loadDevicePairApiModule = createLazyRuntimeModule(() => import(\"./api.js\"));",
+          "note": "The local api.ts barrel dynamically imported here preserves the selected original SDK export revokeDeviceBootstrapToken."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 583,
+          "snippet": "              const { revokeDeviceBootstrapToken } = await loadDevicePairApiModule();",
+          "note": "Destructuring the resolved local barrel namespace selects the unchanged SDK export."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 587,
+          "snippet": "              await revokeDeviceBootstrapToken({ token: payload.bootstrapToken }).catch(() => {});"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 3,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 268,
+          "snippet": "            `device-pair: failed to send pairing notification to ${subscriber.to}: ${formatErrorMessage(err)}`,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 5,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 16,
+          "snippet": "const loadDevicePairApiModule = createLazyRuntimeModule(() => import(\"./api.js\"));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-runtime#renderQrPngBase64",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-runtime#renderQrPngBase64",
+      "classification": "runtime",
+      "referenceKinds": [
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 18,
+          "snippet": "  renderQrPngBase64,",
+          "note": "Unused value reexport from the media-runtime specifier at line 21 remains a source dependency."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-runtime#renderQrPngDataUrl",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-runtime#renderQrPngDataUrl",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import",
+        "member-access",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 19,
+          "snippet": "  renderQrPngDataUrl,",
+          "note": "Named reexport from openclaw/plugin-sdk/media-runtime."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 16,
+          "snippet": "const loadDevicePairApiModule = createLazyRuntimeModule(() => import(\"./api.js\"));",
+          "note": "The local api.ts barrel dynamically imported here preserves the selected original SDK export renderQrPngDataUrl."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 602,
+          "snippet": "              const { renderQrPngDataUrl } = await loadDevicePairApiModule();",
+          "note": "Destructuring the resolved local barrel namespace selects the unchanged SDK export."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 603,
+          "snippet": "              await renderQrPngDataUrl(setupCode);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-runtime#writeQrPngTempFile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-runtime#writeQrPngTempFile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import",
+        "member-access",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 20,
+          "snippet": "  writeQrPngTempFile,",
+          "note": "Named reexport from openclaw/plugin-sdk/media-runtime."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 16,
+          "snippet": "const loadDevicePairApiModule = createLazyRuntimeModule(() => import(\"./api.js\"));",
+          "note": "The local api.ts barrel dynamically imported here preserves the selected original SDK export writeQrPngTempFile."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 556,
+          "snippet": "              const { resolvePreferredOpenClawTmpDir, writeQrPngTempFile } =\n                await loadDevicePairApiModule();",
+          "note": "Destructuring the resolved local barrel namespace selects the unchanged SDK export."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 559,
+          "snippet": "                await writeQrPngTempFile(setupCode, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reexport",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/pair-command-auth.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 12,
+          "snippet": "export { definePluginEntry, type OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 183,
+          "snippet": "async function resolveMobilePairingGatewayUrl(api: OpenClawPluginApi) {"
+        },
+        {
+          "path": "extensions/device-pair/pair-command-auth.ts",
+          "line": 20,
+          "snippet": "export function resolveAuthLabel(cfg: OpenClawPluginApi[\"config\"]): ResolveAuthLabelResult {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginCommandContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginCommandContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 9,
+          "snippet": "  type PluginCommandContext,",
+          "note": "Inline type-only import from plugin-entry on line 10."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 38,
+          "snippet": "type QrCommandContext = Pick<\n  PluginCommandContext,\n  \"channel\" | \"senderId\" | \"from\" | \"to\" | \"accountId\" | \"messageThreadId\"\n>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginServiceSchedulerV1",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginServiceSchedulerV1",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 4,
+          "snippet": "import type {\n  OpenClawPluginApi,\n  PluginCommandContext,\n  PluginServiceSchedulerV1,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 407,
+          "snippet": "  scheduler: PluginServiceSchedulerV1,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 7,
+          "snippet": "  definePluginEntry,",
+          "note": "Ordinary import from plugin-entry, whose specifier is at line 10."
+        },
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 12,
+          "snippet": "export { definePluginEntry, type OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 397,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#PluginStateKeyedStore",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#PluginStateKeyedStore",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 9,
+          "snippet": "import type { PluginStateKeyedStore } from \"openclaw/plugin-sdk/plugin-state-runtime\";"
+        },
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 77,
+          "snippet": "type NotifySubscriberStore = PluginStateKeyedStore<NotifySubscription> & {\n  observe: NonNullable<PluginStateKeyedStore<NotifySubscription>[\"observe\"]>;\n  compareAndApply: NonNullable<PluginStateKeyedStore<NotifySubscription>[\"compareAndApply\"]>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-doctor-migrations#defineRetiredPluginStateMigration",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations#defineRetiredPluginStateMigration",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/doctor-contract-api.ts",
+          "line": 2,
+          "snippet": "import { defineRetiredPluginStateMigration } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";"
+        },
+        {
+          "path": "extensions/device-pair/doctor-contract-api.ts",
+          "line": 5,
+          "snippet": "  defineRetiredPluginStateMigration({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sandbox#resolvePreferredOpenClawTmpDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sandbox#resolvePreferredOpenClawTmpDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import",
+        "member-access",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 14,
+          "snippet": "  resolvePreferredOpenClawTmpDir,",
+          "note": "Named reexport from openclaw/plugin-sdk/sandbox."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 16,
+          "snippet": "const loadDevicePairApiModule = createLazyRuntimeModule(() => import(\"./api.js\"));",
+          "note": "The local api.ts barrel dynamically imported here preserves the selected original SDK export resolvePreferredOpenClawTmpDir."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 556,
+          "snippet": "              const { resolvePreferredOpenClawTmpDir, writeQrPngTempFile } =\n                await loadDevicePairApiModule();",
+          "note": "Destructuring the resolved local barrel namespace selects the unchanged SDK export."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 560,
+          "snippet": "                  tmpRoot: resolvePreferredOpenClawTmpDir(),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sandbox#runPluginCommandWithTimeout",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sandbox#runPluginCommandWithTimeout",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import",
+        "member-access",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 15,
+          "snippet": "  runPluginCommandWithTimeout,",
+          "note": "Named reexport from openclaw/plugin-sdk/sandbox."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 16,
+          "snippet": "const loadDevicePairApiModule = createLazyRuntimeModule(() => import(\"./api.js\"));",
+          "note": "The local api.ts barrel dynamically imported here preserves the selected original SDK export runPluginCommandWithTimeout."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 184,
+          "snippet": "  const { resolvePairingGatewayUrl, runPluginCommandWithTimeout } = await loadDevicePairApiModule();",
+          "note": "Destructuring the resolved local barrel namespace selects the unchanged SDK export."
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 192,
+          "snippet": "      runPluginCommandWithTimeout({ argv, timeoutMs: opts.timeoutMs }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 11,
+          "snippet": "import {\n  normalizeLowercaseStringOrEmpty,\n  normalizeOptionalString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 64,
+          "snippet": "  let normalized = normalizeLowercaseStringOrEmpty(host);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/notify-state.ts",
+          "line": 2,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/device-pair/notify-state.ts",
+          "line": 32,
+          "snippet": "  const normalized = normalizeOptionalString(messageThreadId);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeTrimmedStringList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeTrimmedStringList",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 10,
+          "snippet": "import {\n  normalizeOptionalString,\n  normalizeTrimmedStringList,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 48,
+          "snippet": "  return normalizeTrimmedStringList(values).join(\", \") || \"none\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/device-bootstrap",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/device-bootstrap",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "reexport",
+        "type-reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 3,
+          "snippet": "  approveDevicePairing,",
+          "note": "Value reexport from the device-bootstrap specifier on line 11."
+        },
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 10,
+          "snippet": "  type DeviceBootstrapProfile,\n} from \"openclaw/plugin-sdk/device-bootstrap\";"
+        },
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 2,
+          "snippet": "import { listDevicePairing } from \"openclaw/plugin-sdk/device-bootstrap\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 3,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/lazy-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/lazy-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 5,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 17,
+          "snippet": "export {\n  renderQrPngBase64,\n  renderQrPngDataUrl,\n  writeQrPngTempFile,\n} from \"openclaw/plugin-sdk/media-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "reexport",
+        "type-import",
+        "type-reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/index.ts",
+          "line": 6,
+          "snippet": "import {\n  definePluginEntry,\n  type OpenClawPluginApi,\n  type PluginCommandContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 12,
+          "snippet": "export { definePluginEntry, type OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/device-pair/pair-command-auth.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-state-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/notify.ts",
+          "line": 9,
+          "snippet": "import type { PluginStateKeyedStore } from \"openclaw/plugin-sdk/plugin-state-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-doctor-migrations",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/doctor-contract-api.ts",
+          "line": 2,
+          "snippet": "import { defineRetiredPluginStateMigration } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/sandbox",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/sandbox",
+      "classification": "runtime",
+      "referenceKinds": [
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/api.ts",
+          "line": 13,
+          "snippet": "export {\n  resolvePreferredOpenClawTmpDir,\n  runPluginCommandWithTimeout,\n} from \"openclaw/plugin-sdk/sandbox\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/device-pair/notify-state.ts",
+          "line": 2,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "All seven eligible production TypeScript files and openclaw.plugin.json were read in full. There is no plugin-local package.json. The complete 14-file plugin tree byte-matches the pinned commit; assets, README, and three test files are individually excluded.",
+    "All local imports remain inside extensions/device-pair. api.ts is a production public barrel; doctor-contract-api.ts is a production doctor artifact despite lacking a local runtime import. notify-state.ts is imported by production notify.ts. No shared shipped source outside the canonical plugin root is added and no installed dependency implementation is audited.",
+    "The root package exports and focused public SDK facades confirm all nine exact SDK subpath identities. createLazyRuntimeModule preserves the raw imported module namespace; selections through loadDevicePairApiModule resolve to original SDK exports and retain dynamic-import plus distinct later member-access/call evidence. The local barrel import creates no synthetic SDK-module import or SDK star export.",
+    "Source syntax preserves unused DeviceBootstrapProfile type reexport and renderQrPngBase64 value reexport. listDevicePairing and approveDevicePairing are mixed because explicit typeof references coexist with value imports/reexports and calls. Module classifications follow module dependency sites, not later symbol type references.",
+    "cfg is explicitly OpenClawPluginApi[\"config\"] and is called with api.config; its gateway.auth property reads preserve that provenance. pluginCfg directly aliases api.pluginConfig, and publicUrl is the maximal accessed alias path. Command/service contexts and the scheduler are separate SDK values, not API/runtime handles.",
+    "Object.keys(api.runtime ?? {}) at index.ts:651 enumerates the known runtime root and creates neither a runtime-root identity nor an unknown opaque escape. The independent Object.keys(api.runtime?.channel ?? {}) occurrence at line 652 reads runtime.channel. Built-in behavior is not appended to public member paths.",
+    "Adapter sendText/sendMedia and keyed-store observe/compareAndApply/lookup/register/delete/entries/count belong to returned SDK objects, not api/runtime member paths. Their return-value operations are not expanded. The imported PluginStateKeyedStore type remains a type dependency.",
+    "The only frozen manifest contract field present is commandAliases.name=pair. doctorContract.stateMigrations, categories, activation, enabledByDefault, descriptive fields, config groups/schema and UI hints are not included in the agreed manifest identity fields. No named hooks are registered.",
+    "findingCount counts distinct findings with representative evidence in each reviewed file; evidence includes source occurrences for each established reference kind."
+  ]
+}

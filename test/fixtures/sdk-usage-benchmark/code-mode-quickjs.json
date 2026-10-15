@@ -1,0 +1,1167 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "code-mode-quickjs",
+    "path": "extensions/code-mode-quickjs"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_code_mode_quickjs",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/code-mode-quickjs/code-mode-executor-api.ts",
+      "sha256": "9022b067fa1861ae64bdb5822998417d18385e0bbb28999cb0165a3fc39ee22d",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/code-mode-quickjs/index.ts",
+      "sha256": "242721eff6e9afce5c38505c5db60a4b3cd6d579b291508afaf689ccfe686195",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/code-mode-quickjs/openclaw.plugin.json",
+      "sha256": "a2ff93f8f210d613217df81b8e2ce72ed42efbbb1980b083152f0966af1820f6",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/code-mode-quickjs/package.json",
+      "sha256": "a0767d5bd347355e25ee370e85f917a729d10d4e98accf2b38ae2f4cb29fa959",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+      "sha256": "fdb71d59106d2b80f2ff3e7a2a5222dd42a1ec49b2447d7c0a0fa627f439480d",
+      "role": "production-source",
+      "findingCount": 27
+    },
+    {
+      "path": "extensions/code-mode-quickjs/src/executor.ts",
+      "sha256": "8c4e287dad93c44a26d953615df35f1485193eea3d96110fdd128c0c596693a5",
+      "role": "production-source",
+      "findingCount": 24
+    },
+    {
+      "path": "extensions/code-mode-quickjs/src/source-location.ts",
+      "sha256": "5461e943f1e7ab38c16e0ee188dceb9711328d91d48298d5b122dae43e6574cb",
+      "role": "production-source",
+      "findingCount": 6
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/code-mode-quickjs/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation; outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/code-mode-quickjs/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork asset; outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/code-mode-quickjs/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG artwork asset; outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/code-mode-quickjs/src/executor.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Vitest helpers using vi.spyOn and onTestFinished; repository-wide caller search finds only src/worker-lifecycle.test.ts."
+    },
+    {
+      "path": "extensions/code-mode-quickjs/src/worker-entrypoint.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Test worker URL declaration consumed by executor.test-support.ts, worker-lifecycle.test.ts, and the Vitest worker compiler registry scripts/lib/vitest-worker-build-entries.mts; scripts/lib/vitest-worker-declarations.mts also lists its test artifact. Production executor.ts declares its own worker URL and does not import this helper."
+    },
+    {
+      "path": "extensions/code-mode-quickjs/src/worker-lifecycle.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest worker lifecycle suite; basename contains .test."
+    },
+    {
+      "path": "extensions/code-mode-quickjs/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript package-boundary configuration; not production JS/TS-family source or selected package/manifest metadata."
+    }
+  ],
+  "findings": [
+    {
+      "key": "manifest-contract:manifest.contracts.codeModeExecutors:quickjs",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.codeModeExecutors:quickjs",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/openclaw.plugin.json",
+          "line": 10,
+          "snippet": "    \"codeModeExecutors\": [\"quickjs\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CODE_MODE_CONTROLLER_SOURCE",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CODE_MODE_CONTROLLER_SOURCE",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 4,
+          "snippet": "  CODE_MODE_CONTROLLER_SOURCE,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CODE_MODE_WORKER_WATCHDOG_GRACE_MS",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CODE_MODE_WORKER_WATCHDOG_GRACE_MS",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 4,
+          "snippet": "  CODE_MODE_WORKER_WATCHDOG_GRACE_MS,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeApiVirtualFile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeApiVirtualFile",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 15,
+          "snippet": "  type CodeModeApiVirtualFile,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 720,
+          "snippet": "          ? (input.apiFiles as CodeModeApiVirtualFile[]) // SAFETY: Only host-prepared declaration files enter this channel."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 16,
+          "snippet": "  type CodeModeConfig,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 135,
+          "snippet": "  config: CodeModeConfig;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeExecutor",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeExecutor",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 8,
+          "snippet": "  type CodeModeExecutor,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 234,
+          "snippet": "export const codeModeExecutor: CodeModeExecutor = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeExecutorContinuation",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeExecutorContinuation",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 9,
+          "snippet": "  type CodeModeExecutorContinuation,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 93,
+          "snippet": "function retainSnapshot(snapshot: Snapshot): CodeModeExecutorContinuation {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeExecutorRunOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeExecutorRunOptions",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 10,
+          "snippet": "  type CodeModeExecutorRunOptions,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 117,
+          "snippet": "  { timeoutMs, signal, inlineHost }: CodeModeExecutorRunOptions,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeFailureCode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeFailureCode",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 11,
+          "snippet": "  type CodeModeFailureCode,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 81,
+          "snippet": "  code: CodeModeFailureCode,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeHeadlessAbortError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeHeadlessAbortError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 5,
+          "snippet": "  CodeModeHeadlessAbortError,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeHeadlessTimeoutError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeHeadlessTimeoutError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 6,
+          "snippet": "  CodeModeHeadlessTimeoutError,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeNamespaceDescriptor",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeNamespaceDescriptor",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 17,
+          "snippet": "  type CodeModeNamespaceDescriptor,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 723,
+          "snippet": "          ? (input.namespaces as CodeModeNamespaceDescriptor[]) // SAFETY: The host serializes these descriptors before dispatch."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeVmResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeVmResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 20,
+          "snippet": "  type CodeModeVmResult,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 42,
+          "snippet": "type CodeModeWorkerResult = CodeModeVmResult<Snapshot>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeWorkerBoundary",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeWorkerBoundary",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 12,
+          "snippet": "  type CodeModeWorkerBoundary,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 180,
+          "snippet": "                value as CodeModeWorkerBoundary,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeWorkerContinuation",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeWorkerContinuation",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 19,
+          "snippet": "  type CodeModeWorkerContinuation,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 542,
+          "snippet": "            const command = response.input as CodeModeWorkerContinuation;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeWorkerPayload",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeWorkerPayload",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 13,
+          "snippet": "  type CodeModeWorkerPayload,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 48,
+          "snippet": "type QuickJsWorkerPayload = CodeModeWorkerPayload<Snapshot> &"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 18,
+          "snippet": "  type CodeModeWorkerPayload as SharedWorkerPayload,",
+          "note": "The original SDK export is imported as SharedWorkerPayload."
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 38,
+          "snippet": "type CodeModeWorkerPayload = SharedWorkerPayload<Snapshot> & {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeWorkerResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeWorkerResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 14,
+          "snippet": "  type CodeModeWorkerResult,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 82,
+          "snippet": "): Extract<CodeModeWorkerResult, { status: \"failed\" }> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeWorkerThreadResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#CodeModeWorkerThreadResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 15,
+          "snippet": "  type CodeModeWorkerThreadResult,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 50,
+          "snippet": "type QuickJsWorkerPool = WorkerTaskPool<QuickJsWorkerPayload, CodeModeWorkerThreadResult<Snapshot>>;"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 21,
+          "snippet": "  type CodeModeWorkerThreadResult as SharedWorkerThreadResult,",
+          "note": "The original SDK export is imported as SharedWorkerThreadResult."
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 43,
+          "snippet": "type CodeModeWorkerThreadResult = SharedWorkerThreadResult<Snapshot>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#EMPTY_CODE_MODE_OUTPUT",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#EMPTY_CODE_MODE_OUTPUT",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 7,
+          "snippet": "  EMPTY_CODE_MODE_OUTPUT,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 8,
+          "snippet": "  EMPTY_CODE_MODE_OUTPUT,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#PendingBridgeRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#PendingBridgeRequest",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 22,
+          "snippet": "  type PendingBridgeRequest,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 85,
+          "snippet": "  pendingRequests: PendingBridgeRequest[];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#SOURCE_LOCATION_KEY",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#SOURCE_LOCATION_KEY",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 10,
+          "snippet": "  SOURCE_LOCATION_KEY,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/source-location.ts",
+          "line": 2,
+          "snippet": "  SOURCE_LOCATION_KEY,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#SettledBridgeRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#SettledBridgeRequest",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 23,
+          "snippet": "  type SettledBridgeRequest,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 87,
+          "snippet": "  replies?: SettledBridgeRequest[];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#SourceLocation",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#SourceLocation",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 24,
+          "snippet": "  type SourceLocation,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 102,
+          "snippet": "  location?: SourceLocation,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/source-location.ts",
+          "line": 4,
+          "snippet": "  type SourceLocation,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/source-location.ts",
+          "line": 9,
+          "snippet": "export function readSourceLocation(vm: QuickJS): SourceLocation | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#ToolInputError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#ToolInputError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 14,
+          "snippet": "  ToolInputError,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#USER_SOURCE_FILE",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#USER_SOURCE_FILE",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 11,
+          "snippet": "  USER_SOURCE_FILE,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/source-location.ts",
+          "line": 3,
+          "snippet": "  USER_SOURCE_FILE,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#boundCodeModeError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#boundCodeModeError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 5,
+          "snippet": "  boundCodeModeError,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 358,
+          "snippet": "    ? { ...result, output, error: boundCodeModeError(result.error, config.maxOutputBytes) }"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#buildUserSource",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#buildUserSource",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 9,
+          "snippet": "  buildUserSource,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 655,
+          "snippet": "        const program = buildUserSource(source, input.prelude);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#captureCodeModeOutput",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#captureCodeModeOutput",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 6,
+          "snippet": "  captureCodeModeOutput,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 343,
+          "snippet": "  const output = captureCodeModeOutput(result.output, config.maxOutputBytes);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#captureCodeModeValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#captureCodeModeValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 7,
+          "snippet": "  captureCodeModeValue,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 348,
+          "snippet": "      value: captureCodeModeValue("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#normalizeSourceStack",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#normalizeSourceStack",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 12,
+          "snippet": "  normalizeSourceStack,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 105,
+          "snippet": "  const sourceStack = normalizeSourceStack(stack, location);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/code-mode-executor-runtime#prepareSource",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime#prepareSource",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 13,
+          "snippet": "  prepareSource,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 626,
+          "snippet": "  const source = input.kind === \"exec\" ? prepareSource(input.source) : \"\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 17,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 85,
+          "snippet": "    error: formatErrorMessage(error),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 18,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 28,
+          "snippet": "const getQuickJsModules = createLazyRuntimeModule(async () => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/index.ts",
+          "line": 3,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#WorkerTaskError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#WorkerTaskError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 21,
+          "snippet": "  WorkerTaskError,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#WorkerTaskPool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#WorkerTaskPool",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 22,
+          "snippet": "  WorkerTaskPool,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 50,
+          "snippet": "type QuickJsWorkerPool = WorkerTaskPool<QuickJsWorkerPayload, CodeModeWorkerThreadResult<Snapshot>>;",
+          "note": "The imported class is also used directly in a type alias."
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 69,
+          "snippet": "      pool: new WorkerTaskPool<QuickJsWorkerPayload, CodeModeWorkerThreadResult<Snapshot>>({",
+          "note": "Constructing the imported SDK class contributes call to its exported-root identity."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#WorkerTaskResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#WorkerTaskResponse",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 23,
+          "snippet": "  type WorkerTaskResponse,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 164,
+          "snippet": "          ? async (value, context): Promise<WorkerTaskResponse> => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#resolveRuntimeWorkerUrl",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#resolveRuntimeWorkerUrl",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 20,
+          "snippet": "  resolveRuntimeWorkerUrl,"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 55,
+          "snippet": "  return resolveRuntimeWorkerUrl({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 25,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 143,
+          "snippet": "              if (!isRecord(value)) {"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 26,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 678,
+          "snippet": "        isRecord(extension) &&"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/source-location.ts",
+          "line": 6,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/source-location.ts",
+          "line": 25,
+          "snippet": "    if (!isRecord(value)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/worker-task-server#WorkerTaskChannel",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/worker-task-server#WorkerTaskChannel",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 27,
+          "snippet": "import { serveWorkerTasks, type WorkerTaskChannel } from \"openclaw/plugin-sdk/worker-task-server\";"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 59,
+          "snippet": "function notifyWorkerFailure(channel: WorkerTaskChannel | undefined, error: unknown): void {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/worker-task-server#serveWorkerTasks",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/worker-task-server#serveWorkerTasks",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 27,
+          "snippet": "import { serveWorkerTasks, type WorkerTaskChannel } from \"openclaw/plugin-sdk/worker-task-server\";"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 772,
+          "snippet": "serveWorkerTasks(main, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/code-mode-executor-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/code-mode-executor-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 16,
+          "snippet": "} from \"openclaw/plugin-sdk/code-mode-executor-runtime\";",
+          "note": "This import includes ordinary value bindings and explicit inline type bindings at lines 8\u201315."
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 25,
+          "snippet": "} from \"openclaw/plugin-sdk/code-mode-executor-runtime\";",
+          "note": "This import includes ordinary value bindings and explicit inline type bindings at lines 15\u201324."
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/source-location.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/code-mode-executor-runtime\";",
+          "note": "SOURCE_LOCATION_KEY and USER_SOURCE_FILE are value imports; SourceLocation is an explicit inline type import."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 17,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/lazy-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/lazy-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 18,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/process-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/process-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 24,
+          "snippet": "} from \"openclaw/plugin-sdk/process-runtime\";",
+          "note": "The import includes three value bindings and the explicit inline type WorkerTaskResponse at line 23."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/executor.ts",
+          "line": 25,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 26,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/code-mode-quickjs/src/source-location.ts",
+          "line": 6,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/worker-task-server",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/worker-task-server",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/code-mode-quickjs/src/code-mode.worker.ts",
+          "line": 27,
+          "snippet": "import { serveWorkerTasks, type WorkerTaskChannel } from \"openclaw/plugin-sdk/worker-task-server\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read Inspector root AGENTS.md, the full frozen contract and README, OpenClaw root/extensions/SDK guidance, all five eligible production source files, package.json and openclaw.plugin.json. Read both test-support helpers and verified callers across the repository, including the Vitest worker build registry under scripts/AGENTS.md.",
+    "Source-phase coverage includes code-mode-executor-api.ts even though index.ts only defines an empty registration callback. The local barrel exports the plugin-owned codeModeExecutor, not an SDK symbol; it has no SDK finding of its own.",
+    "All production relative imports remain inside extensions/code-mode-quickjs. No additional plugin-owned/shared shipped source outside the canonical root was identified. Public SDK facades and package exports were checked only for contract provenance; their implementations and the separately installed quickjs-wasi dependency are outside the source audit.",
+    "package.json explicitly ships src/code-mode.worker.ts as a worker entry and packages WASM assets from quickjs-wasi. The production worker is included; external dependency files and generated assets are not recursively audited. Source and packaged-artifact expectations are distinct.",
+    "WorkerTaskChannel, CodeModeExecutorRunOptions.inlineHost, guest bridge state, QuickJS handles and WorkerTaskPool instances are specialized contracts/objects, not OpenClawPluginApi or PluginRuntime handles. Their members do not become api-member/runtime-member identities. The plugin has no API/runtime accesses or named hook registrations.",
+    "The imported WorkerTaskPool class has a runtime import/constructor call and an explicit type alias, yielding a mixed SDK-export identity. The process-runtime module is independently mixed because its import also explicitly imports type WorkerTaskResponse. Aliased SharedWorkerPayload and SharedWorkerThreadResult retain their original SDK exported names.",
+    "createLazyRuntimeModule receives a plugin-owned callback loading QuickJS WASM assets; its returned getQuickJsModules function is not an SDK export alias and does not create dynamic SDK imports or inferred runtime-member consumption.",
+    "Manifest categories, activation, config schema and descriptive metadata are not contract identities; contracts.codeModeExecutors declares exactly quickjs. Each reviewed findingCount counts distinct finding identities with evidence in that file."
+  ]
+}

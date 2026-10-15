@@ -1,0 +1,462 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "bonjour",
+    "path": "extensions/bonjour"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_bonjour",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/bonjour/index.ts",
+      "sha256": "8196df165cc1367f0ef369162fe5db4cc5745df5c36271f1ded52b63866f50fa",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/bonjour/openclaw.plugin.json",
+      "sha256": "a8d1b015e222b6fbae85ea45aadba98428e0243d5a0ee18a1d4f7e805d0cf51c",
+      "role": "manifest",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/bonjour/package.json",
+      "sha256": "7202119ced5cdcb8215d12cff19b6a5f4fadad0156865b3fd6b989441b8b8d7c",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/bonjour/src/advertiser.ts",
+      "sha256": "65e12509de8b973a40190a7390e25d69c44f67c6c0d6f9ece049fbc5df4a027a",
+      "role": "production-source",
+      "findingCount": 11
+    },
+    {
+      "path": "extensions/bonjour/src/ciao.ts",
+      "sha256": "04746bfc476080ad43427107a053bcd4fe0899323e16fc2940419f169c446396",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/bonjour/src/errors.ts",
+      "sha256": "dc84803937d61bae66607c313550ac078a73b535be4044abbe714d2771d99b7a",
+      "role": "production-source",
+      "findingCount": 0
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/bonjour/README.md",
+      "rule": "non-source",
+      "reason": "Plugin usage documentation; Markdown is outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/bonjour/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork is outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/bonjour/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG artwork is outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/bonjour/index.test.ts",
+      "rule": "test-file",
+      "reason": "Entrypoint unit test; basename contains .test. and no reviewed production source imports it."
+    },
+    {
+      "path": "extensions/bonjour/manifest.test.ts",
+      "rule": "test-file",
+      "reason": "Manifest unit test; basename contains .test. and no reviewed production source imports it."
+    },
+    {
+      "path": "extensions/bonjour/src/advertiser.test.ts",
+      "rule": "test-file",
+      "reason": "Advertiser unit test; basename contains .test. and no reviewed production source imports it."
+    },
+    {
+      "path": "extensions/bonjour/src/ciao.test.ts",
+      "rule": "test-file",
+      "reason": "Ciao error classification unit test; basename contains .test. and no reviewed production source imports it."
+    },
+    {
+      "path": "extensions/bonjour/src/errors.test.ts",
+      "rule": "test-file",
+      "reason": "Error formatting unit test; basename contains .test. and no reviewed production source imports it."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.logger",
+      "kind": "api-member",
+      "identity": "api.logger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/index.ts",
+          "line": 42,
+          "snippet": "            logger: api.logger,",
+          "note": "This explicit whole-logger read is independent of the later maximal method accesses in the advertiser."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.debug",
+      "kind": "api-member",
+      "identity": "api.logger.debug",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 174,
+          "snippet": "    debug: deps.logger?.debug ?? defaultLogger.debug,",
+          "note": "index.ts:42 supplies api.logger as deps.logger; the selected method is copied unchanged into the local logger, with a plugin-owned fallback."
+        },
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 304,
+          "snippet": "      logger.debug(`bonjour: failed to attach listeners for gateway: ${String(err)}`);",
+          "note": "Calls the unchanged api.logger.debug alias selected at line 174 when available."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.info",
+      "kind": "api-member",
+      "identity": "api.logger.info",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 172,
+          "snippet": "    info: deps.logger?.info ?? defaultLogger.info,",
+          "note": "index.ts:42 supplies api.logger as deps.logger; this is an unchanged method selection with a plugin-owned fallback."
+        },
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 310,
+          "snippet": "          logger.info(`bonjour: advertised ${serviceSummary(\"gateway\", gateway)}`);",
+          "note": "Calls the unchanged api.logger.info alias selected at line 172 when available."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.warn",
+      "kind": "api-member",
+      "identity": "api.logger.warn",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 173,
+          "snippet": "    warn: deps.logger?.warn ?? defaultLogger.warn,",
+          "note": "index.ts:42 supplies api.logger as deps.logger; this is an unchanged method selection with a plugin-owned fallback."
+        },
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 207,
+          "snippet": "        logger.warn(`bonjour: suppressing ciao netmask assertion: ${classification.formatted}`);",
+          "note": "Calls the unchanged api.logger.warn alias selected at line 173 when available."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerGatewayDiscoveryService",
+      "kind": "api-member",
+      "identity": "api.registerGatewayDiscoveryService",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/index.ts",
+          "line": 19,
+          "snippet": "    api.registerGatewayDiscoveryService({",
+          "note": "register(api) is contextually typed through definePluginEntry and OpenClawPluginDefinition.register as OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#collectErrorGraphCandidates",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#collectErrorGraphCandidates",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/src/ciao.ts",
+          "line": 1,
+          "snippet": "import { collectErrorGraphCandidates } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/bonjour/src/ciao.ts",
+          "line": 16,
+          "snippet": "  for (const candidate of collectErrorGraphCandidates(reason, (current) => ["
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginLogger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginLogger",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 4,
+          "snippet": "import type { PluginLogger } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 30,
+          "snippet": "  logger?: Pick<PluginLogger, \"info\" | \"warn\" | \"debug\">;",
+          "note": "This explicitly references PluginLogger; it is not itself an indexed OpenClawPluginApi type dependency."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/bonjour/index.ts",
+          "line": 14,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime#registerUncaughtExceptionHandler",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime#registerUncaughtExceptionHandler",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/index.ts",
+          "line": 24,
+          "snippet": "          { registerUncaughtExceptionHandler, registerUnhandledRejectionHandler },",
+          "note": "The second result of Promise.all is immediately narrowed by destructuring; its source is import(\"openclaw/plugin-sdk/runtime\") at line 27."
+        },
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 212,
+          "snippet": "    cleanupUncaughtException = deps.registerUncaughtExceptionHandler(handleCiaoProcessError);",
+          "note": "index.ts:44 passes the dynamically imported SDK function unchanged into the plugin-owned deps container; this direct call retains that export provenance."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime#registerUnhandledRejectionHandler",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime#registerUnhandledRejectionHandler",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/index.ts",
+          "line": 24,
+          "snippet": "          { registerUncaughtExceptionHandler, registerUnhandledRejectionHandler },",
+          "note": "The second result of Promise.all is immediately narrowed by destructuring; its source is import(\"openclaw/plugin-sdk/runtime\") at line 27."
+        },
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 211,
+          "snippet": "    cleanupUnhandledRejection = deps.registerUnhandledRejectionHandler(handleCiaoProcessError);",
+          "note": "index.ts:43 passes the dynamically imported SDK function unchanged into the plugin-owned deps container; this direct call retains that export provenance."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#parseBooleanValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#parseBooleanValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 5,
+          "snippet": "import { parseBooleanValue } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 83,
+          "snippet": "  return parseBooleanValue(process.env.OPENCLAW_DISABLE_BONJOUR) ?? isContainerEnvironment();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf8Prefix",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf8Prefix",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 6,
+          "snippet": "import { truncateUtf8Prefix } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 110,
+          "snippet": "  return truncateUtf8Prefix(name, MAX_DNS_LABEL_BYTES).replace(/-+$/, \"\").trim() || fallback;",
+          "note": "Only the exported function call is attributed; replace and trim operate on its returned string."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/src/ciao.ts",
+          "line": 1,
+          "snippet": "import { collectErrorGraphCandidates } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 4,
+          "snippet": "import type { PluginLogger } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/index.ts",
+          "line": 27,
+          "snippet": "          import(\"openclaw/plugin-sdk/runtime\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 5,
+          "snippet": "import { parseBooleanValue } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/text-utility-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/bonjour/src/advertiser.ts",
+          "line": 6,
+          "snippet": "import { truncateUtf8Prefix } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Manually read all four eligible production source files and both metadata files. Root, extensions, plugin-loader, and SDK AGENTS.md instructions were read; no narrower Bonjour instructions exist. All 14 plugin-root files are partitioned into six reviewed and eight excluded records.",
+    "Package metadata declares ./index.ts as its extension entrypoint and @homebridge/ciao as its installed runtime dependency. All plugin-local imports resolve within extensions/bonjour: index dynamically loads advertiser, advertiser imports ciao and errors, and ciao imports errors. These helpers are shipped production source, not test-only helpers. There is no plugin-owned or shared shipped source outside this root to add.",
+    "Production and metadata under extensions/bonjour match the pinned commit. Public package exports and the five SDK facades were inspected only to establish public module/export contracts; SDK internals and the installed @homebridge/ciao dependency were not recursively audited.",
+    "The runtime module is immediately narrowed to two named functions through the second destructured Promise.all result at index.ts:22-28. It does not preserve a whole namespace, so no synthetic star export is added. The unchanged functions pass through the deps object and are called at advertiser.ts:211-212. Their returned cleanup callbacks are arbitrary SDK return values and do not add calls to the original exports.",
+    "api.logger is explicitly read at index.ts:42 and supplied to the local advertiser. advertiser.ts:172-174 selects its methods unchanged, with local fallback functions; subsequent logger calls retain the proven api.logger method provenance. The standalone PluginLogger Pick contributes only the SDK type reference, not an inferred API indexed-type dependency.",
+    "Gateway discovery ctx fields, Bonjour option/dependency containers, error-graph callback records, @homebridge/ciao responder/service members, local return objects, and built-in string methods are not PluginRuntime or OpenClawPluginApi handles. No runtime-member findings are present.",
+    "No API on/registerHook calls occur. The process exception-handler SDK helpers and third-party gateway.on event listeners are not OpenClaw hook registrations. The manifest contains activation, category, platform, descriptive, and config-schema metadata but none of the agreed contract-identity fields; it contributes no manifest-contract findings.",
+    "This is a source-syntax audit: the explicit PluginLogger import and Pick reference remain type dependencies. Module plugin-entry is mixed because its import sites include both an ordinary value import and an explicit type import. All source references resolved statically; no genuine unknowns remain."
+  ]
+}

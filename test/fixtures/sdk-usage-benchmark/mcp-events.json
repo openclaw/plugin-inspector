@@ -1,0 +1,822 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "mcp-events",
+    "path": "extensions/mcp-events"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_mcp_events",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/mcp-events/index.ts",
+      "sha256": "82d843c72712206b00d4788495fea64d20ec171f9f346a429b3239995f682608",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/mcp-events/openclaw.plugin.json",
+      "sha256": "5dae56d15ed3bb77d6da44eeeba312ac6ec0f1d05e95f36b84e2a5b7d52f04a7",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/mcp-events/package.json",
+      "sha256": "ec166d6fb4403002640e459b2f39f85fb4f49eb84ab47f5f591d2c1142a444be",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/mcp-events/src/config.ts",
+      "sha256": "507e9d3ffe598cf3b61e0dfe973c846d89af52a1f6012d023c1249db5b676972",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/mcp-events/src/http.ts",
+      "sha256": "e660bda647d785be7517ed032c911fcb4ae4e2fe222912c465158144c750e1dd",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/mcp-events/src/ingress.ts",
+      "sha256": "c8ad7ec094251d90a3ea16aa23f2680008a641fc13e51352114952723e665507",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/mcp-events/src/protocol.ts",
+      "sha256": "71da8baec448334001de4339cd4575e7656bb97ab7d1c2c8240452402f38addf",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/mcp-events/src/service.ts",
+      "sha256": "87aa85033c4112a9501ad23287b8047cd6e74f76401bc48a42b14d4a283bc871",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/mcp-events/src/source-authority.ts",
+      "sha256": "2e3cced1359e8872081ecc2bacdd9aa8d62b83900c6c738c0317946f48aa572c",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/mcp-events/src/state.ts",
+      "sha256": "5be001c51cf8b46e659b02ac4891f49558d9e3438f10d0fe5806aaeae85a870d",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/mcp-events/src/types.ts",
+      "sha256": "3a74bc6407cc4b9407eb1f14c7169e0683b23d5f527601787aae38648ce26ae7",
+      "role": "production-source",
+      "findingCount": 2
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/mcp-events/README.md",
+      "rule": "non-source",
+      "reason": "Markdown documentation; outside the enumerated JS/TS source extensions."
+    },
+    {
+      "path": "extensions/mcp-events/src/service.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts suite; no production source imports it."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.on",
+      "kind": "api-member",
+      "identity": "api.on",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 76,
+          "snippet": "    api.on(\"cron_changed\", (event) => {"
+        },
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 87,
+          "snippet": "    api.on(\"cron_reconciled\", () => {"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerGatewayMethod",
+      "kind": "api-member",
+      "identity": "api.registerGatewayMethod",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 90,
+          "snippet": "    api.registerGatewayMethod("
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerHttpRoute",
+      "kind": "api-member",
+      "identity": "api.registerHttpRoute",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 69,
+          "snippet": "    api.registerHttpRoute({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerService",
+      "kind": "api-member",
+      "identity": "api.registerService",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 101,
+          "snippet": "    api.registerService({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerTool",
+      "kind": "api-member",
+      "identity": "api.registerTool",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 25,
+          "snippet": "    api.registerTool("
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registrationMode",
+      "kind": "api-member",
+      "identity": "api.registrationMode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 65,
+          "snippet": "    if (api.registrationMode !== \"full\") {"
+        }
+      ]
+    },
+    {
+      "key": "hook:hook.cron_changed",
+      "kind": "hook",
+      "identity": "hook.cron_changed",
+      "classification": "runtime",
+      "referenceKinds": [
+        "hook-registration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 76,
+          "snippet": "    api.on(\"cron_changed\", (event) => {"
+        }
+      ]
+    },
+    {
+      "key": "hook:hook.cron_reconciled",
+      "kind": "hook",
+      "identity": "hook.cron_reconciled",
+      "classification": "runtime",
+      "referenceKinds": [
+        "hook-registration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 87,
+          "snippet": "    api.on(\"cron_reconciled\", () => {"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.tools:mcp_events",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.tools:mcp_events",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/openclaw.plugin.json",
+          "line": 43,
+          "snippet": "      \"mcp_events\"",
+          "note": "Declared in contracts.tools."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.gateway.request",
+      "kind": "runtime-member",
+      "identity": "runtime.gateway.request",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 53,
+          "snippet": "            const result = await api.runtime.gateway.request(\"mcp.events.list\", {"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.openChannelIngressDrain",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openChannelIngressDrain",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/state.ts",
+          "line": 43,
+          "snippet": "    \"openKeyedStore\" | \"openChannelIngressQueue\" | \"openChannelIngressDrain\"",
+          "note": "Literal Pick selects this member from OpenClawPluginApi[\"runtime\"][\"state\"] at line 42; api.runtime normalizes to runtime."
+        },
+        {
+          "path": "extensions/mcp-events/src/ingress.ts",
+          "line": 34,
+          "snippet": "type Drain = ReturnType<OpenClawPluginApi[\"runtime\"][\"state\"][\"openChannelIngressDrain\"]>;"
+        },
+        {
+          "path": "extensions/mcp-events/src/ingress.ts",
+          "line": 74,
+          "snippet": "    const drain = this.deps.runtime.state.openChannelIngressDrain<QueuedEvent>({",
+          "note": "deps.runtime is McpEventsDependencies.runtime, whose McpEventsRuntime state projection is passed from api.runtime through McpEventsService."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.openChannelIngressQueue",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openChannelIngressQueue",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/state.ts",
+          "line": 43,
+          "snippet": "    \"openKeyedStore\" | \"openChannelIngressQueue\" | \"openChannelIngressDrain\"",
+          "note": "Literal Pick selects this member from OpenClawPluginApi[\"runtime\"][\"state\"] at line 42; api.runtime normalizes to runtime."
+        },
+        {
+          "path": "extensions/mcp-events/src/state.ts",
+          "line": 60,
+          "snippet": "      runtime.state.openChannelIngressQueue<QueuedEvent>({ accountId }),"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.openKeyedStore",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openKeyedStore",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/state.ts",
+          "line": 43,
+          "snippet": "    \"openKeyedStore\" | \"openChannelIngressQueue\" | \"openChannelIngressDrain\"",
+          "note": "Literal Pick selects this member from OpenClawPluginApi[\"runtime\"][\"state\"] at line 42; api.runtime normalizes to runtime."
+        },
+        {
+          "path": "extensions/mcp-events/src/state.ts",
+          "line": 48,
+          "snippet": "  const bindings = runtime.state.openKeyedStore<SubscriptionBinding>({",
+          "note": "The McpEventsRuntime parameter carries the explicitly selected public runtime state methods."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-outbound#CHANNEL_INGRESS_RETENTION_DEFAULTS",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-outbound#CHANNEL_INGRESS_RETENTION_DEFAULTS",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/ingress.ts",
+          "line": 2,
+          "snippet": "import { CHANNEL_INGRESS_RETENTION_DEFAULTS } from \"openclaw/plugin-sdk/channel-outbound\";"
+        },
+        {
+          "path": "extensions/mcp-events/src/ingress.ts",
+          "line": 151,
+          "snippet": "            this.now - account.lastPrunedAt >= CHANNEL_INGRESS_RETENTION_DEFAULTS.pruneIntervalMs",
+          "note": "Non-call property read is attributed to the original exported object."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/json-schema-runtime#JsonSchemaObject",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/json-schema-runtime#JsonSchemaObject",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/protocol.ts",
+          "line": 5,
+          "snippet": "  type JsonSchemaObject,"
+        },
+        {
+          "path": "extensions/mcp-events/src/protocol.ts",
+          "line": 18,
+          "snippet": "  inputSchema: JsonSchemaObject | boolean;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/json-schema-runtime#validateJsonSchemaValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/json-schema-runtime#validateJsonSchemaValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/protocol.ts",
+          "line": 4,
+          "snippet": "  validateJsonSchemaValue,"
+        },
+        {
+          "path": "extensions/mcp-events/src/protocol.ts",
+          "line": 196,
+          "snippet": "  const checked = validateJsonSchemaValue({ schema: definition.payloadSchema, value: data });"
+        },
+        {
+          "path": "extensions/mcp-events/src/service.ts",
+          "line": 3,
+          "snippet": "import { validateJsonSchemaValue } from \"openclaw/plugin-sdk/json-schema-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-events/src/service.ts",
+          "line": 363,
+          "snippet": "        !validateJsonSchemaValue({ schema: definition.inputSchema, value: options.arguments }).ok"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/ingress.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-events/src/ingress.ts",
+          "line": 34,
+          "snippet": "type Drain = ReturnType<OpenClawPluginApi[\"runtime\"][\"state\"][\"openChannelIngressDrain\"]>;"
+        },
+        {
+          "path": "extensions/mcp-events/src/state.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-events/src/state.ts",
+          "line": 42,
+          "snippet": "    OpenClawPluginApi[\"runtime\"][\"state\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginHttpRouteHandler",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginHttpRouteHandler",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/http.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginHttpRouteHandler } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-events/src/http.ts",
+          "line": 13,
+          "snippet": "): OpenClawPluginHttpRouteHandler {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginServiceContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginServiceContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/source-authority.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginServiceContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-events/src/source-authority.ts",
+          "line": 6,
+          "snippet": "  ReturnType<NonNullable<OpenClawPluginServiceContext[\"mcpEvents\"]>[\"prepareSource\"]>"
+        },
+        {
+          "path": "extensions/mcp-events/src/types.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginServiceContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-events/src/types.ts",
+          "line": 5,
+          "snippet": "type ServiceCron = NonNullable<ReturnType<NonNullable<OpenClawPluginServiceContext[\"getCron\"]>>>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginServiceContextV2",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginServiceContextV2",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 3,
+          "snippet": "  type OpenClawPluginServiceContextV2,"
+        },
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 11,
+          "snippet": "function currentCron(context: OpenClawPluginServiceContextV2): EventCron {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 2,
+          "snippet": "  definePluginEntry,"
+        },
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 19,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secure-random-runtime#generateSecureToken",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secure-random-runtime#generateSecureToken",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/protocol.ts",
+          "line": 7,
+          "snippet": "import { generateSecureToken } from \"openclaw/plugin-sdk/secure-random-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-events/src/protocol.ts",
+          "line": 105,
+          "snippet": "  return generateSecureToken({ bytes: 32, redact: true, encoding: \"base64\", prefix: \"whsec_\" });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#resolvePinnedHostnameWithPolicy",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#resolvePinnedHostnameWithPolicy",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/config.ts",
+          "line": 1,
+          "snippet": "import { resolvePinnedHostnameWithPolicy } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-events/src/config.ts",
+          "line": 49,
+          "snippet": "  await resolvePinnedHostnameWithPolicy(url.hostname, { signal });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/webhook-request-guards#createWebhookInFlightLimiter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/webhook-request-guards#createWebhookInFlightLimiter",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/http.ts",
+          "line": 3,
+          "snippet": "  createWebhookInFlightLimiter,"
+        },
+        {
+          "path": "extensions/mcp-events/src/http.ts",
+          "line": 14,
+          "snippet": "  const limiter = createWebhookInFlightLimiter({ maxInFlightPerKey: 32, maxTrackedKeys: 1 });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/webhook-request-guards#isRequestBodyLimitError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/webhook-request-guards#isRequestBodyLimitError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/http.ts",
+          "line": 4,
+          "snippet": "  isRequestBodyLimitError,"
+        },
+        {
+          "path": "extensions/mcp-events/src/http.ts",
+          "line": 60,
+          "snippet": "          : isRequestBodyLimitError(error)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/webhook-request-guards#readRequestBodyWithLimit",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/webhook-request-guards#readRequestBodyWithLimit",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/http.ts",
+          "line": 5,
+          "snippet": "  readRequestBodyWithLimit,"
+        },
+        {
+          "path": "extensions/mcp-events/src/http.ts",
+          "line": 45,
+          "snippet": "      const raw = await readRequestBodyWithLimit(req, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/webhook-request-guards#sendHttpRequestRejection",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/webhook-request-guards#sendHttpRequestRejection",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/http.ts",
+          "line": 6,
+          "snippet": "  sendHttpRequestRejection,"
+        },
+        {
+          "path": "extensions/mcp-events/src/http.ts",
+          "line": 22,
+          "snippet": "      await sendHttpRequestRejection(req, res, 404, \"Unknown callback\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-outbound",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-outbound",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/ingress.ts",
+          "line": 2,
+          "snippet": "import { CHANNEL_INGRESS_RETENTION_DEFAULTS } from \"openclaw/plugin-sdk/channel-outbound\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/json-schema-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/json-schema-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/protocol.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/json-schema-runtime\";",
+          "note": "This declaration imports validateJsonSchemaValue and inline type JsonSchemaObject."
+        },
+        {
+          "path": "extensions/mcp-events/src/service.ts",
+          "line": 3,
+          "snippet": "import { validateJsonSchemaValue } from \"openclaw/plugin-sdk/json-schema-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/index.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "This declaration imports the runtime definePluginEntry value and inline type OpenClawPluginServiceContextV2."
+        },
+        {
+          "path": "extensions/mcp-events/src/http.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginHttpRouteHandler } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-events/src/ingress.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-events/src/source-authority.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginServiceContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-events/src/state.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-events/src/types.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginServiceContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/secure-random-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/secure-random-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/protocol.ts",
+          "line": 7,
+          "snippet": "import { generateSecureToken } from \"openclaw/plugin-sdk/secure-random-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/config.ts",
+          "line": 1,
+          "snippet": "import { resolvePinnedHostnameWithPolicy } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/webhook-request-guards",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/webhook-request-guards",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-events/src/http.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/webhook-request-guards\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all nine eligible production TypeScript files (1,708 lines), package.json and openclaw.plugin.json. All 13 files under extensions/mcp-events are partitioned into 11 reviewed and two excluded records. Every plugin file matches the pinned commit byte-for-byte.",
+    "Read Inspector root AGENTS.md, the entire benchmark README and contract, and OpenClaw root/extensions/plugin-sdk/plugins instructions. Inspector implementation, helpers, output and other plugin fixtures were not used.",
+    "package.json declares only ./index.ts as the extension entry and has no artifact-specific source exceptions. All relative production imports stay inside this plugin root; there is no additional plugin-owned or shared shipped source boundary. No installed dependency or SDK implementation tree was recursively audited.",
+    "definePluginEntry supplies register(api) through OpenClawPluginDefinition.register, whose parameter is OpenClawPluginApi; the public API runtime field is PluginRuntime. Imported public names and all six module specifiers were checked against SDK facades and root package exports.",
+    "api.runtime passed at index.ts:116 reaches McpEventsService, createMcpEventsState and McpEventsIngress. McpEventsRuntime explicitly selects three public state methods using Pick<OpenClawPluginApi[\"runtime\"][\"state\"], ...>. Record only those selected paths and gateway.request; omit incidental runtime/state prefixes and downstream transitive projected-type references.",
+    "OpenClawPluginServiceContext/V2, tool context, scheduler, cron and prepared-source capabilities are distinct context/return-value objects, not OpenClawPluginApi or PluginRuntime aliases. Their imported SDK types remain findings, but their fields do not become api/runtime member findings.",
+    "Keyed-store, ingress queue/drain and webhook-limiter objects are SDK method/function return values. Their methods, including withCurrent, enqueueAuthorized and tryAcquire, do not extend the API/runtime-member paths. Plugin-owned forwarding functions and state containers do not inherit SDK-export call kinds.",
+    "CHANNEL_INGRESS_RETENTION_DEFAULTS.pruneIntervalMs is a non-call read on the original SDK-exported object. The manifest contributes only contracts.tools:mcp_events; id, categories, activation, configuration schema and UI hints are descriptive/config metadata.",
+    "All observed syntax dependencies, including explicit and inline type imports, are preserved. No unresolved dynamic SDK/API/runtime access or opaque runtime-handle escape remains."
+  ]
+}

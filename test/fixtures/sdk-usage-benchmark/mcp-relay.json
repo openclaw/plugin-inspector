@@ -1,0 +1,1785 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "mcp-relay",
+    "path": "extensions/mcp-relay"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_mcp_relay",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/mcp-relay/index.ts",
+      "sha256": "91c61884832b5d83cc9037fd7c9c519f06f0b2a1e9715095a9724ea971b1e3ce",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/mcp-relay/openclaw.plugin.json",
+      "sha256": "ff39c4cd5e4292a6dd9da464c0439a0fb188868b14316894bdcbd498fea4e203",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/mcp-relay/package.json",
+      "sha256": "f2bada85d2597005b5eee2ca7de332b5f939ea04fc076de968c2652ada66d98e",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/mcp-relay/src/browser.d.ts",
+      "sha256": "35d26ea66c86da9701e4f4b467913481ffeae910761cea34c775c5dacb7f8eaa",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/mcp-relay/src/caller.ts",
+      "sha256": "3c951abfd3ec1418c8c4e534c9249d7228b6d9d05ef8502e508a38c4a3c31c86",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/mcp-relay/src/cli.ts",
+      "sha256": "71a690e8c63230cea6e19051a0ccc25567ee2f9ebce2f1855a59ba5d86643ee8",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/mcp-relay/src/config.ts",
+      "sha256": "6e68b38b8479b824c7106915b54b37a0ae92e795ff0252bcebfc351973415e99",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/mcp-relay/src/consent.ts",
+      "sha256": "0a8a9e52c8721590fdc802d81846b37b11db2637fb5b769781b71c005930d22b",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/mcp-relay/src/control-ui.ts",
+      "sha256": "b46a400fbeb62b146e0a5fa6c74321ea12482b458d8c3dac1979c8bf96687447",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/mcp-relay/src/gateway-methods.ts",
+      "sha256": "bbe4b24990e8d17200d3da288655942a3e2b763996e04dde479ae924aa451127",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/mcp-relay/src/gateway-request.ts",
+      "sha256": "e6035ef8d589165cd4c5085c5485a1f591a07a2a9b74592f9aa2271021b4b3fc",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/mcp-relay/src/grant-bindings.ts",
+      "sha256": "59f49d6d740f6cd06e2cf02a356a6b86a26dbe265ce6edf82a74d44b52313601",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/mcp-relay/src/operations.ts",
+      "sha256": "815595f31fd18c16af2e3cb3201fa1285d97cb57d319896149f4ab40ac768c99",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/mcp-relay/src/protocol.ts",
+      "sha256": "cf48f495358d0f9a625951ad31e64f417ccb94fb756e1349bf1e4ea621712084",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/mcp-relay/src/service.ts",
+      "sha256": "bfea491cfdfd60a5ff567084be6e6590efa3ce4e8be31144b0b12c400a047934",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/mcp-relay/src/state.ts",
+      "sha256": "7a4f996553ee6383fd4a67766ee02611e7e6061e96b4fcede8063e8b3e28035f",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/mcp-relay/src/ui-tunnel-body.ts",
+      "sha256": "da802de4a6edac7f109ae23d06e2d957a4c77480aecca02e92d8859004173a2e",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/mcp-relay/src/ui-tunnel-protocol.ts",
+      "sha256": "eacb85fce3c4a8869a13a032030544df5eed6a1861da1412f1df2ea529207c28",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/mcp-relay/src/ui-tunnel.ts",
+      "sha256": "58d22812eded0f166fb164d1fbc0cfb476fe42b6273c98160793671a20059445",
+      "role": "production-source",
+      "findingCount": 7
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/mcp-relay/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation is outside the eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/mcp-relay/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG image asset; not a JS/TS source file."
+    },
+    {
+      "path": "extensions/mcp-relay/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG image asset; not a JS/TS source file."
+    },
+    {
+      "path": "extensions/mcp-relay/src/cli.test.ts",
+      "rule": "test-file",
+      "reason": "Unit test file; no eligible production source imports it."
+    },
+    {
+      "path": "extensions/mcp-relay/src/config.test.ts",
+      "rule": "test-file",
+      "reason": "Unit test file; no eligible production source imports it."
+    },
+    {
+      "path": "extensions/mcp-relay/src/control-ui.css",
+      "rule": "non-source",
+      "reason": "Stylesheet imported by the production Control UI, but outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/mcp-relay/src/control-ui.test.ts",
+      "rule": "test-file",
+      "reason": "Unit test file; no eligible production source imports it."
+    },
+    {
+      "path": "extensions/mcp-relay/src/gateway-methods.test.ts",
+      "rule": "test-file",
+      "reason": "Unit test file; no eligible production source imports it."
+    },
+    {
+      "path": "extensions/mcp-relay/src/operations.test.ts",
+      "rule": "test-file",
+      "reason": "Unit test file; no eligible production source imports it."
+    },
+    {
+      "path": "extensions/mcp-relay/src/protocol.test.ts",
+      "rule": "test-file",
+      "reason": "Unit test file; no eligible production source imports it."
+    },
+    {
+      "path": "extensions/mcp-relay/src/relay.test-helpers.ts",
+      "rule": "test-file",
+      "reason": "Test-only fixtures importing vitest and plugin-test-api schedulers; callers are operations.test.ts, gateway-methods.test.ts, state.test.ts, service.test.ts, and ui-tunnel.test.ts only. No production imports."
+    },
+    {
+      "path": "extensions/mcp-relay/src/service.test.ts",
+      "rule": "test-file",
+      "reason": "Unit test file; no eligible production source imports it."
+    },
+    {
+      "path": "extensions/mcp-relay/src/state.test.ts",
+      "rule": "test-file",
+      "reason": "Unit test file; no eligible production source imports it."
+    },
+    {
+      "path": "extensions/mcp-relay/src/ui-tunnel.test.ts",
+      "rule": "test-file",
+      "reason": "Unit test file; no eligible production source imports it."
+    },
+    {
+      "path": "extensions/mcp-relay/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript configuration metadata, not a JS/TS production source file; extends the package-boundary configuration and adds no shipped source."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.config.gateway.controlUi.basePath",
+      "kind": "api-member",
+      "identity": "api.config.gateway.controlUi.basePath",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/gateway-methods.ts",
+          "line": 128,
+          "snippet": "const base = api.config.gateway?.controlUi?.basePath?.trim().replace(/^\\/+|\\/+$/gu, \"\");",
+          "note": "Public basePath is string | undefined (GatewayControlUiConfig inferred from z.string().optional()). Reading it is the SDK member access; trim/replace are built-in String methods, not SDK paths."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger",
+      "kind": "api-member",
+      "identity": "api.logger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/index.ts",
+          "line": 67,
+          "snippet": "logger: api.logger,",
+          "note": "The logger is passed unchanged to the local createOperations helper."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.error",
+      "kind": "api-member",
+      "identity": "api.logger.error",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/operations.ts",
+          "line": 497,
+          "snippet": "logger.error(`mcp-relay: op=${op} method=${method} failed`);",
+          "note": "createOperations destructures logger from its argument; its only production caller passes api.logger at index.ts:67."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig",
+      "kind": "api-member",
+      "identity": "api.pluginConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/index.ts",
+          "line": 33,
+          "snippet": "registerMcpRelayConnectRoute(api, parseMcpRelayConfig(api.pluginConfig).relayUrl);"
+        },
+        {
+          "path": "extensions/mcp-relay/index.ts",
+          "line": 50,
+          "snippet": "const config = parseMcpRelayConfig(api.pluginConfig);"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerCli",
+      "kind": "api-member",
+      "identity": "api.registerCli",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/index.ts",
+          "line": 17,
+          "snippet": "api.registerCli("
+        },
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 7,
+          "snippet": "type CliContext = Parameters<Parameters<OpenClawPluginApi[\"registerCli\"]>[0]>[0];"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerGatewayMethod",
+      "kind": "api-member",
+      "identity": "api.registerGatewayMethod",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/gateway-methods.ts",
+          "line": 20,
+          "snippet": "api.registerGatewayMethod(",
+          "note": "api parameter is explicitly OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerHttpRoute",
+      "kind": "api-member",
+      "identity": "api.registerHttpRoute",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/gateway-methods.ts",
+          "line": 131,
+          "snippet": "api.registerHttpRoute({",
+          "note": "api parameter is explicitly OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerService",
+      "kind": "api-member",
+      "identity": "api.registerService",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/index.ts",
+          "line": 43,
+          "snippet": "api.registerService({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.session.controls.registerControlUiDescriptor",
+      "kind": "api-member",
+      "identity": "api.session.controls.registerControlUiDescriptor",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/index.ts",
+          "line": 34,
+          "snippet": "api.session.controls.registerControlUiDescriptor({"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.cliCommands.name:mcp-relay",
+      "kind": "manifest-contract",
+      "identity": "manifest.cliCommands.name:mcp-relay",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/openclaw.plugin.json",
+          "line": 17,
+          "snippet": "\"name\": \"mcp-relay\","
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.config.current",
+      "kind": "runtime-member",
+      "identity": "runtime.config.current",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/index.ts",
+          "line": 65,
+          "snippet": "config: () => api.runtime.config.current(),"
+        },
+        {
+          "path": "extensions/mcp-relay/src/gateway-methods.ts",
+          "line": 59,
+          "snippet": "const caller = relayCaller(client, api.runtime.config.current());"
+        },
+        {
+          "path": "extensions/mcp-relay/src/caller.ts",
+          "line": 14,
+          "snippet": "config: ReturnType<PluginRuntime[\"config\"][\"current\"]>,"
+        },
+        {
+          "path": "extensions/mcp-relay/src/consent.ts",
+          "line": 17,
+          "snippet": "config: () => ReturnType<PluginRuntime[\"config\"][\"current\"]>;"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 36,
+          "snippet": "type ConfigSnapshot = ReturnType<PluginRuntime[\"config\"][\"current\"]>;"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state",
+      "kind": "runtime-member",
+      "identity": "runtime.state",
+      "classification": "type",
+      "referenceKinds": [
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 95,
+          "snippet": "constructor(runtime: Pick<PluginRuntime, \"state\">, relayUrl: string, assertCurrent: () => void) {",
+          "note": "Built-in Pick explicitly selects the state property from PluginRuntime."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.openKeyedStoreV2",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openKeyedStoreV2",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 98,
+          "snippet": "this.#store = runtime.state.openKeyedStoreV2<unknown>(",
+          "note": "runtime is Pick<PluginRuntime, \"state\">; index.ts:52 supplies api.runtime. Store instance methods are SDK return-value operations, not further runtime paths."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.version",
+      "kind": "runtime-member",
+      "identity": "runtime.version",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/index.ts",
+          "line": 57,
+          "snippet": "const gateway = { name: \"OpenClaw\", version: api.runtime.version };"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/control-ui#ControlUiComponentHandle",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/control-ui#ControlUiComponentHandle",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/control-ui.ts",
+          "line": 3,
+          "snippet": "type ControlUiComponentHandle,"
+        },
+        {
+          "path": "extensions/mcp-relay/src/control-ui.ts",
+          "line": 57,
+          "snippet": "let dialog: ControlUiComponentHandle<ControlUiDialogProps> | undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/control-ui#ControlUiDialogProps",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/control-ui#ControlUiDialogProps",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/control-ui.ts",
+          "line": 4,
+          "snippet": "type ControlUiDialogProps,"
+        },
+        {
+          "path": "extensions/mcp-relay/src/control-ui.ts",
+          "line": 57,
+          "snippet": "let dialog: ControlUiComponentHandle<ControlUiDialogProps> | undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/control-ui#ControlUiView",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/control-ui#ControlUiView",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/control-ui.ts",
+          "line": 5,
+          "snippet": "type ControlUiView,"
+        },
+        {
+          "path": "extensions/mcp-relay/src/control-ui.ts",
+          "line": 44,
+          "snippet": "const mountConnectedApps: ControlUiView = (container, initialContext) => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/control-ui#defineControlUiPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/control-ui#defineControlUiPlugin",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/control-ui.ts",
+          "line": 2,
+          "snippet": "defineControlUiPlugin,",
+          "note": "Named import from openclaw/plugin-sdk/control-ui."
+        },
+        {
+          "path": "extensions/mcp-relay/src/control-ui.ts",
+          "line": 465,
+          "snippet": "export default defineControlUiPlugin({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#PluginRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#PluginRuntime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 95,
+          "snippet": "constructor(runtime: Pick<PluginRuntime, \"state\">, relayUrl: string, assertCurrent: () => void) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-ingress#GatewayControlUiIngressError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-ingress#GatewayControlUiIngressError",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/grant-bindings.ts",
+          "line": 2,
+          "snippet": "GatewayControlUiIngressError,",
+          "note": "Ordinary value import from openclaw/plugin-sdk/gateway-ingress."
+        },
+        {
+          "path": "extensions/mcp-relay/src/grant-bindings.ts",
+          "line": 9,
+          "snippet": "export function isRetiredBindingError(error: unknown): error is GatewayControlUiIngressError {",
+          "note": "Explicit type predicate uses the imported class as a type."
+        },
+        {
+          "path": "extensions/mcp-relay/src/grant-bindings.ts",
+          "line": 11,
+          "snippet": "error instanceof GatewayControlUiIngressError &&",
+          "note": "instanceof is a runtime reference, not a constructor call or member access."
+        },
+        {
+          "path": "extensions/mcp-relay/src/protocol.ts",
+          "line": 2,
+          "snippet": "import { GatewayControlUiIngressError } from \"openclaw/plugin-sdk/gateway-ingress\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/protocol.ts",
+          "line": 85,
+          "snippet": "if (error instanceof GatewayControlUiIngressError) {"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel-protocol.ts",
+          "line": 2,
+          "snippet": "GatewayControlUiIngressError,",
+          "note": "Ordinary value import from openclaw/plugin-sdk/gateway-ingress."
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel-protocol.ts",
+          "line": 33,
+          "snippet": "if (error instanceof GatewayControlUiIngressError) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-ingress#GatewayControlUiIngressFactoryV2",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-ingress#GatewayControlUiIngressFactoryV2",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/consent.ts",
+          "line": 2,
+          "snippet": "import type { GatewayControlUiIngressFactoryV2 } from \"openclaw/plugin-sdk/gateway-ingress\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/consent.ts",
+          "line": 16,
+          "snippet": "controlUiIngress?: GatewayControlUiIngressFactoryV2;"
+        },
+        {
+          "path": "extensions/mcp-relay/src/grant-bindings.ts",
+          "line": 3,
+          "snippet": "type GatewayControlUiIngressFactoryV2,"
+        },
+        {
+          "path": "extensions/mcp-relay/src/grant-bindings.ts",
+          "line": 17,
+          "snippet": "factory: GatewayControlUiIngressFactoryV2 | undefined,"
+        },
+        {
+          "path": "extensions/mcp-relay/src/grant-bindings.ts",
+          "line": 18,
+          "snippet": "): GatewayControlUiIngressFactoryV2 {"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 2,
+          "snippet": "import type { GatewayControlUiIngressFactoryV2 } from \"openclaw/plugin-sdk/gateway-ingress\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 48,
+          "snippet": "controlUiIngress?: GatewayControlUiIngressFactoryV2;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-ingress#GatewayControlUiIngressPresentationOptionsV1",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-ingress#GatewayControlUiIngressPresentationOptionsV1",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel.ts",
+          "line": 2,
+          "snippet": "GatewayControlUiIngressPresentationOptionsV1,"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel.ts",
+          "line": 28,
+          "snippet": "presentation: GatewayControlUiIngressPresentationOptionsV1,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-ingress#GatewayControlUiIngressV2",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-ingress#GatewayControlUiIngressV2",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel.ts",
+          "line": 3,
+          "snippet": "GatewayControlUiIngressV2,"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel.ts",
+          "line": 29,
+          "snippet": ") => Promise<GatewayControlUiIngressV2>;"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel.ts",
+          "line": 41,
+          "snippet": "handle: Promise<GatewayControlUiIngressV2>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-ingress#GatewayIngressMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-ingress#GatewayIngressMessage",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel.ts",
+          "line": 4,
+          "snippet": "GatewayIngressMessage,"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel.ts",
+          "line": 488,
+          "snippet": "const message: GatewayIngressMessage ="
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-ingress#GatewayIngressPrincipal",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-ingress#GatewayIngressPrincipal",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 3,
+          "snippet": "import type { GatewayIngressPrincipal } from \"openclaw/plugin-sdk/gateway-ingress\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 9,
+          "snippet": "readonly principal: Readonly<GatewayIngressPrincipal>;"
+        },
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 48,
+          "snippet": "let parsedPrincipal: GatewayIngressPrincipal;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-ingress#GatewayIngressPrincipalBindingV1",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-ingress#GatewayIngressPrincipalBindingV1",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/gateway-request.ts",
+          "line": 1,
+          "snippet": "import type { GatewayIngressPrincipalBindingV1 } from \"openclaw/plugin-sdk/gateway-ingress\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/gateway-request.ts",
+          "line": 4,
+          "snippet": "...args: Parameters<GatewayIngressPrincipalBindingV1[\"request\"]>"
+        },
+        {
+          "path": "extensions/mcp-relay/src/grant-bindings.ts",
+          "line": 4,
+          "snippet": "type GatewayIngressPrincipalBindingV1,"
+        },
+        {
+          "path": "extensions/mcp-relay/src/grant-bindings.ts",
+          "line": 30,
+          "snippet": "readonly #bindings = new Map<string, Promise<GatewayIngressPrincipalBindingV1>>();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-ingress#GatewayIngressSocketV1",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-ingress#GatewayIngressSocketV1",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel.ts",
+          "line": 5,
+          "snippet": "GatewayIngressSocketV1,"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel.ts",
+          "line": 55,
+          "snippet": "socket?: GatewayIngressSocketV1;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-ingress#GatewayPluginReadCookieV1",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-ingress#GatewayPluginReadCookieV1",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel-protocol.ts",
+          "line": 3,
+          "snippet": "type GatewayPluginReadCookieV1,"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel-protocol.ts",
+          "line": 188,
+          "snippet": "export function tunnelCookies(cookies: readonly GatewayPluginReadCookieV1[]) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#GatewayRequestHandlerOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#GatewayRequestHandlerOptions",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/caller.ts",
+          "line": 1,
+          "snippet": "import type { GatewayRequestHandlerOptions } from \"openclaw/plugin-sdk/gateway-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/caller.ts",
+          "line": 13,
+          "snippet": "client: GatewayRequestHandlerOptions[\"client\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#GatewayRpcOpts",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#GatewayRpcOpts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 2,
+          "snippet": "import type { GatewayRpcOpts } from \"openclaw/plugin-sdk/gateway-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 12,
+          "snippet": "opts: GatewayRpcOpts,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#addGatewayClientOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#addGatewayClientOptions",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 60,
+          "snippet": "const { addGatewayClientOptions } = await import(\"openclaw/plugin-sdk/gateway-runtime\");"
+        },
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 66,
+          "snippet": "addGatewayClientOptions(relay.command(name).description(description)).option("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#callGatewayFromCli",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#callGatewayFromCli",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 15,
+          "snippet": "const { callGatewayFromCli, redactSensitiveUrlLikeString } =",
+          "note": "Destructuring declaration continues with await import(\"openclaw/plugin-sdk/gateway-runtime\") on line 16."
+        },
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 18,
+          "snippet": "const result = await callGatewayFromCli(`mcp-relay.${op}`, opts, params, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#isGatewayClientRequestError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#isGatewayClientRequestError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/operations.ts",
+          "line": 205,
+          "snippet": "const { isGatewayClientRequestError } = await import(\"openclaw/plugin-sdk/gateway-runtime\");"
+        },
+        {
+          "path": "extensions/mcp-relay/src/operations.ts",
+          "line": 207,
+          "snippet": "!isGatewayClientRequestError(error) ||"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#redactSensitiveUrlLikeString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#redactSensitiveUrlLikeString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 15,
+          "snippet": "const { callGatewayFromCli, redactSensitiveUrlLikeString } =",
+          "note": "Destructuring declaration continues with await import(\"openclaw/plugin-sdk/gateway-runtime\") on line 16."
+        },
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 46,
+          "snippet": "const detail = redactSensitiveUrlLikeString("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 7,
+          "snippet": "type CliContext = Parameters<Parameters<OpenClawPluginApi[\"registerCli\"]>[0]>[0];"
+        },
+        {
+          "path": "extensions/mcp-relay/src/gateway-methods.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/gateway-methods.ts",
+          "line": 8,
+          "snippet": "api: OpenClawPluginApi,"
+        },
+        {
+          "path": "extensions/mcp-relay/src/gateway-methods.ts",
+          "line": 127,
+          "snippet": "export function registerMcpRelayConnectRoute(api: OpenClawPluginApi, relayUrl: string): void {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginConfigSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginConfigSchema",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/config.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginConfigSchema } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/config.ts",
+          "line": 44,
+          "snippet": "export const mcpRelayConfigSchema: OpenClawPluginConfigSchema = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginLogger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginLogger",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/operations.ts",
+          "line": 2,
+          "snippet": "import type { PluginLogger } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/operations.ts",
+          "line": 193,
+          "snippet": "logger: Pick<PluginLogger, \"error\">;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginServiceSchedulerV1",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginServiceSchedulerV1",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/consent.ts",
+          "line": 3,
+          "snippet": "import type { PluginServiceSchedulerV1 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/consent.ts",
+          "line": 15,
+          "snippet": "scheduler: Pick<PluginServiceSchedulerV1, \"now\" | \"signal\">;"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 3,
+          "snippet": "import type { PluginServiceSchedulerV1 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 43,
+          "snippet": "scheduler: PluginServiceSchedulerV1;"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 66,
+          "snippet": "#connection?: PluginServiceSchedulerV1;"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel.ts",
+          "line": 7,
+          "snippet": "import type { PluginServiceSchedulerV1 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel.ts",
+          "line": 31,
+          "snippet": "scheduler: PluginServiceSchedulerV1;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/index.ts",
+          "line": 10,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#PluginStateKeyedStore",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#PluginStateKeyedStore",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 4,
+          "snippet": "import type { PluginStateKeyedStore } from \"openclaw/plugin-sdk/plugin-state-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 89,
+          "snippet": "readonly #store: PluginStateKeyedStore<unknown, 2>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-env#defaultRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-env#defaultRuntime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 4,
+          "snippet": "import { defaultRuntime } from \"openclaw/plugin-sdk/runtime-env\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 23,
+          "snippet": "defaultRuntime.writeJson(result);",
+          "note": "Invokes the imported SDK object's writeJson member; log/error/exit calls are the same exported-root dependency."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-store#PluginRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-store#PluginRuntime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/caller.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/runtime-store\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/caller.ts",
+          "line": 14,
+          "snippet": "config: ReturnType<PluginRuntime[\"config\"][\"current\"]>,"
+        },
+        {
+          "path": "extensions/mcp-relay/src/consent.ts",
+          "line": 4,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/runtime-store\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/consent.ts",
+          "line": 17,
+          "snippet": "config: () => ReturnType<PluginRuntime[\"config\"][\"current\"]>;"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 4,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/runtime-store\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 36,
+          "snippet": "type ConfigSnapshot = ReturnType<PluginRuntime[\"config\"][\"current\"]>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 5,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 37,
+          "snippet": "if (op === \"status\" && isRecord(result.ui)) {"
+        },
+        {
+          "path": "extensions/mcp-relay/src/consent.ts",
+          "line": 5,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/consent.ts",
+          "line": 59,
+          "snippet": "!isRecord(result) ||"
+        },
+        {
+          "path": "extensions/mcp-relay/src/gateway-methods.ts",
+          "line": 2,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/gateway-methods.ts",
+          "line": 49,
+          "snippet": "if (!isRecord(params) || Object.keys(params).some((key) => !allowed.includes(key))) {"
+        },
+        {
+          "path": "extensions/mcp-relay/src/operations.ts",
+          "line": 3,
+          "snippet": "import { isRecord, readStringValue } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/operations.ts",
+          "line": 23,
+          "snippet": "if (!isRecord(params)) {"
+        },
+        {
+          "path": "extensions/mcp-relay/src/protocol.ts",
+          "line": 3,
+          "snippet": "import { isRecord, truncateUtf16Safe } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/protocol.ts",
+          "line": 97,
+          "snippet": "return isRecord(error) && error.code === \"not_found\""
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 5,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 311,
+          "snippet": "if (!isRecord(frame)) {"
+        },
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 5,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 41,
+          "snippet": "!isRecord(principal) ||"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel-protocol.ts",
+          "line": 5,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel-protocol.ts",
+          "line": 259,
+          "snippet": "!isRecord(ui) ||"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#readStringValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#readStringValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/operations.ts",
+          "line": 3,
+          "snippet": "import { isRecord, readStringValue } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/operations.ts",
+          "line": 81,
+          "snippet": "sessionId: readStringValue(value.sessionId),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#truncateUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#truncateUtf16Safe",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/protocol.ts",
+          "line": 3,
+          "snippet": "import { isRecord, truncateUtf16Safe } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/protocol.ts",
+          "line": 71,
+          "snippet": "return text.length > 16_000 ? `${truncateUtf16Safe(text, 15_999)}\u2026` : text;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-normalization-runtime#containsAsciiControlCharacter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-normalization-runtime#containsAsciiControlCharacter",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel-protocol.ts",
+          "line": 6,
+          "snippet": "import { containsAsciiControlCharacter } from \"openclaw/plugin-sdk/string-normalization-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel-protocol.ts",
+          "line": 197,
+          "snippet": "containsAsciiControlCharacter(path) ||"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/websocket-runtime#RawData",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/websocket-runtime#RawData",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 6,
+          "snippet": "import { WebSocket, type RawData } from \"openclaw/plugin-sdk/websocket-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 28,
+          "snippet": "on(event: \"message\", listener: (data: RawData, binary: boolean) => void): void;"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 291,
+          "snippet": "socket.on(\"message\", (data: RawData, binary: boolean) => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/websocket-runtime#WebSocket",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/websocket-runtime#WebSocket",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 6,
+          "snippet": "import { WebSocket, type RawData } from \"openclaw/plugin-sdk/websocket-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 220,
+          "snippet": "new WebSocket(address, {",
+          "note": "Constructs the imported WebSocket class. RelaySocket is a plugin-owned structural type, not a PluginRuntime handle."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/control-ui",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/control-ui",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/control-ui.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/control-ui\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/control-ui.ts",
+          "line": 3,
+          "snippet": "type ControlUiComponentHandle,",
+          "note": "Inline type specifier in the same control-ui import."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/gateway-ingress",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/gateway-ingress",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/consent.ts",
+          "line": 2,
+          "snippet": "import type { GatewayControlUiIngressFactoryV2 } from \"openclaw/plugin-sdk/gateway-ingress\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/gateway-request.ts",
+          "line": 1,
+          "snippet": "import type { GatewayIngressPrincipalBindingV1 } from \"openclaw/plugin-sdk/gateway-ingress\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/grant-bindings.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/gateway-ingress\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/grant-bindings.ts",
+          "line": 3,
+          "snippet": "type GatewayControlUiIngressFactoryV2,",
+          "note": "Inline type specifier in the gateway-ingress import."
+        },
+        {
+          "path": "extensions/mcp-relay/src/protocol.ts",
+          "line": 2,
+          "snippet": "import { GatewayControlUiIngressError } from \"openclaw/plugin-sdk/gateway-ingress\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 2,
+          "snippet": "import type { GatewayControlUiIngressFactoryV2 } from \"openclaw/plugin-sdk/gateway-ingress\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 3,
+          "snippet": "import type { GatewayIngressPrincipal } from \"openclaw/plugin-sdk/gateway-ingress\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel-protocol.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/gateway-ingress\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel-protocol.ts",
+          "line": 3,
+          "snippet": "type GatewayPluginReadCookieV1,",
+          "note": "Inline type specifier in the gateway-ingress import."
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/gateway-ingress\";",
+          "note": "The enclosing declaration is import type."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/gateway-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/gateway-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "dynamic-import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/caller.ts",
+          "line": 1,
+          "snippet": "import type { GatewayRequestHandlerOptions } from \"openclaw/plugin-sdk/gateway-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 2,
+          "snippet": "import type { GatewayRpcOpts } from \"openclaw/plugin-sdk/gateway-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 16,
+          "snippet": "await import(\"openclaw/plugin-sdk/gateway-runtime\");"
+        },
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 60,
+          "snippet": "const { addGatewayClientOptions } = await import(\"openclaw/plugin-sdk/gateway-runtime\");"
+        },
+        {
+          "path": "extensions/mcp-relay/src/operations.ts",
+          "line": 205,
+          "snippet": "const { isGatewayClientRequestError } = await import(\"openclaw/plugin-sdk/gateway-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/config.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginConfigSchema } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/consent.ts",
+          "line": 3,
+          "snippet": "import type { PluginServiceSchedulerV1 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/gateway-methods.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/operations.ts",
+          "line": 2,
+          "snippet": "import type { PluginLogger } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 3,
+          "snippet": "import type { PluginServiceSchedulerV1 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel.ts",
+          "line": 7,
+          "snippet": "import type { PluginServiceSchedulerV1 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-state-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 4,
+          "snippet": "import type { PluginStateKeyedStore } from \"openclaw/plugin-sdk/plugin-state-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-env",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-env",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 4,
+          "snippet": "import { defaultRuntime } from \"openclaw/plugin-sdk/runtime-env\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-store",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-store",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/caller.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/runtime-store\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/consent.ts",
+          "line": 4,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/runtime-store\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 4,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/runtime-store\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/cli.ts",
+          "line": 5,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/consent.ts",
+          "line": 5,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/gateway-methods.ts",
+          "line": 2,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/operations.ts",
+          "line": 3,
+          "snippet": "import { isRecord, readStringValue } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/protocol.ts",
+          "line": 3,
+          "snippet": "import { isRecord, truncateUtf16Safe } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 5,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/state.ts",
+          "line": 5,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel-protocol.ts",
+          "line": 5,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-normalization-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-normalization-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/ui-tunnel-protocol.ts",
+          "line": 6,
+          "snippet": "import { containsAsciiControlCharacter } from \"openclaw/plugin-sdk/string-normalization-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/websocket-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/websocket-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/mcp-relay/src/service.ts",
+          "line": 6,
+          "snippet": "import { WebSocket, type RawData } from \"openclaw/plugin-sdk/websocket-runtime\";",
+          "note": "WebSocket is an ordinary value import; RawData is an inline type import."
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all 17 eligible production source files (including browser.d.ts), package.json and openclaw.plugin.json at d912f0c06e7af29a4a40c4211bec0bb76d473f10. Reviewed source and metadata plus 15 individually excluded files partition every file under extensions/mcp-relay.",
+    "No production local import escapes the plugin root. package.json identifies index.ts and src/control-ui.ts as entries; its build scripts invoke host tooling, but do not establish additional plugin-owned/shared shipped JS/TS source. Manifest dist assets are generated output paths, not files present in this source tree. SDK implementation files and separately installed dependencies were not recursively audited.",
+    "Public package exports and SDK facades prove the exact 11 SDK module specifiers and original exported names. No local SDK barrel or reexport sites occur. Directly destructured dynamic SDK imports resolve named exports without an un-narrowed namespace dependency.",
+    "definePluginEntry supplies the OpenClawPluginApi registration parameter. Typed gateway-method helpers preserve that API provenance. api.runtime passed to RelayState resolves to runtime.state.openKeyedStoreV2; no runtime root or api.runtime prefix is emitted. Built-in Pick<PluginRuntime, \"state\"> supplies the separate runtime.state type dependency.",
+    "The config callback in ServiceOptions is a plugin-owned forwarding wrapper around api.runtime.config.current(). Reads of returned configuration snapshots do not extend runtime paths. Gateway request/ingress bindings, scheduler contexts, returned keyed stores, and ControlUiHost are separate SDK contracts, not OpenClawPluginApi/PluginRuntime handles. Their imported type dependencies remain recorded.",
+    "createOperations receives api.logger unchanged from its sole production caller, so its logger.error call has proven api.logger.error provenance. API configuration access stops at basePath: OpenClawPluginApi.config is OpenClawConfig (src/plugins/plugin-api.types.ts:216), whose gateway uses GatewayConfig (src/config/types.openclaw.ts:75); GatewayControlUiConfig inherits the schema input (src/config/types.gateway.ts:36-40), and basePath is z.string().optional() (src/config/zod-schema.gateway.ts:205). Built-in String trim/replace are not SDK members, so this finding is member-access.",
+    "GatewayControlUiIngressError is imported as a value and used in an explicit type predicate, making its export mixed; instanceof uses do not invent constructor calls. WebSocket construction and defaultRuntime member calls contribute call kinds to their imported exported-root identities.",
+    "Only cliCommands.name is an agreed manifest contract here. Activation commands, category, enabledByDefault, configSchema, uiHints and Control UI artifact metadata are not extra contract identities. No named API hooks are registered.",
+    "The browser.d.ts declaration contains only a CSS module declaration; ui-tunnel-body.ts has only plugin-local imports and platform APIs. Both were reviewed and have zero findings. No genuine unresolved SDK/API/runtime references remain."
+  ]
+}

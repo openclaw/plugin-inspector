@@ -1,0 +1,3414 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "file-transfer",
+    "path": "extensions/file-transfer"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_file_transfer",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/file-transfer/doctor-contract-api.ts",
+      "sha256": "2aca4ac1ccd87964bfa22173416d73014cc87cf0da5e8897c4e4434561911c27",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/file-transfer/index.ts",
+      "sha256": "9320a617dfb7ca908ad328d629fe8b65ed1fbfc0878573a1faf61974ed33ca15",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/file-transfer/openclaw.plugin.json",
+      "sha256": "ed95bbbd34dfb801b8632181ebf0d8692ea45048771f90aa4dea6903c18b969e",
+      "role": "manifest",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/file-transfer/package.json",
+      "sha256": "3de0635c5e1c45661fd8ee5ebf756edf12be96744b61d911408455d79bbc9b96",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/file-transfer/src/approvals-migration.ts",
+      "sha256": "1cdbfff5d3f4057cfa07131f4defff9a7065bb99f2567bc49edc0344fd605cf2",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/file-transfer/src/cli.ts",
+      "sha256": "697d9ea9ca0f95bebbaea1fabb01cfe28d788516a3ee5f78fe2f95979300119a",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/dir-fetch-archive.ts",
+      "sha256": "93befbc4a3e44573cf2fee91e976f5de6961857d71beca4b49190b9f27e71230",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/dir-fetch.ts",
+      "sha256": "2c4b5f1ada3717bf9665a8586a68a37ef0015fd57d9191436cfe02e9ba44837f",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/dir-list-worker-command.ts",
+      "sha256": "0ad00f43817a6d1abfa70c08c524aa8e78a0b534bc4a14f113f062a99311f4c9",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/dir-list-worker.ts",
+      "sha256": "20832c163d4517e7753e8ab2342a987c318fc1fb6c4624228068dbbdfb31d0d4",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/dir-list.ts",
+      "sha256": "da69228d6307c447bd587cc7b12a6a484756d111aa0ed50e132f57b1b4b4b034",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/file-create.ts",
+      "sha256": "768879c7d568eb6a0317f6ac2956427b3ca7558590cf5049ce5183bc5d6ca0c4",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/file-fetch-stream.ts",
+      "sha256": "96ffd40d3b7655ba575ae9248b5d3d1a32613ef986abb2aae626fc43ec15f150",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+      "sha256": "cd02cf7c4b65a593c519794c7b6b008f6a2227dee48c14b3ed0f0329f25fd6c6",
+      "role": "production-source",
+      "findingCount": 11
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/file-stat.ts",
+      "sha256": "c27d231627a8c279746ac0095bc0d903213204d82d1bb527cd1ae44f7eed55a0",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/file-write-path.ts",
+      "sha256": "749a5e8ea6ad56c74a62a4dc02e94f95a2813c3763913290fa040ed940f450c6",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/file-write.ts",
+      "sha256": "8912c3b1952192ff6d2399f951753527bb2c1a6bd7c1cefe961570814d85af22",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/path-errors.ts",
+      "sha256": "1a731af5366fa3a717729ffc9e83913428b69c737ab436cb9484d4952f8878b7",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+      "sha256": "a62d6b564c02cec7ea2127e80c85a6de2da2bed731b7acc2cd5379f6f923bd19",
+      "role": "production-source",
+      "findingCount": 15
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/workspace-skill-source.ts",
+      "sha256": "aa45b9e8132ea0b8f65bef0dbdd5d718df3e4f8928139551bfeef11d0be563e4",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/audit-context.ts",
+      "sha256": "5a8a14467c936d9b82f4c3239eaffc898867f9218e4a2c19351579e0ed17c432",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/audit.ts",
+      "sha256": "1a6e0844389d798e33640ca24afce548ad8a871b6b8a862502e43f208eba6a60",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/base64.ts",
+      "sha256": "5267887b5d5d7201e2da4efac496684ff06abf77d4d7f0b8bacb87975ba03494",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+      "sha256": "ec2ac48eb5a5e8d486855e98087193d85bed6d4886da29d28a39a1ffb443e535",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/dir-fetch-limits.ts",
+      "sha256": "7bc7d7dac8cfe1c58156ff16dd415de639306b6da52eafe9963e88565f67db07",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/errors.ts",
+      "sha256": "ee41c7bc8edfe183572157311bf7a8d5a01705a3caa5182decacd2562a830427",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/file-create-protocol.ts",
+      "sha256": "b6c9e3c6003b5617bd72cd5feb7f312643918aed26ff1f2d44118cadea669b79",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/file-fetch-protocol.ts",
+      "sha256": "d3443b96b7a7478dbaee3bdd21c2ee4dff680aa2d0c32dc07d019d1f3d5436ae",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/lazy-node-invoke-policy.ts",
+      "sha256": "1726d7409e991ac8edc069a8fcd49e2d00c31b3d12810e57967a880e8767f352",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/mime.ts",
+      "sha256": "11485ea88d8b5cef3c9043e05440ba9c445a0f9028400b02926c18ac24365b68",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/node-invoke-policy-approval.ts",
+      "sha256": "ce87c8de7c0b2b055cea6c8bc16b9696d1622d0ba8d959c9dbe796dd5e9d45d8",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/node-invoke-policy-commands.ts",
+      "sha256": "c0033ada53b44b22c011f09119532e7ecaa8269ce1df42ad7acedaefbb367106",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/node-invoke-policy-params.ts",
+      "sha256": "9c5362e47fa6bbc4b8f00ee8302c9f0b81e066954c50fe2384a53971776023e9",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/node-invoke-policy-preflight.ts",
+      "sha256": "236d5722c8f0a33382c7bc50e16121ec234281c9ff47571e2c782f05cc4d1efb",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+      "sha256": "d516f8883ee700997941e0e1b3d19a1d13c70b841d36d349526ea75b71cfded2",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/params.ts",
+      "sha256": "c6f20face4a0d6d9d67478377f16f2c697df3ccbf36b8b8ea6ca5f14f05e5b4e",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/path-binding.ts",
+      "sha256": "7c078339eba0be99b48e607e273569ce9b1ea2af3d7d32da012d09fe815b01ad",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/policy.ts",
+      "sha256": "5a7247eb2846fef064c6ea8c44a359246ecadbf15945cc2cf4addeb4fb9283f7",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/workspace-memory-policy.ts",
+      "sha256": "15f78742f2f1fdb5596429c01627c9dcd921b34453b4d498707d977129d82811",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/workspace-memory-request.ts",
+      "sha256": "24e24a44d9926330b2fbd4246454fe0dedd74f252b40cc3333b511631b620f04",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/workspace-skill-source.ts",
+      "sha256": "3a61d2fc9371cfffc3b31ff83c36d95d16821883ba80cf2289af525bd229096c",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/workspace-skills-request.ts",
+      "sha256": "078731573015e660adb4979a9783053fe3b48c913eea2453499612a7d23a1ceb",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/file-transfer/src/tools/descriptors.ts",
+      "sha256": "8b37d5e0f3896d1a01c29538d0f1ee7e78bfb8997ebca5af7e151a8ade85ab2b",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/file-transfer/src/tools/dir-fetch-tool.ts",
+      "sha256": "1e3dd25e83c3d7210e6a1ceaef92693787cc98eb3009a606d23f006bb4f05cb6",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/file-transfer/src/tools/dir-list-tool.ts",
+      "sha256": "46bfdce5bccd8802fe0a7616b39c85de1a82ed7e5fe59b9822eef644f762bbd6",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/file-transfer/src/tools/directory-text.ts",
+      "sha256": "7f806a9621cf838343cf4234679d771476d9b44eb95acbbbdada7713f33a0d8a",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/file-transfer/src/tools/fetch-payload.ts",
+      "sha256": "23e36c483c93e838a31231c9ebaee34f63b1aa2c8cd597efca94e78e7c1cd767",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/file-transfer/src/tools/file-fetch-tool.ts",
+      "sha256": "9c37ed0dde8c88afb956789e271794c9dbb348510942408b3a77c3fa4c714350",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/file-transfer/src/tools/file-write-tool.ts",
+      "sha256": "3f5c2ab6bc148efac036c580d848270c791c3d71da052eef4fbb3e3fbadfeacd",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/file-transfer/src/tools/node-tool-invoke.ts",
+      "sha256": "94f852bc1c910bde1cc30a7269fcf55390ac05215286ba5fae7badaf21116cde",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/file-transfer/src/workspace-bridge.ts",
+      "sha256": "61fb7c0f82b8481fbf546f78775c2f38ae7fb809293085ec99e5e254ec16c4d0",
+      "role": "production-source",
+      "findingCount": 11
+    },
+    {
+      "path": "extensions/file-transfer/src/workspace-file-create.ts",
+      "sha256": "aacbdbef3d8289ef2a1a8084e9ee12ef5c965fce67515f36b142e9317634cb81",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/file-transfer/src/workspace-file-fetch.ts",
+      "sha256": "099c92bd329e8bdef031192ad32baa55ed602340b5d50310b5c5093f6263babd",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/file-transfer/src/workspace-memory.ts",
+      "sha256": "e603ebcf655743ec9453ba8eda8d322b5a84c8e2d1dc71f24e5f05ff504a2393",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/file-transfer/src/workspace-service.ts",
+      "sha256": "5eee74bdc80f09d51cfd8a7b112cee6085b8eaa3f08627fd9fc849a7489651c1",
+      "role": "production-source",
+      "findingCount": 13
+    },
+    {
+      "path": "extensions/file-transfer/src/workspace-skill-lifecycle.ts",
+      "sha256": "82368b3c1c0633d3c79a174ab24dfbb500df9d0042b6a885be5de7c08f97393b",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/file-transfer/src/workspace-skills.ts",
+      "sha256": "4af15598f3eb8f7f1872fd2f27e9821f76c4baafd2c8f200d2adf95ab5c09dc9",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/file-transfer/src/workspace-worker.ts",
+      "sha256": "bc1f2b7b5980b267b49423520ee2a55f189d2b1faab7332d0741e86eeb4aeef5",
+      "role": "production-source",
+      "findingCount": 4
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/file-transfer/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Plugin icon/activity artwork; no eligible JS/TS source extension and not package or manifest metadata."
+    },
+    {
+      "path": "extensions/file-transfer/assets/activity/dir_fetch.svg",
+      "rule": "non-source",
+      "reason": "Plugin icon/activity artwork; no eligible JS/TS source extension and not package or manifest metadata."
+    },
+    {
+      "path": "extensions/file-transfer/assets/activity/dir_list.svg",
+      "rule": "non-source",
+      "reason": "Plugin icon/activity artwork; no eligible JS/TS source extension and not package or manifest metadata."
+    },
+    {
+      "path": "extensions/file-transfer/assets/activity/file_fetch.svg",
+      "rule": "non-source",
+      "reason": "Plugin icon/activity artwork; no eligible JS/TS source extension and not package or manifest metadata."
+    },
+    {
+      "path": "extensions/file-transfer/assets/activity/file_write.svg",
+      "rule": "non-source",
+      "reason": "Plugin icon/activity artwork; no eligible JS/TS source extension and not package or manifest metadata."
+    },
+    {
+      "path": "extensions/file-transfer/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Plugin icon/activity artwork; no eligible JS/TS source extension and not package or manifest metadata."
+    },
+    {
+      "path": "extensions/file-transfer/doctor-contract-api.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/index.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/approvals-migration.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/cli.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/dir-fetch.stream-errors.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/dir-fetch.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/dir-list.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/file-create.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/file-fetch.binary.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/file-fetch.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/file-stat.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/node-host/file-write.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/audit.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/base64.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/errors.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/lazy-node-invoke-policy.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/mime.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/node-invoke-policy.create.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/node-invoke-policy.real-dir-fetch.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/node-invoke-policy.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Contains Vitest mocks/assertions and policy TAR fixtures. Callers are node-invoke-policy.create.test.ts, node-invoke-policy.test.ts, file-stat.test.ts, workspace-service.test.ts and the test-only workspace-service.test-support.ts; no production caller."
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/node-invoke-policy.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/params.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/shared/policy.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/tools/dir-fetch-tool.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/tools/dir-list-tool.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/tools/file-fetch-tool.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/tools/file-write-tool.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/workspace-file-fetch.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/workspace-memory.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/workspace-service.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Creates a mock paired-node transport with createTestPluginApi and the Vitest-backed createCtx. Imported only by workspace-service.test.ts, workspace-skill-lifecycle.test.ts and the test-only test-api.ts barrel."
+    },
+    {
+      "path": "extensions/file-transfer/src/workspace-service.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/workspace-skill-lifecycle.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/src/workspace-skills.windows.test.ts",
+      "rule": "test-file",
+      "reason": "Named test suite; excluded under the benchmark test-file rule and not imported by production source."
+    },
+    {
+      "path": "extensions/file-transfer/test-api.ts",
+      "rule": "test-file",
+      "reason": "Test-only barrel beginning test-; reexports production workspace registration and test transport solely for test/e2e/qa-lab/runtime/remote-managed-skills.e2e.test.ts. No production import."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.config",
+      "kind": "api-member",
+      "identity": "api.config",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 33,
+          "snippet": "declareAgentWorkspaceAccess(api.runtime.agent.resolveAgentWorkspaceDir(api.config, agentId));"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.warn",
+      "kind": "api-member",
+      "identity": "api.logger.warn",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 147,
+          "snippet": "api.logger.warn(bytes.toString(\"utf8\").trimEnd()),"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig",
+      "kind": "api-member",
+      "identity": "api.pluginConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 32,
+          "snippet": "for (const { agentId } of readWorkspaces(api.pluginConfig)) {"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerCli",
+      "kind": "api-member",
+      "identity": "api.registerCli",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/index.ts",
+          "line": 139,
+          "snippet": "api.registerCli("
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerNodeHostCommand",
+      "kind": "api-member",
+      "identity": "api.registerNodeHostCommand",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/index.ts",
+          "line": 117,
+          "snippet": "api.registerNodeHostCommand({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerNodeInvokePolicy",
+      "kind": "api-member",
+      "identity": "api.registerNodeInvokePolicy",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/index.ts",
+          "line": 128,
+          "snippet": "api.registerNodeInvokePolicy({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerService",
+      "kind": "api-member",
+      "identity": "api.registerService",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 43,
+          "snippet": "api.registerService({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerTool",
+      "kind": "api-member",
+      "identity": "api.registerTool",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/index.ts",
+          "line": 155,
+          "snippet": "api.registerTool("
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registrationMode",
+      "kind": "api-member",
+      "identity": "api.registrationMode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 29,
+          "snippet": "if (api.registrationMode !== \"full\") {"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.cliCommands.name:file-transfer",
+      "kind": "manifest-contract",
+      "identity": "manifest.cliCommands.name:file-transfer",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/openclaw.plugin.json",
+          "line": 12,
+          "snippet": "\"name\": \"file-transfer\","
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.tools:dir_fetch",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.tools:dir_fetch",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/openclaw.plugin.json",
+          "line": 21,
+          "snippet": "\"tools\": [\"file_fetch\", \"dir_list\", \"dir_fetch\", \"file_write\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.tools:dir_list",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.tools:dir_list",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/openclaw.plugin.json",
+          "line": 21,
+          "snippet": "\"tools\": [\"file_fetch\", \"dir_list\", \"dir_fetch\", \"file_write\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.tools:file_fetch",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.tools:file_fetch",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/openclaw.plugin.json",
+          "line": 21,
+          "snippet": "\"tools\": [\"file_fetch\", \"dir_list\", \"dir_fetch\", \"file_write\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.tools:file_write",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.tools:file_write",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/openclaw.plugin.json",
+          "line": 21,
+          "snippet": "\"tools\": [\"file_fetch\", \"dir_list\", \"dir_fetch\", \"file_write\"]"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.agent.resolveAgentWorkspaceDir",
+      "kind": "runtime-member",
+      "identity": "runtime.agent.resolveAgentWorkspaceDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 33,
+          "snippet": "declareAgentWorkspaceAccess(api.runtime.agent.resolveAgentWorkspaceDir(api.config, agentId));"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.nodes.invoke",
+      "kind": "runtime-member",
+      "identity": "runtime.nodes.invoke",
+      "classification": "type",
+      "referenceKinds": [
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 39,
+          "snippet": "invoke: OpenClawPluginApi[\"runtime\"][\"nodes\"][\"invoke\"];",
+          "note": "Explicit OpenClawPluginApi runtime indexed type. Actual options.invoke is supplied from ctx.invokeNode in workspace-service.ts:85-96, a separately declared service-context capability, so its call is not attributed to a runtime-handle alias."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#AnyAgentTool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#AnyAgentTool",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/dir-fetch-tool.ts",
+          "line": 5,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/dir-list-tool.ts",
+          "line": 1,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-fetch-tool.ts",
+          "line": 1,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-fetch-tool.ts",
+          "line": 15,
+          "snippet": "export function createFileFetchTool(): AnyAgentTool {"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-write-tool.ts",
+          "line": 2,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#NodeListNode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#NodeListNode",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/node-tool-invoke.ts",
+          "line": 6,
+          "snippet": "type NodeListNode,"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/node-tool-invoke.ts",
+          "line": 52,
+          "snippet": "const nodes: NodeListNode[] = await listNodes(gatewayOpts);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#callGatewayTool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#callGatewayTool",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/node-tool-invoke.ts",
+          "line": 3,
+          "snippet": "callGatewayTool,"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/node-tool-invoke.ts",
+          "line": 67,
+          "snippet": "const raw = await callGatewayTool<{ payload: unknown }>(\"node.invoke\", gatewayOpts, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#listNodes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#listNodes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/node-tool-invoke.ts",
+          "line": 4,
+          "snippet": "listNodes,"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/node-tool-invoke.ts",
+          "line": 52,
+          "snippet": "const nodes: NodeListNode[] = await listNodes(gatewayOpts);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#resolveNodeIdFromList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#resolveNodeIdFromList",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/node-tool-invoke.ts",
+          "line": 5,
+          "snippet": "resolveNodeIdFromList,"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/node-tool-invoke.ts",
+          "line": 58,
+          "snippet": "const nodeId = resolveNodeIdFromList(nodes, input.node, false);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-scope-runtime#listAgentIds",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-scope-runtime#listAgentIds",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 6,
+          "snippet": "import { listAgentIds } from \"openclaw/plugin-sdk/agent-scope-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 47,
+          "snippet": "const agents = listAgentIds(api.config);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-workspace-runtime#AgentWorkspaceAccess",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-workspace-runtime#AgentWorkspaceAccess",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 3,
+          "snippet": "import type { AgentWorkspaceAccess } from \"openclaw/plugin-sdk/agent-workspace-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 43,
+          "snippet": "}): AgentWorkspaceAccess[\"bridge\"] & Required<Pick<SandboxFsBridge, \"createFileExclusive\">> {"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-skill-lifecycle.ts",
+          "line": 3,
+          "snippet": "import type { AgentWorkspaceAccess } from \"openclaw/plugin-sdk/agent-workspace-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-skills.ts",
+          "line": 2,
+          "snippet": "import type { AgentWorkspaceAccess } from \"openclaw/plugin-sdk/agent-workspace-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-workspace-runtime#createWorkspaceAttachmentPreparer",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-workspace-runtime#createWorkspaceAttachmentPreparer",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 3,
+          "snippet": "createWorkspaceAttachmentPreparer,"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 114,
+          "snippet": "prepareTurnAttachments: createWorkspaceAttachmentPreparer({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-workspace-runtime#createWorkspaceMemoryFileClient",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-workspace-runtime#createWorkspaceMemoryFileClient",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-memory.ts",
+          "line": 1,
+          "snippet": "import { createWorkspaceMemoryFileClient } from \"openclaw/plugin-sdk/agent-workspace-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-memory.ts",
+          "line": 6,
+          "snippet": "return createWorkspaceMemoryFileClient({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-workspace-runtime#declareAgentWorkspaceAccess",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-workspace-runtime#declareAgentWorkspaceAccess",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 4,
+          "snippet": "declareAgentWorkspaceAccess,"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 33,
+          "snippet": "declareAgentWorkspaceAccess(api.runtime.agent.resolveAgentWorkspaceDir(api.config, agentId));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-workspace-runtime#readWorkspaceSkillResources",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-workspace-runtime#readWorkspaceSkillResources",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 8,
+          "snippet": "readWorkspaceSkillResources,"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 110,
+          "snippet": "skill: Parameters<typeof readWorkspaceSkillResources>[0];"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 113,
+          "snippet": "const files = await readWorkspaceSkillResources(input.skill, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-workspace-runtime#registerAgentWorkspaceAccess",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-workspace-runtime#registerAgentWorkspaceAccess",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 5,
+          "snippet": "registerAgentWorkspaceAccess,"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 101,
+          "snippet": "registerAgentWorkspaceAccess(entry.workspaceDir, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-workspace-runtime#resolveWorkspaceWorkerArgv",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-workspace-runtime#resolveWorkspaceWorkerArgv",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 9,
+          "snippet": "resolveWorkspaceWorkerArgv,"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 128,
+          "snippet": "...resolveWorkspaceWorkerArgv(kind),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/archive#ARCHIVE_LIMIT_ERROR_CODE",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/archive#ARCHIVE_LIMIT_ERROR_CODE",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+          "line": 2,
+          "snippet": "ARCHIVE_LIMIT_ERROR_CODE,"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+          "line": 18,
+          "snippet": "throw new ArchiveLimitError(ARCHIVE_LIMIT_ERROR_CODE.ARCHIVE_SIZE_EXCEEDS_LIMIT);",
+          "note": "Non-call property read of exported constant object; the enclosing constructor call is ArchiveLimitError."
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+          "line": 2,
+          "snippet": "import { ARCHIVE_LIMIT_ERROR_CODE, ArchiveLimitError } from \"openclaw/plugin-sdk/archive\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/dir-fetch-tool.ts",
+          "line": 7,
+          "snippet": "ARCHIVE_LIMIT_ERROR_CODE,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/archive#ArchiveLimitError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/archive#ArchiveLimitError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-fetch.ts",
+          "line": 4,
+          "snippet": "import { ArchiveLimitError } from \"openclaw/plugin-sdk/archive\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+          "line": 3,
+          "snippet": "ArchiveLimitError,"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+          "line": 18,
+          "snippet": "throw new ArchiveLimitError(ARCHIVE_LIMIT_ERROR_CODE.ARCHIVE_SIZE_EXCEEDS_LIMIT);",
+          "note": "Constructs the imported SDK class."
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+          "line": 2,
+          "snippet": "import { ARCHIVE_LIMIT_ERROR_CODE, ArchiveLimitError } from \"openclaw/plugin-sdk/archive\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/dir-fetch-tool.ts",
+          "line": 8,
+          "snippet": "ArchiveLimitError,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/archive#ExtractArchiveOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/archive#ExtractArchiveOptions",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+          "line": 5,
+          "snippet": "type ExtractArchiveOptions,"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+          "line": 14,
+          "snippet": "} satisfies Pick<ExtractArchiveOptions, \"limits\" | \"entryFilter\" | \"onFiltered\">;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/archive#extractArchive",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/archive#extractArchive",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-skill-source.ts",
+          "line": 4,
+          "snippet": "import { extractArchive } from \"openclaw/plugin-sdk/archive\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-skill-source.ts",
+          "line": 32,
+          "snippet": "await extractArchive({"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/dir-fetch-tool.ts",
+          "line": 9,
+          "snippet": "extractArchive,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/archive#inspectTarArchive",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/archive#inspectTarArchive",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+          "line": 4,
+          "snippet": "inspectTarArchive,"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+          "line": 26,
+          "snippet": "const entries = await inspectTarArchive({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-actions#optionalPositiveIntegerSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-actions#optionalPositiveIntegerSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/descriptors.ts",
+          "line": 1,
+          "snippet": "import { optionalPositiveIntegerSchema } from \"openclaw/plugin-sdk/channel-actions\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/descriptors.ts",
+          "line": 28,
+          "snippet": "maxBytes: optionalPositiveIntegerSchema({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-mutation#mutateConfigFile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-mutation#mutateConfigFile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/cli.ts",
+          "line": 5,
+          "snippet": "mutateConfigFile,"
+        },
+        {
+          "path": "extensions/file-transfer/src/cli.ts",
+          "line": 130,
+          "snippet": "await mutateConfigFile({"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/policy.ts",
+          "line": 7,
+          "snippet": "import { mutateConfigFile } from \"openclaw/plugin-sdk/config-mutation\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-mutation#readConfigFileSnapshotForWrite",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-mutation#readConfigFileSnapshotForWrite",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/cli.ts",
+          "line": 6,
+          "snippet": "readConfigFileSnapshotForWrite,"
+        },
+        {
+          "path": "extensions/file-transfer/src/cli.ts",
+          "line": 30,
+          "snippet": "prepared: Awaited<ReturnType<typeof readConfigFileSnapshotForWrite>>,"
+        },
+        {
+          "path": "extensions/file-transfer/src/cli.ts",
+          "line": 46,
+          "snippet": "const prepared = await readConfigFileSnapshotForWrite();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-fetch.ts",
+          "line": 5,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+          "line": 3,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+          "line": 89,
+          "snippet": ": `dir.fetch archive inspection failed: ${formatErrorMessage(error)}`,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/extension-shared#createDeferred",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/extension-shared#createDeferred",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch-stream.ts",
+          "line": 3,
+          "snippet": "import { createDeferred } from \"openclaw/plugin-sdk/extension-shared\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 11,
+          "snippet": "import { createDeferred } from \"openclaw/plugin-sdk/extension-shared\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-file-create.ts",
+          "line": 2,
+          "snippet": "import { createDeferred } from \"openclaw/plugin-sdk/extension-shared\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-file-create.ts",
+          "line": 38,
+          "snippet": "let receipt = createDeferred<void>();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#openRootFile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#openRootFile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/file-stat.ts",
+          "line": 3,
+          "snippet": "import { openRootFile } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-stat.ts",
+          "line": 64,
+          "snippet": "const opened = await openRootFile({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#readFileHandleBounded",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#readFileHandleBounded",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+          "line": 3,
+          "snippet": "import { readFileHandleBounded } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+          "line": 227,
+          "snippet": "const buffer = await readFileHandleBounded(opened.handle, maxBytes);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#readFileWithinRoot",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#readFileWithinRoot",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-skill-source.ts",
+          "line": 5,
+          "snippet": "import { readFileWithinRoot, removePathWithinRoot } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-skill-source.ts",
+          "line": 26,
+          "snippet": "const { buffer } = await readFileWithinRoot({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#removePathWithinRoot",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#removePathWithinRoot",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-skill-source.ts",
+          "line": 5,
+          "snippet": "import { readFileWithinRoot, removePathWithinRoot } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-skill-source.ts",
+          "line": 11,
+          "snippet": "await removePathWithinRoot({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-mime#detectMime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-mime#detectMime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+          "line": 4,
+          "snippet": "import { detectMime } from \"openclaw/plugin-sdk/media-mime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+          "line": 94,
+          "snippet": "const detected = await detectMime(params);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-mime#mimeTypeFromFilePath",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-mime#mimeTypeFromFilePath",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/mime.ts",
+          "line": 1,
+          "snippet": "import { mimeTypeFromFilePath } from \"openclaw/plugin-sdk/media-mime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/mime.ts",
+          "line": 16,
+          "snippet": "return mimeTypeFromFilePath(filePath) ?? \"application/octet-stream\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-store#readMediaBuffer",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-store#readMediaBuffer",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/file-write-tool.ts",
+          "line": 3,
+          "snippet": "import { readMediaBuffer } from \"openclaw/plugin-sdk/media-store\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-write-tool.ts",
+          "line": 41,
+          "snippet": "const { buffer } = await readMediaBuffer("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-store#saveMediaBuffer",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-store#saveMediaBuffer",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/dir-fetch-tool.ts",
+          "line": 11,
+          "snippet": "import { saveMediaBuffer } from \"openclaw/plugin-sdk/media-store\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-fetch-tool.ts",
+          "line": 2,
+          "snippet": "import { saveMediaBuffer } from \"openclaw/plugin-sdk/media-store\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-fetch-tool.ts",
+          "line": 41,
+          "snippet": "const saved = await saveMediaBuffer("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/node-host#OpenClawPluginNodeHostCommandIo",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/node-host#OpenClawPluginNodeHostCommandIo",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/file-create.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawPluginNodeHostCommandIo } from \"openclaw/plugin-sdk/node-host\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-create.ts",
+          "line": 28,
+          "snippet": "io: OpenClawPluginNodeHostCommandIo,"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch-stream.ts",
+          "line": 4,
+          "snippet": "import type { OpenClawPluginNodeHostCommandIo } from \"openclaw/plugin-sdk/node-host\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+          "line": 5,
+          "snippet": "import type { OpenClawPluginNodeHostCommandIo } from \"openclaw/plugin-sdk/node-host\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#asPositiveFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#asPositiveFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-fetch.ts",
+          "line": 6,
+          "snippet": "import { asPositiveFiniteNumber } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-list.ts",
+          "line": 3,
+          "snippet": "asPositiveFiniteNumber,"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-list.ts",
+          "line": 58,
+          "snippet": "Math.floor(asPositiveFiniteNumber(params.maxEntries) ?? DIR_LIST_DEFAULT_MAX_ENTRIES),"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+          "line": 6,
+          "snippet": "import { asPositiveFiniteNumber } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#formatByteSize",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#formatByteSize",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/params.ts",
+          "line": 1,
+          "snippet": "import { formatByteSize } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/params.ts",
+          "line": 33,
+          "snippet": "return formatByteSize(bytes, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#parseStrictNonNegativeInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#parseStrictNonNegativeInteger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-list.ts",
+          "line": 4,
+          "snippet": "parseStrictNonNegativeInteger,"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-list.ts",
+          "line": 33,
+          "snippet": "return parseStrictNonNegativeInteger(input) ?? 0;"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/dir-list-tool.ts",
+          "line": 2,
+          "snippet": "import { parseStrictNonNegativeInteger } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/param-readers#readPositiveIntegerParam",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/param-readers#readPositiveIntegerParam",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy-params.ts",
+          "line": 1,
+          "snippet": "import { readPositiveIntegerParam } from \"openclaw/plugin-sdk/param-readers\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/params.ts",
+          "line": 2,
+          "snippet": "import { readPositiveIntegerParam } from \"openclaw/plugin-sdk/param-readers\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/params.ts",
+          "line": 18,
+          "snippet": "opts.timeoutMs = readPositiveIntegerParam(params, \"timeoutMs\");"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-fetch-tool.ts",
+          "line": 3,
+          "snippet": "import { readPositiveIntegerParam } from \"openclaw/plugin-sdk/param-readers\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#AnyAgentTool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#AnyAgentTool",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/index.ts",
+          "line": 3,
+          "snippet": "type AnyAgentTool,"
+        },
+        {
+          "path": "extensions/file-transfer/index.ts",
+          "line": 23,
+          "snippet": "loadTool: () => Promise<AnyAgentTool>,"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/descriptors.ts",
+          "line": 2,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 13,
+          "snippet": "OpenClawPluginApi,"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 6,
+          "snippet": "OpenClawPluginApi,"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 7,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 28,
+          "snippet": "export function registerNodeWorkspaces(api: OpenClawPluginApi): void {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeHostCommand",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeHostCommand",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/index.ts",
+          "line": 4,
+          "snippet": "type OpenClawPluginNodeHostCommand,"
+        },
+        {
+          "path": "extensions/file-transfer/index.ts",
+          "line": 35,
+          "snippet": "const fileTransferNodeHostCommands: OpenClawPluginNodeHostCommand[] = ["
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 14,
+          "snippet": "OpenClawPluginNodeHostCommand,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeInvokePolicy",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeInvokePolicy",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/lazy-node-invoke-policy.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginNodeInvokePolicy } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/lazy-node-invoke-policy.ts",
+          "line": 4,
+          "snippet": "export function createLazyFileTransferNodeInvokePolicy(): OpenClawPluginNodeInvokePolicy {"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+          "line": 5,
+          "snippet": "OpenClawPluginNodeInvokePolicy,"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/workspace-memory-policy.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawPluginNodeInvokePolicy } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeInvokePolicyContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeInvokePolicyContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy-approval.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginNodeInvokePolicyContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy-approval.ts",
+          "line": 33,
+          "snippet": "ctx: OpenClawPluginNodeInvokePolicyContext;"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy-preflight.ts",
+          "line": 2,
+          "snippet": "OpenClawPluginNodeInvokePolicyContext,"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+          "line": 6,
+          "snippet": "OpenClawPluginNodeInvokePolicyContext,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeInvokePolicyResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeInvokePolicyResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy-preflight.ts",
+          "line": 3,
+          "snippet": "OpenClawPluginNodeInvokePolicyResult,"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+          "line": 7,
+          "snippet": "OpenClawPluginNodeInvokePolicyResult,"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+          "line": 96,
+          "snippet": "): Promise<OpenClawPluginNodeInvokePolicyResult> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginServiceContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginServiceContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 5,
+          "snippet": "OpenClawPluginServiceContext,"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 41,
+          "snippet": "openDuplex?: OpenClawPluginServiceContext[\"openNodeDuplex\"];"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-file-create.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawPluginServiceContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-file-fetch.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawPluginServiceContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-worker.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawPluginServiceContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/index.ts",
+          "line": 2,
+          "snippet": "definePluginEntry,"
+        },
+        {
+          "path": "extensions/file-transfer/index.ts",
+          "line": 110,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#runCommandBuffered",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#runCommandBuffered",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-fetch-archive.ts",
+          "line": 1,
+          "snippet": "import { runCommandBuffered } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-fetch-archive.ts",
+          "line": 34,
+          "snippet": "const result = await runCommandBuffered("
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-fetch.ts",
+          "line": 7,
+          "snippet": "import { runCommandBuffered } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-list-worker.ts",
+          "line": 1,
+          "snippet": "import { runCommandBuffered } from \"openclaw/plugin-sdk/process-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-config-snapshot#readRuntimeConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-config-snapshot#readRuntimeConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/policy.ts",
+          "line": 8,
+          "snippet": "import { readRuntimeConfig as getRuntimeConfig } from \"openclaw/plugin-sdk/runtime-config-snapshot\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/policy.ts",
+          "line": 126,
+          "snippet": "const plugins = asOptionalObjectRecord(getRuntimeConfig().plugins);",
+          "note": "Imported as getRuntimeConfig at line 8; canonical identity retains original exported readRuntimeConfig."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sandbox#SandboxFsBridge",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sandbox#SandboxFsBridge",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 8,
+          "snippet": "import type { SandboxFsBridge } from \"openclaw/plugin-sdk/sandbox\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 43,
+          "snippet": "}): AgentWorkspaceAccess[\"bridge\"] & Required<Pick<SandboxFsBridge, \"createFileExclusive\">> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#FsSafeError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#FsSafeError",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/file-create.ts",
+          "line": 7,
+          "snippet": "FsSafeError,"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+          "line": 7,
+          "snippet": "import { FsSafeError, root } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-write-path.ts",
+          "line": 5,
+          "snippet": "FsSafeError,"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-write-path.ts",
+          "line": 31,
+          "snippet": "error: FsSafeError,",
+          "note": "Ordinary value imports coexist with explicit class type annotations; instanceof checks are bare value references, not constructor calls."
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-write.ts",
+          "line": 7,
+          "snippet": "FsSafeError,"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/path-errors.ts",
+          "line": 4,
+          "snippet": "import { FsSafeError, resolveAbsolutePathForRead } from \"openclaw/plugin-sdk/security-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#appendRegularFile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#appendRegularFile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/audit.ts",
+          "line": 14,
+          "snippet": "import { appendRegularFile } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/audit.ts",
+          "line": 91,
+          "snippet": "await appendRegularFile({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#canonicalPathFromExistingAncestor",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#canonicalPathFromExistingAncestor",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/file-create.ts",
+          "line": 5,
+          "snippet": "canonicalPathFromExistingAncestor,"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-create.ts",
+          "line": 125,
+          "snippet": "const canonicalPath = await canonicalPathFromExistingAncestor(target.path);"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-write-path.ts",
+          "line": 4,
+          "snippet": "canonicalPathFromExistingAncestor,"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-write.ts",
+          "line": 6,
+          "snippet": "canonicalPathFromExistingAncestor,"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 16,
+          "snippet": "import { canonicalPathFromExistingAncestor } from \"openclaw/plugin-sdk/security-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#extractErrorCode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#extractErrorCode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/file-create.ts",
+          "line": 6,
+          "snippet": "extractErrorCode,"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-create.ts",
+          "line": 137,
+          "snippet": "if (extractErrorCode(error) !== \"ENOENT\") {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#resolveAbsolutePathForRead",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#resolveAbsolutePathForRead",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/path-errors.ts",
+          "line": 4,
+          "snippet": "import { FsSafeError, resolveAbsolutePathForRead } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/path-errors.ts",
+          "line": 76,
+          "snippet": "await resolveAbsolutePathForRead(input.requestedPath, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#resolveAbsolutePathForWrite",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#resolveAbsolutePathForWrite",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/file-create.ts",
+          "line": 8,
+          "snippet": "resolveAbsolutePathForWrite,"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-create.ts",
+          "line": 110,
+          "snippet": "target = await resolveAbsolutePathForWrite(rawPath, {"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-write.ts",
+          "line": 8,
+          "snippet": "resolveAbsolutePathForWrite,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#root",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#root",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-fetch.ts",
+          "line": 8,
+          "snippet": "import { root as fsRoot } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-fetch.ts",
+          "line": 72,
+          "snippet": "const rootHandle = await fsRoot(root);",
+          "note": "Imported as fsRoot at line 8; retain public export name root."
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+          "line": 7,
+          "snippet": "import { FsSafeError, root } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+          "line": 141,
+          "snippet": "let opened: Awaited<ReturnType<Awaited<ReturnType<typeof root>>[\"open\"]>>;",
+          "note": "Direct typeof of SDK root; returned Root methods do not become public PluginRuntime members."
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-write-path.ts",
+          "line": 6,
+          "snippet": "root,"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-write.ts",
+          "line": 9,
+          "snippet": "root,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#wrapExternalContent",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#wrapExternalContent",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/directory-text.ts",
+          "line": 1,
+          "snippet": "import { wrapExternalContent } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/directory-text.ts",
+          "line": 12,
+          "snippet": "const wrapped = wrapExternalContent(text, { source: \"unknown\" });"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-fetch-tool.ts",
+          "line": 4,
+          "snippet": "import { wrapExternalContent } from \"openclaw/plugin-sdk/security-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/setup-runtime#createClackPrompter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/setup-runtime#createClackPrompter",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/cli.ts",
+          "line": 8,
+          "snippet": "import { createClackPrompter } from \"openclaw/plugin-sdk/setup-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/cli.ts",
+          "line": 81,
+          "snippet": "const prompt = createClackPrompter();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asBoolean",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asBoolean",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/file-write-tool.ts",
+          "line": 4,
+          "snippet": "import { asBoolean, asNonArrayRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-write-tool.ts",
+          "line": 72,
+          "snippet": "const overwrite = asBoolean(raw.overwrite) ?? false;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asNonArrayRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asNonArrayRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/file-write-tool.ts",
+          "line": 4,
+          "snippet": "import { asBoolean, asNonArrayRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-write-tool.ts",
+          "line": 67,
+          "snippet": "const raw = asNonArrayRecord(params);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asNullableRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asNullableRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/doctor-contract-api.ts",
+          "line": 1,
+          "snippet": "import { asNullableRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/doctor-contract-api.ts",
+          "line": 4,
+          "snippet": "const config = asNullableRecord(value);"
+        },
+        {
+          "path": "extensions/file-transfer/src/approvals-migration.ts",
+          "line": 1,
+          "snippet": "import { asNullableRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/cli.ts",
+          "line": 9,
+          "snippet": "import { asNullableRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-list-worker.ts",
+          "line": 2,
+          "snippet": "import { asNullableRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy-preflight.ts",
+          "line": 5,
+          "snippet": "import { asNullableRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+          "line": 9,
+          "snippet": "import { asNullableRecord, asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/path-binding.ts",
+          "line": 2,
+          "snippet": "import { asNullableRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/policy.ts",
+          "line": 10,
+          "snippet": "asNullableRecord,"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/node-tool-invoke.ts",
+          "line": 9,
+          "snippet": "asNullableRecord,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalObjectRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalObjectRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/policy.ts",
+          "line": 11,
+          "snippet": "asOptionalObjectRecord,"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/policy.ts",
+          "line": 126,
+          "snippet": "const plugins = asOptionalObjectRecord(getRuntimeConfig().plugins);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/index.ts",
+          "line": 6,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/index.ts",
+          "line": 43,
+          "snippet": "const params = asOptionalRecord(readNodeCommandParams(paramsJSON)) ?? {};"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-stat.ts",
+          "line": 4,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 17,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+          "line": 9,
+          "snippet": "import { asNullableRecord, asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/workspace-memory-policy.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/workspace-memory-request.ts",
+          "line": 2,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/workspace-skills-request.ts",
+          "line": 2,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 10,
+          "snippet": "asOptionalRecord,"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-file-fetch.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 8,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-skill-lifecycle.ts",
+          "line": 4,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-skills.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-worker.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/node-tool-invoke.ts",
+          "line": 10,
+          "snippet": "normalizeOptionalString,"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/node-tool-invoke.ts",
+          "line": 26,
+          "snippet": "const node = normalizeOptionalString(params.node);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#parseStrictNonNegativeInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#parseStrictNonNegativeInteger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 11,
+          "snippet": "parseStrictNonNegativeInteger,"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 320,
+          "snippet": "? parseStrictNonNegativeInteger(payload.nextPageToken)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+          "line": 7,
+          "snippet": "import { resolvePreferredOpenClawTmpDir, withTempWorkspace } from \"openclaw/plugin-sdk/temp-path\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+          "line": 23,
+          "snippet": "{ rootDir: resolvePreferredOpenClawTmpDir(), prefix: \"openclaw-dir-fetch-\" },"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/temp-path#withTempWorkspace",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/temp-path#withTempWorkspace",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+          "line": 7,
+          "snippet": "import { resolvePreferredOpenClawTmpDir, withTempWorkspace } from \"openclaw/plugin-sdk/temp-path\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+          "line": 22,
+          "snippet": "return await withTempWorkspace("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/tool-results#textResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/tool-results#textResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/dir-fetch-tool.ts",
+          "line": 12,
+          "snippet": "import { textResult } from \"openclaw/plugin-sdk/tool-results\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/dir-fetch-tool.ts",
+          "line": 179,
+          "snippet": "return textResult(savedDirectoryText(rootDir, files), {"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/dir-list-tool.ts",
+          "line": 3,
+          "snippet": "import { textResult } from \"openclaw/plugin-sdk/tool-results\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-harness-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/dir-fetch-tool.ts",
+          "line": 5,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/dir-list-tool.ts",
+          "line": 1,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-fetch-tool.ts",
+          "line": 1,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-write-tool.ts",
+          "line": 2,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/node-tool-invoke.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-scope-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-scope-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 6,
+          "snippet": "import { listAgentIds } from \"openclaw/plugin-sdk/agent-scope-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-workspace-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-workspace-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 10,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-workspace-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 3,
+          "snippet": "import type { AgentWorkspaceAccess } from \"openclaw/plugin-sdk/agent-workspace-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-memory.ts",
+          "line": 1,
+          "snippet": "import { createWorkspaceMemoryFileClient } from \"openclaw/plugin-sdk/agent-workspace-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-workspace-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-skill-lifecycle.ts",
+          "line": 3,
+          "snippet": "import type { AgentWorkspaceAccess } from \"openclaw/plugin-sdk/agent-workspace-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-skills.ts",
+          "line": 2,
+          "snippet": "import type { AgentWorkspaceAccess } from \"openclaw/plugin-sdk/agent-workspace-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/archive",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/archive",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-fetch.ts",
+          "line": 4,
+          "snippet": "import { ArchiveLimitError } from \"openclaw/plugin-sdk/archive\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-skill-source.ts",
+          "line": 4,
+          "snippet": "import { extractArchive } from \"openclaw/plugin-sdk/archive\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/archive\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+          "line": 2,
+          "snippet": "import { ARCHIVE_LIMIT_ERROR_CODE, ArchiveLimitError } from \"openclaw/plugin-sdk/archive\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/dir-fetch-tool.ts",
+          "line": 10,
+          "snippet": "} from \"openclaw/plugin-sdk/archive\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-actions",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-actions",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/descriptors.ts",
+          "line": 1,
+          "snippet": "import { optionalPositiveIntegerSchema } from \"openclaw/plugin-sdk/channel-actions\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-mutation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-mutation",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/cli.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/config-mutation\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/policy.ts",
+          "line": 7,
+          "snippet": "import { mutateConfigFile } from \"openclaw/plugin-sdk/config-mutation\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-fetch.ts",
+          "line": 5,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+          "line": 3,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/extension-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/extension-shared",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch-stream.ts",
+          "line": 3,
+          "snippet": "import { createDeferred } from \"openclaw/plugin-sdk/extension-shared\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 11,
+          "snippet": "import { createDeferred } from \"openclaw/plugin-sdk/extension-shared\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-file-create.ts",
+          "line": 2,
+          "snippet": "import { createDeferred } from \"openclaw/plugin-sdk/extension-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/file-access-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/file-access-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+          "line": 3,
+          "snippet": "import { readFileHandleBounded } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-stat.ts",
+          "line": 3,
+          "snippet": "import { openRootFile } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-skill-source.ts",
+          "line": 5,
+          "snippet": "import { readFileWithinRoot, removePathWithinRoot } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-mime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-mime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+          "line": 4,
+          "snippet": "import { detectMime } from \"openclaw/plugin-sdk/media-mime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/mime.ts",
+          "line": 1,
+          "snippet": "import { mimeTypeFromFilePath } from \"openclaw/plugin-sdk/media-mime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-store",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-store",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/dir-fetch-tool.ts",
+          "line": 11,
+          "snippet": "import { saveMediaBuffer } from \"openclaw/plugin-sdk/media-store\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-fetch-tool.ts",
+          "line": 2,
+          "snippet": "import { saveMediaBuffer } from \"openclaw/plugin-sdk/media-store\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-write-tool.ts",
+          "line": 3,
+          "snippet": "import { readMediaBuffer } from \"openclaw/plugin-sdk/media-store\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/node-host",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/node-host",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/file-create.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawPluginNodeHostCommandIo } from \"openclaw/plugin-sdk/node-host\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch-stream.ts",
+          "line": 4,
+          "snippet": "import type { OpenClawPluginNodeHostCommandIo } from \"openclaw/plugin-sdk/node-host\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+          "line": 5,
+          "snippet": "import type { OpenClawPluginNodeHostCommandIo } from \"openclaw/plugin-sdk/node-host\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-fetch.ts",
+          "line": 6,
+          "snippet": "import { asPositiveFiniteNumber } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-list.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+          "line": 6,
+          "snippet": "import { asPositiveFiniteNumber } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/params.ts",
+          "line": 1,
+          "snippet": "import { formatByteSize } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/dir-list-tool.ts",
+          "line": 2,
+          "snippet": "import { parseStrictNonNegativeInteger } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/param-readers",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/param-readers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy-params.ts",
+          "line": 1,
+          "snippet": "import { readPositiveIntegerParam } from \"openclaw/plugin-sdk/param-readers\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/params.ts",
+          "line": 2,
+          "snippet": "import { readPositiveIntegerParam } from \"openclaw/plugin-sdk/param-readers\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-fetch-tool.ts",
+          "line": 3,
+          "snippet": "import { readPositiveIntegerParam } from \"openclaw/plugin-sdk/param-readers\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/index.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 15,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/lazy-node-invoke-policy.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginNodeInvokePolicy } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy-approval.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginNodeInvokePolicyContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy-preflight.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/workspace-memory-policy.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawPluginNodeInvokePolicy } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/descriptors.ts",
+          "line": 2,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-file-create.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawPluginServiceContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-file-fetch.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawPluginServiceContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 7,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-worker.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawPluginServiceContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/process-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/process-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-fetch-archive.ts",
+          "line": 1,
+          "snippet": "import { runCommandBuffered } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-fetch.ts",
+          "line": 7,
+          "snippet": "import { runCommandBuffered } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-list-worker.ts",
+          "line": 1,
+          "snippet": "import { runCommandBuffered } from \"openclaw/plugin-sdk/process-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-config-snapshot",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-config-snapshot",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/policy.ts",
+          "line": 8,
+          "snippet": "import { readRuntimeConfig as getRuntimeConfig } from \"openclaw/plugin-sdk/runtime-config-snapshot\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/sandbox",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/sandbox",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 8,
+          "snippet": "import type { SandboxFsBridge } from \"openclaw/plugin-sdk/sandbox\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/security-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/security-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-fetch.ts",
+          "line": 8,
+          "snippet": "import { root as fsRoot } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-create.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-fetch.ts",
+          "line": 7,
+          "snippet": "import { FsSafeError, root } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-write-path.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-write.ts",
+          "line": 10,
+          "snippet": "} from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/path-errors.ts",
+          "line": 4,
+          "snippet": "import { FsSafeError, resolveAbsolutePathForRead } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 16,
+          "snippet": "import { canonicalPathFromExistingAncestor } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/audit.ts",
+          "line": 14,
+          "snippet": "import { appendRegularFile } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/directory-text.ts",
+          "line": 1,
+          "snippet": "import { wrapExternalContent } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-fetch-tool.ts",
+          "line": 4,
+          "snippet": "import { wrapExternalContent } from \"openclaw/plugin-sdk/security-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/setup-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/setup-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/cli.ts",
+          "line": 8,
+          "snippet": "import { createClackPrompter } from \"openclaw/plugin-sdk/setup-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/doctor-contract-api.ts",
+          "line": 1,
+          "snippet": "import { asNullableRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/index.ts",
+          "line": 6,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/approvals-migration.ts",
+          "line": 1,
+          "snippet": "import { asNullableRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/cli.ts",
+          "line": 9,
+          "snippet": "import { asNullableRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/dir-list-worker.ts",
+          "line": 2,
+          "snippet": "import { asNullableRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/file-stat.ts",
+          "line": 4,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/node-host/workspace-memory.ts",
+          "line": 17,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy-preflight.ts",
+          "line": 5,
+          "snippet": "import { asNullableRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/node-invoke-policy.ts",
+          "line": 9,
+          "snippet": "import { asNullableRecord, asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/path-binding.ts",
+          "line": 2,
+          "snippet": "import { asNullableRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/policy.ts",
+          "line": 12,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/workspace-memory-policy.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/workspace-memory-request.ts",
+          "line": 2,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/shared/workspace-skills-request.ts",
+          "line": 2,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/file-write-tool.ts",
+          "line": 4,
+          "snippet": "import { asBoolean, asNonArrayRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/node-tool-invoke.ts",
+          "line": 11,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-bridge.ts",
+          "line": 12,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-file-fetch.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-service.ts",
+          "line": 8,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-skill-lifecycle.ts",
+          "line": 4,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-skills.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/workspace-worker.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/temp-path",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/temp-path",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/shared/dir-fetch-archive.ts",
+          "line": 7,
+          "snippet": "import { resolvePreferredOpenClawTmpDir, withTempWorkspace } from \"openclaw/plugin-sdk/temp-path\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/tool-results",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/tool-results",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/file-transfer/src/tools/dir-fetch-tool.ts",
+          "line": 12,
+          "snippet": "import { textResult } from \"openclaw/plugin-sdk/tool-results\";"
+        },
+        {
+          "path": "extensions/file-transfer/src/tools/dir-list-tool.ts",
+          "line": 3,
+          "snippet": "import { textResult } from \"openclaw/plugin-sdk/tool-results\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independent manual audit at the pinned commit: read Inspector root AGENTS.md, benchmark contract and entire README, source root/extensions/SDK instructions, source plugin metadata, and every eligible production file. No Inspector implementation, detector output, helpers, or other plugin fixtures were read. Findings and usage sites were manually authored; scripting only serializes them, takes exact preselected evidence lines, and computes inventory/hashes.",
+    "All production local static and dynamic imports remain beneath extensions/file-transfer. The local shared/ and node-host/ source, lazy tool modules, CLI migration, doctor-contract-api.ts and embedded Node worker strings are included. There is no additional plugin-owned/shared shipped source beyond the root. Public SDK facade/type definitions were consulted for provenance only; their implementations and separately installed @openclaw/fs-safe, minimatch, typebox and commander dependencies are outside the audit population.",
+    "The package declares index.ts as its sole extension entry. This is a source-phase audit: eligible source is included even without runtime reachability. package.json itself adds no SDK syntactic or manifest-contract identity; its @openclaw/plugin-sdk devDependency is not an openclaw/plugin-sdk import.",
+    "The test-api.ts barrel and both test-support files were read and their callers verified. They remain excluded because only test suites/test barrels use them. Worker command source strings contain node: built-ins only, with no SDK module site or hook registration.",
+    "Original aliases are preserved: security-runtime root is imported as fsRoot in node-host/dir-fetch.ts; runtime-config-snapshot readRuntimeConfig is imported as getRuntimeConfig in shared/policy.ts. Identically named exports from different public SDK subpaths remain distinct canonical identities.",
+    "OpenClawPluginApi is proven by explicit type annotations and definePluginEntry register typing. runtime.agent.resolveAgentWorkspaceDir is called directly through api.runtime. workspace-bridge.ts:39 explicitly indexes OpenClawPluginApi[\"runtime\"][\"nodes\"][\"invoke\"], contributing a type-only runtime.nodes.invoke finding. workspace-service.ts:85-96 passes separately scoped ctx.invokeNode into options.invoke; plugin-registration.types.ts declares that service capability separately using Omit of runtime parameter types. Its invocation at workspace-bridge.ts:62 does not become a runtime call. Service context fields, policy ctx.approvals/invokeNode, node-host IO and PluginRuntime-shaped function signatures otherwise remain separate contracts, not API/runtime handle aliases.",
+    "Members of SDK helper return values (fs-safe root handles, prompt objects, deferred promises, media receipts and workspace access adapters) are not PluginRuntime members. The audit records each directly imported SDK export and actual call/type use without following helper internal effects. AgentWorkspaceAccess/SandboxFsBridge projections supply export type references, not PluginRuntime paths.",
+    "Explicit typeof uses make readConfigFileSnapshotForWrite, readWorkspaceSkillResources and security-runtime root mixed; FsSafeError is mixed because of direct class type annotations. Their modules retain runtime classification because all module import sites for those respective modules are value imports. Archive and plugin-entry have mixed module syntax because inline/type-only imports coexist with value imports.",
+    "Manifest contracts include only cliCommands.name and the four contracts.tools entries. doctorContract.configRepair, activation, categories, descriptive/config schema metadata and runtime node command strings are not agreed manifest-contract fields or named hooks. There are no api.on/registerHook calls and no genuinely unresolved SDK/API/runtime accesses.",
+    "reviewedFiles.findingCount counts distinct fixture findings evidenced in that file; evidence includes every SDK import site plus representative usage for each established reference kind."
+  ]
+}

@@ -1,0 +1,767 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "runway",
+    "path": "extensions/runway"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_runway",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/runway/index.ts",
+      "sha256": "eaf24c17d17ae1d79fbd75c147d7f093137ce87b9012b0b5f78a0a8d44031bdd",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/runway/openclaw.plugin.json",
+      "sha256": "26aa29421013b83155d80bee2979e98c297b152af7e5b23c4fc367637796a936",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/runway/package.json",
+      "sha256": "c0c73009fe56f96310129e42b2449055d70855c965eaf1df83149bdf1f6e2a92",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/runway/video-generation-provider.ts",
+      "sha256": "f9fa84802ff541faf578dad21b1df4efd2e0c91c0332abd1517d39010ee0a7cb",
+      "role": "production-source",
+      "findingCount": 27
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/runway/README.md",
+      "rule": "non-source",
+      "reason": "Markdown usage documentation; outside eligible source extensions."
+    },
+    {
+      "path": "extensions/runway/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Static SVG artwork; outside eligible source extensions."
+    },
+    {
+      "path": "extensions/runway/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Static PNG artwork; outside eligible source extensions."
+    },
+    {
+      "path": "extensions/runway/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript configuration extends the shared package-boundary config; no production source."
+    },
+    {
+      "path": "extensions/runway/video-generation-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test suite (.test.ts), importing test-runtime/mock helpers; neither production file imports this suite or its external test-support dependency."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerProvider",
+      "kind": "api-member",
+      "identity": "api.registerProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/index.ts",
+          "line": 10,
+          "snippet": "    api.registerProvider({",
+          "note": "The register callback is contextually typed by definePluginEntry: src/plugin-sdk/plugin-entry.ts:227 uses OpenClawPluginDefinition[\"register\"], whose src/plugins/plugin-definition.types.ts:27 parameter is OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerVideoGenerationProvider",
+      "kind": "api-member",
+      "identity": "api.registerVideoGenerationProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/index.ts",
+          "line": 35,
+          "snippet": "    api.registerVideoGenerationProvider(buildRunwayVideoGenerationProvider());",
+          "note": "The register callback is contextually typed by definePluginEntry: src/plugin-sdk/plugin-entry.ts:227 uses OpenClawPluginDefinition[\"register\"], whose src/plugins/plugin-definition.types.ts:27 parameter is OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.videoGenerationProviders:runway",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.videoGenerationProviders:runway",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/openclaw.plugin.json",
+          "line": 33,
+          "snippet": "    \"videoGenerationProviders\": [\"runway\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-generation-runtime#downloadGeneratedVideoAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime#downloadGeneratedVideoAsset",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 2,
+          "snippet": "  downloadGeneratedVideoAsset,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 334,
+          "snippet": "            await downloadGeneratedVideoAsset({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-generation-runtime#resolveGeneratedMediaMaxBytes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime#resolveGeneratedMediaMaxBytes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 3,
+          "snippet": "  resolveGeneratedMediaMaxBytes,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 330,
+          "snippet": "        const maxBytes = resolveGeneratedMediaMaxBytes(req.cfg, \"video\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/runway/index.ts",
+          "line": 5,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isProviderApiKeyConfiguredAsync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#isProviderApiKeyConfiguredAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 5,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 221,
+          "snippet": "    isConfiguredAsync: (ctx) => isProviderApiKeyConfiguredAsync({ provider: \"runway\", ...ctx }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 6,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 246,
+          "snippet": "      const auth = await resolveApiKeyForProvider({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-entry#createProviderApiKeyAuthMethod",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-entry#createProviderApiKeyAuthMethod",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/index.ts",
+          "line": 2,
+          "snippet": "import { createProviderApiKeyAuthMethod } from \"openclaw/plugin-sdk/provider-entry\";"
+        },
+        {
+          "path": "extensions/runway/index.ts",
+          "line": 16,
+          "snippet": "        createProviderApiKeyAuthMethod({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#assertOkOrThrowHttpError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#assertOkOrThrowHttpError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 8,
+          "snippet": "  assertOkOrThrowHttpError,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 291,
+          "snippet": "        await assertOkOrThrowHttpError(response, \"Runway video generation failed\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#createProviderOperationDeadline",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#createProviderOperationDeadline",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 9,
+          "snippet": "  createProviderOperationDeadline,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 257,
+          "snippet": "      const deadline = createProviderOperationDeadline({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#createProviderOperationTimeoutResolver",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#createProviderOperationTimeoutResolver",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 10,
+          "snippet": "  createProviderOperationTimeoutResolver,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 326,
+          "snippet": "        const timeoutMs = createProviderOperationTimeoutResolver({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#pollProviderOperationJson",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#pollProviderOperationJson",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 11,
+          "snippet": "  pollProviderOperationJson,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 300,
+          "snippet": "        const completed = await pollProviderOperationJson<RunwayTaskDetailResponse>({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#postJsonRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#postJsonRequest",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 12,
+          "snippet": "  postJsonRequest,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 278,
+          "snippet": "      const { response, release } = await postJsonRequest({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonObjectResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonObjectResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 13,
+          "snippet": "  readProviderJsonObjectResponse,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 292,
+          "snippet": "        const submitted = await readProviderJsonObjectResponse("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderHttpRequestConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderHttpRequestConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 15,
+          "snippet": "  resolveProviderHttpRequestConfig,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 264,
+          "snippet": "        resolveProviderHttpRequestConfig({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderOperationTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderOperationTimeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 14,
+          "snippet": "  resolveProviderOperationTimeoutMs,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 282,
+          "snippet": "        timeoutMs: resolveProviderOperationTimeoutMs({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 18,
+          "snippet": "  isRecord,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 84,
+          "snippet": "  if (isRecord(failure)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 19,
+          "snippet": "  normalizeLowercaseStringOrEmpty,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 321,
+          "snippet": "                  `Runway video generation ${normalizeLowercaseStringOrEmpty(status)}`"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 20,
+          "snippet": "  normalizeOptionalString,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 64,
+          "snippet": "  const status = normalizeOptionalString(payload.status);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeTrimmedStringList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeTrimmedStringList",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 21,
+          "snippet": "  normalizeTrimmedStringList,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 94,
+          "snippet": "  const outputUrls = normalizeTrimmedStringList(payload.output);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#GeneratedVideoAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#GeneratedVideoAsset",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 24,
+          "snippet": "  GeneratedVideoAsset,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 331,
+          "snippet": "        const videos: GeneratedVideoAsset[] = [];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 25,
+          "snippet": "  VideoGenerationProvider,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 215,
+          "snippet": "export function buildRunwayVideoGenerationProvider(): VideoGenerationProvider {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationRequest",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 26,
+          "snippet": "  VideoGenerationRequest,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 135,
+          "snippet": "function resolveRunwayRatio(req: VideoGenerationRequest): string {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 27,
+          "snippet": "  VideoGenerationResult,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 245,
+          "snippet": "    async generateVideo(req): Promise<VideoGenerationResult> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationSourceAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationSourceAsset",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 28,
+          "snippet": "  VideoGenerationSourceAsset,"
+        },
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 48,
+          "snippet": "type RunwaySourceAsset = Pick<VideoGenerationSourceAsset, \"buffer\" | \"mimeType\" | \"url\">;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-generation-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 5,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 6,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/index.ts",
+          "line": 2,
+          "snippet": "import { createProviderApiKeyAuthMethod } from \"openclaw/plugin-sdk/provider-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-http",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-http",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 16,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-http\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 22,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/video-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/video-generation",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/runway/video-generation-provider.ts",
+          "line": 29,
+          "snippet": "} from \"openclaw/plugin-sdk/video-generation\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Manually read all production source (index.ts and video-generation-provider.ts), package.json, and openclaw.plugin.json. All nine plugin-root files are partitioned. Production and metadata files match the pinned commit; only authorized instructions/skill changes exist elsewhere in the source checkout.",
+    "package.json declares ./index.ts as its extension entry. Its sole relative production import resolves to ./video-generation-provider.ts. No production import leaves the plugin root for plugin-owned/shared shipped source; the test-only ../test-support import does not extend production scope.",
+    "Read source root, extensions, src/plugins, and src/plugin-sdk AGENTS.md, Inspector root AGENTS.md, the benchmark contract, and the entire benchmark README. Public package exports confirm all eight exact SDK module specifiers.",
+    "The contextual definePluginEntry register callback proves api provenance. Its two direct registration calls are the only public API member occurrences; there are no runtime handles, hooks, aliases, dynamic SDK dependencies, or genuine unresolved constructs.",
+    "VideoGenerationRequest/SourceAsset objects, the provider descriptor, and helper-returned auth, HTTP response/release, deadline and task payloads are not OpenClawPluginApi or PluginRuntime. Their members do not create API/runtime findings; SDK helper internals are outside this audit.",
+    "All five explicit video-generation type imports have type-reference uses. The Pick of VideoGenerationSourceAsset selects an ordinary media data type, not a public API/runtime handle. Every ordinary imported SDK function is directly called; repeated calls need no extra reference kind.",
+    "Manifest setup.providers, providerAuthChoices, categories, activation, enabledByDefault and configSchema are metadata rather than agreed contract identities. The sole contract identity is contracts.videoGenerationProviders:runway; there is no top-level providers declaration.",
+    "This is a source audit, including erased type syntax; no published-artifact equivalence or installed dependency audit is claimed."
+  ]
+}

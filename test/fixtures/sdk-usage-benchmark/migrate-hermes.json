@@ -1,0 +1,2583 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "migrate-hermes",
+    "path": "extensions/migrate-hermes"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_migrate_hermes",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/migrate-hermes/apply.ts",
+      "sha256": "8aa7c86ca5cd82e2e92611233929c16c4c69c5b4a877dca9493b1b7b72c8032d",
+      "role": "production-source",
+      "findingCount": 23
+    },
+    {
+      "path": "extensions/migrate-hermes/auth-config.ts",
+      "sha256": "ee117d851e53c7cc7757176e0a9a8ffbd701ac0994e72a97495ece4c9df97f79",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/migrate-hermes/auth-source.ts",
+      "sha256": "5a9ef43f90d9cfa0138e4ed14eddd8326045f8d1fdc32d54b3d4e1535a69ad85",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/migrate-hermes/auth.ts",
+      "sha256": "60a4ac653192795a09f2d072497b63d67feac68c81c964eafac534bf9c5bde50",
+      "role": "production-source",
+      "findingCount": 31
+    },
+    {
+      "path": "extensions/migrate-hermes/config-env.ts",
+      "sha256": "3f91f6e000fa86d5726c779ae0cac90a687ddab842fdf2ed7cb22abaab6e07c1",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/migrate-hermes/config-mcp.ts",
+      "sha256": "cba861920dbd115ddd301f3701ae3ee9208ed99056e1168cc1cb26233d22d0ee",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/migrate-hermes/config-provider-contract.ts",
+      "sha256": "55f375f9c62f935a41b1480b5999092eceeb796b81826e2a1a38976861bf355a",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/migrate-hermes/config-providers.ts",
+      "sha256": "d4e182008ee8a30d84cfe93216f94e81a44e710d27a66834d47daea63aee28b1",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/migrate-hermes/config.ts",
+      "sha256": "fac8d9e347e3c375f24d346a2f567d35d83a0c55b9ce54f37d1823423f359758",
+      "role": "production-source",
+      "findingCount": 13
+    },
+    {
+      "path": "extensions/migrate-hermes/helpers.ts",
+      "sha256": "6b5530f86ef52e097da140c36a509bd54aa55f1716d0b7fe38e3ca0abafbadc0",
+      "role": "production-source",
+      "findingCount": 11
+    },
+    {
+      "path": "extensions/migrate-hermes/index.ts",
+      "sha256": "6c0472aeeef54b3a63cb5191313975203b67b07087d7ac1e33c10e43af419d29",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/migrate-hermes/items.ts",
+      "sha256": "7e7e468f069ffe23457eedf10f2f51890f7b3a0f345ba2bf1e3cdf05206c39f8",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/migrate-hermes/memory.ts",
+      "sha256": "f3b0317994405eb166f9f35f709d3b8a976ca773b338e926ff586457bbbbc204",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/migrate-hermes/model.ts",
+      "sha256": "0d251665451adb0e357f828398ab0f33a5289df7cd1de39c7405bfe73c5c4bc6",
+      "role": "production-source",
+      "findingCount": 16
+    },
+    {
+      "path": "extensions/migrate-hermes/openclaw.plugin.json",
+      "sha256": "5991b60742a7739078091917085a170c419a903b854805767e7fc3cabac75368",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/migrate-hermes/package.json",
+      "sha256": "dfa2cc02323202b7b1aea4419f9422ffcdf103f80c5651027a9807d6b77df53d",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/migrate-hermes/plan.ts",
+      "sha256": "087c636eef5398d9d0ecca72f8785b2f744daef0697e6bd1d65bbd6a855ba950",
+      "role": "production-source",
+      "findingCount": 15
+    },
+    {
+      "path": "extensions/migrate-hermes/provider.ts",
+      "sha256": "ed2bb2b8c1801fccca424c7ca2468ae1f4d87ac9cc9e949c0a78e1a7cb406495",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/migrate-hermes/secret-mappings.ts",
+      "sha256": "23c8e3e1bedaf7156c0ac5fc84fedd8dc8629f265363fbba2b8b1ecea3f06924",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/migrate-hermes/secrets.ts",
+      "sha256": "a61747af35437b1fdfc97488a98765c41b8902760205f754ba902b0e0e479ee3",
+      "role": "production-source",
+      "findingCount": 18
+    },
+    {
+      "path": "extensions/migrate-hermes/skills.ts",
+      "sha256": "400d0c3b157621ab3e28977cfad59be62f9caa3e31eb4f06735e633623ad2549",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/migrate-hermes/source.ts",
+      "sha256": "8fc0e08d1eff094cb3c61332dd35be21294316c00883e90d92abc668d7a3650d",
+      "role": "production-source",
+      "findingCount": 3
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/migrate-hermes/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation, outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/migrate-hermes/apply-identity.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; excluded from production source scope."
+    },
+    {
+      "path": "extensions/migrate-hermes/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Image asset, outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/migrate-hermes/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Image asset, outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/migrate-hermes/config.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; excluded from production source scope."
+    },
+    {
+      "path": "extensions/migrate-hermes/files-and-skills.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; excluded from production source scope."
+    },
+    {
+      "path": "extensions/migrate-hermes/mcp-policy.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; excluded from production source scope."
+    },
+    {
+      "path": "extensions/migrate-hermes/model.apply.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; excluded from production source scope."
+    },
+    {
+      "path": "extensions/migrate-hermes/model.plan.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; excluded from production source scope."
+    },
+    {
+      "path": "extensions/migrate-hermes/provider-contract.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; excluded from production source scope."
+    },
+    {
+      "path": "extensions/migrate-hermes/provider.lazy.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; excluded from production source scope."
+    },
+    {
+      "path": "extensions/migrate-hermes/provider.secret-failure.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; excluded from production source scope."
+    },
+    {
+      "path": "extensions/migrate-hermes/provider.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; excluded from production source scope."
+    },
+    {
+      "path": "extensions/migrate-hermes/secrets.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; excluded from production source scope."
+    },
+    {
+      "path": "extensions/migrate-hermes/skills-policy.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; excluded from production source scope."
+    },
+    {
+      "path": "extensions/migrate-hermes/test/provider-helpers.ts",
+      "rule": "test-directory",
+      "reason": "Test-only context/filesystem fixture builders; all 12 importers of test/provider-helpers.js are .test.ts files, and no production source imports this helper."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerMigrationProvider",
+      "kind": "api-member",
+      "identity": "api.registerMigrationProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/index.ts",
+          "line": 9,
+          "snippet": "api.registerMigrationProvider(buildHermesMigrationProvider({ runtime: api.runtime }));",
+          "note": "definePluginEntry contextually types register(api) as the public plugin API. Bare api.runtime is forwarded to the local provider and ultimately known SDK migration helpers; no standalone runtime root is emitted."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.migrationProviders:hermes",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.migrationProviders:hermes",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/openclaw.plugin.json",
+          "line": 10,
+          "snippet": "\"migrationProviders\": [\"hermes\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-runtime#loadAuthProfileStoreWithoutExternalProfilesAsync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-runtime#loadAuthProfileStoreWithoutExternalProfilesAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 2,
+          "snippet": "import { loadAuthProfileStoreWithoutExternalProfilesAsync } from \"openclaw/plugin-sdk/agent-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 308,
+          "snippet": "loadAuthProfileStoreWithoutExternalProfilesAsync(params.targets.agentDir),"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 1,
+          "snippet": "import { loadAuthProfileStoreWithoutExternalProfilesAsync } from \"openclaw/plugin-sdk/agent-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-runtime#resolveAgentEffectiveModelPrimary",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-runtime#resolveAgentEffectiveModelPrimary",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 2,
+          "snippet": "resolveAgentEffectiveModelPrimary,"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 327,
+          "snippet": "return resolveAgentEffectiveModelPrimary("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-runtime#resolveDefaultAgentId",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-runtime#resolveDefaultAgentId",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 3,
+          "snippet": "resolveDefaultAgentId,"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 329,
+          "snippet": "ctx.targetAgentId ?? resolveDefaultAgentId(ctx.config),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-runtime#setAgentEffectiveModelPrimary",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-runtime#setAgentEffectiveModelPrimary",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 4,
+          "snippet": "setAgentEffectiveModelPrimary,"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 369,
+          "snippet": "setAgentEffectiveModelPrimary(draft, agentId, details.model, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-sessions#AuthStorage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-sessions#AuthStorage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 3,
+          "snippet": "import { AuthStorage } from \"openclaw/plugin-sdk/agent-sessions\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 309,
+          "snippet": "AuthStorage.resolvePathForDisplayAsync(params.targets.agentDir),",
+          "note": "The imported AuthStorage object/class root supplies the static resolvePathForDisplayAsync call; this is not a PluginRuntime member."
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 2,
+          "snippet": "import { AuthStorage } from \"openclaw/plugin-sdk/agent-sessions\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#extractErrorCode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#extractErrorCode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/memory.ts",
+          "line": 3,
+          "snippet": "import { extractErrorCode } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/memory.ts",
+          "line": 23,
+          "snippet": "const code = extractErrorCode(error);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#isPathInside",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#isPathInside",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/source.ts",
+          "line": 2,
+          "snippet": "import { isPathInside } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/source.ts",
+          "line": 82,
+          "snippet": "...(xdgAuthPath && (params.includeFallback || isPathInside(rootParent, xdgAuthPath))"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#MIGRATION_REASON_MISSING_SOURCE_OR_TARGET",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#MIGRATION_REASON_MISSING_SOURCE_OR_TARGET",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 8,
+          "snippet": "MIGRATION_REASON_MISSING_SOURCE_OR_TARGET,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#MIGRATION_REASON_TARGET_EXISTS",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#MIGRATION_REASON_TARGET_EXISTS",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/memory.ts",
+          "line": 6,
+          "snippet": "MIGRATION_REASON_TARGET_EXISTS,"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 6,
+          "snippet": "MIGRATION_REASON_TARGET_EXISTS,"
+        },
+        {
+          "path": "extensions/migrate-hermes/skills.ts",
+          "line": 3,
+          "snippet": "import { createMigrationItem, MIGRATION_REASON_TARGET_EXISTS } from \"openclaw/plugin-sdk/migration\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#MigrationItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#MigrationItem",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/items.ts",
+          "line": 1,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/items.ts",
+          "line": 20,
+          "snippet": "}): MigrationItem {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#applyMigrationConfigPatchItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#applyMigrationConfigPatchItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 4,
+          "snippet": "applyMigrationConfigPatchItem,"
+        },
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 184,
+          "snippet": "appliedItem = await applyMigrationConfigPatchItem(applyCtx, item);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#applyMigrationManualItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#applyMigrationManualItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 5,
+          "snippet": "applyMigrationManualItem,"
+        },
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 186,
+          "snippet": "appliedItem = applyMigrationManualItem(item);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#createMigrationConfigPatchItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#createMigrationConfigPatchItem",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 2,
+          "snippet": "createMigrationConfigPatchItem,"
+        },
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 61,
+          "snippet": "const addConfigPatch = (patch: Parameters<typeof createMigrationConfigPatchItem>[0]) => {"
+        },
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 63,
+          "snippet": "createMigrationConfigPatchItem({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#createMigrationItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#createMigrationItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 5,
+          "snippet": "createMigrationItem,"
+        },
+        {
+          "path": "extensions/migrate-hermes/items.ts",
+          "line": 2,
+          "snippet": "import { createMigrationItem } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/items.ts",
+          "line": 23,
+          "snippet": "return createMigrationItem({"
+        },
+        {
+          "path": "extensions/migrate-hermes/memory.ts",
+          "line": 5,
+          "snippet": "createMigrationItem,"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 3,
+          "snippet": "createMigrationItem,"
+        },
+        {
+          "path": "extensions/migrate-hermes/skills.ts",
+          "line": 3,
+          "snippet": "import { createMigrationItem, MIGRATION_REASON_TARGET_EXISTS } from \"openclaw/plugin-sdk/migration\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#createMigrationManualItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#createMigrationManualItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth-source.ts",
+          "line": 2,
+          "snippet": "import { createMigrationManualItem } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth-source.ts",
+          "line": 121,
+          "snippet": "createMigrationManualItem({"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 1,
+          "snippet": "import { createMigrationManualItem } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-providers.ts",
+          "line": 2,
+          "snippet": "import { createMigrationManualItem } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 3,
+          "snippet": "createMigrationManualItem,"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 4,
+          "snippet": "createMigrationManualItem,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#hasMigrationConfigPatchConflict",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#hasMigrationConfigPatchConflict",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 4,
+          "snippet": "hasMigrationConfigPatchConflict,"
+        },
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 67,
+          "snippet": "hasMigrationConfigPatchConflict(params.ctx.config, patch.path, patch.value),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#markMigrationItemConflict",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#markMigrationItemConflict",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 6,
+          "snippet": "markMigrationItemConflict,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 6,
+          "snippet": "markMigrationItemConflict,"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 7,
+          "snippet": "markMigrationItemConflict,"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 378,
+          "snippet": "? markMigrationItemConflict(item, err.reason)"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 5,
+          "snippet": "markMigrationItemConflict,"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 4,
+          "snippet": "markMigrationItemConflict,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#markMigrationItemError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#markMigrationItemError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 7,
+          "snippet": "markMigrationItemError,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 7,
+          "snippet": "markMigrationItemError,"
+        },
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 6,
+          "snippet": "markMigrationItemError,"
+        },
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 61,
+          "snippet": "return markMigrationItemError(item, MIGRATION_REASON_MISSING_SOURCE_OR_TARGET);"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 8,
+          "snippet": "markMigrationItemError,"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 5,
+          "snippet": "markMigrationItemError,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#markMigrationItemSkipped",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#markMigrationItemSkipped",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 8,
+          "snippet": "markMigrationItemSkipped,"
+        },
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 7,
+          "snippet": "markMigrationItemSkipped,"
+        },
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 68,
+          "snippet": "return markMigrationItemSkipped(item, \"source file is empty\");"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 9,
+          "snippet": "markMigrationItemSkipped,"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 6,
+          "snippet": "markMigrationItemSkipped,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#mergeMigrationConfigValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#mergeMigrationConfigValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 5,
+          "snippet": "mergeMigrationConfigValue,"
+        },
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 49,
+          "snippet": "return asNonArrayRecord(mergeMigrationConfigValue({}, Object.fromEntries(entries)));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#resolveMigrationConfigRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#resolveMigrationConfigRuntime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth-config.ts",
+          "line": 1,
+          "snippet": "import { resolveMigrationConfigRuntime } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 10,
+          "snippet": "resolveMigrationConfigRuntime,"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 352,
+          "snippet": "const configApi = resolveMigrationConfigRuntime(ctx);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration#summarizeMigrationItems",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration#summarizeMigrationItems",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 8,
+          "snippet": "summarizeMigrationItems,"
+        },
+        {
+          "path": "extensions/migrate-hermes/memory.ts",
+          "line": 7,
+          "snippet": "summarizeMigrationItems,"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 7,
+          "snippet": "summarizeMigrationItems,"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 192,
+          "snippet": "summary: summarizeMigrationItems(items),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#PlannedMigrationTargets",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#PlannedMigrationTargets",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 10,
+          "snippet": "import type { PlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 8,
+          "snippet": "import type { PlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/skills.ts",
+          "line": 4,
+          "snippet": "import type { PlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/skills.ts",
+          "line": 65,
+          "snippet": "targets: PlannedMigrationTargets;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#archiveMigrationItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#archiveMigrationItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 11,
+          "snippet": "archiveMigrationItem,"
+        },
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 60,
+          "snippet": "return await archiveMigrationItem(item, reportDir);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#copyMemoryMigrationFileItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#copyMemoryMigrationFileItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 12,
+          "snippet": "copyMemoryMigrationFileItem,"
+        },
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 195,
+          "snippet": "appliedItem = await copyMemoryMigrationFileItem(item, reportDir, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#copyMigrationFileItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#copyMigrationFileItem",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 13,
+          "snippet": "copyMigrationFileItem,"
+        },
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 202,
+          "snippet": "appliedItem = await copyMigrationFileItem(item, reportDir, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#resolvePlannedMigrationTargets",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#resolvePlannedMigrationTargets",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 14,
+          "snippet": "resolvePlannedMigrationTargets,"
+        },
+        {
+          "path": "extensions/migrate-hermes/memory.ts",
+          "line": 9,
+          "snippet": "import { resolvePlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 9,
+          "snippet": "import { resolvePlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 44,
+          "snippet": "const targets = resolvePlannedMigrationTargets(ctx);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#withCachedMigrationConfigRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#withCachedMigrationConfigRuntime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 15,
+          "snippet": "withCachedMigrationConfigRuntime,"
+        },
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 153,
+          "snippet": "const runtime = withCachedMigrationConfigRuntime("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/migration-runtime#writeMigrationReport",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/migration-runtime#writeMigrationReport",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 16,
+          "snippet": "writeMigrationReport,"
+        },
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 216,
+          "snippet": "await writeMigrationReport(result, { title: \"Hermes Migration Report\" });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#asPositiveFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#asPositiveFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 2,
+          "snippet": "import { asPositiveFiniteNumber as readPositiveNumber } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 18,
+          "snippet": "return readPositiveNumber(typeof value === \"string\" ? Number(value) : value);",
+          "note": "readPositiveNumber is the direct imported alias of asPositiveFiniteNumber; the plugin-owned readPositiveNumeric wrapper is not itself an SDK export."
+        },
+        {
+          "path": "extensions/migrate-hermes/config-provider-contract.ts",
+          "line": 2,
+          "snippet": "import { asPositiveFiniteNumber as readPositiveNumber } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#parseDateStringTimestampMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#parseDateStringTimestampMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth-source.ts",
+          "line": 3,
+          "snippet": "import { parseDateStringTimestampMs as readTimestamp } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth-source.ts",
+          "line": 76,
+          "snippet": "? readTimestamp(provider?.last_refresh)",
+          "note": "readTimestamp is the direct imported alias of parseDateStringTimestampMs."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#MigrationApplyResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#MigrationApplyResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 19,
+          "snippet": "MigrationApplyResult,"
+        },
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 145,
+          "snippet": "}): Promise<MigrationApplyResult> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#MigrationItem",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#MigrationItem",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 20,
+          "snippet": "MigrationItem,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth-source.ts",
+          "line": 4,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 11,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 3,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-providers.ts",
+          "line": 3,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 7,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 10,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 59,
+          "snippet": "export async function appendItem(item: MigrationItem): Promise<MigrationItem> {"
+        },
+        {
+          "path": "extensions/migrate-hermes/memory.ts",
+          "line": 11,
+          "snippet": "MigrationItem,"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 12,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 11,
+          "snippet": "MigrationItem,"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 9,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/skills.ts",
+          "line": 5,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#MigrationPlan",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#MigrationPlan",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 21,
+          "snippet": "MigrationPlan,"
+        },
+        {
+          "path": "extensions/migrate-hermes/memory.ts",
+          "line": 12,
+          "snippet": "MigrationPlan,"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 12,
+          "snippet": "MigrationPlan,"
+        },
+        {
+          "path": "extensions/migrate-hermes/provider.ts",
+          "line": 2,
+          "snippet": "MigrationPlan,"
+        },
+        {
+          "path": "extensions/migrate-hermes/provider.ts",
+          "line": 35,
+          "snippet": "async apply(ctx, plan?: MigrationPlan) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#MigrationProviderContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#MigrationProviderContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 22,
+          "snippet": "MigrationProviderContext,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth-config.ts",
+          "line": 2,
+          "snippet": "import type { MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 11,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 7,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/memory.ts",
+          "line": 13,
+          "snippet": "MigrationProviderContext,"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 12,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 13,
+          "snippet": "MigrationProviderContext,"
+        },
+        {
+          "path": "extensions/migrate-hermes/provider.ts",
+          "line": 3,
+          "snippet": "MigrationProviderContext,"
+        },
+        {
+          "path": "extensions/migrate-hermes/provider.ts",
+          "line": 9,
+          "snippet": "runtime?: MigrationProviderContext[\"runtime\"];"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 9,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#MigrationProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#MigrationProviderPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/provider.ts",
+          "line": 4,
+          "snippet": "MigrationProviderPlugin,"
+        },
+        {
+          "path": "extensions/migrate-hermes/provider.ts",
+          "line": 11,
+          "snippet": "): MigrationProviderPlugin {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/index.ts",
+          "line": 4,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#AuthProfileStore",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#AuthProfileStore",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 19,
+          "snippet": "type AuthProfileStore,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 232,
+          "snippet": "store: AuthProfileStore,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#OAuthCredential",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#OAuthCredential",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 20,
+          "snippet": "type OAuthCredential,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 62,
+          "snippet": "credential: OAuthCredential;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth-config.ts",
+          "line": 3,
+          "snippet": "import { applyAuthProfileConfig, type OpenClawConfig } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth-config.ts",
+          "line": 18,
+          "snippet": "existing: NonNullable<NonNullable<OpenClawConfig[\"auth\"]>[\"profiles\"]>[string],"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 21,
+          "snippet": "type OpenClawConfig,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#ProviderAuthResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#ProviderAuthResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 22,
+          "snippet": "type ProviderAuthResult,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 63,
+          "snippet": "result: ProviderAuthResult;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#applyAuthProfileConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#applyAuthProfileConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth-config.ts",
+          "line": 3,
+          "snippet": "import { applyAuthProfileConfig, type OpenClawConfig } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth-config.ts",
+          "line": 84,
+          "snippet": "next = applyAuthProfileConfig(next, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#buildOauthProviderAuthResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#buildOauthProviderAuthResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 14,
+          "snippet": "buildOauthProviderAuthResult,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 117,
+          "snippet": "return buildOauthProviderAuthResult({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#buildOpenAICodexCredentialExtra",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#buildOpenAICodexCredentialExtra",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 13,
+          "snippet": "buildOpenAICodexCredentialExtra,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 126,
+          "snippet": "credentialExtra: buildOpenAICodexCredentialExtra(identity),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#resolveOpenAICodexAccessTokenExpiry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#resolveOpenAICodexAccessTokenExpiry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 15,
+          "snippet": "resolveOpenAICodexAccessTokenExpiry,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 122,
+          "snippet": "expires: resolveOpenAICodexAccessTokenExpiry(candidate.access),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#resolveOpenAICodexAuthIdentity",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#resolveOpenAICodexAuthIdentity",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 16,
+          "snippet": "resolveOpenAICodexAuthIdentity,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 113,
+          "snippet": "const identity = resolveOpenAICodexAuthIdentity({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#resolveOpenAICodexImportProfileName",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#resolveOpenAICodexImportProfileName",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 17,
+          "snippet": "resolveOpenAICodexImportProfileName,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 124,
+          "snippet": "profileName: resolveOpenAICodexImportProfileName(identity, fallbackProfileName),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#updateAuthProfileStoreWithLock",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#updateAuthProfileStoreWithLock",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 18,
+          "snippet": "updateAuthProfileStoreWithLock,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 416,
+          "snippet": "const store = await updateAuthProfileStoreWithLock({"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 10,
+          "snippet": "import { updateAuthProfileStoreWithLock } from \"openclaw/plugin-sdk/provider-auth\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#applyAgentDefaultModelPrimary",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#applyAgentDefaultModelPrimary",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 25,
+          "snippet": "applyAgentDefaultModelPrimary,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 446,
+          "snippet": "? applyAgentDefaultModelPrimary(next, OPENAI_CODEX_DEFAULT_MODEL)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#resolveAgentModelPrimaryValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#resolveAgentModelPrimaryValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 26,
+          "snippet": "resolveAgentModelPrimaryValue,"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 445,
+          "snippet": "return resolveAgentModelPrimaryValue(next.agents?.defaults?.model) === undefined"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#appendRegularFile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#appendRegularFile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 11,
+          "snippet": "import { appendRegularFile } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 76,
+          "snippet": "await appendRegularFile({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#pathExists",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#pathExists",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import",
+        "member-access",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 24,
+          "snippet": "export { pathExists as exists } from \"openclaw/plugin-sdk/security-runtime\";",
+          "note": "Original export pathExists is reexported as exists; the plugin-local helpers barrel is production source."
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 18,
+          "snippet": "import { exists, parseEnv, parseHermesConfig, readText } from \"./helpers.js\";",
+          "note": "Local helpers.js import resolves exists to the unchanged public pathExists reexport; it does not create a new SDK-module import site."
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 100,
+          "snippet": "const conflict = (await exists(target)) && !ctx.overwrite;",
+          "note": "exists resolves through helpers.ts to pathExists."
+        },
+        {
+          "path": "extensions/migrate-hermes/skills.ts",
+          "line": 7,
+          "snippet": "import { exists, parseHermesConfig, readText, sanitizeName } from \"./helpers.js\";",
+          "note": "Local helpers.js import resolves exists to the unchanged public pathExists reexport; it does not create a new SDK-module import site."
+        },
+        {
+          "path": "extensions/migrate-hermes/source.ts",
+          "line": 3,
+          "snippet": "import { exists, isDirectory, readText, resolveHomePath } from \"./helpers.js\";",
+          "note": "Local helpers.js import resolves exists to the unchanged public pathExists reexport; it does not create a new SDK-module import site."
+        },
+        {
+          "path": "extensions/migrate-hermes/source.ts",
+          "line": 148,
+          "snippet": "for (const [key, candidate, probe] of [",
+          "note": "Tuple index 2 is destructured unchanged as probe. Eight explicit rows at lines 149-156 hold exists, resolving through helpers.ts to SDK pathExists; the ninth isDirectory alternative is plugin-owned and does not erase those statically proven SDK alternatives. This selection contributes member-access."
+        },
+        {
+          "path": "extensions/migrate-hermes/source.ts",
+          "line": 149,
+          "snippet": "[\"configPath\", path.join(root, \"config.yaml\"), exists],",
+          "note": "Representative SDK-valued tuple row; all eight rows at lines 149-156 use the pathExists alias exists. Bare insertion itself adds no reference kind."
+        },
+        {
+          "path": "extensions/migrate-hermes/source.ts",
+          "line": 159,
+          "snippet": "if (candidate && (await probe(candidate))) {",
+          "note": "probe directly invokes the unchanged destructured callable: pathExists for the eight exists rows, or plugin-owned isDirectory for the final row."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-runtime#openNodeSqliteDatabase",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-runtime#openNodeSqliteDatabase",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 24,
+          "snippet": "import { openNodeSqliteDatabase } from \"openclaw/plugin-sdk/sqlite-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 81,
+          "snippet": "const source = openNodeSqliteDatabase(sourcePath, { readOnly: true });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asBoolean",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asBoolean",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 5,
+          "snippet": "asBoolean,"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 129,
+          "snippet": "next.supportsParallelToolCalls = asBoolean("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asNonArrayRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asNonArrayRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/config-provider-contract.ts",
+          "line": 4,
+          "snippet": "asNonArrayRecord,"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-providers.ts",
+          "line": 5,
+          "snippet": "asNonArrayRecord,"
+        },
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 9,
+          "snippet": "asNonArrayRecord,"
+        },
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 12,
+          "snippet": "import { asNonArrayRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 45,
+          "snippet": "return raw ? asNonArrayRecord(JSON.parse(raw)) : {};"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 6,
+          "snippet": "asOptionalRecord,"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 14,
+          "snippet": "asOptionalRecord,"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 149,
+          "snippet": "const model = asOptionalRecord(config.model);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#filterStringRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#filterStringRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 15,
+          "snippet": "import { filterStringRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 56,
+          "snippet": "const runtimeEnv = filterStringRecord(process.env) ?? {};"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth-source.ts",
+          "line": 5,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 28,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-env.ts",
+          "line": 2,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 7,
+          "snippet": "isRecord,"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-provider-contract.ts",
+          "line": 5,
+          "snippet": "isRecord,"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-providers.ts",
+          "line": 6,
+          "snippet": "isRecord,"
+        },
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 10,
+          "snippet": "isRecord,"
+        },
+        {
+          "path": "extensions/migrate-hermes/items.ts",
+          "line": 3,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 15,
+          "snippet": "isRecord,"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 240,
+          "snippet": "isRecord(providers) &&"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 11,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth-source.ts",
+          "line": 5,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 28,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 8,
+          "snippet": "normalizeOptionalString,"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-provider-contract.ts",
+          "line": 6,
+          "snippet": "normalizeOptionalString,"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-providers.ts",
+          "line": 7,
+          "snippet": "normalizeOptionalString,"
+        },
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 11,
+          "snippet": "normalizeOptionalString,"
+        },
+        {
+          "path": "extensions/migrate-hermes/items.ts",
+          "line": 3,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/items.ts",
+          "line": 39,
+          "snippet": "const model = normalizeOptionalString(item.details?.model);"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 16,
+          "snippet": "normalizeOptionalString,"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 11,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/skills.ts",
+          "line": 6,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeSingleOrTrimmedStringList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeSingleOrTrimmedStringList",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 12,
+          "snippet": "normalizeSingleOrTrimmedStringList,"
+        },
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 42,
+          "snippet": "for (const skillKey of normalizeSingleOrTrimmedStringList(disabled)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#parseBooleanValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#parseBooleanValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 9,
+          "snippet": "parseBooleanValue,"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 141,
+          "snippet": "const resources = parseBooleanValue(tools?.resources);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 25,
+          "snippet": "import { resolvePreferredOpenClawTmpDir, withTempWorkspace } from \"openclaw/plugin-sdk/temp-path\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 78,
+          "snippet": "{ rootDir: resolvePreferredOpenClawTmpDir(), prefix: HERMES_SQLITE_SNAPSHOT_PREFIX },"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/temp-path#withTempWorkspace",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/temp-path#withTempWorkspace",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 25,
+          "snippet": "import { resolvePreferredOpenClawTmpDir, withTempWorkspace } from \"openclaw/plugin-sdk/temp-path\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 77,
+          "snippet": "return await withTempWorkspace("
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 2,
+          "snippet": "import { loadAuthProfileStoreWithoutExternalProfilesAsync } from \"openclaw/plugin-sdk/agent-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 1,
+          "snippet": "import { loadAuthProfileStoreWithoutExternalProfilesAsync } from \"openclaw/plugin-sdk/agent-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-sessions",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-sessions",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 3,
+          "snippet": "import { AuthStorage } from \"openclaw/plugin-sdk/agent-sessions\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 2,
+          "snippet": "import { AuthStorage } from \"openclaw/plugin-sdk/agent-sessions\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/memory.ts",
+          "line": 3,
+          "snippet": "import { extractErrorCode } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/file-access-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/file-access-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/source.ts",
+          "line": 2,
+          "snippet": "import { isPathInside } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/migration",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/migration",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth-config.ts",
+          "line": 1,
+          "snippet": "import { resolveMigrationConfigRuntime } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth-source.ts",
+          "line": 2,
+          "snippet": "import { createMigrationManualItem } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 1,
+          "snippet": "import { createMigrationManualItem } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-providers.ts",
+          "line": 2,
+          "snippet": "import { createMigrationManualItem } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/items.ts",
+          "line": 1,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/items.ts",
+          "line": 2,
+          "snippet": "import { createMigrationItem } from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/memory.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 11,
+          "snippet": "} from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/migration\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/skills.ts",
+          "line": 3,
+          "snippet": "import { createMigrationItem, MIGRATION_REASON_TARGET_EXISTS } from \"openclaw/plugin-sdk/migration\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/migration-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/migration-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 17,
+          "snippet": "} from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 10,
+          "snippet": "import type { PlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/memory.ts",
+          "line": 9,
+          "snippet": "import { resolvePlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 9,
+          "snippet": "import { resolvePlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 8,
+          "snippet": "import type { PlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/skills.ts",
+          "line": 4,
+          "snippet": "import type { PlannedMigrationTargets } from \"openclaw/plugin-sdk/migration-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth-source.ts",
+          "line": 3,
+          "snippet": "import { parseDateStringTimestampMs as readTimestamp } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 2,
+          "snippet": "import { asPositiveFiniteNumber as readPositiveNumber } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-provider-contract.ts",
+          "line": 2,
+          "snippet": "import { asPositiveFiniteNumber as readPositiveNumber } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 23,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth-config.ts",
+          "line": 2,
+          "snippet": "import type { MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth-source.ts",
+          "line": 4,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 11,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 3,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-providers.ts",
+          "line": 3,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 7,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 10,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/memory.ts",
+          "line": 14,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 12,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 14,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/provider.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 9,
+          "snippet": "import type { MigrationItem, MigrationProviderContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/skills.ts",
+          "line": 5,
+          "snippet": "import type { MigrationItem } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth-config.ts",
+          "line": 3,
+          "snippet": "import { applyAuthProfileConfig, type OpenClawConfig } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 23,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 10,
+          "snippet": "import { updateAuthProfileStoreWithLock } from \"openclaw/plugin-sdk/provider-auth\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-onboard",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-onboard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 27,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-onboard\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/security-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/security-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 11,
+          "snippet": "import { appendRegularFile } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 24,
+          "snippet": "export { pathExists as exists } from \"openclaw/plugin-sdk/security-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/sqlite-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/sqlite-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 24,
+          "snippet": "import { openNodeSqliteDatabase } from \"openclaw/plugin-sdk/sqlite-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/auth-source.ts",
+          "line": 5,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/auth.ts",
+          "line": 28,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-env.ts",
+          "line": 2,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-mcp.ts",
+          "line": 10,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-provider-contract.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config-providers.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/config.ts",
+          "line": 13,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/helpers.ts",
+          "line": 12,
+          "snippet": "import { asNonArrayRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/items.ts",
+          "line": 3,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/model.ts",
+          "line": 17,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/plan.ts",
+          "line": 15,
+          "snippet": "import { filterStringRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/secrets.ts",
+          "line": 11,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/migrate-hermes/skills.ts",
+          "line": 6,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/temp-path",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/temp-path",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/migrate-hermes/apply.ts",
+          "line": 25,
+          "snippet": "import { resolvePreferredOpenClawTmpDir, withTempWorkspace } from \"openclaw/plugin-sdk/temp-path\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Read all 20 production TypeScript files, package.json, openclaw.plugin.json, applicable root/extensions/SDK instructions and migration/API contract definitions. Production files match the pinned source commit. All 38 plugin files are partitioned into 22 reviewed and 16 excluded records.",
+    "Package metadata selects ./index.ts and supplies no build-output/source exception. All relative production imports stay inside this plugin, including lazy imports from provider.ts. No additional plugin-owned/shared shipped source outside the plugin root was identified. Node built-ins and installed dotenv/yaml packages are outside the SDK source audit boundary.",
+    "helpers.ts is shipped production source, including the unchanged pathExists-as-exists reexport; plan.ts, skills.ts and source.ts imports contribute original-export import kinds. source.ts:148 destructures tuple index 2 into probe; eight explicit exists rows preserve the SDK export alongside one plugin-owned isDirectory alternative. The destructuring adds member-access and unchanged probe invocation adds call to pathExists; bare tuple insertion adds no kind and the tuple has no public API/runtime path. Reconciled with the coordinator before completion.",
+    "Original numeric export identities are retained for readPositiveNumber (asPositiveFiniteNumber) and readTimestamp (parseDateStringTimestampMs). AuthStorage.resolvePathForDisplayAsync contributes call to the SDK-export AuthStorage root, not a runtime-member.",
+    "createMigrationConfigPatchItem is mixed: a value import and runtime call plus Parameters<typeof createMigrationConfigPatchItem> in config.ts:61. Its containing migration module is independently mixed because items.ts:1 explicitly imports MigrationItem as a type; downstream typeof alone does not create a new module type-import.",
+    "Bare api.runtime passes through buildHermesMigrationProvider into applyHermesPlan and known migration SDK helpers. No root runtime identity or api.runtime duplicate is emitted. MigrationProviderContext indexed runtime annotations select a whole runtime handle, without explicitly selecting a public runtime member.",
+    "resolveMigrationConfigRuntime returns a helper-owned resolved config object; model.ts and auth-config.ts read/call its current and mutateConfigFile properties. Per the SDK-helper return boundary, retain the helper export import/call without inferring PluginRuntime consumption from the helper implementation. Likewise withCachedMigrationConfigRuntime and resolvePlannedMigrationTargets do not expose their internal calls as plugin findings. This decision was reconciled with the coordinator before fixture completion.",
+    "Migration item/context/config/provider records, authentication stores/results, SQLite handles, third-party parse results and plugin-owned wrappers are not public plugin API/runtime handles. Their members and callable return-object operations do not create additional API/runtime identities.",
+    "The only agreed manifest contract is contracts.migrationProviders:hermes. Activation, categories, identity/display metadata and configSchema do not contribute manifest-contract identities. No on/registerHook registration or unresolved dynamic SDK construct was found.",
+    "SDK entrypoint exports and root package exports were checked to confirm all 14 exact public subpaths and original named export identities. No transitive SDK implementation or separately installed dependency findings were added. This source-phase record includes explicit type dependencies and does not assert packaged-artifact equivalence."
+  ]
+}

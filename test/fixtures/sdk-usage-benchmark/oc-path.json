@@ -1,0 +1,723 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "oc-path",
+    "path": "extensions/oc-path"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_oc_path",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/oc-path/cli-metadata.ts",
+      "sha256": "824542c930bdbccb1de5ac63976e8dc4678958169b2c8c5d697d6c19b52dff44",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/cli-registration.ts",
+      "sha256": "8325185c88013585e1597a457e2c0ff77797fabb65c03046825d4fd0f1f40263",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/oc-path/index.ts",
+      "sha256": "7e5ade1845b8b32f0b33e2fb350dc2de52b25e262bfbe165481094574253dc04",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/oc-path/openclaw.plugin.json",
+      "sha256": "80d3dc2d785708c7428e9fdb6540bc128f70b8628aa765823132a4fa63b4ef38",
+      "role": "manifest",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/oc-path/package.json",
+      "sha256": "08c9274c9537903e4439d9c6552880f628498c4324d358aa8edb31f6c35d3fc8",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/cli.ts",
+      "sha256": "06971418984763e1b552bb251531b5cb10b7cf54039812e16a2cbf8fd5f80964",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/ast.ts",
+      "sha256": "e0d9b80815d7c11bdd5912b2827675288ba4ab9941f893da7ed18db74dbfccf7",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/dispatch.ts",
+      "sha256": "5059d0c15a01e0c2338bb2bc542d4e7d45529d0a6d1da00b8ba972dd8f354a16",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/edit.ts",
+      "sha256": "65dc488cbcbf3aee163e37bc47d5bd0a3319faa3913243758ebd0fb3091c7eb8",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/emit.ts",
+      "sha256": "de9b0033aa4936f3476738b439f68c37d4ba0ec1df7215e03d18f3d629c03c3c",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/find.ts",
+      "sha256": "9e629f8fcce15a8e0f62adc2cccdf2abeb32775edb6356db59ee62370dfd1c77",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/frontmatter-format.ts",
+      "sha256": "a94e73e0804384d308fad272384e64d4eff4a22c0878cad5734d4b4f511ce8c1",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/jsonc/ast.ts",
+      "sha256": "7ade06f2673fd9105366b1197cf68ff6793d5043720ee003c150a407d874e309",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/jsonc/edit.ts",
+      "sha256": "e551b441de3b874df634d7a01dfe1ebcee8ffa7b5f3bb6cb33b407ffac8873f5",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/jsonc/emit.ts",
+      "sha256": "d5ccfed2fd5efd465ddd064ce6903d2abb6e932511b30d4b6a34bca5123407ea",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/jsonc/parse.ts",
+      "sha256": "279148e80b3fc5323a8c204b053d2838e98e81526dad5da5c4555c26a3843cd7",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/jsonc/resolve-value.ts",
+      "sha256": "26acd742495b0cf441065e76f840bca275c38b9bcc6bba1e208482971f847302",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/jsonc/resolve.ts",
+      "sha256": "a1c17b11940eba1ce59603e25169133e3fa1996807fb94f18be227cbd3ea54d7",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/jsonl/ast.ts",
+      "sha256": "9f3776c30db246d0e0756c66a1fb3a827c8d46469883040f760cf20e5a586633",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/jsonl/edit.ts",
+      "sha256": "9c7a80fcfb0058068402807fc13b139a62229537d8b908fd05b11dd69ee59e7f",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/jsonl/emit.ts",
+      "sha256": "f5417c6c4e322f5cb05ddfdd91c8bfa4299cda78a761b05072455933293c1798",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/jsonl/line.ts",
+      "sha256": "4afd7e59cd75512a75cab8933d2425b7fb620c189d7da5282bc81a30cd609699",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/jsonl/parse.ts",
+      "sha256": "5ab2e304f9a701b0b281b269f1c4b42039b02c371e80d5e1dedcca9d80006ab5",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/jsonl/resolve.ts",
+      "sha256": "0334686dd953108c7893dffc310b802cd40b3e0701c59f1f95ba4c3f5a194f46",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/oc-path.ts",
+      "sha256": "87e3d50e5ef8d843c3dda42dfa478ddcc066251df86902c87d854be85908bc53",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/parse.ts",
+      "sha256": "eca3c908e350e7dd97c87b5087ad01036f5a16d3f557f216c5ff5e5db456a7cd",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/resolve.ts",
+      "sha256": "950a3f1d133fdb6db22844ccfbc2e643c8be192e479c9ad9b4d0713853953ab8",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/sentinel.ts",
+      "sha256": "c960deb9d8d5a433a35d216f0e8224c2444399fe505deb902b95d134ef4dbf8e",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/slug.ts",
+      "sha256": "23f02b0999e0c87ac1b9a2b90bc1bb2069d4dd58e058840b0607aa1d065e2463",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/universal.ts",
+      "sha256": "5d0ac0cfbed3e155bcbc580b50030c341e268bc4392533e29322471399506828",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/yaml/ast.ts",
+      "sha256": "22c8d344c76d76c5483e53effee3900fbea8d44bc926ad5a31ef0decbe121790",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/yaml/edit.ts",
+      "sha256": "9fd0e5de12f1bcb18c96e05b843fc3ccca0eaf6b0427cc6ea4c96800152221c0",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/yaml/parse.ts",
+      "sha256": "84810104ad764436093b1f5db7c569234229b4ef56683c87adcfa111899177e7",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/yaml/resolve.ts",
+      "sha256": "fd3936d900af2b767b99a3c7df3a54019954a11ef21f12a2fb7b42769ff5a1ce",
+      "role": "production-source",
+      "findingCount": 0
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/oc-path/README.md",
+      "rule": "non-source",
+      "reason": "Plugin usage documentation; Markdown is outside the production-source extensions."
+    },
+    {
+      "path": "extensions/oc-path/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG visual asset; not a production JS/TS family source file."
+    },
+    {
+      "path": "extensions/oc-path/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG icon asset; not a production JS/TS family source file."
+    },
+    {
+      "path": "extensions/oc-path/src/cli.test.ts",
+      "rule": "test-file",
+      "reason": "cli.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/edit.test.ts",
+      "rule": "test-file",
+      "reason": "edit.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/find.test.ts",
+      "rule": "test-file",
+      "reason": "find.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/jsonc/edit.test.ts",
+      "rule": "test-file",
+      "reason": "edit.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/jsonc/parse.test.ts",
+      "rule": "test-file",
+      "reason": "parse.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/jsonc/resolve.test.ts",
+      "rule": "test-file",
+      "reason": "resolve.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/jsonl/edit.test.ts",
+      "rule": "test-file",
+      "reason": "edit.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/jsonl/emit.test.ts",
+      "rule": "test-file",
+      "reason": "emit.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/jsonl/parse.test.ts",
+      "rule": "test-file",
+      "reason": "parse.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/jsonl/resolve.test.ts",
+      "rule": "test-file",
+      "reason": "resolve.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/oc-path.test.ts",
+      "rule": "test-file",
+      "reason": "oc-path.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/parse.test.ts",
+      "rule": "test-file",
+      "reason": "parse.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/resolve.test.ts",
+      "rule": "test-file",
+      "reason": "resolve.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/append-multi-agent.test.ts",
+      "rule": "test-file",
+      "reason": "append-multi-agent.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/cross-kind-properties.test.ts",
+      "rule": "test-file",
+      "reason": "cross-kind-properties.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/edit-emit-roundtrip.test.ts",
+      "rule": "test-file",
+      "reason": "edit-emit-roundtrip.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/frontmatter-edges.test.ts",
+      "rule": "test-file",
+      "reason": "frontmatter-edges.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/h2-block-split.test.ts",
+      "rule": "test-file",
+      "reason": "h2-block-split.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/items.test.ts",
+      "rule": "test-file",
+      "reason": "items.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/jsonc-byte-fidelity.test.ts",
+      "rule": "test-file",
+      "reason": "jsonc-byte-fidelity.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/jsonc-resolver-edges.test.ts",
+      "rule": "test-file",
+      "reason": "jsonc-resolver-edges.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/jsonl-byte-fidelity.test.ts",
+      "rule": "test-file",
+      "reason": "jsonl-byte-fidelity.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/jsonl-resolver-edges.test.ts",
+      "rule": "test-file",
+      "reason": "jsonl-resolver-edges.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/malformed-input.test.ts",
+      "rule": "test-file",
+      "reason": "malformed-input.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/oc-path-parse-edges.test.ts",
+      "rule": "test-file",
+      "reason": "oc-path-parse-edges.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/oc-path-resolver-edges.test.ts",
+      "rule": "test-file",
+      "reason": "oc-path-resolver-edges.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/perf-determinism.test.ts",
+      "rule": "test-file",
+      "reason": "perf-determinism.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/security-and-limits.test.ts",
+      "rule": "test-file",
+      "reason": "security-and-limits.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/sentinel-cross-kind.test.ts",
+      "rule": "test-file",
+      "reason": "sentinel-cross-kind.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/scenarios/sentinel-guard.test.ts",
+      "rule": "test-file",
+      "reason": "sentinel-guard.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/sentinel.test.ts",
+      "rule": "test-file",
+      "reason": "sentinel.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/universal.test.ts",
+      "rule": "test-file",
+      "reason": "universal.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    },
+    {
+      "path": "extensions/oc-path/src/oc-path/tests/yaml/yaml-kind.test.ts",
+      "rule": "test-file",
+      "reason": "yaml-kind.test.ts is a test-named file; full production-source review confirms no production import of this test file."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerCli",
+      "kind": "api-member",
+      "identity": "api.registerCli",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/oc-path/cli-registration.ts",
+          "line": 23,
+          "snippet": "api.registerCli(",
+          "note": "The parameter is explicitly OpenClawPluginApi at line 22 and receives definePluginEntry register(api) at index.ts:9."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.cliCommands.name:path",
+      "kind": "manifest-contract",
+      "identity": "manifest.cliCommands.name:path",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/oc-path/openclaw.plugin.json",
+          "line": 8,
+          "snippet": "\"name\": \"path\",",
+          "note": "Name within cliCommands; declaration begins at line 6."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.commandAliases.name:path",
+      "kind": "manifest-contract",
+      "identity": "manifest.commandAliases.name:path",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/oc-path/openclaw.plugin.json",
+          "line": 19,
+          "snippet": "\"name\": \"path\",",
+          "note": "Name within commandAliases; declaration begins at line 17."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/expect-runtime#expectDefined",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/expect-runtime#expectDefined",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/oc-path/src/oc-path/find.ts",
+          "line": 10,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        },
+        {
+          "path": "extensions/oc-path/src/oc-path/find.ts",
+          "line": 169,
+          "snippet": "const cur = expectDefined(subs[i], \"dispatch index checked by walker\");"
+        },
+        {
+          "path": "extensions/oc-path/src/oc-path/oc-path.ts",
+          "line": 13,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        },
+        {
+          "path": "extensions/oc-path/src/oc-path/oc-path.ts",
+          "line": 169,
+          "snippet": "const fileSeg = expectDefined(rawSegments.at(0), \"path split always returns a file segment\");"
+        },
+        {
+          "path": "extensions/oc-path/src/oc-path/parse.ts",
+          "line": 15,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        },
+        {
+          "path": "extensions/oc-path/src/oc-path/parse.ts",
+          "line": 79,
+          "snippet": "const key = expectDefined(m[1], \"frontmatter key capture\");"
+        },
+        {
+          "path": "extensions/oc-path/src/oc-path/universal.ts",
+          "line": 18,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        },
+        {
+          "path": "extensions/oc-path/src/oc-path/universal.ts",
+          "line": 496,
+          "snippet": "const section = expectDefined(p.section, \"Markdown section insertion has a section\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/oc-path/cli-registration.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/oc-path/cli-registration.ts",
+          "line": 22,
+          "snippet": "export function registerOcPathCli(api: OpenClawPluginApi): void {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/oc-path/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/oc-path/index.ts",
+          "line": 4,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-normalization-runtime#containsAsciiControlCharacter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-normalization-runtime#containsAsciiControlCharacter",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/oc-path/src/oc-path/oc-path.ts",
+          "line": 14,
+          "snippet": "import { containsAsciiControlCharacter as hasControlChar } from \"openclaw/plugin-sdk/string-normalization-runtime\";",
+          "note": "Imported under the local alias hasControlChar; identity preserves original public export."
+        },
+        {
+          "path": "extensions/oc-path/src/oc-path/oc-path.ts",
+          "line": 93,
+          "snippet": "if (hasControlChar(file)) {",
+          "note": "Direct invocation of the unchanged hasControlChar import alias."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#escapeRegExp",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#escapeRegExp",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/oc-path/src/oc-path/edit.ts",
+          "line": 12,
+          "snippet": "import { escapeRegExp } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/oc-path/src/oc-path/edit.ts",
+          "line": 64,
+          "snippet": "const prefix = new RegExp(`^([\\\\s\\\\S]*?${escapeRegExp(item.kv.key)}[ \\\\t]*:[ \\\\t]*)`).exec("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/oc-path/src/oc-path/oc-path.ts",
+          "line": 15,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/oc-path/src/oc-path/oc-path.ts",
+          "line": 128,
+          "snippet": "truncateUtf16Safe(input, 80) + \"\u2026\","
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/expect-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/expect-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/oc-path/src/oc-path/find.ts",
+          "line": 10,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        },
+        {
+          "path": "extensions/oc-path/src/oc-path/oc-path.ts",
+          "line": 13,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        },
+        {
+          "path": "extensions/oc-path/src/oc-path/parse.ts",
+          "line": 15,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        },
+        {
+          "path": "extensions/oc-path/src/oc-path/universal.ts",
+          "line": 18,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/oc-path/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/oc-path/cli-registration.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-normalization-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-normalization-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/oc-path/src/oc-path/oc-path.ts",
+          "line": 14,
+          "snippet": "import { containsAsciiControlCharacter as hasControlChar } from \"openclaw/plugin-sdk/string-normalization-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/text-utility-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/oc-path/src/oc-path/edit.ts",
+          "line": 12,
+          "snippet": "import { escapeRegExp } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/oc-path/src/oc-path/oc-path.ts",
+          "line": 15,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read every eligible production source file and both metadata files. Read Inspector root AGENTS.md, contract.json and the entire benchmark README; read OpenClaw root, extensions, plugin-sdk and plugins scoped instructions. No plugin-specific AGENTS.md exists.",
+    "Public specifiers were verified against root package.json exports and src/plugin-sdk/{plugin-entry,expect-runtime,string-normalization-runtime,text-utility-runtime}.ts. Only the public export definitions were consulted for provenance; SDK implementation internals and separately installed dependencies were not added to plugin findings.",
+    "All plugin-local imports remain inside extensions/oc-path. No shared shipped source outside that root or ambiguous test-only helpers were found. Tests are excluded individually by their .test. filenames; no production imports override those exclusions. package.json declares index.ts as the extension and no generated source exception.",
+    "cli-metadata.ts reexports the local plugin entry object from index.ts. That object is the result of definePluginEntry, not the SDK function itself, so it creates no SDK-export reexport occurrence. cli-registration.ts dynamically imports the plugin-owned src/cli.ts, with no additional SDK dynamic-import finding.",
+    "API provenance is explicit: registerOcPathCli takes OpenClawPluginApi and receives the entry register(api) argument. Its sole public API member is registerCli. The callback program is a Commander Command, not an API/runtime handle; command(), option(), action() and other Commander members do not produce public API/runtime identities.",
+    "containsAsciiControlCharacter is imported as hasControlChar and is canonicalized to the original exported name. All ordinary SDK imports are runtime syntax; OpenClawPluginApi is explicitly imported and used only as a type. The plugin-entry SDK module therefore has mixed classification.",
+    "No runtime handles or hook registrations appear. Parser ASTs, YAML documents, local dispatch ops, filesystem handles, and SDK helper return values are not public API/runtime objects. Manifest activation metadata, categories, descriptions and config schema do not create contract identities; cliCommands.name and commandAliases.name do.",
+    "Each reviewed file was byte-compared with the pinned commit and hashed. Representative evidence covers every established reference kind and every file containing a finding; repeated calls do not change the canonical identity or reference-kind set."
+  ]
+}

@@ -1,0 +1,802 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "microsoft",
+    "path": "extensions/microsoft"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_microsoft",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/microsoft/capability-catalog.ts",
+      "sha256": "06013942d95e31178deceaf6e7c721833bbbe50706864b527af6f00534556ed2",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/microsoft/index.ts",
+      "sha256": "bed9e1eb61188905ecf67e7f1d490534f328872ef3e2cd8e9436099c0dc920cb",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/microsoft/openclaw.plugin.json",
+      "sha256": "fe608a041e9c44f8b8db76c5b0a9c2ccc5f1c4a3ef268b4682107d177519c9c0",
+      "role": "manifest",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/microsoft/package.json",
+      "sha256": "805c5938e4bbfec4e2a36ee5f442afce423e25a8dfde9ca668e351c0e01f57ae",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/microsoft/speech-provider.ts",
+      "sha256": "2d3427b3bfa93e26b9489e766d0728a8a2c99185bbe99ff1fcf60d7af1040380",
+      "role": "production-source",
+      "findingCount": 25
+    },
+    {
+      "path": "extensions/microsoft/tts.ts",
+      "sha256": "8720f95fac3aa6950c370f4b89b9cf1a88fe2e1fc98f9ed018806c9e5244c2f4",
+      "role": "production-source",
+      "findingCount": 4
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/microsoft/README.md",
+      "rule": "non-source",
+      "reason": "Markdown usage documentation; not a production JS/TS-family source file."
+    },
+    {
+      "path": "extensions/microsoft/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG activity artwork; not a source extension in the benchmark."
+    },
+    {
+      "path": "extensions/microsoft/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG plugin icon; not a source extension in the benchmark."
+    },
+    {
+      "path": "extensions/microsoft/microsoft.live.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. file for live Microsoft integration testing; no production imports reference it."
+    },
+    {
+      "path": "extensions/microsoft/speech-provider.optional-capture.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. file for optional capture behavior; no production imports reference it."
+    },
+    {
+      "path": "extensions/microsoft/speech-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. file for speech-provider tests; no production imports reference it."
+    },
+    {
+      "path": "extensions/microsoft/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript configuration JSON extending the shared package-boundary compiler config, not production JS/TS-family source or plugin metadata."
+    },
+    {
+      "path": "extensions/microsoft/tts.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. file for TTS helpers; no production imports reference it."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerSpeechProvider",
+      "kind": "api-member",
+      "identity": "api.registerSpeechProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/index.ts",
+          "line": 9,
+          "snippet": "    api.registerSpeechProvider(buildMicrosoftSpeechProvider());",
+          "note": "definePluginEntry register is typed through OpenClawPluginDefinition.register as (api: OpenClawPluginApi) => void."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.speechProviders:edge",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.speechProviders:edge",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/openclaw.plugin.json",
+          "line": 10,
+          "snippet": "    \"speechProviders\": [\"microsoft\", \"edge\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.speechProviders:microsoft",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.speechProviders:microsoft",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/openclaw.plugin.json",
+          "line": 10,
+          "snippet": "    \"speechProviders\": [\"microsoft\", \"edge\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-runtime#isVoiceMessageCompatibleAudio",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-runtime#isVoiceMessageCompatibleAudio",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 208,
+          "snippet": "      const { isVoiceMessageCompatibleAudio } = await import(\"openclaw/plugin-sdk/media-runtime\");"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 249,
+          "snippet": "            voiceCompatible: isVoiceMessageCompatibleAudio({ fileName: outputPath }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginCapabilityCatalog",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginCapabilityCatalog",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/capability-catalog.ts",
+          "line": 1,
+          "snippet": "import type { PluginCapabilityCatalog } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/microsoft/capability-catalog.ts",
+          "line": 6,
+          "snippet": "} satisfies PluginCapabilityCatalog;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/microsoft/index.ts",
+          "line": 4,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#assertOkOrThrowProviderError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#assertOkOrThrowProviderError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 101,
+          "snippet": "  const { assertOkOrThrowProviderError, readProviderJsonResponse } =\n    await import(\"openclaw/plugin-sdk/provider-http\");"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 136,
+          "snippet": "    await assertOkOrThrowProviderError(response, \"Microsoft voices API error\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 101,
+          "snippet": "  const { assertOkOrThrowProviderError, readProviderJsonResponse } =\n    await import(\"openclaw/plugin-sdk/provider-http\");"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 137,
+          "snippet": "    const voices = await readProviderJsonResponse<unknown>(response, \"microsoft.speech-voices\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/proxy-capture#*",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/proxy-capture#*",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 103,
+          "snippet": "  const proxyCaptureSdk = await import(\"openclaw/plugin-sdk/proxy-capture\");",
+          "note": "The whole dynamic module namespace is retained as proxyCaptureSdk."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/proxy-capture#captureHttpExchangeAsync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/proxy-capture#captureHttpExchangeAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 103,
+          "snippet": "  const proxyCaptureSdk = await import(\"openclaw/plugin-sdk/proxy-capture\");",
+          "note": "The retained dynamic namespace is narrowed to this named export at its direct call on lines 122-123."
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 122,
+          "snippet": "      void proxyCaptureSdk\n        .captureHttpExchangeAsync({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/proxy-capture#isDebugProxyGlobalFetchPatchInstalled",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/proxy-capture#isDebugProxyGlobalFetchPatchInstalled",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 103,
+          "snippet": "  const proxyCaptureSdk = await import(\"openclaw/plugin-sdk/proxy-capture\");",
+          "note": "The retained dynamic namespace is narrowed to this named export at its direct call on line 120."
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 120,
+          "snippet": "    if (!proxyCaptureSdk.isDebugProxyGlobalFetchPatchInstalled()) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#writeExternalFileWithinRoot",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#writeExternalFileWithinRoot",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/tts.ts",
+          "line": 43,
+          "snippet": "  const { writeExternalFileWithinRoot } = await import(\"openclaw/plugin-sdk/security-runtime\");"
+        },
+        {
+          "path": "extensions/microsoft/tts.ts",
+          "line": 60,
+          "snippet": "    await writeExternalFileWithinRoot({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech#SpeechProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech#SpeechProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 8,
+          "snippet": "import type {\n  SpeechProviderConfig,\n  SpeechProviderPlugin,\n  SpeechVoiceOption,\n} from \"openclaw/plugin-sdk/speech\";"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 39,
+          "snippet": "function readMicrosoftProviderConfig(config: SpeechProviderConfig) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech#SpeechProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech#SpeechProviderPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 8,
+          "snippet": "import type {\n  SpeechProviderConfig,\n  SpeechProviderPlugin,\n  SpeechVoiceOption,\n} from \"openclaw/plugin-sdk/speech\";"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 166,
+          "snippet": "export function buildMicrosoftSpeechProvider(): SpeechProviderPlugin {"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 167,
+          "snippet": "  const isConfigured: NonNullable<SpeechProviderPlugin[\"isConfigured\"]> = ({ providerConfig }) =>",
+          "note": "The indexed member belongs to SpeechProviderPlugin, not OpenClawPluginApi or PluginRuntime; it contributes only the SDK export type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech#SpeechVoiceOption",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech#SpeechVoiceOption",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 8,
+          "snippet": "import type {\n  SpeechProviderConfig,\n  SpeechProviderPlugin,\n  SpeechVoiceOption,\n} from \"openclaw/plugin-sdk/speech\";"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 100,
+          "snippet": "): Promise<SpeechVoiceOption[]> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 104,
+          "snippet": "  const { fetchWithSsrFGuard, ssrfPolicyFromHttpBaseUrlAllowedHostname } =\n    await import(\"openclaw/plugin-sdk/ssrf-runtime\");"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 110,
+          "snippet": "  const { response, release } = await fetchWithSsrFGuard({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 104,
+          "snippet": "  const { fetchWithSsrFGuard, ssrfPolicyFromHttpBaseUrlAllowedHostname } =\n    await import(\"openclaw/plugin-sdk/ssrf-runtime\");"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 115,
+          "snippet": "    policy: ssrfPolicyFromHttpBaseUrlAllowedHostname(\"https://speech.platform.bing.com\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asBoolean",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asBoolean",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 14,
+          "snippet": "  asBoolean,"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 41,
+          "snippet": "    enabled: asBoolean(config.enabled) ?? true,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 15,
+          "snippet": "  asFiniteNumber,"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 51,
+          "snippet": "    timeoutMs: asFiniteNumber(config.timeoutMs),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 16,
+          "snippet": "  asOptionalRecord,"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 28,
+          "snippet": "  const providers = asOptionalRecord(rawConfig.providers);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#filterStringRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#filterStringRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 17,
+          "snippet": "  filterStringRecord,"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 180,
+          "snippet": "        ...filterStringRecord({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/tts.ts",
+          "line": 4,
+          "snippet": "import { normalizeLowercaseStringOrEmpty } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft/tts.ts",
+          "line": 7,
+          "snippet": "  const normalized = normalizeLowercaseStringOrEmpty(outputFormat);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 18,
+          "snippet": "  normalizeOptionalString as trimToUndefined,",
+          "note": "Imported under the local alias trimToUndefined."
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 35,
+          "snippet": "    outputFormatConfigured: Boolean(trimToUndefined(raw.outputFormat)),",
+          "note": "trimToUndefined is the unchanged alias of normalizeOptionalString."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 209,
+          "snippet": "      const { tempWorkspace, resolvePreferredOpenClawTmpDir } =\n        await import(\"openclaw/plugin-sdk/temp-path\");"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 212,
+          "snippet": "        rootDir: resolvePreferredOpenClawTmpDir(),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/temp-path#tempWorkspace",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/temp-path#tempWorkspace",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 209,
+          "snippet": "      const { tempWorkspace, resolvePreferredOpenClawTmpDir } =\n        await import(\"openclaw/plugin-sdk/temp-path\");"
+        },
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 211,
+          "snippet": "      const temp = await tempWorkspace({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 208,
+          "snippet": "      const { isVoiceMessageCompatibleAudio } = await import(\"openclaw/plugin-sdk/media-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/microsoft/capability-catalog.ts",
+          "line": 1,
+          "snippet": "import type { PluginCapabilityCatalog } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-http",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-http",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 101,
+          "snippet": "  const { assertOkOrThrowProviderError, readProviderJsonResponse } =\n    await import(\"openclaw/plugin-sdk/provider-http\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/proxy-capture",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/proxy-capture",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 103,
+          "snippet": "  const proxyCaptureSdk = await import(\"openclaw/plugin-sdk/proxy-capture\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/security-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/security-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/tts.ts",
+          "line": 43,
+          "snippet": "  const { writeExternalFileWithinRoot } = await import(\"openclaw/plugin-sdk/security-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/speech",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/speech",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 8,
+          "snippet": "import type {\n  SpeechProviderConfig,\n  SpeechProviderPlugin,\n  SpeechVoiceOption,\n} from \"openclaw/plugin-sdk/speech\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 104,
+          "snippet": "  const { fetchWithSsrFGuard, ssrfPolicyFromHttpBaseUrlAllowedHostname } =\n    await import(\"openclaw/plugin-sdk/ssrf-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 13,
+          "snippet": "import {\n  asBoolean,\n  asFiniteNumber,\n  asOptionalRecord,\n  filterStringRecord,\n  normalizeOptionalString as trimToUndefined,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/microsoft/tts.ts",
+          "line": 4,
+          "snippet": "import { normalizeLowercaseStringOrEmpty } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/temp-path",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/temp-path",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/microsoft/speech-provider.ts",
+          "line": 209,
+          "snippet": "      const { tempWorkspace, resolvePreferredOpenClawTmpDir } =\n        await import(\"openclaw/plugin-sdk/temp-path\");"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all four eligible production source files in full, package.json and openclaw.plugin.json, the benchmark contract and complete README, Inspector root AGENTS.md, and source root/extensions/plugin-SDK/plugin-loader AGENTS.md. Production and metadata content matches the pinned commit; only separately authorized instruction/skill edits exist in the source checkout.",
+    "Production local imports stay within extensions/microsoft: index.ts and capability-catalog.ts import speech-provider.ts, which imports tts.ts. No shared shipped source outside the canonical root, declaration files, ambiguous test helpers or production imports of excluded tests were found. The tsconfig extends a compiler configuration, not a shipped source dependency.",
+    "Verified all nine exact public SDK specifiers in root package exports and their named exports in the SDK facades. SDK implementation and node-edge-tts internals are outside the audit boundary.",
+    "definePluginEntry establishes API provenance for register(api); only api.registerSpeechProvider is consumed. SpeechProviderPlugin indexed type usage and provider request/config objects are not public API/runtime handles.",
+    "The full proxy-capture dynamic namespace retains the syntactic * export dependency and separately resolved named exports. The namespace methods are direct calls, with no distinct non-call member-access occurrence. Immediately destructured dynamic imports retain only their selected named exports.",
+    "normalizeOptionalString is preserved under its original SDK export identity despite its local trimToUndefined alias. SDK return objects and built-ins, including fetch response/release, temp.dir/temp.cleanup and capture Promise.catch, are not API/runtime member dependencies.",
+    "The manifest declares microsoft and edge under contracts.speechProviders. Descriptive categories, capabilityCatalogEntry, activation, defaults, schema fields and package metadata add no manifest-contract identities. No hook registration, runtime member consumption or genuinely unresolved SDK expression was found."
+  ]
+}

@@ -1,0 +1,853 @@
+{
+  "schemaVersion": 1,
+  "status": "frozen",
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "population": {
+    "distribution": "core",
+    "count": 69
+  },
+  "contractSha256": "10297e62af1d020743674ef1e8e0401a7d0fd8ded5d4b27b69b7aac2a2d23c0e",
+  "readmeSha256": "a2341be4bb48bc2b7cb560cc949922eaa75c77e24f768aae142e79bd9250a4ca",
+  "rosterSha256": "a24d28e28eb7d191bd4d9b7148bee984381767f403b5c9c78a847545b17ea43c",
+  "progressSha256": "05a523f15f38e5e32d3c342d93ee15be03775d398bcbc5085c2bea720d2a573b",
+  "fixtures": [
+    {
+      "pluginId": "a2a",
+      "path": "a2a.json",
+      "agentId": "/root/audit_a2a",
+      "sha256": "3951fbfbf84475dd3d010ed36a49e48173274a40bea24589aa7b8dbf95ba4615",
+      "counts": {
+        "findings": 75,
+        "reviewedFiles": 23,
+        "excludedFiles": 13,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "active-memory",
+      "path": "active-memory.json",
+      "agentId": "/root/audit_active_memory",
+      "sha256": "6f895a21ce8f955d31df483a807664afbf81e1aa7d63312e277cee7829905787",
+      "counts": {
+        "findings": 100,
+        "reviewedFiles": 17,
+        "excludedFiles": 16,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "admin-http-rpc",
+      "path": "admin-http-rpc.json",
+      "agentId": "/root/audit_admin_http_rpc",
+      "sha256": "b8f56bcb419a811147dac2f3281705c4af719e293e192555211288569639caf6",
+      "counts": {
+        "findings": 16,
+        "reviewedFiles": 5,
+        "excludedFiles": 6,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "advisor",
+      "path": "advisor.json",
+      "agentId": "/root/audit_advisor",
+      "sha256": "7e09c0e6483d99acbccd6127d1e324b3701f4ae3ab17dc5268cfeac5ccf9cd78",
+      "counts": {
+        "findings": 20,
+        "reviewedFiles": 5,
+        "excludedFiles": 3,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "agentsapi",
+      "path": "agentsapi.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_agentsapi",
+      "sha256": "44c5d64da862210e23c723fe7295794eda16ab90bdc89d412a429bc57b0c82ad",
+      "counts": {
+        "findings": 179,
+        "reviewedFiles": 30,
+        "excludedFiles": 22,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "alibaba",
+      "path": "alibaba.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_alibaba",
+      "sha256": "1dc4f69d26dcd691f73c802aa4417224d9f1d89b983f3653c70d10fb022ce64b",
+      "counts": {
+        "findings": 9,
+        "reviewedFiles": 4,
+        "excludedFiles": 5,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "anthropic",
+      "path": "anthropic.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_anthropic",
+      "sha256": "f86f289ef86d9fdc72d79cd9a41e77f70ca3129075a2fe2a2c52929c5871feea",
+      "counts": {
+        "findings": 240,
+        "reviewedFiles": 57,
+        "excludedFiles": 45,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "apple-fm",
+      "path": "apple-fm.json",
+      "agentId": "/root/audit_apple_fm",
+      "sha256": "7ade97b830b3371f083b9e04c836620a0b783bbd180f3e88948e43416b73d35e",
+      "counts": {
+        "findings": 39,
+        "reviewedFiles": 7,
+        "excludedFiles": 9,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "azure-speech",
+      "path": "azure-speech.json",
+      "agentId": "/root/audit_azure_speech",
+      "sha256": "53373ffd4a2a2cfe4074bf6de9b6bd12ae41614efe2e96682b2718493443f89d",
+      "counts": {
+        "findings": 30,
+        "reviewedFiles": 6,
+        "excludedFiles": 8,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "beam",
+      "path": "beam.json",
+      "agentId": "/root/audit_beam",
+      "sha256": "064e7b753441be095faa9f0b98cdfd72694891bd159631e0ab059becdb8b61cc",
+      "counts": {
+        "findings": 41,
+        "reviewedFiles": 8,
+        "excludedFiles": 10,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "bonjour",
+      "path": "bonjour.json",
+      "agentId": "/root/audit_bonjour",
+      "sha256": "5768785332b9df6c2fd36162329f37c3bccd4a2e6843065230656c7fe2a71559",
+      "counts": {
+        "findings": 17,
+        "reviewedFiles": 6,
+        "excludedFiles": 8,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "browser",
+      "path": "browser.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_browser",
+      "sha256": "82066b5075176138d8134659d4aa3594aebdc14237ca4b3e81bb052ea4a4d298",
+      "counts": {
+        "findings": 316,
+        "reviewedFiles": 339,
+        "excludedFiles": 331,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "canvas",
+      "path": "canvas.json",
+      "agentId": "/root/audit_canvas",
+      "sha256": "9297bbe7b4cdf0b5bcc0cddd0b87d7731128e504d41dbc2fb1699f855dc1803d",
+      "counts": {
+        "findings": 83,
+        "reviewedFiles": 28,
+        "excludedFiles": 15,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "clawrouter",
+      "path": "clawrouter.json",
+      "agentId": "/root/audit_clawrouter",
+      "sha256": "3a6a96088ad106d9798f472992aa102949354bd56f5496fdbff12379c8033a6a",
+      "counts": {
+        "findings": 50,
+        "reviewedFiles": 11,
+        "excludedFiles": 11,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "cloudflare",
+      "path": "cloudflare.json",
+      "agentId": "/root/audit_cloudflare",
+      "sha256": "dcb538b76c5d1e0e3f7d31a53639fe7d2ea2175721333374e1a5b758afc74220",
+      "counts": {
+        "findings": 11,
+        "reviewedFiles": 7,
+        "excludedFiles": 7,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "code-mode-quickjs",
+      "path": "code-mode-quickjs.json",
+      "agentId": "/root/audit_code_mode_quickjs",
+      "sha256": "5609d195a6e688432689b1adeff2ebfe8c45250063e654f3c759e734fb910469",
+      "counts": {
+        "findings": 48,
+        "reviewedFiles": 7,
+        "excludedFiles": 7,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "copilot-proxy",
+      "path": "copilot-proxy.json",
+      "agentId": "/root/audit_copilot_proxy",
+      "sha256": "3da92449460e356f110825a5e2daef90618e33294aba34b794e8eba2905fdd06",
+      "counts": {
+        "findings": 10,
+        "reviewedFiles": 4,
+        "excludedFiles": 4,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "crabbox",
+      "path": "crabbox.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_crabbox",
+      "sha256": "0845ee3b3d7517c8c333a3b69296e096fa4394270d52c0d54cbd490bf030fae3",
+      "counts": {
+        "findings": 118,
+        "reviewedFiles": 52,
+        "excludedFiles": 57,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "cua-computer",
+      "path": "cua-computer.json",
+      "agentId": "/root/audit_cua_computer",
+      "sha256": "b2a8332164a028a4baf2e05093b3c6f521ffa0c0af4fc4203b93a56fc5ed8ba5",
+      "counts": {
+        "findings": 43,
+        "reviewedFiles": 20,
+        "excludedFiles": 20,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "deepgram",
+      "path": "deepgram.json",
+      "agentId": "/root/audit_deepgram",
+      "sha256": "2616646a0438ab1a33376adb37dfef3a18b1f6c26e5c42dddf05f8b665c0ca4f",
+      "counts": {
+        "findings": 42,
+        "reviewedFiles": 8,
+        "excludedFiles": 10,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "device-pair",
+      "path": "device-pair.json",
+      "agentId": "/root/audit_device_pair",
+      "sha256": "5b309d9992aaea8eb47a4b274290ee37e1c86bc1de81a88d5e7a35d168414137",
+      "counts": {
+        "findings": 48,
+        "reviewedFiles": 8,
+        "excludedFiles": 6,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "document-extract",
+      "path": "document-extract.json",
+      "agentId": "/root/audit_document_extract",
+      "sha256": "c9c802b09351c8e3713c81c17048e881a322bb5fb1c788601510dcb8099f2e64",
+      "counts": {
+        "findings": 19,
+        "reviewedFiles": 7,
+        "excludedFiles": 6,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "elevenlabs",
+      "path": "elevenlabs.json",
+      "agentId": "/root/audit_elevenlabs",
+      "sha256": "bc175d9cdd8f037392976d923327be81063a17cfe276163af82a33a3df533728",
+      "counts": {
+        "findings": 72,
+        "reviewedFiles": 14,
+        "excludedFiles": 11,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "fal",
+      "path": "fal.json",
+      "agentId": "/root/audit_fal",
+      "sha256": "d0b6f9fe6b1cadd9dbfa706ce0f82ef3f1e1926d6cc9dd3230ec91bd8ab65505",
+      "counts": {
+        "findings": 63,
+        "reviewedFiles": 10,
+        "excludedFiles": 9,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "file-transfer",
+      "path": "file-transfer.json",
+      "agentId": "/root/audit_file_transfer",
+      "sha256": "ac25be727b63aaed9a2c4620f7a67d77f2650f44fe5d1d686f33e33ffcf235ea",
+      "counts": {
+        "findings": 105,
+        "reviewedFiles": 58,
+        "excludedFiles": 40,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "geolocation",
+      "path": "geolocation.json",
+      "agentId": "/root/audit_geolocation",
+      "sha256": "ea6d79c71a24e2c071338d3eca8e0cd69c50574b9ca001aa73776d697de4eec9",
+      "counts": {
+        "findings": 29,
+        "reviewedFiles": 8,
+        "excludedFiles": 8,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "github",
+      "path": "github.json",
+      "agentId": "/root/audit_github",
+      "sha256": "90405b8edc14de5ca8c3f650927634b69e58bb2c83a61da8d34db3719a927de8",
+      "counts": {
+        "findings": 33,
+        "reviewedFiles": 15,
+        "excludedFiles": 9,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "github-copilot",
+      "path": "github-copilot.json",
+      "agentId": "/root/audit_github_copilot",
+      "sha256": "9680f663f32d7a5804e4cc8c27ba7fef7d6a89289cdb68909d8361302a0337f1",
+      "counts": {
+        "findings": 102,
+        "reviewedFiles": 22,
+        "excludedFiles": 25,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "google",
+      "path": "google.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_google",
+      "sha256": "bc54b49cf3825c7ed71d9f1c1d6d891484eb20458c92144891df1430d1cd5e56",
+      "counts": {
+        "findings": 303,
+        "reviewedFiles": 57,
+        "excludedFiles": 46,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "huggingface",
+      "path": "huggingface.json",
+      "agentId": "/root/audit_huggingface",
+      "sha256": "753185772acfa2e9d5c7535dda53268507e2519b5cfc8e6295a9431c99716b57",
+      "counts": {
+        "findings": 24,
+        "reviewedFiles": 7,
+        "excludedFiles": 7,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "imap",
+      "path": "imap.json",
+      "agentId": "/root/audit_imap",
+      "sha256": "fdd172c2d41c5803906dac7896974d6bf38b14000b737926874d044484dfbdc8",
+      "counts": {
+        "findings": 23,
+        "reviewedFiles": 8,
+        "excludedFiles": 9,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "kie",
+      "path": "kie.json",
+      "agentId": "/root/audit_kie",
+      "sha256": "5dd799fe81fc92b03e0097409fb9f5ee857158a156792d163a77b243e7b2c223",
+      "counts": {
+        "findings": 34,
+        "reviewedFiles": 5,
+        "excludedFiles": 3,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "linux-node",
+      "path": "linux-node.json",
+      "agentId": "/root/audit_linux_node",
+      "sha256": "8e4160611ecf36e11f0b0fe9ecdd2670d156f30e22020d0bc44a631927a43c1d",
+      "counts": {
+        "findings": 21,
+        "reviewedFiles": 8,
+        "excludedFiles": 8,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "litellm",
+      "path": "litellm.json",
+      "agentId": "/root/audit_litellm",
+      "sha256": "3d1cc0aed6d0be2849a106930438bf2dd402eac9999ff86c835ff82b30552d30",
+      "counts": {
+        "findings": 31,
+        "reviewedFiles": 7,
+        "excludedFiles": 8,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "llm-task",
+      "path": "llm-task.json",
+      "agentId": "/root/audit_llm_task",
+      "sha256": "5f7de56e99c87d6521d5d475ec6716b8707d15da0ad2be9f499d95d4fd892d97",
+      "counts": {
+        "findings": 44,
+        "reviewedFiles": 6,
+        "excludedFiles": 7,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "lmstudio",
+      "path": "lmstudio.json",
+      "agentId": "/root/audit_lmstudio",
+      "sha256": "3870008371daf7328cb5ca938f02d97f376bf2d69e54099546ee1890d8beba49",
+      "counts": {
+        "findings": 131,
+        "reviewedFiles": 19,
+        "excludedFiles": 22,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "logbook",
+      "path": "logbook.json",
+      "agentId": "/root/audit_logbook",
+      "sha256": "4d1d773be3f2c26c53fb4473d7437fda0bc2a1d7f3b8b4ad261b77f03593012a",
+      "counts": {
+        "findings": 65,
+        "reviewedFiles": 16,
+        "excludedFiles": 16,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "mcp-events",
+      "path": "mcp-events.json",
+      "agentId": "/root/audit_mcp_events",
+      "sha256": "3ac74d93c2758b5dfc2a605bf3edd5c7a5608029e1acd028686c8c5d11884e5f",
+      "counts": {
+        "findings": 33,
+        "reviewedFiles": 11,
+        "excludedFiles": 2,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "mcp-relay",
+      "path": "mcp-relay.json",
+      "agentId": "/root/audit_mcp_relay",
+      "sha256": "0c7905a0e47a08a111c9be0fa378fddea2872bfa96d2fadf4037e7d35ae796e0",
+      "counts": {
+        "findings": 59,
+        "reviewedFiles": 19,
+        "excludedFiles": 15,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "memory-core",
+      "path": "memory-core.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_memory_core",
+      "sha256": "1ee7bda7f60dff9579d04eed15dfa92b35fdeb23c6b52a85349c83bf12e26331",
+      "counts": {
+        "findings": 526,
+        "reviewedFiles": 203,
+        "excludedFiles": 209,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "memory-wiki",
+      "path": "memory-wiki.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_memory_wiki",
+      "sha256": "5b26339cd32e4d7b1d6b2c743da752fafb16ac8d4f8234d4868bda5113a2891e",
+      "counts": {
+        "findings": 123,
+        "reviewedFiles": 50,
+        "excludedFiles": 63,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "microsoft",
+      "path": "microsoft.json",
+      "agentId": "/root/audit_microsoft",
+      "sha256": "d74e5df84ff87ad0b56d6631f1fbc261bc96b3a82f567fd805fe253925ea4c8e",
+      "counts": {
+        "findings": 34,
+        "reviewedFiles": 6,
+        "excludedFiles": 8,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "microsoft-foundry",
+      "path": "microsoft-foundry.json",
+      "agentId": "/root/audit_microsoft_foundry",
+      "sha256": "205dd1823a2fdc661c988a4848b18d62f85abc07456463588b7aead63111d413",
+      "counts": {
+        "findings": 84,
+        "reviewedFiles": 10,
+        "excludedFiles": 7,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "migrate-claude",
+      "path": "migrate-claude.json",
+      "agentId": "/root/audit_migrate_claude",
+      "sha256": "2b79f02440c34974db6b153fa4c1f1fa3d576f0a7e7aa14412ed09113519d89a",
+      "counts": {
+        "findings": 45,
+        "reviewedFiles": 11,
+        "excludedFiles": 5,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "migrate-hermes",
+      "path": "migrate-hermes.json",
+      "agentId": "/root/audit_migrate_hermes",
+      "sha256": "a87139ba1270e9acf987549b8478304b2f5d69028c1135a6210e459b6f195088",
+      "counts": {
+        "findings": 79,
+        "reviewedFiles": 22,
+        "excludedFiles": 16,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "minimax",
+      "path": "minimax.json",
+      "agentId": "/root/audit_minimax",
+      "sha256": "80aa892f1c87671cf367fd58dc3a43ef103faa43d12846d52ef9a03530988421",
+      "counts": {
+        "findings": 187,
+        "reviewedFiles": 28,
+        "excludedFiles": 19,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "nvidia",
+      "path": "nvidia.json",
+      "agentId": "/root/audit_nvidia",
+      "sha256": "5fe6073e45a8f41e633975d93bd175cc6a08133ba11d6fbd09dda55e3c54bc95",
+      "counts": {
+        "findings": 22,
+        "reviewedFiles": 6,
+        "excludedFiles": 8,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "oc-path",
+      "path": "oc-path.json",
+      "agentId": "/root/audit_oc_path",
+      "sha256": "e41a2b0a45ecdcd7f47aa2fb09d8e47a9416970a5b43c18fd984f39f059b00e9",
+      "counts": {
+        "findings": 13,
+        "reviewedFiles": 34,
+        "excludedFiles": 36,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "ollama",
+      "path": "ollama.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_ollama",
+      "sha256": "420cb8b3192e45b04f065112164bfa1dafcc450fe930b98b6e312ba5343491ea",
+      "counts": {
+        "findings": 230,
+        "reviewedFiles": 49,
+        "excludedFiles": 47,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "onepassword",
+      "path": "onepassword.json",
+      "agentId": "/root/audit_onepassword",
+      "sha256": "68dff819eec8705e913ed71b5700aa472c7b0e068013b502704132ad26fc6d82",
+      "counts": {
+        "findings": 58,
+        "reviewedFiles": 16,
+        "excludedFiles": 15,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "openai",
+      "path": "openai.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_openai",
+      "sha256": "6667e7513866c75f10a920f07872d501b5ba5fae857ed3d3b24fbebc2bac6b70",
+      "counts": {
+        "findings": 408,
+        "reviewedFiles": 89,
+        "excludedFiles": 117,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "opencode-go",
+      "path": "opencode-go.json",
+      "agentId": "/root/audit_opencode_go",
+      "sha256": "bdd57ab4e20c630ca4223290da073640e27f097462f703f143af932f7e71ad82",
+      "counts": {
+        "findings": 47,
+        "reviewedFiles": 11,
+        "excludedFiles": 8,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "openrouter",
+      "path": "openrouter.json",
+      "agentId": "/root/audit_openrouter",
+      "sha256": "51ee630309587eaacefa50c13ea186868c5f3d805cd921d0b9721d222a93a548",
+      "counts": {
+        "findings": 158,
+        "reviewedFiles": 25,
+        "excludedFiles": 24,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "policy",
+      "path": "policy.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_policy",
+      "sha256": "4fc2fef2584d8fac16e6d6e10c38300c1cf459cb0940efd5f40ea562d3ebf948",
+      "counts": {
+        "findings": 64,
+        "reviewedFiles": 60,
+        "excludedFiles": 25,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "reef",
+      "path": "reef.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_reef",
+      "sha256": "d9acbbd3ef6db94bc285b8d53090d73a194683b4cd8eaefe71fdf618357fbac4",
+      "counts": {
+        "findings": 107,
+        "reviewedFiles": 67,
+        "excludedFiles": 40,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "runway",
+      "path": "runway.json",
+      "agentId": "/root/audit_runway",
+      "sha256": "1952368093de4fdf7c7d10e75360b0675ea9f5e4dd49053a500b7f8ced393840",
+      "counts": {
+        "findings": 34,
+        "reviewedFiles": 4,
+        "excludedFiles": 5,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "senseaudio",
+      "path": "senseaudio.json",
+      "agentId": "/root/audit_senseaudio",
+      "sha256": "08ba3e6cc0d4ac90186fd473968108c9ec476e19dec0341e9901de73b3a39d87",
+      "counts": {
+        "findings": 7,
+        "reviewedFiles": 4,
+        "excludedFiles": 5,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "session-share",
+      "path": "session-share.json",
+      "agentId": "/root/audit_session_share",
+      "sha256": "30299163c560c0f5c0e989aa337421017b7e17df8ed9da80bd9ba4afd1e751cf",
+      "counts": {
+        "findings": 45,
+        "reviewedFiles": 7,
+        "excludedFiles": 5,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "sglang",
+      "path": "sglang.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_sglang",
+      "sha256": "e5598e28747d867da37dcfc803a493fc50d20873ce709f0ec6d8566569d5bd3c",
+      "counts": {
+        "findings": 4,
+        "reviewedFiles": 5,
+        "excludedFiles": 6,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "talk-voice",
+      "path": "talk-voice.json",
+      "agentId": "/root/audit_talk_voice",
+      "sha256": "7fdae40bb7f853a02d988112ecb4c88dc4f1ab9105c7872761534649bb795ce3",
+      "counts": {
+        "findings": 36,
+        "reviewedFiles": 4,
+        "excludedFiles": 3,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "telegram",
+      "path": "telegram.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_telegram",
+      "sha256": "fa7ee097ca141bec462e02441d390a015bff73a52ac127d94322f9ab5e98c407",
+      "counts": {
+        "findings": 877,
+        "reviewedFiles": 298,
+        "excludedFiles": 214,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "together",
+      "path": "together.json",
+      "agentId": "/root/audit_together",
+      "sha256": "4ebfe1304b250014590cd2131db4a14fa896404ae553b8d67fc6220684e70fd1",
+      "counts": {
+        "findings": 40,
+        "reviewedFiles": 8,
+        "excludedFiles": 7,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "tts-local-cli",
+      "path": "tts-local-cli.json",
+      "agentId": "/root/audit_tts_local_cli",
+      "sha256": "22d1266cb70f16672e686e4fac9b0de411a9dfe71d7cb68cb05b84ae0962be1e",
+      "counts": {
+        "findings": 25,
+        "reviewedFiles": 5,
+        "excludedFiles": 6,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "vault",
+      "path": "vault.json",
+      "agentId": "/root/audit_vault",
+      "sha256": "1e9cf3cf013f96603f60859d644cb28238cb4438121fee3ade32503485e298ba",
+      "counts": {
+        "findings": 15,
+        "reviewedFiles": 7,
+        "excludedFiles": 5,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "vllm",
+      "path": "vllm.json",
+      "agentId": "/root/audit_vllm",
+      "sha256": "da0ccc2e6a9c7f2b432b5715c59172e877fd4e4f244c031e986bb51a2e080cba",
+      "counts": {
+        "findings": 23,
+        "reviewedFiles": 9,
+        "excludedFiles": 10,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "web-readability",
+      "path": "web-readability.json",
+      "agentId": "/root/audit_web_readability",
+      "sha256": "3d92e196eba78893794b54baabc77c754b45f53284addab63dc264619c57d767",
+      "counts": {
+        "findings": 12,
+        "reviewedFiles": 4,
+        "excludedFiles": 4,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "workboard",
+      "path": "workboard.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_workboard",
+      "sha256": "67364288af5ec04a4186dffd2187ff5846eaaed174d9e7192f7414d0da9421da",
+      "counts": {
+        "findings": 183,
+        "reviewedFiles": 133,
+        "excludedFiles": 140,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "x",
+      "path": "x.json",
+      "agentId": "/root/audit_x",
+      "sha256": "ec1db8be92396f66d74d20d6ea550093b6fbca751984e68dae40bdb0b7f20b24",
+      "counts": {
+        "findings": 97,
+        "reviewedFiles": 41,
+        "excludedFiles": 30,
+        "unknowns": 0
+      }
+    },
+    {
+      "pluginId": "xai",
+      "path": "xai.json",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_xai",
+      "sha256": "42eea0823b14cda1cf3deda1d2370109e0b521583ecb149d0f93f6d0f7106c4d",
+      "counts": {
+        "findings": 276,
+        "reviewedFiles": 66,
+        "excludedFiles": 51,
+        "unknowns": 0
+      }
+    }
+  ],
+  "aggregateCounts": {
+    "findings": 6585,
+    "reviewedFiles": 2231,
+    "excludedFiles": 2002,
+    "unknowns": 0
+  }
+}

@@ -1,0 +1,4799 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "minimax",
+    "path": "extensions/minimax"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_minimax",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/minimax/api.ts",
+      "sha256": "5e56d1feb2d73df7d98fd0d7e4572fdd30d1d8b9fa3838b4cb07507592e6a9ab",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/minimax/capability-catalog.ts",
+      "sha256": "6bb9a5b65c96e565e77e5e1d4d79d2609cfeaa53c3091afab01ab12cd5ef2245",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/minimax/image-generation-provider.ts",
+      "sha256": "919c6527564ba8aaca9ccfe117341e99872e2605eeacd8205098663608fff3f5",
+      "role": "production-source",
+      "findingCount": 15
+    },
+    {
+      "path": "extensions/minimax/index.ts",
+      "sha256": "cbb22dc1afc09034545c67cbd9fef45fcba49abdb696edf1cf1b02011b2bbfc8",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/minimax/media-provider-runtime.ts",
+      "sha256": "08c55ac6dbf9a8de97cc0e19d837c4155ae47fedddb8ca7a679ec85533e751aa",
+      "role": "production-source",
+      "findingCount": 15
+    },
+    {
+      "path": "extensions/minimax/media-understanding-provider.ts",
+      "sha256": "18d13d9a6b8b4b52bd3210fecf71a439f22fbeaec9b187908a949cfa0cd3936d",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/minimax/model-definitions.ts",
+      "sha256": "dcb43e1a095a88e83f59031c07b621738b7c083d21926585a6f5f98b00e6a437",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/minimax/music-generation-provider.ts",
+      "sha256": "c96be6a7a7cb6186b41fb82108480ad5f377ef4ed0a33394eae52491244e273b",
+      "role": "production-source",
+      "findingCount": 23
+    },
+    {
+      "path": "extensions/minimax/oauth.runtime.ts",
+      "sha256": "c7a142bb6960a5fd2aee812b091e3ae247a2706a1d43a1d4735b0d919f958ba8",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/minimax/oauth.ts",
+      "sha256": "022cc9664bd903343c5ad16339c5f850c6f92d5c9ff44021c5ffbdb16cdd2bb8",
+      "role": "production-source",
+      "findingCount": 19
+    },
+    {
+      "path": "extensions/minimax/onboard.ts",
+      "sha256": "78d268f705ad527a7f49c771f4166edc8782d5462b258c284b6ae47fc51a519a",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/minimax/openclaw.plugin.json",
+      "sha256": "dd8e18eeb21c16fbd2f14657596bf19bde71be7f16eb7bb917b76dfd3cb751ec",
+      "role": "manifest",
+      "findingCount": 13
+    },
+    {
+      "path": "extensions/minimax/package.json",
+      "sha256": "1d5bd1955f7d4c12ae5f3be0e4a603822904c5e65ab48a1d8537443b7b7f189d",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/minimax/provider-catalog.ts",
+      "sha256": "c47c8ab09a02ce431e4090cdfbabdb5b4b60012117f1874899a3942691933e78",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/minimax/provider-contract-api.ts",
+      "sha256": "8ec03c49244dce60ddd9ef836c8c90e0a8b2efe5558a54b9edf166d5ce1e12d9",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/minimax/provider-discovery.ts",
+      "sha256": "f2d0406db79e4ccd0b31021ce2c0893260a201927cb26a181f79fa6d01949274",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/minimax/provider-models.ts",
+      "sha256": "72f7d7eef4caed6516510eb537fd686ab8e1a49bf4d85c9694ab165d1d971032",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/minimax/provider-policy-api.ts",
+      "sha256": "0a778389c0296196603dbea460cc38a41c0f507c72114c84eba75f6ffed2e45c",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/minimax/provider-registration.ts",
+      "sha256": "9e36736651536aaf04d277937002f06b2ec0b7b6fc547c742d212cd999b47f00",
+      "role": "production-source",
+      "findingCount": 29
+    },
+    {
+      "path": "extensions/minimax/speech-provider-factory.ts",
+      "sha256": "aec7c0a19b440e1a41b7b1d8daec43a17a2b28d19be8b2e183724b34282dfb88",
+      "role": "production-source",
+      "findingCount": 25
+    },
+    {
+      "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+      "sha256": "3a51432a0d2803959c5ea86e6486c0765fd587bcfe6f016345e6dda597e67d6b",
+      "role": "production-source",
+      "findingCount": 27
+    },
+    {
+      "path": "extensions/minimax/src/minimax-web-search-provider.ts",
+      "sha256": "f88c75a2dbf757cb62c29d4d122710f2fc9eca511062cd5c85828714fe25da59",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/minimax/stream.ts",
+      "sha256": "f8b3c8441f1b0ef3f8664ca5f82a1cd39ca88b1e614543404c7b1754011ea6b0",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/minimax/thinking.ts",
+      "sha256": "539d20b4a4a90766239b4ff7bac9657da104a70a118ae294490f6c410e5d4ac1",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/minimax/tts.ts",
+      "sha256": "add100feef6971df663965c56a6093261f126b2cc216403160d37b57442440b4",
+      "role": "production-source",
+      "findingCount": 11
+    },
+    {
+      "path": "extensions/minimax/video-generation-provider.ts",
+      "sha256": "b6a6d0e882d31a3741fa10f8e07506159e0c98d7ebcfef88ba71bd206f5eae18",
+      "role": "production-source",
+      "findingCount": 25
+    },
+    {
+      "path": "extensions/minimax/web-search-contract-api.ts",
+      "sha256": "d6680315a7ee5ef4863e360be2dcab2a4dbbba294859a9aee0615e1c31024128",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/minimax/web-search-provider.ts",
+      "sha256": "5d567aa7cfed439329e3f65505fe30b21fa368f43119e1f073cd4d55cbe447b2",
+      "role": "production-source",
+      "findingCount": 0
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/minimax/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation, not an eligible source extension."
+    },
+    {
+      "path": "extensions/minimax/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Static SVG image asset, not eligible JS/TS source."
+    },
+    {
+      "path": "extensions/minimax/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Static PNG image asset, not eligible JS/TS source."
+    },
+    {
+      "path": "extensions/minimax/image-generation-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. filename; test-only source, with no production-source import."
+    },
+    {
+      "path": "extensions/minimax/index.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. filename; test-only source, with no production-source import."
+    },
+    {
+      "path": "extensions/minimax/minimax.live.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. filename; test-only source, with no production-source import."
+    },
+    {
+      "path": "extensions/minimax/model-definitions.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. filename; test-only source, with no production-source import."
+    },
+    {
+      "path": "extensions/minimax/music-generation-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. filename; test-only source, with no production-source import."
+    },
+    {
+      "path": "extensions/minimax/oauth.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. filename; test-only source, with no production-source import."
+    },
+    {
+      "path": "extensions/minimax/onboard.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. filename; test-only source, with no production-source import."
+    },
+    {
+      "path": "extensions/minimax/provider-catalog.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. filename; test-only source, with no production-source import."
+    },
+    {
+      "path": "extensions/minimax/provider-discovery.contract.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. filename; test-only source, with no production-source import."
+    },
+    {
+      "path": "extensions/minimax/provider-fast-mode.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. filename; test-only source, with no production-source import."
+    },
+    {
+      "path": "extensions/minimax/provider-http.test-helpers.ts",
+      "rule": "test-helper",
+      "reason": "Read in full: Vitest mocks, assertions and cleanup. Repository caller search finds only music-generation-provider.test.ts and video-generation-provider.test.ts imports; no production importer. Build-entry test explicitly excludes this helper."
+    },
+    {
+      "path": "extensions/minimax/speech-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. filename; test-only source, with no production-source import."
+    },
+    {
+      "path": "extensions/minimax/src/minimax-web-search-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. filename; test-only source, with no production-source import."
+    },
+    {
+      "path": "extensions/minimax/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript build configuration, not production source or plugin/package metadata."
+    },
+    {
+      "path": "extensions/minimax/tts.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. filename; test-only source, with no production-source import."
+    },
+    {
+      "path": "extensions/minimax/video-generation-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. filename; test-only source, with no production-source import."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerImageGenerationProvider",
+      "kind": "api-member",
+      "identity": "api.registerImageGenerationProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/index.ts",
+          "line": 21,
+          "snippet": "api.registerImageGenerationProvider(buildMinimaxImageGenerationProvider());",
+          "note": "api is the definePluginEntry register callback API."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerMediaUnderstandingProvider",
+      "kind": "api-member",
+      "identity": "api.registerMediaUnderstandingProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/index.ts",
+          "line": 19,
+          "snippet": "api.registerMediaUnderstandingProvider(minimaxMediaUnderstandingProvider);",
+          "note": "api is the definePluginEntry register callback API."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerMusicGenerationProvider",
+      "kind": "api-member",
+      "identity": "api.registerMusicGenerationProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/index.ts",
+          "line": 23,
+          "snippet": "api.registerMusicGenerationProvider(buildMinimaxMusicGenerationProvider());",
+          "note": "api is the definePluginEntry register callback API."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerProvider",
+      "kind": "api-member",
+      "identity": "api.registerProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 349,
+          "snippet": "api.registerProvider(buildMinimaxApiProviderPlugin());",
+          "note": "api is explicitly OpenClawPluginApi and receives index.ts register(api)."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerSpeechProvider",
+      "kind": "api-member",
+      "identity": "api.registerSpeechProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/index.ts",
+          "line": 27,
+          "snippet": "api.registerSpeechProvider(buildMinimaxSpeechProvider);",
+          "note": "api is the definePluginEntry register callback API."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerVideoGenerationProvider",
+      "kind": "api-member",
+      "identity": "api.registerVideoGenerationProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/index.ts",
+          "line": 25,
+          "snippet": "api.registerVideoGenerationProvider(buildMinimaxVideoGenerationProvider());",
+          "note": "api is the definePluginEntry register callback API."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerWebSearchProvider",
+      "kind": "api-member",
+      "identity": "api.registerWebSearchProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/index.ts",
+          "line": 28,
+          "snippet": "api.registerWebSearchProvider(createMiniMaxWebSearchProvider());",
+          "note": "api is the definePluginEntry register callback API."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.imageGenerationProviders:minimax",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.imageGenerationProviders:minimax",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/openclaw.plugin.json",
+          "line": 105,
+          "snippet": "\"imageGenerationProviders\": [\"minimax\", \"minimax-portal\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.imageGenerationProviders:minimax-portal",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.imageGenerationProviders:minimax-portal",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/openclaw.plugin.json",
+          "line": 105,
+          "snippet": "\"imageGenerationProviders\": [\"minimax\", \"minimax-portal\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.mediaUnderstandingProviders:minimax",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.mediaUnderstandingProviders:minimax",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/openclaw.plugin.json",
+          "line": 104,
+          "snippet": "\"mediaUnderstandingProviders\": [\"minimax\", \"minimax-portal\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.mediaUnderstandingProviders:minimax-portal",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.mediaUnderstandingProviders:minimax-portal",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/openclaw.plugin.json",
+          "line": 104,
+          "snippet": "\"mediaUnderstandingProviders\": [\"minimax\", \"minimax-portal\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.musicGenerationProviders:minimax",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.musicGenerationProviders:minimax",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/openclaw.plugin.json",
+          "line": 106,
+          "snippet": "\"musicGenerationProviders\": [\"minimax\", \"minimax-portal\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.musicGenerationProviders:minimax-portal",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.musicGenerationProviders:minimax-portal",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/openclaw.plugin.json",
+          "line": 106,
+          "snippet": "\"musicGenerationProviders\": [\"minimax\", \"minimax-portal\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.speechProviders:minimax",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.speechProviders:minimax",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/openclaw.plugin.json",
+          "line": 103,
+          "snippet": "\"speechProviders\": [\"minimax\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.usageProviders:minimax",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.usageProviders:minimax",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/openclaw.plugin.json",
+          "line": 109,
+          "snippet": "\"usageProviders\": [\"minimax\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.videoGenerationProviders:minimax",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.videoGenerationProviders:minimax",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/openclaw.plugin.json",
+          "line": 107,
+          "snippet": "\"videoGenerationProviders\": [\"minimax\", \"minimax-portal\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.videoGenerationProviders:minimax-portal",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.videoGenerationProviders:minimax-portal",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/openclaw.plugin.json",
+          "line": 107,
+          "snippet": "\"videoGenerationProviders\": [\"minimax\", \"minimax-portal\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.webSearchProviders:minimax",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.webSearchProviders:minimax",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/openclaw.plugin.json",
+          "line": 108,
+          "snippet": "\"webSearchProviders\": [\"minimax\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.providers:minimax",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:minimax",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/openclaw.plugin.json",
+          "line": 10,
+          "snippet": "\"providers\": [\"minimax\", \"minimax-portal\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.providers:minimax-portal",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:minimax-portal",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/openclaw.plugin.json",
+          "line": 10,
+          "snippet": "\"providers\": [\"minimax\", \"minimax-portal\"],"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.config.current",
+      "kind": "runtime-member",
+      "identity": "runtime.config.current",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 353,
+          "snippet": "api.runtime.config.current().models?.providers?.[PORTAL_PROVIDER_ID]?.baseUrl,",
+          "note": "OpenClawPluginApi.runtime is PluginRuntime; the returned OpenClawConfig is data, not a runtime handle."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-core#StreamFn",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-core#StreamFn",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 1,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";",
+          "note": "Imported from openclaw/plugin-sdk/agent-core"
+        },
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 17,
+          "snippet": "export function wrapMinimaxProviderStream(ctx: ProviderWrapStreamFnContext): StreamFn {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Imported from openclaw/plugin-sdk/config-contracts"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 42,
+          "snippet": "function resolveConfiguredPortalTtsBaseUrl(cfg: OpenClawConfig | undefined): string | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#ProviderDefaultThinkingPolicyContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#ProviderDefaultThinkingPolicyContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-policy-api.ts",
+          "line": 2,
+          "snippet": "import type { ProviderDefaultThinkingPolicyContext } from \"openclaw/plugin-sdk/core\";",
+          "note": "Imported from openclaw/plugin-sdk/core"
+        },
+        {
+          "path": "extensions/minimax/provider-policy-api.ts",
+          "line": 17,
+          "snippet": "export function resolveThinkingProfile(context: ProviderDefaultThinkingPolicyContext) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 1,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/error-runtime"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 248,
+          "snippet": "const errorMsg = formatErrorMessage(err);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#ImageGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#ImageGenerationProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 3,
+          "snippet": "type ImageGenerationProvider,",
+          "note": "Imported from openclaw/plugin-sdk/image-generation"
+        },
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 78,
+          "snippet": "): ImageGenerationProvider {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#resolveInlineImageJsonResponseMaxBytes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#resolveInlineImageJsonResponseMaxBytes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 2,
+          "snippet": "resolveInlineImageJsonResponseMaxBytes,",
+          "note": "Imported from openclaw/plugin-sdk/image-generation"
+        },
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 163,
+          "snippet": "maxBytes: resolveInlineImageJsonResponseMaxBytes("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#toImageDataUrl",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#toImageDataUrl",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { toImageDataUrl } from \"openclaw/plugin-sdk/image-generation\";",
+          "note": "Imported from openclaw/plugin-sdk/image-generation"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 82,
+          "snippet": "return toImageDataUrl({ ...input, buffer: input.buffer, defaultMimeType: \"image/png\" });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.ts",
+          "line": 1,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/lazy-runtime"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.ts",
+          "line": 15,
+          "snippet": "const loadMiniMaxWebSearchRuntime = createLazyRuntimeModule("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#streamSimple",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#streamSimple",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 2,
+          "snippet": "import { streamSimple } from \"openclaw/plugin-sdk/llm\";",
+          "note": "Imported from openclaw/plugin-sdk/llm"
+        },
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 21,
+          "snippet": "return underlying(model, context, options);",
+          "note": "underlying is the unchanged nullish fallback alias of streamSimple established at line 18; this call may use that SDK function."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-generation-runtime#downloadGeneratedVideoAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime#downloadGeneratedVideoAsset",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 3,
+          "snippet": "downloadGeneratedVideoAsset,",
+          "note": "Imported from openclaw/plugin-sdk/media-generation-runtime"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 146,
+          "snippet": "return await downloadGeneratedVideoAsset({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-generation-runtime#resolveGeneratedMediaMaxBytes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime#resolveGeneratedMediaMaxBytes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 5,
+          "snippet": "import { resolveGeneratedMediaMaxBytes } from \"openclaw/plugin-sdk/media-generation-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/media-generation-runtime"
+        },
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 165,
+          "snippet": "resolveGeneratedMediaMaxBytes(req.cfg, \"image\"),"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { resolveGeneratedMediaMaxBytes } from \"openclaw/plugin-sdk/media-generation-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/media-generation-runtime"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 304,
+          "snippet": "const maxGeneratedMusicBytes = resolveGeneratedMediaMaxBytes(req.cfg, \"audio\");"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 4,
+          "snippet": "resolveGeneratedMediaMaxBytes,",
+          "note": "Imported from openclaw/plugin-sdk/media-generation-runtime"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 413,
+          "snippet": "maxBytes: resolveGeneratedMediaMaxBytes(req.cfg, \"video\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-mime#extensionForMime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-mime#extensionForMime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 2,
+          "snippet": "import { extensionForMime } from \"openclaw/plugin-sdk/media-mime\";",
+          "note": "Imported from openclaw/plugin-sdk/media-mime"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 152,
+          "snippet": "const ext = extensionForMime(contentType)?.replace(/^\\./u, \"\") || \"mp3\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-runtime#canonicalizeBase64",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-runtime#canonicalizeBase64",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 6,
+          "snippet": "import { canonicalizeBase64 } from \"openclaw/plugin-sdk/media-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/media-runtime"
+        },
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 190,
+          "snippet": "const canonicalBase64 = canonicalizeBase64(b64);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-runtime#transcodeAudioBufferToOpus",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-runtime#transcodeAudioBufferToOpus",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 262,
+          "snippet": "const { transcodeAudioBufferToOpus } = await import(\"openclaw/plugin-sdk/media-runtime\");",
+          "note": "Imported from openclaw/plugin-sdk/media-runtime"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 263,
+          "snippet": "const opusBuffer = await transcodeAudioBufferToOpus({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-understanding#MediaUnderstandingProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-understanding#MediaUnderstandingProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/media-understanding-provider.ts",
+          "line": 1,
+          "snippet": "import type { MediaUnderstandingProvider } from \"openclaw/plugin-sdk/media-understanding\";",
+          "note": "Imported from openclaw/plugin-sdk/media-understanding"
+        },
+        {
+          "path": "extensions/minimax/media-understanding-provider.ts",
+          "line": 3,
+          "snippet": "export const minimaxMediaUnderstandingProvider: MediaUnderstandingProvider = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/music-generation#GeneratedMusicAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/music-generation#GeneratedMusicAsset",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 5,
+          "snippet": "type GeneratedMusicAsset,",
+          "note": "Imported from openclaw/plugin-sdk/music-generation"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 86,
+          "snippet": "}): Promise<GeneratedMusicAsset> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/music-generation#MusicGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/music-generation#MusicGenerationProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 6,
+          "snippet": "type MusicGenerationProvider,",
+          "note": "Imported from openclaw/plugin-sdk/music-generation"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 209,
+          "snippet": "): MusicGenerationProvider {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/music-generation#downloadGeneratedMusicAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/music-generation#downloadGeneratedMusicAsset",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 4,
+          "snippet": "downloadGeneratedMusicAsset,",
+          "note": "Imported from openclaw/plugin-sdk/music-generation"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 87,
+          "snippet": "return await downloadGeneratedMusicAsset({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#MAX_DATE_TIMESTAMP_MS",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#MAX_DATE_TIMESTAMP_MS",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 3,
+          "snippet": "MAX_DATE_TIMESTAMP_MS,",
+          "note": "Imported from openclaw/plugin-sdk/number-runtime"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#asSafeIntegerInRange",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#asSafeIntegerInRange",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 4,
+          "snippet": "asSafeIntegerInRange,",
+          "note": "Imported from openclaw/plugin-sdk/number-runtime"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 131,
+          "snippet": "const expiredIn = asSafeIntegerInRange(payload.expired_in, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolveExpiresAtMsFromDurationOrEpoch",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolveExpiresAtMsFromDurationOrEpoch",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 5,
+          "snippet": "resolveExpiresAtMsFromDurationOrEpoch,",
+          "note": "Imported from openclaw/plugin-sdk/number-runtime"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 232,
+          "snippet": "const expires = resolveExpiresAtMsFromDurationOrEpoch(payload.expired_in, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolvePositiveTimerTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolvePositiveTimerTimeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 6,
+          "snippet": "resolvePositiveTimerTimeoutMs,",
+          "note": "Imported from openclaw/plugin-sdk/number-runtime"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 392,
+          "snippet": "let pollIntervalMs = resolvePositiveTimerTimeoutMs(oauth.interval, 2000);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolveTimerTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolveTimerTimeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 1,
+          "snippet": "import { resolveTimerTimeoutMs } from \"openclaw/plugin-sdk/number-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/number-runtime"
+        },
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 55,
+          "snippet": "const safeTimeoutMs = resolveTimerTimeoutMs(timeoutMs, 1);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 4,
+          "snippet": "OpenClawConfig,",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 70,
+          "snippet": "function getProviderBaseUrl(cfg: OpenClawConfig, providerId: string): string | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 3,
+          "snippet": "OpenClawPluginApi,",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 348,
+          "snippet": "export function registerMinimaxProviders(api: OpenClawPluginApi) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginCapabilityCatalogHostContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginCapabilityCatalogHostContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 2,
+          "snippet": "import type { PluginCapabilityCatalogHostContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 196,
+          "snippet": "PluginCapabilityCatalogHostContext,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginCapabilityCatalogHostEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginCapabilityCatalogHostEntry",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/capability-catalog.ts",
+          "line": 1,
+          "snippet": "import type { PluginCapabilityCatalogHostEntry } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/capability-catalog.ts",
+          "line": 4,
+          "snippet": "const catalog: PluginCapabilityCatalogHostEntry = (context) => ({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 8,
+          "snippet": "import type { ProviderAuthContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 341,
+          "snippet": "deviceCode?: ProviderAuthContext[\"prompter\"][\"deviceCode\"];"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 5,
+          "snippet": "ProviderAuthContext,",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 189,
+          "snippet": "return async (ctx: ProviderAuthContext): Promise<ProviderAuthResult> => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthMethod",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthMethod",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-contract-api.ts",
+          "line": 1,
+          "snippet": "import type { ProviderAuthMethod } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/provider-contract-api.ts",
+          "line": 11,
+          "snippet": "): Omit<ProviderAuthMethod, \"run\"> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 6,
+          "snippet": "ProviderAuthResult,",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 189,
+          "snippet": "return async (ctx: ProviderAuthContext): Promise<ProviderAuthResult> => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderCatalogContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderCatalogContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 7,
+          "snippet": "ProviderCatalogContext,",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 98,
+          "snippet": "async function resolveApiCatalog(ctx: ProviderCatalogContext) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderCatalogResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderCatalogResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 8,
+          "snippet": "ProviderCatalogResult,",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 120,
+          "snippet": "async function resolvePortalCatalog(ctx: ProviderCatalogContext): Promise<ProviderCatalogResult> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderResolveDynamicModelContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderResolveDynamicModelContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 9,
+          "snippet": "ProviderResolveDynamicModelContext,",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 80,
+          "snippet": "ctx: ProviderResolveDynamicModelContext;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderRuntimeModel",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderRuntimeModel",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 10,
+          "snippet": "ProviderRuntimeModel,",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 81,
+          "snippet": "}): ProviderRuntimeModel | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderThinkingProfile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderThinkingProfile",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/thinking.ts",
+          "line": 2,
+          "snippet": "import type { ProviderThinkingProfile } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/thinking.ts",
+          "line": 16,
+          "snippet": "): ProviderThinkingProfile | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderWrapStreamFnContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderWrapStreamFnContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 3,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 17,
+          "snippet": "export function wrapMinimaxProviderStream(ctx: ProviderWrapStreamFnContext): StreamFn {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Imported from openclaw/plugin-sdk/plugin-entry"
+        },
+        {
+          "path": "extensions/minimax/index.ts",
+          "line": 13,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#MINIMAX_OAUTH_MARKER",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#MINIMAX_OAUTH_MARKER",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 13,
+          "snippet": "MINIMAX_OAUTH_MARKER,",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#OAuthCredential",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#OAuthCredential",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 12,
+          "snippet": "type OAuthCredential,",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 280,
+          "snippet": "credential: OAuthCredential,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#buildOauthProviderAuthResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#buildOauthProviderAuthResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 14,
+          "snippet": "buildOauthProviderAuthResult,",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 211,
+          "snippet": "return buildOauthProviderAuthResult({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#findNormalizedProviderValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#findNormalizedProviderValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/onboard.ts",
+          "line": 1,
+          "snippet": "import { findNormalizedProviderValue } from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth"
+        },
+        {
+          "path": "extensions/minimax/onboard.ts",
+          "line": 21,
+          "snippet": "const existingProvider = providers.minimax ?? findNormalizedProviderValue(providers, \"minimax\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#generatePkceVerifierChallenge",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#generatePkceVerifierChallenge",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 10,
+          "snippet": "generatePkceVerifierChallenge,",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 357,
+          "snippet": "const { verifier, challenge } = generatePkceVerifierChallenge();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isNonSecretApiKeyMarker",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#isNonSecretApiKeyMarker",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 15,
+          "snippet": "isNonSecretApiKeyMarker,",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 137,
+          "snippet": "if (!normalizeOptionalString(auth.discoveryApiKey) && isNonSecretApiKeyMarker(apiKey)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isProviderApiKeyConfiguredAsync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#isProviderApiKeyConfiguredAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 7,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth"
+        },
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 84,
+          "snippet": "isConfiguredAsync: (ctx) => isProviderApiKeyConfiguredAsync({ provider: providerId, ...ctx }),"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 8,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 215,
+          "snippet": "isConfiguredAsync: (ctx) => isProviderApiKeyConfiguredAsync({ provider: providerId, ...ctx }),"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 6,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 250,
+          "snippet": "isConfiguredAsync: (ctx) => isProviderApiKeyConfiguredAsync({ provider: providerId, ...ctx }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isProviderAuthProfileConfigured",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#isProviderAuthProfileConfigured",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "member-access",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 193,
+          "snippet": "isProviderAuthProfileConfigured,",
+          "note": "PluginCapabilityCatalogHostContext names the provider-auth-availability export; provider-auth.ts publicly reexports that same helper. The factory destructures this proven SDK-valued property."
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 197,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"isProviderAuthProfileConfiguredAsync\"",
+          "note": "The literal Pick selects this SDK-valued context property; no API/runtime path or synthetic import site is created."
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 233,
+          "snippet": "isProviderAuthProfileConfigured({ cfg, provider: MINIMAX_PORTAL_PROVIDER_ID }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isProviderAuthProfileConfiguredAsync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#isProviderAuthProfileConfiguredAsync",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "member-access",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 194,
+          "snippet": "isProviderAuthProfileConfiguredAsync,",
+          "note": "PluginCapabilityCatalogHostContext names the provider-auth-availability export; provider-auth.ts publicly reexports that same helper. The factory destructures this proven SDK-valued property."
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 197,
+          "snippet": "\"isProviderAuthProfileConfigured\" | \"isProviderAuthProfileConfiguredAsync\"",
+          "note": "The literal Pick selects this SDK-valued context property; no API/runtime path or synthetic import site is created."
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 238,
+          "snippet": "(await isProviderAuthProfileConfiguredAsync({ cfg, provider: MINIMAX_PORTAL_PROVIDER_ID })),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#resolveProviderAuthProfileApiKey",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#resolveProviderAuthProfileApiKey",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 53,
+          "snippet": "const { resolveProviderAuthProfileApiKey } = await import(\"openclaw/plugin-sdk/provider-auth\");",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 56,
+          "snippet": "await resolveProviderAuthProfileApiKey({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#toFormUrlEncoded",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#toFormUrlEncoded",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 11,
+          "snippet": "toFormUrlEncoded,",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 97,
+          "snippet": "body: toFormUrlEncoded({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 8,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth-runtime"
+        },
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 58,
+          "snippet": "cfg: Parameters<typeof resolveApiKeyForProvider>[0][\"cfg\"],"
+        },
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 105,
+          "snippet": "const auth = await resolveApiKeyForProvider({"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 1,
+          "snippet": "import type { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth-runtime"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 31,
+          "snippet": "cfg: Parameters<typeof resolveApiKeyForProvider>[0][\"cfg\"],"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 9,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth-runtime"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 239,
+          "snippet": "const auth = await resolveApiKeyForProvider({"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 7,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-auth-runtime"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 278,
+          "snippet": "const auth = await resolveApiKeyForProvider({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#OpenAICompatibleModelDiscoveryOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#OpenAICompatibleModelDiscoveryOptions",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-catalog.ts",
+          "line": 1,
+          "snippet": "import type { OpenAICompatibleModelDiscoveryOptions } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-catalog-live-runtime"
+        },
+        {
+          "path": "extensions/minimax/provider-catalog.ts",
+          "line": 9,
+          "snippet": "): OpenAICompatibleModelDiscoveryOptions {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#buildOpenAICompatibleLiveProviderCatalog",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#buildOpenAICompatibleLiveProviderCatalog",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 17,
+          "snippet": "import { buildOpenAICompatibleLiveProviderCatalog } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-catalog-live-runtime"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 109,
+          "snippet": "return await buildOpenAICompatibleLiveProviderCatalog({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-entry#createProviderApiKeyAuthMethod",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-entry#createProviderApiKeyAuthMethod",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 18,
+          "snippet": "import { createProviderApiKeyAuthMethod } from \"openclaw/plugin-sdk/provider-entry\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-entry"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 262,
+          "snippet": "return createProviderApiKeyAuthMethod({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#ProviderOperationDeadline",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#ProviderOperationDeadline",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 16,
+          "snippet": "type ProviderOperationDeadline,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 115,
+          "snippet": "function resolveBodyReadTimeoutMs(deadline: ProviderOperationDeadline): number {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#ProviderOperationRetryStage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#ProviderOperationRetryStage",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 9,
+          "snippet": "type ProviderOperationRetryStage,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 90,
+          "snippet": "stage: ProviderOperationRetryStage;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#ProviderOperationTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#ProviderOperationTimeoutMs",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 10,
+          "snippet": "type ProviderOperationTimeoutMs,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 93,
+          "snippet": "timeoutMs?: ProviderOperationTimeoutMs;"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 17,
+          "snippet": "type ProviderOperationTimeoutMs,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 141,
+          "snippet": "timeoutMs?: ProviderOperationTimeoutMs;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#assertOkOrThrowHttpError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#assertOkOrThrowHttpError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 10,
+          "snippet": "assertOkOrThrowHttpError,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 157,
+          "snippet": "await assertOkOrThrowHttpError(response, \"MiniMax image generation failed\");"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 3,
+          "snippet": "assertOkOrThrowHttpError,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 114,
+          "snippet": "await assertOkOrThrowHttpError(result.response, params.requestFailedMessage);"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 11,
+          "snippet": "assertOkOrThrowHttpError,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 301,
+          "snippet": "await assertOkOrThrowHttpError(res, \"MiniMax music generation failed\");"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 9,
+          "snippet": "assertOkOrThrowHttpError,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 337,
+          "snippet": "await assertOkOrThrowHttpError(response, \"MiniMax video generation failed\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#assertOkOrThrowProviderError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#assertOkOrThrowProviderError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 56,
+          "snippet": "const { assertOkOrThrowProviderError, readProviderJsonObjectResponse } =",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 98,
+          "snippet": "await assertOkOrThrowProviderError(response, \"MiniMax TTS API error\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#createProviderHttpError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#createProviderHttpError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 2,
+          "snippet": "createProviderHttpError,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 141,
+          "snippet": "throw await createProviderHttpError(res, \"MiniMax Search API error\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#createProviderOperationDeadline",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#createProviderOperationDeadline",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 12,
+          "snippet": "createProviderOperationDeadline,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 251,
+          "snippet": "const deadline = createProviderOperationDeadline({"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 10,
+          "snippet": "createProviderOperationDeadline,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 181,
+          "snippet": "const metadataDeadline = createProviderOperationDeadline({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#createProviderOperationTimeoutError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#createProviderOperationTimeoutError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 13,
+          "snippet": "createProviderOperationTimeoutError,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 140,
+          "snippet": "onTimeout: () => createProviderOperationTimeoutError(deadline),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#createProviderOperationTimeoutResolver",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#createProviderOperationTimeoutResolver",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 11,
+          "snippet": "createProviderOperationTimeoutResolver,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 185,
+          "snippet": "const metadataTimeoutMs = createProviderOperationTimeoutResolver({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#executeProviderOperationWithRetry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#executeProviderOperationWithRetry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 4,
+          "snippet": "executeProviderOperationWithRetry,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 98,
+          "snippet": "return await executeProviderOperationWithRetry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#fetchWithTimeoutGuarded",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#fetchWithTimeoutGuarded",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 5,
+          "snippet": "fetchWithTimeoutGuarded,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 80,
+          "snippet": "): Parameters<typeof fetchWithTimeoutGuarded>[4] | undefined {"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 104,
+          "snippet": "const result = await fetchWithTimeoutGuarded("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#formatProviderHttpErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#formatProviderHttpErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 3,
+          "snippet": "formatProviderHttpErrorMessage,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 151,
+          "snippet": "formatProviderHttpErrorMessage({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#pollProviderOperation",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#pollProviderOperation",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 12,
+          "snippet": "pollProviderOperation,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 358,
+          "snippet": "const completed = await pollProviderOperation<MinimaxQueryResponse>({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#postJsonRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#postJsonRequest",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 11,
+          "snippet": "postJsonRequest,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 146,
+          "snippet": "const { response, release } = await postJsonRequest({"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 8,
+          "snippet": "type postJsonRequest,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 26,
+          "snippet": "Parameters<typeof postJsonRequest>[0],"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 14,
+          "snippet": "postJsonRequest,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 286,
+          "snippet": "const { response: res, release } = await postJsonRequest({"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 13,
+          "snippet": "postJsonRequest,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 324,
+          "snippet": "const { response, release } = await postJsonRequest({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonObjectResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonObjectResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 56,
+          "snippet": "const { assertOkOrThrowProviderError, readProviderJsonObjectResponse } =",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 100,
+          "snippet": "const body = await readProviderJsonObjectResponse(response, \"minimax.tts\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 12,
+          "snippet": "readProviderJsonResponse,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 159,
+          "snippet": "const data = await readProviderJsonResponse<MinimaxImageApiResponse>("
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 15,
+          "snippet": "readProviderJsonResponse,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 118,
+          "snippet": "const payload = await readProviderJsonResponse<MiniMaxOAuthAuthorization & { error?: string }>("
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 4,
+          "snippet": "readProviderJsonResponse,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 144,
+          "snippet": "const data = await readProviderJsonResponse<MiniMaxSearchResponse>("
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 14,
+          "snippet": "readProviderJsonResponse,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 203,
+          "snippet": "metadata = await readProviderJsonResponse<MinimaxFileRetrieveResponse>("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readResponseTextLimited",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readResponseTextLimited",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 16,
+          "snippet": "readResponseTextLimited,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 114,
+          "snippet": "const text = await readResponseTextLimited(response, MINIMAX_OAUTH_ERROR_BODY_LIMIT_BYTES);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderHttpRequestConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderHttpRequestConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 6,
+          "snippet": "resolveProviderHttpRequestConfig,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 45,
+          "snippet": "return resolveProviderHttpRequestConfig({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderOperationTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderOperationTimeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 15,
+          "snippet": "resolveProviderOperationTimeoutMs,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 116,
+          "snippet": "return resolveProviderOperationTimeoutMs({"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 15,
+          "snippet": "resolveProviderOperationTimeoutMs,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 328,
+          "snippet": "timeoutMs: resolveProviderOperationTimeoutMs({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#sanitizeConfiguredModelProviderRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#sanitizeConfiguredModelProviderRequest",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 7,
+          "snippet": "sanitizeConfiguredModelProviderRequest,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 55,
+          "snippet": "request: sanitizeConfiguredModelProviderRequest("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#waitProviderOperationPollInterval",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#waitProviderOperationPollInterval",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 16,
+          "snippet": "waitProviderOperationPollInterval,",
+          "note": "Imported from openclaw/plugin-sdk/provider-http"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 362,
+          "snippet": "waitProviderOperationPollInterval({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-metadata#resolveMinimaxFastModelId",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-metadata#resolveMinimaxFastModelId",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-policy-api.ts",
+          "line": 3,
+          "snippet": "import { resolveMinimaxFastModelId } from \"openclaw/plugin-sdk/provider-model-metadata\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-model-metadata"
+        },
+        {
+          "path": "extensions/minimax/provider-policy-api.ts",
+          "line": 12,
+          "snippet": "resolveMinimaxFastModelId({ id: ctx.modelId, provider: ctx.provider, api: ctx.api }) !=="
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/model-definitions.ts",
+          "line": 1,
+          "snippet": "import type { ModelDefinitionConfig } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-model-shared"
+        },
+        {
+          "path": "extensions/minimax/model-definitions.ts",
+          "line": 57,
+          "snippet": "type MinimaxTextModelDefinition = Omit<ModelDefinitionConfig, \"input\"> & {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-catalog.ts",
+          "line": 2,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-model-shared"
+        },
+        {
+          "path": "extensions/minimax/provider-catalog.ts",
+          "line": 7,
+          "snippet": "{ baseUrl, api }: Pick<ModelProviderConfig, \"baseUrl\" | \"api\">,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ProviderPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-contract-api.ts",
+          "line": 2,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-model-shared"
+        },
+        {
+          "path": "extensions/minimax/provider-contract-api.ts",
+          "line": 32,
+          "snippet": "function createMinimaxProviderContract(portal: boolean): ProviderPlugin {"
+        },
+        {
+          "path": "extensions/minimax/provider-discovery.ts",
+          "line": 1,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-model-shared"
+        },
+        {
+          "path": "extensions/minimax/provider-discovery.ts",
+          "line": 4,
+          "snippet": "const minimaxProviderDiscovery: ProviderPlugin[] = [\"minimax\", \"minimax-portal\"].map((id) => ({"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 19,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-model-shared"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 289,
+          "snippet": "function buildMinimaxApiProviderPlugin(): ProviderPlugin {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#buildProviderReplayFamilyHooks",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#buildProviderReplayFamilyHooks",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 21,
+          "snippet": "buildProviderReplayFamilyHooks,",
+          "note": "Imported from openclaw/plugin-sdk/provider-model-shared"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 60,
+          "snippet": "...buildProviderReplayFamilyHooks({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#matchesExactOrPrefix",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#matchesExactOrPrefix",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-models.ts",
+          "line": 1,
+          "snippet": "import { matchesExactOrPrefix } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-model-shared"
+        },
+        {
+          "path": "extensions/minimax/provider-models.ts",
+          "line": 50,
+          "snippet": "return matchesExactOrPrefix(modelId, MINIMAX_MODERN_MODEL_MATCHERS);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#normalizeModelCompat",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#normalizeModelCompat",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 22,
+          "snippet": "normalizeModelCompat,",
+          "note": "Imported from openclaw/plugin-sdk/provider-model-shared"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 89,
+          "snippet": "return normalizeModelCompat({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-types#ProviderFastModePolicyContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-types#ProviderFastModePolicyContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-policy-api.ts",
+          "line": 4,
+          "snippet": "import type { ProviderFastModePolicyContext } from \"openclaw/plugin-sdk/provider-model-types\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-model-types"
+        },
+        {
+          "path": "extensions/minimax/provider-policy-api.ts",
+          "line": 7,
+          "snippet": "export function resolveFastModeSupport(ctx: ProviderFastModePolicyContext): boolean | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#ModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#ModelProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/onboard.ts",
+          "line": 5,
+          "snippet": "type ModelProviderConfig,",
+          "note": "Imported from openclaw/plugin-sdk/provider-onboard"
+        },
+        {
+          "path": "extensions/minimax/onboard.ts",
+          "line": 20,
+          "snippet": "const providers = { ...cfg.models?.providers } as Record<string, ModelProviderConfig>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/onboard.ts",
+          "line": 6,
+          "snippet": "type OpenClawConfig,",
+          "note": "Imported from openclaw/plugin-sdk/provider-onboard"
+        },
+        {
+          "path": "extensions/minimax/onboard.ts",
+          "line": 16,
+          "snippet": "cfg: OpenClawConfig,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#applyAgentDefaultModelPrimary",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#applyAgentDefaultModelPrimary",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/onboard.ts",
+          "line": 3,
+          "snippet": "applyAgentDefaultModelPrimary,",
+          "note": "Imported from openclaw/plugin-sdk/provider-onboard"
+        },
+        {
+          "path": "extensions/minimax/onboard.ts",
+          "line": 66,
+          "snippet": "return applyAgentDefaultModelPrimary("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#applyOnboardAuthAgentModelsAndProviders",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#applyOnboardAuthAgentModelsAndProviders",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/onboard.ts",
+          "line": 4,
+          "snippet": "applyOnboardAuthAgentModelsAndProviders,",
+          "note": "Imported from openclaw/plugin-sdk/provider-onboard"
+        },
+        {
+          "path": "extensions/minimax/onboard.ts",
+          "line": 52,
+          "snippet": "return applyOnboardAuthAgentModelsAndProviders(cfg, { agentModels: models, providers });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-family#buildProviderStreamFamilyHooks",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-family#buildProviderStreamFamilyHooks",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 4,
+          "snippet": "import { buildProviderStreamFamilyHooks } from \"openclaw/plugin-sdk/provider-stream-family\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-stream-family"
+        },
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 14,
+          "snippet": "const FAST_MODE_HOOKS = buildProviderStreamFamilyHooks(\"minimax-fast-mode\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#streamWithPayloadPatch",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#streamWithPayloadPatch",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 5,
+          "snippet": "import { streamWithPayloadPatch } from \"openclaw/plugin-sdk/provider-stream-shared\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-stream-shared"
+        },
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 33,
+          "snippet": "return streamWithPayloadPatch("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-usage#fetchMinimaxUsage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-usage#fetchMinimaxUsage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 24,
+          "snippet": "import { fetchMinimaxUsage } from \"openclaw/plugin-sdk/provider-usage\";",
+          "note": "Imported from openclaw/plugin-sdk/provider-usage"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 317,
+          "snippet": "await fetchMinimaxUsage(ctx.token, ctx.timeoutMs, ctx.fetchFn, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#DEFAULT_SEARCH_COUNT",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#DEFAULT_SEARCH_COUNT",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 7,
+          "snippet": "DEFAULT_SEARCH_COUNT,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#MAX_SEARCH_COUNT",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#MAX_SEARCH_COUNT",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 16,
+          "snippet": "MAX_SEARCH_COUNT,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#SearchConfigRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#SearchConfigRecord",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 25,
+          "snippet": "type SearchConfigRecord,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 60,
+          "snippet": "function resolveMiniMaxApiKey(searchConfig?: SearchConfigRecord): string | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#buildSearchCacheKey",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#buildSearchCacheKey",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 8,
+          "snippet": "buildSearchCacheKey,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 221,
+          "snippet": "const cacheKey = buildSearchCacheKey([\"minimax\", endpoint, query, resolvedCount]);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#formatCliCommand",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#formatCliCommand",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 9,
+          "snippet": "formatCliCommand,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 188,
+          "snippet": "message: `web_search (minimax) needs a MiniMax Token Plan key or OAuth token. Run \\`${formatCliCommand(\"openclaw configure --section web\")}\\` to store it, or set MINIMAX_CODE_PLAN_KEY, MINIMAX_CODING_API_KEY, MINIMAX_OAUTH_TOKEN, or MINIMAX_API_KEY in the Gateway environment.`,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#mergeScopedSearchConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#mergeScopedSearchConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 10,
+          "snippet": "mergeScopedSearchConfig,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 198,
+          "snippet": "const searchConfig = mergeScopedSearchConfig("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#readCachedSearchPayload",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#readCachedSearchPayload",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 11,
+          "snippet": "readCachedSearchPayload,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 223,
+          "snippet": "const cached = readCachedSearchPayload(cacheKey, cacheTtlMs);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#readConfiguredSecretString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#readConfiguredSecretString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 12,
+          "snippet": "readConfiguredSecretString,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 62,
+          "snippet": "readConfiguredSecretString("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#readPositiveIntegerParam",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#readPositiveIntegerParam",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 13,
+          "snippet": "readPositiveIntegerParam,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 211,
+          "snippet": "readPositiveIntegerParam(args, \"count\", {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#readProviderEnvValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#readProviderEnvValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 14,
+          "snippet": "readProviderEnvValue,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 65,
+          "snippet": ") ?? readProviderEnvValue([...MINIMAX_TOKEN_PLAN_ENV_VARS, \"MINIMAX_API_KEY\"])"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#readStringParam",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#readStringParam",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 15,
+          "snippet": "readStringParam,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 209,
+          "snippet": "const query = readStringParam(args, \"query\", { required: true });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#resolveProviderWebSearchPluginConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#resolveProviderWebSearchPluginConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 17,
+          "snippet": "resolveProviderWebSearchPluginConfig,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 201,
+          "snippet": "resolveProviderWebSearchPluginConfig(ctx.config, \"minimax\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#resolveSearchCacheTtlMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#resolveSearchCacheTtlMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 18,
+          "snippet": "resolveSearchCacheTtlMs,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 222,
+          "snippet": "const cacheTtlMs = resolveSearchCacheTtlMs(searchConfig);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#resolveSearchCount",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#resolveSearchCount",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 19,
+          "snippet": "resolveSearchCount,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 218,
+          "snippet": "const resolvedCount = resolveSearchCount(count, DEFAULT_SEARCH_COUNT);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#resolveSearchTimeoutSeconds",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#resolveSearchTimeoutSeconds",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 20,
+          "snippet": "resolveSearchTimeoutSeconds,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 229,
+          "snippet": "const timeoutSeconds = resolveSearchTimeoutSeconds(searchConfig);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#resolveSiteName",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#resolveSiteName",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 21,
+          "snippet": "resolveSiteName,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 169,
+          "snippet": "siteName: resolveSiteName(url) || undefined,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#withTrustedWebSearchEndpoint",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#withTrustedWebSearchEndpoint",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 22,
+          "snippet": "withTrustedWebSearchEndpoint,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 124,
+          "snippet": "return withTrustedWebSearchEndpoint("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#wrapWebContent",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#wrapWebContent",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 23,
+          "snippet": "wrapWebContent,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 165,
+          "snippet": "title: title ? wrapWebContent(title, \"web_search\") : \"\","
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search#writeCachedSearchPayload",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search#writeCachedSearchPayload",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 24,
+          "snippet": "writeCachedSearchPayload,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 259,
+          "snippet": "writeCachedSearchPayload(cacheKey, payload, cacheTtlMs);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search-config-contract#WebSearchProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search-config-contract#WebSearchProviderPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.ts",
+          "line": 4,
+          "snippet": "type WebSearchProviderPlugin,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search-config-contract"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.ts",
+          "line": 32,
+          "snippet": "export function createMiniMaxWebSearchProvider(): WebSearchProviderPlugin {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-web-search-config-contract#createWebSearchProviderContractFields",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-web-search-config-contract#createWebSearchProviderContractFields",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.ts",
+          "line": 3,
+          "snippet": "createWebSearchProviderContractFields,",
+          "note": "Imported from openclaw/plugin-sdk/provider-web-search-config-contract"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.ts",
+          "line": 45,
+          "snippet": "...createWebSearchProviderContractFields({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/response-limit-runtime#readResponseWithLimit",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/response-limit-runtime#readResponseWithLimit",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 18,
+          "snippet": "import { readResponseWithLimit } from \"openclaw/plugin-sdk/response-limit-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/response-limit-runtime"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 138,
+          "snippet": "return await readResponseWithLimit(response, maxBytes, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-env#ensureGlobalUndiciEnvProxyDispatcher",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-env#ensureGlobalUndiciEnvProxyDispatcher",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 19,
+          "snippet": "ensureGlobalUndiciEnvProxyDispatcher,",
+          "note": "Imported from openclaw/plugin-sdk/runtime-env"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 301,
+          "snippet": "ensureGlobalUndiciEnvProxyDispatcher();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-env#sleepWithAbort",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-env#sleepWithAbort",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 20,
+          "snippet": "sleepWithAbort,",
+          "note": "Imported from openclaw/plugin-sdk/runtime-env"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 420,
+          "snippet": "await sleepWithAbort(Math.min(pollIntervalMs, remainingMs), params.signal).catch(() => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input#normalizeResolvedSecretInputString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input#normalizeResolvedSecretInputString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 3,
+          "snippet": "import { normalizeResolvedSecretInputString } from \"openclaw/plugin-sdk/secret-input\";",
+          "note": "Imported from openclaw/plugin-sdk/secret-input"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 76,
+          "snippet": "apiKey: normalizeResolvedSecretInputString({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-core#SpeechDirectiveTokenParseContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-core#SpeechDirectiveTokenParseContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 5,
+          "snippet": "SpeechDirectiveTokenParseContext,",
+          "note": "Imported from openclaw/plugin-sdk/speech-core"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 142,
+          "snippet": "ctx: SpeechDirectiveTokenParseContext,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-core#SpeechDirectiveTokenParseResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-core#SpeechDirectiveTokenParseResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 6,
+          "snippet": "SpeechDirectiveTokenParseResult,",
+          "note": "Imported from openclaw/plugin-sdk/speech-core"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 143,
+          "snippet": "): SpeechDirectiveTokenParseResult {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-core#SpeechProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-core#SpeechProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 7,
+          "snippet": "SpeechProviderConfig,",
+          "note": "Imported from openclaw/plugin-sdk/speech-core"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 113,
+          "snippet": "function readMinimaxProviderConfig(config: SpeechProviderConfig, cfg?: OpenClawConfig) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-core#SpeechProviderOverrides",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-core#SpeechProviderOverrides",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 8,
+          "snippet": "SpeechProviderOverrides,",
+          "note": "Imported from openclaw/plugin-sdk/speech-core"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 121,
+          "snippet": "overrides: SpeechProviderOverrides | undefined,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-core#SpeechProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-core#SpeechProviderPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 9,
+          "snippet": "SpeechProviderPlugin,",
+          "note": "Imported from openclaw/plugin-sdk/speech-core"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 198,
+          "snippet": ">): SpeechProviderPlugin {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-provider#parseSpeechDirectiveNumberOverride",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-provider#parseSpeechDirectiveNumberOverride",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 12,
+          "snippet": "parseSpeechDirectiveNumberOverride,",
+          "note": "Imported from openclaw/plugin-sdk/speech-provider"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 162,
+          "snippet": "return parseSpeechDirectiveNumberOverride({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-provider#resolveSpeechProviderApiKey",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-provider#resolveSpeechProviderApiKey",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 13,
+          "snippet": "resolveSpeechProviderApiKey,",
+          "note": "Imported from openclaw/plugin-sdk/speech-provider"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 54,
+          "snippet": "return resolveSpeechProviderApiKey("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 22,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/ssrf-runtime"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 88,
+          "snippet": "const { response, release } = await fetchWithSsrFGuard({"
+        },
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 58,
+          "snippet": "const { fetchWithSsrFGuard, ssrfPolicyFromHttpBaseUrlAllowedHostname } =",
+          "note": "Imported from openclaw/plugin-sdk/ssrf-runtime"
+        },
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 67,
+          "snippet": "const { response, release } = await fetchWithSsrFGuard({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 58,
+          "snippet": "const { fetchWithSsrFGuard, ssrfPolicyFromHttpBaseUrlAllowedHostname } =",
+          "note": "Imported from openclaw/plugin-sdk/ssrf-runtime"
+        },
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 94,
+          "snippet": "policy: ssrfPolicyFromHttpBaseUrlAllowedHostname(baseUrl),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumberInRange",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumberInRange",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 16,
+          "snippet": "asFiniteNumberInRange,",
+          "note": "Imported from openclaw/plugin-sdk/string-coerce-runtime"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 101,
+          "snippet": "return asFiniteNumberInRange(value, { min: 0.5, max: 2 });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 13,
+          "snippet": "asOptionalRecord,",
+          "note": "Imported from openclaw/plugin-sdk/string-coerce-runtime"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 62,
+          "snippet": "const baseResp = asOptionalRecord(value);"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 17,
+          "snippet": "asOptionalRecord,",
+          "note": "Imported from openclaw/plugin-sdk/string-coerce-runtime"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 43,
+          "snippet": "const providers = asOptionalRecord(asOptionalRecord(cfg?.models)?.providers);"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 28,
+          "snippet": "asOptionalRecord,",
+          "note": "Imported from openclaw/plugin-sdk/string-coerce-runtime"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 81,
+          "snippet": "const minimax = asOptionalRecord(searchConfig?.minimax);"
+        },
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 2,
+          "snippet": "import { asOptionalRecord, readStringField } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/string-coerce-runtime"
+        },
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 103,
+          "snippet": "const hexAudio = readStringField(asOptionalRecord(body.data), \"audio\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 6,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/string-coerce-runtime"
+        },
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 42,
+          "snippet": "...(isRecord(payload.output_config) ? payload.output_config : {}),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 14,
+          "snippet": "normalizeOptionalString,",
+          "note": "Imported from openclaw/plugin-sdk/string-coerce-runtime"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 34,
+          "snippet": "const configured = normalizeOptionalString(cfg?.models?.providers?.[providerId]?.baseUrl);"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 19,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/string-coerce-runtime"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 76,
+          "snippet": "const trimmed = normalizeOptionalString(value);"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 25,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/string-coerce-runtime"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 71,
+          "snippet": "return normalizeOptionalString(cfg.models?.providers?.[providerId]?.baseUrl);"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 18,
+          "snippet": "normalizeOptionalString as trimToUndefined,",
+          "note": "Imported from openclaw/plugin-sdk/string-coerce-runtime"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 45,
+          "snippet": "const portalBaseUrl = trimToUndefined(portalProvider?.baseUrl);"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 45,
+          "snippet": "const portalBaseUrl = trimToUndefined(portalProvider?.baseUrl);",
+          "note": "trimToUndefined is the direct import alias of normalizeOptionalString at line 18."
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 29,
+          "snippet": "normalizeOptionalString,",
+          "note": "Imported from openclaw/plugin-sdk/string-coerce-runtime"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 70,
+          "snippet": "const trimmed = normalizeOptionalString(value);"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 19,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/string-coerce-runtime"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 75,
+          "snippet": "const inputUrl = normalizeOptionalString(input.url);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#readStringField",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#readStringField",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 15,
+          "snippet": "readStringField,",
+          "note": "Imported from openclaw/plugin-sdk/string-coerce-runtime"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 65,
+          "snippet": "`${context} (${baseResp.status_code}): ${readStringField(baseResp, \"status_msg\") ?? \"unknown error\"}`,"
+        },
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 2,
+          "snippet": "import { asOptionalRecord, readStringField } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Imported from openclaw/plugin-sdk/string-coerce-runtime"
+        },
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 103,
+          "snippet": "const hexAudio = readStringField(asOptionalRecord(body.data), \"audio\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#GeneratedVideoAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#GeneratedVideoAsset",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 21,
+          "snippet": "GeneratedVideoAsset,",
+          "note": "Imported from openclaw/plugin-sdk/video-generation"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 145,
+          "snippet": "}): Promise<GeneratedVideoAsset> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 22,
+          "snippet": "VideoGenerationProvider,",
+          "note": "Imported from openclaw/plugin-sdk/video-generation"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 237,
+          "snippet": "): VideoGenerationProvider {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationRequest",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 23,
+          "snippet": "VideoGenerationRequest,",
+          "note": "Imported from openclaw/plugin-sdk/video-generation"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 70,
+          "snippet": "function resolveFirstFrameImage(req: VideoGenerationRequest): string | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 1,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-contracts",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-contracts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-policy-api.ts",
+          "line": 2,
+          "snippet": "import type { ProviderDefaultThinkingPolicyContext } from \"openclaw/plugin-sdk/core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 1,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/image-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/image-generation",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { toImageDataUrl } from \"openclaw/plugin-sdk/image-generation\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/lazy-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/lazy-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.ts",
+          "line": 1,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/llm",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/llm",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 2,
+          "snippet": "import { streamSimple } from \"openclaw/plugin-sdk/llm\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-generation-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 5,
+          "snippet": "import { resolveGeneratedMediaMaxBytes } from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { resolveGeneratedMediaMaxBytes } from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-mime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-mime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 2,
+          "snippet": "import { extensionForMime } from \"openclaw/plugin-sdk/media-mime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 6,
+          "snippet": "import { canonicalizeBase64 } from \"openclaw/plugin-sdk/media-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 262,
+          "snippet": "const { transcodeAudioBufferToOpus } = await import(\"openclaw/plugin-sdk/media-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-understanding",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-understanding",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/media-understanding-provider.ts",
+          "line": 1,
+          "snippet": "import type { MediaUnderstandingProvider } from \"openclaw/plugin-sdk/media-understanding\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/music-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/music-generation",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/music-generation\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 1,
+          "snippet": "import { resolveTimerTimeoutMs } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/capability-catalog.ts",
+          "line": 1,
+          "snippet": "import type { PluginCapabilityCatalogHostEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/minimax/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 8,
+          "snippet": "import type { ProviderAuthContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/minimax/provider-contract-api.ts",
+          "line": 1,
+          "snippet": "import type { ProviderAuthMethod } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 11,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 2,
+          "snippet": "import type { PluginCapabilityCatalogHostContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 3,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/minimax/thinking.ts",
+          "line": 2,
+          "snippet": "import type { ProviderThinkingProfile } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth",
+      "classification": "mixed",
+      "referenceKinds": [
+        "dynamic-import",
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 7,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 8,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 13,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/minimax/onboard.ts",
+          "line": 1,
+          "snippet": "import { findNormalizedProviderValue } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 16,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 53,
+          "snippet": "const { resolveProviderAuthProfileApiKey } = await import(\"openclaw/plugin-sdk/provider-auth\");"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 6,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 8,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 1,
+          "snippet": "import type { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 9,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 7,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-catalog.ts",
+          "line": 1,
+          "snippet": "import type { OpenAICompatibleModelDiscoveryOptions } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 17,
+          "snippet": "import { buildOpenAICompatibleLiveProviderCatalog } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 18,
+          "snippet": "import { createProviderApiKeyAuthMethod } from \"openclaw/plugin-sdk/provider-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-http",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-http",
+      "classification": "mixed",
+      "referenceKinds": [
+        "dynamic-import",
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/image-generation-provider.ts",
+          "line": 13,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 11,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 17,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 17,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 57,
+          "snippet": "await import(\"openclaw/plugin-sdk/provider-http\");"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 18,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-http\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-metadata",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-metadata",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-policy-api.ts",
+          "line": 3,
+          "snippet": "import { resolveMinimaxFastModelId } from \"openclaw/plugin-sdk/provider-model-metadata\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-shared",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/model-definitions.ts",
+          "line": 1,
+          "snippet": "import type { ModelDefinitionConfig } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/minimax/provider-catalog.ts",
+          "line": 2,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/minimax/provider-contract-api.ts",
+          "line": 2,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/minimax/provider-discovery.ts",
+          "line": 1,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/minimax/provider-models.ts",
+          "line": 1,
+          "snippet": "import { matchesExactOrPrefix } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 19,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 23,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-model-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-types",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-types",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-policy-api.ts",
+          "line": 4,
+          "snippet": "import type { ProviderFastModePolicyContext } from \"openclaw/plugin-sdk/provider-model-types\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-onboard",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-onboard",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/onboard.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-onboard\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-stream-family",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-stream-family",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 4,
+          "snippet": "import { buildProviderStreamFamilyHooks } from \"openclaw/plugin-sdk/provider-stream-family\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-stream-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 5,
+          "snippet": "import { streamWithPayloadPatch } from \"openclaw/plugin-sdk/provider-stream-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-usage",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-usage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 24,
+          "snippet": "import { fetchMinimaxUsage } from \"openclaw/plugin-sdk/provider-usage\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-web-search",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-web-search",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 26,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-web-search\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-web-search-config-contract",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-web-search-config-contract",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-web-search-config-contract\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/response-limit-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/response-limit-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 18,
+          "snippet": "import { readResponseWithLimit } from \"openclaw/plugin-sdk/response-limit-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-env",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-env",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 21,
+          "snippet": "} from \"openclaw/plugin-sdk/runtime-env\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/secret-input",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/secret-input",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 3,
+          "snippet": "import { normalizeResolvedSecretInputString } from \"openclaw/plugin-sdk/secret-input\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/speech-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/speech-core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 10,
+          "snippet": "} from \"openclaw/plugin-sdk/speech-core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/speech-provider",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/speech-provider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 14,
+          "snippet": "} from \"openclaw/plugin-sdk/speech-provider\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/oauth.ts",
+          "line": 22,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 59,
+          "snippet": "await import(\"openclaw/plugin-sdk/ssrf-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/media-provider-runtime.ts",
+          "line": 16,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/music-generation-provider.ts",
+          "line": 19,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/provider-registration.ts",
+          "line": 25,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/speech-provider-factory.ts",
+          "line": 19,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/src/minimax-web-search-provider.runtime.ts",
+          "line": 30,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/stream.ts",
+          "line": 6,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/tts.ts",
+          "line": 2,
+          "snippet": "import { asOptionalRecord, readStringField } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 19,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/video-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/video-generation",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/minimax/video-generation-provider.ts",
+          "line": 24,
+          "snippet": "} from \"openclaw/plugin-sdk/video-generation\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all 26 production-source files and both package/manifest metadata files at the pinned commit. All 47 plugin files are partitioned into 28 reviewed and 19 excluded records. No Inspector implementation, detector output, other fixture, or generic expectation extractor was read or used.",
+    "All local static and dynamic imports/reexports stay inside extensions/minimax. api.ts and the OAuth/search barrels forward plugin-owned implementations, not SDK symbols. No additional shared shipped source lies outside this plugin root; SDK implementation files were consulted only to establish public export/type provenance, not recursively audited.",
+    "Public package.json export entries and SDK facades establish the exact imported subpaths/export names. Public aliases remain the names exported by each imported SDK module (for example provider-web-search#readStringParam). speech-provider-factory.ts aliases normalizeOptionalString locally as trimToUndefined; the original SDK export identity is retained.",
+    "PluginCapabilityCatalogHostContext explicitly types isProviderAuthProfileConfigured and isProviderAuthProfileConfiguredAsync as the provider-auth-availability helpers publicly reexported by provider-auth. Literal Pick selection adds type-reference; function-parameter destructuring adds member-access and direct invocation adds call. These exports have no synthetic import or module site.",
+    "api from definePluginEntry register is passed to registerMinimaxProviders, which explicitly annotates OpenClawPluginApi. Its api.runtime.config.current() is the sole concrete runtime access. Returned config data, provider/auth/catalog contexts, web-search contexts, speech provider objects, request/response objects and helper results are not API/runtime handles.",
+    "Provider replay/stream family hooks and provider hookAliases are provider contracts, not API on/registerHook registrations. No named hook finding is implied by SDK helper internals.",
+    "Immediate destructuring of dynamic SDK imports in speech-provider-factory.ts and tts.ts records the selected named exports with dynamic-import and actual call references, without synthetic namespace stars. Local lazy runtime imports load plugin-owned code, so they add no SDK-module site.",
+    "Parameters<typeof fetchWithTimeoutGuarded>, Parameters<typeof resolveApiKeyForProvider> and Parameters<typeof postJsonRequest> contribute type-reference to those SDK exports. Ordinary imports remain runtime; combined explicit type use/imports makes the export mixed while modules follow only dependency syntax.",
+    "stream.ts underlying directly selects streamSimple as its final nullish fallback; the direct invocation preserves that SDK call provenance. FAST_MODE_HOOKS is an SDK helper result, so its wrapStreamFn property is not expanded into an API/runtime member or a transitive helper call.",
+    "Source phase includes entry metadata, onboarding, policy/catalog modules, local barrels and eligible source regardless of runtime reachability. Package metadata declares index.ts and no alternative artifact/source exception. No installed dependency package was traversed."
+  ]
+}

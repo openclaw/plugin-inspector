@@ -1,0 +1,1391 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "clawrouter",
+    "path": "extensions/clawrouter"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_clawrouter",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/clawrouter/index.ts",
+      "sha256": "7c09d49f5e498b22fc773143bb831d1f681aa2256ea31a892793f3d86686afb4",
+      "role": "production-source",
+      "findingCount": 13
+    },
+    {
+      "path": "extensions/clawrouter/openclaw.plugin.json",
+      "sha256": "bdb67929af7211b9b5f9334d02080905fbd4e9de6dbb7a3d295fb21080a37626",
+      "role": "manifest",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/clawrouter/package.json",
+      "sha256": "4fc2d49324e3ea054d047fb64d8f16a84255893f6e6078622653069be74b8ce2",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/clawrouter/pool-gateway.ts",
+      "sha256": "d9d8be243ed407d70291754f89b8bdead998e388ed8d5ce6e7f757e2b3e353fb",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/clawrouter/pool.ts",
+      "sha256": "56f50125c3611c49311c60fd83be859e5c5556c08dcfbb0103ae6f7c25055bef",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/clawrouter/provider-catalog.ts",
+      "sha256": "bdcd54fb1eef1f6257518a22eb0109719954d5382f5f27cd9e18b8fa33ae05f3",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/clawrouter/src/control-ui.tsx",
+      "sha256": "a483ccf4c7688d8c9492a247caf64833328475d239cd170a46698e494b0dfa33",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/clawrouter/src/styles.d.ts",
+      "sha256": "35d26ea66c86da9701e4f4b467913481ffeae910761cea34c775c5dacb7f8eaa",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/clawrouter/stream.ts",
+      "sha256": "d4b5311d53776d78da43f3ef1414062b655e219c44140906dec593e8075552d7",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/clawrouter/tool-schemas.ts",
+      "sha256": "bde34cb765b5250c35958c2a676a5cacef1538447e4b01638bee439ff5c3e4ef",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/clawrouter/usage.ts",
+      "sha256": "a4e71314003b4484a96092bcbbf8b265688b2d41824ddae4055304a409494e04",
+      "role": "production-source",
+      "findingCount": 13
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/clawrouter/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation; outside the source extensions."
+    },
+    {
+      "path": "extensions/clawrouter/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork; outside the source extensions."
+    },
+    {
+      "path": "extensions/clawrouter/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG artwork; outside the source extensions."
+    },
+    {
+      "path": "extensions/clawrouter/index.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest entrypoint/provider behavior tests; basename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/clawrouter/pool-gateway.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest pool gateway tests; basename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/clawrouter/pool.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest pool parser tests; basename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/clawrouter/provider-catalog.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest catalog tests; basename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/clawrouter/src/control-ui.css",
+      "rule": "non-source",
+      "reason": "Shipped stylesheet imported by control-ui.tsx; CSS is outside the source extensions."
+    },
+    {
+      "path": "extensions/clawrouter/tool-schemas.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest schema tests; basename contains .test.; no production source imports this file."
+    },
+    {
+      "path": "extensions/clawrouter/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript compiler configuration; outside the source extensions and not plugin package/manifest metadata."
+    },
+    {
+      "path": "extensions/clawrouter/usage.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest usage tests; basename contains .test.; no production source imports this file."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerGatewayMethod",
+      "kind": "api-member",
+      "identity": "api.registerGatewayMethod",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 26,
+          "snippet": "api: Pick<OpenClawPluginApi, \"registerGatewayMethod\">,",
+          "note": "Built-in Pick explicitly selects the public API method."
+        },
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 28,
+          "snippet": "api.registerGatewayMethod(",
+          "note": "Typed API parameter; registered by defineSingleProviderPluginEntry via index.ts line 123."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.usageProviders:clawrouter",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.usageProviders:clawrouter",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/openclaw.plugin.json",
+          "line": 18,
+          "snippet": "\"clawrouter\"",
+          "note": "Item in contracts.usageProviders, lines 16\u201320."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.providers:clawrouter",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:clawrouter",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/openclaw.plugin.json",
+          "line": 14,
+          "snippet": "\"clawrouter\"",
+          "note": "Item in the top-level providers array, lines 13\u201315."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-core#StreamFn",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-core#StreamFn",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/stream.ts",
+          "line": 3,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";"
+        },
+        {
+          "path": "extensions/clawrouter/stream.ts",
+          "line": 123,
+          "snippet": "): StreamFn | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/control-ui#ControlUiView",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/control-ui#ControlUiView",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/src/control-ui.tsx",
+          "line": 3,
+          "snippet": "import { defineControlUiPlugin, type ControlUiView } from \"openclaw/plugin-sdk/control-ui\";"
+        },
+        {
+          "path": "extensions/clawrouter/src/control-ui.tsx",
+          "line": 25,
+          "snippet": "const mountPool: ControlUiView = (container, initialContext) => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/control-ui#defineControlUiPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/control-ui#defineControlUiPlugin",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/src/control-ui.tsx",
+          "line": 3,
+          "snippet": "import { defineControlUiPlugin, type ControlUiView } from \"openclaw/plugin-sdk/control-ui\";"
+        },
+        {
+          "path": "extensions/clawrouter/src/control-ui.tsx",
+          "line": 539,
+          "snippet": "export default defineControlUiPlugin({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/fetch-runtime#withTrustedEnvProxyGuardedFetchMode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/fetch-runtime#withTrustedEnvProxyGuardedFetchMode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 1,
+          "snippet": "import { withTrustedEnvProxyGuardedFetchMode } from \"openclaw/plugin-sdk/fetch-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 66,
+          "snippet": "withTrustedEnvProxyGuardedFetchMode({"
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 1,
+          "snippet": "import { withTrustedEnvProxyGuardedFetchMode } from \"openclaw/plugin-sdk/fetch-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 107,
+          "snippet": "withTrustedEnvProxyGuardedFetchMode({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#AnyAgentTool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#AnyAgentTool",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/tool-schemas.ts",
+          "line": 2,
+          "snippet": "AnyAgentTool,",
+          "note": "Named binding in import type from openclaw/plugin-sdk/plugin-entry, lines 1\u20135."
+        },
+        {
+          "path": "extensions/clawrouter/tool-schemas.ts",
+          "line": 114,
+          "snippet": "): AnyAgentTool[] {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 26,
+          "snippet": "api: Pick<OpenClawPluginApi, \"registerGatewayMethod\">,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderDefaultThinkingPolicyContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderDefaultThinkingPolicyContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 2,
+          "snippet": "ProviderDefaultThinkingPolicyContext,",
+          "note": "Named binding in import type from openclaw/plugin-sdk/plugin-entry, lines 1\u20136."
+        },
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 44,
+          "snippet": "ctx: ProviderDefaultThinkingPolicyContext,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderNormalizeToolSchemasContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderNormalizeToolSchemasContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/tool-schemas.ts",
+          "line": 3,
+          "snippet": "ProviderNormalizeToolSchemasContext,",
+          "note": "Named binding in import type from openclaw/plugin-sdk/plugin-entry, lines 1\u20135."
+        },
+        {
+          "path": "extensions/clawrouter/tool-schemas.ts",
+          "line": 113,
+          "snippet": "ctx: ProviderNormalizeToolSchemasContext,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderResolveDynamicModelContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderResolveDynamicModelContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 3,
+          "snippet": "ProviderResolveDynamicModelContext,",
+          "note": "Named binding in import type from openclaw/plugin-sdk/plugin-entry, lines 1\u20136."
+        },
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 72,
+          "snippet": "function dynamicModelScope(ctx: ProviderResolveDynamicModelContext): string {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderRuntimeModel",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderRuntimeModel",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 4,
+          "snippet": "ProviderRuntimeModel,",
+          "note": "Named binding in import type from openclaw/plugin-sdk/plugin-entry, lines 1\u20136."
+        },
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 83,
+          "snippet": "): Map<string, ProviderRuntimeModel> {"
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 1,
+          "snippet": "import type { ProviderRuntimeModel } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 371,
+          "snippet": "function readRouteMetadata(params: ProviderRuntimeModel[\"params\"]): RouteMetadata | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderThinkingProfile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderThinkingProfile",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 5,
+          "snippet": "ProviderThinkingProfile,",
+          "note": "Named binding in import type from openclaw/plugin-sdk/plugin-entry, lines 1\u20136."
+        },
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 45,
+          "snippet": "): ProviderThinkingProfile | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderToolSchemaDiagnostic",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderToolSchemaDiagnostic",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/tool-schemas.ts",
+          "line": 4,
+          "snippet": "ProviderToolSchemaDiagnostic,",
+          "note": "Named binding in import type from openclaw/plugin-sdk/plugin-entry, lines 1\u20135."
+        },
+        {
+          "path": "extensions/clawrouter/tool-schemas.ts",
+          "line": 128,
+          "snippet": "): ProviderToolSchemaDiagnostic[] {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderWrapStreamFnContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderWrapStreamFnContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/stream.ts",
+          "line": 4,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/clawrouter/stream.ts",
+          "line": 122,
+          "snippet": "ctx: ProviderWrapStreamFnContext,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 145,
+          "snippet": "const { resolveApiKeyForProvider } =",
+          "note": "Immediately destructured from import(\"openclaw/plugin-sdk/provider-auth-runtime\") on line 146; no retained namespace."
+        },
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 148,
+          "snippet": "await resolveApiKeyForProvider({"
+        },
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 43,
+          "snippet": "const { resolveApiKeyForProvider } =",
+          "note": "Immediately destructured from import(\"openclaw/plugin-sdk/provider-auth-runtime\") on line 44."
+        },
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 48,
+          "snippet": "await resolveApiKeyForProvider({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#LiveModelCatalogFetchGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#LiveModelCatalogFetchGuard",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 4,
+          "snippet": "type LiveModelCatalogFetchGuard,",
+          "note": "Inline type binding from openclaw/plugin-sdk/provider-catalog-live-runtime."
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 347,
+          "snippet": "fetchGuard?: LiveModelCatalogFetchGuard;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#getCachedLiveProviderModelRows",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#getCachedLiveProviderModelRows",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 3,
+          "snippet": "getCachedLiveProviderModelRows,",
+          "note": "Value binding from openclaw/plugin-sdk/provider-catalog-live-runtime."
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 350,
+          "snippet": "const rows = await getCachedLiveProviderModelRows({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-entry#defineSingleProviderPluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-entry#defineSingleProviderPluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 7,
+          "snippet": "import { defineSingleProviderPluginEntry } from \"openclaw/plugin-sdk/provider-entry\";"
+        },
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 118,
+          "snippet": "export default defineSingleProviderPluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 7,
+          "snippet": "ModelDefinitionConfig,",
+          "note": "Named binding in import type from openclaw/plugin-sdk/provider-model-shared, lines 6\u20139."
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 80,
+          "snippet": "api: NonNullable<ModelDefinitionConfig[\"api\"]>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 8,
+          "snippet": "ModelProviderConfig,",
+          "note": "Named binding in import type from openclaw/plugin-sdk/provider-model-shared, lines 6\u20139."
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 348,
+          "snippet": "}): Promise<ModelProviderConfig> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#buildProviderReplayFamilyHooks",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#buildProviderReplayFamilyHooks",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 8,
+          "snippet": "import { buildProviderReplayFamilyHooks } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 27,
+          "snippet": "const openAiReplay = buildProviderReplayFamilyHooks({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-tools#buildProviderToolCompatFamilyHooks",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-tools#buildProviderToolCompatFamilyHooks",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 9,
+          "snippet": "import { buildProviderToolCompatFamilyHooks } from \"openclaw/plugin-sdk/provider-tools\";"
+        },
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 35,
+          "snippet": "const openAiTools = buildProviderToolCompatFamilyHooks(\"openai\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-tools#findUnsupportedSchemaKeywords",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-tools#findUnsupportedSchemaKeywords",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/tool-schemas.ts",
+          "line": 6,
+          "snippet": "import { findUnsupportedSchemaKeywords } from \"openclaw/plugin-sdk/provider-tools\";"
+        },
+        {
+          "path": "extensions/clawrouter/tool-schemas.ts",
+          "line": 132,
+          "snippet": "...findUnsupportedSchemaKeywords("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-usage#ProviderUsageSnapshot",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-usage#ProviderUsageSnapshot",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 4,
+          "snippet": "type ProviderUsageSnapshot,",
+          "note": "Inline type binding from openclaw/plugin-sdk/provider-usage."
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 100,
+          "snippet": "}): Promise<ProviderUsageSnapshot> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-usage#buildUsageErrorSnapshot",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-usage#buildUsageErrorSnapshot",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 3,
+          "snippet": "buildUsageErrorSnapshot,",
+          "note": "Value binding from openclaw/plugin-sdk/provider-usage."
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 130,
+          "snippet": "return buildUsageErrorSnapshot(\"clawrouter\", \"Malformed usage response\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/response-limit-runtime#readResponseWithLimit",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/response-limit-runtime#readResponseWithLimit",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 3,
+          "snippet": "import { readResponseWithLimit } from \"openclaw/plugin-sdk/response-limit-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 21,
+          "snippet": "const bytes = await readResponseWithLimit(response, MAX_BYTES, { chunkTimeoutMs: TIMEOUT_MS });"
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 6,
+          "snippet": "import { readResponseWithLimit } from \"openclaw/plugin-sdk/response-limit-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 79,
+          "snippet": "const buffer = await readResponseWithLimit(response, CLAWROUTER_USAGE_RESPONSE_MAX_BYTES, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 5,
+          "snippet": "fetchWithSsrFGuard,",
+          "note": "Value import from openclaw/plugin-sdk/ssrf-runtime, lines 4\u20137."
+        },
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 65,
+          "snippet": "const { response, release } = await fetchWithSsrFGuard("
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 8,
+          "snippet": "fetchWithSsrFGuard,",
+          "note": "Value import from openclaw/plugin-sdk/ssrf-runtime, lines 7\u201310."
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 16,
+          "snippet": "type ClawRouterUsageFetchGuard = typeof fetchWithSsrFGuard;",
+          "note": "Direct typeof on the imported function adds a type reference."
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 106,
+          "snippet": "const { response, release } = await fetchGuard(",
+          "note": "fetchGuard is the optional injected guard or unchanged fetchWithSsrFGuard fallback selected on line 105."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 6,
+          "snippet": "ssrfPolicyFromHttpBaseUrlAllowedHostname,",
+          "note": "Value import from openclaw/plugin-sdk/ssrf-runtime, lines 4\u20137."
+        },
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 71,
+          "snippet": "policy: ssrfPolicyFromHttpBaseUrlAllowedHostname(baseUrl),"
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 9,
+          "snippet": "ssrfPolicyFromHttpBaseUrlAllowedHostname,",
+          "note": "Value import from openclaw/plugin-sdk/ssrf-runtime, lines 7\u201310."
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 117,
+          "snippet": "policy: ssrfPolicyFromHttpBaseUrlAllowedHostname(rootUrl),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumberInRange",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumberInRange",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 11,
+          "snippet": "asFiniteNumberInRange,",
+          "note": "Value import from openclaw/plugin-sdk/string-coerce-runtime, lines 10\u201316."
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 126,
+          "snippet": "inputMicrosPerMillion: asFiniteNumberInRange(row.inputMicrosPerMillion, { min: 0 }),"
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 11,
+          "snippet": "import { asFiniteNumberInRange, asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 64,
+          "snippet": "const requests = asFiniteNumberInRange(summary?.requestCount, { min: 0 });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 8,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 82,
+          "snippet": "const body = asOptionalRecord(await readJson(response).catch(() => undefined));"
+        },
+        {
+          "path": "extensions/clawrouter/pool.ts",
+          "line": 1,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/pool.ts",
+          "line": 82,
+          "snippet": "const record = asOptionalRecord(row);"
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 12,
+          "snippet": "asOptionalRecord,",
+          "note": "Value import from openclaw/plugin-sdk/string-coerce-runtime, lines 10\u201316."
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 99,
+          "snippet": "const providers = asOptionalRecord(body)?.providers;"
+        },
+        {
+          "path": "extensions/clawrouter/tool-schemas.ts",
+          "line": 7,
+          "snippet": "import { asOptionalRecord as readRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "The local readRecord alias preserves the original export identity."
+        },
+        {
+          "path": "extensions/clawrouter/tool-schemas.ts",
+          "line": 47,
+          "snippet": "const record = readRecord(value);",
+          "note": "Call through the unchanged readRecord import alias."
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 11,
+          "snippet": "import { asFiniteNumberInRange, asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 87,
+          "snippet": "return asOptionalRecord(payload) as ClawRouterUsagePayload | undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asPositiveSafeInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asPositiveSafeInteger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 13,
+          "snippet": "asPositiveSafeInteger,",
+          "note": "Value import from openclaw/plugin-sdk/string-coerce-runtime, lines 10\u201316."
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 141,
+          "snippet": "maxInputTokens: asPositiveSafeInteger(row.maxInputTokens),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 14,
+          "snippet": "normalizeOptionalString,",
+          "note": "Value import from openclaw/plugin-sdk/string-coerce-runtime, lines 10\u201316."
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 108,
+          "snippet": "const path = normalizeOptionalString(row?.path);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeTrimmedStringList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeTrimmedStringList",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 15,
+          "snippet": "normalizeTrimmedStringList,",
+          "note": "Value import from openclaw/plugin-sdk/string-coerce-runtime, lines 10\u201316."
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 116,
+          "snippet": "methods: normalizeTrimmedStringList(row?.methods).map((method) => method.toUpperCase()),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-normalization-runtime#containsAsciiControlCharacter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-normalization-runtime#containsAsciiControlCharacter",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/stream.ts",
+          "line": 5,
+          "snippet": "import { containsAsciiControlCharacter } from \"openclaw/plugin-sdk/string-normalization-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/stream.ts",
+          "line": 48,
+          "snippet": "if (!normalized || containsAsciiControlCharacter(normalized)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/stream.ts",
+          "line": 3,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/control-ui",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/control-ui",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/src/control-ui.tsx",
+          "line": 3,
+          "snippet": "import { defineControlUiPlugin, type ControlUiView } from \"openclaw/plugin-sdk/control-ui\";",
+          "note": "The same import has a value binding and inline type binding."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/fetch-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/fetch-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 1,
+          "snippet": "import { withTrustedEnvProxyGuardedFetchMode } from \"openclaw/plugin-sdk/fetch-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 1,
+          "snippet": "import { withTrustedEnvProxyGuardedFetchMode } from \"openclaw/plugin-sdk/fetch-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "The statement begins with import type at line 1."
+        },
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 1,
+          "snippet": "import type { ProviderRuntimeModel } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/clawrouter/stream.ts",
+          "line": 4,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/clawrouter/tool-schemas.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "The statement begins with import type at line 1."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 146,
+          "snippet": "await import(\"openclaw/plugin-sdk/provider-auth-runtime\");"
+        },
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 44,
+          "snippet": "await import(\"openclaw/plugin-sdk/provider-auth-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";",
+          "note": "getCachedLiveProviderModelRows is a value import; LiveModelCatalogFetchGuard has an inline type modifier."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 7,
+          "snippet": "import { defineSingleProviderPluginEntry } from \"openclaw/plugin-sdk/provider-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-shared",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 8,
+          "snippet": "import { buildProviderReplayFamilyHooks } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "The statement begins with import type at line 6."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-tools",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-tools",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/index.ts",
+          "line": 9,
+          "snippet": "import { buildProviderToolCompatFamilyHooks } from \"openclaw/plugin-sdk/provider-tools\";"
+        },
+        {
+          "path": "extensions/clawrouter/tool-schemas.ts",
+          "line": 6,
+          "snippet": "import { findUnsupportedSchemaKeywords } from \"openclaw/plugin-sdk/provider-tools\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-usage",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-usage",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-usage\";",
+          "note": "buildUsageErrorSnapshot is a value import; ProviderUsageSnapshot has an inline type modifier."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/response-limit-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/response-limit-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 3,
+          "snippet": "import { readResponseWithLimit } from \"openclaw/plugin-sdk/response-limit-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 6,
+          "snippet": "import { readResponseWithLimit } from \"openclaw/plugin-sdk/response-limit-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 10,
+          "snippet": "} from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "Both bindings are ordinary value imports; later typeof usage changes only the export classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/pool-gateway.ts",
+          "line": 8,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/pool.ts",
+          "line": 1,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/provider-catalog.ts",
+          "line": 16,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/tool-schemas.ts",
+          "line": 7,
+          "snippet": "import { asOptionalRecord as readRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/clawrouter/usage.ts",
+          "line": 11,
+          "snippet": "import { asFiniteNumberInRange, asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-normalization-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-normalization-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/clawrouter/stream.ts",
+          "line": 5,
+          "snippet": "import { containsAsciiControlCharacter } from \"openclaw/plugin-sdk/string-normalization-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read every eligible production file, including the full Control UI and styles.d.ts declaration, plus package.json and openclaw.plugin.json; expectations were manually authored without Inspector implementation, helpers, output or another fixture.",
+    "All 22 files beneath extensions/clawrouter matched the pinned commit byte-for-byte. The partition is 9 production-source files, 2 reviewed metadata files, 6 test-file exclusions and 5 non-source exclusions.",
+    "Package metadata declares index.ts and src/control-ui.tsx as shipped entrypoints. The UI type import ../pool.js stays within the plugin root; every other local source import also stays within the root. No additional plugin-owned/shared shipped source boundary was found. Solid dependencies and Node built-ins are outside this SDK audit; installed dependencies were not crawled.",
+    "No test-only helper files require an ambiguous exclusion: the six excluded TypeScript files have .test. basenames, import Vitest, and are not imported by production source. The CSS import does not make CSS eligible under the explicit source extension list.",
+    "pool-gateway.ts selects registerGatewayMethod through Pick<OpenClawPluginApi, \"registerGatewayMethod\"> and calls that method. Both type-reference and call apply, so the API member is mixed. The registration callback request/context is a Gateway request, not an OpenClawPluginApi or PluginRuntime handle.",
+    "Provider callback contexts, model.api values, the local runtime string in index.ts and the ControlUiHost in control-ui.tsx are not OpenClawPluginApi/PluginRuntime handles. Public control-ui.ts types establish ControlUiHost as a separate browser host contract; its properties are not normalized to api or runtime.",
+    "Calls on openAiReplay, anthropicReplay, googleReplay and tool-family objects operate on SDK helper return values. Only the direct imported helper dependencies/calls are recorded; no helper internals or arbitrary returned-member paths are inferred.",
+    "Immediately destructured provider-auth-runtime dynamic imports identify resolveApiKeyForProvider without retaining a namespace, so there is no synthetic star export. The readRecord import alias maps to asOptionalRecord.",
+    "usage.ts directly references typeof fetchWithSsrFGuard. That SDK export is mixed with import, call and type-reference, while its module remains runtime because every module dependency site is an ordinary value import.",
+    "The manifest contracts are top-level providers:clawrouter and contracts.usageProviders:clawrouter. Activation, setup, providerAuthChoices, configSchema, uiCapabilities and controlUi metadata do not add identities under the frozen manifest field whitelist.",
+    "No API on/registerHook calls, proven PluginRuntime members, opaque runtime escapes or genuinely unresolved SDK references were found. SDK type dependencies are retained for the source phase; no published-artifact equivalence is claimed."
+  ]
+}

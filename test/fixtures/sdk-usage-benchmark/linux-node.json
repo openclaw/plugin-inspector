@@ -1,0 +1,660 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "linux-node",
+    "path": "extensions/linux-node"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_linux_node",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/linux-node/index.ts",
+      "sha256": "c1369cf69de0c242d4b616bb3fc0d9a37e43d4be5ebe11f47d299744ab173461",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/linux-node/openclaw.plugin.json",
+      "sha256": "f9b041682b2c0c8b1c2afc91e78e337af6be41b581e1c600d4ba37dcf6738b87",
+      "role": "manifest",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/linux-node/package.json",
+      "sha256": "01d930078bee579ffaaddc1eb49910b17d13edeae4b08142f0f7be36e2d11e7b",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/linux-node/src/command-utils.ts",
+      "sha256": "a63d44c3d9ae48b23c61e9fdf3c3d27255e08ba377c41adef2da51ad750e2c4e",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/linux-node/src/commands.ts",
+      "sha256": "fee4511718d34d79cafc26ab682a968ce89c43bd65e801a615cb665ea5ab2cb7",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/linux-node/src/config.ts",
+      "sha256": "a6f34f756d54dcd5a17a587cf3fca02588dee305fc03820ec0bce793cfe92b6d",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/linux-node/src/executables.ts",
+      "sha256": "0d5b8a03f34206051f319327789436eb0118093a1871ce2cca0243eb2096e38a",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/linux-node/src/location.ts",
+      "sha256": "f3e100f85656a304c1f13d9e353bd8347a72d76991b3df83f1bdbba6cfe12c43",
+      "role": "production-source",
+      "findingCount": 8
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/linux-node/README.md",
+      "rule": "non-source",
+      "reason": "Plugin usage documentation, outside the eligible JS/TS-family source extensions; read for metadata and scope context."
+    },
+    {
+      "path": "extensions/linux-node/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork asset, outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/linux-node/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG artwork asset, outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/linux-node/index.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest entry-registration tests with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/linux-node/src/command-utils.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest command-result utility tests with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/linux-node/src/commands.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest command behavior tests and mocks with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/linux-node/src/config.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest configuration-schema tests with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/linux-node/src/executables.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest executable-resolution tests with .test. basename; no production source imports this file."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.pluginConfig",
+      "kind": "api-member",
+      "identity": "api.pluginConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/index.ts",
+          "line": 11,
+          "snippet": "const config = resolveLinuxNodePluginConfig(api.pluginConfig);",
+          "note": "api is the register parameter contextually typed by definePluginEntry via OpenClawPluginDefinition.register."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerNodeHostCommand",
+      "kind": "api-member",
+      "identity": "api.registerNodeHostCommand",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/index.ts",
+          "line": 13,
+          "snippet": "api.registerNodeHostCommand(command);"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerNodeInvokePolicy",
+      "kind": "api-member",
+      "identity": "api.registerNodeInvokePolicy",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/index.ts",
+          "line": 16,
+          "snippet": "api.registerNodeInvokePolicy({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeHostCommand",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeHostCommand",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 4,
+          "snippet": "OpenClawPluginNodeHostCommand,",
+          "note": "Named type import from openclaw/plugin-sdk/plugin-entry; the import statement spans lines 3-6."
+        },
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 116,
+          "snippet": "): OpenClawPluginNodeHostCommand[] {"
+        },
+        {
+          "path": "extensions/linux-node/src/location.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginNodeHostCommand } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/linux-node/src/location.ts",
+          "line": 85,
+          "snippet": "): OpenClawPluginNodeHostCommand {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeHostCommandAvailabilityContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeHostCommandAvailabilityContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/config.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginNodeHostCommandAvailabilityContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/linux-node/src/config.ts",
+          "line": 36,
+          "snippet": "config: OpenClawPluginNodeHostCommandAvailabilityContext[\"config\"],",
+          "note": "This indexed type is a node-host availability context, not OpenClawPluginApi or PluginRuntime; no api.config identity is implied."
+        },
+        {
+          "path": "extensions/linux-node/src/command-utils.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginNodeHostCommandAvailabilityContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/linux-node/src/command-utils.ts",
+          "line": 31,
+          "snippet": "context: OpenClawPluginNodeHostCommandAvailabilityContext,"
+        },
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 5,
+          "snippet": "OpenClawPluginNodeHostCommandAvailabilityContext,",
+          "note": "Named type import from openclaw/plugin-sdk/plugin-entry; the import statement spans lines 3-6."
+        },
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 137,
+          "snippet": "(context: OpenClawPluginNodeHostCommandAvailabilityContext) =>"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#buildPluginConfigSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#buildPluginConfigSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/config.ts",
+          "line": 2,
+          "snippet": "import { buildPluginConfigSchema } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/linux-node/src/config.ts",
+          "line": 18,
+          "snippet": "return buildPluginConfigSchema(LinuxNodePluginConfigSchema);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/linux-node/index.ts",
+          "line": 5,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#SpawnResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#SpawnResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/command-utils.ts",
+          "line": 2,
+          "snippet": "import type { SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/command-utils.ts",
+          "line": 14,
+          "snippet": "export function formatToolError(result: SpawnResult): string {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#runCommandWithTimeout",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#runCommandWithTimeout",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 7,
+          "snippet": "import { runCommandWithTimeout } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 85,
+          "snippet": "const probe = await runCommandWithTimeout("
+        },
+        {
+          "path": "extensions/linux-node/src/location.ts",
+          "line": 2,
+          "snippet": "import { runCommandWithTimeout } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/location.ts",
+          "line": 123,
+          "snippet": "const result = await runCommandWithTimeout("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 8,
+          "snippet": "import { asFiniteNumber as readFiniteNumber } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 228,
+          "snippet": "const maxWidthRaw = readFiniteNumber(params.maxWidth);",
+          "note": "readFiniteNumber is the unchanged local import alias of asFiniteNumber."
+        },
+        {
+          "path": "extensions/linux-node/src/location.ts",
+          "line": 3,
+          "snippet": "import { asFiniteNumber as readFiniteNumber } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/location.ts",
+          "line": 113,
+          "snippet": "Math.floor(readFiniteNumber(params.timeoutMs) ?? 10_000),",
+          "note": "readFiniteNumber is the unchanged local import alias of asFiniteNumber."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asNonArrayRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asNonArrayRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/command-utils.ts",
+          "line": 3,
+          "snippet": "import { asNonArrayRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/command-utils.ts",
+          "line": 11,
+          "snippet": "return asNonArrayRecord(safeParseJson(paramsJSON ?? \"\"));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 9,
+          "snippet": "import { resolvePreferredOpenClawTmpDir, withTempWorkspace } from \"openclaw/plugin-sdk/temp-path\";"
+        },
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 109,
+          "snippet": "{ rootDir: resolvePreferredOpenClawTmpDir(), prefix: \"openclaw-linux-node-\" },"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/temp-path#withTempWorkspace",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/temp-path#withTempWorkspace",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 9,
+          "snippet": "import { resolvePreferredOpenClawTmpDir, withTempWorkspace } from \"openclaw/plugin-sdk/temp-path\";"
+        },
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 108,
+          "snippet": "return await withTempWorkspace("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#clamp",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#clamp",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 10,
+          "snippet": "import { clamp } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 233,
+          "snippet": "const quality = clamp(readFiniteNumber(params.quality) ?? 0.9, 0.05, 1);"
+        },
+        {
+          "path": "extensions/linux-node/src/location.ts",
+          "line": 4,
+          "snippet": "import { clamp } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/location.ts",
+          "line": 112,
+          "snippet": "const timeoutMs = clamp("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#safeParseJson",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#safeParseJson",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/command-utils.ts",
+          "line": 4,
+          "snippet": "import { safeParseJson, truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/command-utils.ts",
+          "line": 11,
+          "snippet": "return asNonArrayRecord(safeParseJson(paramsJSON ?? \"\"));",
+          "note": "The public export is safeParseJson, regardless of its SDK-internal implementation name."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/command-utils.ts",
+          "line": 4,
+          "snippet": "import { safeParseJson, truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/command-utils.ts",
+          "line": 17,
+          "snippet": "? truncateUtf16Safe(detail.replaceAll(/\\s+/gu, \" \"), 300)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/linux-node/src/config.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginNodeHostCommandAvailabilityContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/linux-node/src/config.ts",
+          "line": 2,
+          "snippet": "import { buildPluginConfigSchema } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/linux-node/src/command-utils.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginNodeHostCommandAvailabilityContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "The import type statement begins at line 3 and names both node-host command types."
+        },
+        {
+          "path": "extensions/linux-node/src/location.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginNodeHostCommand } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/process-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/process-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/command-utils.ts",
+          "line": 2,
+          "snippet": "import type { SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 7,
+          "snippet": "import { runCommandWithTimeout } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/location.ts",
+          "line": 2,
+          "snippet": "import { runCommandWithTimeout } from \"openclaw/plugin-sdk/process-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/command-utils.ts",
+          "line": 3,
+          "snippet": "import { asNonArrayRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 8,
+          "snippet": "import { asFiniteNumber as readFiniteNumber } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/location.ts",
+          "line": 3,
+          "snippet": "import { asFiniteNumber as readFiniteNumber } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/temp-path",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/temp-path",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 9,
+          "snippet": "import { resolvePreferredOpenClawTmpDir, withTempWorkspace } from \"openclaw/plugin-sdk/temp-path\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/text-utility-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/linux-node/src/command-utils.ts",
+          "line": 4,
+          "snippet": "import { safeParseJson, truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/commands.ts",
+          "line": 10,
+          "snippet": "import { clamp } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/linux-node/src/location.ts",
+          "line": 4,
+          "snippet": "import { clamp } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independent manual source audit of all six production TypeScript files, package metadata and manifest at the pinned commit. All 16 files beneath extensions/linux-node are partitioned into reviewed or excluded records; no production-source differences from the pin were present.",
+    "Package openclaw.extensions names ./index.ts. Every local production import remains under extensions/linux-node; there is no external plugin-owned/shared shipped source boundary to include. command-utils.ts is consumed by commands.ts and location.ts, executables.ts by both command modules, location.ts by commands.ts, and config.ts by the entry and helpers. All are production source.",
+    "Public SDK facade exports and package exports establish the five exact module identities. The local readFiniteNumber alias retains original SDK export identity asFiniteNumber; safeParseJson remains the public export name rather than SDK-internal tryParseJson.",
+    "The register(api) parameter is proven by definePluginEntry options and OpenClawPluginDefinition.register to be OpenClawPluginApi. Its three consumed members are pluginConfig, registerNodeHostCommand and registerNodeInvokePolicy. No api.runtime or PluginRuntime handle is used.",
+    "Node-host availability contexts and node-invocation policy contexts are distinct SDK callback contracts, not API/runtime handles. Their config, env and invokeNode members therefore do not create api-member or runtime-member findings; the imported context types remain type dependencies. Config objects returned by plugin-owned schema resolution, SpawnResult data, and SDK temporary-workspace callback data likewise do not become public API/runtime paths.",
+    "The manifest declares activation, configuration and presentation metadata but none of the agreed contract identity fields (channels, providers, skills, commandAliases.name, cliCommands.name or contracts). Node command names in source and configuration help strings do not produce manifest-contract identities. No hooks are registered.",
+    "Source-phase expectations retain every syntactic SDK dependency and explicit type reference, without inferring SDK-helper internals, installed dependencies, or packaged-artifact membership. Finding counts are unique identities evidenced in each reviewed file."
+  ]
+}

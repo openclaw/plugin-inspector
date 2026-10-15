@@ -1,0 +1,414 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "admin-http-rpc",
+    "path": "extensions/admin-http-rpc"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_admin_http_rpc",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/admin-http-rpc/index.ts",
+      "sha256": "5cf967468b944f72c2d35434bf1b2d78c121ff2bcdcf46f5b0a61b9d94f6f236",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/admin-http-rpc/openclaw.plugin.json",
+      "sha256": "f9cdcff4c27b89d773e3c867f444854e83a2bf93810a15b5f565bac02a5c8a45",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/admin-http-rpc/package.json",
+      "sha256": "7e1ead6dff1722e0d3db9aaf4f62773e2f36d1bfa5744b16e929ed132dfd11f0",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/admin-http-rpc/src/handler.ts",
+      "sha256": "07506682429150320bb3f971f932e3c113403ce4dba5d0b9b6496b2952790b47",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/admin-http-rpc/src/methods.ts",
+      "sha256": "8f8dd93c5a1b407bac2455c098baae53669db4345b2afe990dd0eba85ea6bedb",
+      "role": "production-source",
+      "findingCount": 0
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/admin-http-rpc/README.md",
+      "rule": "non-source",
+      "reason": "Markdown plugin documentation; outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/admin-http-rpc/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork asset; outside the eligible source extensions."
+    },
+    {
+      "path": "extensions/admin-http-rpc/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG icon asset; outside the eligible source extensions."
+    },
+    {
+      "path": "extensions/admin-http-rpc/index.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest entry and manifest tests; basename contains .test. and no production source imports this file."
+    },
+    {
+      "path": "extensions/admin-http-rpc/src/handler.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest HTTP handler tests and test-local helpers; basename contains .test. and no production source imports this file."
+    },
+    {
+      "path": "extensions/admin-http-rpc/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript compiler configuration; outside the eligible source extensions and not package or plugin metadata."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerHttpRoute",
+      "kind": "api-member",
+      "identity": "api.registerHttpRoute",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/index.ts",
+          "line": 13,
+          "snippet": "    api.registerHttpRoute({",
+          "note": "definePluginEntry contextually types register through OpenClawPluginDefinition.register as (api: OpenClawPluginApi) => void; verified src/plugin-sdk/plugin-entry.ts and src/plugins/plugin-definition.types.ts."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.gatewayMethodDispatch:authenticated-request",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.gatewayMethodDispatch:authenticated-request",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/openclaw.plugin.json",
+          "line": 9,
+          "snippet": "    \"gatewayMethodDispatch\": [\"authenticated-request\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-method-runtime#GatewayMethodDispatchError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-method-runtime#GatewayMethodDispatchError",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 5,
+          "snippet": "  type GatewayMethodDispatchError,",
+          "note": "Inline type-only named import from openclaw/plugin-sdk/gateway-method-runtime, lines 3\u20136."
+        },
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 18,
+          "snippet": "  | { id: string; ok: false; error: GatewayMethodDispatchError; meta?: Record<string, unknown> };"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-method-runtime#dispatchGatewayMethod",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-method-runtime#dispatchGatewayMethod",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 4,
+          "snippet": "  dispatchGatewayMethod,",
+          "note": "Ordinary named import from openclaw/plugin-sdk/gateway-method-runtime, lines 3\u20136."
+        },
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 125,
+          "snippet": "    const response = await dispatchGatewayMethod(request.method, request.params);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/index.ts",
+          "line": 5,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/admin-http-rpc/index.ts",
+          "line": 8,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-runtime#getPluginRuntimeGatewayRequestScope",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-runtime#getPluginRuntimeGatewayRequestScope",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 7,
+          "snippet": "import { getPluginRuntimeGatewayRequestScope } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 208,
+          "snippet": "  await getPluginRuntimeGatewayRequestScope()?.revalidate?.();",
+          "note": "The SDK function is called; revalidate belongs to its returned request-scope object, not a proven PluginRuntime handle."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 8,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 102,
+          "snippet": "  if (!isRecord(body)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 8,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 105,
+          "snippet": "  const method = normalizeOptionalString(body.method);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/webhook-request-guards#WEBHOOK_BODY_READ_DEFAULTS",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/webhook-request-guards#WEBHOOK_BODY_READ_DEFAULTS",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 12,
+          "snippet": "  WEBHOOK_BODY_READ_DEFAULTS,",
+          "note": "Named import from openclaw/plugin-sdk/webhook-request-guards, lines 9\u201313."
+        },
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 71,
+          "snippet": "    ...WEBHOOK_BODY_READ_DEFAULTS.postAuthResponseFirst,",
+          "note": "Non-call property selection rooted directly in the imported SDK object."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/webhook-request-guards#readJsonBodyWithLimit",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/webhook-request-guards#readJsonBodyWithLimit",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 10,
+          "snippet": "  readJsonBodyWithLimit,",
+          "note": "Named import from openclaw/plugin-sdk/webhook-request-guards, lines 9\u201313."
+        },
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 68,
+          "snippet": "  const body = await readJsonBodyWithLimit(req, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/webhook-request-guards#sendHttpRequestRejection",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/webhook-request-guards#sendHttpRequestRejection",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 11,
+          "snippet": "  sendHttpRequestRejection,",
+          "note": "Named import from openclaw/plugin-sdk/webhook-request-guards, lines 9\u201313."
+        },
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 162,
+          "snippet": "      await sendHttpRequestRejection("
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/gateway-method-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/gateway-method-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 3,
+          "snippet": "import {\n  dispatchGatewayMethod,\n  type GatewayMethodDispatchError,\n} from \"openclaw/plugin-sdk/gateway-method-runtime\";",
+          "note": "The same SDK module has an ordinary value specifier and an inline type-only specifier."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/index.ts",
+          "line": 5,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 7,
+          "snippet": "import { getPluginRuntimeGatewayRequestScope } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 8,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/webhook-request-guards",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/webhook-request-guards",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/admin-http-rpc/src/handler.ts",
+          "line": 9,
+          "snippet": "import {\n  readJsonBodyWithLimit,\n  sendHttpRequestRejection,\n  WEBHOOK_BODY_READ_DEFAULTS,\n} from \"openclaw/plugin-sdk/webhook-request-guards\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "All three eligible production TypeScript files were manually read in full, together with package.json and openclaw.plugin.json. The 11 files under the plugin root are partitioned into five reviewed and six excluded records.",
+    "Package openclaw.extensions declares ./index.ts. Its only local import is ./src/handler.js, which imports ./methods.js. All local production imports stay under the plugin root; there is no additional plugin-owned/shared shipped source outside that boundary. No dependency installation or SDK implementation crawl is part of the source population.",
+    "Public package exports confirm all five exact openclaw/plugin-sdk subpaths. SDK facade/type reads establish original export and contextual registration API provenance; those SDK definitions are boundary evidence, not additional plugin source files.",
+    "GatewayMethodDispatchError uses an explicit inline type import and type annotations. Its SDK export is type-only; gateway-method-runtime is mixed because the same import declaration also imports dispatchGatewayMethod as a value. No SDK-export or module identities are synthesized from contextual inferred types.",
+    "getPluginRuntimeGatewayRequestScope is a called SDK free function. Its returned request-scope revalidate method, body fields from readJsonBodyWithLimit, and response fields from dispatchGatewayMethod are SDK helper return-object members, not public API/runtime member identities. No proven PluginRuntime handle is used.",
+    "WEBHOOK_BODY_READ_DEFAULTS.postAuthResponseFirst is a member-access reference to the original imported SDK object. The plugin-owned allowed-method tables in methods.ts are RPC method values, not registered hooks or manifest contract identities.",
+    "The manifest contributes only contracts.gatewayMethodDispatch:authenticated-request. Plugin id, categories, activation, configSchema and package openclaw.extensions are metadata rather than contract identities under this benchmark.",
+    "Production and metadata files match the pinned source commit; checkout differences observed are authorized AGENTS/skill documentation outside this plugin."
+  ]
+}

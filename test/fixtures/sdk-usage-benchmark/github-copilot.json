@@ -1,0 +1,3069 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "github-copilot",
+    "path": "extensions/github-copilot"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_github_copilot",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/github-copilot/api.ts",
+      "sha256": "6f1b5cd8438c24fb0a8708f56818c736402ae227e2d47483c3a4bc551ace02c5",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/github-copilot/auth.ts",
+      "sha256": "40ce9e4227bc43744bfd5fe92b7aa2aacdcc2efac28080b36177d00246df3271",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/github-copilot/connection-bound-ids.ts",
+      "sha256": "faae98cd2b623056d24306fe4f7eaeb8bf16eccf9f477edeb721abb639c3ad0c",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/github-copilot/domain.ts",
+      "sha256": "861601b3b2323e6cd02d2e942e867f293e5347c0a333379ed2601b525df5f1fc",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/github-copilot/dynamic-models.ts",
+      "sha256": "31dbb4696a57310c8ab82db0933e93342fa90b4db1870a67507c47e7bbb05dce",
+      "role": "production-source",
+      "findingCount": 13
+    },
+    {
+      "path": "extensions/github-copilot/embeddings.ts",
+      "sha256": "e5e58532604954ce4c9d360e7fffb3a22227430afac2e736fca4bf619e956e43",
+      "role": "production-source",
+      "findingCount": 18
+    },
+    {
+      "path": "extensions/github-copilot/index.ts",
+      "sha256": "9161d9bb9fd372780bb6b6b258864c6933117db9ce4b7bf11da6ee6fdacd0aa0",
+      "role": "production-source",
+      "findingCount": 21
+    },
+    {
+      "path": "extensions/github-copilot/login.ts",
+      "sha256": "6d98d9e44348b67b9903dc996812d640011b456cbc8ce408bb3fab71ca173f43",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/github-copilot/model-metadata.ts",
+      "sha256": "9a4face9ccb9891610c0bea2f43d54078ed3cf66eb987e729df3f20c6769c1af",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/github-copilot/models.ts",
+      "sha256": "223c7e7974942d64fecf33ff0d4c09981a3efd414fc70b2f473045ba8d1c829f",
+      "role": "production-source",
+      "findingCount": 16
+    },
+    {
+      "path": "extensions/github-copilot/oauth.ts",
+      "sha256": "d7fceda0ad792a61187ad52fe577f4eed8cc4de2ecf0597df03654a2664f1be7",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/github-copilot/openclaw.plugin.json",
+      "sha256": "22f19b7cb6df8c9f50fcb9dfd6801a89671bcf5c7fe37148a4afae5bc3a1a8f2",
+      "role": "manifest",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/github-copilot/package.json",
+      "sha256": "3fbb81a7f9ed4fe276b634ed84f2d5717aacfbd7a7ddcf4bf7808344ec9f39e8",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/github-copilot/provider-policy-api.ts",
+      "sha256": "f43b4ff55793cdbb2ff15516061429c50a69572782ba3092f4308cfded5d91c0",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/github-copilot/register.runtime.ts",
+      "sha256": "934ba3023ad66c798b5066dbc7f0518bc6847cfb5a259ee3ff311693599f7b9b",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/github-copilot/replay-policy.ts",
+      "sha256": "c79da8092343bf92e8193ec5e1affd27b746e46d29295bdbf7e5fd1235241510",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/github-copilot/runtime-auth-error.ts",
+      "sha256": "3f5e0f0bc16bf2ee3c5ed8f746f4e9898707a22ca866f1494d6139bd3d46a08f",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/github-copilot/runtime-auth.ts",
+      "sha256": "f1495f445e7a57dd2d2396b8cb859429b793e697fbfeb1288a72e9171272fe5d",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/github-copilot/runtime-identity.ts",
+      "sha256": "a81c1721b720d6acabb5eef1448878b8cc9425230e15f4d2e7fcb3c8d65a8e30",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/github-copilot/starter-model.ts",
+      "sha256": "4ab589750e8f0e541a5924fc2164639195f5d25d58b0cef87759abfe8d7aadf4",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/github-copilot/stream.ts",
+      "sha256": "31ecbe3daea297065c8c5efce7e97be5dcff0fe86eb9e73fec707a920365334f",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/github-copilot/usage.ts",
+      "sha256": "0e6c66c498c4567933ae142588bfe92937c17106ab2b091b4afb635e2546ce26",
+      "role": "production-source",
+      "findingCount": 13
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/github-copilot/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation, outside the JS/TS source extensions."
+    },
+    {
+      "path": "extensions/github-copilot/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Static vector image asset, not production JS/TS source."
+    },
+    {
+      "path": "extensions/github-copilot/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Static raster image asset, not production JS/TS source."
+    },
+    {
+      "path": "extensions/github-copilot/auth-reconnect.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/auth.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/catalog.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/connection-bound-ids.live.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/connection-bound-ids.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/domain.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/embeddings.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/embeddings.transport.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/index.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/login.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/models.context-window-source.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/models.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/oauth.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/provider-auth.contract.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/provider-discovery.contract.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/provider-policy-api.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/provider-runtime.contract.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/provider.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Vitest-backed registration/context helper; the only callers are index.test.ts:57 and auth-reconnect.test.ts:8. No production import or shared shipped boundary uses it."
+    },
+    {
+      "path": "extensions/github-copilot/replay-policy.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/stream.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    },
+    {
+      "path": "extensions/github-copilot/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript package-boundary configuration, outside the source extensions; it is not package or plugin manifest metadata."
+    },
+    {
+      "path": "extensions/github-copilot/usage.test.ts",
+      "rule": "test-file",
+      "reason": "Test filename matches the frozen test-file exclusion; no production source imports this file."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerEmbeddingProvider",
+      "kind": "api-member",
+      "identity": "api.registerEmbeddingProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 558,
+          "snippet": "api.registerEmbeddingProvider(githubCopilotMemoryEmbeddingProviderAdapter);",
+          "note": "register(api) is the definePluginEntry callback; its API type is defined by the public entry helper."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerProvider",
+      "kind": "api-member",
+      "identity": "api.registerProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 560,
+          "snippet": "api.registerProvider({",
+          "note": "Direct API call in the definePluginEntry register callback."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.embeddingProviders:github-copilot",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.embeddingProviders:github-copilot",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/openclaw.plugin.json",
+          "line": 288,
+          "snippet": "\"embeddingProviders\": [\"github-copilot\"],"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.usageProviders:github-copilot",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.usageProviders:github-copilot",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/openclaw.plugin.json",
+          "line": 289,
+          "snippet": "\"usageProviders\": [\"github-copilot\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.providers:github-copilot",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:github-copilot",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/openclaw.plugin.json",
+          "line": 8,
+          "snippet": "\"providers\": [\"github-copilot\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-core#StreamFn",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-core#StreamFn",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/stream.ts",
+          "line": 1,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/agent-core."
+        },
+        {
+          "path": "extensions/github-copilot/stream.ts",
+          "line": 128,
+          "snippet": "export function wrapCopilotProviderStream(ctx: ProviderWrapStreamFnContext): StreamFn | undefined {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/claude-model-runtime#supportsClaudeAdaptiveThinking",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/claude-model-runtime#supportsClaudeAdaptiveThinking",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/model-metadata.ts",
+          "line": 2,
+          "snippet": "import { supportsClaudeAdaptiveThinking } from \"openclaw/plugin-sdk/claude-model-runtime\";",
+          "note": "Named value import from openclaw/plugin-sdk/claude-model-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/model-metadata.ts",
+          "line": 117,
+          "snippet": "supportsClaudeAdaptiveThinking({ id: normalizedModelId, params });",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/config-contracts."
+        },
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 21,
+          "snippet": "config?: OpenClawConfig;",
+          "note": "Explicit source type reference."
+        },
+        {
+          "path": "extensions/github-copilot/domain.ts",
+          "line": 5,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/config-contracts."
+        },
+        {
+          "path": "extensions/github-copilot/domain.ts",
+          "line": 45,
+          "snippet": "function readConfiguredGithubCopilotDomain(config?: OpenClawConfig): string | undefined {",
+          "note": "Explicit source type reference."
+        },
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/config-contracts."
+        },
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 27,
+          "snippet": "config?: OpenClawConfig;",
+          "note": "Explicit source type reference."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/config-contracts."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 65,
+          "snippet": "function applyCopilotDefaultModel(cfg: OpenClawConfig, modelRef: string): OpenClawConfig {",
+          "note": "Explicit source type reference."
+        },
+        {
+          "path": "extensions/github-copilot/runtime-auth.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/config-contracts."
+        },
+        {
+          "path": "extensions/github-copilot/runtime-auth.ts",
+          "line": 65,
+          "snippet": "config?: OpenClawConfig;",
+          "note": "Explicit source type reference."
+        },
+        {
+          "path": "extensions/github-copilot/runtime-identity.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/config-contracts."
+        },
+        {
+          "path": "extensions/github-copilot/runtime-identity.ts",
+          "line": 11,
+          "snippet": "config?: OpenClawConfig;",
+          "note": "Explicit source type reference."
+        },
+        {
+          "path": "extensions/github-copilot/starter-model.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/config-contracts."
+        },
+        {
+          "path": "extensions/github-copilot/starter-model.ts",
+          "line": 14,
+          "snippet": "config?: OpenClawConfig;",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#ProviderDefaultThinkingPolicyContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#ProviderDefaultThinkingPolicyContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/provider-policy-api.ts",
+          "line": 1,
+          "snippet": "import type { ProviderDefaultThinkingPolicyContext } from \"openclaw/plugin-sdk/core\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/github-copilot/provider-policy-api.ts",
+          "line": 4,
+          "snippet": "export function resolveThinkingProfile(context: ProviderDefaultThinkingPolicyContext) {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#ProviderResolveDynamicModelContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#ProviderResolveDynamicModelContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 2,
+          "snippet": "ProviderResolveDynamicModelContext,",
+          "note": "Explicit type import from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 35,
+          "snippet": "ctx: ProviderResolveDynamicModelContext,",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#ProviderRuntimeModel",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#ProviderRuntimeModel",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 3,
+          "snippet": "ProviderRuntimeModel,",
+          "note": "Explicit type import from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 36,
+          "snippet": "): ProviderRuntimeModel | undefined {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-embeddings#MemoryEmbeddingProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings#MemoryEmbeddingProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 5,
+          "snippet": "type MemoryEmbeddingProvider,",
+          "note": "Explicit type import from openclaw/plugin-sdk/memory-core-host-engine-embeddings."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 196,
+          "snippet": "): MemoryEmbeddingProvider {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-embeddings#MemoryEmbeddingProviderAdapter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings#MemoryEmbeddingProviderAdapter",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 6,
+          "snippet": "type MemoryEmbeddingProviderAdapter,",
+          "note": "Explicit type import from openclaw/plugin-sdk/memory-core-host-engine-embeddings."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 252,
+          "snippet": "export const githubCopilotMemoryEmbeddingProviderAdapter: MemoryEmbeddingProviderAdapter = {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-embeddings#buildRemoteBaseUrlPolicy",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings#buildRemoteBaseUrlPolicy",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 2,
+          "snippet": "buildRemoteBaseUrlPolicy,",
+          "note": "Named value import from openclaw/plugin-sdk/memory-core-host-engine-embeddings."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 206,
+          "snippet": "ssrfPolicy: buildRemoteBaseUrlPolicy(client.baseUrl),",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-embeddings#sanitizeAndNormalizeEmbedding",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings#sanitizeAndNormalizeEmbedding",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 3,
+          "snippet": "sanitizeAndNormalizeEmbedding,",
+          "note": "Named value import from openclaw/plugin-sdk/memory-core-host-engine-embeddings."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 183,
+          "snippet": "vectors[index] = sanitizeAndNormalizeEmbedding(embedding);",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-embeddings#withRemoteHttpResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings#withRemoteHttpResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 4,
+          "snippet": "withRemoteHttpResponse,",
+          "note": "Named value import from openclaw/plugin-sdk/memory-core-host-engine-embeddings."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 203,
+          "snippet": "return await withRemoteHttpResponse({",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#MAX_DATE_TIMESTAMP_MS",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#MAX_DATE_TIMESTAMP_MS",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/oauth.ts",
+          "line": 1,
+          "snippet": "import { MAX_DATE_TIMESTAMP_MS } from \"openclaw/plugin-sdk/number-runtime\";",
+          "note": "Named value import from openclaw/plugin-sdk/number-runtime."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#nonNegativeSecondsToSafeMilliseconds",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#nonNegativeSecondsToSafeMilliseconds",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 3,
+          "snippet": "nonNegativeSecondsToSafeMilliseconds,",
+          "note": "Named value import from openclaw/plugin-sdk/number-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 64,
+          "snippet": ": nonNegativeSecondsToSafeMilliseconds(value.interval);",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#positiveSecondsToSafeMilliseconds",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#positiveSecondsToSafeMilliseconds",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 4,
+          "snippet": "positiveSecondsToSafeMilliseconds,",
+          "note": "Named value import from openclaw/plugin-sdk/number-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 60,
+          "snippet": "const expiresInMs = positiveSecondsToSafeMilliseconds(value.expires_in);",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolveExpiresAtMsFromDurationMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolveExpiresAtMsFromDurationMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 2,
+          "snippet": "resolveExpiresAtMsFromDurationMs,",
+          "note": "Named value import from openclaw/plugin-sdk/number-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 68,
+          "snippet": ": resolveExpiresAtMsFromDurationMs(expiresInMs, { nowMs: issuedAt });",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolveTimerTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolveTimerTimeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 5,
+          "snippet": "resolveTimerTimeoutMs,",
+          "note": "Named value import from openclaw/plugin-sdk/number-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 228,
+          "snippet": "const safeDelayMs = resolveTimerTimeoutMs(remainingMs, 1);",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 4,
+          "snippet": "type ProviderAuthContext,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 49,
+          "snippet": "ctx: ProviderAuthContext,",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthDoctorHintContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthDoctorHintContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/oauth.ts",
+          "line": 2,
+          "snippet": "import type { ProviderAuthDoctorHintContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/oauth.ts",
+          "line": 123,
+          "snippet": "context: ProviderAuthDoctorHintContext,",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthMethodNonInteractiveContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthMethodNonInteractiveContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 6,
+          "snippet": "type ProviderAuthMethodNonInteractiveContext,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 213,
+          "snippet": "ctx: ProviderAuthMethodNonInteractiveContext,",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 5,
+          "snippet": "type ProviderAuthResult,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 51,
+          "snippet": "): ProviderAuthResult[\"profiles\"][number] {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderCatalogContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderCatalogContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 3,
+          "snippet": "ProviderCatalogContext,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 89,
+          "snippet": "async function runCatalog(ctx: ProviderCatalogContext): Promise<ProviderCatalogResult> {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderCatalogResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderCatalogResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 4,
+          "snippet": "ProviderCatalogResult,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 89,
+          "snippet": "async function runCatalog(ctx: ProviderCatalogContext): Promise<ProviderCatalogResult> {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderPrepareDynamicModelContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderPrepareDynamicModelContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 2,
+          "snippet": "import type { ProviderPrepareDynamicModelContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 24,
+          "snippet": "authProfileMode?: ProviderPrepareDynamicModelContext[\"authProfileMode\"];",
+          "note": "Explicit source type reference."
+        },
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 5,
+          "snippet": "ProviderPrepareDynamicModelContext,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 30,
+          "snippet": "authProfileMode?: ProviderPrepareDynamicModelContext[\"authProfileMode\"];",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderReplayPolicy",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderReplayPolicy",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/replay-policy.ts",
+          "line": 2,
+          "snippet": "ProviderReplayPolicy,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/replay-policy.ts",
+          "line": 39,
+          "snippet": "): ProviderReplayPolicy | undefined {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderReplayPolicyContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderReplayPolicyContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/replay-policy.ts",
+          "line": 3,
+          "snippet": "ProviderReplayPolicyContext,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/replay-policy.ts",
+          "line": 38,
+          "snippet": "ctx: ProviderReplayPolicyContext,",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderResolveDynamicModelContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderResolveDynamicModelContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 6,
+          "snippet": "ProviderResolveDynamicModelContext,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 146,
+          "snippet": "function resolveDynamicModel(ctx: ProviderResolveDynamicModelContext) {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderRuntimeModel",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderRuntimeModel",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 7,
+          "snippet": "ProviderRuntimeModel,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 48,
+          "snippet": "Map<string, ReadonlyMap<string, ProviderRuntimeModel>>",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderSanitizeReplayHistoryContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderSanitizeReplayHistoryContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/replay-policy.ts",
+          "line": 4,
+          "snippet": "ProviderSanitizeReplayHistoryContext,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/replay-policy.ts",
+          "line": 55,
+          "snippet": "export function sanitizeGithubCopilotReplayHistory(ctx: ProviderSanitizeReplayHistoryContext) {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderWrapStreamFnContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderWrapStreamFnContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/stream.ts",
+          "line": 2,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/stream.ts",
+          "line": 128,
+          "snippet": "export function wrapCopilotProviderStream(ctx: ProviderWrapStreamFnContext): StreamFn | undefined {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 3,
+          "snippet": "definePluginEntry,",
+          "note": "Named value import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 333,
+          "snippet": "export default definePluginEntry({",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#OAuthCredential",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#OAuthCredential",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/oauth.ts",
+          "line": 3,
+          "snippet": "import type { OAuthCredential } from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/oauth.ts",
+          "line": 65,
+          "snippet": "export function refreshGithubCopilotOAuth(credential: OAuthCredential) {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#applyAuthProfileConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#applyAuthProfileConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 9,
+          "snippet": "applyAuthProfileConfig,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 325,
+          "snippet": "const configWithAuth = applyAuthProfileConfig(configWithDomain, {",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#buildCopilotIdeHeaders",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#buildCopilotIdeHeaders",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/runtime-identity.ts",
+          "line": 2,
+          "snippet": "import { buildCopilotIdeHeaders } from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/runtime-identity.ts",
+          "line": 35,
+          "snippet": "...buildCopilotIdeHeaders(),",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 1,
+          "snippet": "import { buildCopilotIdeHeaders } from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 33,
+          "snippet": "...buildCopilotIdeHeaders({ includeApiVersion: true }),",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#coerceSecretRef",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#coerceSecretRef",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 4,
+          "snippet": "coerceSecretRef,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 45,
+          "snippet": "Boolean(coerceSecretRef(providerConfig?.apiKey, params.config?.secrets?.defaults))) ||",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 10,
+          "snippet": "coerceSecretRef,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 106,
+          "snippet": "normalizeOptionalSecretInput(profile.token) || coerceSecretRef(profile.tokenRef)?.id.trim(),",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#ensureAuthProfileStoreAsync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#ensureAuthProfileStoreAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 5,
+          "snippet": "ensureAuthProfileStoreAsync,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 31,
+          "snippet": "const authStore = await ensureAuthProfileStoreAsync(params.agentDir, {",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 11,
+          "snippet": "ensureAuthProfileStoreAsync,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 97,
+          "snippet": "const authStore = await ensureAuthProfileStoreAsync(agentDir, {",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#findNormalizedProviderValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#findNormalizedProviderValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 6,
+          "snippet": "findNormalizedProviderValue,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 79,
+          "snippet": "findNormalizedProviderValue(authStore.order, PROVIDER_ID) ??",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#listProfilesForProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#listProfilesForProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 7,
+          "snippet": "listProfilesForProvider,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 34,
+          "snippet": "const profileIds = listProfilesForProvider(authStore, PROVIDER_ID);",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 12,
+          "snippet": "listProfilesForProvider,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 100,
+          "snippet": "return listProfilesForProvider(authStore, PROVIDER_ID).find((profileId) => {",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#normalizeOptionalSecretInput",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#normalizeOptionalSecretInput",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 8,
+          "snippet": "normalizeOptionalSecretInput,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 37,
+          "snippet": "const githubToken = normalizeOptionalSecretInput(params.env.COPILOT_GITHUB_TOKEN) ?? \"\";",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 13,
+          "snippet": "normalizeOptionalSecretInput,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 106,
+          "snippet": "normalizeOptionalSecretInput(profile.token) || coerceSecretRef(profile.tokenRef)?.id.trim(),",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#resolveAuthProfileOrder",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#resolveAuthProfileOrder",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 9,
+          "snippet": "resolveAuthProfileOrder,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 87,
+          "snippet": ": resolveAuthProfileOrder({",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#resolveDefaultSecretProviderAlias",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#resolveDefaultSecretProviderAlias",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 14,
+          "snippet": "resolveDefaultSecretProviderAlias,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 313,
+          "snippet": "provider: resolveDefaultSecretProviderAlias(ctx.baseConfig, \"env\", {",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#upsertAuthProfileWithLock",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#upsertAuthProfileWithLock",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 15,
+          "snippet": "upsertAuthProfileWithLock,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-auth."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 304,
+          "snippet": "await upsertAuthProfileWithLock({",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#LiveModelCatalogHttpError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#LiveModelCatalogHttpError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 10,
+          "snippet": "LiveModelCatalogHttpError,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-catalog-live-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 72,
+          "snippet": "throw new LiveModelCatalogHttpError(PROVIDER_ID, error.status);",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 5,
+          "snippet": "import { LiveModelCatalogHttpError } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";",
+          "note": "Named value import from openclaw/plugin-sdk/provider-catalog-live-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 373,
+          "snippet": "throw new LiveModelCatalogHttpError(PROVIDER_ID, res.status);",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#runLiveProviderCatalog",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#runLiveProviderCatalog",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 11,
+          "snippet": "runLiveProviderCatalog,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-catalog-live-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 95,
+          "snippet": "return await runLiveProviderCatalog({",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-shared#getCachedLiveCatalogValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared#getCachedLiveCatalogValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 13,
+          "snippet": "import { getCachedLiveCatalogValue } from \"openclaw/plugin-sdk/provider-catalog-shared\";",
+          "note": "Named value import from openclaw/plugin-sdk/provider-catalog-shared."
+        },
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 76,
+          "snippet": "const models = await getCachedLiveCatalogValue({",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonArrayFieldResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonArrayFieldResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 6,
+          "snippet": "import { readProviderJsonArrayFieldResponse } from \"openclaw/plugin-sdk/provider-http\";",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 375,
+          "snippet": "const data = await readProviderJsonArrayFieldResponse(res, \"Copilot /models\", \"data\");",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 9,
+          "snippet": "readProviderJsonResponse,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 102,
+          "snippet": "const payload = await readProviderJsonResponse(response, \"github-copilot.model-discovery\");",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 7,
+          "snippet": "import { readProviderJsonResponse } from \"openclaw/plugin-sdk/provider-http\";",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 126,
+          "snippet": "await readProviderJsonResponse(response, \"github-copilot.device-flow\"),",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/runtime-auth.ts",
+          "line": 3,
+          "snippet": "import { readProviderJsonResponse } from \"openclaw/plugin-sdk/provider-http\";",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/github-copilot/runtime-auth.ts",
+          "line": 97,
+          "snippet": "await readProviderJsonResponse(response, \"github-copilot.user\"),",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 2,
+          "snippet": "import { readProviderJsonResponse } from \"openclaw/plugin-sdk/provider-http\";",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 48,
+          "snippet": "const payload = await readProviderJsonResponse<unknown>(res, \"github-copilot-usage\");",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readResponseTextLimited",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readResponseTextLimited",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 10,
+          "snippet": "readResponseTextLimited,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 97,
+          "snippet": "await readResponseTextLimited(response, COPILOT_ERROR_BODY_LIMIT_BYTES),",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#redactProviderResponseErrorText",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#redactProviderResponseErrorText",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 11,
+          "snippet": "redactProviderResponseErrorText,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 96,
+          "snippet": "const detail = redactProviderResponseErrorText(",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-metadata#buildManifestModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-metadata#buildManifestModelProviderConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/model-metadata.ts",
+          "line": 3,
+          "snippet": "import { buildManifestModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-metadata\";",
+          "note": "Named value import from openclaw/plugin-sdk/provider-model-metadata."
+        },
+        {
+          "path": "extensions/github-copilot/model-metadata.ts",
+          "line": 25,
+          "snippet": "const manifestModels = buildManifestModelProviderConfig({",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/model-metadata.ts",
+          "line": 4,
+          "snippet": "import type { ModelDefinitionConfig } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/github-copilot/model-metadata.ts",
+          "line": 18,
+          "snippet": "const COPILOT_CHAT_COMPLETIONS_COMPAT: ModelDefinitionConfig[\"compat\"] = {",
+          "note": "Explicit source type reference."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 7,
+          "snippet": "import type { ModelDefinitionConfig } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 182,
+          "snippet": "type CopilotCatalogModel = Omit<ModelDefinitionConfig, \"input\"> & {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#buildStrictAnthropicReplayPolicy",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#buildStrictAnthropicReplayPolicy",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/replay-policy.ts",
+          "line": 6,
+          "snippet": "import { buildStrictAnthropicReplayPolicy } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Named value import from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/github-copilot/replay-policy.ts",
+          "line": 43,
+          "snippet": "return buildStrictAnthropicReplayPolicy({",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#normalizeModelCompat",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#normalizeModelCompat",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 8,
+          "snippet": "import { normalizeModelCompat } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Named value import from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 54,
+          "snippet": "return normalizeModelCompat({",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-oauth-runtime#OAuthCredentials",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-oauth-runtime#OAuthCredentials",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/oauth.ts",
+          "line": 5,
+          "snippet": "OAuthCredentials,",
+          "note": "Explicit type import from openclaw/plugin-sdk/provider-oauth-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/oauth.ts",
+          "line": 30,
+          "snippet": "): Promise<OAuthCredentials> {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-oauth-runtime#OAuthLoginCallbacks",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-oauth-runtime#OAuthLoginCallbacks",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/oauth.ts",
+          "line": 6,
+          "snippet": "OAuthLoginCallbacks,",
+          "note": "Explicit type import from openclaw/plugin-sdk/provider-oauth-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/oauth.ts",
+          "line": 29,
+          "snippet": "callbacks: OAuthLoginCallbacks,",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#resolveAgentModelPrimaryValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#resolveAgentModelPrimaryValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 17,
+          "snippet": "import { resolveAgentModelPrimaryValue } from \"openclaw/plugin-sdk/provider-onboard\";",
+          "note": "Named value import from openclaw/plugin-sdk/provider-onboard."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 66,
+          "snippet": "if (resolveAgentModelPrimaryValue(cfg.agents?.defaults?.model)) {",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#applyAnthropicEphemeralCacheControlMarkers",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#applyAnthropicEphemeralCacheControlMarkers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/stream.ts",
+          "line": 4,
+          "snippet": "applyAnthropicEphemeralCacheControlMarkers,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-stream-shared."
+        },
+        {
+          "path": "extensions/github-copilot/stream.ts",
+          "line": 125,
+          "snippet": "applyAnthropicEphemeralCacheControlMarkers(record);",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#projectCopilotRequestFacts",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#projectCopilotRequestFacts",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/stream.ts",
+          "line": 5,
+          "snippet": "projectCopilotRequestFacts,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-stream-shared."
+        },
+        {
+          "path": "extensions/github-copilot/stream.ts",
+          "line": 140,
+          "snippet": "const facts = projectCopilotRequestFacts(context.messages, \"nested\");",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-usage#PROVIDER_LABELS",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-usage#PROVIDER_LABELS",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 7,
+          "snippet": "PROVIDER_LABELS,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-usage."
+        },
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 64,
+          "snippet": "displayName: PROVIDER_LABELS[\"github-copilot\"],",
+          "note": "Direct SDK export member-access occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-usage#ProviderUsageSnapshot",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-usage#ProviderUsageSnapshot",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 8,
+          "snippet": "type ProviderUsageSnapshot,",
+          "note": "Explicit type import from openclaw/plugin-sdk/provider-usage."
+        },
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 27,
+          "snippet": "): Promise<ProviderUsageSnapshot> {",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-usage#UsageWindow",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-usage#UsageWindow",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 9,
+          "snippet": "type UsageWindow,",
+          "note": "Explicit type import from openclaw/plugin-sdk/provider-usage."
+        },
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 50,
+          "snippet": "const windows: UsageWindow[] = [];",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-usage#buildUsageHttpErrorSnapshot",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-usage#buildUsageHttpErrorSnapshot",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 4,
+          "snippet": "buildUsageHttpErrorSnapshot,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-usage."
+        },
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 42,
+          "snippet": "return buildUsageHttpErrorSnapshot({",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-usage#clampPercent",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-usage#clampPercent",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 6,
+          "snippet": "clampPercent,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-usage."
+        },
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 58,
+          "snippet": "windows.push({ label, usedPercent: clampPercent(100 - (quota.percent_remaining ?? 0)) });",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-usage#fetchJson",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-usage#fetchJson",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 5,
+          "snippet": "fetchJson,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-usage."
+        },
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 28,
+          "snippet": "const res = await fetchJson(",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/retry-runtime#sleepWithAbort",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/retry-runtime#sleepWithAbort",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 8,
+          "snippet": "import { sleepWithAbort } from \"openclaw/plugin-sdk/retry-runtime\";",
+          "note": "Named value import from openclaw/plugin-sdk/retry-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 230,
+          "snippet": "await sleepWithAbort(waitMs, signal).catch(() => {",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input#normalizeResolvedSecretInputString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input#normalizeResolvedSecretInputString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 13,
+          "snippet": "import { normalizeResolvedSecretInputString } from \"openclaw/plugin-sdk/secret-input\";",
+          "note": "Named value import from openclaw/plugin-sdk/secret-input."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 261,
+          "snippet": "const explicitValue = normalizeResolvedSecretInputString({",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/runtime-identity.ts",
+          "line": 3,
+          "snippet": "import { normalizeResolvedSecretInputString } from \"openclaw/plugin-sdk/secret-input\";",
+          "note": "Named value import from openclaw/plugin-sdk/secret-input."
+        },
+        {
+          "path": "extensions/github-copilot/runtime-identity.ts",
+          "line": 20,
+          "snippet": "normalizeResolvedSecretInputString({",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input-runtime#resolveConfiguredSecretInputWithFallback",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input-runtime#resolveConfiguredSecretInputWithFallback",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 12,
+          "snippet": "resolveConfiguredSecretInputWithFallback,",
+          "note": "Named value import from openclaw/plugin-sdk/secret-input-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 60,
+          "snippet": "const resolved = await resolveConfiguredSecretInputWithFallback({",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input-runtime#resolveRequiredConfiguredSecretRefInputString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input-runtime#resolveRequiredConfiguredSecretRefInputString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 13,
+          "snippet": "resolveRequiredConfiguredSecretRefInputString,",
+          "note": "Named value import from openclaw/plugin-sdk/secret-input-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 109,
+          "snippet": "const resolved = await resolveRequiredConfiguredSecretRefInputString({",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 18,
+          "snippet": "import { resolveRequiredConfiguredSecretRefInputString } from \"openclaw/plugin-sdk/secret-input-runtime\";",
+          "note": "Named value import from openclaw/plugin-sdk/secret-input-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 434,
+          "snippet": "const resolved = await resolveRequiredConfiguredSecretRefInputString({",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#SsrFPolicy",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#SsrFPolicy",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 14,
+          "snippet": "import { fetchWithSsrFGuard, type SsrFPolicy } from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 75,
+          "snippet": "ssrfPolicy?: SsrFPolicy;",
+          "note": "Explicit source type reference."
+        },
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 9,
+          "snippet": "import { fetchWithSsrFGuard, type SsrFPolicy } from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "Explicit type import from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 23,
+          "snippet": "const githubAuthSsrfPolicy = (domain: string): SsrFPolicy => ({",
+          "note": "Explicit source type reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 14,
+          "snippet": "import { fetchWithSsrFGuard, type SsrFPolicy } from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "Named value import from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 82,
+          "snippet": "const { response, release } = await fetchWithSsrFGuard({",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 9,
+          "snippet": "import { fetchWithSsrFGuard, type SsrFPolicy } from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "Named value import from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 102,
+          "snippet": "const { response, release } = await fetchWithSsrFGuard({",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 10,
+          "snippet": "fetchWithSsrFGuard,",
+          "note": "Named value import from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 355,
+          "snippet": "const guarded = await fetchWithSsrFGuard({",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedOrigin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedOrigin",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 11,
+          "snippet": "ssrfPolicyFromHttpBaseUrlAllowedOrigin,",
+          "note": "Named value import from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 357,
+          "snippet": "policy: ssrfPolicyFromHttpBaseUrlAllowedOrigin(trimmedBase),",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalObjectRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalObjectRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/connection-bound-ids.ts",
+          "line": 2,
+          "snippet": "import { asOptionalObjectRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/connection-bound-ids.ts",
+          "line": 33,
+          "snippet": "const dependentMessage = asOptionalObjectRecord(input[index]);",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 16,
+          "snippet": "asOptionalObjectRecord,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 158,
+          "snippet": "const data = asOptionalObjectRecord(payload)?.data;",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/replay-policy.ts",
+          "line": 7,
+          "snippet": "import { asOptionalObjectRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/replay-policy.ts",
+          "line": 12,
+          "snippet": "const type = asOptionalObjectRecord(value)?.type;",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/stream.ts",
+          "line": 7,
+          "snippet": "import { asOptionalObjectRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/stream.ts",
+          "line": 36,
+          "snippet": "const content = asOptionalObjectRecord(message)?.content;",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asPositiveSafeInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asPositiveSafeInteger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 14,
+          "snippet": "asPositiveSafeInteger,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 265,
+          "snippet": "const nativeContextWindow = asPositiveSafeInteger(limits?.max_context_window_tokens);",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#filterStringEntries",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#filterStringEntries",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 17,
+          "snippet": "filterStringEntries,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 115,
+          "snippet": "const endpoints = filterStringEntries(entry.supported_endpoints);",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 11,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 49,
+          "snippet": "const data = isRecord(payload) ? (payload as CopilotUsageResponse) : {};",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalLowercaseString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalLowercaseString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/model-metadata.ts",
+          "line": 5,
+          "snippet": "import { normalizeOptionalLowercaseString } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/model-metadata.ts",
+          "line": 69,
+          "snippet": "const normalized = normalizeOptionalLowercaseString(modelId) ?? \"\";",
+          "note": "Direct SDK export call occurrence."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 15,
+          "snippet": "normalizeOptionalLowercaseString,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 42,
+          "snippet": "const lowerModelId = normalizeOptionalLowercaseString(trimmedModelId) ?? \"\";",
+          "note": "Direct SDK export call occurrence."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/stream.ts",
+          "line": 1,
+          "snippet": "import type { StreamFn } from \"openclaw/plugin-sdk/agent-core\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/claude-model-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/claude-model-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/model-metadata.ts",
+          "line": 2,
+          "snippet": "import { supportsClaudeAdaptiveThinking } from \"openclaw/plugin-sdk/claude-model-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-contracts",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-contracts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/domain.ts",
+          "line": 5,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/runtime-auth.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/runtime-identity.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/starter-model.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/core\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/provider-policy-api.ts",
+          "line": 1,
+          "snippet": "import type { ProviderDefaultThinkingPolicyContext } from \"openclaw/plugin-sdk/core\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/memory-core-host-engine-embeddings",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-embeddings",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/memory-core-host-engine-embeddings\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/number-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/oauth.ts",
+          "line": 1,
+          "snippet": "import { MAX_DATE_TIMESTAMP_MS } from \"openclaw/plugin-sdk/number-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 2,
+          "snippet": "import type { ProviderPrepareDynamicModelContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/oauth.ts",
+          "line": 2,
+          "snippet": "import type { ProviderAuthDoctorHintContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/replay-policy.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/stream.ts",
+          "line": 2,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 10,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 16,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/oauth.ts",
+          "line": 3,
+          "snippet": "import type { OAuthCredential } from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/runtime-identity.ts",
+          "line": 2,
+          "snippet": "import { buildCopilotIdeHeaders } from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 1,
+          "snippet": "import { buildCopilotIdeHeaders } from \"openclaw/plugin-sdk/provider-auth\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 12,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 5,
+          "snippet": "import { LiveModelCatalogHttpError } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/dynamic-models.ts",
+          "line": 13,
+          "snippet": "import { getCachedLiveCatalogValue } from \"openclaw/plugin-sdk/provider-catalog-shared\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-http",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-http",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 12,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-http\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 7,
+          "snippet": "import { readProviderJsonResponse } from \"openclaw/plugin-sdk/provider-http\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 6,
+          "snippet": "import { readProviderJsonArrayFieldResponse } from \"openclaw/plugin-sdk/provider-http\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/runtime-auth.ts",
+          "line": 3,
+          "snippet": "import { readProviderJsonResponse } from \"openclaw/plugin-sdk/provider-http\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 2,
+          "snippet": "import { readProviderJsonResponse } from \"openclaw/plugin-sdk/provider-http\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-metadata",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-metadata",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/model-metadata.ts",
+          "line": 3,
+          "snippet": "import { buildManifestModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-metadata\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-shared",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/model-metadata.ts",
+          "line": 4,
+          "snippet": "import type { ModelDefinitionConfig } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 7,
+          "snippet": "import type { ModelDefinitionConfig } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 8,
+          "snippet": "import { normalizeModelCompat } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/replay-policy.ts",
+          "line": 6,
+          "snippet": "import { buildStrictAnthropicReplayPolicy } from \"openclaw/plugin-sdk/provider-model-shared\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-oauth-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-oauth-runtime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/oauth.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-oauth-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-onboard",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-onboard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 17,
+          "snippet": "import { resolveAgentModelPrimaryValue } from \"openclaw/plugin-sdk/provider-onboard\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-stream-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/stream.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-stream-shared\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-usage",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-usage",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 10,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-usage\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/retry-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/retry-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 8,
+          "snippet": "import { sleepWithAbort } from \"openclaw/plugin-sdk/retry-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/secret-input",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/secret-input",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 13,
+          "snippet": "import { normalizeResolvedSecretInputString } from \"openclaw/plugin-sdk/secret-input\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/runtime-identity.ts",
+          "line": 3,
+          "snippet": "import { normalizeResolvedSecretInputString } from \"openclaw/plugin-sdk/secret-input\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/secret-input-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/secret-input-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/auth.ts",
+          "line": 14,
+          "snippet": "} from \"openclaw/plugin-sdk/secret-input-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/index.ts",
+          "line": 18,
+          "snippet": "import { resolveRequiredConfiguredSecretRefInputString } from \"openclaw/plugin-sdk/secret-input-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 14,
+          "snippet": "import { fetchWithSsrFGuard, type SsrFPolicy } from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/login.ts",
+          "line": 9,
+          "snippet": "import { fetchWithSsrFGuard, type SsrFPolicy } from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 12,
+          "snippet": "} from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github-copilot/connection-bound-ids.ts",
+          "line": 2,
+          "snippet": "import { asOptionalObjectRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/embeddings.ts",
+          "line": 18,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/model-metadata.ts",
+          "line": 5,
+          "snippet": "import { normalizeOptionalLowercaseString } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/models.ts",
+          "line": 16,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/replay-policy.ts",
+          "line": 7,
+          "snippet": "import { asOptionalObjectRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/stream.ts",
+          "line": 7,
+          "snippet": "import { asOptionalObjectRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        },
+        {
+          "path": "extensions/github-copilot/usage.ts",
+          "line": 11,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Public SDK module specifier; source import kinds follow its value/type specifiers."
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently reviewed all 20 production TypeScript files and both package/manifest metadata files. The 47-file plugin inventory is partitioned into 22 reviewed and 25 excluded files; source bytes were checked against the pinned commit.",
+    "provider.test-support.ts was individually read and excluded only after verifying its two callers are index.test.ts and auth-reconnect.test.ts. It imports Vitest and the SDK test API; these test-only dependencies do not enter production expectations.",
+    "Every production relative import remains within extensions/github-copilot. api.ts reexports the plugin-owned domain helper; register.runtime.ts reexports plugin-owned runtime-auth, starter-model, and usage helpers. Their dynamic imports do not create SDK dynamic-import or reexport findings. There is no additional shared shipped source outside this root.",
+    "All 22 imported SDK subpaths are exact public package.json exports; their source facades establish the named exports. Public export names remain canonical, including provider-auth#upsertAuthProfileWithLock, whose SDK facade aliases its internal Compat implementation. SDK implementations and separately installed packages are not recursively attributed.",
+    "The definePluginEntry register callback proves exactly api.registerEmbeddingProvider and api.registerProvider. ProviderAuthContext, provider/catalog/model callback contexts, OAuth callbacks, embedding adapter options, and the plugin-owned objects named runtime or runtimeAuth are not OpenClawPluginApi or PluginRuntime handles. Their properties do not create API/runtime findings.",
+    "Provider methods such as prepareDynamicModel, buildReplayPolicy, wrapStreamFn, and fetchUsageSnapshot are provider contracts, not named API on/registerHook registrations. There are no named hook or runtime-member findings.",
+    "Explicit import type and inline type imports remain type dependencies with representative annotation/indexed-access evidence. Indexed access on provider model/context types is not public API/runtime indexed access. No ordinary value import is reclassified based on hypothetical emitted JavaScript.",
+    "Known SDK helper calls retain their direct exported-function dependencies without inferring internal API/runtime consumption. Calls on arbitrary helper return values (such as fetch release callbacks) are not SDK-export or runtime-member calls.",
+    "The manifest contributes providers plus contracts.embeddingProviders and contracts.usageProviders. Model catalog rows, provider endpoints/request policy, auth/setup choices, CLI option descriptions, category, and config schema are metadata outside the agreed contract identities."
+  ]
+}

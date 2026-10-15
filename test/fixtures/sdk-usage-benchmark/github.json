@@ -1,0 +1,1031 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "github",
+    "path": "extensions/github"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_github",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/github/api.ts",
+      "sha256": "785064c3ca76ed0a5c9978c5f71c5bfae398e65b2d73b7e230faa1e5606dc1e2",
+      "role": "production-source",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/github/index.ts",
+      "sha256": "cb8d65f4ff70b0c7e4a1c56c283576a201f996ddb810522b6820770e90417977",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/github/openclaw.plugin.json",
+      "sha256": "8382e8c66e041bb41b65c1510dafc020c9c952d80ec0aa1a773947dd81afea40",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/github/package.json",
+      "sha256": "c540c323a4aa2fc87aa5751c2cde13b5cd5085720fd5930d307eaeb8fd1f1940",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/github/src/detail-checks.ts",
+      "sha256": "d7a8e5cfbb7d3451986c6124b29233a5c0fcf35612dc44d9eee2edb86cd98dd2",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/github/src/detail.ts",
+      "sha256": "e9726530e5f44e5c5d800960627c96ad5354f63d342f0f1d852ce8995b8bffdb",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/github/src/github-api.ts",
+      "sha256": "0ba5c8ef560e6f8583c8648d0fbe62c02bf46d763eaa23d6f7a649bf7deb55a3",
+      "role": "production-source",
+      "findingCount": 13
+    },
+    {
+      "path": "extensions/github/src/handlers.ts",
+      "sha256": "892513b6a4abbc0077c8a12f93ac0a2376696cf418765f35b334bdbffc1f6533",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/github/src/image.ts",
+      "sha256": "4efe5835dae328e56eb1a1366f364ae06434c0cee2e92210a5b2a0381f47137e",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/github/src/preview-contract.ts",
+      "sha256": "f3afcc60190ed2be42c48b5c597e59217691eb861d338045baed0ccf1ef57f17",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/github/src/preview.ts",
+      "sha256": "08ac151c55649ee7bb22991058bdf1c2963ab5c1cc8e302a1345ce451e470bda",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/github/src/targets.ts",
+      "sha256": "fd407985f33c869aeb86989205f1dea80d878275aa764b0e5dfa725a2ec13aff",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/github/src/upgrade.ts",
+      "sha256": "f1f7239092ded63a2186d4a737ca90cc031adc25512ae9166bb396def6673d15",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/github/src/view-model.ts",
+      "sha256": "778573845ea74f42496ab21b2abdd67245f938f79103a8d985725ef977cc03f7",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/github/upgrade-api.ts",
+      "sha256": "4af6544e1ce67e6fc711c2423f136d8fc7561fa62bcb3e8c2ef6e5741449284d",
+      "role": "production-source",
+      "findingCount": 0
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/github/README.md",
+      "rule": "non-source",
+      "reason": "Plugin user documentation, outside the eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/github/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Shipped SVG artwork, not eligible JS/TS source."
+    },
+    {
+      "path": "extensions/github/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Shipped PNG artwork, not eligible JS/TS source."
+    },
+    {
+      "path": "extensions/github/index.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test source; the complete production import graph has no import of this file."
+    },
+    {
+      "path": "extensions/github/src/detail-checks.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test source; the complete production import graph has no import of this file."
+    },
+    {
+      "path": "extensions/github/src/detail.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test source; the complete production import graph has no import of this file."
+    },
+    {
+      "path": "extensions/github/src/github-api.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test source; the complete production import graph has no import of this file."
+    },
+    {
+      "path": "extensions/github/src/preview.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test source; the complete production import graph has no import of this file."
+    },
+    {
+      "path": "extensions/github/src/upgrade.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test source; the complete production import graph has no import of this file."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerGatewayMethod",
+      "kind": "api-member",
+      "identity": "api.registerGatewayMethod",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/index.ts",
+          "line": 34,
+          "snippet": "api.registerGatewayMethod(",
+          "note": "definePluginEntry register is contextually typed by OpenClawPluginDefinition.register(api: OpenClawPluginApi). The literal methods loop registers github.preview, github.detail and github.image."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.session.controls.registerControlUiDescriptor",
+      "kind": "api-member",
+      "identity": "api.session.controls.registerControlUiDescriptor",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/index.ts",
+          "line": 14,
+          "snippet": "api.session.controls.registerControlUiDescriptor({",
+          "note": "definePluginEntry supplies the public OpenClawPluginApi. plugin-api.types.ts defines session.controls.registerControlUiDescriptor; no incidental session/controls prefixes are emitted."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.gatewayMethodDispatch:authenticated-request",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.gatewayMethodDispatch:authenticated-request",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/openclaw.plugin.json",
+          "line": 12,
+          "snippet": "\"gatewayMethodDispatch\": [\"authenticated-request\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/collection-runtime#createStaleWhileRevalidateCache",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/collection-runtime#createStaleWhileRevalidateCache",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/preview.ts",
+          "line": 1,
+          "snippet": "import { createStaleWhileRevalidateCache } from \"openclaw/plugin-sdk/collection-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/preview.ts",
+          "line": 63,
+          "snippet": "ReturnType<typeof createStaleWhileRevalidateCache<CachedPreview>>",
+          "note": "Direct typeof references the SDK symbol in type syntax."
+        },
+        {
+          "path": "extensions/github/src/preview.ts",
+          "line": 384,
+          "snippet": "createStaleWhileRevalidateCache<CachedPreview>({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/collection-runtime#pruneMapToMaxSize",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/collection-runtime#pruneMapToMaxSize",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/detail.ts",
+          "line": 1,
+          "snippet": "import { pruneMapToMaxSize } from \"openclaw/plugin-sdk/collection-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/detail.ts",
+          "line": 504,
+          "snippet": "pruneMapToMaxSize(detailCache, CACHE_LIMIT);"
+        },
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 2,
+          "snippet": "import { pruneMapToMaxSize } from \"openclaw/plugin-sdk/collection-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 219,
+          "snippet": "pruneMapToMaxSize(cooldowns, GITHUB_QUOTA_CACHE_LIMIT);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/control-ui-link-reader#ControlUiLinkReaderDocument",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/control-ui-link-reader#ControlUiLinkReaderDocument",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/detail.ts",
+          "line": 2,
+          "snippet": "import type { ControlUiLinkReaderDocument } from \"openclaw/plugin-sdk/control-ui-link-reader\";"
+        },
+        {
+          "path": "extensions/github/src/detail.ts",
+          "line": 26,
+          "snippet": "type GitHubComment = NonNullable<ControlUiLinkReaderDocument[\"comments\"]>[number];"
+        },
+        {
+          "path": "extensions/github/src/detail-checks.ts",
+          "line": 1,
+          "snippet": "import type { ControlUiLinkReaderDocument } from \"openclaw/plugin-sdk/control-ui-link-reader\";"
+        },
+        {
+          "path": "extensions/github/src/detail-checks.ts",
+          "line": 4,
+          "snippet": "type Checks = NonNullable<ControlUiLinkReaderDocument[\"checks\"]>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/control-ui-link-reader#ControlUiLinkReaderPreview",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/control-ui-link-reader#ControlUiLinkReaderPreview",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/view-model.ts",
+          "line": 1,
+          "snippet": "import type { ControlUiLinkReaderPreview } from \"openclaw/plugin-sdk/control-ui-link-reader\";"
+        },
+        {
+          "path": "extensions/github/src/view-model.ts",
+          "line": 10,
+          "snippet": "): NonNullable<ControlUiLinkReaderPreview[\"metadata\"]> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-method-runtime#dispatchGatewayMethod",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-method-runtime#dispatchGatewayMethod",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/handlers.ts",
+          "line": 1,
+          "snippet": "import { dispatchGatewayMethod } from \"openclaw/plugin-sdk/gateway-method-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/handlers.ts",
+          "line": 29,
+          "snippet": "const result = await dispatchGatewayMethod("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#ErrorCodes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#ErrorCodes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/handlers.ts",
+          "line": 3,
+          "snippet": "ErrorCodes,",
+          "note": "Imported from openclaw/plugin-sdk/gateway-runtime in lines 2\u20136."
+        },
+        {
+          "path": "extensions/github/src/handlers.ts",
+          "line": 24,
+          "snippet": "errorShape(ErrorCodes.INVALID_REQUEST, \"invalid \" + method + \" params\"),",
+          "note": "The exported ErrorCodes object is read; the function call belongs to errorShape."
+        },
+        {
+          "path": "extensions/github/src/handlers.ts",
+          "line": 77,
+          "snippet": "respond(false, undefined, errorShape(ErrorCodes.UNAVAILABLE, message, details));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#GatewayRequestHandlerOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#GatewayRequestHandlerOptions",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/handlers.ts",
+          "line": 5,
+          "snippet": "type GatewayRequestHandlerOptions,",
+          "note": "Inline type import from openclaw/plugin-sdk/gateway-runtime."
+        },
+        {
+          "path": "extensions/github/src/handlers.ts",
+          "line": 17,
+          "snippet": "{ params, respond }: GatewayRequestHandlerOptions,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#errorShape",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#errorShape",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/handlers.ts",
+          "line": 4,
+          "snippet": "errorShape,",
+          "note": "Imported from openclaw/plugin-sdk/gateway-runtime in lines 2\u20136."
+        },
+        {
+          "path": "extensions/github/src/handlers.ts",
+          "line": 24,
+          "snippet": "errorShape(ErrorCodes.INVALID_REQUEST, \"invalid \" + method + \" params\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/logging-core#createSubsystemLogger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/logging-core#createSubsystemLogger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 3,
+          "snippet": "import { createSubsystemLogger } from \"openclaw/plugin-sdk/logging-core\";"
+        },
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 57,
+          "snippet": "const log = createSubsystemLogger(\"github/http\");"
+        },
+        {
+          "path": "extensions/github/src/preview.ts",
+          "line": 2,
+          "snippet": "import { createSubsystemLogger } from \"openclaw/plugin-sdk/logging-core\";"
+        },
+        {
+          "path": "extensions/github/src/preview.ts",
+          "line": 39,
+          "snippet": "const log = createSubsystemLogger(\"github/preview\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-mime#detectMime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-mime#detectMime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/image.ts",
+          "line": 1,
+          "snippet": "import { detectMime } from \"openclaw/plugin-sdk/media-mime\";"
+        },
+        {
+          "path": "extensions/github/src/image.ts",
+          "line": 59,
+          "snippet": "const mime = await detectMime({ buffer: body });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/github/index.ts",
+          "line": 4,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/response-limit-runtime#readResponseWithLimit",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/response-limit-runtime#readResponseWithLimit",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 4,
+          "snippet": "import { readResponseWithLimit } from \"openclaw/plugin-sdk/response-limit-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 385,
+          "snippet": "return await readResponseWithLimit(response, maxBytes, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/retry-runtime#parseRetryAfterHeaderSeconds",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/retry-runtime#parseRetryAfterHeaderSeconds",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 5,
+          "snippet": "import { parseRetryAfterHeaderSeconds } from \"openclaw/plugin-sdk/retry-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 421,
+          "snippet": "const retrySeconds = parseRetryAfterHeaderSeconds(response.headers.get(\"retry-after\"));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/image.ts",
+          "line": 2,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/image.ts",
+          "line": 37,
+          "snippet": "const { response, release } = await fetchWithSsrFGuard({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 7,
+          "snippet": "asFiniteNumber,",
+          "note": "Imported from string-coerce-runtime in lines 6\u201311."
+        },
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 185,
+          "snippet": "return asFiniteNumber(record[key]);"
+        },
+        {
+          "path": "extensions/github/src/preview.ts",
+          "line": 4,
+          "snippet": "asFiniteNumber,",
+          "note": "Imported from string-coerce-runtime in lines 3\u20137."
+        },
+        {
+          "path": "extensions/github/src/preview.ts",
+          "line": 145,
+          "snippet": "additions: asFiniteNumber(value.additions),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "reexport",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/api.ts",
+          "line": 16,
+          "snippet": "isRecord,",
+          "note": "Explicit local-barrel reexport from ./src/github-api.js (lines 3\u201324), which reexports this original SDK symbol at line 13."
+        },
+        {
+          "path": "extensions/github/src/detail-checks.ts",
+          "line": 2,
+          "snippet": "import { ControlUiGitHubError, isRecord, requiredString } from \"./github-api.js\";",
+          "note": "Local barrel import resolves through github-api.ts:13 to string-coerce-runtime#isRecord."
+        },
+        {
+          "path": "extensions/github/src/detail-checks.ts",
+          "line": 71,
+          "snippet": "if (!isRecord(page.value)) {"
+        },
+        {
+          "path": "extensions/github/src/detail.ts",
+          "line": 11,
+          "snippet": "isRecord,",
+          "note": "Local import from ./github-api.js (lines 5\u201317) resolves the SDK reexport."
+        },
+        {
+          "path": "extensions/github/src/detail.ts",
+          "line": 94,
+          "snippet": "const id = isRecord(repository) ? optionalNumber(repository, \"id\") : undefined;"
+        },
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 8,
+          "snippet": "isRecord,",
+          "note": "Direct SDK import from string-coerce-runtime in lines 6\u201311."
+        },
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 13,
+          "snippet": "export { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 462,
+          "snippet": "isRecord(value) &&"
+        },
+        {
+          "path": "extensions/github/src/handlers.ts",
+          "line": 7,
+          "snippet": "import { ControlUiGitHubError, formatControlUiGitHubPreviewError, isRecord } from \"./github-api.js\";",
+          "note": "Local import resolves the SDK reexport."
+        },
+        {
+          "path": "extensions/github/src/handlers.ts",
+          "line": 60,
+          "snippet": "!isRecord(document) ||"
+        },
+        {
+          "path": "extensions/github/src/image.ts",
+          "line": 3,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/image.ts",
+          "line": 29,
+          "snippet": "if (!isRecord(params) || typeof params.url !== \"string\" || params.url.length > 8192) {"
+        },
+        {
+          "path": "extensions/github/src/preview-contract.ts",
+          "line": 1,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/preview-contract.ts",
+          "line": 39,
+          "snippet": "if (!isRecord(value) || !parseGitHubItemTarget(value)) {"
+        },
+        {
+          "path": "extensions/github/src/preview.ts",
+          "line": 5,
+          "snippet": "isRecord,",
+          "note": "Direct SDK import from string-coerce-runtime in lines 3\u20137."
+        },
+        {
+          "path": "extensions/github/src/preview.ts",
+          "line": 69,
+          "snippet": "return isRecord(value) && value.private === false && value.visibility === \"public\";"
+        },
+        {
+          "path": "extensions/github/src/targets.ts",
+          "line": 1,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/targets.ts",
+          "line": 31,
+          "snippet": "if (!isRecord(value)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#parseStrictNonNegativeInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#parseStrictNonNegativeInteger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 9,
+          "snippet": "parseStrictNonNegativeInteger,",
+          "note": "Direct SDK import from string-coerce-runtime in lines 6\u201311."
+        },
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 425,
+          "snippet": "? parseStrictNonNegativeInteger(response.headers.get(\"x-ratelimit-reset\"))"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#readNonBlankString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#readNonBlankString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 10,
+          "snippet": "readNonBlankString,",
+          "note": "Direct SDK import from string-coerce-runtime in lines 6\u201311."
+        },
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 170,
+          "snippet": "const value = readNonBlankString(record[key]);"
+        },
+        {
+          "path": "extensions/github/src/preview.ts",
+          "line": 6,
+          "snippet": "readNonBlankString,",
+          "note": "Direct SDK import from string-coerce-runtime in lines 3\u20137."
+        },
+        {
+          "path": "extensions/github/src/preview.ts",
+          "line": 147,
+          "snippet": "closedAt: readNonBlankString(value.closed_at),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#truncateUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#truncateUtf16Safe",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/detail.ts",
+          "line": 3,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/detail.ts",
+          "line": 109,
+          "snippet": "return { body: truncateUtf16Safe(body, maxChars), bodyTruncated: body.length > maxChars };"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/collection-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/collection-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/detail.ts",
+          "line": 1,
+          "snippet": "import { pruneMapToMaxSize } from \"openclaw/plugin-sdk/collection-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 2,
+          "snippet": "import { pruneMapToMaxSize } from \"openclaw/plugin-sdk/collection-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/preview.ts",
+          "line": 1,
+          "snippet": "import { createStaleWhileRevalidateCache } from \"openclaw/plugin-sdk/collection-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/control-ui-link-reader",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/control-ui-link-reader",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/detail.ts",
+          "line": 2,
+          "snippet": "import type { ControlUiLinkReaderDocument } from \"openclaw/plugin-sdk/control-ui-link-reader\";"
+        },
+        {
+          "path": "extensions/github/src/detail-checks.ts",
+          "line": 1,
+          "snippet": "import type { ControlUiLinkReaderDocument } from \"openclaw/plugin-sdk/control-ui-link-reader\";"
+        },
+        {
+          "path": "extensions/github/src/view-model.ts",
+          "line": 1,
+          "snippet": "import type { ControlUiLinkReaderPreview } from \"openclaw/plugin-sdk/control-ui-link-reader\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/gateway-method-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/gateway-method-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/handlers.ts",
+          "line": 1,
+          "snippet": "import { dispatchGatewayMethod } from \"openclaw/plugin-sdk/gateway-method-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/gateway-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/gateway-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/handlers.ts",
+          "line": 2,
+          "snippet": "import {\n  ErrorCodes,\n  errorShape,\n  type GatewayRequestHandlerOptions,\n} from \"openclaw/plugin-sdk/gateway-runtime\";",
+          "note": "Ordinary ErrorCodes/errorShape imports and an explicit inline type import share this SDK module site."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/logging-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/logging-core",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 3,
+          "snippet": "import { createSubsystemLogger } from \"openclaw/plugin-sdk/logging-core\";"
+        },
+        {
+          "path": "extensions/github/src/preview.ts",
+          "line": 2,
+          "snippet": "import { createSubsystemLogger } from \"openclaw/plugin-sdk/logging-core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-mime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-mime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/image.ts",
+          "line": 1,
+          "snippet": "import { detectMime } from \"openclaw/plugin-sdk/media-mime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/response-limit-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/response-limit-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 4,
+          "snippet": "import { readResponseWithLimit } from \"openclaw/plugin-sdk/response-limit-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/retry-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/retry-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 5,
+          "snippet": "import { parseRetryAfterHeaderSeconds } from \"openclaw/plugin-sdk/retry-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/image.ts",
+          "line": 2,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/github/src/detail.ts",
+          "line": 3,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 6,
+          "snippet": "import {\n  asFiniteNumber,\n  isRecord,\n  parseStrictNonNegativeInteger,\n  readNonBlankString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/github-api.ts",
+          "line": 13,
+          "snippet": "export { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/image.ts",
+          "line": 3,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/preview-contract.ts",
+          "line": 1,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/preview.ts",
+          "line": 3,
+          "snippet": "import {\n  asFiniteNumber,\n  isRecord,\n  readNonBlankString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/github/src/targets.ts",
+          "line": 1,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all 13 eligible production sources and both package/manifest metadata files. The 24 files under extensions/github partition into 15 reviewed records and 9 exclusions. No eligible declaration files or ambiguous test helpers exist.",
+    "All plugin-relative imports stay beneath extensions/github and resolve to the reviewed source set, including api.ts and upgrade-api.ts. No additional plugin-owned/shared shipped source lies outside the root. Tests have no production importers. package.json declares index.ts and no generated-build exception.",
+    "The public package.json exports and corresponding src/plugin-sdk facades establish every listed SDK module/export. SDK implementation dependencies and node:crypto are outside the inventory; SDK implementations were consulted only to resolve public provenance, not recursively audited.",
+    "definePluginEntry contextually types register through OpenClawPluginDefinition.register(api: OpenClawPluginApi); the public API defines both registerGatewayMethod and session.controls.registerControlUiDescriptor. Only these maximal called paths are used. No PluginRuntime handle or named hook registration occurs.",
+    "github-api.ts directly imports and reexports string-coerce-runtime#isRecord. api.ts reexports the same symbol, and detail.ts, detail-checks.ts and handlers.ts import it through the local barrel. These sites retain original export provenance and do not invent additional SDK-module sites.",
+    "createStaleWhileRevalidateCache is mixed because preview.ts has an ordinary import/call and a direct ReturnType<typeof createStaleWhileRevalidateCache<CachedPreview>> type reference. Its module remains runtime. gateway-runtime is mixed because its import declaration has both value and inline type specifiers.",
+    "The log objects and previewCache are SDK helper return values, not OpenClawPluginApi or PluginRuntime handles. Their info/read calls do not become API/runtime findings or extra calls to the factories. Guarded fetch response/release and gateway dispatch result fields likewise remain helper return values.",
+    "ControlUiGitHubPreviewIdentity and policy are plugin-owned structural types; their revalidate/assertSelected/config-like fields are not public API/runtime paths. ControlUiLinkReaderDocument/Preview indexed accesses are SDK type references, not API/runtime members.",
+    "The manifest contributes contracts.gatewayMethodDispatch:authenticated-request. uiCapabilities, categories, activation, enabledByDefault and descriptive/config metadata are outside the agreed manifest identity fields.",
+    "Source files and metadata match pinned commit d912f0c06e7af29a4a40c4211bec0bb76d473f10. Existing root-authorized changes to scoped AGENTS/skill documentation are outside this source fixture. Finding counts count distinct findings evidenced per file; evidence samples cover every affected source file and every reference kind."
+  ]
+}

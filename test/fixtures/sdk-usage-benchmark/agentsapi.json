@@ -1,0 +1,4295 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "agentsapi",
+    "path": "extensions/agentsapi"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/sdk_benchmark_coordinator/audit_agentsapi",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+      "sha256": "d259abd9cab1f956186d59f5348d9f3cf2a2aeefd7a6789cc469356d0c9dca52",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-attempt.ts",
+      "sha256": "d749396d002f24d5b65c6916fd5bff7e864360258c0ddbe4410d02f668de7dda",
+      "role": "production-source",
+      "findingCount": 18
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-binding-migration.ts",
+      "sha256": "2b50a4a7320877d522467dc9b0fd82963642932ffed6803df3b744354ebeb3d6",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-binding-record.ts",
+      "sha256": "24eceb7203b3b99b852564259417238866bebab9fbf05a9056216f5c84042aab",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-bindings.ts",
+      "sha256": "b32d24bffcb24b758d70ade9490e761aa37a01a7d4c266b9abecd425c354e830",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-client.ts",
+      "sha256": "8388047d3cc7bb0f902ed86f0faaed227024b5d85a176fa18e720a0130149c97",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-environment.ts",
+      "sha256": "aabb15c459bf0681cf8e7ced4f0c19645b94bd199c3089dea6822817b9e93172",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-errors.ts",
+      "sha256": "b26707c482d24f07d288bfc97033eb6e7f90d53463573f98eb69a0bda66b324b",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-executor-binding.ts",
+      "sha256": "6c1a64b881349024e8d8749b94e633e4561cd065e169d4b19d0a62abbe9fd11f",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-files.ts",
+      "sha256": "2ad534e2ac3512c260f5cd31add2d14060006b878f894829ff0a3e526c133146",
+      "role": "production-source",
+      "findingCount": 11
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-harness.ts",
+      "sha256": "8887e90579b8faad1174f02e5bd8f4788e3546b38ae35649f652be87a55a7c39",
+      "role": "production-source",
+      "findingCount": 24
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-isolated-completion.ts",
+      "sha256": "dc1fa7972b596b8aa16634bd2f92742a244418713c0aade4dd046106d395f2cc",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-mcp.ts",
+      "sha256": "bdc41eccfd5263c619d5757d36e140dad79b00034b97223ec0622e94ef9fd5b3",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-messages.ts",
+      "sha256": "a4731fcf058e7d81d14f0bf1af301a69feeb6539c913727470b500106ba4cd4d",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-native-items.ts",
+      "sha256": "d0d97abf73986518ffaf2bf0bf873809be7040417756b09a0eb2f0ccad7e2c93",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+      "sha256": "d85529fdfdb8739a5d353f8fc6db41331b0bcfe054f22ce706b0b084642b95d5",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-prompt.ts",
+      "sha256": "42ea9570b1991c51025d513e82b76b75ad124b56c92bd902533ffea035044105",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-reasoning.ts",
+      "sha256": "bc6f7cba846d999317689de3dc363332c63171fdfbed62c66242a0d90da97182",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-session-history.ts",
+      "sha256": "7990427f54d7f7f1d5406ef92322a8725ecb1712192926a78f5cb1b9a2b170ea",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-session.ts",
+      "sha256": "18e705523baa30bee544216dca60e4af29ea89661570d5d4602c0a16d04d3d22",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-target.ts",
+      "sha256": "8c37bcbe55bd932199120f4c4194e319c1c311726c01bd7522850cddb9ec5fe7",
+      "role": "production-source",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-text.ts",
+      "sha256": "abee466e798d8bfb14ff471c6637a0615bc0609d4bcecd123a654c3d0c42ced2",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-tools.ts",
+      "sha256": "a57d202249be0874ff13ed888d2c892e689c920b1a0af7306a1d7e8cca1a50b2",
+      "role": "production-source",
+      "findingCount": 49
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-transcript.ts",
+      "sha256": "2bf0ce28e7431963a77244ed27207a7eb9f3b0dd52718b53659c59ea32aa7d9e",
+      "role": "production-source",
+      "findingCount": 11
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-usage.ts",
+      "sha256": "f1601ef83889d3fc3d1496a7d6e56cdf8d2422de3363ba85c7f175d981d3fe23",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/agentsapi/config.ts",
+      "sha256": "3f507990d1b1433107bc90f645e08a21feb28fdb05bea2d3bca409fe2aa0d95d",
+      "role": "production-source",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/agentsapi/index.ts",
+      "sha256": "e7c6ae000f7abd47791ba5ceb9c914ba7a59923ebb7211a8aa8df1944694e46b",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/agentsapi/native-session-binding-api.ts",
+      "sha256": "d11a3c19805784058a6c39858a76722c02a482fdf7b3ec997e9193c72d0a0d97",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/agentsapi/openclaw.plugin.json",
+      "sha256": "9fbe9ffe4b38395e0c36a5b0c7930f45825405876c3f2f71861cf39af042a794",
+      "role": "manifest",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/agentsapi/package.json",
+      "sha256": "7e006ebe33265e7eb5296b8f3c6454ea6ab5c0cc57314801388bc13b706ac4b3",
+      "role": "package-metadata",
+      "findingCount": 0
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/agentsapi/AGENTS.md",
+      "rule": "non-source",
+      "reason": "Scoped authoring instructions; read for this audit, not JS/TS source."
+    },
+    {
+      "path": "extensions/agentsapi/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation; no eligible source extension."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-attempt.instructions.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test.; no production import found."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-attempt.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test.; no production import found."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-client.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test.; no production import found."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-environment.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test.; no production import found."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-files.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test.; no production import found."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-harness.lifecycle.test-helpers.ts",
+      "rule": "test-helper",
+      "reason": "Registers native lifecycle tests; sole importing caller is agentsapi-harness.persistence.test.ts."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-harness.live.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test.; no production import found."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-harness.migration.test-helpers.ts",
+      "rule": "test-helper",
+      "reason": "Registers migration tests; sole importing caller is agentsapi-harness.persistence.test.ts."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-harness.persistence.test-helpers.ts",
+      "rule": "test-helper",
+      "reason": "Test fixtures imported only by persistence/live tests and the excluded lifecycle/migration test helpers."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-harness.persistence.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test.; no production import found."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-mcp.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test.; no production import found."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-messages.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test.; no production import found."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-session.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test.; no production import found."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi-tools.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test.; no production import found."
+    },
+    {
+      "path": "extensions/agentsapi/agentsapi.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Synthetic createModel/createTurn/createHostedSession builders; all repository callers are tests or the excluded native-session-binding.test-api.ts and harness test helpers."
+    },
+    {
+      "path": "extensions/agentsapi/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG image asset, not executable JS/TS source."
+    },
+    {
+      "path": "extensions/agentsapi/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG image asset, not executable JS/TS source."
+    },
+    {
+      "path": "extensions/agentsapi/index.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test.; no production import found."
+    },
+    {
+      "path": "extensions/agentsapi/native-session-binding.test-api.ts",
+      "rule": "test-helper",
+      "reason": "Vitest spies and synthetic binding fixture; loaded only by session-agent-purge.test.ts, session-native-binding.message-cut.test.ts, session-native-binding.test-support.ts, and agents-delete.integration.test.ts via test artifact basename."
+    },
+    {
+      "path": "extensions/agentsapi/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript compiler configuration, not production JS/TS source."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.pluginConfig",
+      "kind": "api-member",
+      "identity": "api.pluginConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/index.ts",
+          "line": 14,
+          "snippet": "const config = agentsApiConfigSchema.parse(api.pluginConfig ?? {});",
+          "note": "definePluginEntry register parameter is OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerAgentHarness",
+      "kind": "api-member",
+      "identity": "api.registerAgentHarness",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/index.ts",
+          "line": 15,
+          "snippet": "api.registerAgentHarness({"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.agent.resolveAgentDir",
+      "kind": "runtime-member",
+      "identity": "runtime.agent.resolveAgentDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 83,
+          "snippet": "agentDir: runtime.agent.resolveAgentDir(config, agentId),",
+          "note": "PluginRuntime parameter propagated unchanged from index.ts api.runtime; calls on returned config/state values are not additional runtime paths."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.agent.resolveAgentWorkspaceDir",
+      "kind": "runtime-member",
+      "identity": "runtime.agent.resolveAgentWorkspaceDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 84,
+          "snippet": "workspaceDir: runtime.agent.resolveAgentWorkspaceDir(config, agentId),",
+          "note": "PluginRuntime parameter propagated unchanged from index.ts api.runtime; calls on returned config/state values are not additional runtime paths."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.config.current",
+      "kind": "runtime-member",
+      "identity": "runtime.config.current",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 70,
+          "snippet": "const config = runtime.config.current({ clone: true });",
+          "note": "PluginRuntime parameter propagated unchanged from index.ts api.runtime; calls on returned config/state values are not additional runtime paths."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.openKeyedStoreV2",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openKeyedStoreV2",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-bindings.ts",
+          "line": 48,
+          "snippet": "const state = runtime.state.openKeyedStoreV2<StoredBinding>(stateOptions);",
+          "note": "PluginRuntime parameter propagated unchanged from index.ts api.runtime; calls on returned config/state values are not additional runtime paths."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#AgentHarnessAttemptTimeout",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#AgentHarnessAttemptTimeout",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 10,
+          "snippet": "type AgentHarnessAttemptTimeout,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 105,
+          "snippet": "let timeout: AgentHarnessAttemptTimeout | undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#AgentHarnessProjectionSettlement",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#AgentHarnessProjectionSettlement",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 7,
+          "snippet": "AgentHarnessProjectionSettlement,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 162,
+          "snippet": "const projectionSettlement = new AgentHarnessProjectionSettlement("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#MAX_TOOL_OUTPUT_DELTA_MESSAGES_PER_ITEM",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#MAX_TOOL_OUTPUT_DELTA_MESSAGES_PER_ITEM",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 5,
+          "snippet": "MAX_TOOL_OUTPUT_DELTA_MESSAGES_PER_ITEM,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#NativeToolOutputAccumulator",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#NativeToolOutputAccumulator",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 6,
+          "snippet": "NativeToolOutputAccumulator,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 59,
+          "snippet": "private readonly output = new NativeToolOutputAccumulator(\"Agents API\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#TOOL_TRANSCRIPT_OUTPUT_MAX_CHARS",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#TOOL_TRANSCRIPT_OUTPUT_MAX_CHARS",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-native-items.ts",
+          "line": 2,
+          "snippet": "TOOL_TRANSCRIPT_OUTPUT_MAX_CHARS,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#buildCurrentInboundPrompt",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#buildCurrentInboundPrompt",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 2,
+          "snippet": "buildCurrentInboundPrompt,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 201,
+          "snippet": "buildCurrentInboundPrompt({ context: options?.currentInboundContext, prompt: text }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#createAgentHarnessAssistantMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#createAgentHarnessAssistantMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-isolated-completion.ts",
+          "line": 1,
+          "snippet": "import { createAgentHarnessAssistantMessage } from \"openclaw/plugin-sdk/agent-harness-attempt-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-isolated-completion.ts",
+          "line": 112,
+          "snippet": "const assistant = createAgentHarnessAssistantMessage("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#createAgentHarnessAttemptCancellation",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#createAgentHarnessAttemptCancellation",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 3,
+          "snippet": "createAgentHarnessAttemptCancellation,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 72,
+          "snippet": "const cancellation = createAgentHarnessAttemptCancellation({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#createAgentHarnessAttemptDeadlineController",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#createAgentHarnessAttemptDeadlineController",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 4,
+          "snippet": "createAgentHarnessAttemptDeadlineController,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 108,
+          "snippet": "const deadlines = createAgentHarnessAttemptDeadlineController({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#createAgentHarnessAttemptLifecycle",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#createAgentHarnessAttemptLifecycle",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 5,
+          "snippet": "createAgentHarnessAttemptLifecycle,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 134,
+          "snippet": "const lifecycle = createAgentHarnessAttemptLifecycle({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#createAgentHarnessToolCallMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#createAgentHarnessToolCallMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 3,
+          "snippet": "createAgentHarnessToolCallMessage,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 161,
+          "snippet": "...createAgentHarnessToolCallMessage("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#createAgentHarnessToolResultMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#createAgentHarnessToolResultMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 4,
+          "snippet": "createAgentHarnessToolResultMessage,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 120,
+          "snippet": "...createAgentHarnessToolResultMessage("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#emitAgentHarnessAttemptEvent",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#emitAgentHarnessAttemptEvent",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 6,
+          "snippet": "emitAgentHarnessAttemptEvent,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 133,
+          "snippet": ") => emitAgentHarnessAttemptEvent(params, event, { label: \"Agents API\", log: embeddedAgentLog });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#formatNativeToolOutput",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#formatNativeToolOutput",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 3,
+          "snippet": "formatNativeToolOutput,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 472,
+          "snippet": "formatNativeToolOutput("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#formatNativeToolSummary",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#formatNativeToolSummary",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 4,
+          "snippet": "formatNativeToolSummary,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 256,
+          "snippet": "formatNativeToolSummary(name, this.formattedMeta(state.tool)),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#makeZeroUsageSnapshot",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#makeZeroUsageSnapshot",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-usage.ts",
+          "line": 1,
+          "snippet": "import { makeZeroUsageSnapshot } from \"openclaw/plugin-sdk/agent-harness-attempt-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-usage.ts",
+          "line": 50,
+          "snippet": "...makeZeroUsageSnapshot(),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#racePromiseWithAbortSignal",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#racePromiseWithAbortSignal",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 8,
+          "snippet": "racePromiseWithAbortSignal,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 619,
+          "snippet": "await racePromiseWithAbortSignal(projectionSettlement.drain(), cleanupSignal);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#resolveAgentHarnessHistoryLimits",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#resolveAgentHarnessHistoryLimits",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 9,
+          "snippet": "resolveAgentHarnessHistoryLimits,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 296,
+          "snippet": "const historyLimits = resolveAgentHarnessHistoryLimits("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#resolveAgentWorkspaceMemoryRouting",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#resolveAgentWorkspaceMemoryRouting",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 3,
+          "snippet": "resolveAgentWorkspaceMemoryRouting,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 72,
+          "snippet": "const { memoryToolNames, memoryToolRouted } = resolveAgentWorkspaceMemoryRouting({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#resolveStoredSessionPermissionPolicy",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#resolveStoredSessionPermissionPolicy",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 2,
+          "snippet": "import { resolveStoredSessionPermissionPolicy } from \"openclaw/plugin-sdk/agent-harness-attempt-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 121,
+          "snippet": "sessionPermissionPolicy: resolveStoredSessionPermissionPolicy("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#selectSupportedReasoningEffort",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#selectSupportedReasoningEffort",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-reasoning.ts",
+          "line": 2,
+          "snippet": "import { selectSupportedReasoningEffort } from \"openclaw/plugin-sdk/agent-harness-attempt-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-reasoning.ts",
+          "line": 41,
+          "snippet": ": selectSupportedReasoningEffort({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#shouldIncludeAgentHarnessRuntimeContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#shouldIncludeAgentHarnessRuntimeContext",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 4,
+          "snippet": "shouldIncludeAgentHarnessRuntimeContext,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 93,
+          "snippet": "memoryTools: shouldIncludeAgentHarnessRuntimeContext(params)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-attempt-runtime#truncateNativeToolTranscriptText",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime#truncateNativeToolTranscriptText",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-native-items.ts",
+          "line": 3,
+          "snippet": "truncateNativeToolTranscriptText,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-items.ts",
+          "line": 173,
+          "snippet": "return truncateNativeToolTranscriptText(text, \"Agents API\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-registration#AgentHarnessPreflightError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-registration#AgentHarnessPreflightError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-errors.ts",
+          "line": 2,
+          "snippet": "import { AgentHarnessPreflightError } from \"openclaw/plugin-sdk/agent-harness-registration\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-errors.ts",
+          "line": 55,
+          "snippet": "return new AgentHarnessPreflightError(error.message, { cause: error, userMessage });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#AgentExecutorController",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#AgentExecutorController",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-environment.ts",
+          "line": 3,
+          "snippet": "import type { AgentExecutorController } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-environment.ts",
+          "line": 13,
+          "snippet": "controller: AgentExecutorController;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessAttemptParamsV2",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessAttemptParamsV2",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-binding-migration.ts",
+          "line": 2,
+          "snippet": "import type { AgentHarnessAttemptParamsV2 } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-binding-migration.ts",
+          "line": 17,
+          "snippet": "params: AgentHarnessAttemptParamsV2,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessAttemptResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessAttemptResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 16,
+          "snippet": "type AgentHarnessAttemptResult,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 60,
+          "snippet": "private readonly metas = new Map<string, AgentHarnessAttemptResult[\"toolMetas\"][number]>();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessPreflightError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessPreflightError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 5,
+          "snippet": "AgentHarnessPreflightError,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 431,
+          "snippet": "throw new AgentHarnessPreflightError("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessSessionCleanupError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessSessionCleanupError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 6,
+          "snippet": "AgentHarnessSessionCleanupError,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 262,
+          "snippet": "throw new AgentHarnessSessionCleanupError(formatErrorMessage(error), { cause: error });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessSessionDeletionMutation",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessSessionDeletionMutation",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 11,
+          "snippet": "type AgentHarnessSessionDeletionMutation,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 303,
+          "snippet": "run: (mutation: AgentHarnessSessionDeletionMutation) => Promise<T>,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessSessionDeletionParams",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessSessionDeletionParams",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 12,
+          "snippet": "type AgentHarnessSessionDeletionParams,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 302,
+          "snippet": "params: AgentHarnessSessionDeletionParams,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessSessionSupersededError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessSessionSupersededError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 7,
+          "snippet": "AgentHarnessSessionSupersededError,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 189,
+          "snippet": "new AgentHarnessSessionSupersededError("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessV2",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#AgentHarnessV2",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 13,
+          "snippet": "type AgentHarnessV2,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 43,
+          "snippet": "export function createAgentsApiHarness(runtime: PluginRuntime): AgentHarnessV2 {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#AgentMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#AgentMessage",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-messages.ts",
+          "line": 9,
+          "snippet": "type AgentMessage,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-messages.ts",
+          "line": 665,
+          "snippet": "private append<TMessage extends AgentMessage>("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#AnyAgentTool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#AnyAgentTool",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 32,
+          "snippet": "type AnyAgentTool,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 312,
+          "snippet": "result: Awaited<ReturnType<AnyAgentTool[\"execute\"]>>,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#EmbeddedRunAttemptResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#EmbeddedRunAttemptResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 10,
+          "snippet": "type EmbeddedRunAttemptResult,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 40,
+          "snippet": "async function complete(result: EmbeddedRunAttemptResult) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#NormalizedUsage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#NormalizedUsage",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-messages.ts",
+          "line": 10,
+          "snippet": "type NormalizedUsage,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-messages.ts",
+          "line": 33,
+          "snippet": "usage?: NormalizedUsage;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#SKILL_WORKSHOP_TOOL_NAME",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#SKILL_WORKSHOP_TOOL_NAME",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 17,
+          "snippet": "SKILL_WORKSHOP_TOOL_NAME,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#TOOL_PROGRESS_OUTPUT_MAX_CHARS",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#TOOL_PROGRESS_OUTPUT_MAX_CHARS",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 14,
+          "snippet": "TOOL_PROGRESS_OUTPUT_MAX_CHARS,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#abortAndDrainAgentHarnessRun",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#abortAndDrainAgentHarnessRun",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 2,
+          "snippet": "abortAndDrainAgentHarnessRun,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 285,
+          "snippet": "abortAndDrainAgentHarnessRun({ sessionId, settleMs: 95_000 }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#agentHarnessAttemptTerminal",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#agentHarnessAttemptTerminal",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 13,
+          "snippet": "agentHarnessAttemptTerminal,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 157,
+          "snippet": "let terminal: ReturnType<typeof agentHarnessAttemptTerminal.normalize> = { kind: \"ok\" };",
+          "note": "Explicit typeof of imported object member normalize; no invocation appears in production source."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#applyEmbeddedAttemptToolsAllow",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#applyEmbeddedAttemptToolsAllow",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 4,
+          "snippet": "applyEmbeddedAttemptToolsAllow,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 180,
+          "snippet": "const tools = applyEmbeddedAttemptToolsAllow("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#awaitAgentEndSideEffects",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#awaitAgentEndSideEffects",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 2,
+          "snippet": "awaitAgentEndSideEffects,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 77,
+          "snippet": "await awaitAgentEndSideEffects(agentEnd);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#buildAgentHookContextChannelFields",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#buildAgentHookContextChannelFields",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 3,
+          "snippet": "buildAgentHookContextChannelFields,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 34,
+          "snippet": "...buildAgentHookContextChannelFields(params),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#buildCredentialSafetyPrompt",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#buildCredentialSafetyPrompt",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 7,
+          "snippet": "buildCredentialSafetyPrompt,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 153,
+          "snippet": "buildCredentialSafetyPrompt("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#buildDelegationGuidanceSection",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#buildDelegationGuidanceSection",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 8,
+          "snippet": "buildDelegationGuidanceSection,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 132,
+          "snippet": "? buildDelegationGuidanceSection({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#buildEmbeddedAttemptToolRunContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#buildEmbeddedAttemptToolRunContext",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 6,
+          "snippet": "buildEmbeddedAttemptToolRunContext,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 95,
+          "snippet": "const runContext = buildEmbeddedAttemptToolRunContext({ ...params, forceMessageTool });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#buildEmbeddedForegroundPromptContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#buildEmbeddedForegroundPromptContext",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 4,
+          "snippet": "buildEmbeddedForegroundPromptContext,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 68,
+          "snippet": "foregroundPromptContext: buildEmbeddedForegroundPromptContext("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#buildHarnessVisibleReplyGuidance",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#buildHarnessVisibleReplyGuidance",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 9,
+          "snippet": "buildHarnessVisibleReplyGuidance,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 209,
+          "snippet": "buildHarnessVisibleReplyGuidance({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#buildSkillWorkshopPromptSection",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#buildSkillWorkshopPromptSection",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 10,
+          "snippet": "buildSkillWorkshopPromptSection,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 129,
+          "snippet": "? buildSkillWorkshopPromptSection().join(\"\\n\")"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#buildTemporalContextText",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#buildTemporalContextText",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 11,
+          "snippet": "buildTemporalContextText,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 203,
+          "snippet": "buildTemporalContextText({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#buildUiPresentationPrompt",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#buildUiPresentationPrompt",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 12,
+          "snippet": "buildUiPresentationPrompt,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 143,
+          "snippet": "? buildUiPresentationPrompt({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#classifyAgentHarnessTerminalOutcome",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#classifyAgentHarnessTerminalOutcome",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-messages.ts",
+          "line": 4,
+          "snippet": "classifyAgentHarnessTerminalOutcome,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-messages.ts",
+          "line": 333,
+          "snippet": "this.classification = classifyAgentHarnessTerminalOutcome({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#clearActiveEmbeddedRun",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#clearActiveEmbeddedRun",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 14,
+          "snippet": "clearActiveEmbeddedRun,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 643,
+          "snippet": "clearActiveEmbeddedRun(params.sessionId, handle, params.sessionKey, params.sessionFile);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#createAgentToolResultMiddlewareRunner",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#createAgentToolResultMiddlewareRunner",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 7,
+          "snippet": "createAgentToolResultMiddlewareRunner,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 228,
+          "snippet": "const middleware = createAgentToolResultMiddlewareRunner({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#decodeHeaderEnvPlaceholder",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#decodeHeaderEnvPlaceholder",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-mcp.ts",
+          "line": 3,
+          "snippet": "decodeHeaderEnvPlaceholder,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-mcp.ts",
+          "line": 111,
+          "snippet": "const placeholder = decodeHeaderEnvPlaceholder(text);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#embeddedAgentLog",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#embeddedAgentLog",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 3,
+          "snippet": "embeddedAgentLog,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 378,
+          "snippet": "embeddedAgentLog.warn(\"Agents API executor cleanup was not acknowledged\", { error });",
+          "note": "Calls warn on the imported SDK logger object; bare passing as log elsewhere adds no kind."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#extractMessagingToolSend",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#extractMessagingToolSend",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 9,
+          "snippet": "extractMessagingToolSend,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 577,
+          "snippet": "const pending = extractMessagingToolSend(tool.name, routedArgs, messagingContext);"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 556,
+          "snippet": "messagingContext: Parameters<typeof extractMessagingToolSend>[2],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#extractMessagingToolSendResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#extractMessagingToolSendResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 10,
+          "snippet": "extractMessagingToolSendResult,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 584,
+          "snippet": "target: pending ? extractMessagingToolSendResult(pending, raw) : undefined,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#extractToolErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#extractToolErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 11,
+          "snippet": "extractToolErrorMessage,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 488,
+          "snippet": "rawIsError ? extractToolErrorMessage(raw) : undefined,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#finalizeAgentToolAvailability",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#finalizeAgentToolAvailability",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 12,
+          "snippet": "finalizeAgentToolAvailability,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 202,
+          "snippet": "finalizeAgentToolAvailability(normalized);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#finalizeToolTerminalPresentation",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#finalizeToolTerminalPresentation",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 13,
+          "snippet": "finalizeToolTerminalPresentation,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 339,
+          "snippet": "finalizeToolTerminalPresentation({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#formatErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 8,
+          "snippet": "formatErrorMessage,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 262,
+          "snippet": "throw new AgentHarnessSessionCleanupError(formatErrorMessage(error), { cause: error });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#formatToolExecutionErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#formatToolExecutionErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 14,
+          "snippet": "formatToolExecutionErrorMessage,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 335,
+          "snippet": "`Agents API tool result observer failed: ${formatToolExecutionErrorMessage(error, \"Unknown error\")}`,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#formatToolProgressOutput",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#formatToolProgressOutput",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 11,
+          "snippet": "formatToolProgressOutput,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 391,
+          "snippet": "output !== undefined && commandBearing ? (formatToolProgressOutput(output) ?? \"\") : output;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#getBeforeToolCallFailureDisposition",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#getBeforeToolCallFailureDisposition",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 15,
+          "snippet": "getBeforeToolCallFailureDisposition,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 520,
+          "snippet": "getBeforeToolCallFailureDisposition(error) ??"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#getPluginToolMeta",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#getPluginToolMeta",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 16,
+          "snippet": "getPluginToolMeta,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 286,
+          "snippet": "const pluginMeta = entry ? getPluginToolMeta(entry.tool) : undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#getPluginToolSideEffectOwnerKey",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#getPluginToolSideEffectOwnerKey",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 17,
+          "snippet": "getPluginToolSideEffectOwnerKey,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 285,
+          "snippet": "const ownerKey = entry ? getPluginToolSideEffectOwnerKey(entry.tool) : undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#inferToolMetaFromArgs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#inferToolMetaFromArgs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-native-items.ts",
+          "line": 6,
+          "snippet": "inferToolMetaFromArgs,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-items.ts",
+          "line": 51,
+          "snippet": "const meta = inferToolMetaFromArgs(name, args, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#isDeliveredMessageToolOnlySourceReplyResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#isDeliveredMessageToolOnlySourceReplyResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 18,
+          "snippet": "isDeliveredMessageToolOnlySourceReplyResult,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 458,
+          "snippet": "const sourceRouteDelivered = isDeliveredMessageToolOnlySourceReplyResult({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#isDeliveredMessagingToolResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#isDeliveredMessagingToolResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 19,
+          "snippet": "isDeliveredMessagingToolResult,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 563,
+          "snippet": "isDeliveredMessagingToolResult({ toolName: tool.name, args, result: raw })"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#isMessagingTool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#isMessagingTool",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 20,
+          "snippet": "isMessagingTool,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 562,
+          "snippet": "isMessagingTool(tool.name) &&"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#isReplaySafeToolCall",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#isReplaySafeToolCall",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 21,
+          "snippet": "isReplaySafeToolCall,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 297,
+          "snippet": "isReplaySafeToolCall(call.name, executedArgs),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#isSubagentSessionKey",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#isSubagentSessionKey",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 22,
+          "snippet": "isSubagentSessionKey,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 139,
+          "snippet": "(params.sessionKey !== undefined && isSubagentSessionKey(params.sessionKey)),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#isToolResultError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#isToolResultError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 23,
+          "snippet": "isToolResultError,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 591,
+          "snippet": "if (signal.aborted || isToolResultError(raw)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#loadAgentHarnessMcpConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#loadAgentHarnessMcpConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-mcp.ts",
+          "line": 6,
+          "snippet": "loadAgentHarnessMcpConfig,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-mcp.ts",
+          "line": 18,
+          "snippet": "const loaded = await loadAgentHarnessMcpConfig({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#normalizeAgentRuntimeTools",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#normalizeAgentRuntimeTools",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 24,
+          "snippet": "normalizeAgentRuntimeTools,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 191,
+          "snippet": "const normalized = normalizeAgentRuntimeTools({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#normalizeUsage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#normalizeUsage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-isolated-completion.ts",
+          "line": 2,
+          "snippet": "import { normalizeUsage, type AgentHarnessV2 } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-isolated-completion.ts",
+          "line": 108,
+          "snippet": "const normalized = normalizeUsage(turn.usage);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#prepareAgentWorkspaceContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#prepareAgentWorkspaceContext",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 14,
+          "snippet": "prepareAgentWorkspaceContext,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 80,
+          "snippet": "const workspace = await prepareAgentWorkspaceContext({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#prepareWatchedSessionsHarnessContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#prepareWatchedSessionsHarnessContext",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 15,
+          "snippet": "prepareWatchedSessionsHarnessContext,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 215,
+          "snippet": "await prepareWatchedSessionsHarnessContext({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#projectAgentToolActivity",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#projectAgentToolActivity",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 12,
+          "snippet": "projectAgentToolActivity,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 239,
+          "snippet": "data: projectAgentToolActivity({ toolCallId: id, name, phase: \"start\", args, meta }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#projectRuntimeToolInputSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#projectRuntimeToolInputSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 25,
+          "snippet": "projectRuntimeToolInputSchema,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 206,
+          "snippet": "const projection = projectRuntimeToolInputSchema("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#resolveAgentDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#resolveAgentDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 6,
+          "snippet": "resolveAgentDir,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 70,
+          "snippet": "params.agentDir ?? resolveAgentDir(params.config ?? {}, agentId),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#resolveAgentExecutorController",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#resolveAgentExecutorController",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 4,
+          "snippet": "resolveAgentExecutorController,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 358,
+          "snippet": "resolveAgentExecutorController(binding.executorControllerPluginId!),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#resolveAgentHarnessBeforePromptBuildResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#resolveAgentHarnessBeforePromptBuildResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 17,
+          "snippet": "resolveAgentHarnessBeforePromptBuildResult,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 309,
+          "snippet": "const promptBuild = await resolveAgentHarnessBeforePromptBuildResult({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#resolveMainSessionDelegationMode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#resolveMainSessionDelegationMode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 16,
+          "snippet": "resolveMainSessionDelegationMode,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 133,
+          "snippet": "mode: resolveMainSessionDelegationMode(params),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#resolveToolExecutionErrorKind",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#resolveToolExecutionErrorKind",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 27,
+          "snippet": "resolveToolExecutionErrorKind,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 521,
+          "snippet": "(signal.aborted ? \"cancelled\" : resolveToolExecutionErrorKind(error));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#runAgentEndSideEffectsAsync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#runAgentEndSideEffectsAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 7,
+          "snippet": "runAgentEndSideEffectsAsync,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 79,
+          "snippet": "await runAgentEndSideEffectsAsync(agentEnd);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#runAgentHarnessAfterToolCallHook",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#runAgentHarnessAfterToolCallHook",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 28,
+          "snippet": "runAgentHarnessAfterToolCallHook,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 358,
+          "snippet": "void runAgentHarnessAfterToolCallHook({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#runAgentHarnessLlmOutputHook",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#runAgentHarnessLlmOutputHook",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 8,
+          "snippet": "runAgentHarnessLlmOutputHook,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 42,
+          "snippet": "runAgentHarnessLlmOutputHook({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#sanitizeToolResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#sanitizeToolResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-native-items.ts",
+          "line": 7,
+          "snippet": "sanitizeToolResult,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-items.ts",
+          "line": 121,
+          "snippet": "sanitizeToolResult({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#setActiveEmbeddedRun",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#setActiveEmbeddedRun",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 19,
+          "snippet": "setActiveEmbeddedRun,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 217,
+          "snippet": "setActiveEmbeddedRun("
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 214,
+          "snippet": "} satisfies Parameters<typeof setActiveEmbeddedRun>[1];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#toolPolicy",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#toolPolicy",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 9,
+          "snippet": "toolPolicy,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 423,
+          "snippet": "const runtimeToolAllowed = toolPolicy.createToolPolicyMatcher({ allow: params.toolsAllow });",
+          "note": "Calls createToolPolicyMatcher on the imported SDK object."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-session-runtime#NativeSessionBindingAuthority",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-session-runtime#NativeSessionBindingAuthority",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 11,
+          "snippet": "import type { NativeSessionBindingAuthority } from \"openclaw/plugin-sdk/agent-harness-session-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 27,
+          "snippet": "type TranscriptAssertion = NativeSessionBindingAuthority[\"assertLegacyCurrent\"];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-session-runtime#combinePreparedNativeSessionBindingAuthority",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-session-runtime#combinePreparedNativeSessionBindingAuthority",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 16,
+          "snippet": "combinePreparedNativeSessionBindingAuthority,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 209,
+          "snippet": "combinePreparedNativeSessionBindingAuthority("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-session-runtime#createNativeSessionBindingLifecycleV2",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-session-runtime#createNativeSessionBindingLifecycleV2",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-bindings.ts",
+          "line": 6,
+          "snippet": "createNativeSessionBindingLifecycleV2,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-bindings.ts",
+          "line": 49,
+          "snippet": "const lifecycle = createNativeSessionBindingLifecycleV2("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-session-runtime#createNativeSessionBindingScope",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-session-runtime#createNativeSessionBindingScope",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 17,
+          "snippet": "createNativeSessionBindingScope,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 211,
+          "snippet": "createNativeSessionBindingScope(assertLeaseCurrent),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-session-runtime#isNativeSessionDeletionUnresolved",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-session-runtime#isNativeSessionDeletionUnresolved",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-bindings.ts",
+          "line": 7,
+          "snippet": "isNativeSessionDeletionUnresolved,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-bindings.ts",
+          "line": 282,
+          "snippet": "if (committed && !isNativeSessionDeletionUnresolved(mutation)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-session-runtime#retainNativeSessionGenerationAuthority",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-session-runtime#retainNativeSessionGenerationAuthority",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 18,
+          "snippet": "retainNativeSessionGenerationAuthority,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 180,
+          "snippet": "const captured = await retainNativeSessionGenerationAuthority({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-session-runtime#wrapNativeSessionDeletionMutation",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-session-runtime#wrapNativeSessionDeletionMutation",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 19,
+          "snippet": "wrapNativeSessionDeletionMutation,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 325,
+          "snippet": "wrapNativeSessionDeletionMutation(mutation, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-tool-runtime#AgentHarnessMessagingDeliveryFacts",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-tool-runtime#AgentHarnessMessagingDeliveryFacts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 43,
+          "snippet": "type AgentHarnessMessagingDeliveryFacts,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 59,
+          "snippet": "type ToolDelivery = AgentHarnessMessagingDeliveryFacts &"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-tool-runtime#AgentHarnessToolMediaFacts",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-tool-runtime#AgentHarnessToolMediaFacts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 44,
+          "snippet": "type AgentHarnessToolMediaFacts,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 60,
+          "snippet": "AgentHarnessToolMediaFacts &"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-tool-runtime#collectMessagingMediaUrlsFromRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-tool-runtime#collectMessagingMediaUrlsFromRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 36,
+          "snippet": "collectMessagingMediaUrlsFromRecord,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 581,
+          "snippet": "const mediaUrls = collectMessagingMediaUrlsFromRecord(args);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-tool-runtime#createAgentHarnessToolExecutionBoundaryRegistry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-tool-runtime#createAgentHarnessToolExecutionBoundaryRegistry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 35,
+          "snippet": "createAgentHarnessToolExecutionBoundaryRegistry,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 246,
+          "snippet": "const executionBoundaries = createAgentHarnessToolExecutionBoundaryRegistry();"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 268,
+          "snippet": "ReturnType<typeof createAgentHarnessToolExecutionBoundaryRegistry>[\"begin\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-tool-runtime#extractMessagingToolSourceReplyPayload",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-tool-runtime#extractMessagingToolSourceReplyPayload",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 37,
+          "snippet": "extractMessagingToolSourceReplyPayload,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 565,
+          "snippet": "const payload = extractMessagingToolSourceReplyPayload(raw);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-tool-runtime#isAsyncStartedToolResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-tool-runtime#isAsyncStartedToolResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 38,
+          "snippet": "isAsyncStartedToolResult,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 445,
+          "snippet": "asyncStarted = !rawIsError && isAsyncStartedToolResult(raw);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-tool-runtime#normalizeAcceptedSessionSpawnResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-tool-runtime#normalizeAcceptedSessionSpawnResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 40,
+          "snippet": "normalizeAcceptedSessionSpawnResult,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 449,
+          "snippet": "? normalizeAcceptedSessionSpawnResult(raw)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-tool-runtime#readAsyncStartedTaskIds",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-tool-runtime#readAsyncStartedTaskIds",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 39,
+          "snippet": "readAsyncStartedTaskIds,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 446,
+          "snippet": "asyncTaskIds = asyncStarted ? readAsyncStartedTaskIds(raw) : {};"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 275,
+          "snippet": "let asyncTaskIds: ReturnType<typeof readAsyncStartedTaskIds> = {};"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-tool-runtime#recordAgentHarnessMessagingDelivery",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-tool-runtime#recordAgentHarnessMessagingDelivery",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 41,
+          "snippet": "recordAgentHarnessMessagingDelivery,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 567,
+          "snippet": "recordAgentHarnessMessagingDelivery({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-tool-runtime#recordAgentHarnessToolResultMedia",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-tool-runtime#recordAgentHarnessToolResultMedia",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 42,
+          "snippet": "recordAgentHarnessToolResultMedia,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 600,
+          "snippet": "const media = recordAgentHarnessToolResultMedia({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-tool-runtime#runAgentHarnessToolInvocation",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-tool-runtime#runAgentHarnessToolInvocation",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 45,
+          "snippet": "runAgentHarnessToolInvocation,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 385,
+          "snippet": "const { transcriptResult, ...nativeResult } = await runAgentHarnessToolInvocation<"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-sessions#SessionManager",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-sessions#SessionManager",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 23,
+          "snippet": "import { SessionManager } from \"openclaw/plugin-sdk/agent-sessions\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 324,
+          "snippet": "const history = await SessionManager.openModelContextAsync(target, {",
+          "note": "Calls the imported SessionManager static method openModelContextAsync."
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 714,
+          "snippet": "messages: ReturnType<SessionManager[\"buildSessionContext\"]>[\"messages\"];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-workspace-runtime#prepareAgentWorkspaceAttachments",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-workspace-runtime#prepareAgentWorkspaceAttachments",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 32,
+          "snippet": "const { prepareAgentWorkspaceAttachments } =",
+          "note": "Named destructuring from the adjacent direct dynamic SDK import; no un-narrowed namespace binding is retained."
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 33,
+          "snippet": "await import(\"openclaw/plugin-sdk/agent-workspace-runtime\");"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 35,
+          "snippet": "const mappingText = await prepareAgentWorkspaceAttachments({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-session.ts",
+          "line": 4,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-session.ts",
+          "line": 126,
+          "snippet": ": new Error(formatErrorMessage(submissionError), { cause: submissionError });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/fetch-runtime#responseWithRelease",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/fetch-runtime#responseWithRelease",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 12,
+          "snippet": "import { responseWithRelease } from \"openclaw/plugin-sdk/fetch-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 189,
+          "snippet": "const response = responseWithRelease(guarded.response, guarded.release);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#createStagedInputPathMatcher",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#createStagedInputPathMatcher",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 4,
+          "snippet": "import { createStagedInputPathMatcher, root } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 314,
+          "snippet": "return { root: workspaceRoot, owns: createStagedInputPathMatcher(workspaceRoot) };"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#root",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#root",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 4,
+          "snippet": "import { createStagedInputPathMatcher, root } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 313,
+          "snippet": "const workspaceRoot = await root(workspaceDir);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/json-schema-runtime#validateJsonSchemaValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/json-schema-runtime#validateJsonSchemaValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 47,
+          "snippet": "import { validateJsonSchemaValue } from \"openclaw/plugin-sdk/json-schema-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 422,
+          "snippet": "const validation = validateJsonSchemaValue({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#AssistantMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#AssistantMessage",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-usage.ts",
+          "line": 7,
+          "snippet": "import { calculateCost, type AssistantMessage } from \"openclaw/plugin-sdk/llm\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-usage.ts",
+          "line": 12,
+          "snippet": "): { usage: NormalizedUsage; assistantUsage: AssistantMessage[\"usage\"] } {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#calculateCost",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#calculateCost",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-usage.ts",
+          "line": 7,
+          "snippet": "import { calculateCost, type AssistantMessage } from \"openclaw/plugin-sdk/llm\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-usage.ts",
+          "line": 33,
+          "snippet": "calculateCost(model, usage);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#resolveOpenAIModelReasoningEfforts",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#resolveOpenAIModelReasoningEfforts",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-reasoning.ts",
+          "line": 5,
+          "snippet": "resolveOpenAIModelReasoningEfforts,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-reasoning.ts",
+          "line": 19,
+          "snippet": "const supportedEfforts = resolveOpenAIModelReasoningEfforts(params.model);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#resolveOpenAIReasoningEffortMap",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#resolveOpenAIReasoningEffortMap",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-reasoning.ts",
+          "line": 6,
+          "snippet": "resolveOpenAIReasoningEffortMap,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-reasoning.ts",
+          "line": 27,
+          "snippet": "resolveOpenAIReasoningEffortMap(params.model),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#resolveOpenAIReasoningEffortMapping",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#resolveOpenAIReasoningEffortMapping",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-reasoning.ts",
+          "line": 7,
+          "snippet": "resolveOpenAIReasoningEffortMapping,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-reasoning.ts",
+          "line": 25,
+          "snippet": "resolveOpenAIReasoningEffortMapping("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-store#readMediaBuffer",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-store#readMediaBuffer",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 5,
+          "snippet": "import { readMediaBuffer, resolveMediaBufferPath } from \"openclaw/plugin-sdk/media-store\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 112,
+          "snippet": "readInput = () => readMediaBuffer(managed.id, managed.subdir, maxBytes);"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 90,
+          "snippet": "Pick<Awaited<ReturnType<typeof readMediaBuffer>>, \"buffer\" | \"path\" | \"size\">"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-store#resolveMediaBufferPath",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-store#resolveMediaBufferPath",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 5,
+          "snippet": "import { readMediaBuffer, resolveMediaBufferPath } from \"openclaw/plugin-sdk/media-store\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 93,
+          "snippet": "const resolved = await resolveMediaBufferPath(managed.id, managed.subdir);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#buildPluginConfigSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#buildPluginConfigSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/index.ts",
+          "line": 1,
+          "snippet": "import { buildPluginConfigSchema, definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/agentsapi/index.ts",
+          "line": 9,
+          "snippet": "configSchema: buildPluginConfigSchema(agentsApiConfigSchema),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/index.ts",
+          "line": 1,
+          "snippet": "import { buildPluginConfigSchema, definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/agentsapi/index.ts",
+          "line": 5,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-runtime#PluginRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-runtime#PluginRuntime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 21,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 43,
+          "snippet": "export function createAgentsApiHarness(runtime: PluginRuntime): AgentHarnessV2 {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 22,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 80,
+          "snippet": "const auth = await resolveApiKeyForProvider({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderRequestHeaders",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderRequestHeaders",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 13,
+          "snippet": "import { resolveProviderRequestHeaders } from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 177,
+          "snippet": "const headers = resolveProviderRequestHeaders({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-tools#normalizeOpenAIStrictCompatSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-tools#normalizeOpenAIStrictCompatSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 48,
+          "snippet": "import { normalizeOpenAIStrictCompatSchema } from \"openclaw/plugin-sdk/provider-tools\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 207,
+          "snippet": "normalizeOpenAIStrictCompatSchema(tool.parameters) ?? tool.parameters,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/retry-runtime#retryAsync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/retry-runtime#retryAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 14,
+          "snippet": "import { retryAsync } from \"openclaw/plugin-sdk/retry-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 619,
+          "snippet": "await retryAsync("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-env#sleepWithAbort",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-env#sleepWithAbort",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 15,
+          "snippet": "import { sleepWithAbort } from \"openclaw/plugin-sdk/runtime-env\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 637,
+          "snippet": "sleep: (ms) => sleepWithAbort(ms, signal),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#FsSafeError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#FsSafeError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 6,
+          "snippet": "import { FsSafeError } from \"openclaw/plugin-sdk/security-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-transcript-runtime#appendSessionTranscriptMessageByIdentityStrict",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-transcript-runtime#appendSessionTranscriptMessageByIdentityStrict",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 13,
+          "snippet": "appendSessionTranscriptMessageByIdentityStrict,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 247,
+          "snippet": "const append = await appendSessionTranscriptMessageByIdentityStrict({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-transcript-runtime#publishSessionTranscriptUpdateByIdentity",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-transcript-runtime#publishSessionTranscriptUpdateByIdentity",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 14,
+          "snippet": "publishSessionTranscriptUpdateByIdentity,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 259,
+          "snippet": "await publishSessionTranscriptUpdateByIdentity({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-transcript-runtime#withSessionTranscriptWrite",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-transcript-runtime#withSessionTranscriptWrite",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 15,
+          "snippet": "withSessionTranscriptWrite,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 229,
+          "snippet": "const facts = await withSessionTranscriptWrite(target, (transcript) =>"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 16,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 183,
+          "snippet": "const guarded = await fetchWithSsrFGuard({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-errors.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-errors.ts",
+          "line": 37,
+          "snippet": "const nativeMessage = asOptionalRecord(error.error)?.message;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-mcp.ts",
+          "line": 10,
+          "snippet": "isRecord,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-mcp.ts",
+          "line": 52,
+          "snippet": "const filter = isRecord(server.toolFilter) ? server.toolFilter : {};"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-mcp.ts",
+          "line": 11,
+          "snippet": "normalizeLowercaseStringOrEmpty,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-mcp.ts",
+          "line": 32,
+          "snippet": "const transport = normalizeLowercaseStringOrEmpty(server.transport) || \"sse\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeTrimmedStringList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeTrimmedStringList",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-mcp.ts",
+          "line": 12,
+          "snippet": "normalizeTrimmedStringList,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-mcp.ts",
+          "line": 53,
+          "snippet": "const include = normalizeTrimmedStringList(filter.include);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#DEFAULT_MAX_LIVE_TOOL_RESULT_CHARS",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#DEFAULT_MAX_LIVE_TOOL_RESULT_CHARS",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 51,
+          "snippet": "DEFAULT_MAX_LIVE_TOOL_RESULT_CHARS,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#resolveLiveToolResultMaxChars",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#resolveLiveToolResultMaxChars",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 52,
+          "snippet": "resolveLiveToolResultMaxChars,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 250,
+          "snippet": "? resolveLiveToolResultMaxChars({ contextWindowTokens: contextTokens })"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#sliceToolResultTextToBudget",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#sliceToolResultTextToBudget",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 53,
+          "snippet": "sliceToolResultTextToBudget,"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 531,
+          "snippet": "error: sliceToolResultTextToBudget(message, maxChars),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 18,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 206,
+          "snippet": "const text = truncateUtf16Safe(delta, remaining);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/tool-results#textResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/tool-results#textResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 55,
+          "snippet": "import { textResult } from \"openclaw/plugin-sdk/tool-results\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 522,
+          "snippet": "const failed = textResult(message, { status: disposition, error: message });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-harness-attempt-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-harness-attempt-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 11,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-attempt-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 10,
+          "snippet": "type AgentHarnessAttemptTimeout,",
+          "note": "Inline type import of AgentHarnessAttemptTimeout."
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-isolated-completion.ts",
+          "line": 1,
+          "snippet": "import { createAgentHarnessAssistantMessage } from \"openclaw/plugin-sdk/agent-harness-attempt-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-reasoning.ts",
+          "line": 2,
+          "snippet": "import { selectSupportedReasoningEffort } from \"openclaw/plugin-sdk/agent-harness-attempt-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-usage.ts",
+          "line": 1,
+          "snippet": "import { makeZeroUsageSnapshot } from \"openclaw/plugin-sdk/agent-harness-attempt-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-attempt-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-items.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-attempt-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-attempt-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-messages.ts",
+          "line": 2,
+          "snippet": "import { createAgentHarnessAssistantMessage } from \"openclaw/plugin-sdk/agent-harness-attempt-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 2,
+          "snippet": "import { resolveStoredSessionPermissionPolicy } from \"openclaw/plugin-sdk/agent-harness-attempt-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-attempt-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-harness-registration",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-harness-registration",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-errors.ts",
+          "line": 2,
+          "snippet": "import { AgentHarnessPreflightError } from \"openclaw/plugin-sdk/agent-harness-registration\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-harness-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 14,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt-hooks.ts",
+          "line": 11,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-binding-migration.ts",
+          "line": 2,
+          "snippet": "import type { AgentHarnessAttemptParamsV2 } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-bindings.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-environment.ts",
+          "line": 3,
+          "snippet": "import type { AgentExecutorController } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-isolated-completion.ts",
+          "line": 2,
+          "snippet": "import { normalizeUsage, type AgentHarnessV2 } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-mcp.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 22,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 3,
+          "snippet": "import type { AgentHarnessAttemptParamsV2 } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/config.ts",
+          "line": 4,
+          "snippet": "import type { AgentHarnessAttemptParamsV2 } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-prompt.ts",
+          "line": 19,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-items.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 17,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-messages.ts",
+          "line": 11,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 33,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 10,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-usage.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-target.ts",
+          "line": 1,
+          "snippet": "import type { AgentHarnessAttemptParamsV2 } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-reasoning.ts",
+          "line": 3,
+          "snippet": "import type { AgentHarnessAttemptParamsV2 } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-harness-session-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-harness-session-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 20,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-session-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-bindings.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-session-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 11,
+          "snippet": "import type { NativeSessionBindingAuthority } from \"openclaw/plugin-sdk/agent-harness-session-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-harness-tool-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-harness-tool-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 46,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-harness-tool-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 43,
+          "snippet": "type AgentHarnessMessagingDeliveryFacts,",
+          "note": "Inline type import of AgentHarnessMessagingDeliveryFacts."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-sessions",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-sessions",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 23,
+          "snippet": "import { SessionManager } from \"openclaw/plugin-sdk/agent-sessions\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-workspace-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-workspace-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 33,
+          "snippet": "await import(\"openclaw/plugin-sdk/agent-workspace-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-session.ts",
+          "line": 4,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/fetch-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/fetch-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 12,
+          "snippet": "import { responseWithRelease } from \"openclaw/plugin-sdk/fetch-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/file-access-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/file-access-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 4,
+          "snippet": "import { createStagedInputPathMatcher, root } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/json-schema-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/json-schema-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 47,
+          "snippet": "import { validateJsonSchemaValue } from \"openclaw/plugin-sdk/json-schema-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/llm",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/llm",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-reasoning.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/llm\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-usage.ts",
+          "line": 7,
+          "snippet": "import { calculateCost, type AssistantMessage } from \"openclaw/plugin-sdk/llm\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-messages.ts",
+          "line": 12,
+          "snippet": "import { calculateCost, type AssistantMessage } from \"openclaw/plugin-sdk/llm\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-store",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-store",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 5,
+          "snippet": "import { readMediaBuffer, resolveMediaBufferPath } from \"openclaw/plugin-sdk/media-store\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/index.ts",
+          "line": 1,
+          "snippet": "import { buildPluginConfigSchema, definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-runtime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 21,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-bindings.ts",
+          "line": 10,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-harness.ts",
+          "line": 22,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-http",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-http",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 13,
+          "snippet": "import { resolveProviderRequestHeaders } from \"openclaw/plugin-sdk/provider-http\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-tools",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-tools",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 48,
+          "snippet": "import { normalizeOpenAIStrictCompatSchema } from \"openclaw/plugin-sdk/provider-tools\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/retry-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/retry-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 14,
+          "snippet": "import { retryAsync } from \"openclaw/plugin-sdk/retry-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-env",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-env",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 15,
+          "snippet": "import { sleepWithAbort } from \"openclaw/plugin-sdk/runtime-env\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/security-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/security-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-files.ts",
+          "line": 6,
+          "snippet": "import { FsSafeError } from \"openclaw/plugin-sdk/security-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/session-transcript-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/session-transcript-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 16,
+          "snippet": "} from \"openclaw/plugin-sdk/session-transcript-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-client.ts",
+          "line": 16,
+          "snippet": "import { fetchWithSsrFGuard } from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-errors.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-mcp.ts",
+          "line": 13,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-attempt.ts",
+          "line": 24,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-native-items.ts",
+          "line": 10,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 49,
+          "snippet": "import { asOptionalRecord, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-transcript.ts",
+          "line": 17,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/text-utility-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-native-tool-projection.ts",
+          "line": 18,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 54,
+          "snippet": "} from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/tool-results",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/tool-results",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/agentsapi/agentsapi-tools.ts",
+          "line": 55,
+          "snippet": "import { textResult } from \"openclaw/plugin-sdk/tool-results\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all 28 eligible production TS files, package.json and openclaw.plugin.json. All 52 plugin files are explicitly partitioned; no eligible declaration files or generated/build exceptions exist in this source tree.",
+    "Production relative imports remain within extensions/agentsapi. The eligible native-session-binding-api.ts barrel reexports plugin-owned readRecord, not an SDK symbol. No additional plugin-owned/shared shipped source outside the root is imported. SDK implementations and installed openai/zod dependencies are outside this audit boundary.",
+    "The package declares index.ts as its extension entry. Source scope also includes native-session-binding-api.ts and all eligible helpers regardless of entrypoint reachability. Published-artifact coverage is not claimed.",
+    "Resolved public specifiers and original exported names against package.json exports and their src/plugin-sdk facades. SDK aliases inside those facades (for example embeddedAgentLog and abortAndDrainAgentHarnessRun) retain the names publicly imported by this plugin.",
+    "definePluginEntry types its register callback through OpenClawPluginDefinition.register/OpenClawPluginApi. index.ts forwards api.runtime unchanged into the PluginRuntime-typed harness and binding helpers. The only consumed public runtime paths are config.current, agent.resolveAgentDir, agent.resolveAgentWorkspaceDir, and state.openKeyedStoreV2; the bare handle propagation adds no root/prefix finding.",
+    "Harness params, hostCapabilities, executor controller, SessionManager instances, state stores, lifecycle objects, native API clients, projections, returned config objects, and SDK helper return values are separate contracts or plugin-owned objects, not OpenClawPluginApi/PluginRuntime handles. Their members and SDK helper internal effects are not enumerated as API/runtime members.",
+    "runAgentHarnessLlmOutputHook/runAgentHarnessAfterToolCallHook/agent-end helper invocations are SDK function dependencies, not API on/registerHook registrations. No named hook registrations occur. Manifest activation.onAgentHarnesses/categories/configSchema describe discovery/configuration and are not agreed manifest-contract fields; this manifest has no channels/providers/skills/commandAliases/cliCommands/contracts declarations.",
+    "Type syntax is preserved: agentHarnessAttemptTerminal, setActiveEmbeddedRun, SessionManager, readMediaBuffer, extractMessagingToolSend, createAgentHarnessToolExecutionBoundaryRegistry, and readAsyncStartedTaskIds have ordinary value imports plus explicit type use and are mixed exports. Their module classifications follow only import sites. FsSafeError is imported and used in instanceof, with no constructor invocation; imported constants remain import-only.",
+    "agentsapi-files.ts directly destructures prepareAgentWorkspaceAttachments from a dynamic SDK import; this resolves the named export without an un-narrowed namespace binding. Local wrapper calls do not acquire transitive SDK call kinds.",
+    "Repository caller search verified the five ambiguous test-only API/helper files. native-session-binding.test-api.ts uses Vitest spies and is loaded by storage/deletion tests, including the separately test-only session-native-binding.test-support.ts; no production callers override exclusions.",
+    "findingCount counts canonical findings with representative evidence in each reviewed file. Evidence is representative per required reference kind; complete referenceKinds were reconciled against all reviewed occurrences."
+  ]
+}

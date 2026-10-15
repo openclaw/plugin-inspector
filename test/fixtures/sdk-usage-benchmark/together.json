@@ -1,0 +1,971 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "together",
+    "path": "extensions/together"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_together",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/together/api.ts",
+      "sha256": "52aafc80989809be152387aa8e00582b356102842d600d078a3b861dd6a9e15e",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/together/index.ts",
+      "sha256": "0aaf6af5b60664b0c3152fa365e067685b02cc349c55381b22776b1721ac102f",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/together/models.ts",
+      "sha256": "8fa3934197cbbbb722c0b9d086dafb2b640214472694feb6261f741398ece428",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/together/onboard.ts",
+      "sha256": "aca88cf3ddfa8cf5756eee4c2e8c27624b3ff0a4527b90e63e1f29be8ee45214",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/together/openclaw.plugin.json",
+      "sha256": "e6988227ddb1904063c1ccc40f4d68cc1049366622afe45d3b7a81d1bb3b419e",
+      "role": "manifest",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/together/package.json",
+      "sha256": "22a623605b74ad78bf7c811153c45dbefe8ffd69e5c56d2fad658d7935ff0892",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/together/provider-catalog.ts",
+      "sha256": "36f427b9db36b25d83525348582cd46d569ac12488b923a0af5fc4064f006483",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/together/video-generation-provider.ts",
+      "sha256": "868b82f5102a9fb302adb199538c51bf900cd670b6d13147236e35ebd4fc077c",
+      "role": "production-source",
+      "findingCount": 25
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/together/README.md",
+      "rule": "non-source",
+      "reason": "Markdown plugin documentation; outside the eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/together/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG activity artwork; outside the eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/together/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG plugin icon; outside the eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/together/onboard.test.ts",
+      "rule": "test-file",
+      "reason": "The basename contains .test.; production files do not import this onboarding test."
+    },
+    {
+      "path": "extensions/together/together.live.test.ts",
+      "rule": "test-file",
+      "reason": "The basename contains .test.; production files do not import this live integration test."
+    },
+    {
+      "path": "extensions/together/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript configuration JSON; neither eligible JS/TS source nor package/manifest metadata."
+    },
+    {
+      "path": "extensions/together/video-generation-provider.test.ts",
+      "rule": "test-file",
+      "reason": "The basename contains .test.; production files do not import this video provider test."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerVideoGenerationProvider",
+      "kind": "api-member",
+      "identity": "api.registerVideoGenerationProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/index.ts",
+          "line": 35,
+          "snippet": "    api.registerVideoGenerationProvider(buildTogetherVideoGenerationProvider());",
+          "note": "The register callback is typed (api: OpenClawPluginApi) by SingleProviderPluginOptions in src/plugin-sdk/provider-entry.ts:245; no helper-internal registrations are attributed to this plugin."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.videoGenerationProviders:together",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.videoGenerationProviders:together",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/openclaw.plugin.json",
+          "line": 41,
+          "snippet": "    \"videoGenerationProviders\": [\"together\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.providers:together",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:together",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/openclaw.plugin.json",
+          "line": 8,
+          "snippet": "  \"providers\": [\"together\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#toImageDataUrl",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#toImageDataUrl",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { toImageDataUrl } from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 221,
+          "snippet": "            ? toImageDataUrl({ ...input, buffer: input.buffer, defaultMimeType: \"image/png\" })"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-generation-runtime#downloadGeneratedVideoAsset",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime#downloadGeneratedVideoAsset",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 3,
+          "snippet": "  downloadGeneratedVideoAsset,",
+          "note": "Named value import from openclaw/plugin-sdk/media-generation-runtime (lines 2\u20135)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 280,
+          "snippet": "        const video = await downloadGeneratedVideoAsset({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-generation-runtime#resolveGeneratedMediaMaxBytes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime#resolveGeneratedMediaMaxBytes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 4,
+          "snippet": "  resolveGeneratedMediaMaxBytes,",
+          "note": "Named value import from openclaw/plugin-sdk/media-generation-runtime (lines 2\u20135)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 291,
+          "snippet": "          maxBytes: resolveGeneratedMediaMaxBytes(req.cfg, \"video\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#isProviderApiKeyConfiguredAsync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#isProviderApiKeyConfiguredAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 6,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 128,
+          "snippet": "    isConfiguredAsync: (ctx) => isProviderApiKeyConfiguredAsync({ provider: \"together\", ...ctx }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime#resolveApiKeyForProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 7,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 153,
+          "snippet": "      const auth = await resolveApiKeyForProvider({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-shared#buildManifestModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared#buildManifestModelProviderConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/models.ts",
+          "line": 1,
+          "snippet": "import { buildManifestModelProviderConfig } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        },
+        {
+          "path": "extensions/together/models.ts",
+          "line": 8,
+          "snippet": "export const TOGETHER_MODEL_CATALOG: ModelDefinitionConfig[] = buildManifestModelProviderConfig({"
+        },
+        {
+          "path": "extensions/together/provider-catalog.ts",
+          "line": 1,
+          "snippet": "import { buildManifestModelProviderConfig } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        },
+        {
+          "path": "extensions/together/provider-catalog.ts",
+          "line": 6,
+          "snippet": "  return buildManifestModelProviderConfig({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-shared#readManifestProviderDefaultModelRef",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared#readManifestProviderDefaultModelRef",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/onboard.ts",
+          "line": 1,
+          "snippet": "import { readManifestProviderDefaultModelRef } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        },
+        {
+          "path": "extensions/together/onboard.ts",
+          "line": 9,
+          "snippet": "export const TOGETHER_DEFAULT_MODEL_REF = readManifestProviderDefaultModelRef("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-entry#defineSingleProviderPluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-entry#defineSingleProviderPluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/index.ts",
+          "line": 1,
+          "snippet": "import { defineSingleProviderPluginEntry } from \"openclaw/plugin-sdk/provider-entry\";"
+        },
+        {
+          "path": "extensions/together/index.ts",
+          "line": 9,
+          "snippet": "export default defineSingleProviderPluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#assertOkOrThrowHttpError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#assertOkOrThrowHttpError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 9,
+          "snippet": "  assertOkOrThrowHttpError,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http (lines 8\u201318)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 241,
+          "snippet": "        await assertOkOrThrowHttpError(response, \"Together video generation failed\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#createProviderOperationDeadline",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#createProviderOperationDeadline",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 10,
+          "snippet": "  createProviderOperationDeadline,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http (lines 8\u201318)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 164,
+          "snippet": "      const deadline = createProviderOperationDeadline({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#createProviderOperationTimeoutResolver",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#createProviderOperationTimeoutResolver",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 11,
+          "snippet": "  createProviderOperationTimeoutResolver,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http (lines 8\u201318)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 282,
+          "snippet": "          timeoutMs: createProviderOperationTimeoutResolver({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#normalizeBaseUrl",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#normalizeBaseUrl",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 12,
+          "snippet": "  normalizeBaseUrl,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http (lines 8\u201318)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 82,
+          "snippet": "    normalizeBaseUrl(configuredBaseUrl) === normalizeBaseUrl(TOGETHER_BASE_URL)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#pollProviderOperationJson",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#pollProviderOperationJson",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 13,
+          "snippet": "  pollProviderOperationJson,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http (lines 8\u201318)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 257,
+          "snippet": "            : await pollProviderOperationJson<TogetherVideoResponse>({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#postJsonRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#postJsonRequest",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 14,
+          "snippet": "  postJsonRequest,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http (lines 8\u201318)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 228,
+          "snippet": "      const { response, release } = await postJsonRequest({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 15,
+          "snippet": "  readProviderJsonResponse,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http (lines 8\u201318)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 242,
+          "snippet": "        const submitted = await readProviderJsonResponse<TogetherVideoResponse>("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderHttpRequestConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderHttpRequestConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 17,
+          "snippet": "  resolveProviderHttpRequestConfig,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http (lines 8\u201318)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 169,
+          "snippet": "        resolveProviderHttpRequestConfig({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderOperationTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderOperationTimeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 16,
+          "snippet": "  resolveProviderOperationTimeoutMs,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-http (lines 8\u201318)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 232,
+          "snippet": "        timeoutMs: resolveProviderOperationTimeoutMs({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/models.ts",
+          "line": 2,
+          "snippet": "import type { ModelDefinitionConfig } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/together/models.ts",
+          "line": 8,
+          "snippet": "export const TOGETHER_MODEL_CATALOG: ModelDefinitionConfig[] = buildManifestModelProviderConfig({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/provider-catalog.ts",
+          "line": 2,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/together/provider-catalog.ts",
+          "line": 5,
+          "snippet": "export function buildTogetherProvider(): ModelProviderConfig {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#applyModelCompatPatch",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#applyModelCompatPatch",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/index.ts",
+          "line": 2,
+          "snippet": "import { applyModelCompatPatch } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/together/index.ts",
+          "line": 24,
+          "snippet": "        ? applyModelCompatPatch(model, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#createModelCatalogPresetAppliers",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#createModelCatalogPresetAppliers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/onboard.ts",
+          "line": 3,
+          "snippet": "  createModelCatalogPresetAppliers,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-onboard (lines 2\u20135)."
+        },
+        {
+          "path": "extensions/together/onboard.ts",
+          "line": 26,
+          "snippet": "  createModelCatalogPresetAppliers(togetherPreset);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#createProviderConnectionPresetAppliers",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#createProviderConnectionPresetAppliers",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/onboard.ts",
+          "line": 4,
+          "snippet": "  createProviderConnectionPresetAppliers,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-onboard (lines 2\u20135)."
+        },
+        {
+          "path": "extensions/together/onboard.ts",
+          "line": 23,
+          "snippet": "} satisfies Parameters<typeof createProviderConnectionPresetAppliers<[]>>[0];",
+          "note": "Direct typeof of the imported SDK function is a type-reference."
+        },
+        {
+          "path": "extensions/together/onboard.ts",
+          "line": 28,
+          "snippet": "  createProviderConnectionPresetAppliers(togetherPreset);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asSafeIntegerInRange",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asSafeIntegerInRange",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 20,
+          "snippet": "  asSafeIntegerInRange,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime (lines 19\u201322)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 115,
+          "snippet": "  const duration = asSafeIntegerInRange(Math.round(value), {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 21,
+          "snippet": "  normalizeOptionalString,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime (lines 19\u201322)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 79,
+          "snippet": "  const configuredBaseUrl = normalizeOptionalString(req.cfg?.models?.providers?.together?.baseUrl);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 24,
+          "snippet": "  VideoGenerationProvider,",
+          "note": "Named type import from openclaw/plugin-sdk/video-generation (lines 23\u201326)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 122,
+          "snippet": "export function buildTogetherVideoGenerationProvider(): VideoGenerationProvider {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/video-generation#VideoGenerationRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/video-generation#VideoGenerationRequest",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 25,
+          "snippet": "  VideoGenerationRequest,",
+          "note": "Named type import from openclaw/plugin-sdk/video-generation (lines 23\u201326)."
+        },
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 78,
+          "snippet": "function resolveTogetherVideoBaseUrl(req: VideoGenerationRequest): string {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/image-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/image-generation",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 1,
+          "snippet": "import { toImageDataUrl } from \"openclaw/plugin-sdk/image-generation\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-generation-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/media-generation-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 6,
+          "snippet": "import { isProviderApiKeyConfiguredAsync } from \"openclaw/plugin-sdk/provider-auth\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 7,
+          "snippet": "import { resolveApiKeyForProvider } from \"openclaw/plugin-sdk/provider-auth-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/models.ts",
+          "line": 1,
+          "snippet": "import { buildManifestModelProviderConfig } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        },
+        {
+          "path": "extensions/together/provider-catalog.ts",
+          "line": 1,
+          "snippet": "import { buildManifestModelProviderConfig } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        },
+        {
+          "path": "extensions/together/onboard.ts",
+          "line": 1,
+          "snippet": "import { readManifestProviderDefaultModelRef } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/index.ts",
+          "line": 1,
+          "snippet": "import { defineSingleProviderPluginEntry } from \"openclaw/plugin-sdk/provider-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-http",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-http",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 18,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-http\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-shared",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/index.ts",
+          "line": 2,
+          "snippet": "import { applyModelCompatPatch } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/together/models.ts",
+          "line": 2,
+          "snippet": "import type { ModelDefinitionConfig } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/together/provider-catalog.ts",
+          "line": 2,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-onboard",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-onboard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/onboard.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-onboard\";",
+          "note": "Ordinary value import; later typeof usage affects the export classification, not this module import site."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 22,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/video-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/video-generation",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/together/video-generation-provider.ts",
+          "line": 26,
+          "snippet": "} from \"openclaw/plugin-sdk/video-generation\";",
+          "note": "The declaration starts with import type at line 23."
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Manually read all six production JS/TS-family files and both package/manifest metadata files. All 15 files beneath extensions/together were inventoried and byte-verified against d912f0c06e7af29a4a40c4211bec0bb76d473f10. Source root, extensions, plugin-sdk, and plugins AGENTS.md were read; no deeper Together AGENTS.md exists.",
+    "All local imports and reexports stay within extensions/together. The package declares only index.ts as its extension entry, no generated-output exceptions or additional shipped-source boundary. The source audit includes api.ts and provider-catalog.ts regardless of runtime reachability; no installed dependency or SDK implementation was recursively audited.",
+    "api.ts reexports plugin-owned constants, a wrapper function, and SDK helper results, not unchanged SDK symbols. createModelCatalogPresetAppliers/createProviderConnectionPresetAppliers return objects and their applyConfig properties are outside API/runtime provenance; these local exports add no SDK reexport identities.",
+    "createProviderConnectionPresetAppliers has an ordinary value import, direct call, and explicit typeof type usage in onboard.ts:23, making the export mixed. The provider-onboard module remains runtime because its only dependency site is the ordinary import.",
+    "Only the direct api.registerVideoGenerationProvider call is attributed as an API member. defineSingleProviderPluginEntry establishes the callback API type; its internal provider registrations are SDK helper internals, not Together source occurrences.",
+    "Provider callback model, video request req, configuration contexts, response objects, the auth result, and operation deadline/result objects are not OpenClawPluginApi or PluginRuntime handles. Their properties, built-in operations, and returned release callback do not create API/runtime or transitive SDK-export findings.",
+    "Manifest contract identities are limited to providers and contracts.videoGenerationProviders. Categories, activation, setup/auth-choice data, providerRequest family, modelCatalog entries, and configSchema are metadata rather than the agreed manifest contract identities.",
+    "No hook registrations, runtime handles, dynamic SDK dependencies, namespace imports, or genuinely unresolved dependency constructs were found. Type imports remain source-phase dependencies; this fixture makes no packaged-artifact equivalence claim."
+  ]
+}

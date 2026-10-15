@@ -1,0 +1,3277 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "reef",
+    "path": "extensions/reef"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/sdk_benchmark_coordinator/audit_reef",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/reef/api.ts",
+      "sha256": "40b26b1f28d21e28bf847354d3b684f2ff4c33369a5b53d7545518d9071ed87d",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/audit-state-operation-api.ts",
+      "sha256": "2970956e7be30054e4ad56b15696fe2105c6321dd246f7eea95f72186bf19736",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/channel-config-api.ts",
+      "sha256": "e5c6998ffdc4511ea421763e89d09799937d4c9d0b830108a6e6d3a2dfb45b5c",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/channel-plugin-api.ts",
+      "sha256": "967f23fc6d3e56dfcefad0409980472b486ad4f91d66a4ae9e05a5488a79c210",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/cli-metadata.ts",
+      "sha256": "0cea7ed86b6eefd19692fc33bd7e42bb34dbc87d82b6cf346a883faba61223ca",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/reef/commands.runtime.ts",
+      "sha256": "b3ed3e01d6289746fd10cd0ba163d608a75acf32b075fe8db995cbbe9cca6212",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/config-doctor-api.ts",
+      "sha256": "d3487ad7a2fa9d8b7eb4685a9ccbb127ecd5da08e60a8167f5c67943acbd17a6",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/reef/doctor-contract-api.ts",
+      "sha256": "2ff682679eab7095969f87bfd0b0dcb1c5b5e3984f70793e7e651b47cce59998",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/reef/index.ts",
+      "sha256": "04a5202c639836405405c1b214c2a69fc5764d42c78ea8d13fbc7cbc3771bb53",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/reef/openclaw.plugin.json",
+      "sha256": "07c9e579d2e6d7bd76f5f0e8b28d9e29b6e4d1e337b79d4b72fe904209863ddc",
+      "role": "manifest",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/reef/outbound-state-operation-api.ts",
+      "sha256": "8a992f93d261dec9459338741120a577790b0b28c5631a31ce6ada568090d910",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/package.json",
+      "sha256": "5378f9d4f49af03a0ccd57633a56e387a352f59ec478decfec65d6f351c49367",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/protocol/audit.ts",
+      "sha256": "83534dac7311383ea85d27866d70da8ed8cb23c5c1aeb094996bfcc416ee5c23",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/protocol/canonical.ts",
+      "sha256": "1bbaaad19a130a55194ddd5f6ed0f9844ad65b533d4196762b52dd38b032b562",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/protocol/checks.ts",
+      "sha256": "e3a14f4a116192d640da128eb46cb9555fe21656cce9085c125ce14de23d48e5",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/protocol/encoding.ts",
+      "sha256": "a80f925464f093011512f5c7b85bea2307827827f72740ceb57e880c33c6f91c",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/protocol/envelope.ts",
+      "sha256": "3b76c92519c7d74a104efd8478fd73a7ff4a1b67e711d982329b5955bf6bf0ab",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/protocol/guard-adapters.ts",
+      "sha256": "864891b37cda8d697fa100aa7a39be1ce82f36b22469f251e68004638459eec7",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/reef/protocol/guard.ts",
+      "sha256": "35efdcf1909679f1b8283d72f3fb5b13cc4f27040161a3550e5f0643b611736b",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/protocol/identity.ts",
+      "sha256": "eb438fb63726bfc9d1d28339b5a82931ff295bb176e55ba221b66b5243c1cd78",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/protocol/index.ts",
+      "sha256": "372bfea558b8cd0dd10dc23b1975269c49b8c8d4ebeef23460d324bb15d127fa",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/protocol/pipeline.ts",
+      "sha256": "5e8c311ad30e55b710630e00869f66791cc71bcc2f8668f06392dae61615b0fd",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/protocol/receipts.ts",
+      "sha256": "267b57691dc9044bf2b56922f535c78bc2a41d03730fa3e284e4dcb33358bf07",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/protocol/ulid.ts",
+      "sha256": "b4430e3cca164613bb9a6b43ced1fe753406c4e8f2628c74ef95fcffc268989d",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/runtime-api.ts",
+      "sha256": "0825df7898ac35f0021a097f524722a48ac243185d6442b9d10e350365c83eea",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/setup-entry.ts",
+      "sha256": "d242b77cd83777a51e729690688b39721c1bff7c3b757227a2b6d41c1dc7e2d0",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/reef/src/audit-state-format.ts",
+      "sha256": "29ba17e86626a106f72cf6e5f233a935605d25fcb0026c4518f838b753aa6714",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/src/audit-state-operation.ts",
+      "sha256": "84b728a2913447fe76f8a235618c3a0c6cf508b62b4c0f22d2c659ce05ddf0c1",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/reef/src/audit-state.ts",
+      "sha256": "e108f01a4ab3fd30c5911f2c81706dc780bf0c5ce427d15619bbda85b286d0ec",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/reef/src/channel-lifecycle.ts",
+      "sha256": "a5cb869dfeb411587319a1eb7437bdf116902779bf558467b1efbef5a4a54dd3",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/reef/src/channel.ts",
+      "sha256": "ef8b126b5bffa728c3a6715dea88e0f915651a96240073a21a5b8e1c180b3a2d",
+      "role": "production-source",
+      "findingCount": 17
+    },
+    {
+      "path": "extensions/reef/src/cli.ts",
+      "sha256": "be418e1e30e8e0ce427ace8a0566bd1d0314586422fa947978da459d30c027eb",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/reef/src/commands.ts",
+      "sha256": "7d5eb80b1c2659578619a20154075f86997e4b2374e4292f4a0c75b27b27364e",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/src/config-schema.ts",
+      "sha256": "cbefc9a6f5cb020834fdaa7e848117874adfb71a840e686a0f84aca88e32fede",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/src/doctor-durable-state.ts",
+      "sha256": "307e3aca2d984dc90d6fe666c8d0b4dfbdd837599290d6e275d55539569b6d09",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/reef/src/doctor-state-paths.ts",
+      "sha256": "38b9397ed96a129071cf0289be04f25e86ef834f938d51904ee10e298a900c2b",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/reef/src/flow.ts",
+      "sha256": "24c9d639b14ec3861ffe83ab826fa4931af7a41ae98fdeb8f48efcf60c6b4784",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/reef/src/friend-types.ts",
+      "sha256": "84f8462bce8f83df696180b5d8cefeb29aeefccac26b62abd4fd909de0f2cfe5",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/src/friends.ts",
+      "sha256": "3a987358970b89383c1fe3e3760dc63ff983795246252e13a08f47597f8a5649",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/reef/src/guard.ts",
+      "sha256": "4ce17a0200a6f60e63ca6694d6cfd357dffd64ca783db91d94bdbf20091d61e4",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/reef/src/inbound.ts",
+      "sha256": "4d06e2da73721f959e95113dfdbe19a96664b7a586958400bef750cbbd1d1568",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/src/legacy-key-guard.ts",
+      "sha256": "814c7372a769ed8500d35d7abf3de70ad33e44c895438067780ad37d9b73ead8",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/reef/src/outbound-state-client.ts",
+      "sha256": "27539773c4d7aefedb943728600cada51dbdb86516209c1f6bfc5dc9806c16fb",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/src/outbound-state-operation.ts",
+      "sha256": "145dcf5e4d9fd47d7fe3577fd3c69e60f3795b9e9350cb03ab95cfdae0cabf77",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/reef/src/outbound.ts",
+      "sha256": "ed939abe1201d474c9d6241a540b167718a65a7f1c3a08460c8405231a9e6aaf",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/reef/src/owner-notice.ts",
+      "sha256": "54019bad8dd1df9c1d3ea9b7144d1ae45e67ac50e99f77be7917ea67a92d1302",
+      "role": "production-source",
+      "findingCount": 11
+    },
+    {
+      "path": "extensions/reef/src/registration-state.ts",
+      "sha256": "133d290be73b8e0d2fd0b07687a76319312bd4edfa68879d02885128501cb23b",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/reef/src/rejection-resend.ts",
+      "sha256": "5c7da4a4811dbddb10ca5304600ca7c162c54aa342b94e7ca5b3067b0bdc0dfb",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/src/replay-store.ts",
+      "sha256": "11aed59a3fa8c84a886c62efb672742c902c74c846615009fe5c5ad5e9614baa",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/reef/src/runtime.ts",
+      "sha256": "288d96b7018e4a81f14203f345849b448a5e7071f6e28921e2676485129de57e",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/reef/src/setup.ts",
+      "sha256": "006ed49d4a68dd6bc93b5a1a4b2ba27726167fb05c7d42ae50fa8e655b4fb820",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/reef/src/state-format.ts",
+      "sha256": "5b26d68199215f5f60c9b64b800cbcce28b9008161b2c57b7bbcb19d3548e471",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/reef/src/state-operation.ts",
+      "sha256": "88f91438bc05ebbe467329da268c14df7ab66ad35835a8e1ae79926a7588023e",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/reef/src/state-policy.ts",
+      "sha256": "0367b0eee5f5dee617bd8cc44a7b90e48b26decb81479817daa9f25b056ec3ee",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/src/state.ts",
+      "sha256": "00aea5eb7a4777ed324e649d71d291e3c3cc3d201929756f8b8314097ad55364",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/reef/src/transport-errors.ts",
+      "sha256": "fb8c336c396cf2730ca47fcffa1bd9e1fc2f0ec1627ae642ad01d53c11b84006",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/reef/src/transport.ts",
+      "sha256": "e3a2b46b41194a9bd1ab12f8fa846b91ef71674bc2ab4c52fa2859be5fdad4f8",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/reef/src/trust-delivery-transition.ts",
+      "sha256": "979f1a6a7e7085495989d7eafb20ffb386689c8629cc0d5b666718538830b745",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/src/trust-peer-transition.ts",
+      "sha256": "ec4b9ff7ed1059f32c7a54412b3ac037dfe6b6dfc4ead0cecdcade8cf04fc0c5",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/reef/src/trust-state-operation.ts",
+      "sha256": "e7695c53c78cbdc134e1f555e8072b0d3459e2c0d709cd970a72dc28e0610b2c",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/reef/src/trust-store-authority.ts",
+      "sha256": "f81a346bc26762fd1d895d0d333ab8b1334b871e0500a895aa83d48dcffe9328",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/reef/src/trust-store-delivery.ts",
+      "sha256": "74f09e88dde4d4638cbf4ac8a6de7f45e0be87833f390e6b5db934c769b08263",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/reef/src/trust-store-format.ts",
+      "sha256": "f163226d3b4452d817f70d6f08fa859e2cab78ac61c193a8f42bb274a167df17",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/src/trust-store.ts",
+      "sha256": "6213aa800dc4d3eb65010ed3fac959bdcd80f883afef95d7efc2e25d32263519",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/reef/src/types.ts",
+      "sha256": "b21fc83d214c9f460163d745f6081bc667873d9296ea35f069732898eb3b7567",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/state-operation-api.ts",
+      "sha256": "eb651e51421b0b264a17424e6b5a07c73fed081fddb5b80237de9fa6c69b1824",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/reef/trust-state-operation-api.ts",
+      "sha256": "c9273e2809a712dce718f498daf8201266a4669d194dfc126d248e0af0987b66",
+      "role": "production-source",
+      "findingCount": 0
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/reef/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation, outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/reef/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Static image asset, outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/reef/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Static image asset, outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/reef/doctor-contract-api.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/index.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/protocol/audit-receipts.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/protocol/checks-ulid.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/protocol/encoding.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/protocol/guard.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/protocol/identity-envelope.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/protocol/memory-stores.test-support.ts",
+      "rule": "test-helper",
+      "reason": "In-memory audit/replay test implementations; imported only by Reef *.test.ts files and flow.test-helpers.ts, not production."
+    },
+    {
+      "path": "extensions/reef/protocol/pipeline.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/audit-state.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/channel.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/config-schema.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/flow-receipts.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/flow-send.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/flow.source-authority.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/flow.test-helpers.ts",
+      "rule": "test-helper",
+      "reason": "Vitest mocks and temporary test store fixtures; callers are channel, flow, outbound and transport-capacity-recovery *.test.ts files only."
+    },
+    {
+      "path": "extensions/reef/src/flow.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/flow.worker-outbound.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/friends.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/inbox-cursor.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/legacy-key-guard.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/outbound.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/owner-notice.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/rejection-resend.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/replay-state.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/runtime.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/setup.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/state.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Vitest runtime/state-store mock helpers; callers are state, audit-state, friends, inbox-cursor and doctor-contract-api *.test.ts files only."
+    },
+    {
+      "path": "extensions/reef/src/state.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/transport-capacity-recovery.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/transport-inbox.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/transport-parked.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/transport.test-helpers.ts",
+      "rule": "test-helper",
+      "reason": "Deterministic signing fixtures, fake sockets and relay clients; callers are transport, transport-inbox, transport-parked and transport-capacity-recovery *.test.ts files only."
+    },
+    {
+      "path": "extensions/reef/src/transport.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/transport.timeout.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/src/trust-store.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite with .test. basename; no production source imports this file."
+    },
+    {
+      "path": "extensions/reef/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript configuration, outside eligible source extensions and not package/manifest metadata."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerCli",
+      "kind": "api-member",
+      "identity": "api.registerCli",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/cli-metadata.ts",
+          "line": 5,
+          "snippet": "  api.registerCli("
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerCommand",
+      "kind": "api-member",
+      "identity": "api.registerCommand",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/index.ts",
+          "line": 8,
+          "snippet": "  api.registerCommand({"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.channels:reef",
+      "kind": "manifest-contract",
+      "identity": "manifest.channels:reef",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/openclaw.plugin.json",
+          "line": 30,
+          "snippet": "    \"reef\""
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.cliCommands.name:reef",
+      "kind": "manifest-contract",
+      "identity": "manifest.cliCommands.name:reef",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/openclaw.plugin.json",
+          "line": 18,
+          "snippet": "      \"name\": \"reef\","
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.commandAliases.name:reef",
+      "kind": "manifest-contract",
+      "identity": "manifest.commandAliases.name:reef",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/openclaw.plugin.json",
+          "line": 39,
+          "snippet": "      \"name\": \"reef\""
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.channel.routing.resolveAgentRoute",
+      "kind": "runtime-member",
+      "identity": "runtime.channel.routing.resolveAgentRoute",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/owner-notice.ts",
+          "line": 9,
+          "snippet": "  PluginRuntime[\"channel\"][\"routing\"][\"resolveAgentRoute\"]"
+        },
+        {
+          "path": "extensions/reef/src/owner-notice.ts",
+          "line": 345,
+          "snippet": "    const route = params.runtime.channel.routing.resolveAgentRoute({"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.config.current",
+      "kind": "runtime-member",
+      "identity": "runtime.config.current",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/cli.ts",
+          "line": 102,
+          "snippet": "  const cfg = getReefRuntime().config.current() as { channels?: { reef?: unknown } };"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.llm.complete",
+      "kind": "runtime-member",
+      "identity": "runtime.llm.complete",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/guard.ts",
+          "line": 25,
+          "snippet": "        getReefRuntime().llm.complete({"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.modelConfig.resolveModelRuntimePolicy",
+      "kind": "runtime-member",
+      "identity": "runtime.modelConfig.resolveModelRuntimePolicy",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 291,
+          "snippet": "      .resolveModelRuntimePolicy({"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.openKeyedStoreV2",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openKeyedStoreV2",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "member-access",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/audit-state.ts",
+          "line": 64,
+          "snippet": "    const migration = runtime.state.openKeyedStoreV2<{ pending: true }>({",
+          "note": "PluginRuntime-typed runtime parameter."
+        },
+        {
+          "path": "extensions/reef/src/registration-state.ts",
+          "line": 38,
+          "snippet": "  return runtime.state.openKeyedStoreV2<ReefRegistrationRecord>(registrationStoreOptions);",
+          "note": "PluginRuntime-typed runtime parameter."
+        },
+        {
+          "path": "extensions/reef/src/replay-store.ts",
+          "line": 141,
+          "snippet": "    this.#store = runtime.state.openKeyedStoreV2<ReefReplayRecord>(options);",
+          "note": "PluginRuntime-typed runtime parameter."
+        },
+        {
+          "path": "extensions/reef/src/state.ts",
+          "line": 48,
+          "snippet": "    runtime.state.openKeyedStoreV2<ReefDurableMigrationRecord>({"
+        },
+        {
+          "path": "extensions/reef/src/trust-store.ts",
+          "line": 44,
+          "snippet": "function openStores(openStore: PluginRuntime[\"state\"][\"openKeyedStoreV2\"]) {"
+        },
+        {
+          "path": "extensions/reef/src/trust-store.ts",
+          "line": 46,
+          "snippet": "    peers: openStore<ReefPeerStateSnapshot>(REEF_TRUST_STORE_OPTIONS),",
+          "note": "Direct callable parameter alias; openReefTrustStore passes runtime.state.openKeyedStoreV2 at line 360."
+        },
+        {
+          "path": "extensions/reef/src/trust-store.ts",
+          "line": 360,
+          "snippet": "  const stores = openStores(runtime.state.openKeyedStoreV2);"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.system.enqueueSystemEvent",
+      "kind": "runtime-member",
+      "identity": "runtime.system.enqueueSystemEvent",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/owner-notice.ts",
+          "line": 351,
+          "snippet": "    const queued = params.runtime.system.enqueueSystemEvent(notice.text, {"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.system.requestHeartbeat",
+      "kind": "runtime-member",
+      "identity": "runtime.system.requestHeartbeat",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/owner-notice.ts",
+          "line": 358,
+          "snippet": "    params.runtime.system.requestHeartbeat({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/account-resolution#resolveUserPath",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/account-resolution#resolveUserPath",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/doctor-state-paths.ts",
+          "line": 4,
+          "snippet": "import { resolveUserPath } from \"openclaw/plugin-sdk/account-resolution\";",
+          "note": "Original resolveUserPath dependency from openclaw/plugin-sdk/account-resolution."
+        },
+        {
+          "path": "extensions/reef/src/doctor-state-paths.ts",
+          "line": 28,
+          "snippet": "  const configuredDir = configured ? resolveUserPath(configured, params.env) : null;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-scope-runtime#resolveSessionAgentIdStrict",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-scope-runtime#resolveSessionAgentIdStrict",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 282,
+          "snippet": "  const { resolveSessionAgentIdStrict } = await import(\"openclaw/plugin-sdk/agent-scope-runtime\");",
+          "note": "Original resolveSessionAgentIdStrict dependency from openclaw/plugin-sdk/agent-scope-runtime."
+        },
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 284,
+          "snippet": "  const agentId = resolveSessionAgentIdStrict({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/async-lock-runtime#createAsyncLock",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/async-lock-runtime#createAsyncLock",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/friends.ts",
+          "line": 1,
+          "snippet": "import { createAsyncLock } from \"openclaw/plugin-sdk/async-lock-runtime\";",
+          "note": "Original createAsyncLock dependency from openclaw/plugin-sdk/async-lock-runtime."
+        },
+        {
+          "path": "extensions/reef/src/replay-store.ts",
+          "line": 4,
+          "snippet": "import { createAsyncLock } from \"openclaw/plugin-sdk/async-lock-runtime\";",
+          "note": "Original createAsyncLock dependency from openclaw/plugin-sdk/async-lock-runtime."
+        },
+        {
+          "path": "extensions/reef/src/replay-store.ts",
+          "line": 120,
+          "snippet": "  readonly #enqueue = createAsyncLock();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-contract#ChannelDoctorLegacyConfigRule",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-contract#ChannelDoctorLegacyConfigRule",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/config-doctor-api.ts",
+          "line": 1,
+          "snippet": "import type { ChannelDoctorLegacyConfigRule } from \"openclaw/plugin-sdk/channel-contract\";",
+          "note": "Original ChannelDoctorLegacyConfigRule dependency from openclaw/plugin-sdk/channel-contract."
+        },
+        {
+          "path": "extensions/reef/config-doctor-api.ts",
+          "line": 20,
+          "snippet": "export const legacyConfigRules: ChannelDoctorLegacyConfigRule[] = ["
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-contract#ChannelOutboundContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-contract#ChannelOutboundContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 1,
+          "snippet": "import type { ChannelOutboundContext } from \"openclaw/plugin-sdk/channel-contract\";",
+          "note": "Original ChannelOutboundContext dependency from openclaw/plugin-sdk/channel-contract."
+        },
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 95,
+          "snippet": "  ChannelOutboundContext,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-contract#ChannelThreadingToolContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-contract#ChannelThreadingToolContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 1,
+          "snippet": "import type { ChannelThreadingToolContext } from \"openclaw/plugin-sdk/channel-contract\";",
+          "note": "Original ChannelThreadingToolContext dependency from openclaw/plugin-sdk/channel-contract."
+        },
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 112,
+          "snippet": "function matchesReefToolTarget(target: string, toolContext?: ChannelThreadingToolContext): boolean {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-entry-contract#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-entry-contract#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/index.ts",
+          "line": 3,
+          "snippet": "  type OpenClawPluginApi,",
+          "note": "Original OpenClawPluginApi dependency from openclaw/plugin-sdk/channel-entry-contract."
+        },
+        {
+          "path": "extensions/reef/index.ts",
+          "line": 7,
+          "snippet": "function registerReefFullRuntime(api: OpenClawPluginApi): void {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-entry-contract#defineBundledChannelEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-entry-contract#defineBundledChannelEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/index.ts",
+          "line": 2,
+          "snippet": "  defineBundledChannelEntry,",
+          "note": "Original defineBundledChannelEntry dependency from openclaw/plugin-sdk/channel-entry-contract."
+        },
+        {
+          "path": "extensions/reef/index.ts",
+          "line": 21,
+          "snippet": "export default defineBundledChannelEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-entry-contract#defineBundledChannelSetupEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-entry-contract#defineBundledChannelSetupEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/setup-entry.ts",
+          "line": 1,
+          "snippet": "import { defineBundledChannelSetupEntry } from \"openclaw/plugin-sdk/channel-entry-contract\";",
+          "note": "Original defineBundledChannelSetupEntry dependency from openclaw/plugin-sdk/channel-entry-contract."
+        },
+        {
+          "path": "extensions/reef/setup-entry.ts",
+          "line": 3,
+          "snippet": "export default defineBundledChannelSetupEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-inbound#dispatchInboundDirectDm",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-inbound#dispatchInboundDirectDm",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 3,
+          "snippet": "  dispatchInboundDirectDm,",
+          "note": "Original dispatchInboundDirectDm dependency from openclaw/plugin-sdk/channel-inbound."
+        },
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 301,
+          "snippet": "        await dispatchInboundDirectDm({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-inbound#recordChannelBotPairLoopAndCheckSuppression",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-inbound#recordChannelBotPairLoopAndCheckSuppression",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 4,
+          "snippet": "  recordChannelBotPairLoopAndCheckSuppression,",
+          "note": "Original recordChannelBotPairLoopAndCheckSuppression dependency from openclaw/plugin-sdk/channel-inbound."
+        },
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 282,
+          "snippet": "        const loop = recordChannelBotPairLoopAndCheckSuppression({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-outbound#createMessageReceiptFromOutboundResults",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-outbound#createMessageReceiptFromOutboundResults",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 3,
+          "snippet": "  createMessageReceiptFromOutboundResults,",
+          "note": "Original createMessageReceiptFromOutboundResults dependency from openclaw/plugin-sdk/channel-outbound."
+        },
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 168,
+          "snippet": "      const receipt = createMessageReceiptFromOutboundResults({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-outbound#defineChannelMessageAdapter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-outbound#defineChannelMessageAdapter",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 4,
+          "snippet": "  defineChannelMessageAdapter,",
+          "note": "Original defineChannelMessageAdapter dependency from openclaw/plugin-sdk/channel-outbound."
+        },
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 162,
+          "snippet": "export const reefMessageAdapter = defineChannelMessageAdapter({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-pairing#createChannelPairingController",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-pairing#createChannelPairingController",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 6,
+          "snippet": "import { createChannelPairingController } from \"openclaw/plugin-sdk/channel-pairing\";",
+          "note": "Original createChannelPairingController dependency from openclaw/plugin-sdk/channel-pairing."
+        },
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 264,
+          "snippet": "      const pairing = createChannelPairingController({"
+        },
+        {
+          "path": "extensions/reef/src/cli.ts",
+          "line": 5,
+          "snippet": "import { createChannelPairingController } from \"openclaw/plugin-sdk/channel-pairing\";",
+          "note": "Original createChannelPairingController dependency from openclaw/plugin-sdk/channel-pairing."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-plugin-common#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-plugin-common#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/cli-metadata.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/channel-plugin-common\";",
+          "note": "Original OpenClawPluginApi dependency from openclaw/plugin-sdk/channel-plugin-common."
+        },
+        {
+          "path": "extensions/reef/cli-metadata.ts",
+          "line": 4,
+          "snippet": "export function registerReefCliMetadata(api: OpenClawPluginApi) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-secret-basic-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-secret-basic-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/protocol/guard-adapters.ts",
+          "line": 1,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/channel-secret-basic-runtime\";",
+          "note": "Original isRecord dependency from openclaw/plugin-sdk/channel-secret-basic-runtime."
+        },
+        {
+          "path": "extensions/reef/protocol/guard-adapters.ts",
+          "line": 106,
+          "snippet": "        !isRecord(envelope) ||"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-send-result#ChannelOutboundAdapter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-send-result#ChannelOutboundAdapter",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 7,
+          "snippet": "  ChannelOutboundAdapter,",
+          "note": "Original ChannelOutboundAdapter dependency from openclaw/plugin-sdk/channel-send-result."
+        },
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 141,
+          "snippet": "export const reefOutboundAdapter: ChannelOutboundAdapter = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-send-result#OutboundDeliveryResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-send-result#OutboundDeliveryResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 8,
+          "snippet": "  OutboundDeliveryResult,",
+          "note": "Original OutboundDeliveryResult dependency from openclaw/plugin-sdk/channel-send-result."
+        },
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 97,
+          "snippet": ">): Promise<OutboundDeliveryResult> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-setup#defineChannelSetupContract",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-setup#defineChannelSetupContract",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 1,
+          "snippet": "import { defineChannelSetupContract } from \"openclaw/plugin-sdk/channel-setup\";",
+          "note": "Original defineChannelSetupContract dependency from openclaw/plugin-sdk/channel-setup."
+        },
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 40,
+          "snippet": "export const reefSetupContract = defineChannelSetupContract({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-status#PAIRING_APPROVED_MESSAGE",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-status#PAIRING_APPROVED_MESSAGE",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 7,
+          "snippet": "import { PAIRING_APPROVED_MESSAGE } from \"openclaw/plugin-sdk/channel-status\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/collection-runtime#pruneMapToMaxSize",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/collection-runtime#pruneMapToMaxSize",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/owner-notice.ts",
+          "line": 1,
+          "snippet": "import { pruneMapToMaxSize } from \"openclaw/plugin-sdk/collection-runtime\";",
+          "note": "Original pruneMapToMaxSize dependency from openclaw/plugin-sdk/collection-runtime."
+        },
+        {
+          "path": "extensions/reef/src/owner-notice.ts",
+          "line": 204,
+          "snippet": "    pruneMapToMaxSize(this.peerStates, MAX_REJECTION_TRACKED);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/config-doctor-api.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Original OpenClawConfig dependency from openclaw/plugin-sdk/config-contracts."
+        },
+        {
+          "path": "extensions/reef/config-doctor-api.ts",
+          "line": 30,
+          "snippet": "export function normalizeCompatibilityConfig({ cfg }: { cfg: OpenClawConfig }): {"
+        },
+        {
+          "path": "extensions/reef/doctor-contract-api.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Original OpenClawConfig dependency from openclaw/plugin-sdk/config-contracts."
+        },
+        {
+          "path": "extensions/reef/src/doctor-state-paths.ts",
+          "line": 5,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Original OpenClawConfig dependency from openclaw/plugin-sdk/config-contracts."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-mutation#mutateConfigFile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-mutation#mutateConfigFile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/cli.ts",
+          "line": 6,
+          "snippet": "import { mutateConfigFile } from \"openclaw/plugin-sdk/config-mutation\";",
+          "note": "Original mutateConfigFile dependency from openclaw/plugin-sdk/config-mutation."
+        },
+        {
+          "path": "extensions/reef/src/cli.ts",
+          "line": 155,
+          "snippet": "  await mutateConfigFile({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#ChannelPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#ChannelPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 11,
+          "snippet": "  type ChannelPlugin,",
+          "note": "Original ChannelPlugin dependency from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 118,
+          "snippet": "export const reefPlugin: ChannelPlugin<ReefAccount, unknown, unknown, 2> = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/cli.ts",
+          "line": 7,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/core\";",
+          "note": "Original OpenClawConfig dependency from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig, WizardPrompter } from \"openclaw/plugin-sdk/core\";",
+          "note": "Original OpenClawConfig dependency from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 34,
+          "snippet": "    cfg: OpenClawConfig;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#PluginRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#PluginRuntime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/audit-state.ts",
+          "line": 1,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";",
+          "note": "Original PluginRuntime dependency from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/reef/src/owner-notice.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";",
+          "note": "Original PluginRuntime dependency from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/reef/src/registration-state.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";",
+          "note": "Original PluginRuntime dependency from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/reef/src/replay-store.ts",
+          "line": 5,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";",
+          "note": "Original PluginRuntime dependency from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/reef/src/runtime.ts",
+          "line": 1,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";",
+          "note": "Original PluginRuntime dependency from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/reef/src/runtime.ts",
+          "line": 17,
+          "snippet": "} = createPluginRuntimeStore<PluginRuntime>({"
+        },
+        {
+          "path": "extensions/reef/src/state.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";",
+          "note": "Original PluginRuntime dependency from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/reef/src/trust-store.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";",
+          "note": "Original PluginRuntime dependency from openclaw/plugin-sdk/core."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#WizardPrompter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#WizardPrompter",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig, WizardPrompter } from \"openclaw/plugin-sdk/core\";",
+          "note": "Original WizardPrompter dependency from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 27,
+          "snippet": "type Prompt = Pick<WizardPrompter, \"note\" | \"text\" | \"select\" | \"confirm\">;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#buildChannelConfigSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#buildChannelConfigSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 9,
+          "snippet": "  buildChannelConfigSchema,",
+          "note": "Original buildChannelConfigSchema dependency from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 139,
+          "snippet": "  configSchema: buildChannelConfigSchema(ReefChannelConfigSchema),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#buildChannelOutboundSessionRoute",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#buildChannelOutboundSessionRoute",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 10,
+          "snippet": "  buildChannelOutboundSessionRoute,",
+          "note": "Original buildChannelOutboundSessionRoute dependency from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 165,
+          "snippet": "        ? buildChannelOutboundSessionRoute({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/cli-metadata.ts",
+          "line": 2,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/core\";",
+          "note": "Original definePluginEntry dependency from openclaw/plugin-sdk/core."
+        },
+        {
+          "path": "extensions/reef/cli-metadata.ts",
+          "line": 22,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/directory-runtime#createChannelDirectoryAdapter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/directory-runtime#createChannelDirectoryAdapter",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 13,
+          "snippet": "import { createChannelDirectoryAdapter } from \"openclaw/plugin-sdk/directory-runtime\";",
+          "note": "Original createChannelDirectoryAdapter dependency from openclaw/plugin-sdk/directory-runtime."
+        },
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 198,
+          "snippet": "  directory: createChannelDirectoryAdapter({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#PlatformMessageNotDispatchedError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#PlatformMessageNotDispatchedError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 10,
+          "snippet": "import { PlatformMessageNotDispatchedError } from \"openclaw/plugin-sdk/error-runtime\";",
+          "note": "Original PlatformMessageNotDispatchedError dependency from openclaw/plugin-sdk/error-runtime."
+        },
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 32,
+          "snippet": "    throw new PlatformMessageNotDispatchedError(cause.message, { cause, retryable: false });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#toStringifiedError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#toStringifiedError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 1,
+          "snippet": "import { toStringifiedError as asError } from \"openclaw/plugin-sdk/error-runtime\";",
+          "note": "Original toStringifiedError dependency from openclaw/plugin-sdk/error-runtime."
+        },
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 483,
+          "snippet": "        this.options.onError?.(asError(error));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/extension-shared#buildTimeoutAbortSignal",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/extension-shared#buildTimeoutAbortSignal",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 2,
+          "snippet": "import { buildTimeoutAbortSignal } from \"openclaw/plugin-sdk/extension-shared\";",
+          "note": "Original buildTimeoutAbortSignal dependency from openclaw/plugin-sdk/extension-shared."
+        },
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 324,
+          "snippet": "    const timeout = buildTimeoutAbortSignal({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/fetch-runtime#captureEffectAuthority",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/fetch-runtime#captureEffectAuthority",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 3,
+          "snippet": "import { captureEffectAuthority } from \"openclaw/plugin-sdk/fetch-runtime\";",
+          "note": "Original captureEffectAuthority dependency from openclaw/plugin-sdk/fetch-runtime."
+        },
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 322,
+          "snippet": "    const effect = captureEffectAuthority();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#channelReadyPatch",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#channelReadyPatch",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 14,
+          "snippet": "import { channelReadyPatch } from \"openclaw/plugin-sdk/gateway-runtime\";",
+          "note": "Original channelReadyPatch dependency from openclaw/plugin-sdk/gateway-runtime."
+        },
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 475,
+          "snippet": "            ctx.setStatus(channelReadyPatch({ accountId: \"default\", lastDisconnect: null }));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/keyed-async-queue#KeyedAsyncQueue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/keyed-async-queue#KeyedAsyncQueue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/owner-notice.ts",
+          "line": 3,
+          "snippet": "import { KeyedAsyncQueue } from \"openclaw/plugin-sdk/keyed-async-queue\";",
+          "note": "Original KeyedAsyncQueue dependency from openclaw/plugin-sdk/keyed-async-queue."
+        },
+        {
+          "path": "extensions/reef/src/owner-notice.ts",
+          "line": 66,
+          "snippet": "  private readonly peerQueues = new KeyedAsyncQueue();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/logging-core#redactSensitiveText",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/logging-core#redactSensitiveText",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/transport-errors.ts",
+          "line": 1,
+          "snippet": "import { redactSensitiveText } from \"openclaw/plugin-sdk/logging-core\";",
+          "note": "Original redactSensitiveText dependency from openclaw/plugin-sdk/logging-core."
+        },
+        {
+          "path": "extensions/reef/src/transport-errors.ts",
+          "line": 10,
+          "snippet": "  return redactSensitiveText(redacted, { mode: \"tools\" });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginServiceSchedulerV1",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginServiceSchedulerV1",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel-lifecycle.ts",
+          "line": 1,
+          "snippet": "import type { PluginServiceSchedulerV1 } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Original PluginServiceSchedulerV1 dependency from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/reef/src/channel-lifecycle.ts",
+          "line": 31,
+          "snippet": "  scheduler: PluginServiceSchedulerV1;"
+        },
+        {
+          "path": "extensions/reef/src/owner-notice.ts",
+          "line": 4,
+          "snippet": "import type { PluginServiceSchedulerV1 } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Original PluginServiceSchedulerV1 dependency from openclaw/plugin-sdk/plugin-entry."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#OpenKeyedStoreOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#OpenKeyedStoreOptions",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/registration-state.ts",
+          "line": 4,
+          "snippet": "  OpenKeyedStoreOptions,",
+          "note": "Original OpenKeyedStoreOptions dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/registration-state.ts",
+          "line": 33,
+          "snippet": "} satisfies OpenKeyedStoreOptions;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#PluginStateKeyedStore",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#PluginStateKeyedStore",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/audit-state.ts",
+          "line": 3,
+          "snippet": "  PluginStateKeyedStore,",
+          "note": "Original PluginStateKeyedStore dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/doctor-durable-state.ts",
+          "line": 3,
+          "snippet": "import type { PluginStateKeyedStore } from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Original PluginStateKeyedStore dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/registration-state.ts",
+          "line": 5,
+          "snippet": "  PluginStateKeyedStore,",
+          "note": "Original PluginStateKeyedStore dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/replay-store.ts",
+          "line": 6,
+          "snippet": "import type { PluginStateKeyedStore } from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Original PluginStateKeyedStore dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/state.ts",
+          "line": 3,
+          "snippet": "import type { PluginStateKeyedStore } from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Original PluginStateKeyedStore dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/state.ts",
+          "line": 105,
+          "snippet": "  store: PluginStateKeyedStore<ReefReviewRecord, 2>;"
+        },
+        {
+          "path": "extensions/reef/src/trust-store-authority.ts",
+          "line": 2,
+          "snippet": "  PluginStateKeyedStore,",
+          "note": "Original PluginStateKeyedStore dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#PluginStateOperation",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#PluginStateOperation",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/audit-state.ts",
+          "line": 4,
+          "snippet": "  PluginStateOperation,",
+          "note": "Original PluginStateOperation dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/audit-state.ts",
+          "line": 51,
+          "snippet": "  readonly #operation: PluginStateOperation<ReefAuditOperations>;"
+        },
+        {
+          "path": "extensions/reef/src/trust-store-delivery.ts",
+          "line": 2,
+          "snippet": "  PluginStateOperation,",
+          "note": "Original PluginStateOperation dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/trust-store.ts",
+          "line": 4,
+          "snippet": "  PluginStateOperation,",
+          "note": "Original PluginStateOperation dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#PluginStateOperationCommand",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#PluginStateOperationCommand",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/audit-state-operation.ts",
+          "line": 2,
+          "snippet": "  PluginStateOperationCommand,",
+          "note": "Original PluginStateOperationCommand dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/outbound-state-operation.ts",
+          "line": 2,
+          "snippet": "  PluginStateOperationCommand,",
+          "note": "Original PluginStateOperationCommand dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/state-operation.ts",
+          "line": 2,
+          "snippet": "  PluginStateOperationCommand,",
+          "note": "Original PluginStateOperationCommand dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/state-operation.ts",
+          "line": 119,
+          "snippet": "  command: PluginStateOperationCommand<ReefStateOperations>,"
+        },
+        {
+          "path": "extensions/reef/src/trust-peer-transition.ts",
+          "line": 1,
+          "snippet": "import type { PluginStateOperationCommand } from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Original PluginStateOperationCommand dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/trust-state-operation.ts",
+          "line": 2,
+          "snippet": "  PluginStateOperationCommand,",
+          "note": "Original PluginStateOperationCommand dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#PluginStateOperationInvalidatedError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#PluginStateOperationInvalidatedError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/flow.ts",
+          "line": 1,
+          "snippet": "import { PluginStateOperationInvalidatedError } from \"openclaw/plugin-sdk/plugin-state-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#PluginStateOperationReceipt",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#PluginStateOperationReceipt",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/trust-store-authority.ts",
+          "line": 3,
+          "snippet": "  PluginStateOperationReceipt,",
+          "note": "Original PluginStateOperationReceipt dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/trust-store-delivery.ts",
+          "line": 3,
+          "snippet": "  PluginStateOperationReceipt,",
+          "note": "Original PluginStateOperationReceipt dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/trust-store.ts",
+          "line": 5,
+          "snippet": "  PluginStateOperationReceipt,",
+          "note": "Original PluginStateOperationReceipt dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/trust-store.ts",
+          "line": 84,
+          "snippet": "  ): Promise<PluginStateOperationReceipt<ReefTrustStateOperations[Type][\"output\"]>> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#PluginStateOperationTransaction",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#PluginStateOperationTransaction",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/audit-state-operation.ts",
+          "line": 3,
+          "snippet": "  PluginStateOperationTransaction,",
+          "note": "Original PluginStateOperationTransaction dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/outbound-state-operation.ts",
+          "line": 3,
+          "snippet": "  PluginStateOperationTransaction,",
+          "note": "Original PluginStateOperationTransaction dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/state-operation.ts",
+          "line": 3,
+          "snippet": "  PluginStateOperationTransaction,",
+          "note": "Original PluginStateOperationTransaction dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/reef/src/state-operation.ts",
+          "line": 53,
+          "snippet": "  tx: PluginStateOperationTransaction,"
+        },
+        {
+          "path": "extensions/reef/src/trust-state-operation.ts",
+          "line": 3,
+          "snippet": "  PluginStateOperationTransaction,",
+          "note": "Original PluginStateOperationTransaction dependency from openclaw/plugin-sdk/plugin-state-runtime."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 4,
+          "snippet": "import { readProviderJsonResponse } from \"openclaw/plugin-sdk/provider-http\";",
+          "note": "Original readProviderJsonResponse dependency from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 98,
+          "snippet": "    return await readProviderJsonResponse<T>(response, \"reef.relay\", {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderTextResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderTextResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/protocol/guard-adapters.ts",
+          "line": 2,
+          "snippet": "import { readProviderTextResponse } from \"openclaw/plugin-sdk/provider-http\";",
+          "note": "Original readProviderTextResponse dependency from openclaw/plugin-sdk/provider-http."
+        },
+        {
+          "path": "extensions/reef/protocol/guard-adapters.ts",
+          "line": 231,
+          "snippet": "  const text = await readProviderTextResponse(response, \"Reef guard response\", {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-doctor-migrations#PluginDoctorStateMigration",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations#PluginDoctorStateMigration",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/doctor-contract-api.ts",
+          "line": 6,
+          "snippet": "  type PluginDoctorStateMigration,",
+          "note": "Original PluginDoctorStateMigration dependency from openclaw/plugin-sdk/runtime-doctor-migrations."
+        },
+        {
+          "path": "extensions/reef/doctor-contract-api.ts",
+          "line": 138,
+          "snippet": "export const stateMigrations: PluginDoctorStateMigration[] = ["
+        },
+        {
+          "path": "extensions/reef/src/doctor-durable-state.ts",
+          "line": 6,
+          "snippet": "  type PluginDoctorStateMigration,",
+          "note": "Original PluginDoctorStateMigration dependency from openclaw/plugin-sdk/runtime-doctor-migrations."
+        },
+        {
+          "path": "extensions/reef/src/doctor-state-paths.ts",
+          "line": 6,
+          "snippet": "import type { PluginDoctorStateMigration } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";",
+          "note": "Original PluginDoctorStateMigration dependency from openclaw/plugin-sdk/runtime-doctor-migrations."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-doctor-migrations#PluginDoctorStateMigrationContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations#PluginDoctorStateMigrationContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/doctor-durable-state.ts",
+          "line": 7,
+          "snippet": "  type PluginDoctorStateMigrationContext,",
+          "note": "Original PluginDoctorStateMigrationContext dependency from openclaw/plugin-sdk/runtime-doctor-migrations."
+        },
+        {
+          "path": "extensions/reef/src/doctor-durable-state.ts",
+          "line": 65,
+          "snippet": "export function openReefIdentityMigrationStore(context: PluginDoctorStateMigrationContext) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-doctor-migrations#archiveLegacyStateSource",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations#archiveLegacyStateSource",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/doctor-contract-api.ts",
+          "line": 5,
+          "snippet": "  archiveLegacyStateSource,",
+          "note": "Original archiveLegacyStateSource dependency from openclaw/plugin-sdk/runtime-doctor-migrations."
+        },
+        {
+          "path": "extensions/reef/doctor-contract-api.ts",
+          "line": 253,
+          "snippet": "      await archiveLegacyStateSource({"
+        },
+        {
+          "path": "extensions/reef/src/doctor-durable-state.ts",
+          "line": 5,
+          "snippet": "  archiveLegacyStateSource,",
+          "note": "Original archiveLegacyStateSource dependency from openclaw/plugin-sdk/runtime-doctor-migrations."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-doctor-migrations#defineStrayPluginEntryConfigMigration",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations#defineStrayPluginEntryConfigMigration",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/config-doctor-api.ts",
+          "line": 3,
+          "snippet": "import { defineStrayPluginEntryConfigMigration } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";",
+          "note": "Original defineStrayPluginEntryConfigMigration dependency from openclaw/plugin-sdk/runtime-doctor-migrations."
+        },
+        {
+          "path": "extensions/reef/config-doctor-api.ts",
+          "line": 14,
+          "snippet": "const reefStrayEntryConfigMigration = defineStrayPluginEntryConfigMigration({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-env#sleepWithAbort",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-env#sleepWithAbort",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 5,
+          "snippet": "import { sleepWithAbort } from \"openclaw/plugin-sdk/runtime-env\";",
+          "note": "Original sleepWithAbort dependency from openclaw/plugin-sdk/runtime-env."
+        },
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 484,
+          "snippet": "        await sleepWithAbort(delay, signal).catch(() => {});"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-store#createPluginRuntimeStore",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-store#createPluginRuntimeStore",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/runtime.ts",
+          "line": 2,
+          "snippet": "import { createPluginRuntimeStore } from \"openclaw/plugin-sdk/runtime-store\";",
+          "note": "Original createPluginRuntimeStore dependency from openclaw/plugin-sdk/runtime-store."
+        },
+        {
+          "path": "extensions/reef/src/runtime.ts",
+          "line": 17,
+          "snippet": "} = createPluginRuntimeStore<PluginRuntime>({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/setup#patchTopLevelChannelConfigSection",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/setup#patchTopLevelChannelConfigSection",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 3,
+          "snippet": "import { patchTopLevelChannelConfigSection } from \"openclaw/plugin-sdk/setup\";",
+          "note": "Original patchTopLevelChannelConfigSection dependency from openclaw/plugin-sdk/setup."
+        },
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 37,
+          "snippet": "  }) => patchTopLevelChannelConfigSection({ cfg, channel: \"reef\", patch: input }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/state-paths#resolveStateDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/state-paths#resolveStateDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/legacy-key-guard.ts",
+          "line": 3,
+          "snippet": "import { resolveStateDir } from \"openclaw/plugin-sdk/state-paths\";",
+          "note": "Original resolveStateDir dependency from openclaw/plugin-sdk/state-paths."
+        },
+        {
+          "path": "extensions/reef/src/legacy-key-guard.ts",
+          "line": 16,
+          "snippet": "    stateDir: resolveStateDir(env, () => homeDir),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/config-doctor-api.ts",
+          "line": 4,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Original isRecord dependency from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/reef/config-doctor-api.ts",
+          "line": 8,
+          "snippet": "  return isRecord(value) && [\"dmPolicy\", \"allowFrom\"].some((key) => Object.hasOwn(value, key));"
+        },
+        {
+          "path": "extensions/reef/doctor-contract-api.ts",
+          "line": 8,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Original isRecord dependency from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/reef/src/doctor-durable-state.ts",
+          "line": 9,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Original isRecord dependency from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/reef/src/doctor-state-paths.ts",
+          "line": 7,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Original isRecord dependency from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/reef/src/state-format.ts",
+          "line": 1,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Original isRecord dependency from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/reef/src/state-operation.ts",
+          "line": 5,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Original isRecord dependency from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 6,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Original isRecord dependency from openclaw/plugin-sdk/string-coerce-runtime."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/guard.ts",
+          "line": 1,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Original normalizeOptionalString dependency from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/reef/src/guard.ts",
+          "line": 41,
+          "snippet": "  const guardCredential = normalizeOptionalString(process.env[config.guard.apiKeyEnv]);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-chunking#sanitizeAssistantVisibleText",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-chunking#sanitizeAssistantVisibleText",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 11,
+          "snippet": "import { sanitizeAssistantVisibleText } from \"openclaw/plugin-sdk/text-chunking\";",
+          "note": "Original sanitizeAssistantVisibleText dependency from openclaw/plugin-sdk/text-chunking."
+        },
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 146,
+          "snippet": "  sanitizeText: ({ text }) => sanitizeAssistantVisibleText(text),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/websocket-runtime#WebSocket",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/websocket-runtime#WebSocket",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 7,
+          "snippet": "import { WebSocket } from \"openclaw/plugin-sdk/websocket-runtime\";",
+          "note": "Original WebSocket dependency from openclaw/plugin-sdk/websocket-runtime."
+        },
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 430,
+          "snippet": "  return new WebSocket(url, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/account-resolution",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/account-resolution",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/doctor-state-paths.ts",
+          "line": 4,
+          "snippet": "import { resolveUserPath } from \"openclaw/plugin-sdk/account-resolution\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-scope-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-scope-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 282,
+          "snippet": "  const { resolveSessionAgentIdStrict } = await import(\"openclaw/plugin-sdk/agent-scope-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/async-lock-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/async-lock-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/friends.ts",
+          "line": 1,
+          "snippet": "import { createAsyncLock } from \"openclaw/plugin-sdk/async-lock-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/replay-store.ts",
+          "line": 4,
+          "snippet": "import { createAsyncLock } from \"openclaw/plugin-sdk/async-lock-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-contract",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-contract",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/config-doctor-api.ts",
+          "line": 1,
+          "snippet": "import type { ChannelDoctorLegacyConfigRule } from \"openclaw/plugin-sdk/channel-contract\";"
+        },
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 1,
+          "snippet": "import type { ChannelThreadingToolContext } from \"openclaw/plugin-sdk/channel-contract\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 1,
+          "snippet": "import type { ChannelOutboundContext } from \"openclaw/plugin-sdk/channel-contract\";",
+          "note": "Direct SDK dependency site."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-entry-contract",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-entry-contract",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/index.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/channel-entry-contract\";"
+        },
+        {
+          "path": "extensions/reef/setup-entry.ts",
+          "line": 1,
+          "snippet": "import { defineBundledChannelSetupEntry } from \"openclaw/plugin-sdk/channel-entry-contract\";",
+          "note": "Direct SDK dependency site."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-inbound",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-inbound",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/channel-inbound\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-outbound",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-outbound",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/channel-outbound\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-pairing",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-pairing",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 6,
+          "snippet": "import { createChannelPairingController } from \"openclaw/plugin-sdk/channel-pairing\";"
+        },
+        {
+          "path": "extensions/reef/src/cli.ts",
+          "line": 5,
+          "snippet": "import { createChannelPairingController } from \"openclaw/plugin-sdk/channel-pairing\";",
+          "note": "Direct SDK dependency site."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-plugin-common",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-plugin-common",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/cli-metadata.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/channel-plugin-common\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-secret-basic-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-secret-basic-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/protocol/guard-adapters.ts",
+          "line": 1,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/channel-secret-basic-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-send-result",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-send-result",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/channel-send-result\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-setup",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-setup",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 1,
+          "snippet": "import { defineChannelSetupContract } from \"openclaw/plugin-sdk/channel-setup\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-status",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-status",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 7,
+          "snippet": "import { PAIRING_APPROVED_MESSAGE } from \"openclaw/plugin-sdk/channel-status\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/collection-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/collection-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/owner-notice.ts",
+          "line": 1,
+          "snippet": "import { pruneMapToMaxSize } from \"openclaw/plugin-sdk/collection-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-contracts",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-contracts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/config-doctor-api.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/reef/doctor-contract-api.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/doctor-state-paths.ts",
+          "line": 5,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";",
+          "note": "Direct SDK dependency site."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-mutation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-mutation",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/cli.ts",
+          "line": 6,
+          "snippet": "import { mutateConfigFile } from \"openclaw/plugin-sdk/config-mutation\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/core",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/cli-metadata.ts",
+          "line": 2,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/reef/src/audit-state.ts",
+          "line": 1,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 12,
+          "snippet": "} from \"openclaw/plugin-sdk/core\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/cli.ts",
+          "line": 7,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/core\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/owner-notice.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/registration-state.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/replay-store.ts",
+          "line": 5,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/runtime.ts",
+          "line": 1,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig, WizardPrompter } from \"openclaw/plugin-sdk/core\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/state.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/trust-store.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";",
+          "note": "Direct SDK dependency site."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/directory-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/directory-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 13,
+          "snippet": "import { createChannelDirectoryAdapter } from \"openclaw/plugin-sdk/directory-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 10,
+          "snippet": "import { PlatformMessageNotDispatchedError } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 1,
+          "snippet": "import { toStringifiedError as asError } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/extension-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/extension-shared",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 2,
+          "snippet": "import { buildTimeoutAbortSignal } from \"openclaw/plugin-sdk/extension-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/fetch-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/fetch-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 3,
+          "snippet": "import { captureEffectAuthority } from \"openclaw/plugin-sdk/fetch-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/gateway-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/gateway-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel.ts",
+          "line": 14,
+          "snippet": "import { channelReadyPatch } from \"openclaw/plugin-sdk/gateway-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/keyed-async-queue",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/keyed-async-queue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/owner-notice.ts",
+          "line": 3,
+          "snippet": "import { KeyedAsyncQueue } from \"openclaw/plugin-sdk/keyed-async-queue\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/logging-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/logging-core",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/transport-errors.ts",
+          "line": 1,
+          "snippet": "import { redactSensitiveText } from \"openclaw/plugin-sdk/logging-core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/channel-lifecycle.ts",
+          "line": 1,
+          "snippet": "import type { PluginServiceSchedulerV1 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/reef/src/owner-notice.ts",
+          "line": 4,
+          "snippet": "import type { PluginServiceSchedulerV1 } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Direct SDK dependency site."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-state-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/audit-state-operation.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/audit-state.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/doctor-durable-state.ts",
+          "line": 3,
+          "snippet": "import type { PluginStateKeyedStore } from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/flow.ts",
+          "line": 1,
+          "snippet": "import { PluginStateOperationInvalidatedError } from \"openclaw/plugin-sdk/plugin-state-runtime\";"
+        },
+        {
+          "path": "extensions/reef/src/outbound-state-operation.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/registration-state.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/replay-store.ts",
+          "line": 6,
+          "snippet": "import type { PluginStateKeyedStore } from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/state-operation.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/state.ts",
+          "line": 3,
+          "snippet": "import type { PluginStateKeyedStore } from \"openclaw/plugin-sdk/plugin-state-runtime\";"
+        },
+        {
+          "path": "extensions/reef/src/trust-peer-transition.ts",
+          "line": 1,
+          "snippet": "import type { PluginStateOperationCommand } from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/trust-state-operation.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/trust-store-authority.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/trust-store-delivery.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/trust-store.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Direct SDK dependency site."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-http",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-http",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/protocol/guard-adapters.ts",
+          "line": 2,
+          "snippet": "import { readProviderTextResponse } from \"openclaw/plugin-sdk/provider-http\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 4,
+          "snippet": "import { readProviderJsonResponse } from \"openclaw/plugin-sdk/provider-http\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-doctor-migrations",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/config-doctor-api.ts",
+          "line": 3,
+          "snippet": "import { defineStrayPluginEntryConfigMigration } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/doctor-contract-api.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/runtime-doctor-migrations\";"
+        },
+        {
+          "path": "extensions/reef/src/doctor-durable-state.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/runtime-doctor-migrations\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/doctor-state-paths.ts",
+          "line": 6,
+          "snippet": "import type { PluginDoctorStateMigration } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";",
+          "note": "Direct SDK dependency site."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-env",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-env",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 5,
+          "snippet": "import { sleepWithAbort } from \"openclaw/plugin-sdk/runtime-env\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-store",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-store",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/runtime.ts",
+          "line": 2,
+          "snippet": "import { createPluginRuntimeStore } from \"openclaw/plugin-sdk/runtime-store\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/setup",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/setup",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/setup.ts",
+          "line": 3,
+          "snippet": "import { patchTopLevelChannelConfigSection } from \"openclaw/plugin-sdk/setup\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/state-paths",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/state-paths",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/legacy-key-guard.ts",
+          "line": 3,
+          "snippet": "import { resolveStateDir } from \"openclaw/plugin-sdk/state-paths\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/config-doctor-api.ts",
+          "line": 4,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/reef/doctor-contract-api.ts",
+          "line": 8,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/doctor-durable-state.ts",
+          "line": 9,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/doctor-state-paths.ts",
+          "line": 7,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/guard.ts",
+          "line": 1,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/state-format.ts",
+          "line": 1,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/state-operation.ts",
+          "line": 5,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Direct SDK dependency site."
+        },
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 6,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Direct SDK dependency site."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/text-chunking",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/text-chunking",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/outbound.ts",
+          "line": 11,
+          "snippet": "import { sanitizeAssistantVisibleText } from \"openclaw/plugin-sdk/text-chunking\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/websocket-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/websocket-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/reef/src/transport.ts",
+          "line": 7,
+          "snippet": "import { WebSocket } from \"openclaw/plugin-sdk/websocket-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all 65 eligible production TypeScript files and both metadata files. The 107 plugin files partition into 67 reviewed and 40 excluded. Test helper exclusions were checked against callers; no production import overrides an exclusion.",
+    "All production relative imports, lazy imports, entrypoint descriptors and worker-operation module descriptors stay within extensions/reef. Local API and protocol barrels expose plugin-owned implementations/types, not reexports of imported SDK symbols. Separately installed dependencies are outside the audit.",
+    "src/runtime.ts creates one createPluginRuntimeStore<PluginRuntime> with getReefRuntime/getOptionalReefRuntime aliases and another store containing plugin-owned ActiveReef state. Only the first supplies public runtime provenance; activeReefStore, flow, friends, reviews, scheduler contexts and channel status runtime objects are not PluginRuntime member paths.",
+    "runtime.state.openKeyedStoreV2 has calls, a non-call read passed to openStores, and an explicit PluginRuntime indexed type. The callable openStore parameter preserves this public member's provenance. Returned keyed stores, operations, receipts, pairing controllers and locks do not become public API/runtime roots.",
+    "PluginRuntime[\"channel\"][\"routing\"][\"resolveAgentRoute\"] and the corresponding runtime call make that runtime member mixed. ReturnType<typeof getReefRuntime> preserves the handle used by the setup helper; its modelConfig.resolveModelRuntimePolicy call is recorded without adding SDK-return-value paths.",
+    "The dynamic import of agent-scope-runtime in src/setup.ts resolves resolveSessionAgentIdStrict. The transport's asError import normalizes to the original toStringifiedError SDK export. Imported classes contribute call only where explicitly constructed; PluginStateOperationInvalidatedError is only imported and used in instanceof.",
+    "Known SDK helper calls are recorded as SDK exports without inferring their internal API/runtime consumption. In particular defineBundledChannelEntry does not create an api.registerChannel source finding, and passing the runtime to createChannelPairingController does not invent pairing runtime members.",
+    "Manifest identities include channels, cliCommands.name and commandAliases.name. doctorContract, categories, activation, descriptive metadata and configSchema are outside the agreed manifest identity fields. No named hook registrations occur."
+  ]
+}

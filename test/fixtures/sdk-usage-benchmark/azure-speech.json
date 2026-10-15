@@ -1,0 +1,768 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "azure-speech",
+    "path": "extensions/azure-speech"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_azure_speech",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/azure-speech/capability-catalog.ts",
+      "sha256": "1c9486362d4e205acfe14d0f421302655071b498f5c39fdd6ecce4bc7c99ad4a",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/azure-speech/index.ts",
+      "sha256": "b4eaa9ed363d981bb10596a7237f43224d1c8847d16fd23f95788fe47f75ec2e",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/azure-speech/openclaw.plugin.json",
+      "sha256": "9e089ae5d5f15c9b3f4a32bb312968df970657d7b7dd38d055ef5af2ef3e1dc0",
+      "role": "manifest",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/azure-speech/package.json",
+      "sha256": "6b86e6708150ee52f853c1bfebce78f2b962c4821070b4c18840764aefd6e599",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/azure-speech/speech-provider.ts",
+      "sha256": "98b0079281d3a93587652086611f111981dd5698cd045c91fa4d98eefe9f623d",
+      "role": "production-source",
+      "findingCount": 16
+    },
+    {
+      "path": "extensions/azure-speech/tts.ts",
+      "sha256": "8c6d9af60d3c618d8125a7976f1ebd3df2de4fdf830df529d808bfb6b520c6c7",
+      "role": "production-source",
+      "findingCount": 12
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/azure-speech/README.md",
+      "rule": "non-source",
+      "reason": "Plugin usage documentation; Markdown is outside the eligible JS/TS extensions."
+    },
+    {
+      "path": "extensions/azure-speech/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG activity artwork, not eligible production JS/TS source."
+    },
+    {
+      "path": "extensions/azure-speech/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG plugin icon, not eligible production JS/TS source."
+    },
+    {
+      "path": "extensions/azure-speech/azure-speech.live.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. file using Vitest and plugin live-test helpers; no production source imports it."
+    },
+    {
+      "path": "extensions/azure-speech/speech-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. file using Vitest and mocked provider dependencies; no production source imports it."
+    },
+    {
+      "path": "extensions/azure-speech/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript configuration JSON, outside the eligible source extensions; it only extends the shared package-boundary tsconfig."
+    },
+    {
+      "path": "extensions/azure-speech/tts.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. file using Vitest and test-support helpers; no production source imports it."
+    },
+    {
+      "path": "extensions/azure-speech/voices-timeout.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test. file using Vitest and test-env helper; no production source imports it."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerSpeechProvider",
+      "kind": "api-member",
+      "identity": "api.registerSpeechProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/index.ts",
+          "line": 9,
+          "snippet": "    api.registerSpeechProvider(buildAzureSpeechProvider());",
+          "note": "definePluginEntry types register as OpenClawPluginDefinition.register; its parameter is OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.speechProviders:azure",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.speechProviders:azure",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/openclaw.plugin.json",
+          "line": 24,
+          "snippet": "    \"speechProviders\": [\"azure-speech\", \"azure\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.speechProviders:azure-speech",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.speechProviders:azure-speech",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/openclaw.plugin.json",
+          "line": 24,
+          "snippet": "    \"speechProviders\": [\"azure-speech\", \"azure\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-generation-runtime#resolveGeneratedMediaMaxBytes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime#resolveGeneratedMediaMaxBytes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 141,
+          "snippet": "  const { resolveGeneratedMediaMaxBytes } =",
+          "note": "Immediately destructured dynamic SDK import on the next line; no retained namespace."
+        },
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 156,
+          "snippet": "    maxBytes: resolveGeneratedMediaMaxBytes(req.cfg, \"audio\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginCapabilityCatalog",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginCapabilityCatalog",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/capability-catalog.ts",
+          "line": 1,
+          "snippet": "import type { PluginCapabilityCatalog } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/azure-speech/capability-catalog.ts",
+          "line": 6,
+          "snippet": "} satisfies PluginCapabilityCatalog;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/azure-speech/index.ts",
+          "line": 4,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#assertOkOrThrowProviderError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#assertOkOrThrowProviderError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 108,
+          "snippet": "  const { assertOkOrThrowProviderError, readProviderJsonResponse } =",
+          "note": "Immediately destructured dynamic provider-http import on the next line."
+        },
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 126,
+          "snippet": "    await assertOkOrThrowProviderError(response, \"Azure Speech voices API error\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderBinaryResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderBinaryResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 171,
+          "snippet": "  const { assertOkOrThrowProviderError, readProviderBinaryResponse } =",
+          "note": "Immediately destructured dynamic provider-http import on the next line."
+        },
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 198,
+          "snippet": "    return await readProviderBinaryResponse(response, \"Azure Speech TTS API error\", \"audio\", {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#readProviderJsonResponse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 108,
+          "snippet": "  const { assertOkOrThrowProviderError, readProviderJsonResponse } =",
+          "note": "Immediately destructured dynamic provider-http import on the next line."
+        },
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 127,
+          "snippet": "    const voices = await readProviderJsonResponse<unknown>(response, \"azure-speech.voices\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input#normalizeResolvedSecretInputString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input#normalizeResolvedSecretInputString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 1,
+          "snippet": "import { normalizeResolvedSecretInputString } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 50,
+          "snippet": "    apiKey: normalizeResolvedSecretInputString({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-core#SpeechDirectiveTokenParseContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-core#SpeechDirectiveTokenParseContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 3,
+          "snippet": "  SpeechDirectiveTokenParseContext,",
+          "note": "Imported by the explicit type import from speech-core at lines 2\u20137."
+        },
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 89,
+          "snippet": "function parseDirectiveToken(ctx: SpeechDirectiveTokenParseContext) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-core#SpeechProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-core#SpeechProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 4,
+          "snippet": "  SpeechProviderConfig,",
+          "note": "Imported by the explicit type import from speech-core at lines 2\u20137."
+        },
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 66,
+          "snippet": "function readAzureSpeechProviderConfig(config: SpeechProviderConfig) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-core#SpeechProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-core#SpeechProviderPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 5,
+          "snippet": "  SpeechProviderPlugin,",
+          "note": "Imported by the explicit type import from speech-core at lines 2\u20137."
+        },
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 160,
+          "snippet": "export function buildAzureSpeechProvider(): SpeechProviderPlugin {"
+        },
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 161,
+          "snippet": "  const isConfigured: NonNullable<SpeechProviderPlugin[\"isConfigured\"]> = ({ providerConfig }) => {",
+          "note": "This is a speech-provider type, not OpenClawPluginApi or PluginRuntime."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-core#SpeechSynthesisRequest",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-core#SpeechSynthesisRequest",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 6,
+          "snippet": "  SpeechSynthesisRequest,",
+          "note": "Imported by the explicit type import from speech-core at lines 2\u20137."
+        },
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 129,
+          "snippet": "  req: SpeechSynthesisRequest,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-core#SpeechVoiceOption",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-core#SpeechVoiceOption",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 1,
+          "snippet": "import type { SpeechVoiceOption } from \"openclaw/plugin-sdk/speech-core\";"
+        },
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 106,
+          "snippet": "}): Promise<SpeechVoiceOption[]> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech-provider#resolveSpeechProviderApiKey",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech-provider#resolveSpeechProviderApiKey",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 8,
+          "snippet": "import { resolveSpeechProviderApiKey } from \"openclaw/plugin-sdk/speech-provider\";"
+        },
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 120,
+          "snippet": "  return resolveSpeechProviderApiKey("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 110,
+          "snippet": "  const { fetchWithSsrFGuard, ssrfPolicyFromHttpBaseUrlAllowedHostname } =",
+          "note": "Immediately destructured dynamic ssrf-runtime import on the next line."
+        },
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 112,
+          "snippet": "  const { response, release } = await fetchWithSsrFGuard({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 110,
+          "snippet": "  const { fetchWithSsrFGuard, ssrfPolicyFromHttpBaseUrlAllowedHostname } =",
+          "note": "Immediately destructured dynamic ssrf-runtime import on the next line."
+        },
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 121,
+          "snippet": "    policy: ssrfPolicyFromHttpBaseUrlAllowedHostname(url),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 10,
+          "snippet": "  asFiniteNumber,",
+          "note": "Named value import from string-coerce-runtime at lines 9\u201314."
+        },
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 62,
+          "snippet": "    timeoutMs: asFiniteNumber(raw?.timeoutMs),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 11,
+          "snippet": "  asOptionalRecord,",
+          "note": "Named value import from string-coerce-runtime at lines 9\u201314."
+        },
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 35,
+          "snippet": "  const providers = asOptionalRecord(rawConfig.providers);"
+        },
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 3,
+          "snippet": "  asOptionalRecord,",
+          "note": "Named value import from string-coerce-runtime at lines 2\u20135."
+        },
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 130,
+          "snippet": "          const voice = asOptionalRecord(value);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#filterStringRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#filterStringRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 12,
+          "snippet": "  filterStringRecord,",
+          "note": "Named value import from string-coerce-runtime at lines 9\u201314."
+        },
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 195,
+          "snippet": "        ...filterStringRecord({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 13,
+          "snippet": "  normalizeOptionalString as trimToUndefined,",
+          "note": "Preserve original SDK export name despite local alias."
+        },
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 30,
+          "snippet": "    trimToUndefined(process.env.AZURE_SPEECH_REGION) ?? trimToUndefined(process.env.SPEECH_REGION)"
+        },
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 4,
+          "snippet": "  normalizeOptionalString as trimToUndefined,",
+          "note": "Preserve original SDK export name despite local alias."
+        },
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 29,
+          "snippet": "  const configured = trimToUndefined(params.baseUrl) ?? trimToUndefined(params.endpoint);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-generation-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-generation-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 142,
+          "snippet": "    await import(\"openclaw/plugin-sdk/media-generation-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/index.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/azure-speech/capability-catalog.ts",
+          "line": 1,
+          "snippet": "import type { PluginCapabilityCatalog } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-http",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-http",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 109,
+          "snippet": "    await import(\"openclaw/plugin-sdk/provider-http\");"
+        },
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 172,
+          "snippet": "    await import(\"openclaw/plugin-sdk/provider-http\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/secret-input",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/secret-input",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 1,
+          "snippet": "import { normalizeResolvedSecretInputString } from \"openclaw/plugin-sdk/secret-input\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/speech-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/speech-core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/speech-core\";",
+          "note": "The import type declaration begins at line 2."
+        },
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 1,
+          "snippet": "import type { SpeechVoiceOption } from \"openclaw/plugin-sdk/speech-core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/speech-provider",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/speech-provider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 8,
+          "snippet": "import { resolveSpeechProviderApiKey } from \"openclaw/plugin-sdk/speech-provider\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 111,
+          "snippet": "    await import(\"openclaw/plugin-sdk/ssrf-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/azure-speech/speech-provider.ts",
+          "line": 14,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/azure-speech/tts.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read the benchmark contract and full README, Inspector root AGENTS.md, source root/extensions/plugin-SDK/plugin-loader instructions, all four production TS files and both metadata files. The plugin source matches the pinned commit; existing authorized instructions/skill edits were not changed.",
+    "All production local imports resolve within extensions/azure-speech: index.ts and capability-catalog.ts consume speech-provider.ts, which consumes tts.ts. No production shared-source boundary leaves the plugin; the external ../test-support import occurs only in excluded tts.test.ts. No installed dependencies or SDK helper implementation call graphs were audited.",
+    "package.json declares index.ts as its plugin entry; openclaw.plugin.json declares capability-catalog.ts. Both are included, as is all eligible source regardless of runtime reachability. These source expectations do not claim published-artifact equivalence.",
+    "Public SDK module identities were checked against root package exports and named exports against their public SDK facades. normalizeOptionalString retains its original identity despite the trimToUndefined local alias. Direct destructured dynamic imports yield named SDK exports and no synthetic namespace or member-access dependency.",
+    "The register callback is proven OpenClawPluginApi via definePluginEntry and OpenClawPluginDefinition. Speech provider configs, parse contexts, request objects, and SpeechProviderPlugin indexed types are not API/runtime handles. response/release from fetchWithSsrFGuard are arbitrary SDK return values; their use does not add API/runtime identities or infer SDK helper internals.",
+    "Only contracts.speechProviders yields manifest-contract identities. setup.providers, categories, configGroups, activation, descriptive fields and configSchema are metadata rather than contracted identities under the frozen schema.",
+    "No API/runtime aliases, hooks, namespace imports, reexports, declaration files, or genuinely unresolved dependencies were present. Type annotations and satisfies clauses add type-reference to their explicitly imported SDK type identities; SDK modules retain their import-site classification."
+  ]
+}

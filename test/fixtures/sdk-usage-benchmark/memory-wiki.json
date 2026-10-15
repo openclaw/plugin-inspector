@@ -1,0 +1,3209 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "memory-wiki",
+    "path": "extensions/memory-wiki"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/sdk_benchmark_coordinator/audit_memory_wiki",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/memory-wiki/api.ts",
+      "sha256": "b27580a201d165f5a3da867e320cab43b05e10d391324b6b9ec3fbe2fc51c091",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/memory-wiki/cli-metadata.ts",
+      "sha256": "e4a9305ad3c3210618e04cb5d0c4ef5f0e7418d7c56e4d1bd975d854bed9ee4e",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/memory-wiki/doctor-contract-api.ts",
+      "sha256": "9911d5e64a936986b1b7622300a0d108f88eb6def487a72dbb6dea70137b5a33",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/memory-wiki/index.ts",
+      "sha256": "be83e9fb7519e1964ec2981372c1e6af80c207727817013b3443e2ad5e398c49",
+      "role": "production-source",
+      "findingCount": 13
+    },
+    {
+      "path": "extensions/memory-wiki/openclaw.plugin.json",
+      "sha256": "988762d7ca53705dbe8710b90d1526e25780d7cedf1e763a33a5a9b04f76f910",
+      "role": "manifest",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/memory-wiki/package.json",
+      "sha256": "bde224fa485b38b9a4f431492700c7c996361a75c1e08064693e3661606ce24e",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/memory-wiki/src/apply.ts",
+      "sha256": "b686e874352aee655b75784e13f147697d9fa2d74fbd75eeba53bf01e685d7cc",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/memory-wiki/src/bounded-walk.ts",
+      "sha256": "478bb6bcd7c74fd16ba8aec9824020d61034e2ad727370a8597cb95cc03c7261",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/memory-wiki/src/bridge.ts",
+      "sha256": "adc9ac4e4c01454d218012a584579a2bd47781fbdd51ea79ca592c7e8597c19b",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/memory-wiki/src/chatgpt-import-recovery.ts",
+      "sha256": "38ea6e93f190eb97efb8edd3e6fe85d40c49df5d3016134317d1d3005c8a8b1c",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/memory-wiki/src/chatgpt-import.ts",
+      "sha256": "0330d8773fb961d9353630400dbd15f320e02c3105055f8311f0a03a2a1c715d",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/memory-wiki/src/claim-health.ts",
+      "sha256": "91c442e8d5713842a1f09719041b706c590c8c401e744db74f0efabf6b5834ec",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/memory-wiki/src/cli.ts",
+      "sha256": "b93b0fc84ecfde6de218664ceeb2ab21ef73e89060e7783e8062d02e03d7f1a7",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/memory-wiki/src/compile.ts",
+      "sha256": "ad453418a1036eb09611813a118ff282cb2dc7186f07b100c4f43f044f552e5f",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/memory-wiki/src/compiled-cache.ts",
+      "sha256": "042b75d3e336d0e324884e76b5cba16b4458de4587cab093ff90ac33a8f71c37",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/memory-wiki/src/config-schema.ts",
+      "sha256": "8474122c9c06d6313088c3a646669cb32bb9d8cdcbd61f3857606c34f5cfbec2",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/memory-wiki/src/config.ts",
+      "sha256": "342c8df5f0721a28fcdc6b1e909b355a2beba7872fff0e6d785224629abaadbb",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/memory-wiki/src/corpus-supplement.ts",
+      "sha256": "df1d0320d1fe79d0f7d5c08e5c8975ab628310486aba80758741a47a9669a9df",
+      "role": "production-source",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/memory-wiki/src/gateway.ts",
+      "sha256": "8e713286e02682b8a4fd1604f86268790a786ec8ea5c9b474494d3fdfee73bed",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/memory-wiki/src/import-insights.ts",
+      "sha256": "6a363ec69794bdc9b54318a48df790db011ae4e51788350dd9ceb6b1956e5322",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/memory-wiki/src/import-runs-state.ts",
+      "sha256": "e9234a4aba01433d8caef36da5d568a8436561b8b2cb3148cea9b2d49200c7b4",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/memory-wiki/src/import-runs.ts",
+      "sha256": "c65a5da8e1a757cc35d46620063c789ff38ab73c4312765e273a364bdb4ed682",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/memory-wiki/src/ingest.ts",
+      "sha256": "719e90fb6ae75fbc945e47266ecfea5f2b695e6d51d1746277c5af07ba97c05c",
+      "role": "production-source",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/memory-wiki/src/lint.ts",
+      "sha256": "968f2a9a819a77c71e4b5d039512fd7d611f3bda857d320e303f40f660159a01",
+      "role": "production-source",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/memory-wiki/src/log.ts",
+      "sha256": "747d255f2ab14b9a5d070391c28f11aeb20977d84c8a095ca261622d4fc04245",
+      "role": "production-source",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/memory-wiki/src/markdown-links.ts",
+      "sha256": "2df84e92c0b8349dd857f31b1fbcddae4fa1755cb22a0c1436d0319c86124975",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/memory-wiki/src/markdown.ts",
+      "sha256": "65853659718495827d44c513139427e1608e91f44893165f65b5824242ed21c5",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/memory-wiki/src/mutation-coordinator.ts",
+      "sha256": "f18c178794c8d79a7b668852e70ec1f3cb14f448083adf0fb33b63fac0a204f3",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/memory-wiki/src/obsidian.ts",
+      "sha256": "dc6ded7e5dfd6ee98772820e6ad07872dda0f33b70be79a97fafe960caf48f78",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/memory-wiki/src/okf.ts",
+      "sha256": "f22b70870a1fce7698e53b8a6da28c4f79010ee76217f5a43027491712853ff2",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/memory-wiki/src/person-page.ts",
+      "sha256": "604765ea1c7174c7685e9a9b66509a272627870a0b708905a331407570a04c4e",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/memory-wiki/src/presentation.ts",
+      "sha256": "ebbd5f3b0da875ec4a1c0d70b38a2897b0339c1c3e055221e281667b7ef93dde",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/memory-wiki/src/prompt-section.ts",
+      "sha256": "4393c2fd27a6d0a759f632871ba22719201a0f0367b2a5a9fa598e2dc62a9a65",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/memory-wiki/src/query-memory-provider.ts",
+      "sha256": "2a07d91d488270cc77961788f4dcf08b617055213b126e7d796bfb316ad45ce4",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/memory-wiki/src/query-page-lookup.ts",
+      "sha256": "6d929f9a0a5500c00cb9f831dc6cebac08ceb61c3e95cd4055288ef94c4b711f",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/memory-wiki/src/query-pages.ts",
+      "sha256": "3689c695581e70fecf3060a6dd26c69ccf9a2c27a0200ccf1f32fdb4fb1076ae",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/memory-wiki/src/query-shared-memory.ts",
+      "sha256": "bf6782aee833e26797fd852063f328999f4e2d68c466d97eda22e561aa730eb7",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/memory-wiki/src/query.ts",
+      "sha256": "6756831ce412f924b69bfbc247c35d6b050794230d26761c2fe428e11f80868c",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/memory-wiki/src/source-import.ts",
+      "sha256": "8373c542bd737e4c36c0ed25729cac3266453cf50869192466cbf6c674eb71f7",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/memory-wiki/src/source-page-shared.ts",
+      "sha256": "e8c37ee9ceef9f97e126ee55a9b0696838ffb8ebac3c0c463f8cd9b0d1f107b9",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/memory-wiki/src/source-path-shared.ts",
+      "sha256": "73c889be767d0661e7a4e870a17cd5d9e23dd99490d9aa10090571e6487bc889",
+      "role": "production-source",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/memory-wiki/src/source-sync-state.ts",
+      "sha256": "239c2cbb7dbab1ba2fbccedcbe67fbe41f1c0a0919e146bbcfd66f192eb8afcd",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/memory-wiki/src/source-sync.ts",
+      "sha256": "15ceb2d1ac6b84fc6e5ac1d5dba60ae6a3bdc4f29c3fa41c31b8ac32dc03ccc0",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/memory-wiki/src/status.ts",
+      "sha256": "10638879e056e4928d9d86373cb1ce703aae6b39ce2727a62a86e8e899a2e1d3",
+      "role": "production-source",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/memory-wiki/src/time.ts",
+      "sha256": "a3234106b902a336bd4e6689635d6b6a1ef1d507ebca94345e6e6b78d9d6e776",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/memory-wiki/src/tool.ts",
+      "sha256": "cd4995139c160ceecb59c9417e54a3352e7fcd9c6ddab86f36ff21bd124bc4a1",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/memory-wiki/src/unsafe-local.ts",
+      "sha256": "c03cb55f198c8ff1b5a554e3b06137479d9c12ce54214a6c7db3653a22974a97",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/memory-wiki/src/vault-page-write.ts",
+      "sha256": "cd1bd949ffea1d21530c28c94dfd5e354cfb5a2925dd45d0577c58fc689863e7",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/memory-wiki/src/vault.ts",
+      "sha256": "11f92f7114ac54c63e808832b77247490829c442e8b591ef3ac93e0ae329eb7c",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/memory-wiki/src/wiki-overview.ts",
+      "sha256": "6841bc15f1dc03c47ee84ad64c68443b3e506a78f54c6b5080af50cc9d4c5748",
+      "role": "production-source",
+      "findingCount": 0
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/memory-wiki/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation, outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/memory-wiki/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Static SVG asset, outside eligible source extensions."
+    },
+    {
+      "path": "extensions/memory-wiki/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Static image asset, outside eligible source extensions."
+    },
+    {
+      "path": "extensions/memory-wiki/cli-metadata.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/control-ui.presentation.json",
+      "rule": "non-source",
+      "reason": "Control UI presentation metadata, outside the package/manifest files and JS/TS source scope."
+    },
+    {
+      "path": "extensions/memory-wiki/doctor-contract-api.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/index.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/skills/obsidian-vault-maintainer/SKILL.md",
+      "rule": "non-source",
+      "reason": "Shipped skill Markdown instructions, outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/memory-wiki/skills/wiki-maintainer/SKILL.md",
+      "rule": "non-source",
+      "reason": "Shipped skill Markdown instructions, outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/memory-wiki/src/agent-vault-isolation.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/apply.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/bounded-walk.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/bridge.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/chatgpt-import-labels.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/chatgpt-import.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/claim-health.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/cli.agent-scope.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/cli.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/compile.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/compiled-cache.integration.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/compiled-cache.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/config.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/corpus-supplement.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/corpus-supplement.visibility.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/deferred.test-helpers.ts",
+      "rule": "test-helper",
+      "reason": "Deferred-promise test utility imported by src/mutation-coordinator.test.ts:5, src/gateway.test.ts:10 and other tests only; no production imports."
+    },
+    {
+      "path": "extensions/memory-wiki/src/gateway.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/guarded-root.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Vitest spy helper for root-move fault injection, imported only by src/cli.test.ts and src/chatgpt-import.test.ts."
+    },
+    {
+      "path": "extensions/memory-wiki/src/import-insights.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/import-runs.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/ingest-human-notes.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/ingest.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/lint.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/log.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/markdown.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/mutation-coordinator.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/obsidian.discovery.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/obsidian.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/okf.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/prompt-section.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/query.abort.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/query.conversation-recall.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Registers Vitest conversation-recall cases for src/query.test.ts:12; no production imports."
+    },
+    {
+      "path": "extensions/memory-wiki/src/query.path-lookup.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/query.provider-runtime.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Registers Vitest provider-runtime cases for src/query.test.ts:14; no production imports."
+    },
+    {
+      "path": "extensions/memory-wiki/src/query.reads.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/query.session-scope.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Registers Vitest session-scope cases for src/query.test.ts:15; no production imports."
+    },
+    {
+      "path": "extensions/memory-wiki/src/query.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/reserved-index-collision.repro.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/source-page-shared.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/source-page.test-helpers.ts",
+      "rule": "test-helper",
+      "reason": "Synthetic imported-source page builder used only by src/source-page-shared.test.ts:7 and src/wiki-notes-read-retry.test.ts:11."
+    },
+    {
+      "path": "extensions/memory-wiki/src/source-sync-malformed-notes.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/source-sync-state.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/source-sync.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/status.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/test-helpers.ts",
+      "rule": "test-helper",
+      "reason": "Test harness with Vitest lifecycle/mocks and in-memory stores; callers are test files (for example index.test.ts:25 and src/apply.test.ts:7), with no production imports."
+    },
+    {
+      "path": "extensions/memory-wiki/src/time.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/tool.deadline.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/tool.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/unsafe-local.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/vault-page-write.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/vault.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/wiki-notes-read-retry.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/src/wiki-overview.test.ts",
+      "rule": "test-file",
+      "reason": "Test suite file under the contract basename rule; full production-source import review found no production imports of this file."
+    },
+    {
+      "path": "extensions/memory-wiki/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript project configuration, outside eligible source extensions."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.logger.warn",
+      "kind": "api-member",
+      "identity": "api.logger.warn",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/index.ts",
+          "line": 110,
+          "snippet": "api.logger.warn(`memory-wiki: compiled cache unavailable: ${String(error)}`);"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig",
+      "kind": "api-member",
+      "identity": "api.pluginConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/index.ts",
+          "line": 82,
+          "snippet": "const config = resolveMemoryWikiConfig(api.pluginConfig);"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerCli",
+      "kind": "api-member",
+      "identity": "api.registerCli",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/cli-metadata.ts",
+          "line": 8,
+          "snippet": "api.registerCli("
+        },
+        {
+          "path": "extensions/memory-wiki/index.ts",
+          "line": 231,
+          "snippet": "api.registerCli("
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerGatewayMethod",
+      "kind": "api-member",
+      "identity": "api.registerGatewayMethod",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/gateway.ts",
+          "line": 39,
+          "snippet": "Parameters<OpenClawPluginApi[\"registerGatewayMethod\"]>[1]"
+        },
+        {
+          "path": "extensions/memory-wiki/src/gateway.ts",
+          "line": 116,
+          "snippet": "api.registerGatewayMethod(",
+          "note": "The destructured api at line 107 comes from params.api: OpenClawPluginApi at line 101."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerMemoryCorpusSupplement",
+      "kind": "api-member",
+      "identity": "api.registerMemoryCorpusSupplement",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/index.ts",
+          "line": 179,
+          "snippet": "api.registerMemoryCorpusSupplement(createWikiCorpusSupplement({ resolveConfig, getAppConfig }));"
+        },
+        {
+          "path": "extensions/memory-wiki/src/corpus-supplement.ts",
+          "line": 43,
+          "snippet": "} satisfies Parameters<OpenClawPluginApi[\"registerMemoryCorpusSupplement\"]>[0];"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerMemoryPromptPreparation",
+      "kind": "api-member",
+      "identity": "api.registerMemoryPromptPreparation",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/index.ts",
+          "line": 178,
+          "snippet": "api.registerMemoryPromptPreparation(createWikiPromptSectionPreparer({ config, resolveConfig }));"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerMemoryPromptSupplement",
+      "kind": "api-member",
+      "identity": "api.registerMemoryPromptSupplement",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/index.ts",
+          "line": 177,
+          "snippet": "api.registerMemoryPromptSupplement(createWikiPromptSectionBuilder());"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerService",
+      "kind": "api-member",
+      "identity": "api.registerService",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/index.ts",
+          "line": 115,
+          "snippet": "api.registerService({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerTool",
+      "kind": "api-member",
+      "identity": "api.registerTool",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/index.ts",
+          "line": 194,
+          "snippet": "api.registerTool("
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.cliCommands.name:wiki",
+      "kind": "manifest-contract",
+      "identity": "manifest.cliCommands.name:wiki",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/openclaw.plugin.json",
+          "line": 18,
+          "snippet": "\"name\": \"wiki\","
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.commandAliases.name:wiki",
+      "kind": "manifest-contract",
+      "identity": "manifest.commandAliases.name:wiki",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/openclaw.plugin.json",
+          "line": 285,
+          "snippet": "\"commandAliases\": [{ \"name\": \"wiki\" }]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.tools:wiki_apply",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.tools:wiki_apply",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/openclaw.plugin.json",
+          "line": 25,
+          "snippet": "\"tools\": [\"wiki_apply\", \"wiki_get\", \"wiki_lint\", \"wiki_search\", \"wiki_status\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.tools:wiki_get",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.tools:wiki_get",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/openclaw.plugin.json",
+          "line": 25,
+          "snippet": "\"tools\": [\"wiki_apply\", \"wiki_get\", \"wiki_lint\", \"wiki_search\", \"wiki_status\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.tools:wiki_lint",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.tools:wiki_lint",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/openclaw.plugin.json",
+          "line": 25,
+          "snippet": "\"tools\": [\"wiki_apply\", \"wiki_get\", \"wiki_lint\", \"wiki_search\", \"wiki_status\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.tools:wiki_search",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.tools:wiki_search",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/openclaw.plugin.json",
+          "line": 25,
+          "snippet": "\"tools\": [\"wiki_apply\", \"wiki_get\", \"wiki_lint\", \"wiki_search\", \"wiki_status\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.tools:wiki_status",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.tools:wiki_status",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/openclaw.plugin.json",
+          "line": 25,
+          "snippet": "\"tools\": [\"wiki_apply\", \"wiki_get\", \"wiki_lint\", \"wiki_search\", \"wiki_status\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.skills:./skills",
+      "kind": "manifest-contract",
+      "identity": "manifest.skills:./skills",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/openclaw.plugin.json",
+          "line": 27,
+          "snippet": "\"skills\": [\"./skills\"],"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.config.current",
+      "kind": "runtime-member",
+      "identity": "runtime.config.current",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/index.ts",
+          "line": 83,
+          "snippet": "const getAppConfig = () => api.runtime.config.current() as OpenClawConfig;"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.openBlobStore",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openBlobStore",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/index.ts",
+          "line": 108,
+          "snippet": "const compiledCacheStore = createMemoryWikiCompiledCacheStore(api.runtime.state.openBlobStore, {",
+          "note": "Host runtime opener is passed unchanged into the local compiled-cache factory."
+        },
+        {
+          "path": "extensions/memory-wiki/src/compiled-cache.ts",
+          "line": 305,
+          "snippet": "const store = openBlobStore<CompiledCacheMetadata>({",
+          "note": "The openBlobStore factory parameter receives api.runtime.state.openBlobStore unchanged at index.ts:108."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.openKeyedStore",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openKeyedStore",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/index.ts",
+          "line": 103,
+          "snippet": "createMemoryWikiSourceSyncStateStore(api.runtime.state.openKeyedStore),",
+          "note": "Host runtime opener is passed unchanged into the local store factory."
+        },
+        {
+          "path": "extensions/memory-wiki/src/source-sync-state.ts",
+          "line": 118,
+          "snippet": "openKeyedStore<MemoryWikiSourceSyncStateRecord>({",
+          "note": "The factory parameter openKeyedStore receives api.runtime.state.openKeyedStore unchanged at index.ts:103; this invokes that callable."
+        },
+        {
+          "path": "extensions/memory-wiki/src/import-runs-state.ts",
+          "line": 219,
+          "snippet": "openKeyedStore<MemoryWikiImportRunStateRecord>({",
+          "note": "The second local factory receives the same runtime opener at index.ts:106. Doctor supplies its own context callback to the same factories; that context does not become api/runtime provenance."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-scope-runtime#resolveDefaultAgentId",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-scope-runtime#resolveDefaultAgentId",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 6,
+          "snippet": "resolveDefaultAgentId,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 191,
+          "snippet": "return [...new Set(ids.length > 0 ? ids : [resolveDefaultAgentId(appConfig ?? {})])];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-scope-runtime#resolveSessionAgentIdStrict",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-scope-runtime#resolveSessionAgentIdStrict",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 7,
+          "snippet": "resolveSessionAgentIdStrict,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 189,
+          "snippet": "return [resolveSessionAgentIdStrict({ config: appConfig, agentId: rawId })];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-actions#optionalFiniteNumberSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-actions#optionalFiniteNumberSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/tool.ts",
+          "line": 2,
+          "snippet": "import { optionalFiniteNumberSchema } from \"openclaw/plugin-sdk/channel-actions\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/tool.ts",
+          "line": 70,
+          "snippet": "weight: optionalFiniteNumberSchema({ minimum: 0 }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/concurrency-runtime#runTasksWithConcurrency",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/concurrency-runtime#runTasksWithConcurrency",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/compile.ts",
+          "line": 5,
+          "snippet": "import { runTasksWithConcurrency } from \"openclaw/plugin-sdk/concurrency-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/compile.ts",
+          "line": 347,
+          "snippet": "const readResult = await runTasksWithConcurrency({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/gateway.ts",
+          "line": 1,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/gateway.ts",
+          "line": 96,
+          "snippet": "const message = formatErrorMessage(error);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/extension-shared#mapPluginConfigIssues",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/extension-shared#mapPluginConfigIssues",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config-schema.ts",
+          "line": 2,
+          "snippet": "import { mapPluginConfigIssues } from \"openclaw/plugin-sdk/extension-shared\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/config-schema.ts",
+          "line": 18,
+          "snippet": "issues: mapPluginConfigIssues(result.error.issues),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#isPathInside",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#isPathInside",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/bridge.ts",
+          "line": 4,
+          "snippet": "import { isPathInside } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/bridge.ts",
+          "line": 100,
+          "snippet": "if (isPathInside(vaultRootKey, syncKey)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#readFileWindowFully",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#readFileWindowFully",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/source-sync-state.ts",
+          "line": 3,
+          "snippet": "import { readFileWindowFully } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/source-sync-state.ts",
+          "line": 245,
+          "snippet": "if ((await readFileWindowFully(opened.handle, headerBuffer, 0)) !== headerBytes) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#ErrorCodes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#ErrorCodes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/gateway.ts",
+          "line": 2,
+          "snippet": "import { ErrorCodes, errorShape } from \"openclaw/plugin-sdk/gateway-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/gateway.ts",
+          "line": 86,
+          "snippet": "error.state === \"compile-required\" ? ErrorCodes.INVALID_REQUEST : ErrorCodes.UNAVAILABLE,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#callGatewayFromCli",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#callGatewayFromCli",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/cli.ts",
+          "line": 3,
+          "snippet": "import { callGatewayFromCli } from \"openclaw/plugin-sdk/gateway-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/cli.ts",
+          "line": 263,
+          "snippet": "const result = await callGatewayFromCli("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#errorShape",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#errorShape",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/gateway.ts",
+          "line": 2,
+          "snippet": "import { ErrorCodes, errorShape } from \"openclaw/plugin-sdk/gateway-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/gateway.ts",
+          "line": 85,
+          "snippet": "errorShape("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/keyed-async-queue#KeyedAsyncQueue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/keyed-async-queue#KeyedAsyncQueue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/mutation-coordinator.ts",
+          "line": 4,
+          "snippet": "import { KeyedAsyncQueue } from \"openclaw/plugin-sdk/keyed-async-queue\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/mutation-coordinator.ts",
+          "line": 9,
+          "snippet": "const vaultMutationQueue = new KeyedAsyncQueue();",
+          "note": "Construction of the imported SDK class. The queue instance is not a PluginRuntime handle."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-storage#retryTransientMemoryRead",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-storage#retryTransientMemoryRead",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/compile.ts",
+          "line": 6,
+          "snippet": "import { retryTransientMemoryRead } from \"openclaw/plugin-sdk/memory-core-host-engine-storage\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/compile.ts",
+          "line": 351,
+          "snippet": "const raw = await retryTransientMemoryRead("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-core#MemoryPluginPublicArtifact",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-core#MemoryPluginPublicArtifact",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/bridge.ts",
+          "line": 8,
+          "snippet": "type MemoryPluginPublicArtifact,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/bridge.ts",
+          "line": 46,
+          "snippet": "artifacts: MemoryPluginPublicArtifact[];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-core#MemoryPromptSectionBuilder",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-core#MemoryPromptSectionBuilder",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/prompt-section.ts",
+          "line": 1,
+          "snippet": "import type { MemoryPromptSectionBuilder } from \"openclaw/plugin-sdk/memory-host-core\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/prompt-section.ts",
+          "line": 150,
+          "snippet": "export function createWikiPromptSectionBuilder(): MemoryPromptSectionBuilder {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-core#getMemoryCapabilityRegistration",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-core#getMemoryCapabilityRegistration",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/bridge.ts",
+          "line": 6,
+          "snippet": "getMemoryCapabilityRegistration,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/bridge.ts",
+          "line": 261,
+          "snippet": "canPrune: () => Boolean(getMemoryCapabilityRegistration()),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-core#listActiveMemoryPublicArtifacts",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-core#listActiveMemoryPublicArtifacts",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/bridge.ts",
+          "line": 7,
+          "snippet": "listActiveMemoryPublicArtifacts,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/bridge.ts",
+          "line": 164,
+          "snippet": "artifacts: await listActiveMemoryPublicArtifacts({ cfg: params.appConfig }),"
+        },
+        {
+          "path": "extensions/memory-wiki/src/status.ts",
+          "line": 42,
+          "snippet": "listPublicArtifacts?: typeof listActiveMemoryPublicArtifacts;",
+          "note": "Explicit typeof of the imported SDK function adds a type reference; the module import site remains a value import."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-core#resolveDefaultAgentId",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-core#resolveDefaultAgentId",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/cli.ts",
+          "line": 4,
+          "snippet": "import { resolveDefaultAgentId } from \"openclaw/plugin-sdk/memory-host-core\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/cli.ts",
+          "line": 502,
+          "snippet": "agentId = resolveDefaultAgentId(currentAppConfig ?? {});"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-markdown#replaceManagedMarkdownBlock",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-markdown#replaceManagedMarkdownBlock",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 3,
+          "snippet": "replaceManagedMarkdownBlock,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 168,
+          "snippet": "const withGenerated = replaceManagedMarkdownBlock({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-markdown#withTrailingNewline",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-markdown#withTrailingNewline",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 4,
+          "snippet": "withTrailingNewline,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 189,
+          "snippet": "const rendered = withTrailingNewline("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-search#ActiveMemoryProviderResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-search#ActiveMemoryProviderResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/query-memory-provider.ts",
+          "line": 6,
+          "snippet": "type ActiveMemoryProviderResult,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/query-memory-provider.ts",
+          "line": 53,
+          "snippet": "action: (result: ActiveMemoryProviderResult) => Promise<T>,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-search#MemoryCallerContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-search#MemoryCallerContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/query-memory-provider.ts",
+          "line": 7,
+          "snippet": "type MemoryCallerContext,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/query-memory-provider.ts",
+          "line": 17,
+          "snippet": "memoryContext?: MemoryCallerContext;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-search#MemoryCitation",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-search#MemoryCitation",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/query-shared-memory.ts",
+          "line": 8,
+          "snippet": "type MemoryCitation,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/query-shared-memory.ts",
+          "line": 37,
+          "snippet": "citations?: MemoryCitation[];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-search#MemoryReference",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-search#MemoryReference",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/query-memory-provider.ts",
+          "line": 8,
+          "snippet": "type MemoryReference,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/query-memory-provider.ts",
+          "line": 96,
+          "snippet": "export function memoryReferenceLookup(reference: MemoryReference): string {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-search#getActiveMemoryProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-search#getActiveMemoryProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/query-memory-provider.ts",
+          "line": 4,
+          "snippet": "getActiveMemoryProvider,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/query-memory-provider.ts",
+          "line": 76,
+          "snippet": "result = await getActiveMemoryProvider({ cfg: params.appConfig, agentId, context });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-search#getActiveMemorySearchManager",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-search#getActiveMemorySearchManager",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/query-shared-memory.ts",
+          "line": 6,
+          "snippet": "getActiveMemorySearchManager,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/query-shared-memory.ts",
+          "line": 77,
+          "snippet": "const { manager } = await getActiveMemorySearchManager({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-search#isActiveMemoryProviderNative",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-search#isActiveMemoryProviderNative",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/query-memory-provider.ts",
+          "line": 5,
+          "snippet": "isActiveMemoryProviderNative,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/query-memory-provider.ts",
+          "line": 43,
+          "snippet": "return await isActiveMemoryProviderNative({ cfg: params.appConfig, agentId });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#parseDateStringTimestampMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#parseDateStringTimestampMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/claim-health.ts",
+          "line": 1,
+          "snippet": "import { parseDateStringTimestampMs } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/claim-health.ts",
+          "line": 50,
+          "snippet": "const timestampMs = parseDateStringTimestampMs(params.timestamp);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#parseStrictPositiveInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#parseStrictPositiveInteger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/cli.ts",
+          "line": 5,
+          "snippet": "import { parseStrictPositiveInteger } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/cli.ts",
+          "line": 382,
+          "snippet": "const parsed = parseStrictPositiveInteger(value);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolveIntegerOption",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolveIntegerOption",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/query.ts",
+          "line": 5,
+          "snippet": "import { resolveIntegerOption } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/query.ts",
+          "line": 933,
+          "snippet": "const maxResults = resolveIntegerOption(params.maxResults, 10, { min: 1 });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolveNonNegativeIntegerOption",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolveNonNegativeIntegerOption",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/import-insights.ts",
+          "line": 1,
+          "snippet": "import { resolveNonNegativeIntegerOption } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/import-insights.ts",
+          "line": 69,
+          "snippet": "return match ? resolveNonNegativeIntegerOption(Number(match[0]), 0) : 0;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#timestampMsToIsoString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#timestampMsToIsoString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/chatgpt-import.ts",
+          "line": 8,
+          "snippet": "import { timestampMsToIsoString } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/chatgpt-import.ts",
+          "line": 133,
+          "snippet": "return timestampMsToIsoString(numeric * 1000);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/param-readers#readFiniteNumberParam",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/param-readers#readFiniteNumberParam",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 6,
+          "snippet": "import { readFiniteNumberParam } from \"openclaw/plugin-sdk/param-readers\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 112,
+          "snippet": "const confidence = readFiniteNumberParam(params, \"confidence\", { min: 0, max: 1 });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/param-readers#readPositiveIntegerParam",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/param-readers#readPositiveIntegerParam",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/gateway.ts",
+          "line": 5,
+          "snippet": "import { readPositiveIntegerParam } from \"openclaw/plugin-sdk/param-readers\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/gateway.ts",
+          "line": 205,
+          "snippet": "const limit = readPositiveIntegerParam(requestParams, \"limit\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#AnyAgentTool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#AnyAgentTool",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reexport",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/api.ts",
+          "line": 4,
+          "snippet": "type AnyAgentTool,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/tool.ts",
+          "line": 9,
+          "snippet": "import type { AnyAgentTool, OpenClawConfig } from \"../api.js\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/tool.ts",
+          "line": 123,
+          "snippet": "): AnyAgentTool {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reexport",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/api.ts",
+          "line": 5,
+          "snippet": "type OpenClawConfig,"
+        },
+        {
+          "path": "extensions/memory-wiki/doctor-contract-api.ts",
+          "line": 4,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/memory-wiki/index.ts",
+          "line": 3,
+          "snippet": "import { definePluginEntry, type OpenClawConfig } from \"./api.js\";",
+          "note": "Inline type import through the local api.js barrel."
+        },
+        {
+          "path": "extensions/memory-wiki/doctor-contract-api.ts",
+          "line": 63,
+          "snippet": "function readConfiguredPluginConfig(config: OpenClawConfig): MemoryWikiPluginConfig | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reexport",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/api.ts",
+          "line": 6,
+          "snippet": "type OpenClawPluginApi,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/gateway.ts",
+          "line": 6,
+          "snippet": "import type { OpenClawConfig, OpenClawPluginApi } from \"../api.js\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/gateway.ts",
+          "line": 101,
+          "snippet": "api: OpenClawPluginApi;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginConfigSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginConfigSchema",
+      "classification": "type",
+      "referenceKinds": [
+        "type-reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/api.ts",
+          "line": 7,
+          "snippet": "type OpenClawPluginConfigSchema,",
+          "note": "Unused type reexport remains a syntactic SDK dependency."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginToolContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginToolContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/query-shared-memory.ts",
+          "line": 11,
+          "snippet": "import type { OpenClawPluginToolContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/query-shared-memory.ts",
+          "line": 20,
+          "snippet": "type ConversationRecallContext = NonNullable<OpenClawPluginToolContext[\"conversationRecall\"]>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#buildPluginConfigSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#buildPluginConfigSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/api.ts",
+          "line": 2,
+          "snippet": "buildPluginConfigSchema,",
+          "note": "Named reexport from openclaw/plugin-sdk/plugin-entry; local consumers preserve this original SDK identity."
+        },
+        {
+          "path": "extensions/memory-wiki/src/config-schema.ts",
+          "line": 3,
+          "snippet": "import { buildPluginConfigSchema } from \"../api.js\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/config-schema.ts",
+          "line": 6,
+          "snippet": "export const memoryWikiConfigSchema = buildPluginConfigSchema(MemoryWikiConfigSource, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/api.ts",
+          "line": 3,
+          "snippet": "definePluginEntry,"
+        },
+        {
+          "path": "extensions/memory-wiki/cli-metadata.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/memory-wiki/index.ts",
+          "line": 3,
+          "snippet": "import { definePluginEntry, type OpenClawConfig } from \"./api.js\";",
+          "note": "Local api.js barrel forwards the original SDK export."
+        },
+        {
+          "path": "extensions/memory-wiki/index.ts",
+          "line": 76,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#OpenBlobStoreOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#OpenBlobStoreOptions",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/compiled-cache.ts",
+          "line": 5,
+          "snippet": "OpenBlobStoreOptions,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/compiled-cache.ts",
+          "line": 302,
+          "snippet": "openBlobStore: <TMetadata>(options: OpenBlobStoreOptions) => PluginBlobStore<TMetadata>,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#OpenKeyedStoreOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#OpenKeyedStoreOptions",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/import-runs-state.ts",
+          "line": 5,
+          "snippet": "OpenKeyedStoreOptions,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/import-runs-state.ts",
+          "line": 216,
+          "snippet": "openKeyedStore: <T>(options: OpenKeyedStoreOptions) => PluginStateKeyedStore<T>,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#PluginBlobStore",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#PluginBlobStore",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/compiled-cache.ts",
+          "line": 6,
+          "snippet": "PluginBlobStore,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/compiled-cache.ts",
+          "line": 302,
+          "snippet": "openBlobStore: <TMetadata>(options: OpenBlobStoreOptions) => PluginBlobStore<TMetadata>,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#PluginStateKeyedStore",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#PluginStateKeyedStore",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/import-runs-state.ts",
+          "line": 6,
+          "snippet": "PluginStateKeyedStore,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/import-runs-state.ts",
+          "line": 216,
+          "snippet": "openKeyedStore: <T>(options: OpenKeyedStoreOptions) => PluginStateKeyedStore<T>,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#runExec",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#runExec",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/obsidian.ts",
+          "line": 4,
+          "snippet": "import { runExec } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/obsidian.ts",
+          "line": 107,
+          "snippet": "const exec = params.deps?.exec ?? runExec;\n  const { stdout, stderr } = await exec(probe.command, argv, {\n    logOutput: false,\n    timeoutMs: OBSIDIAN_CLI_TIMEOUT_MS,\n  });",
+          "note": "exec retains the imported SDK function as its direct fallback; invocation contributes call. The optional plugin-owned dependency object is not a public runtime."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/retry-runtime#retryAsync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/retry-runtime#retryAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/vault-page-write.ts",
+          "line": 1,
+          "snippet": "import { retryAsync } from \"openclaw/plugin-sdk/retry-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/vault-page-write.ts",
+          "line": 50,
+          "snippet": "await retryAsync("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/root-walk#RootWalkEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/root-walk#RootWalkEntry",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/bounded-walk.ts",
+          "line": 4,
+          "snippet": "type RootWalkEntry,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/bounded-walk.ts",
+          "line": 22,
+          "snippet": "): Promise<RootWalkEntry[]> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/root-walk#RootWalkOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/root-walk#RootWalkOptions",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/bounded-walk.ts",
+          "line": 5,
+          "snippet": "type RootWalkOptions,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/bounded-walk.ts",
+          "line": 14,
+          "snippet": "entryFilter?: RootWalkOptions[\"entryFilter\"];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/root-walk#walkRootDirectory",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/root-walk#walkRootDirectory",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/bounded-walk.ts",
+          "line": 3,
+          "snippet": "walkRootDirectory,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/bounded-walk.ts",
+          "line": 25,
+          "snippet": "for await (const entry of walkRootDirectory(rootDir, relativePath, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/routing#normalizeAgentId",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/routing#normalizeAgentId",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/bridge.ts",
+          "line": 10,
+          "snippet": "import { normalizeAgentId } from \"openclaw/plugin-sdk/routing\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/bridge.ts",
+          "line": 41,
+          "snippet": "return normalizeAgentId(agentId);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-doctor-migrations#PluginDoctorStateMigration",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations#PluginDoctorStateMigration",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/doctor-contract-api.ts",
+          "line": 5,
+          "snippet": "import type { PluginDoctorStateMigration } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";"
+        },
+        {
+          "path": "extensions/memory-wiki/doctor-contract-api.ts",
+          "line": 94,
+          "snippet": "type WikiStateMigrationParams = Parameters<PluginDoctorStateMigration[\"detectLegacyState\"]>[0];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#FsSafeError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#FsSafeError",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/chatgpt-import-recovery.ts",
+          "line": 6,
+          "snippet": "FsSafeError,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/chatgpt-import-recovery.ts",
+          "line": 45,
+          "snippet": "export function isFsSafeErrorCode(error: unknown, code: FsSafeError[\"code\"]): boolean {",
+          "note": "Imported class is used in an indexed type annotation."
+        },
+        {
+          "path": "extensions/memory-wiki/src/chatgpt-import-recovery.ts",
+          "line": 111,
+          "snippet": "throw new FsSafeError(\"invalid-path\", \"Memory Wiki rollback requires a regular file\", {",
+          "note": "Constructing the imported SDK error contributes call."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#appendRegularFile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#appendRegularFile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/log.ts",
+          "line": 5,
+          "snippet": "import { appendRegularFile } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/log.ts",
+          "line": 36,
+          "snippet": "await appendRegularFile({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#extractErrorCode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#extractErrorCode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/chatgpt-import-recovery.ts",
+          "line": 5,
+          "snippet": "extractErrorCode,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/chatgpt-import-recovery.ts",
+          "line": 108,
+          "snippet": "if (extractErrorCode(cause)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#pathExists",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#pathExists",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/ingest.ts",
+          "line": 3,
+          "snippet": "import { pathExists } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/ingest.ts",
+          "line": 43,
+          "snippet": "const created = !(await pathExists(pagePath));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#replaceFileAtomic",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#replaceFileAtomic",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/lint.ts",
+          "line": 7,
+          "snippet": "import { replaceFileAtomic } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/lint.ts",
+          "line": 378,
+          "snippet": "await replaceFileAtomic({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#root",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#root",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/doctor-contract-api.ts",
+          "line": 6,
+          "snippet": "import { FsSafeError, root as fsRoot } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/chatgpt-import-recovery.ts",
+          "line": 7,
+          "snippet": "type root as fsRoot,"
+        },
+        {
+          "path": "extensions/memory-wiki/doctor-contract-api.ts",
+          "line": 54,
+          "snippet": "return await fsRoot(vaultRoot);"
+        },
+        {
+          "path": "extensions/memory-wiki/doctor-contract-api.ts",
+          "line": 38,
+          "snippet": "vaultRoot: Awaited<ReturnType<typeof fsRoot>>,",
+          "note": "fsRoot is the local alias of SDK root; typeof adds a type reference. Members on the returned file handle do not become runtime-member paths."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#statRegularFileSync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#statRegularFileSync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/chatgpt-import-recovery.ts",
+          "line": 8,
+          "snippet": "statRegularFileSync,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/chatgpt-import-recovery.ts",
+          "line": 106,
+          "snippet": "source = statRegularFileSync(sourcePath);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/state-paths#resolveStateDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/state-paths#resolveStateDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 9,
+          "snippet": "import { resolveStateDir } from \"openclaw/plugin-sdk/state-paths\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 130,
+          "snippet": "resolveStateDir({ ...(options?.env ?? process.env), HOME: homedir }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/markdown.ts",
+          "line": 4,
+          "snippet": "asFiniteNumber,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/markdown.ts",
+          "line": 191,
+          "snippet": "const weight = asFiniteNumber(record.weight);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asNonArrayRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asNonArrayRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 9,
+          "snippet": "asNonArrayRecord,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 95,
+          "snippet": "const params = asNonArrayRecord(rawParams) as MemoryWikiMutationMetadata & {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asNullableRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asNullableRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/chatgpt-import.ts",
+          "line": 11,
+          "snippet": "asNullableRecord,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/chatgpt-import.ts",
+          "line": 118,
+          "snippet": ": Object.values(asNullableRecord(parsed) ?? {}).find(Array.isArray);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#filterStringEntries",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#filterStringEntries",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/import-insights.ts",
+          "line": 3,
+          "snippet": "filterStringEntries,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/import-insights.ts",
+          "line": 14,
+          "snippet": "return filterStringEntries(value).filter((entry) => entry.trim().length > 0);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/doctor-contract-api.ts",
+          "line": 7,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/doctor-contract-api.ts",
+          "line": 33,
+          "snippet": "(isRecord(error) && error.code === \"ENOENT\")"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#lowercasePreservingWhitespace",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#lowercasePreservingWhitespace",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/source-path-shared.ts",
+          "line": 3,
+          "snippet": "import { lowercasePreservingWhitespace } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/source-path-shared.ts",
+          "line": 8,
+          "snippet": "? lowercasePreservingWhitespace(canonicalPath)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/claim-health.ts",
+          "line": 2,
+          "snippet": "import { normalizeLowercaseStringOrEmpty } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/claim-health.ts",
+          "line": 39,
+          "snippet": "return normalizeLowercaseStringOrEmpty(text.replace(/\\s+/g, \" \"));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/import-insights.ts",
+          "line": 4,
+          "snippet": "normalizeOptionalString,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/import-insights.ts",
+          "line": 257,
+          "snippet": "const createdAt = normalizeOptionalString(parsed.frontmatter.createdAt);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeSingleOrTrimmedStringList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeSingleOrTrimmedStringList",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 10,
+          "snippet": "normalizeSingleOrTrimmedStringList,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 232,
+          "snippet": "sourceIds: normalizeSingleOrTrimmedStringList(params.mutation.sourceIds),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeStringEntries",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeStringEntries",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 11,
+          "snippet": "normalizeStringEntries,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 148,
+          "snippet": "return uniqueStrings(normalizeStringEntries(values));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeUniqueTrimmedStringList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeUniqueTrimmedStringList",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/import-runs-state.ts",
+          "line": 11,
+          "snippet": "normalizeUniqueTrimmedStringList,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/import-runs-state.ts",
+          "line": 155,
+          "snippet": "const recoveryPaths = normalizeUniqueTrimmedStringList(record.recoveryPaths);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#uniqueStrings",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#uniqueStrings",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 12,
+          "snippet": "uniqueStrings,"
+        },
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 148,
+          "snippet": "return uniqueStrings(normalizeStringEntries(values));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/cli.ts",
+          "line": 11,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/cli.ts",
+          "line": 122,
+          "snippet": "? truncateUtf16Safe(value, GATEWAY_TERMINAL_STRING_MAX_CHARS)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf8Prefix",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf8Prefix",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/markdown.ts",
+          "line": 10,
+          "snippet": "import { truncateUtf8Prefix } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/markdown.ts",
+          "line": 104,
+          "snippet": "const truncated = truncateUtf8Prefix(raw, maxBytes - Buffer.byteLength(`-${suffix}`)).replace("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/time-runtime#racePromiseWithAbortSignal",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/time-runtime#racePromiseWithAbortSignal",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/tool.ts",
+          "line": 6,
+          "snippet": "import { racePromiseWithAbortSignal } from \"openclaw/plugin-sdk/time-runtime\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/tool.ts",
+          "line": 169,
+          "snippet": "return await racePromiseWithAbortSignal("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/tool-results#textResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/tool-results#textResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/tool.ts",
+          "line": 7,
+          "snippet": "import { textResult } from \"openclaw/plugin-sdk/tool-results\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/tool.ts",
+          "line": 136,
+          "snippet": "return textResult(renderMemoryWikiStatus(status), status);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-scope-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-scope-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 5,
+          "snippet": "import {\n  resolveDefaultAgentId,\n  resolveSessionAgentIdStrict,\n} from \"openclaw/plugin-sdk/agent-scope-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-actions",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-actions",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/tool.ts",
+          "line": 2,
+          "snippet": "import { optionalFiniteNumberSchema } from \"openclaw/plugin-sdk/channel-actions\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/concurrency-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/concurrency-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/compile.ts",
+          "line": 5,
+          "snippet": "import { runTasksWithConcurrency } from \"openclaw/plugin-sdk/concurrency-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/gateway.ts",
+          "line": 1,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/extension-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/extension-shared",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config-schema.ts",
+          "line": 2,
+          "snippet": "import { mapPluginConfigIssues } from \"openclaw/plugin-sdk/extension-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/file-access-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/file-access-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/bridge.ts",
+          "line": 4,
+          "snippet": "import { isPathInside } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/gateway-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/gateway-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/gateway.ts",
+          "line": 2,
+          "snippet": "import { ErrorCodes, errorShape } from \"openclaw/plugin-sdk/gateway-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/keyed-async-queue",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/keyed-async-queue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/mutation-coordinator.ts",
+          "line": 4,
+          "snippet": "import { KeyedAsyncQueue } from \"openclaw/plugin-sdk/keyed-async-queue\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/memory-core-host-engine-storage",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-storage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/compile.ts",
+          "line": 6,
+          "snippet": "import { retryTransientMemoryRead } from \"openclaw/plugin-sdk/memory-core-host-engine-storage\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/memory-host-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/memory-host-core",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/bridge.ts",
+          "line": 5,
+          "snippet": "import {\n  getMemoryCapabilityRegistration,\n  listActiveMemoryPublicArtifacts,\n  type MemoryPluginPublicArtifact,\n} from \"openclaw/plugin-sdk/memory-host-core\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/prompt-section.ts",
+          "line": 1,
+          "snippet": "import type { MemoryPromptSectionBuilder } from \"openclaw/plugin-sdk/memory-host-core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/memory-host-markdown",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/memory-host-markdown",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 2,
+          "snippet": "import {\n  replaceManagedMarkdownBlock,\n  withTrailingNewline,\n} from \"openclaw/plugin-sdk/memory-host-markdown\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/memory-host-search",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/memory-host-search",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/query-memory-provider.ts",
+          "line": 3,
+          "snippet": "import {\n  getActiveMemoryProvider,\n  isActiveMemoryProviderNative,\n  type ActiveMemoryProviderResult,\n  type MemoryCallerContext,\n  type MemoryReference,\n} from \"openclaw/plugin-sdk/memory-host-search\";"
+        },
+        {
+          "path": "extensions/memory-wiki/src/query.ts",
+          "line": 4,
+          "snippet": "import type { MemoryReference, MemoryCitation } from \"openclaw/plugin-sdk/memory-host-search\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/claim-health.ts",
+          "line": 1,
+          "snippet": "import { parseDateStringTimestampMs } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/param-readers",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/param-readers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 6,
+          "snippet": "import { readFiniteNumberParam } from \"openclaw/plugin-sdk/param-readers\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "reexport",
+        "type-import",
+        "type-reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/api.ts",
+          "line": 1,
+          "snippet": "export {\n  buildPluginConfigSchema,\n  definePluginEntry,\n  type AnyAgentTool,\n  type OpenClawConfig,\n  type OpenClawPluginApi,\n  type OpenClawPluginConfigSchema,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/memory-wiki/cli-metadata.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/memory-wiki/doctor-contract-api.ts",
+          "line": 4,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-state-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/compiled-cache.ts",
+          "line": 4,
+          "snippet": "import type {\n  OpenBlobStoreOptions,\n  PluginBlobStore,\n} from \"openclaw/plugin-sdk/plugin-state-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/process-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/process-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/obsidian.ts",
+          "line": 4,
+          "snippet": "import { runExec } from \"openclaw/plugin-sdk/process-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/retry-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/retry-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/vault-page-write.ts",
+          "line": 1,
+          "snippet": "import { retryAsync } from \"openclaw/plugin-sdk/retry-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/root-walk",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/root-walk",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/bounded-walk.ts",
+          "line": 2,
+          "snippet": "import {\n  walkRootDirectory,\n  type RootWalkEntry,\n  type RootWalkOptions,\n} from \"openclaw/plugin-sdk/root-walk\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/routing",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/routing",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/bridge.ts",
+          "line": 10,
+          "snippet": "import { normalizeAgentId } from \"openclaw/plugin-sdk/routing\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-doctor-migrations",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/doctor-contract-api.ts",
+          "line": 5,
+          "snippet": "import type { PluginDoctorStateMigration } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/security-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/security-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/chatgpt-import-recovery.ts",
+          "line": 4,
+          "snippet": "import {\n  extractErrorCode,\n  FsSafeError,\n  type root as fsRoot,\n  statRegularFileSync,\n} from \"openclaw/plugin-sdk/security-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/state-paths",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/state-paths",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/config.ts",
+          "line": 9,
+          "snippet": "import { resolveStateDir } from \"openclaw/plugin-sdk/state-paths\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/apply.ts",
+          "line": 8,
+          "snippet": "import {\n  asNonArrayRecord,\n  normalizeSingleOrTrimmedStringList,\n  normalizeStringEntries,\n  uniqueStrings,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/text-utility-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/markdown.ts",
+          "line": 10,
+          "snippet": "import { truncateUtf8Prefix } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/time-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/time-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/tool.ts",
+          "line": 6,
+          "snippet": "import { racePromiseWithAbortSignal } from \"openclaw/plugin-sdk/time-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/tool-results",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/tool-results",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/memory-wiki/src/tool.ts",
+          "line": 7,
+          "snippet": "import { textResult } from \"openclaw/plugin-sdk/tool-results\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all 48 eligible production TypeScript files and both package/manifest files. All 113 plugin files are accounted for. Evidence is representative per identity and reference kind; reviewed-file findingCount counts findings with evidence in that file.",
+    "The local api.ts barrel forwards SDK exports from plugin-entry. Runtime imports through that barrel retain import/call, type consumers retain type-import/type-reference, and unused OpenClawPluginConfigSchema still retains type-reexport. The z reexport is third-party and excluded from SDK identities.",
+    "Explicit typeof/indexed syntax makes root, FsSafeError, and listActiveMemoryPublicArtifacts mixed exports. Later type use of a value import does not add a module type dependency site. security-runtime does independently have an inline type import of root.",
+    "OpenClawPluginApi indexed types directly select registerGatewayMethod and registerMemoryCorpusSupplement, making those identities mixed. The ToolContext conversationRecall projection is an SDK-export type dependency; it is not a member of OpenClawPluginApi or PluginRuntime.",
+    "Unchanged runtime state opener callbacks are tracked into the local factories for call evidence, alongside their initial member-access sites. Their returned BlobStore/KeyedStore objects, filesystem root handles, memory managers/providers, Doctor contexts, and tool invocation contexts are distinct contracts and are not invented API/runtime member paths. No transitive SDK implementation effects are attributed.",
+    "runExec is invoked through the direct fallback alias exec in obsidian.ts. The Commander wiki.hook(preAction) call is not an OpenClaw API hook; no named API hooks occur.",
+    "The @openclaw/memory-core/session-search-visibility-api.js import in query-shared-memory.ts is a separate workspace package dependency declared by package.json, not an openclaw/plugin-sdk module or a relative shared-source escape. Its transitive SDK dependencies are outside this plugin audit. No relative imports leave the plugin root.",
+    "Manifest identities cover cliCommands.name, commandAliases.name, skills, and five contracts.tools entries. Doctor migrations, activation, categories, presentation/configuration and descriptive fields are reviewed metadata but are not agreed manifest-contract identities.",
+    "Seven helper modules were excluded after checking their test-only callers. Production-source import review found no filename/directory exclusion override. This is a source-phase fixture, not an assertion of published artifact contents."
+  ]
+}

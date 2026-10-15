@@ -1,0 +1,596 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "huggingface",
+    "path": "extensions/huggingface"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_huggingface",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/huggingface/api.ts",
+      "sha256": "510ae5a129435e8ae885ad9fc661643f6e6d0fcd7e398b1d3e2c740e3b43d699",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/huggingface/index.ts",
+      "sha256": "4fa5c47b99e2344b81a7831440a68f4a91c46ece0c045d5c83ef69916bd7949e",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/huggingface/models.ts",
+      "sha256": "0da96a8be4db61e9944acdd9e4acdc2e402a0f6c7f053797002a6efe8aeed9e9",
+      "role": "production-source",
+      "findingCount": 16
+    },
+    {
+      "path": "extensions/huggingface/onboard.ts",
+      "sha256": "28b9bd178893c224608242f56a4ef2482fef754486a33da0460fab2c83d667d3",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/huggingface/openclaw.plugin.json",
+      "sha256": "8576e448256d6b2e632eb5607377f1d23afef498a8611327f8d54b535ea9a638",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/huggingface/package.json",
+      "sha256": "98b05e99d02116d412988cb335cf0dcf72b84d5eaa7abcef86cf6863640c08b5",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/huggingface/provider-catalog.ts",
+      "sha256": "6b1c94b0cecf6be33c069f83f440db8d891dec58fe849db17deff27d4cfdf241",
+      "role": "production-source",
+      "findingCount": 2
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/huggingface/README.md",
+      "rule": "non-source",
+      "reason": "Markdown usage documentation, outside the eligible JS/TS-family extensions."
+    },
+    {
+      "path": "extensions/huggingface/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG asset, outside the eligible JS/TS-family extensions."
+    },
+    {
+      "path": "extensions/huggingface/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG image asset, outside the eligible JS/TS-family extensions."
+    },
+    {
+      "path": "extensions/huggingface/index.test.ts",
+      "rule": "test-file",
+      "reason": "The basename contains .test.; no production source imports this test module."
+    },
+    {
+      "path": "extensions/huggingface/models.proxy.test.ts",
+      "rule": "test-file",
+      "reason": "The basename contains .test.; no production source imports this proxy test module."
+    },
+    {
+      "path": "extensions/huggingface/models.test.ts",
+      "rule": "test-file",
+      "reason": "The basename contains .test.; no production source imports this model test module."
+    },
+    {
+      "path": "extensions/huggingface/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript configuration JSON, outside the eligible source extensions and not package or manifest metadata."
+    }
+  ],
+  "findings": [
+    {
+      "key": "manifest-contract:manifest.providers:huggingface",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:huggingface",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/openclaw.plugin.json",
+          "line": 8,
+          "snippet": "  \"providers\": [\"huggingface\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/fetch-runtime#withTrustedEnvProxyGuardedFetchMode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/fetch-runtime#withTrustedEnvProxyGuardedFetchMode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 1,
+          "snippet": "import { withTrustedEnvProxyGuardedFetchMode } from \"openclaw/plugin-sdk/fetch-runtime\";"
+        },
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 146,
+          "snippet": "    fetchGuard: (params) => fetchWithSsrFGuard(withTrustedEnvProxyGuardedFetchMode(params)),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolveTimerTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolveTimerTimeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 2,
+          "snippet": "import { resolveTimerTimeoutMs } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 128,
+          "snippet": "  const requestTimeoutMs = resolveTimerTimeoutMs(timeoutMs, HUGGINGFACE_DISCOVERY_TIMEOUT_MS);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#buildLiveModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#buildLiveModelProviderConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 3,
+          "snippet": "import {\n  buildLiveModelProviderConfig,\n  readLiveModelCatalogStringField,\n} from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        },
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 129,
+          "snippet": "  const provider = await buildLiveModelProviderConfig({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#readLiveModelCatalogStringField",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#readLiveModelCatalogStringField",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 3,
+          "snippet": "import {\n  buildLiveModelProviderConfig,\n  readLiveModelCatalogStringField,\n} from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        },
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 57,
+          "snippet": "  const fromApi = readLiveModelCatalogStringField(entry, [\"name\", \"title\", \"display_name\"]);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#runLiveProviderCatalog",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#runLiveProviderCatalog",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/index.ts",
+          "line": 1,
+          "snippet": "import { runLiveProviderCatalog } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        },
+        {
+          "path": "extensions/huggingface/index.ts",
+          "line": 47,
+          "snippet": "          ? await runLiveProviderCatalog({ providerId: PROVIDER_ID, profileId, run })"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-shared#buildManifestModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared#buildManifestModelProviderConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 7,
+          "snippet": "import { buildManifestModelProviderConfig } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        },
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 46,
+          "snippet": "export const HUGGINGFACE_MODEL_CATALOG: ModelDefinitionConfig[] = buildManifestModelProviderConfig({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-entry#defineSingleProviderPluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-entry#defineSingleProviderPluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/index.ts",
+          "line": 2,
+          "snippet": "import { defineSingleProviderPluginEntry } from \"openclaw/plugin-sdk/provider-entry\";"
+        },
+        {
+          "path": "extensions/huggingface/index.ts",
+          "line": 15,
+          "snippet": "export default defineSingleProviderPluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-types#ModelDefinitionConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-types#ModelDefinitionConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 8,
+          "snippet": "import type { ModelDefinitionConfig } from \"openclaw/plugin-sdk/provider-model-types\";"
+        },
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 77,
+          "snippet": "function projectHuggingfaceModels(rows: readonly unknown[]): ModelDefinitionConfig[] {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-types#ModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-types#ModelProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/provider-catalog.ts",
+          "line": 1,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-types\";"
+        },
+        {
+          "path": "extensions/huggingface/provider-catalog.ts",
+          "line": 7,
+          "snippet": "): Promise<ModelProviderConfig> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#createModelCatalogPresetAppliers",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#createModelCatalogPresetAppliers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/onboard.ts",
+          "line": 1,
+          "snippet": "import {\n  createModelCatalogPresetAppliers,\n  createProviderConnectionPresetAppliers,\n} from \"openclaw/plugin-sdk/provider-onboard\";"
+        },
+        {
+          "path": "extensions/huggingface/onboard.ts",
+          "line": 21,
+          "snippet": "  createModelCatalogPresetAppliers(huggingfacePreset);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#createProviderConnectionPresetAppliers",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#createProviderConnectionPresetAppliers",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/onboard.ts",
+          "line": 1,
+          "snippet": "import {\n  createModelCatalogPresetAppliers,\n  createProviderConnectionPresetAppliers,\n} from \"openclaw/plugin-sdk/provider-onboard\";"
+        },
+        {
+          "path": "extensions/huggingface/onboard.ts",
+          "line": 18,
+          "snippet": "} satisfies Parameters<typeof createProviderConnectionPresetAppliers<[]>>[0];",
+          "note": "The explicit typeof query is a type reference to the imported SDK function; the ordinary import and invocation are runtime source references."
+        },
+        {
+          "path": "extensions/huggingface/onboard.ts",
+          "line": 23,
+          "snippet": "  createProviderConnectionPresetAppliers(huggingfacePreset);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 9,
+          "snippet": "import {\n  fetchWithSsrFGuard,\n  ssrfPolicyFromHttpBaseUrlAllowedHostname,\n} from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 146,
+          "snippet": "    fetchGuard: (params) => fetchWithSsrFGuard(withTrustedEnvProxyGuardedFetchMode(params)),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 9,
+          "snippet": "import {\n  fetchWithSsrFGuard,\n  ssrfPolicyFromHttpBaseUrlAllowedHostname,\n} from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        },
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 144,
+          "snippet": "    policy: ssrfPolicyFromHttpBaseUrlAllowedHostname(HUGGINGFACE_BASE_URL),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 13,
+          "snippet": "import { normalizeLowercaseStringOrEmpty } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 52,
+          "snippet": "  const lower = normalizeLowercaseStringOrEmpty(modelId);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/fetch-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/fetch-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 1,
+          "snippet": "import { withTrustedEnvProxyGuardedFetchMode } from \"openclaw/plugin-sdk/fetch-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 2,
+          "snippet": "import { resolveTimerTimeoutMs } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/index.ts",
+          "line": 1,
+          "snippet": "import { runLiveProviderCatalog } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        },
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 3,
+          "snippet": "import {\n  buildLiveModelProviderConfig,\n  readLiveModelCatalogStringField,\n} from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 7,
+          "snippet": "import { buildManifestModelProviderConfig } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/index.ts",
+          "line": 2,
+          "snippet": "import { defineSingleProviderPluginEntry } from \"openclaw/plugin-sdk/provider-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-types",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-types",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 8,
+          "snippet": "import type { ModelDefinitionConfig } from \"openclaw/plugin-sdk/provider-model-types\";"
+        },
+        {
+          "path": "extensions/huggingface/provider-catalog.ts",
+          "line": 1,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-types\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-onboard",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-onboard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/onboard.ts",
+          "line": 1,
+          "snippet": "import {\n  createModelCatalogPresetAppliers,\n  createProviderConnectionPresetAppliers,\n} from \"openclaw/plugin-sdk/provider-onboard\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 9,
+          "snippet": "import {\n  fetchWithSsrFGuard,\n  ssrfPolicyFromHttpBaseUrlAllowedHostname,\n} from \"openclaw/plugin-sdk/ssrf-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/huggingface/models.ts",
+          "line": 13,
+          "snippet": "import { normalizeLowercaseStringOrEmpty } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Manually reviewed every eligible production source file (api.ts, index.ts, models.ts, onboard.ts and provider-catalog.ts) and both package/manifest metadata files. The 14 files under the canonical plugin root are partitioned into 7 reviewed and 7 excluded records; all match the pinned commit byte-for-byte.",
+    "All production local imports and reexports stay within extensions/huggingface. package.json declares ./index.ts as its extension entry and no generated/build-output exception; no additional shared shipped source or installed dependency falls inside this source audit.",
+    "api.ts reexports plugin-owned functions, constants and SDK-helper results. The applyConfig functions destructured in onboard.ts are returned values of SDK calls, not unchanged aliases of SDK exports; the local barrel therefore introduces no additional SDK import/reexport finding.",
+    "index.ts:29-36 receives a ProviderCatalogContext, as established by SingleProviderPluginCatalogOptions.run in src/plugin-sdk/provider-entry.ts and ProviderPluginCatalog.run / ProviderCatalogContext in src/plugins/provider-catalog.types.ts:16-47,61-63. Its config and resolveProviderApiKey accesses are provider context members, not OpenClawPluginApi or PluginRuntime paths.",
+    "Registration performed inside defineSingleProviderPluginEntry is an SDK implementation detail and is not attributed to plugin source. There are no direct API/runtime handles or hook registrations. Likewise, models.ts:49,149 reads models on returned model-provider configuration objects, which do not become API/runtime handles.",
+    "createProviderConnectionPresetAppliers has runtime import/call references and an explicit typeof type reference at onboard.ts:18, so its export is mixed. provider-onboard remains a runtime module dependency because the module has only an ordinary import site. The two ModelDefinitionConfig/ModelProviderConfig imports and their annotations remain type dependencies.",
+    "The only agreed manifest-contract identity is the top-level providers entry. modelCatalog, modelIdNormalization, setup, providerAuthChoices, configGroups, configSchema, uiHints and activation metadata do not add identities under the frozen contract.",
+    "Public SDK package export entries and focused facade declarations were checked to confirm all nine module specifiers and fourteen original export names. SDK implementations and their transitive dependencies were not added to plugin source coverage or expanded into usage findings."
+  ]
+}

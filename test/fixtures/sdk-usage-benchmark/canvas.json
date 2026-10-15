@@ -1,0 +1,2230 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "canvas",
+    "path": "extensions/canvas"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_canvas",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/canvas/cli-metadata.ts",
+      "sha256": "d4d943cba1c96c86ff609cbbacf14c6207990dc2661d0cde7fd330838ff9b6a7",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/canvas/doctor-contract-api.ts",
+      "sha256": "84fb8c3dd9fd2ef69c70df1a8e8dc991c5d75e72be7b6419f2a9e44894fbef03",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/canvas/index.ts",
+      "sha256": "5a72fb282b6671ff8f92e50153a89405a35332c8f325c0aa4af00392cd9438bc",
+      "role": "production-source",
+      "findingCount": 13
+    },
+    {
+      "path": "extensions/canvas/openclaw.plugin.json",
+      "sha256": "81fe413fcdfc47cb144d37488fe64bcd4e47796417f66c766972b0abde7185ff",
+      "role": "manifest",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/canvas/package.json",
+      "sha256": "1ed0b7e49bbe3a706280dada69dba1874870ae361a805e4dca2e2aaca2fc2f8f",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/canvas/runtime-api.ts",
+      "sha256": "f67f954d2b7cc98877056231af322b80f9a81bbcdc264b89c78b2f3795174b97",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/canvas/scripts/copy-a2ui.d.mts",
+      "sha256": "66b2091b857922f2b42802c3f32b36307a09ff32d7d91edea5e63860ce5d37da",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/canvas/scripts/copy-a2ui.mjs",
+      "sha256": "7932364f5f5820f2b49ba7a82144628c76d6757154b2c2f98f8bb8871742204d",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/canvas/setup-api.ts",
+      "sha256": "272bffa9d535171dcb81954566d7f08305b21c52b87b0cd350dc1a6b12ed8c8e",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/canvas/src/a2ui-jsonl.ts",
+      "sha256": "b62ea8aa5a69010732c2bbfb527e7d876b479a08fee59d172097f70761cffd09",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/canvas/src/board-widget.ts",
+      "sha256": "dc81bcf32b9d6fb45cd4802559b864951650499a3ff56789850e3105b10b8699",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/canvas/src/cli.ts",
+      "sha256": "a9a19ff9310cec23058f58e0f106d2a675292a45f2acbfc94672c7a889c52234",
+      "role": "production-source",
+      "findingCount": 20
+    },
+    {
+      "path": "extensions/canvas/src/config-migration.ts",
+      "sha256": "6dacc39a57bbce17f603f97d3043c2f314d5508284d326546427b5cbf4a9cb28",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/canvas/src/config.ts",
+      "sha256": "6ba294dbfbe7b321d824b58252e5f521e88345c1b5ba9e597f30512ff0acee45",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/canvas/src/host/a2ui-app/bootstrap-v0.9.jsx",
+      "sha256": "76067c315048e60979e78dc848efc642329fd39b05d1070ce8130b8671c35541",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/canvas/src/host/a2ui-app/bootstrap.jsx",
+      "sha256": "4d065285abd1a989ae6ab7f5d94cdffa94a89d5f87161e2c638c897271f6679e",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/canvas/src/host/a2ui-app/host-styles.js",
+      "sha256": "9335c5cbefa02c047bd356d883922436a9dcdf931ad2777efb1b55590584a7db",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/canvas/src/host/a2ui-app/host.jsx",
+      "sha256": "15894be6c04fb96f8bc17c4c965f446983f27d673990014d5202e85da2dccb24",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/canvas/src/host/a2ui-app/rolldown.config.mjs",
+      "sha256": "facd4f66c062dc6e7dff528049fc58d95aacc6a9f5218149b6bd5a632f2311c0",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/canvas/src/host/a2ui-app/theme.js",
+      "sha256": "d1608c635c4067b7e65dd5bd88380e2b433f31268a6cb637a8ea55744e10677f",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/canvas/src/host/a2ui-route.ts",
+      "sha256": "e03582307e790f71e2aefa0e1fdef6fa89074b5eb0edf8499f4499e8b0d3153e",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/canvas/src/host/a2ui-shared.ts",
+      "sha256": "aa1171a253750701584373fde3bede900afeeb4135fdab17c22abaf3ea023064",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/canvas/src/host/a2ui.ts",
+      "sha256": "1799dbb51b0af5e8e802947503d3c69c3a666f436c79bc1213e2bea6bb307e64",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/canvas/src/host/file-resolver.ts",
+      "sha256": "b6c034d6d4f326b7776733c7e6a1c4ad8b0cd9b9d84dcb4e19f5b7734eaffab9",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/canvas/src/node-eligibility.ts",
+      "sha256": "917e34cb343b9c2f80274125d924d6e6a3d0db5be73574daf91360643f3cb6bc",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/canvas/src/tool-schema.ts",
+      "sha256": "3084464a9cf89b3843a2d9763e778c713cb1142e9eb34838d2d1578a6e2bcf3c",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/canvas/src/tool.ts",
+      "sha256": "e0ab11c05ef8214c6a6596cd72363eeb2a0b58bfc7648a0bd40ddef011bf1151",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/canvas/src/widget-presenter.ts",
+      "sha256": "02ea28d108db22590f89c43cfacd5d325fb1e5d2422595564981536317fadca0",
+      "role": "production-source",
+      "findingCount": 12
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/canvas/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG icon asset; outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/canvas/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG icon asset; outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/canvas/doctor-contract-api.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; no eligible Canvas production file imports this test."
+    },
+    {
+      "path": "extensions/canvas/index.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; no eligible Canvas production file imports this test."
+    },
+    {
+      "path": "extensions/canvas/scripts/copy-a2ui.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; no eligible Canvas production file imports this test."
+    },
+    {
+      "path": "extensions/canvas/skills/canvas/SKILL.md",
+      "rule": "non-source",
+      "reason": "Packaged Canvas skill prose; outside the eligible JS/TS-family source extensions. Its directory is captured by the manifest skills contract."
+    },
+    {
+      "path": "extensions/canvas/src/a2ui-jsonl.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; no eligible Canvas production file imports this test."
+    },
+    {
+      "path": "extensions/canvas/src/board-widget.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; no eligible Canvas production file imports this test."
+    },
+    {
+      "path": "extensions/canvas/src/cli.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; no eligible Canvas production file imports this test."
+    },
+    {
+      "path": "extensions/canvas/src/config-migration.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; no eligible Canvas production file imports this test."
+    },
+    {
+      "path": "extensions/canvas/src/config.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; no eligible Canvas production file imports this test."
+    },
+    {
+      "path": "extensions/canvas/src/host/a2ui.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; no eligible Canvas production file imports this test."
+    },
+    {
+      "path": "extensions/canvas/src/host/file-resolver.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; no eligible Canvas production file imports this test."
+    },
+    {
+      "path": "extensions/canvas/src/tool.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; no eligible Canvas production file imports this test."
+    },
+    {
+      "path": "extensions/canvas/src/widget-presenter.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts test file; no eligible Canvas production file imports this test."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.config",
+      "kind": "api-member",
+      "identity": "api.config",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 28,
+          "snippet": "if (isCanvasHostEnabled(api.config)) {",
+          "note": "register(api) is typed by definePluginEntry through OpenClawPluginDefinition.register; the config is passed into plugin-owned config parsing and a known SDK helper."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerBoardWidgetContentKind",
+      "kind": "api-member",
+      "identity": "api.registerBoardWidgetContentKind",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 29,
+          "snippet": "api.registerBoardWidgetContentKind(canvasA2UIBoardWidgetKind);"
+        },
+        {
+          "path": "extensions/canvas/src/board-widget.ts",
+          "line": 33,
+          "snippet": "OpenClawPluginApi[\"registerBoardWidgetContentKind\"]"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerConfigMigration",
+      "kind": "api-member",
+      "identity": "api.registerConfigMigration",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/setup-api.ts",
+          "line": 9,
+          "snippet": "api.registerConfigMigration(migrateCanvasHostConfig);"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerHttpRoute",
+      "kind": "api-member",
+      "identity": "api.registerHttpRoute",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 31,
+          "snippet": "api.registerHttpRoute({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerNodeCliFeature",
+      "kind": "api-member",
+      "identity": "api.registerNodeCliFeature",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 46,
+          "snippet": "api.registerNodeCliFeature("
+        },
+        {
+          "path": "extensions/canvas/cli-metadata.ts",
+          "line": 8,
+          "snippet": "api.registerNodeCliFeature(() => {}, {"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerNodeInvokePolicy",
+      "kind": "api-member",
+      "identity": "api.registerNodeInvokePolicy",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 40,
+          "snippet": "api.registerNodeInvokePolicy({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerTool",
+      "kind": "api-member",
+      "identity": "api.registerTool",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 45,
+          "snippet": "api.registerTool((ctx) => createLazyCanvasTool(ctx.sessionKey));"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerWidgetPresenter",
+      "kind": "api-member",
+      "identity": "api.registerWidgetPresenter",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 38,
+          "snippet": "api.registerWidgetPresenter(createCanvasWidgetPresenter(api.runtime.nodes));"
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 10,
+          "snippet": "type WidgetPresenter = Parameters<OpenClawPluginApi[\"registerWidgetPresenter\"]>[0];"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.tools:canvas",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.tools:canvas",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/openclaw.plugin.json",
+          "line": 16,
+          "snippet": "\"tools\": [\"canvas\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.skills:./skills",
+      "kind": "manifest-contract",
+      "identity": "manifest.skills:./skills",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/openclaw.plugin.json",
+          "line": 14,
+          "snippet": "\"skills\": [\"./skills\"],"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.nodes",
+      "kind": "runtime-member",
+      "identity": "runtime.nodes",
+      "classification": "mixed",
+      "referenceKinds": [
+        "member-access",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 38,
+          "snippet": "api.registerWidgetPresenter(createCanvasWidgetPresenter(api.runtime.nodes));",
+          "note": "The nodes subobject is read from the proven api.runtime handle and passed to the plugin-owned presenter."
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 13,
+          "snippet": "nodesRuntime: PluginRuntime[\"nodes\"],",
+          "note": "Explicit public indexed type selects nodes; actual list/invoke calls are separately recorded."
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 24,
+          "snippet": "export function createCanvasWidgetPresenter(nodesRuntime: PluginRuntime[\"nodes\"]): WidgetPresenter {"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.nodes.invoke",
+      "kind": "runtime-member",
+      "identity": "runtime.nodes.invoke",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 76,
+          "snippet": "await nodesRuntime.invoke({",
+          "note": "nodesRuntime is the unchanged PluginRuntime.nodes subobject."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.nodes.list",
+      "kind": "runtime-member",
+      "identity": "runtime.nodes.list",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/node-eligibility.ts",
+          "line": 9,
+          "snippet": "Awaited<ReturnType<PluginRuntime[\"nodes\"][\"list\"]>>[\"nodes\"][number],",
+          "note": "The public indexed path stops at list; ReturnType result nodes and node descriptors are not runtime handle paths."
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 9,
+          "snippet": "type CanvasRuntimeNode = Awaited<ReturnType<PluginRuntime[\"nodes\"][\"list\"]>>[\"nodes\"][number];"
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 16,
+          "snippet": "const { nodes } = await nodesRuntime.list({ connected: true });",
+          "note": "nodesRuntime is annotated PluginRuntime[\"nodes\"] and is supplied from api.runtime.nodes."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#NodeListNode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#NodeListNode",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/node-eligibility.ts",
+          "line": 1,
+          "snippet": "import type { NodeListNode } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/node-eligibility.ts",
+          "line": 24,
+          "snippet": "const CANVAS_NODE_MESSAGES: EligibleNodeMessages<NodeListNode> = {"
+        },
+        {
+          "path": "extensions/canvas/src/node-eligibility.ts",
+          "line": 37,
+          "snippet": "export function resolveCanvasNodeFromList(nodes: NodeListNode[], query?: string): NodeListNode {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#callGatewayTool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#callGatewayTool",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 2,
+          "snippet": "import { callGatewayTool, listNodes } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 42,
+          "snippet": "await callGatewayTool("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#listNodes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#listNodes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 2,
+          "snippet": "import { callGatewayTool, listNodes } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 34,
+          "snippet": "const nodeId = resolveCanvasNodeFromList(await listNodes(gatewayOpts), nodeQuery).nodeId;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#selectDefaultNodeFromList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#selectDefaultNodeFromList",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 15,
+          "snippet": "const { selectDefaultNodeFromList } = await import(\"openclaw/plugin-sdk/agent-harness-runtime\");"
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 17,
+          "snippet": "return selectDefaultNodeFromList(nodes.filter(isEligibleCanvasNode), {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-actions#jsonResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-actions#jsonResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 3,
+          "snippet": "import { jsonResult, readStringParam } from \"openclaw/plugin-sdk/channel-actions\";"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 76,
+          "snippet": "return jsonResult({ ok: true, node, ...(presentTarget ? { url: presentTarget } : {}) });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-actions#optionalFiniteNumberSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-actions#optionalFiniteNumberSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/tool-schema.ts",
+          "line": 2,
+          "snippet": "optionalFiniteNumberSchema,"
+        },
+        {
+          "path": "extensions/canvas/src/tool-schema.ts",
+          "line": 16,
+          "snippet": "x: optionalFiniteNumberSchema(),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-actions#optionalPositiveIntegerSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-actions#optionalPositiveIntegerSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/tool-schema.ts",
+          "line": 3,
+          "snippet": "optionalPositiveIntegerSchema,"
+        },
+        {
+          "path": "extensions/canvas/src/tool-schema.ts",
+          "line": 13,
+          "snippet": "timeoutMs: optionalPositiveIntegerSchema(),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-actions#readStringParam",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-actions#readStringParam",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 3,
+          "snippet": "import { jsonResult, readStringParam } from \"openclaw/plugin-sdk/channel-actions\";"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 25,
+          "snippet": "const action = readStringParam(params, \"action\", { required: true });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-actions#stringEnum",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-actions#stringEnum",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/tool-schema.ts",
+          "line": 4,
+          "snippet": "stringEnum,"
+        },
+        {
+          "path": "extensions/canvas/src/tool-schema.ts",
+          "line": 10,
+          "snippet": "action: stringEnum([\"present\", \"hide\", \"navigate\"]),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/doctor-contract-api.ts",
+          "line": 4,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/canvas/doctor-contract-api.ts",
+          "line": 28,
+          "snippet": "export function normalizeCompatibilityConfig({ cfg }: { cfg: OpenClawConfig }): {"
+        },
+        {
+          "path": "extensions/canvas/src/config.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/canvas/src/config.ts",
+          "line": 23,
+          "snippet": "config?: OpenClawConfig;"
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 16,
+          "snippet": "function readLegacyCanvasRoot(config: OpenClawConfig): unknown {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#extractErrorCode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#extractErrorCode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 4,
+          "snippet": "import { extractErrorCode } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 59,
+          "snippet": "if (extractErrorCode(error) === \"ENOENT\") {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 2,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 43,
+          "snippet": "error: { code: \"node_error\", message: formatErrorMessage(error) },"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#GatewayRpcOpts",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#GatewayRpcOpts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 2,
+          "snippet": "import type { GatewayRpcOpts, NodeMatchCandidate } from \"openclaw/plugin-sdk/gateway-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 18,
+          "snippet": "export type CanvasNodesRpcOpts = GatewayRpcOpts & {",
+          "note": "CanvasNodesRpcOpts is a plugin-owned intersection; exporting that composite from runtime-api.ts does not reexport GatewayRpcOpts itself."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#NodeMatchCandidate",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#NodeMatchCandidate",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 2,
+          "snippet": "import type { GatewayRpcOpts, NodeMatchCandidate } from \"openclaw/plugin-sdk/gateway-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 42,
+          "snippet": "function parseNodeCandidates(raw: unknown): NodeMatchCandidate[] {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#callGatewayFromCli",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#callGatewayFromCli",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 89,
+          "snippet": "const { callGatewayFromCli } = await import(\"openclaw/plugin-sdk/gateway-runtime\");"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 91,
+          "snippet": "return await callGatewayFromCli(method, { ...opts, timeout }, params, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#isGatewayClientRequestError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#isGatewayClientRequestError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 97,
+          "snippet": "const { isGatewayClientRequestError, resolveNodeFromNodeList } =",
+          "note": "Direct destructuring of the gateway-runtime dynamic import on the following line."
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 104,
+          "snippet": "!isGatewayClientRequestError(error) ||"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#resolveNodeFromNodeList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#resolveNodeFromNodeList",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 97,
+          "snippet": "const { isGatewayClientRequestError, resolveNodeFromNodeList } =",
+          "note": "Direct destructuring of the gateway-runtime dynamic import on the following line."
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 113,
+          "snippet": "return resolveNodeFromNodeList(parseNodeCandidates(raw), normalizeOptionalString(opts.node) ?? \"\")"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 1,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 12,
+          "snippet": "const loadTool = createLazyRuntimeModule(() =>"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-mime#detectMime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-mime#detectMime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/host/a2ui-route.ts",
+          "line": 1,
+          "snippet": "import { detectMime } from \"openclaw/plugin-sdk/media-mime\";"
+        },
+        {
+          "path": "extensions/canvas/src/host/a2ui-route.ts",
+          "line": 58,
+          "snippet": ": ((await detectMime({ filePath: result.realPath })) ?? \"application/octet-stream\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/node-cli-runtime#buildNodeInvokeParams",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/node-cli-runtime#buildNodeInvokeParams",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 4,
+          "snippet": "buildNodeInvokeParams,"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 130,
+          "snippet": "const invokeParams = buildNodeInvokeParams({ nodeId, command, params, timeoutMs });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/node-cli-runtime#getNodesTheme",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/node-cli-runtime#getNodesTheme",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 5,
+          "snippet": "getNodesTheme,"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 155,
+          "snippet": "const { ok } = getNodesTheme();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/node-cli-runtime#nodesCallOpts",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/node-cli-runtime#nodesCallOpts",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 6,
+          "snippet": "nodesCallOpts,"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 166,
+          "snippet": "nodesCallOpts("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/node-cli-runtime#runNodesCommand",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/node-cli-runtime#runNodesCommand",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 7,
+          "snippet": "runNodesCommand,"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 150,
+          "snippet": "await runNodesCommand(`canvas ${action}`, async () => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/node-selection-runtime#EligibleNodeMessages",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/node-selection-runtime#EligibleNodeMessages",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/node-eligibility.ts",
+          "line": 3,
+          "snippet": "type EligibleNodeMessages,"
+        },
+        {
+          "path": "extensions/canvas/src/node-eligibility.ts",
+          "line": 24,
+          "snippet": "const CANVAS_NODE_MESSAGES: EligibleNodeMessages<NodeListNode> = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/node-selection-runtime#resolveEligibleNodeFromList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/node-selection-runtime#resolveEligibleNodeFromList",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/node-eligibility.ts",
+          "line": 4,
+          "snippet": "resolveEligibleNodeFromList,"
+        },
+        {
+          "path": "extensions/canvas/src/node-eligibility.ts",
+          "line": 38,
+          "snippet": "return resolveEligibleNodeFromList(nodes, query, isEligibleCanvasNode, CANVAS_NODE_MESSAGES);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#addTimerTimeoutGraceMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#addTimerTimeoutGraceMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 10,
+          "snippet": "addTimerTimeoutGraceMs,"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 140,
+          "snippet": "addTimerTimeoutGraceMs(timeoutMs, CANVAS_NODE_INVOKE_TRANSPORT_GRACE_MS) ?? timeoutMs,"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 5,
+          "snippet": "addTimerTimeoutGraceMs,"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 41,
+          "snippet": "addTimerTimeoutGraceMs(timeoutMs, CANVAS_NODE_INVOKE_TRANSPORT_GRACE_MS) ?? timeoutMs;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#clampPositiveTimerTimeoutMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#clampPositiveTimerTimeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 11,
+          "snippet": "clampPositiveTimerTimeoutMs,"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 127,
+          "snippet": "clampPositiveTimerTimeoutMs(invokeTimeoutMs ?? DEFAULT_CANVAS_NODE_INVOKE_TIMEOUT_MS) ??"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 6,
+          "snippet": "clampPositiveTimerTimeoutMs,"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 36,
+          "snippet": "clampPositiveTimerTimeoutMs("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#parseStrictFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#parseStrictFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 12,
+          "snippet": "parseStrictFiniteNumber,"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 35,
+          "snippet": "const parsed = parseStrictFiniteNumber(raw);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#parseStrictPositiveInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#parseStrictPositiveInteger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 13,
+          "snippet": "parseStrictPositiveInteger,"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 122,
+          "snippet": "const invokeTimeoutMs = parseStrictPositiveInteger(opts.invokeTimeout);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/param-readers#readFiniteNumberParam",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/param-readers#readFiniteNumberParam",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 8,
+          "snippet": "import { readFiniteNumberParam, readPositiveIntegerParam } from \"openclaw/plugin-sdk/param-readers\";"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 60,
+          "snippet": "x: readFiniteNumberParam(params, \"x\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/param-readers#readPositiveIntegerParam",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/param-readers#readPositiveIntegerParam",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 8,
+          "snippet": "import { readFiniteNumberParam, readPositiveIntegerParam } from \"openclaw/plugin-sdk/param-readers\";"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 29,
+          "snippet": "timeoutMs: readPositiveIntegerParam(params, \"timeoutMs\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-config-runtime#resolvePluginConfigObject",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-config-runtime#resolvePluginConfigObject",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/config.ts",
+          "line": 2,
+          "snippet": "import { resolvePluginConfigObject } from \"openclaw/plugin-sdk/plugin-config-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/config.ts",
+          "line": 27,
+          "snippet": "params.pluginConfig ?? resolvePluginConfigObject(params.config, \"canvas\") ?? {};"
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 5,
+          "snippet": "import { resolvePluginConfigObject } from \"openclaw/plugin-sdk/plugin-config-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 19,
+          "snippet": "const pluginHost = readRecord(resolvePluginConfigObject(config, \"canvas\")?.host);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#AnyAgentTool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#AnyAgentTool",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 2,
+          "snippet": "import { definePluginEntry, type AnyAgentTool } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 11,
+          "snippet": "function createLazyCanvasTool(agentSessionKey?: string): AnyAgentTool {"
+        },
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 17,
+          "snippet": "execute: async (...args: Parameters<AnyAgentTool[\"execute\"]>) =>"
+        },
+        {
+          "path": "extensions/canvas/src/tool-schema.ts",
+          "line": 6,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/canvas/src/tool-schema.ts",
+          "line": 29,
+          "snippet": "} satisfies Omit<AnyAgentTool, \"execute\">;"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 9,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 20,
+          "snippet": "export function createCanvasTool(options?: CanvasToolOptions): AnyAgentTool {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 10,
+          "snippet": "type WidgetPresenter = Parameters<OpenClawPluginApi[\"registerWidgetPresenter\"]>[0];"
+        },
+        {
+          "path": "extensions/canvas/src/board-widget.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/canvas/src/board-widget.ts",
+          "line": 33,
+          "snippet": "OpenClawPluginApi[\"registerBoardWidgetContentKind\"]"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 2,
+          "snippet": "import { definePluginEntry, type AnyAgentTool } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 22,
+          "snippet": "export default definePluginEntry({"
+        },
+        {
+          "path": "extensions/canvas/cli-metadata.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/canvas/cli-metadata.ts",
+          "line": 3,
+          "snippet": "export default definePluginEntry({"
+        },
+        {
+          "path": "extensions/canvas/setup-api.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/canvas/setup-api.ts",
+          "line": 4,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-runtime#PluginRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-runtime#PluginRuntime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/node-eligibility.ts",
+          "line": 6,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/node-eligibility.ts",
+          "line": 9,
+          "snippet": "Awaited<ReturnType<PluginRuntime[\"nodes\"][\"list\"]>>[\"nodes\"][number],"
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 4,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 9,
+          "snippet": "type CanvasRuntimeNode = Awaited<ReturnType<PluginRuntime[\"nodes\"][\"list\"]>>[\"nodes\"][number];"
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 13,
+          "snippet": "nodesRuntime: PluginRuntime[\"nodes\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-doctor-migrations#PluginDoctorStateMigration",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations#PluginDoctorStateMigration",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/doctor-contract-api.ts",
+          "line": 5,
+          "snippet": "import type { PluginDoctorStateMigration } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";"
+        },
+        {
+          "path": "extensions/canvas/doctor-contract-api.ts",
+          "line": 35,
+          "snippet": "export const stateMigrations: PluginDoctorStateMigration[] = ["
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-env#defaultRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-env#defaultRuntime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 15,
+          "snippet": "import { defaultRuntime } from \"openclaw/plugin-sdk/runtime-env\";"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 153,
+          "snippet": "defaultRuntime.writeJson(result);",
+          "note": "Calls writeJson on the SDK-exported defaultRuntime object, not the distinct PluginRuntime surface."
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 156,
+          "snippet": "defaultRuntime.log(ok(`canvas ${action} ok`));",
+          "note": "Calls the exported object's log method; returned theme helper ok is not a direct SDK export alias."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-env#isTruthyEnvValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-env#isTruthyEnvValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/config.ts",
+          "line": 3,
+          "snippet": "import { isTruthyEnvValue } from \"openclaw/plugin-sdk/runtime-env\";"
+        },
+        {
+          "path": "extensions/canvas/src/config.ts",
+          "line": 33,
+          "snippet": "if (isTruthyEnvValue(process.env.OPENCLAW_SKIP_CANVAS_HOST)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#FsSafeError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#FsSafeError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/host/file-resolver.ts",
+          "line": 2,
+          "snippet": "import { root as fsRoot, FsSafeError } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/host/file-resolver.ts",
+          "line": 63,
+          "snippet": "if (err instanceof FsSafeError) {",
+          "note": "The bare constructor in instanceof is a runtime value reference, not a constructor call, member access, or type-syntax reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#root",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#root",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/host/file-resolver.ts",
+          "line": 2,
+          "snippet": "import { root as fsRoot, FsSafeError } from \"openclaw/plugin-sdk/security-runtime\";",
+          "note": "Imported under the alias fsRoot."
+        },
+        {
+          "path": "extensions/canvas/src/host/file-resolver.ts",
+          "line": 4,
+          "snippet": "type CanvasOpenResult = Awaited<ReturnType<Awaited<ReturnType<typeof fsRoot>>[\"open\"]>>;",
+          "note": "typeof fsRoot is a direct type reference to the SDK export. The returned object's open member is not a PluginRuntime member."
+        },
+        {
+          "path": "extensions/canvas/src/host/file-resolver.ts",
+          "line": 51,
+          "snippet": "const root = await fsRoot(rootReal);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/state-paths#resolveStateDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/state-paths#resolveStateDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 6,
+          "snippet": "import { resolveStateDir } from \"openclaw/plugin-sdk/state-paths\";"
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 88,
+          "snippet": "stateDir: resolveStateDir(),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asBoolean",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asBoolean",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/config.ts",
+          "line": 4,
+          "snippet": "import { asBoolean as readBoolean, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";",
+          "note": "Locally renamed readBoolean."
+        },
+        {
+          "path": "extensions/canvas/src/config.ts",
+          "line": 18,
+          "snippet": "const enabled = readBoolean(value.host.enabled);"
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 8,
+          "snippet": "asBoolean,"
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 104,
+          "snippet": "const enabled = asBoolean(existingHost?.enabled) ?? asBoolean(legacyHost?.enabled);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 9,
+          "snippet": "asOptionalRecord as readRecord,",
+          "note": "Imported as readRecord from string-coerce-runtime."
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 18,
+          "snippet": "const legacyHost = readRecord(readRecord(config)?.canvasHost);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/config.ts",
+          "line": 4,
+          "snippet": "import { asBoolean as readBoolean, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/config.ts",
+          "line": 15,
+          "snippet": "if (!isRecord(value) || !isRecord(value.host)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#lowercasePreservingWhitespace",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#lowercasePreservingWhitespace",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/host/a2ui-route.ts",
+          "line": 2,
+          "snippet": "import { lowercasePreservingWhitespace } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/host/a2ui-route.ts",
+          "line": 54,
+          "snippet": "const lower = lowercasePreservingWhitespace(result.realPath);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 16,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 113,
+          "snippet": "return resolveNodeFromNodeList(parseNodeCandidates(raw), normalizeOptionalString(opts.node) ?? \"\")"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#readStringValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#readStringValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 10,
+          "snippet": "readStringValue as readString,",
+          "note": "Imported as readString from string-coerce-runtime."
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 28,
+          "snippet": "const configuredRoot = readString(readLegacyCanvasRoot(params.config))?.trim();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#pathExists",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#pathExists",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/doctor-contract-api.ts",
+          "line": 77,
+          "snippet": "const { pathExists } = await import(\"openclaw/plugin-sdk/text-utility-runtime\");"
+        },
+        {
+          "path": "extensions/canvas/doctor-contract-api.ts",
+          "line": 87,
+          "snippet": "if (await pathExists(targetDir)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#resolveUserPath",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#resolveUserPath",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 12,
+          "snippet": "import { resolveUserPath } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 33,
+          "snippet": "path.resolve(resolveUserPath(configuredRoot, params.env)),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-harness-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "dynamic-import",
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 2,
+          "snippet": "import { callGatewayTool, listNodes } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/node-eligibility.ts",
+          "line": 1,
+          "snippet": "import type { NodeListNode } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 15,
+          "snippet": "const { selectDefaultNodeFromList } = await import(\"openclaw/plugin-sdk/agent-harness-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-actions",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-actions",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/tool-schema.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/channel-actions\";"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 3,
+          "snippet": "import { jsonResult, readStringParam } from \"openclaw/plugin-sdk/channel-actions\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-contracts",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-contracts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/doctor-contract-api.ts",
+          "line": 4,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/canvas/src/config.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 4,
+          "snippet": "import { extractErrorCode } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 2,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/gateway-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/gateway-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "dynamic-import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 2,
+          "snippet": "import type { GatewayRpcOpts, NodeMatchCandidate } from \"openclaw/plugin-sdk/gateway-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 89,
+          "snippet": "const { callGatewayFromCli } = await import(\"openclaw/plugin-sdk/gateway-runtime\");"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 98,
+          "snippet": "await import(\"openclaw/plugin-sdk/gateway-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/lazy-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/lazy-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 1,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-mime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-mime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/host/a2ui-route.ts",
+          "line": 1,
+          "snippet": "import { detectMime } from \"openclaw/plugin-sdk/media-mime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/node-cli-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/node-cli-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/node-cli-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/node-selection-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/node-selection-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/node-eligibility.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/node-selection-runtime\";",
+          "note": "This declaration imports resolveEligibleNodeFromList as a value and EligibleNodeMessages with an inline type modifier."
+        },
+        {
+          "path": "extensions/canvas/src/node-eligibility.ts",
+          "line": 3,
+          "snippet": "type EligibleNodeMessages,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 14,
+          "snippet": "} from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/param-readers",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/param-readers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 8,
+          "snippet": "import { readFiniteNumberParam, readPositiveIntegerParam } from \"openclaw/plugin-sdk/param-readers\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-config-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-config-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/config.ts",
+          "line": 2,
+          "snippet": "import { resolvePluginConfigObject } from \"openclaw/plugin-sdk/plugin-config-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 5,
+          "snippet": "import { resolvePluginConfigObject } from \"openclaw/plugin-sdk/plugin-config-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/index.ts",
+          "line": 2,
+          "snippet": "import { definePluginEntry, type AnyAgentTool } from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "The declaration contains value definePluginEntry and inline type AnyAgentTool imports."
+        },
+        {
+          "path": "extensions/canvas/cli-metadata.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/canvas/setup-api.ts",
+          "line": 1,
+          "snippet": "import { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/canvas/src/tool-schema.ts",
+          "line": 6,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/canvas/src/tool.ts",
+          "line": 9,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/canvas/src/board-widget.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-runtime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/node-eligibility.ts",
+          "line": 6,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/widget-presenter.ts",
+          "line": 4,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-doctor-migrations",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/doctor-contract-api.ts",
+          "line": 5,
+          "snippet": "import type { PluginDoctorStateMigration } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-env",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-env",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/config.ts",
+          "line": 3,
+          "snippet": "import { isTruthyEnvValue } from \"openclaw/plugin-sdk/runtime-env\";"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 15,
+          "snippet": "import { defaultRuntime } from \"openclaw/plugin-sdk/runtime-env\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/security-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/security-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/host/file-resolver.ts",
+          "line": 2,
+          "snippet": "import { root as fsRoot, FsSafeError } from \"openclaw/plugin-sdk/security-runtime\";",
+          "note": "Ordinary value imports; later typeof fsRoot type syntax affects the export classification, not this module import site."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/state-paths",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/state-paths",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 6,
+          "snippet": "import { resolveStateDir } from \"openclaw/plugin-sdk/state-paths\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/src/config.ts",
+          "line": 4,
+          "snippet": "import { asBoolean as readBoolean, isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 11,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/cli.ts",
+          "line": 16,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/canvas/src/host/a2ui-route.ts",
+          "line": 2,
+          "snippet": "import { lowercasePreservingWhitespace } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/text-utility-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/canvas/doctor-contract-api.ts",
+          "line": 77,
+          "snippet": "const { pathExists } = await import(\"openclaw/plugin-sdk/text-utility-runtime\");"
+        },
+        {
+          "path": "extensions/canvas/src/config-migration.ts",
+          "line": 12,
+          "snippet": "import { resolveUserPath } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all 26 eligible production JS/TS-family files (including copy-a2ui.d.mts, the copy script, A2UI browser source and rolldown build config) plus package.json and openclaw.plugin.json. All 43 plugin files are explicitly partitioned; no ambiguous test-only helper exclusion was needed.",
+    "All production local imports stay within extensions/canvas. runtime-api.ts reexports Canvas-owned implementations and composite types, not direct SDK aliases. No additional plugin-owned/shared shipped source lies beyond the plugin root. The package asset build command references core scripts/tsx.mjs and scripts/bundle-a2ui.mts as build tooling, not imported shipped plugin source; generated bundle output named in package metadata is not present in the pinned plugin tree.",
+    "Public module spellings and original exported names were checked against root package.json exports and src/plugin-sdk facades. readBoolean, readRecord, readString, and fsRoot resolve to asBoolean, asOptionalRecord, readStringValue, and root respectively. No SDK module suffix normalization was needed.",
+    "definePluginEntry supplies OpenClawPluginApi to register callbacks via OpenClawPluginDefinition.register. api.runtime.nodes is propagated unchanged into the presenter and typed PluginRuntime[\"nodes\"]. Explicit public indexed types contribute runtime.nodes, runtime.nodes.list, api.registerWidgetPresenter and api.registerBoardWidgetContentKind; ReturnType node descriptors do not extend those public paths.",
+    "Browser bootstrap globalThis.openclaw aliases are the widget board action bridge (state.emit/prompt.send), not the native OpenClawPluginApi or PluginRuntime. host.jsx #api/globalThis.openclawA2UI is a plugin-owned renderer object. Neither produces API/runtime findings.",
+    "defaultRuntime is an SDK-exported RuntimeEnv object, so direct writeJson/log calls attach call to that export and do not invent PluginRuntime paths. getNodesTheme().ok and fsRoot() filesystem handles are SDK return values; their members are not native API/runtime members or additional direct SDK-export calls. The direct typeof fsRoot type reference makes only security-runtime#root mixed.",
+    "Known SDK helpers are boundary dependencies only; their internal member consumption is not inferred. Dynamic SDK imports are immediately destructured and contribute only their named exports, without synthetic namespace-star dependencies.",
+    "No on/registerHook registrations occur. Manifest identities are limited to skills and contracts.tools; doctor/config migration metadata, configSchema, categories and runtime node/CLI descriptors are not manifest contracts under the frozen rules. No genuinely unresolved SDK/API/runtime construct remained."
+  ]
+}

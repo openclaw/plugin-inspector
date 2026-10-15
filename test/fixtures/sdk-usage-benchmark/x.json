@@ -1,0 +1,2891 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "x",
+    "path": "extensions/x"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_x",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/x/admin-api.ts",
+      "sha256": "5182e91198fab3564fa35154995736797fd49a40dfec3fcd5969f48239fb3032",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/channel-plugin-api.ts",
+      "sha256": "7d927ca2551aef0764ab71c2ba59a0be5daa2d15018c5c74e97544b255e8957d",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/index.ts",
+      "sha256": "ebd105fde4640193ff9dd574bbb4e771f3cbf9a13b405ce2357b8f94926eae84",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/x/openclaw.plugin.json",
+      "sha256": "bbd5a7c7aea6a546101e8f772845f0c3a67a5dd85d6fc640b815aa0ac1ca2713",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/x/package.json",
+      "sha256": "ffc5afcbc97b702ada9d4b5c27ea67a026ba2ddef7d7e0bf6d6111de3da11211",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/runtime-api.ts",
+      "sha256": "10b93bbf3da247de3b06931885fddb707e3bb384040e71463f79b7277a5319d4",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/secret-contract-api.ts",
+      "sha256": "c381e9461fc33c8b3f797fc2541fc4e91960ae02623fcfaf834ed0d56d6b9f02",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/src/accounts.ts",
+      "sha256": "76e48c85aca1d330054bad1332eebd8c53bc7266cc034a6e58380cfcbda3584d",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/x/src/admin.ts",
+      "sha256": "7a3e2191a0a00fdbe4e21d8233b9c14e3f4ded9885a041fba0363d51f1700e94",
+      "role": "production-source",
+      "findingCount": 15
+    },
+    {
+      "path": "extensions/x/src/allowlist.ts",
+      "sha256": "6fe6f2ab90d0a59a6e786236471e4e8e8062fd8b1eab703b8e116c76efa33204",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/x/src/api.ts",
+      "sha256": "d49fd7b03b4d94706b0b0c8f2b5ae6ed04a4a525512c5a983bde8d9e0af26405",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/x/src/channel.ts",
+      "sha256": "a75fb942cff5f0246dbe155ccba93b2b0fd8f5c803c9aa009a94874ed03a5f83",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/x/src/client.ts",
+      "sha256": "10454c936dc64af7f3cb3c6bcea1170478c10110e7c31398cc0257955b76a17b",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/x/src/config-schema.ts",
+      "sha256": "d3d96b76a507b0a6d84c849640f98da952728efecd9211d67aad579e79f7d85c",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/x/src/control-ui.tsx",
+      "sha256": "01df89251aaa4e20be0f3fc2b922f9b44a5014520ece72aa19d840d0168cad85",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/x/src/cost-limits.ts",
+      "sha256": "1444469f17025160467c82969af5b7ee3e297d33fbe103e08127318978bc003d",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/src/events.ts",
+      "sha256": "2d3b7c8a0cddf4ffaa57082a85a2e78cc1e5732b1fe143eb7b44ce66e6c4c725",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/x/src/fetch.ts",
+      "sha256": "6835a41a994f74818d640875291fab5d0264f51dc83246a83c83e230fceb0d46",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/x/src/github.ts",
+      "sha256": "7bff9980a4c948d85b8aff11c4e05f136aa3bbf6f068a51719da69d793d925ac",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/x/src/guest-policy.ts",
+      "sha256": "c46c74b19ec5983b4a64f4d648d0081b16eca40f7259bab94aafae8b8c552917",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/src/guest-tools.ts",
+      "sha256": "b2a5ed08dee4a4ef157bf05d9e9a6288b7c51882eff0eba530f8d71517312657",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/src/guest-usage.ts",
+      "sha256": "50304220ebf5dcb0ef995c45c39197a08df94dcb3642956ebe1fc6bcf4165689",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/x/src/guests.ts",
+      "sha256": "d284b6c5d392a905ffb993264fedffcc92a8357be91565d401ef6ffc7398c6a0",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/x/src/ingress.ts",
+      "sha256": "dbfac3c85047ba000f745cb5b4bb34a9de757caffe7c2b82785ffca973bc7997",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/x/src/monitor.ts",
+      "sha256": "28cd091340fd8d88f4385130076e6151c00b1c6b7347753d2dee920e7a35ddc3",
+      "role": "production-source",
+      "findingCount": 15
+    },
+    {
+      "path": "extensions/x/src/pricing.ts",
+      "sha256": "63b2dbbad1f1149c7c26b443d0cddbfd1b76a9b32bac0aa7256a91514039ea8a",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/x/src/public-thread.ts",
+      "sha256": "395aac353c09977a2dc148588e063685e2c1e8382396c6480e9a882c40280fdb",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/src/recipient.ts",
+      "sha256": "385d91fc50bd2d5be37add3d75d60fddaae5c44e28c09e8e0f63b8bd444b218d",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/src/reply.ts",
+      "sha256": "102f633cccbbb32930e9d6f7be244da13d0c9021797e6066209fd783b1647d93",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/x/src/runtime.ts",
+      "sha256": "aa6e4b6a77ba628326daaa6dd5cdfff329b0c57fd7024aafa337ab3ba4913c03",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/x/src/secret-contract.ts",
+      "sha256": "a69bf523eb19e9da290548260e3024fa1a5b3c32a508d7b207b64fa08e296a4d",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/x/src/send.ts",
+      "sha256": "96d3a85e93ce3a2aa809ffe774d2465d2d5e5c293f46e9d116fccb36f050e2f3",
+      "role": "production-source",
+      "findingCount": 11
+    },
+    {
+      "path": "extensions/x/src/spend.ts",
+      "sha256": "7d98b1d9de2fc37db9ad042336906047fd4624c8b9f1b529e348b6e2baed3e5f",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/x/src/target.ts",
+      "sha256": "1f38174b414165e81daaa6a36f1f652037c31d9327f5666e9d6e5c4c76b8b3f6",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/src/thread.ts",
+      "sha256": "045afda9cb71171e91ba03a414824fb73c49f53d501958c1f9eeeb6ccc39d0a3",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/src/urls.ts",
+      "sha256": "4d9ff90f751e06ba99120ade6b9c5b2f1d664650d73adc1d8af0a7396ab68864",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/src/verified-github-service.ts",
+      "sha256": "6ecdc947336dfa843d043a7bb1083bb58b59a53becaab43ba73a8dbc0e5e646d",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/x/src/verified-github.ts",
+      "sha256": "dc8a01d3119d1b970de8c8c22f39ba40bffe2f190484bf31fc1b0586ac863005",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/src/work-origin.ts",
+      "sha256": "d327d5c542225076e0f5aac78ac5eafb072b60fa2f8fbfdaa5f888d5c6fc133d",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/x/verified-github-api.ts",
+      "sha256": "1ab067a6917eaabfa9240e15533e6367dab559d3024920e7f420bda5fbe58d8d",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/x/work-origin-api.ts",
+      "sha256": "3c6d63bee093e3b32e8889933928a064f8d2aa870d0264c3ea57d83c3f4e9bf6",
+      "role": "production-source",
+      "findingCount": 0
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/x/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork; outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/x/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG artwork; outside eligible JS/TS source extensions."
+    },
+    {
+      "path": "extensions/x/src/admin.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for admin; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/allowlist.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for allowlist; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/api-cost.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for api-cost; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/api.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for api; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/authority.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for authority; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/client.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for client; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/config-schema.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for config-schema; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/control-ui.css",
+      "rule": "non-source",
+      "reason": "Control UI stylesheet; reviewed import boundary but CSS is outside eligible source extensions."
+    },
+    {
+      "path": "extensions/x/src/events-budget.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for events-budget; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/events.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for events; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/github.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for github; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/guest-usage.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for guest-usage; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/guests.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for guests; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/monitor-publication.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for monitor-publication; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/monitor.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for monitor; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/public-thread.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for public-thread; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/recipient.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for recipient; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/reply.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for reply; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/spend.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for spend; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/test-support/events.ts",
+      "rule": "test-directory",
+      "reason": "Synthetic post and budget API fixtures consumed only by events.test.ts and events-budget.test.ts."
+    },
+    {
+      "path": "extensions/x/src/test-support/monitor-fixture.ts",
+      "rule": "test-directory",
+      "reason": "Vitest monitor fixture consumed only by authority, guests, monitor, publication, verified-GitHub and work-origin test suites."
+    },
+    {
+      "path": "extensions/x/src/test-support/monitor.ts",
+      "rule": "test-directory",
+      "reason": "In-memory queue/keyed-state doubles imported only by tests, excluded test-support fixtures and the explicitly test-only test-api.ts barrel."
+    },
+    {
+      "path": "extensions/x/src/test-support/spend.ts",
+      "rule": "test-directory",
+      "reason": "createXTestSpend test factory consumed only by .test.ts suites and excluded monitor-fixture.ts; imports the in-memory test store."
+    },
+    {
+      "path": "extensions/x/src/thread.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for thread; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/verified-github.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for verified-github; not a production import target."
+    },
+    {
+      "path": "extensions/x/src/work-origin.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts regression suite for work-origin; not a production import target."
+    },
+    {
+      "path": "extensions/x/test-api.ts",
+      "rule": "test-file",
+      "reason": "Basename begins test- and its header declares test-only ingress/runner regression seams. No production source imports it; its only extra boundary is excluded src/test-support/monitor.ts."
+    },
+    {
+      "path": "extensions/x/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript project configuration extending the shared package-boundary config; not source or package/manifest metadata."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.logger",
+      "kind": "api-member",
+      "identity": "api.logger",
+      "classification": "type",
+      "referenceKinds": [
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 64,
+          "snippet": "api: Pick<OpenClawPluginApi, \"registerGatewayMethod\" | \"logger\"> & {",
+          "note": "Literal Pick explicitly selects the logger member; the later error call has its own maximal path."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.error",
+      "kind": "api-member",
+      "identity": "api.logger.error",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 193,
+          "snippet": "api.logger.error("
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.on",
+      "kind": "api-member",
+      "identity": "api.on",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/work-origin.ts",
+          "line": 37,
+          "snippet": "export function registerXWorkOriginGuidance(api: Pick<OpenClawPluginApi, \"on\" | \"runtime\">) {",
+          "note": "Literal Pick selects on. Its runtime handle is propagated to the plugin-owned store helper."
+        },
+        {
+          "path": "extensions/x/src/work-origin.ts",
+          "line": 38,
+          "snippet": "api.on(\"before_prompt_build\", async (_event, ctx) => {"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerGatewayMethod",
+      "kind": "api-member",
+      "identity": "api.registerGatewayMethod",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 17,
+          "snippet": "type Request = Parameters<Parameters<OpenClawPluginApi[\"registerGatewayMethod\"]>[1]>[0];"
+        },
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 64,
+          "snippet": "api: Pick<OpenClawPluginApi, \"registerGatewayMethod\" | \"logger\"> & {",
+          "note": "Literal Pick selects registerGatewayMethod and logger."
+        },
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 181,
+          "snippet": "api.registerGatewayMethod("
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerService",
+      "kind": "api-member",
+      "identity": "api.registerService",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/index.ts",
+          "line": 26,
+          "snippet": "api.registerService(",
+          "note": "registerFull is typed as an OpenClawPluginApi callback by defineBundledChannelEntry."
+        }
+      ]
+    },
+    {
+      "key": "hook:hook.before_prompt_build",
+      "kind": "hook",
+      "identity": "hook.before_prompt_build",
+      "classification": "runtime",
+      "referenceKinds": [
+        "hook-registration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/work-origin.ts",
+          "line": 38,
+          "snippet": "api.on(\"before_prompt_build\", async (_event, ctx) => {"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.channels:x",
+      "kind": "manifest-contract",
+      "identity": "manifest.channels:x",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/openclaw.plugin.json",
+          "line": 11,
+          "snippet": "\"channels\": [",
+          "note": "Manifest channel contract field."
+        },
+        {
+          "path": "extensions/x/openclaw.plugin.json",
+          "line": 12,
+          "snippet": "\"x\"",
+          "note": "The channels array declares x."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.channel.inbound.buildContext",
+      "kind": "runtime-member",
+      "identity": "runtime.channel.inbound.buildContext",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 327,
+          "snippet": "const ctxPayload = core.channel.inbound.buildContext({"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.channel.inbound.dispatch",
+      "kind": "runtime-member",
+      "identity": "runtime.channel.inbound.dispatch",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 367,
+          "snippet": "await core.channel.inbound.dispatch({"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.channel.inbound.ingress.resolveStable",
+      "kind": "runtime-member",
+      "identity": "runtime.channel.inbound.ingress.resolveStable",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/ingress.ts",
+          "line": 103,
+          "snippet": "const ingress = await core.channel.inbound.ingress.resolveStable({",
+          "note": "core is getXRuntime(), whose store type is PluginRuntime in src/runtime.ts."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.logging.getChildLogger",
+      "kind": "runtime-member",
+      "identity": "runtime.logging.getChildLogger",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 45,
+          "snippet": "const log = core.logging.getChildLogger({ channel: \"x\", accountId: account.accountId });",
+          "note": "core/getXRuntime and SpendRuntime preserve public PluginRuntime provenance; returned logger operations do not extend the runtime path."
+        },
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 179,
+          "snippet": "const logger = runtime.logging.getChildLogger({ channel: \"x\", accountId: account.accountId });",
+          "note": "core/getXRuntime and SpendRuntime preserve public PluginRuntime provenance; returned logger operations do not extend the runtime path."
+        },
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 30,
+          "snippet": "logging?: Pick<PluginRuntime[\"logging\"], \"getChildLogger\">;",
+          "note": "Literal Pick narrows the logging type to getChildLogger."
+        },
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 77,
+          "snippet": "let logger = runtime.logging?.getChildLogger({ channel: \"x\", accountId });",
+          "note": "core/getXRuntime and SpendRuntime preserve public PluginRuntime provenance; returned logger operations do not extend the runtime path."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state",
+      "kind": "runtime-member",
+      "identity": "runtime.state",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 76,
+          "snippet": "let state = runtime.state;",
+          "note": "This standalone state read is maximal at this occurrence, and is retained for reference comparison at lines 332-334."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.openChannelIngressQueue",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openChannelIngressQueue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 77,
+          "snippet": "const queue = core.state.openChannelIngressQueue<IngressPayload>({"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.openKeyedStore",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openKeyedStore",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 66,
+          "snippet": "state: Pick<OpenClawPluginApi[\"runtime\"][\"state\"], \"openKeyedStore\" | \"resolveStateDir\">;",
+          "note": "Literal Pick explicitly selects this member of the public runtime state surface; no incidental state prefix."
+        },
+        {
+          "path": "extensions/x/src/allowlist.ts",
+          "line": 97,
+          "snippet": "state: Pick<PluginRuntime[\"state\"], \"openKeyedStore\" | \"resolveStateDir\">;",
+          "note": "Literal Pick explicitly selects this member of the public runtime state surface; no incidental state prefix."
+        },
+        {
+          "path": "extensions/x/src/allowlist.ts",
+          "line": 100,
+          "snippet": "const store = runtime.state.openKeyedStore<XAllowlistEntry>({",
+          "note": "Runtime provenance follows PluginRuntime types, getXRuntime, or a local projection of PluginRuntime.state. Returned keyed stores are not themselves runtime handles."
+        },
+        {
+          "path": "extensions/x/src/client.ts",
+          "line": 64,
+          "snippet": "const tokens = runtime.state.openKeyedStore<{",
+          "note": "Runtime provenance follows PluginRuntime types, getXRuntime, or a local projection of PluginRuntime.state. Returned keyed stores are not themselves runtime handles."
+        },
+        {
+          "path": "extensions/x/src/guest-usage.ts",
+          "line": 27,
+          "snippet": "state: Pick<PluginRuntime[\"state\"], \"openKeyedStore\" | \"resolveStateDir\">;",
+          "note": "Literal Pick explicitly selects this member of the public runtime state surface; no incidental state prefix."
+        },
+        {
+          "path": "extensions/x/src/guest-usage.ts",
+          "line": 29,
+          "snippet": "const store = runtime.state.openKeyedStore<XGuestUsage>({",
+          "note": "Runtime provenance follows PluginRuntime types, getXRuntime, or a local projection of PluginRuntime.state. Returned keyed stores are not themselves runtime handles."
+        },
+        {
+          "path": "extensions/x/src/guests.ts",
+          "line": 71,
+          "snippet": "state: Pick<PluginRuntime[\"state\"], \"openKeyedStore\" | \"resolveStateDir\">;",
+          "note": "Literal Pick explicitly selects this member of the public runtime state surface; no incidental state prefix."
+        },
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 72,
+          "snippet": "const cursor = core.state.openKeyedStore<XCursorState & { userId: string }>({",
+          "note": "Runtime provenance follows PluginRuntime types, getXRuntime, or a local projection of PluginRuntime.state. Returned keyed stores are not themselves runtime handles."
+        },
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 29,
+          "snippet": "state: Pick<PluginRuntime[\"state\"], \"openKeyedStore\" | \"resolveStateDir\">;",
+          "note": "Literal Pick explicitly selects this member of the public runtime state surface; no incidental state prefix."
+        },
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 69,
+          "snippet": "current.state.openKeyedStore<number>({",
+          "note": "Runtime provenance follows PluginRuntime types, getXRuntime, or a local projection of PluginRuntime.state. Returned keyed stores are not themselves runtime handles."
+        },
+        {
+          "path": "extensions/x/src/work-origin.ts",
+          "line": 17,
+          "snippet": "return runtime.state.openKeyedStore<XWorkOrigin>({",
+          "note": "Runtime provenance follows PluginRuntime types, getXRuntime, or a local projection of PluginRuntime.state. Returned keyed stores are not themselves runtime handles."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.resolveStateDir",
+      "kind": "runtime-member",
+      "identity": "runtime.state.resolveStateDir",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 66,
+          "snippet": "state: Pick<OpenClawPluginApi[\"runtime\"][\"state\"], \"openKeyedStore\" | \"resolveStateDir\">;",
+          "note": "Literal Pick explicitly selects this member of the public runtime state surface; no incidental state prefix."
+        },
+        {
+          "path": "extensions/x/src/allowlist.ts",
+          "line": 80,
+          "snippet": "state: Pick<PluginRuntime[\"state\"], \"resolveStateDir\">;"
+        },
+        {
+          "path": "extensions/x/src/allowlist.ts",
+          "line": 85,
+          "snippet": "const state = mutations.get(JSON.stringify([runtime.state.resolveStateDir(), accountId]));"
+        },
+        {
+          "path": "extensions/x/src/allowlist.ts",
+          "line": 97,
+          "snippet": "state: Pick<PluginRuntime[\"state\"], \"openKeyedStore\" | \"resolveStateDir\">;",
+          "note": "Literal Pick explicitly selects this member of the public runtime state surface; no incidental state prefix."
+        },
+        {
+          "path": "extensions/x/src/guest-usage.ts",
+          "line": 27,
+          "snippet": "state: Pick<PluginRuntime[\"state\"], \"openKeyedStore\" | \"resolveStateDir\">;",
+          "note": "Literal Pick explicitly selects this member of the public runtime state surface; no incidental state prefix."
+        },
+        {
+          "path": "extensions/x/src/guests.ts",
+          "line": 71,
+          "snippet": "state: Pick<PluginRuntime[\"state\"], \"openKeyedStore\" | \"resolveStateDir\">;",
+          "note": "Literal Pick explicitly selects this member of the public runtime state surface; no incidental state prefix."
+        },
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 29,
+          "snippet": "state: Pick<PluginRuntime[\"state\"], \"openKeyedStore\" | \"resolveStateDir\">;",
+          "note": "Literal Pick explicitly selects this member of the public runtime state surface; no incidental state prefix."
+        },
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 345,
+          "snippet": "const key = JSON.stringify([runtime.state.resolveStateDir(), accountId]);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/account-helpers#createAccountListHelpers",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/account-helpers#createAccountListHelpers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/accounts.ts",
+          "line": 1,
+          "snippet": "import { createAccountListHelpers, mergeAccountConfig } from \"openclaw/plugin-sdk/account-helpers\";"
+        },
+        {
+          "path": "extensions/x/src/accounts.ts",
+          "line": 8,
+          "snippet": "const accounts = createAccountListHelpers<XAccountConfig>(\"x\", {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/account-helpers#mergeAccountConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/account-helpers#mergeAccountConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/accounts.ts",
+          "line": 1,
+          "snippet": "import { createAccountListHelpers, mergeAccountConfig } from \"openclaw/plugin-sdk/account-helpers\";"
+        },
+        {
+          "path": "extensions/x/src/accounts.ts",
+          "line": 19,
+          "snippet": "config.guests = mergeAccountConfig({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/account-id#normalizeAccountId",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/account-id#normalizeAccountId",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/accounts.ts",
+          "line": 2,
+          "snippet": "import { normalizeAccountId } from \"openclaw/plugin-sdk/account-id\";"
+        },
+        {
+          "path": "extensions/x/src/accounts.ts",
+          "line": 16,
+          "snippet": "const accountId = normalizeAccountId(requested ?? resolveDefaultXAccountId(cfg));"
+        },
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 1,
+          "snippet": "import { normalizeAccountId } from \"openclaw/plugin-sdk/account-id\";"
+        },
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 78,
+          "snippet": "const accountId = normalizeAccountId(raw ?? resolveDefaultXAccountId(cfg));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-scope-runtime#resolveAgentConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-scope-runtime#resolveAgentConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/guests.ts",
+          "line": 1,
+          "snippet": "import { resolveAgentConfig } from \"openclaw/plugin-sdk/agent-scope-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/guests.ts",
+          "line": 13,
+          "snippet": "const agent = resolveAgentConfig(cfg, agentId);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-actions#jsonResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-actions#jsonResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 1,
+          "snippet": "import { jsonResult, readStringParam } from \"openclaw/plugin-sdk/channel-actions\";"
+        },
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 145,
+          "snippet": "return jsonResult({ ok: true, messageId: result.messageId });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-actions#readStringParam",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-actions#readStringParam",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 1,
+          "snippet": "import { jsonResult, readStringParam } from \"openclaw/plugin-sdk/channel-actions\";"
+        },
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 139,
+          "snippet": "to: readStringParam(params, \"to\", { required: true }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-config-schema#buildMultiAccountChannelSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-config-schema#buildMultiAccountChannelSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/config-schema.ts",
+          "line": 1,
+          "snippet": "import { buildMultiAccountChannelSchema } from \"openclaw/plugin-sdk/channel-config-schema\";"
+        },
+        {
+          "path": "extensions/x/src/config-schema.ts",
+          "line": 78,
+          "snippet": "export const XConfigSchema = buildMultiAccountChannelSchema(XAccountSchema, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-contract#ChannelGatewayContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-contract#ChannelGatewayContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 1,
+          "snippet": "import type { ChannelGatewayContext } from \"openclaw/plugin-sdk/channel-contract\";"
+        },
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 40,
+          "snippet": "export async function startXAccount(ctx: ChannelGatewayContext<ResolvedXAccount>) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-core#ChannelPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-core#ChannelPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 2,
+          "snippet": "import { buildChannelConfigSchema, type ChannelPlugin } from \"openclaw/plugin-sdk/channel-core\";"
+        },
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 27,
+          "snippet": "export const xPlugin: ChannelPlugin<ResolvedXAccount> = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-core#buildChannelConfigSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-core#buildChannelConfigSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 2,
+          "snippet": "import { buildChannelConfigSchema, type ChannelPlugin } from \"openclaw/plugin-sdk/channel-core\";"
+        },
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 48,
+          "snippet": "configSchema: buildChannelConfigSchema(XConfigSchema),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-entry-contract#defineBundledChannelEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-entry-contract#defineBundledChannelEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/index.ts",
+          "line": 2,
+          "snippet": "defineBundledChannelEntry,",
+          "note": "Named import from openclaw/plugin-sdk/channel-entry-contract; module specifier is on line 4."
+        },
+        {
+          "path": "extensions/x/index.ts",
+          "line": 9,
+          "snippet": "export default defineBundledChannelEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-entry-contract#loadBundledEntryExportSync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-entry-contract#loadBundledEntryExportSync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/index.ts",
+          "line": 3,
+          "snippet": "loadBundledEntryExportSync,",
+          "note": "Named import from openclaw/plugin-sdk/channel-entry-contract; module specifier is on line 4."
+        },
+        {
+          "path": "extensions/x/index.ts",
+          "line": 18,
+          "snippet": "loadBundledEntryExportSync<typeof registerXWorkOriginGuidance>(import.meta.url, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-inbound#createChannelPartialDeliveryError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-inbound#createChannelPartialDeliveryError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 1,
+          "snippet": "import { createChannelPartialDeliveryError } from \"openclaw/plugin-sdk/channel-inbound\";"
+        },
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 200,
+          "snippet": "throw createChannelPartialDeliveryError(error, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-ingress-runtime#ChannelIngressContextBinding",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-ingress-runtime#ChannelIngressContextBinding",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/ingress.ts",
+          "line": 2,
+          "snippet": "ChannelIngressContextBinding,",
+          "note": "Named import from openclaw/plugin-sdk/channel-ingress-runtime; module specifier is on line 4."
+        },
+        {
+          "path": "extensions/x/src/ingress.ts",
+          "line": 89,
+          "snippet": "contextBinding?: ChannelIngressContextBinding,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-ingress-runtime#ResolveStableChannelMessageIngressParams",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-ingress-runtime#ResolveStableChannelMessageIngressParams",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/ingress.ts",
+          "line": 3,
+          "snippet": "ResolveStableChannelMessageIngressParams,",
+          "note": "Named import from openclaw/plugin-sdk/channel-ingress-runtime; module specifier is on line 4."
+        },
+        {
+          "path": "extensions/x/src/ingress.ts",
+          "line": 90,
+          "snippet": "childSessionPublication?: ResolveStableChannelMessageIngressParams[\"childSessionPublication\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-outbound#bindIngressLifecycleToReplyOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-outbound#bindIngressLifecycleToReplyOptions",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 3,
+          "snippet": "bindIngressLifecycleToReplyOptions,",
+          "note": "Named import from openclaw/plugin-sdk/channel-outbound; module specifier is on line 6."
+        },
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 373,
+          "snippet": "...bindIngressLifecycleToReplyOptions(lifecycle),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-outbound#createChannelIngressError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-outbound#createChannelIngressError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 4,
+          "snippet": "createChannelIngressError,",
+          "note": "Named import from openclaw/plugin-sdk/channel-outbound; module specifier is on line 6."
+        },
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 31,
+          "snippet": "const InvalidXEvent = createChannelIngressError(\"InvalidXEvent\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-outbound#createChannelIngressMonitor",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-outbound#createChannelIngressMonitor",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 5,
+          "snippet": "createChannelIngressMonitor,",
+          "note": "Named import from openclaw/plugin-sdk/channel-outbound; module specifier is on line 6."
+        },
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 96,
+          "snippet": "const ingress = createChannelIngressMonitor<XPostEnvelope, string, IngressPayload>({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-outbound#createMessageReceiptFromOutboundResults",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-outbound#createMessageReceiptFromOutboundResults",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 2,
+          "snippet": "import { createMessageReceiptFromOutboundResults } from \"openclaw/plugin-sdk/channel-outbound\";"
+        },
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 30,
+          "snippet": "return createMessageReceiptFromOutboundResults({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-outbound#defineChannelMessageAdapter",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-outbound#defineChannelMessageAdapter",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 3,
+          "snippet": "import { defineChannelMessageAdapter } from \"openclaw/plugin-sdk/channel-outbound\";"
+        },
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 25,
+          "snippet": "const message = defineChannelMessageAdapter({ id: \"x\", send: { text: send } });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-policy#buildOpenGroupPolicyWarning",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-policy#buildOpenGroupPolicyWarning",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 4,
+          "snippet": "import { buildOpenGroupPolicyWarning } from \"openclaw/plugin-sdk/channel-policy\";"
+        },
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 96,
+          "snippet": "buildOpenGroupPolicyWarning({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-secret-basic-runtime#collectNestedChannelFieldAssignments",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-secret-basic-runtime#collectNestedChannelFieldAssignments",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/secret-contract.ts",
+          "line": 2,
+          "snippet": "collectNestedChannelFieldAssignments,",
+          "note": "Named import from openclaw/plugin-sdk/channel-secret-basic-runtime; module specifier is on line 6."
+        },
+        {
+          "path": "extensions/x/src/secret-contract.ts",
+          "line": 27,
+          "snippet": "collectNestedChannelFieldAssignments({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-secret-basic-runtime#collectSimpleChannelFieldAssignments",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-secret-basic-runtime#collectSimpleChannelFieldAssignments",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/secret-contract.ts",
+          "line": 3,
+          "snippet": "collectSimpleChannelFieldAssignments,",
+          "note": "Named import from openclaw/plugin-sdk/channel-secret-basic-runtime; module specifier is on line 6."
+        },
+        {
+          "path": "extensions/x/src/secret-contract.ts",
+          "line": 15,
+          "snippet": "collectSimpleChannelFieldAssignments({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-secret-basic-runtime#createChannelSecretContract",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-secret-basic-runtime#createChannelSecretContract",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/secret-contract.ts",
+          "line": 4,
+          "snippet": "createChannelSecretContract,",
+          "note": "Named import from openclaw/plugin-sdk/channel-secret-basic-runtime; module specifier is on line 6."
+        },
+        {
+          "path": "extensions/x/src/secret-contract.ts",
+          "line": 9,
+          "snippet": "export const channelSecrets = createChannelSecretContract({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-secret-basic-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-secret-basic-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/secret-contract.ts",
+          "line": 5,
+          "snippet": "isRecord,",
+          "note": "Named import from openclaw/plugin-sdk/channel-secret-basic-runtime; module specifier is on line 6."
+        },
+        {
+          "path": "extensions/x/src/secret-contract.ts",
+          "line": 23,
+          "snippet": "isRecord(config.verifiedFromGitHub) ? config.verifiedFromGitHub : {};"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/accounts.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/x/src/accounts.ts",
+          "line": 15,
+          "snippet": "export function resolveXAccount(cfg: OpenClawConfig, requested?: string | null) {"
+        },
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 86,
+          "snippet": "cfg: OpenClawConfig = request.context.getRuntimeConfig(),"
+        },
+        {
+          "path": "extensions/x/src/client.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/x/src/client.ts",
+          "line": 24,
+          "snippet": "export async function getXApi(accountId: string, cfg: OpenClawConfig): Promise<XApiClient> {"
+        },
+        {
+          "path": "extensions/x/src/guests.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/x/src/guests.ts",
+          "line": 10,
+          "snippet": "cfg: OpenClawConfig,"
+        },
+        {
+          "path": "extensions/x/src/ingress.ts",
+          "line": 5,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/x/src/ingress.ts",
+          "line": 19,
+          "snippet": "cfg: OpenClawConfig;"
+        },
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 38,
+          "snippet": "cfg: OpenClawConfig;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-mutation#mutateConfigFile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-mutation#mutateConfigFile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 124,
+          "snippet": "const { mutateConfigFile } = await import(\"openclaw/plugin-sdk/config-mutation\");"
+        },
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 125,
+          "snippet": "const committed = await mutateConfigFile({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/control-ui#ControlUiView",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/control-ui#ControlUiView",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/control-ui.tsx",
+          "line": 3,
+          "snippet": "import { defineControlUiPlugin, type ControlUiView } from \"openclaw/plugin-sdk/control-ui\";"
+        },
+        {
+          "path": "extensions/x/src/control-ui.tsx",
+          "line": 20,
+          "snippet": "const mountXReplies: ControlUiView = (container, initialContext) => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/control-ui#defineControlUiPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/control-ui#defineControlUiPlugin",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/control-ui.tsx",
+          "line": 3,
+          "snippet": "import { defineControlUiPlugin, type ControlUiView } from \"openclaw/plugin-sdk/control-ui\";"
+        },
+        {
+          "path": "extensions/x/src/control-ui.tsx",
+          "line": 500,
+          "snippet": "export default defineControlUiPlugin({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/conversation-runtime#createStaticReplyToModeResolver",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/conversation-runtime#createStaticReplyToModeResolver",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 5,
+          "snippet": "import { createStaticReplyToModeResolver } from \"openclaw/plugin-sdk/conversation-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 114,
+          "snippet": "threading: { resolveReplyToMode: createStaticReplyToModeResolver(\"all\") },"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#PluginRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#PluginRuntime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/client.ts",
+          "line": 3,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/x/src/client.ts",
+          "line": 18,
+          "snippet": "const clients = new WeakMap<PluginRuntime, Map<string, ClientEntry>>();"
+        },
+        {
+          "path": "extensions/x/src/runtime.ts",
+          "line": 1,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/x/src/runtime.ts",
+          "line": 4,
+          "snippet": "const store = createPluginRuntimeStore<PluginRuntime>({"
+        },
+        {
+          "path": "extensions/x/src/work-origin.ts",
+          "line": 1,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/x/src/work-origin.ts",
+          "line": 14,
+          "snippet": "const stores = new WeakMap<PluginRuntime, ReturnType<typeof createStore>>();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#PlatformMessageNotDispatchedError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#PlatformMessageNotDispatchedError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/api.ts",
+          "line": 1,
+          "snippet": "import { PlatformMessageNotDispatchedError } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/api.ts",
+          "line": 606,
+          "snippet": "throw new PlatformMessageNotDispatchedError(cause.message, { cause, retryable: false });",
+          "note": "Constructing the SDK-exported error class is a call; instanceof is a bare value reference."
+        },
+        {
+          "path": "extensions/x/src/reply.ts",
+          "line": 1,
+          "snippet": "import { PlatformMessageNotDispatchedError } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/reply.ts",
+          "line": 145,
+          "snippet": "throw new PlatformMessageNotDispatchedError(",
+          "note": "Constructing the SDK-exported error class is a call; instanceof is a bare value reference."
+        },
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 4,
+          "snippet": "import { PlatformMessageNotDispatchedError } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 21,
+          "snippet": "throw new PlatformMessageNotDispatchedError(\"X reply allowlist changed during authorization.\", {",
+          "note": "Constructing the SDK-exported error class is a call; instanceof is a bare value reference."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/fetch-runtime#responseWithRelease",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/fetch-runtime#responseWithRelease",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/fetch.ts",
+          "line": 22,
+          "snippet": "const [{ fetchWithSsrFGuard }, { responseWithRelease }, { fetchWithRuntimeDispatcher }] =",
+          "note": "Promise.all positional destructuring binds responseWithRelease from the direct SDK dynamic import on line 25."
+        },
+        {
+          "path": "extensions/x/src/fetch.ts",
+          "line": 25,
+          "snippet": "import(\"openclaw/plugin-sdk/fetch-runtime\"),"
+        },
+        {
+          "path": "extensions/x/src/fetch.ts",
+          "line": 38,
+          "snippet": "return responseWithRelease(guarded.response, guarded.release);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/global-singleton#resolveGlobalMap",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/global-singleton#resolveGlobalMap",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/allowlist.ts",
+          "line": 1,
+          "snippet": "import { resolveGlobalMap } from \"openclaw/plugin-sdk/global-singleton\";"
+        },
+        {
+          "path": "extensions/x/src/allowlist.ts",
+          "line": 68,
+          "snippet": "const mutations = resolveGlobalMap<"
+        },
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 2,
+          "snippet": "import { resolveGlobalMap, resolveGlobalSingleton } from \"openclaw/plugin-sdk/global-singleton\";"
+        },
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 37,
+          "snippet": "const owners = resolveGlobalMap<string, SpendOwner>("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/global-singleton#resolveGlobalSingleton",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/global-singleton#resolveGlobalSingleton",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 2,
+          "snippet": "import { resolveGlobalMap, resolveGlobalSingleton } from \"openclaw/plugin-sdk/global-singleton\";"
+        },
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 13,
+          "snippet": "export const XBudgetExceededError = resolveGlobalSingleton("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 17,
+          "snippet": "type Request = Parameters<Parameters<OpenClawPluginApi[\"registerGatewayMethod\"]>[1]>[0];"
+        },
+        {
+          "path": "extensions/x/src/verified-github-service.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi, OpenClawPluginServiceV2 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/x/src/verified-github-service.ts",
+          "line": 12,
+          "snippet": "api: Pick<OpenClawPluginApi, \"runtime\">,"
+        },
+        {
+          "path": "extensions/x/src/work-origin.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/x/src/work-origin.ts",
+          "line": 37,
+          "snippet": "export function registerXWorkOriginGuidance(api: Pick<OpenClawPluginApi, \"on\" | \"runtime\">) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginServiceV2",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginServiceV2",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/verified-github-service.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi, OpenClawPluginServiceV2 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/x/src/verified-github-service.ts",
+          "line": 13,
+          "snippet": "): OpenClawPluginServiceV2 {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-runtime#PluginRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-runtime#PluginRuntime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/allowlist.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/allowlist.ts",
+          "line": 80,
+          "snippet": "state: Pick<PluginRuntime[\"state\"], \"resolveStateDir\">;"
+        },
+        {
+          "path": "extensions/x/src/guest-usage.ts",
+          "line": 1,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/guest-usage.ts",
+          "line": 27,
+          "snippet": "state: Pick<PluginRuntime[\"state\"], \"openKeyedStore\" | \"resolveStateDir\">;"
+        },
+        {
+          "path": "extensions/x/src/guests.ts",
+          "line": 3,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/guests.ts",
+          "line": 71,
+          "snippet": "state: Pick<PluginRuntime[\"state\"], \"openKeyedStore\" | \"resolveStateDir\">;"
+        },
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 3,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 29,
+          "snippet": "state: Pick<PluginRuntime[\"state\"], \"openKeyedStore\" | \"resolveStateDir\">;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/response-limit-runtime#readResponseWithLimit",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/response-limit-runtime#readResponseWithLimit",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/api.ts",
+          "line": 35,
+          "snippet": "const { readResponseWithLimit } = await import(\"openclaw/plugin-sdk/response-limit-runtime\");"
+        },
+        {
+          "path": "extensions/x/src/api.ts",
+          "line": 38,
+          "snippet": "(await readResponseWithLimit(response, 16_384, { signal, timeoutMs: 30_000 })).toString(),"
+        },
+        {
+          "path": "extensions/x/src/github.ts",
+          "line": 135,
+          "snippet": "const { readResponseWithLimit } = await import(\"openclaw/plugin-sdk/response-limit-runtime\");"
+        },
+        {
+          "path": "extensions/x/src/github.ts",
+          "line": 136,
+          "snippet": "const bytes = await readResponseWithLimit(response, 2_000_000, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/routing#resolveAgentRoute",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/routing#resolveAgentRoute",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/guests.ts",
+          "line": 4,
+          "snippet": "import { resolveAgentRoute } from \"openclaw/plugin-sdk/routing\";"
+        },
+        {
+          "path": "extensions/x/src/guests.ts",
+          "line": 53,
+          "snippet": "resolveAgentRoute({"
+        },
+        {
+          "path": "extensions/x/src/ingress.ts",
+          "line": 6,
+          "snippet": "import { resolveAgentRoute } from \"openclaw/plugin-sdk/routing\";"
+        },
+        {
+          "path": "extensions/x/src/ingress.ts",
+          "line": 36,
+          "snippet": "const route = resolveAgentRoute({"
+        },
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 7,
+          "snippet": "import { resolveAgentRoute } from \"openclaw/plugin-sdk/routing\";"
+        },
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 178,
+          "snippet": "const guestRoute = resolveAgentRoute({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-config-snapshot#createRuntimeConfigReader",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-config-snapshot#createRuntimeConfigReader",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 4,
+          "snippet": "import { createRuntimeConfigReader } from \"openclaw/plugin-sdk/runtime-config-snapshot\";"
+        },
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 92,
+          "snippet": "const readConfig = createRuntimeConfigReader(cfg);"
+        },
+        {
+          "path": "extensions/x/src/client.ts",
+          "line": 4,
+          "snippet": "import { createRuntimeConfigReader } from \"openclaw/plugin-sdk/runtime-config-snapshot\";"
+        },
+        {
+          "path": "extensions/x/src/client.ts",
+          "line": 50,
+          "snippet": "const readConfig = createRuntimeConfigReader(cfg);"
+        },
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 8,
+          "snippet": "import { createRuntimeConfigReader } from \"openclaw/plugin-sdk/runtime-config-snapshot\";"
+        },
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 43,
+          "snippet": "const readConfig = createRuntimeConfigReader(ctx.cfg);"
+        },
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 5,
+          "snippet": "import { createRuntimeConfigReader } from \"openclaw/plugin-sdk/runtime-config-snapshot\";"
+        },
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 67,
+          "snippet": "const readConfig = createRuntimeConfigReader(params.cfg);"
+        },
+        {
+          "path": "extensions/x/src/verified-github-service.ts",
+          "line": 2,
+          "snippet": "import { createRuntimeConfigReader } from \"openclaw/plugin-sdk/runtime-config-snapshot\";"
+        },
+        {
+          "path": "extensions/x/src/verified-github-service.ts",
+          "line": 20,
+          "snippet": "const readConfig = createRuntimeConfigReader(context.config);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-fetch#fetchWithRuntimeDispatcher",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-fetch#fetchWithRuntimeDispatcher",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/fetch.ts",
+          "line": 17,
+          "snippet": "return dispatch(input, prepared);",
+          "note": "authorize receives fetchWithRuntimeDispatcher unchanged at line 35; its dispatch parameter directly invokes that SDK function at this site. The returned authorize wrapper is plugin-owned."
+        },
+        {
+          "path": "extensions/x/src/fetch.ts",
+          "line": 22,
+          "snippet": "const [{ fetchWithSsrFGuard }, { responseWithRelease }, { fetchWithRuntimeDispatcher }] =",
+          "note": "Promise.all positional destructuring binds fetchWithRuntimeDispatcher from the direct SDK dynamic import on line 26."
+        },
+        {
+          "path": "extensions/x/src/fetch.ts",
+          "line": 26,
+          "snippet": "import(\"openclaw/plugin-sdk/runtime-fetch\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-store#createPluginRuntimeStore",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-store#createPluginRuntimeStore",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/runtime.ts",
+          "line": 2,
+          "snippet": "import { createPluginRuntimeStore } from \"openclaw/plugin-sdk/runtime-store\";"
+        },
+        {
+          "path": "extensions/x/src/runtime.ts",
+          "line": 4,
+          "snippet": "const store = createPluginRuntimeStore<PluginRuntime>({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input#buildSecretInputSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input#buildSecretInputSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/config-schema.ts",
+          "line": 2,
+          "snippet": "import { buildSecretInputSchema } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/x/src/config-schema.ts",
+          "line": 18,
+          "snippet": "clientSecret: buildSecretInputSchema().optional(),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input#hasConfiguredSecretInput",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input#hasConfiguredSecretInput",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/accounts.ts",
+          "line": 4,
+          "snippet": "import { hasConfiguredSecretInput } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/x/src/accounts.ts",
+          "line": 30,
+          "snippet": "hasConfiguredSecretInput(config.clientSecret) &&"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input#resolveSecretInputString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input#resolveSecretInputString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/client.ts",
+          "line": 5,
+          "snippet": "import { resolveSecretInputString } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/x/src/client.ts",
+          "line": 33,
+          "snippet": "resolveSecretInputString({"
+        },
+        {
+          "path": "extensions/x/src/verified-github-service.ts",
+          "line": 3,
+          "snippet": "import { resolveSecretInputString } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/x/src/verified-github-service.ts",
+          "line": 47,
+          "snippet": "const token = resolveSecretInputString({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/fetch.ts",
+          "line": 22,
+          "snippet": "const [{ fetchWithSsrFGuard }, { responseWithRelease }, { fetchWithRuntimeDispatcher }] =",
+          "note": "Promise.all positional destructuring binds fetchWithSsrFGuard from the direct SDK dynamic import on line 24."
+        },
+        {
+          "path": "extensions/x/src/fetch.ts",
+          "line": 24,
+          "snippet": "import(\"openclaw/plugin-sdk/ssrf-runtime\"),"
+        },
+        {
+          "path": "extensions/x/src/fetch.ts",
+          "line": 28,
+          "snippet": "const guarded = await fetchWithSsrFGuard({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/api.ts",
+          "line": 2,
+          "snippet": "import { asOptionalRecord as record } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/api.ts",
+          "line": 36,
+          "snippet": "const body = record(",
+          "note": "record is the local import alias of asOptionalRecord."
+        },
+        {
+          "path": "extensions/x/src/github.ts",
+          "line": 1,
+          "snippet": "import { asOptionalRecord as record } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/github.ts",
+          "line": 147,
+          "snippet": "const message = record(body)?.message;",
+          "note": "record is the local import alias of asOptionalRecord."
+        },
+        {
+          "path": "extensions/x/src/pricing.ts",
+          "line": 1,
+          "snippet": "import { asOptionalRecord as record } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/pricing.ts",
+          "line": 18,
+          "snippet": "const row = record(value);",
+          "note": "record is the local import alias of asOptionalRecord."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/events.ts",
+          "line": 2,
+          "snippet": "import { asRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/events.ts",
+          "line": 161,
+          "snippet": "const event = asRecord(asRecord(value).data);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/tool-send#extractToolSend",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/tool-send#extractToolSend",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 6,
+          "snippet": "import { extractToolSend } from \"openclaw/plugin-sdk/tool-send\";"
+        },
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 124,
+          "snippet": "extractToolSend: ({ args }) => extractToolSend(args, \"sendMessage\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/account-helpers",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/account-helpers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/accounts.ts",
+          "line": 1,
+          "snippet": "import { createAccountListHelpers, mergeAccountConfig } from \"openclaw/plugin-sdk/account-helpers\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/account-id",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/account-id",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/accounts.ts",
+          "line": 2,
+          "snippet": "import { normalizeAccountId } from \"openclaw/plugin-sdk/account-id\";"
+        },
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 1,
+          "snippet": "import { normalizeAccountId } from \"openclaw/plugin-sdk/account-id\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-scope-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-scope-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/guests.ts",
+          "line": 1,
+          "snippet": "import { resolveAgentConfig } from \"openclaw/plugin-sdk/agent-scope-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-actions",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-actions",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 1,
+          "snippet": "import { jsonResult, readStringParam } from \"openclaw/plugin-sdk/channel-actions\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-config-schema",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-config-schema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/config-schema.ts",
+          "line": 1,
+          "snippet": "import { buildMultiAccountChannelSchema } from \"openclaw/plugin-sdk/channel-config-schema\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-contract",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-contract",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 1,
+          "snippet": "import type { ChannelGatewayContext } from \"openclaw/plugin-sdk/channel-contract\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-core",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 2,
+          "snippet": "import { buildChannelConfigSchema, type ChannelPlugin } from \"openclaw/plugin-sdk/channel-core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-entry-contract",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-entry-contract",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/index.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/channel-entry-contract\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-inbound",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-inbound",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 1,
+          "snippet": "import { createChannelPartialDeliveryError } from \"openclaw/plugin-sdk/channel-inbound\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-ingress-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-ingress-runtime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/ingress.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/channel-ingress-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-outbound",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-outbound",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 3,
+          "snippet": "import { defineChannelMessageAdapter } from \"openclaw/plugin-sdk/channel-outbound\";"
+        },
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/channel-outbound\";"
+        },
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 2,
+          "snippet": "import { createMessageReceiptFromOutboundResults } from \"openclaw/plugin-sdk/channel-outbound\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-policy",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-policy",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 4,
+          "snippet": "import { buildOpenGroupPolicyWarning } from \"openclaw/plugin-sdk/channel-policy\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-secret-basic-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-secret-basic-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/secret-contract.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/channel-secret-basic-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-contracts",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-contracts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/accounts.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/x/src/client.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/x/src/guests.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/x/src/ingress.ts",
+          "line": 5,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-mutation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-mutation",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 124,
+          "snippet": "const { mutateConfigFile } = await import(\"openclaw/plugin-sdk/config-mutation\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/control-ui",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/control-ui",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/control-ui.tsx",
+          "line": 3,
+          "snippet": "import { defineControlUiPlugin, type ControlUiView } from \"openclaw/plugin-sdk/control-ui\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/conversation-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/conversation-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 5,
+          "snippet": "import { createStaticReplyToModeResolver } from \"openclaw/plugin-sdk/conversation-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/client.ts",
+          "line": 3,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/x/src/runtime.ts",
+          "line": 1,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/x/src/work-origin.ts",
+          "line": 1,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/api.ts",
+          "line": 1,
+          "snippet": "import { PlatformMessageNotDispatchedError } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/reply.ts",
+          "line": 1,
+          "snippet": "import { PlatformMessageNotDispatchedError } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 4,
+          "snippet": "import { PlatformMessageNotDispatchedError } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/fetch-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/fetch-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/fetch.ts",
+          "line": 25,
+          "snippet": "import(\"openclaw/plugin-sdk/fetch-runtime\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/global-singleton",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/global-singleton",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/allowlist.ts",
+          "line": 1,
+          "snippet": "import { resolveGlobalMap } from \"openclaw/plugin-sdk/global-singleton\";"
+        },
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 2,
+          "snippet": "import { resolveGlobalMap, resolveGlobalSingleton } from \"openclaw/plugin-sdk/global-singleton\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/x/src/verified-github-service.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi, OpenClawPluginServiceV2 } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/x/src/work-origin.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-runtime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/allowlist.ts",
+          "line": 2,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/guest-usage.ts",
+          "line": 1,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/guests.ts",
+          "line": 3,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/spend.ts",
+          "line": 3,
+          "snippet": "import type { PluginRuntime } from \"openclaw/plugin-sdk/plugin-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/response-limit-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/response-limit-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/api.ts",
+          "line": 35,
+          "snippet": "const { readResponseWithLimit } = await import(\"openclaw/plugin-sdk/response-limit-runtime\");"
+        },
+        {
+          "path": "extensions/x/src/github.ts",
+          "line": 135,
+          "snippet": "const { readResponseWithLimit } = await import(\"openclaw/plugin-sdk/response-limit-runtime\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/routing",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/routing",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/guests.ts",
+          "line": 4,
+          "snippet": "import { resolveAgentRoute } from \"openclaw/plugin-sdk/routing\";"
+        },
+        {
+          "path": "extensions/x/src/ingress.ts",
+          "line": 6,
+          "snippet": "import { resolveAgentRoute } from \"openclaw/plugin-sdk/routing\";"
+        },
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 7,
+          "snippet": "import { resolveAgentRoute } from \"openclaw/plugin-sdk/routing\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-config-snapshot",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-config-snapshot",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/admin.ts",
+          "line": 4,
+          "snippet": "import { createRuntimeConfigReader } from \"openclaw/plugin-sdk/runtime-config-snapshot\";"
+        },
+        {
+          "path": "extensions/x/src/client.ts",
+          "line": 4,
+          "snippet": "import { createRuntimeConfigReader } from \"openclaw/plugin-sdk/runtime-config-snapshot\";"
+        },
+        {
+          "path": "extensions/x/src/monitor.ts",
+          "line": 8,
+          "snippet": "import { createRuntimeConfigReader } from \"openclaw/plugin-sdk/runtime-config-snapshot\";"
+        },
+        {
+          "path": "extensions/x/src/send.ts",
+          "line": 5,
+          "snippet": "import { createRuntimeConfigReader } from \"openclaw/plugin-sdk/runtime-config-snapshot\";"
+        },
+        {
+          "path": "extensions/x/src/verified-github-service.ts",
+          "line": 2,
+          "snippet": "import { createRuntimeConfigReader } from \"openclaw/plugin-sdk/runtime-config-snapshot\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-fetch",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-fetch",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/fetch.ts",
+          "line": 26,
+          "snippet": "import(\"openclaw/plugin-sdk/runtime-fetch\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-store",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-store",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/runtime.ts",
+          "line": 2,
+          "snippet": "import { createPluginRuntimeStore } from \"openclaw/plugin-sdk/runtime-store\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/secret-input",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/secret-input",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/accounts.ts",
+          "line": 4,
+          "snippet": "import { hasConfiguredSecretInput } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/x/src/client.ts",
+          "line": 5,
+          "snippet": "import { resolveSecretInputString } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/x/src/config-schema.ts",
+          "line": 2,
+          "snippet": "import { buildSecretInputSchema } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/x/src/verified-github-service.ts",
+          "line": 3,
+          "snippet": "import { resolveSecretInputString } from \"openclaw/plugin-sdk/secret-input\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/fetch.ts",
+          "line": 24,
+          "snippet": "import(\"openclaw/plugin-sdk/ssrf-runtime\"),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/api.ts",
+          "line": 2,
+          "snippet": "import { asOptionalRecord as record } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/events.ts",
+          "line": 2,
+          "snippet": "import { asRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/github.ts",
+          "line": 1,
+          "snippet": "import { asOptionalRecord as record } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/x/src/pricing.ts",
+          "line": 1,
+          "snippet": "import { asOptionalRecord as record } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/tool-send",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/tool-send",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/x/src/channel.ts",
+          "line": 6,
+          "snippet": "import { extractToolSend } from \"openclaw/plugin-sdk/tool-send\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all 39 eligible production JS/TS-family source files, package.json, openclaw.plugin.json, root/extensions/SDK instructions, local barrel provenance and relevant public SDK export/type contracts at the pinned commit. The 71-file plugin inventory partitions into 41 reviewed and 30 excluded files.",
+    "No production relative import leaves extensions/x. Local admin/channel/runtime/secret-contract/verified-GitHub/work-origin API barrels and literal lazy module descriptors remain included. They reexport plugin-owned wrappers/values rather than directly imported SDK symbols, so they do not create synthetic SDK reexport findings. Shared SDK internals and separately installed packages are outside the source boundary.",
+    "The entry descriptor names setXRuntime; src/runtime.ts uses createPluginRuntimeStore<PluginRuntime>. Thus getXRuntime handles and core/runtime aliases retain public runtime provenance. Bare api.runtime propagation is traced through local helpers without a root runtime or api.runtime identity. Pick<OpenClawPluginApi, runtime> selects the runtime handle only; it does not create a root path.",
+    "Literal Pick selections establish type references to api.on, api.registerGatewayMethod, api.logger, runtime.state.openKeyedStore, runtime.state.resolveStateDir and runtime.logging.getChildLogger. Runtime state is also independently read for reference comparison in spend.ts, so runtime.state has its own runtime member-access finding.",
+    "Plugin-owned XApiClient variables named api, channel status snapshots named runtime, admin request context, service scheduler/logger, ControlUiHost and ControlUiView contexts are distinct contracts, not OpenClawPluginApi or PluginRuntime handles. No public API/runtime paths are inferred for those objects.",
+    "Keyed store/queue/ingress monitor/secret-contract/account helper return values and child logger instances are not PluginRuntime; their calls do not extend public runtime paths or add calls to the creating SDK export. The error returned by createChannelIngressError and functions returned by createRuntimeConfigReader/createStaticReplyToModeResolver remain SDK result values, not direct unchanged export aliases.",
+    "fetch.ts destructures three direct dynamic SDK modules in Promise.all. Its authorize function passes fetchWithRuntimeDispatcher unchanged as dispatch and directly invokes it; this contributes call on that SDK export. The authorize return wrapper itself is plugin-owned. Dynamic imports narrowed by destructuring retain named-export provenance, without an unobserved namespace-star dependency.",
+    "Only manifest.channels:x is an agreed manifest contract identity. Categories, controlUi hashed build paths, package channel metadata and config/activation fields are descriptive/build metadata, not additional identities. This source audit includes the TSX UI source and erased types; it does not assert the generated published artifact has the same dependencies.",
+    "Test directory callers and the explicitly test-only test-api.ts boundary were checked. No production source imports those helpers. Reviewed production contents were individually compared with git show at the pinned commit before hashing.",
+    "Reference-kind sets were reconciled across all source occurrences; evidence is representative per kind and affected file. reviewedFiles.findingCount counts distinct findings with recorded evidence in that file, not occurrences.",
+    "Evidence reconciliation: manifest.channels:x is evidenced by the channels field and literal x value, not its closing delimiter. Multiline named imports now cite the selected symbol with module-line provenance; Promise.all dynamic imports also include their named destructuring binding."
+  ]
+}

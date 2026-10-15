@@ -1,0 +1,688 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "imap",
+    "path": "extensions/imap"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_imap",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/imap/index.ts",
+      "sha256": "71e2118f4f9c7e5a26b907cb5827ba8b1b030b2bcdfd96686f0cef95347a76db",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/imap/openclaw.plugin.json",
+      "sha256": "1cfc4902da00b3b4d30e78c5f8857db1b2b7b8ebe74fdc6ba7e0d39c15d15220",
+      "role": "manifest",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/imap/package.json",
+      "sha256": "dc0a6d45efc62803b21cd2275cf1aa96e3e123634271f957f1b9f908cbed11d0",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/imap/src/config.ts",
+      "sha256": "6a0ebade3ed21b3069e51fc34442beab065d71d776492797f586fca4f3d48b2d",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/imap/src/prompt.ts",
+      "sha256": "8378973b5e515d027ceeac9c5d9f81c61e0580ae2f29b55e535a1fee2cdbf180",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/imap/src/sender-gate.ts",
+      "sha256": "f2164d3cb161a74f99ae8f66579222287cf42560e9d181f3202e486b7d69589c",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/imap/src/state.ts",
+      "sha256": "3384344cbb8ff21befe6f43033c1d657f3494cf67e2d0e2f49c84cbd443861c9",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/imap/src/watcher.ts",
+      "sha256": "65c7b50c7d18a32a6502c76e13d009826a89d7826901337ea90406bc0ac1ebe5",
+      "role": "production-source",
+      "findingCount": 7
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/imap/README.md",
+      "rule": "non-source",
+      "reason": "Markdown documentation is outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/imap/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork is outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/imap/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG artwork is outside the eligible JS/TS-family source extensions."
+    },
+    {
+      "path": "extensions/imap/src/config.test.ts",
+      "rule": "test-file",
+      "reason": "Basename contains .test.; test suite, with no imports from reviewed production source."
+    },
+    {
+      "path": "extensions/imap/src/imap-test-support.ts",
+      "rule": "test-helper",
+      "reason": "Read the full helper: it exports Vitest/runtime-mock/authentication fixtures. Repository-wide caller search finds imports only from src/state.test.ts:3, src/sender-gate.test.ts:5 and src/watcher.test.ts:8; no production caller."
+    },
+    {
+      "path": "extensions/imap/src/prompt.test.ts",
+      "rule": "test-file",
+      "reason": "Basename contains .test.; test suite, with no imports from reviewed production source."
+    },
+    {
+      "path": "extensions/imap/src/sender-gate.test.ts",
+      "rule": "test-file",
+      "reason": "Basename contains .test.; test suite, with no imports from reviewed production source."
+    },
+    {
+      "path": "extensions/imap/src/state.test.ts",
+      "rule": "test-file",
+      "reason": "Basename contains .test.; test suite, with no imports from reviewed production source."
+    },
+    {
+      "path": "extensions/imap/src/watcher.test.ts",
+      "rule": "test-file",
+      "reason": "Basename contains .test.; test suite, with no imports from reviewed production source."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.pluginConfig",
+      "kind": "api-member",
+      "identity": "api.pluginConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/index.ts",
+          "line": 32,
+          "snippet": "        const config = imapConfigSchema.parse(api.pluginConfig, (accountId) => {"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerService",
+      "kind": "api-member",
+      "identity": "api.registerService",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/index.ts",
+          "line": 22,
+          "snippet": "    api.registerService({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registrationMode",
+      "kind": "api-member",
+      "identity": "api.registrationMode",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/index.ts",
+          "line": 18,
+          "snippet": "    if (api.registrationMode !== \"full\") {",
+          "note": "api is explicitly typed OpenClawPluginApi at line 17."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.hooks.dispatchHookAgentTurn",
+      "kind": "runtime-member",
+      "identity": "runtime.hooks.dispatchHookAgentTurn",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/config.ts",
+          "line": 11,
+          "snippet": "type HookDispatch = OpenClawPluginApi[\"runtime\"][\"hooks\"][\"dispatchHookAgentTurn\"];",
+          "note": "Maximal public runtime indexed-access type path; omit api.runtime and intermediate prefixes."
+        },
+        {
+          "path": "extensions/imap/src/watcher.ts",
+          "line": 368,
+          "snippet": "      ReturnType<ImapWatcherOptions[\"runtime\"][\"hooks\"][\"dispatchHookAgentTurn\"]>",
+          "note": "ImapWatcherOptions.runtime is OpenClawPluginApi[\"runtime\"] at line 29."
+        },
+        {
+          "path": "extensions/imap/src/watcher.ts",
+          "line": 371,
+          "snippet": "      result = await this.options.runtime.hooks.dispatchHookAgentTurn({",
+          "note": "The options.runtime property is typed as the public runtime and receives api.runtime at index.ts:47."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.openKeyedStore",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openKeyedStore",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/state.ts",
+          "line": 10,
+          "snippet": "    cursors: runtime.state.openKeyedStore<ImapCursor>({",
+          "note": "runtime is OpenClawPluginApi[\"runtime\"] at line 8 and receives api.runtime from index.ts:44. The same method opens claims, messageIds and skips stores."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-ingress-runtime#IdentifierAuthentication",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-ingress-runtime#IdentifierAuthentication",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/config.ts",
+          "line": 1,
+          "snippet": "import type { IdentifierAuthentication } from \"openclaw/plugin-sdk/channel-ingress-runtime\";"
+        },
+        {
+          "path": "extensions/imap/src/config.ts",
+          "line": 10,
+          "snippet": "] as const satisfies readonly IdentifierAuthentication[];"
+        },
+        {
+          "path": "extensions/imap/src/sender-gate.ts",
+          "line": 6,
+          "snippet": "  type IdentifierAuthentication,",
+          "note": "Inline type import from openclaw/plugin-sdk/channel-ingress-runtime."
+        },
+        {
+          "path": "extensions/imap/src/sender-gate.ts",
+          "line": 16,
+          "snippet": "  strength: IdentifierAuthentication;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-ingress-runtime#meetsIdentifierAuthentication",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-ingress-runtime#meetsIdentifierAuthentication",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/sender-gate.ts",
+          "line": 5,
+          "snippet": "  meetsIdentifierAuthentication,",
+          "note": "Value import from openclaw/plugin-sdk/channel-ingress-runtime."
+        },
+        {
+          "path": "extensions/imap/src/sender-gate.ts",
+          "line": 200,
+          "snippet": "      meetsIdentifierAuthentication(fallback.strength, params.account.senderAuth.min)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/watcher.ts",
+          "line": 3,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/imap/src/watcher.ts",
+          "line": 116,
+          "snippet": "          `imap: account=${this.options.accountId} connection error=${formatErrorMessage(error)}`,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/index.ts",
+          "line": 3,
+          "snippet": "  type OpenClawPluginApi,",
+          "note": "Inline type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/imap/index.ts",
+          "line": 17,
+          "snippet": "  register(api: OpenClawPluginApi) {"
+        },
+        {
+          "path": "extensions/imap/src/config.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/imap/src/config.ts",
+          "line": 11,
+          "snippet": "type HookDispatch = OpenClawPluginApi[\"runtime\"][\"hooks\"][\"dispatchHookAgentTurn\"];"
+        },
+        {
+          "path": "extensions/imap/src/state.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/imap/src/state.ts",
+          "line": 8,
+          "snippet": "export function createImapState(runtime: OpenClawPluginApi[\"runtime\"]) {"
+        },
+        {
+          "path": "extensions/imap/src/watcher.ts",
+          "line": 5,
+          "snippet": "  OpenClawPluginApi,",
+          "note": "Part of import type from openclaw/plugin-sdk/plugin-entry at lines 4\u20138."
+        },
+        {
+          "path": "extensions/imap/src/watcher.ts",
+          "line": 29,
+          "snippet": "  runtime: OpenClawPluginApi[\"runtime\"];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginServiceContextV2",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginServiceContextV2",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/index.ts",
+          "line": 4,
+          "snippet": "  type OpenClawPluginServiceContextV2,",
+          "note": "Inline type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/imap/index.ts",
+          "line": 25,
+          "snippet": "      async start(context: OpenClawPluginServiceContextV2) {"
+        },
+        {
+          "path": "extensions/imap/src/watcher.ts",
+          "line": 6,
+          "snippet": "  OpenClawPluginServiceContextV2,",
+          "note": "Part of import type from openclaw/plugin-sdk/plugin-entry at lines 4\u20138."
+        },
+        {
+          "path": "extensions/imap/src/watcher.ts",
+          "line": 31,
+          "snippet": "  context: OpenClawPluginServiceContextV2;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginServiceSchedulerV1",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginServiceSchedulerV1",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/watcher.ts",
+          "line": 7,
+          "snippet": "  PluginServiceSchedulerV1,",
+          "note": "Part of import type from openclaw/plugin-sdk/plugin-entry at lines 4\u20138."
+        },
+        {
+          "path": "extensions/imap/src/watcher.ts",
+          "line": 47,
+          "snippet": "  private readonly scheduler: PluginServiceSchedulerV1;"
+        },
+        {
+          "path": "extensions/imap/src/watcher.ts",
+          "line": 48,
+          "snippet": "  private pollJob: ReturnType<PluginServiceSchedulerV1[\"schedule\"]> | undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/index.ts",
+          "line": 2,
+          "snippet": "  definePluginEntry,",
+          "note": "Value import from openclaw/plugin-sdk/plugin-entry at lines 1\u20135."
+        },
+        {
+          "path": "extensions/imap/index.ts",
+          "line": 12,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/security-runtime#safeEqualSecret",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/security-runtime#safeEqualSecret",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/sender-gate.ts",
+          "line": 8,
+          "snippet": "import { safeEqualSecret } from \"openclaw/plugin-sdk/security-runtime\";"
+        },
+        {
+          "path": "extensions/imap/src/sender-gate.ts",
+          "line": 77,
+          "snippet": "  return safeEqualSecret(local.slice(plus + 1), expected);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/config.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord, filterStringEntries } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/imap/src/config.ts",
+          "line": 43,
+          "snippet": "  const configured = asOptionalRecord(asOptionalRecord(value)?.accounts);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#filterStringEntries",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#filterStringEntries",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/config.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord, filterStringEntries } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/imap/src/config.ts",
+          "line": 95,
+          "snippet": "      allowedSenders: filterStringEntries(account.allowedSenders),"
+        },
+        {
+          "path": "extensions/imap/src/sender-gate.ts",
+          "line": 9,
+          "snippet": "import { filterStringEntries } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/imap/src/sender-gate.ts",
+          "line": 64,
+          "snippet": "    typeof delivered === \"string\" ? [delivered] : filterStringEntries(delivered);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/prompt.ts",
+          "line": 2,
+          "snippet": "import { truncateUtf8Prefix, truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/imap/src/prompt.ts",
+          "line": 11,
+          "snippet": "  const snippet = truncateUtf16Safe(body.replace(/\\s+/gu, \" \"), 240);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf8Prefix",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf8Prefix",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/prompt.ts",
+          "line": 2,
+          "snippet": "import { truncateUtf8Prefix, truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/imap/src/prompt.ts",
+          "line": 28,
+          "snippet": "  return `${truncateUtf8Prefix(text, available)}${marker}`;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-ingress-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-ingress-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/config.ts",
+          "line": 1,
+          "snippet": "import type { IdentifierAuthentication } from \"openclaw/plugin-sdk/channel-ingress-runtime\";"
+        },
+        {
+          "path": "extensions/imap/src/sender-gate.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/channel-ingress-runtime\";",
+          "note": "The import at lines 4\u20137 contains value meetsIdentifierAuthentication and inline type IdentifierAuthentication."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/watcher.ts",
+          "line": 3,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/index.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "The import at lines 1\u20135 includes value definePluginEntry and inline type OpenClawPluginApi/OpenClawPluginServiceContextV2."
+        },
+        {
+          "path": "extensions/imap/src/config.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/imap/src/state.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/imap/src/watcher.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "The import type declaration at lines 4\u20138 imports three public types."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/security-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/security-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/sender-gate.ts",
+          "line": 8,
+          "snippet": "import { safeEqualSecret } from \"openclaw/plugin-sdk/security-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/config.ts",
+          "line": 3,
+          "snippet": "import { asOptionalRecord, filterStringEntries } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/imap/src/sender-gate.ts",
+          "line": 9,
+          "snippet": "import { filterStringEntries } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/text-utility-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/imap/src/prompt.ts",
+          "line": 2,
+          "snippet": "import { truncateUtf8Prefix, truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read the Inspector root AGENTS.md, frozen contract and entire README; read source-root, extensions, SDK and plugins AGENTS.md. Read all six eligible production files in full and both metadata files. No Inspector implementation, detector output, other fixture, or expectation extractor was consulted.",
+    "HEAD and its tree match the frozen source identity. The plugin production subtree has no changes relative to the pinned commit; root-authorized instruction/skill edits elsewhere do not change this source audit.",
+    "All 17 files under extensions/imap are partitioned: six production-source files, two metadata files, five test suites, one verified test-only helper and three non-source files. Package metadata selects ./index.ts; no packaged/generated-source exception applies.",
+    "Every plugin-relative production import remains beneath extensions/imap. There is no additional plugin-owned/shared shipped source outside the root. Separately installed imapflow, mailauth and mailparser dependencies and SDK implementation internals are outside the audit population.",
+    "Public SDK facade declarations and package exports confirm all six exact public module specifiers and their original named exports. Explicit and inline type imports remain source dependencies; value imports remain runtime dependencies. Evidence is representative per identity/kind/file, not an occurrence census.",
+    "api.runtime is passed into createImapState and ImapAccountWatcher. Both consumers prove the handle using OpenClawPluginApi[\"runtime\"]; trace its actual state.openKeyedStore and hooks.dispatchHookAgentTurn consumption without a runtime-root or api.runtime identity. The dispatch method has both indexed type references and a runtime call.",
+    "OpenClawPluginServiceContextV2 and PluginServiceSchedulerV1 are distinct imported type contracts. context.logger, context.scheduler, context.serviceHealth and the scheduler scope/job handles are not OpenClawPluginApi or PluginRuntime paths; their property usage does not create api/runtime identities.",
+    "createImapState returns a plugin-owned object containing results of runtime.state.openKeyedStore. Store lookup/register/registerIfAbsent/delete operations and result fields remain outside API/runtime member enumeration under the arbitrary-return-object boundary.",
+    "The manifest contains no channels, providers, skills, commandAliases, cliCommands or contracts fields. configContracts, activation, categories, uiHints, configGroups and configSchema are configuration/descriptive metadata, not agreed manifest-contract identities.",
+    "No API on/registerHook registration exists. runtime.hooks.dispatchHookAgentTurn and hook:imap session keys dispatch work but do not declare named hooks. All relevant references resolve statically; unknowns is empty."
+  ]
+}

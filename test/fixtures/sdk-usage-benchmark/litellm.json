@@ -1,0 +1,719 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "litellm",
+    "path": "extensions/litellm"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_litellm",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/litellm/api.ts",
+      "sha256": "2f0952bf1054f53ca88fb88b481b47d57cce3fd5b9e2f7c686dc39704b4bc232",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/litellm/image-generation-provider.ts",
+      "sha256": "856498c8a391c1c1fd2f2818fd9861da0ad6d812d0e5432e4eb9f31d704df9b5",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/litellm/index.ts",
+      "sha256": "f357367c10e5d0ada09eae2f012dc6ce1bfa5619bb88eae37fb7a95d23f30c29",
+      "role": "production-source",
+      "findingCount": 15
+    },
+    {
+      "path": "extensions/litellm/onboard.ts",
+      "sha256": "c8b23ec095c16dc7b0cec14b9f4c3c31cb86426fcb12af33bfc40b1ecbd4999d",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/litellm/openclaw.plugin.json",
+      "sha256": "2b9831b0cd2da311ec5a97d6fa1a85bb1b628ca48fa5049fc6cd4bc947d23819",
+      "role": "manifest",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/litellm/package.json",
+      "sha256": "80fdb90eb0f38484b7d4b3f5f700efc0ea73a78f505c513047316cd820ef24ab",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/litellm/provider-catalog.ts",
+      "sha256": "5a94bf706331977e088ae2fae442aeea9e751e8b6a182c74c15653990612b8ac",
+      "role": "production-source",
+      "findingCount": 2
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/litellm/AGENTS.md",
+      "rule": "non-source",
+      "reason": "Plugin test instructions; Markdown is outside eligible source extensions. Read for audit guidance."
+    },
+    {
+      "path": "extensions/litellm/CLAUDE.md",
+      "rule": "non-source",
+      "reason": "Symlink to AGENTS.md; Markdown instructions are outside eligible source extensions."
+    },
+    {
+      "path": "extensions/litellm/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation; Markdown is outside eligible source extensions."
+    },
+    {
+      "path": "extensions/litellm/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG artwork is not an eligible JavaScript/TypeScript source file."
+    },
+    {
+      "path": "extensions/litellm/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG artwork is not an eligible JavaScript/TypeScript source file."
+    },
+    {
+      "path": "extensions/litellm/image-generation-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest image-generation tests with .test. basename; no production module imports this file."
+    },
+    {
+      "path": "extensions/litellm/index.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest plugin registration/onboarding tests with .test. basename; no production module imports this file. Its ../test-support/runtime-spies.js dependency is test-only and outside production scope."
+    },
+    {
+      "path": "extensions/litellm/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript compiler configuration is JSON, outside eligible source extensions and the separately reviewed package/manifest metadata."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerImageGenerationProvider",
+      "kind": "api-member",
+      "identity": "api.registerImageGenerationProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 119,
+          "snippet": "    api.registerImageGenerationProvider(buildLitellmImageGenerationProvider());",
+          "note": "The register parameter is explicitly OpenClawPluginApi at line 48."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerProvider",
+      "kind": "api-member",
+      "identity": "api.registerProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 76,
+          "snippet": "    api.registerProvider({",
+          "note": "The register parameter is explicitly OpenClawPluginApi at line 48."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.imageGenerationProviders:litellm",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.imageGenerationProviders:litellm",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/openclaw.plugin.json",
+          "line": 40,
+          "snippet": "    \"imageGenerationProviders\": [\"litellm\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.providers:litellm",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:litellm",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/openclaw.plugin.json",
+          "line": 8,
+          "snippet": "  \"providers\": [\"litellm\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/blob-runtime#bufferToBlobPart",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/blob-runtime#bufferToBlobPart",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/image-generation-provider.ts",
+          "line": 2,
+          "snippet": "import { bufferToBlobPart } from \"openclaw/plugin-sdk/blob-runtime\";"
+        },
+        {
+          "path": "extensions/litellm/image-generation-provider.ts",
+          "line": 100,
+          "snippet": "          new Blob([bufferToBlobPart(image.buffer)], { type: mimeType }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 20,
+          "snippet": "  cfg: OpenClawConfig,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#ImageGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#ImageGenerationProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/image-generation-provider.ts",
+          "line": 3,
+          "snippet": "import {\n  createOpenAiCompatibleImageGenerationProvider,\n  imageSourceUploadFileName,\n  type ImageGenerationProvider,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/litellm/image-generation-provider.ts",
+          "line": 46,
+          "snippet": "export function buildLitellmImageGenerationProvider(): ImageGenerationProvider {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#createOpenAiCompatibleImageGenerationProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#createOpenAiCompatibleImageGenerationProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/image-generation-provider.ts",
+          "line": 3,
+          "snippet": "import {\n  createOpenAiCompatibleImageGenerationProvider,\n  imageSourceUploadFileName,\n  type ImageGenerationProvider,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/litellm/image-generation-provider.ts",
+          "line": 47,
+          "snippet": "  return createOpenAiCompatibleImageGenerationProvider({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/image-generation#imageSourceUploadFileName",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/image-generation#imageSourceUploadFileName",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/image-generation-provider.ts",
+          "line": 3,
+          "snippet": "import {\n  createOpenAiCompatibleImageGenerationProvider,\n  imageSourceUploadFileName,\n  type ImageGenerationProvider,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        },
+        {
+          "path": "extensions/litellm/image-generation-provider.ts",
+          "line": 101,
+          "snippet": "          imageSourceUploadFileName({ image, index }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 2,
+          "snippet": "import {\n  definePluginEntry,\n  type OpenClawPluginApi,\n  type ProviderAuthMethodNonInteractiveContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 48,
+          "snippet": "  register(api: OpenClawPluginApi) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderAuthMethodNonInteractiveContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderAuthMethodNonInteractiveContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 2,
+          "snippet": "import {\n  definePluginEntry,\n  type OpenClawPluginApi,\n  type ProviderAuthMethodNonInteractiveContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 84,
+          "snippet": "          runNonInteractive: async (ctx: ProviderAuthMethodNonInteractiveContext) => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 2,
+          "snippet": "import {\n  definePluginEntry,\n  type OpenClawPluginApi,\n  type ProviderAuthMethodNonInteractiveContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 44,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#findNormalizedProviderValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#findNormalizedProviderValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 7,
+          "snippet": "import {\n  findNormalizedProviderValue,\n  normalizeOptionalSecretInput,\n} from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 102,
+          "snippet": "            findNormalizedProviderValue(ctx.config.models?.providers, PROVIDER_ID)?.baseUrl ?? \"\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-auth#normalizeOptionalSecretInput",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-auth#normalizeOptionalSecretInput",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 7,
+          "snippet": "import {\n  findNormalizedProviderValue,\n  normalizeOptionalSecretInput,\n} from \"openclaw/plugin-sdk/provider-auth\";"
+        },
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 23,
+          "snippet": "  const baseUrl = normalizeOptionalSecretInput(customBaseUrl)?.replace(/\\/+$/, \"\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#buildOpenAICompatibleProviderCatalog",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#buildOpenAICompatibleProviderCatalog",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 11,
+          "snippet": "import { buildOpenAICompatibleProviderCatalog } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        },
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 104,
+          "snippet": "          return buildOpenAICompatibleProviderCatalog({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-entry#createProviderApiKeyAuthMethod",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-entry#createProviderApiKeyAuthMethod",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 12,
+          "snippet": "import { createProviderApiKeyAuthMethod } from \"openclaw/plugin-sdk/provider-entry\";"
+        },
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 49,
+          "snippet": "    const apiKeyAuth = createProviderApiKeyAuthMethod({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/provider-catalog.ts",
+          "line": 1,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/litellm/provider-catalog.ts",
+          "line": 4,
+          "snippet": "export function buildLitellmProvider(): ModelProviderConfig {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#ModelDefinitionConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#ModelDefinitionConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/onboard.ts",
+          "line": 1,
+          "snippet": "import {\n  createDefaultModelsPresetAppliers,\n  type ModelDefinitionConfig,\n  type OpenClawConfig,\n} from \"openclaw/plugin-sdk/provider-onboard\";"
+        },
+        {
+          "path": "extensions/litellm/onboard.ts",
+          "line": 19,
+          "snippet": "export function buildLitellmModelDefinition(): ModelDefinitionConfig {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/onboard.ts",
+          "line": 1,
+          "snippet": "import {\n  createDefaultModelsPresetAppliers,\n  type ModelDefinitionConfig,\n  type OpenClawConfig,\n} from \"openclaw/plugin-sdk/provider-onboard\";"
+        },
+        {
+          "path": "extensions/litellm/onboard.ts",
+          "line": 34,
+          "snippet": "    resolveParams: (cfg: OpenClawConfig) => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#createDefaultModelsPresetAppliers",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#createDefaultModelsPresetAppliers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/onboard.ts",
+          "line": 1,
+          "snippet": "import {\n  createDefaultModelsPresetAppliers,\n  type ModelDefinitionConfig,\n  type OpenClawConfig,\n} from \"openclaw/plugin-sdk/provider-onboard\";"
+        },
+        {
+          "path": "extensions/litellm/onboard.ts",
+          "line": 32,
+          "snippet": "  createDefaultModelsPresetAppliers<[]>({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/image-generation-provider.ts",
+          "line": 8,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/litellm/image-generation-provider.ts",
+          "line": 97,
+          "snippet": "        const mimeType = normalizeOptionalString(image.mimeType) ?? \"image/png\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/blob-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/blob-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/image-generation-provider.ts",
+          "line": 2,
+          "snippet": "import { bufferToBlobPart } from \"openclaw/plugin-sdk/blob-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-contracts",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-contracts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/image-generation",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/image-generation",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/image-generation-provider.ts",
+          "line": 3,
+          "snippet": "import {\n  createOpenAiCompatibleImageGenerationProvider,\n  imageSourceUploadFileName,\n  type ImageGenerationProvider,\n} from \"openclaw/plugin-sdk/image-generation\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 2,
+          "snippet": "import {\n  definePluginEntry,\n  type OpenClawPluginApi,\n  type ProviderAuthMethodNonInteractiveContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-auth",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-auth",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 7,
+          "snippet": "import {\n  findNormalizedProviderValue,\n  normalizeOptionalSecretInput,\n} from \"openclaw/plugin-sdk/provider-auth\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 11,
+          "snippet": "import { buildOpenAICompatibleProviderCatalog } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/index.ts",
+          "line": 12,
+          "snippet": "import { createProviderApiKeyAuthMethod } from \"openclaw/plugin-sdk/provider-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-shared",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/provider-catalog.ts",
+          "line": 1,
+          "snippet": "import type { ModelProviderConfig } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-onboard",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-onboard",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/onboard.ts",
+          "line": 1,
+          "snippet": "import {\n  createDefaultModelsPresetAppliers,\n  type ModelDefinitionConfig,\n  type OpenClawConfig,\n} from \"openclaw/plugin-sdk/provider-onboard\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/litellm/image-generation-provider.ts",
+          "line": 8,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all five eligible production modules, including the local api.ts barrel and onboard.ts, plus package.json and openclaw.plugin.json. All reviewed source and metadata bytes match the pinned commit; the checkout has separately authorized instruction/skill edits outside this plugin.",
+    "All production relative imports remain inside extensions/litellm. There is no additional shared shipped source outside the canonical root. The ../test-support/runtime-spies.js import occurs only in excluded index.test.ts; SDK implementations and installed dependencies are outside this audit population.",
+    "package.json identifies ./index.ts as the plugin entry and declares no artifact inclusion exception. Source scope independently includes api.ts even though the entry does not import it.",
+    "api.ts reexports plugin-local constants/functions from onboard.ts. applyLitellmConfig and applyLitellmProviderConfig are properties of createDefaultModelsPresetAppliers return value (onboard.ts:31-32), not direct aliases of exported SDK functions; their imports/reexports do not add SDK export identities.",
+    "apiKeyAuth.runNonInteractive (index.ts:85-89) is a method of a value returned by createProviderApiKeyAuthMethod, not a public OpenClawPluginApi/PluginRuntime handle or a direct SDK-export alias. Provider contexts, config objects, image callback arguments, and returned model/provider objects likewise do not acquire API/runtime member identities.",
+    "OpenClawConfig imported through config-contracts and provider-onboard retains each explicit facade identity. Inline type imports are type dependencies; their enclosing modules are mixed when ordinary value imports occur in the same declaration. Every imported type is explicitly annotated and every imported value helper is directly called.",
+    "Only api.registerProvider and api.registerImageGenerationProvider are public API accesses. There are no runtime handles, hooks, dynamic SDK imports, computed SDK members, or genuinely unresolved dependencies.",
+    "Manifest identities are the top-level providers entry and contracts.imageGenerationProviders entry. modelCatalog, setup, providerAuthChoices, categories, activation, and configSchema are descriptive/configuration metadata outside the frozen manifest-contract fields."
+  ]
+}

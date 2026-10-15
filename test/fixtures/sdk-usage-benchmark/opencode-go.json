@@ -1,0 +1,1144 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "opencode-go",
+    "path": "extensions/opencode-go"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_opencode_go",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/opencode-go/index.ts",
+      "sha256": "3857b8401d4eed75463d2b03b08d556e70bbfba7b6b54dac1d98b8acc888b8ac",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/opencode-go/media-understanding-provider.ts",
+      "sha256": "5920d733c18cb0a7c24506350dd340ee7fe4bb4f0772c32fb37e30781817f723",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/opencode-go/onboard.ts",
+      "sha256": "962c5878be90cee16d952d113b3a5e5fef77c35e5c20b1e5a192f55118307110",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/opencode-go/openclaw.plugin.json",
+      "sha256": "d80902deb665ebe54623e87ebb38fb2a1a14813f63a127655454f64526b588d7",
+      "role": "manifest",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/opencode-go/package.json",
+      "sha256": "f119cd370cfa87e19f4f8cd26be764a80f8c24ff054e083ee20a89d53edb0445",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/opencode-go/provider-catalog.ts",
+      "sha256": "b886e6f0d34a4f210a5ef126cf05dd57bf5da0fdef2bb632a4f635b3e8bfc830",
+      "role": "production-source",
+      "findingCount": 15
+    },
+    {
+      "path": "extensions/opencode-go/provider-discovery.ts",
+      "sha256": "a00b00d51b7ab183fca21f889d19d5ed5291bc38a2e8253cc41e08c97c4ee8ee",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/opencode-go/provider-policy-api.ts",
+      "sha256": "53b924eda2f9e7abe696ddfc967950dbcf2fb84503c4999c5a87ee47bd57b441",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/opencode-go/reasoning-sanitizer.ts",
+      "sha256": "648c92fcc522dc5c8603f629a45cc01ee8972ec1b2e7e47234249945febb7429",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/opencode-go/stream-termination.ts",
+      "sha256": "e59e7c874c9cb539227389530e6329a2ae268229d85dd9997954f921a72e4b61",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/opencode-go/stream.ts",
+      "sha256": "03f3c05494a1a66965fa5c645c4207ba7e695eea5bd95263cbf23851fde421d8",
+      "role": "production-source",
+      "findingCount": 8
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/opencode-go/README.md",
+      "rule": "non-source",
+      "reason": "Markdown plugin setup documentation; not a JS/TS-family source file."
+    },
+    {
+      "path": "extensions/opencode-go/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG visual asset; not a JS/TS-family source file."
+    },
+    {
+      "path": "extensions/opencode-go/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG visual asset; not a JS/TS-family source file."
+    },
+    {
+      "path": "extensions/opencode-go/index.test.ts",
+      "rule": "test-file",
+      "reason": "Plugin entrypoint tests; basename contains .test. and no production file imports it."
+    },
+    {
+      "path": "extensions/opencode-go/opencode-go.live.test.ts",
+      "rule": "test-file",
+      "reason": "Live provider tests; basename contains .test. and no production file imports it."
+    },
+    {
+      "path": "extensions/opencode-go/reasoning-sanitizer.test.ts",
+      "rule": "test-file",
+      "reason": "Reasoning sanitizer tests; basename contains .test. and no production file imports it."
+    },
+    {
+      "path": "extensions/opencode-go/stream-termination.test.ts",
+      "rule": "test-file",
+      "reason": "Stream termination tests; basename contains .test. and no production file imports it."
+    },
+    {
+      "path": "extensions/opencode-go/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript compiler configuration; not a JS/TS-family source file or required package/manifest metadata."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerMediaUnderstandingProvider",
+      "kind": "api-member",
+      "identity": "api.registerMediaUnderstandingProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/index.ts",
+          "line": 137,
+          "snippet": "api.registerMediaUnderstandingProvider(opencodeGoMediaUnderstandingProvider);",
+          "note": "register(api) is the callback passed to defineSingleProviderPluginEntry; its SingleProviderPluginOptions.register contract in src/plugin-sdk/provider-entry.ts types api as OpenClawPluginApi."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.mediaUnderstandingProviders:opencode-go",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.mediaUnderstandingProviders:opencode-go",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/openclaw.plugin.json",
+          "line": 196,
+          "snippet": "\"mediaUnderstandingProviders\": [\"opencode-go\"]"
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.providers:opencode-go",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:opencode-go",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/openclaw.plugin.json",
+          "line": 9,
+          "snippet": "\"providers\": [\"opencode-go\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-runtime#ModelCatalogEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-runtime#ModelCatalogEntry",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 1,
+          "snippet": "import type { ModelCatalogEntry } from \"openclaw/plugin-sdk/agent-runtime\";"
+        },
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 102,
+          "snippet": "export function listOpencodeGoModelCatalogEntries(): ModelCatalogEntry[] {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#AssistantMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#AssistantMessage",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 4,
+          "snippet": "import type { AssistantMessage, AssistantMessageEvent } from \"openclaw/plugin-sdk/llm\";"
+        },
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 45,
+          "snippet": "partial: AssistantMessage | undefined,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#AssistantMessageEvent",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#AssistantMessageEvent",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 4,
+          "snippet": "import type { AssistantMessage, AssistantMessageEvent } from \"openclaw/plugin-sdk/llm\";"
+        },
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 29,
+          "snippet": "function isProviderProgressEvent(event: AssistantMessageEvent): boolean {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/llm#createAssistantMessageEventStream",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/llm#createAssistantMessageEventStream",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 5,
+          "snippet": "import { createAssistantMessageEventStream } from \"openclaw/plugin-sdk/llm\";"
+        },
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 77,
+          "snippet": "const output = createAssistantMessageEventStream();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-understanding#MediaUnderstandingProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-understanding#MediaUnderstandingProvider",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/media-understanding-provider.ts",
+          "line": 2,
+          "snippet": "import type { MediaUnderstandingProvider } from \"openclaw/plugin-sdk/media-understanding\";"
+        },
+        {
+          "path": "extensions/opencode-go/media-understanding-provider.ts",
+          "line": 4,
+          "snippet": "export const opencodeGoMediaUnderstandingProvider: MediaUnderstandingProvider = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#asPositiveFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#asPositiveFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 6,
+          "snippet": "import { asPositiveFiniteNumber as validTimeoutMs } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 26,
+          "snippet": "return validTimeoutMs((model as { requestTimeoutMs?: unknown })?.requestTimeoutMs) ?? fallbackMs;",
+          "note": "validTimeoutMs is the unchanged imported alias of asPositiveFiniteNumber."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderDefaultThinkingPolicyContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderDefaultThinkingPolicyContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-policy-api.ts",
+          "line": 3,
+          "snippet": "ProviderDefaultThinkingPolicyContext,",
+          "note": "Binding in the import type block from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/opencode-go/provider-policy-api.ts",
+          "line": 41,
+          "snippet": "context?: Pick<ProviderDefaultThinkingPolicyContext, \"api\" | \"reasoning\" | \"compat\">,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderRuntimeModel",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderRuntimeModel",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 2,
+          "snippet": "import type { ProviderRuntimeModel } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 106,
+          "snippet": "export function resolveOpencodeGoModel(modelId: string): ProviderRuntimeModel | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderThinkingProfile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderThinkingProfile",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-policy-api.ts",
+          "line": 4,
+          "snippet": "ProviderThinkingProfile,",
+          "note": "Binding in the import type block from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/opencode-go/provider-policy-api.ts",
+          "line": 11,
+          "snippet": "} as const satisfies ProviderThinkingProfile;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#ProviderWrapStreamFnContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#ProviderWrapStreamFnContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 7,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 10,
+          "snippet": "type ProviderStreamFn = NonNullable<ProviderWrapStreamFnContext[\"streamFn\"]>;"
+        },
+        {
+          "path": "extensions/opencode-go/stream.ts",
+          "line": 1,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/opencode-go/stream.ts",
+          "line": 16,
+          "snippet": "baseStreamFn: NonNullable<ProviderWrapStreamFnContext[\"streamFn\"]>,",
+          "note": "Provider callback context is not OpenClawPluginApi or PluginRuntime; its indexed types do not create API/runtime member identities."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#ProjectedUpstreamProviderCatalogModel",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#ProjectedUpstreamProviderCatalogModel",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 9,
+          "snippet": "type ProjectedUpstreamProviderCatalogModel as OpencodeGoModelDefinition,",
+          "note": "Inline type import preserves original export name; local alias is OpencodeGoModelDefinition."
+        },
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 34,
+          "snippet": "const hydrated = inheritedTransport as OpencodeGoModelDefinition;",
+          "note": "OpencodeGoModelDefinition directly aliases ProjectedUpstreamProviderCatalogModel."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#ProviderCatalogSnapshot",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#ProviderCatalogSnapshot",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 8,
+          "snippet": "type ProviderCatalogSnapshot,",
+          "note": "Inline type binding from openclaw/plugin-sdk/provider-catalog-live-runtime."
+        },
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 25,
+          "snippet": "const OPENCODE_GO_SEED_CATALOG: ProviderCatalogSnapshot = new Map("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#buildOpenAICompatibleLiveModels",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#buildOpenAICompatibleLiveModels",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 4,
+          "snippet": "buildOpenAICompatibleLiveModels,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-catalog-live-runtime."
+        },
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 60,
+          "snippet": "const unknown = buildOpenAICompatibleLiveModels(rows, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#createUpstreamProviderCatalog",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#createUpstreamProviderCatalog",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 5,
+          "snippet": "createUpstreamProviderCatalog,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-catalog-live-runtime."
+        },
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 77,
+          "snippet": "const opencodeGoCatalog = createUpstreamProviderCatalog({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#listProviderCatalogSnapshotEntries",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#listProviderCatalogSnapshotEntries",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 6,
+          "snippet": "listProviderCatalogSnapshotEntries,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-catalog-live-runtime."
+        },
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 103,
+          "snippet": "return listProviderCatalogSnapshotEntries(opencodeGoCatalog.getSnapshot());"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#projectProviderCatalogSnapshotRows",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#projectProviderCatalogSnapshotRows",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 7,
+          "snippet": "projectProviderCatalogSnapshotRows,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-catalog-live-runtime."
+        },
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 75,
+          "snippet": "return [...projectProviderCatalogSnapshotRows(rows, snapshot), ...unknown];"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#runLiveProviderCatalog",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#runLiveProviderCatalog",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/index.ts",
+          "line": 2,
+          "snippet": "import { runLiveProviderCatalog } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        },
+        {
+          "path": "extensions/opencode-go/index.ts",
+          "line": 103,
+          "snippet": "return await runLiveProviderCatalog({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-shared#resolveFirstProviderCatalogAuth",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared#resolveFirstProviderCatalogAuth",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/index.ts",
+          "line": 3,
+          "snippet": "import { resolveFirstProviderCatalogAuth } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        },
+        {
+          "path": "extensions/opencode-go/index.ts",
+          "line": 91,
+          "snippet": "const auth = resolveFirstProviderCatalogAuth(ctx.resolveProviderApiKey, ["
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-entry#defineSingleProviderPluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-entry#defineSingleProviderPluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/index.ts",
+          "line": 4,
+          "snippet": "import { defineSingleProviderPluginEntry } from \"openclaw/plugin-sdk/provider-entry\";"
+        },
+        {
+          "path": "extensions/opencode-go/index.ts",
+          "line": 23,
+          "snippet": "export default defineSingleProviderPluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#normalizeBaseUrl",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#normalizeBaseUrl",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 11,
+          "snippet": "import { normalizeBaseUrl } from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 138,
+          "snippet": "const normalized = normalizeBaseUrl(params.baseUrl);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-http#resolveProviderRequestHeaders",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-http#resolveProviderRequestHeaders",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/stream.ts",
+          "line": 2,
+          "snippet": "import { resolveProviderRequestHeaders } from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/opencode-go/stream.ts",
+          "line": 28,
+          "snippet": "headers: resolveProviderRequestHeaders({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ProviderPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ProviderPlugin",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-discovery.ts",
+          "line": 2,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/opencode-go/provider-discovery.ts",
+          "line": 5,
+          "snippet": "const opencodeGoProviderDiscovery: ProviderPlugin = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#buildProviderReplayFamilyHooks",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#buildProviderReplayFamilyHooks",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/index.ts",
+          "line": 5,
+          "snippet": "import { buildProviderReplayFamilyHooks } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/opencode-go/index.ts",
+          "line": 116,
+          "snippet": "...buildProviderReplayFamilyHooks({ family: \"passthrough-gemini\" }),",
+          "note": "Calling the SDK helper does not expose its internal hook registrations as plugin source findings."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#normalizeModelCompat",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#normalizeModelCompat",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 12,
+          "snippet": "import { normalizeModelCompat } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 36,
+          "snippet": "const model = normalizeModelCompat(hydrated) as OpencodeGoModelDefinition;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#createDeepSeekV4OpenAICompatibleThinkingWrapper",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#createDeepSeekV4OpenAICompatibleThinkingWrapper",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/stream.ts",
+          "line": 4,
+          "snippet": "createDeepSeekV4OpenAICompatibleThinkingWrapper,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-stream-shared."
+        },
+        {
+          "path": "extensions/opencode-go/stream.ts",
+          "line": 45,
+          "snippet": "const flashStreamFn = createDeepSeekV4OpenAICompatibleThinkingWrapper({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#createOpenAICompatibleCompletionsThinkingOffWrapper",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#createOpenAICompatibleCompletionsThinkingOffWrapper",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/stream.ts",
+          "line": 5,
+          "snippet": "createOpenAICompatibleCompletionsThinkingOffWrapper,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-stream-shared."
+        },
+        {
+          "path": "extensions/opencode-go/stream.ts",
+          "line": 81,
+          "snippet": "const thinkingOff = createOpenAICompatibleCompletionsThinkingOffWrapper("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-stream-shared#createPayloadPatchStreamWrapper",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared#createPayloadPatchStreamWrapper",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/stream.ts",
+          "line": 6,
+          "snippet": "createPayloadPatchStreamWrapper,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-stream-shared."
+        },
+        {
+          "path": "extensions/opencode-go/stream.ts",
+          "line": 69,
+          "snippet": "const payloadStreamFn = createPayloadPatchStreamWrapper("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-thinking-runtime#resolveEffortThinkingProfile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-thinking-runtime#resolveEffortThinkingProfile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-policy-api.ts",
+          "line": 6,
+          "snippet": "import { resolveEffortThinkingProfile } from \"openclaw/plugin-sdk/provider-thinking-runtime\";"
+        },
+        {
+          "path": "extensions/opencode-go/provider-policy-api.ts",
+          "line": 47,
+          "snippet": "const effortProfile = resolveEffortThinkingProfile(context?.compat?.supportedReasoningEfforts);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-transport-runtime#createEmptyTransportUsage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-transport-runtime#createEmptyTransportUsage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 8,
+          "snippet": "import { createEmptyTransportUsage } from \"openclaw/plugin-sdk/provider-transport-runtime\";"
+        },
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 59,
+          "snippet": "usage: createEmptyTransportUsage(),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalObjectRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalObjectRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/reasoning-sanitizer.ts",
+          "line": 1,
+          "snippet": "import { asOptionalObjectRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/opencode-go/reasoning-sanitizer.ts",
+          "line": 13,
+          "snippet": "const type = asOptionalObjectRecord(value)?.type;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-runtime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 1,
+          "snippet": "import type { ModelCatalogEntry } from \"openclaw/plugin-sdk/agent-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/llm",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/llm",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 4,
+          "snippet": "import type { AssistantMessage, AssistantMessageEvent } from \"openclaw/plugin-sdk/llm\";"
+        },
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 5,
+          "snippet": "import { createAssistantMessageEventStream } from \"openclaw/plugin-sdk/llm\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-understanding",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-understanding",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/media-understanding-provider.ts",
+          "line": 2,
+          "snippet": "import type { MediaUnderstandingProvider } from \"openclaw/plugin-sdk/media-understanding\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 6,
+          "snippet": "import { asPositiveFiniteNumber as validTimeoutMs } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 2,
+          "snippet": "import type { ProviderRuntimeModel } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/opencode-go/provider-policy-api.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "This import type block binds ProviderDefaultThinkingPolicyContext and ProviderThinkingProfile."
+        },
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 7,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/opencode-go/stream.ts",
+          "line": 1,
+          "snippet": "import type { ProviderWrapStreamFnContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/index.ts",
+          "line": 2,
+          "snippet": "import { runLiveProviderCatalog } from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        },
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 10,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";",
+          "note": "The import block has runtime helper bindings and inline type bindings ProviderCatalogSnapshot and ProjectedUpstreamProviderCatalogModel."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/index.ts",
+          "line": 3,
+          "snippet": "import { resolveFirstProviderCatalogAuth } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/index.ts",
+          "line": 4,
+          "snippet": "import { defineSingleProviderPluginEntry } from \"openclaw/plugin-sdk/provider-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-http",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-http",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 11,
+          "snippet": "import { normalizeBaseUrl } from \"openclaw/plugin-sdk/provider-http\";"
+        },
+        {
+          "path": "extensions/opencode-go/stream.ts",
+          "line": 2,
+          "snippet": "import { resolveProviderRequestHeaders } from \"openclaw/plugin-sdk/provider-http\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-shared",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/index.ts",
+          "line": 5,
+          "snippet": "import { buildProviderReplayFamilyHooks } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/opencode-go/provider-catalog.ts",
+          "line": 12,
+          "snippet": "import { normalizeModelCompat } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        },
+        {
+          "path": "extensions/opencode-go/provider-discovery.ts",
+          "line": 2,
+          "snippet": "import type { ProviderPlugin } from \"openclaw/plugin-sdk/provider-model-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-stream-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-stream-shared",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/stream.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-stream-shared\";",
+          "note": "The named value import binds three stream wrapper functions."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-thinking-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-thinking-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/provider-policy-api.ts",
+          "line": 6,
+          "snippet": "import { resolveEffortThinkingProfile } from \"openclaw/plugin-sdk/provider-thinking-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-transport-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-transport-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/stream-termination.ts",
+          "line": 8,
+          "snippet": "import { createEmptyTransportUsage } from \"openclaw/plugin-sdk/provider-transport-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/opencode-go/reasoning-sanitizer.ts",
+          "line": 1,
+          "snippet": "import { asOptionalObjectRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all nine eligible production source files, package.json and the full manifest. The nine source files and metadata bytes match the pinned commit; source checkout changes are confined to authorized AGENTS/skill documentation outside this plugin.",
+    "All 19 files under extensions/opencode-go are partitioned into 11 reviewed and 8 excluded records. Package metadata declares index.ts as its extension entry and bundledDist true; no generated source or artifact-scope exception exists in this source tree.",
+    "Every local production import stays within the plugin root. stream.ts imports reasoning-sanitizer.ts and stream-termination.ts; index.ts, stream.ts and provider-catalog.ts import provider-policy-api.ts. These are shipped production helpers despite having associated tests. No extra shared shipped-source boundary is crossed, and no installed dependency implementation was crawled.",
+    "The only public API member occurrence is registerMediaUnderstandingProvider in the proven OpenClawPluginApi register callback. Provider catalog, thinking, model and transport contexts are different contracts; their api/model/compat fields and ProviderWrapStreamFnContext indexed types are not OpenClawPluginApi or PluginRuntime member usage.",
+    "createUpstreamProviderCatalog returns a catalog object, and createAssistantMessageEventStream returns an event stream. Their getSnapshot/buildStaticProvider/buildLiveProvider/resolveStarterModel/push/end and other return-object members do not become API/runtime findings. SDK-created wrapper calls likewise do not invent direct references to their helper internals.",
+    "Manifest contracts are exactly providers and contracts.mediaUnderstandingProviders. Catalog contents, request metadata, endpoint metadata, setup providers, auth choices and media metadata are not additional identities under the frozen manifest rule.",
+    "No runtime handles, API on/registerHook calls, local SDK reexports, dynamic SDK imports, or genuinely unresolved API/runtime accesses occur. The replay-family helper call is an SDK dependency and does not imply source-level hook identities.",
+    "Original SDK export identities are retained for validTimeoutMs (asPositiveFiniteNumber) and OpencodeGoModelDefinition (ProjectedUpstreamProviderCatalogModel). Explicit/inline type imports and their annotations remain type dependencies; ordinary SDK helper imports and calls remain runtime dependencies."
+  ]
+}

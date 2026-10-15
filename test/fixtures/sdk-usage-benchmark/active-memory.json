@@ -1,0 +1,2979 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "active-memory",
+    "path": "extensions/active-memory"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_active_memory",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/active-memory/config.ts",
+      "sha256": "4ba4c96648f4836698a0cf6c955ea96f46a2b1d46d49fe40ef8806bbbed5470d",
+      "role": "production-source",
+      "findingCount": 18
+    },
+    {
+      "path": "extensions/active-memory/doctor-contract-api.ts",
+      "sha256": "ac0fb637d897bfe7db74d4a2e4ae56c26194a478fd7ad7294184fb1d83c91031",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/active-memory/escalation.ts",
+      "sha256": "ba4671551caf3ddde8ac4ae3961a271eaa8f1dd162333e332f785c84d02f1989",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/active-memory/index.ts",
+      "sha256": "8052d45f31b37fb62dbb0a90a1892dcf7ea71bb942883140823d596c5e835533",
+      "role": "production-source",
+      "findingCount": 30
+    },
+    {
+      "path": "extensions/active-memory/openclaw.plugin.json",
+      "sha256": "011d1d0f521a30b58024afd09f8733b7872bb22c5220f95cc45c2b77e6d6275f",
+      "role": "manifest",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/active-memory/prompt.ts",
+      "sha256": "ee9e864936d3d681388559f08907827613e8316fc5982300bd6495c7fb6e04e7",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/active-memory/query.ts",
+      "sha256": "7054c1020e96e5d2a4aeab8a765ee3ef218057519da4b15e04ce2424e8c82979",
+      "role": "production-source",
+      "findingCount": 11
+    },
+    {
+      "path": "extensions/active-memory/recall-run.ts",
+      "sha256": "7fcd958b6ab14eae2813914fcf378b46619d159126fea85d3afad34dfd1f9fa5",
+      "role": "production-source",
+      "findingCount": 26
+    },
+    {
+      "path": "extensions/active-memory/recall-state.ts",
+      "sha256": "60a63b0c6ad7d4871afddbb6ca14ac6967e1d9037162960b500b3240e0980199",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/active-memory/recall.ts",
+      "sha256": "b59490400be983891d1ebadaee1ddb2dd1e060404d0c0541deb808613f1a473b",
+      "role": "production-source",
+      "findingCount": 13
+    },
+    {
+      "path": "extensions/active-memory/session-policy.ts",
+      "sha256": "28242048b0b703ebc4b5ee38d6eddd3c92ac99d359828bbd1747fd632d4b66f6",
+      "role": "production-source",
+      "findingCount": 16
+    },
+    {
+      "path": "extensions/active-memory/session.ts",
+      "sha256": "30c62ce86dbea00ef2208f73c6ea3bcaef6c4b42df73bda5b33b6d522ffe7239",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/active-memory/transcript-result.ts",
+      "sha256": "2988a026647a4805d2c8a7551b6c4215b4c594c19b42e0ca4945e3dbf7c5e296",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/active-memory/transcript-watch.ts",
+      "sha256": "207e9ef193e556e4ea583c7e9dc2d96e1b974ac9e24b6c81b20762ae175da2b3",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/active-memory/transcript.ts",
+      "sha256": "c7e8c7b942c8b30cfbc48e91b59fd6ca9b8b2f7c0eb470407fa9d8833a1a083b",
+      "role": "production-source",
+      "findingCount": 17
+    },
+    {
+      "path": "extensions/active-memory/trigger-recall.ts",
+      "sha256": "ea592725f6fae1bc3a577da26c875dacb3df46177e9d2a2351461e8ba62a415a",
+      "role": "production-source",
+      "findingCount": 15
+    },
+    {
+      "path": "extensions/active-memory/types.ts",
+      "sha256": "be7c7b5b5991a29d44ee3e57a502a84c0f1ec52f40f1afea683621b74c8bf73a",
+      "role": "production-source",
+      "findingCount": 4
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/active-memory/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation, outside eligible source extensions."
+    },
+    {
+      "path": "extensions/active-memory/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Vector plugin artwork, outside eligible source extensions."
+    },
+    {
+      "path": "extensions/active-memory/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Binary plugin icon asset, not executable source."
+    },
+    {
+      "path": "extensions/active-memory/config.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; excluded by basename rule and not imported by production source."
+    },
+    {
+      "path": "extensions/active-memory/control-ui.presentation.json",
+      "rule": "non-source",
+      "reason": "UI presentation metadata, outside source extensions and not an agreed manifest-contract document."
+    },
+    {
+      "path": "extensions/active-memory/doctor-contract-api.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; excluded by basename rule and not imported by production source."
+    },
+    {
+      "path": "extensions/active-memory/escalation.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; excluded by basename rule and not imported by production source."
+    },
+    {
+      "path": "extensions/active-memory/index.diagnostics.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Only caller is extensions/active-memory/index.test.ts (verified repository-wide); no production import. Provides diagnostic test registration."
+    },
+    {
+      "path": "extensions/active-memory/index.memory-provider.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Only caller is extensions/active-memory/index.test.ts (verified repository-wide); no production import. Provides memory-provider test registration."
+    },
+    {
+      "path": "extensions/active-memory/index.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; excluded by basename rule and not imported by production source."
+    },
+    {
+      "path": "extensions/active-memory/index.transcript.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Only caller is extensions/active-memory/index.test.ts (verified repository-wide); no production import. Provides test transcript writers and fixture helpers."
+    },
+    {
+      "path": "extensions/active-memory/prompt.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; excluded by basename rule and not imported by production source."
+    },
+    {
+      "path": "extensions/active-memory/query.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; excluded by basename rule and not imported by production source."
+    },
+    {
+      "path": "extensions/active-memory/recall-state.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; excluded by basename rule and not imported by production source."
+    },
+    {
+      "path": "extensions/active-memory/session-policy.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; excluded by basename rule and not imported by production source."
+    },
+    {
+      "path": "extensions/active-memory/trigger-recall.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; excluded by basename rule and not imported by production source."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.config",
+      "kind": "api-member",
+      "identity": "api.config",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 254,
+          "snippet": "    return api.config;"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.session.mainKey",
+      "kind": "api-member",
+      "identity": "api.config.session.mainKey",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 359,
+          "snippet": "              mainKey: liveConfig.session?.mainKey ?? api.config.session?.mainKey,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.id",
+      "kind": "api-member",
+      "identity": "api.id",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 229,
+          "snippet": "      pluginOwnerId: params.api.id,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.debug",
+      "kind": "api-member",
+      "identity": "api.logger.debug",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 219,
+          "snippet": "          api.logger.debug?.("
+        },
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 101,
+          "snippet": "          api.logger.debug?.(`${logPrefix} released memory search managers after timeout`);"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 202,
+          "snippet": "            params.api.logger.debug?.("
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 45,
+          "snippet": "    params.api.logger.debug?.("
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 268,
+          "snippet": "    params.api.logger.debug?.("
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.info",
+      "kind": "api-member",
+      "identity": "api.logger.info",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 210,
+          "snippet": "      api.logger.info?.(`active-memory: recall skipped reason=${reason}`);"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 113,
+          "snippet": "    params.api.logger.info?.(buildRecallDoneLogLine(params.logPrefix, params.result));"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.logger.warn",
+      "kind": "api-member",
+      "identity": "api.logger.warn",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 82,
+          "snippet": "        api.logger.warn?.("
+        },
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 105,
+          "snippet": "          api.logger.warn?.("
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 214,
+          "snippet": "          params.api.logger.warn?.("
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 416,
+          "snippet": "      params.api.logger.warn?.(`${logPrefix} failed error=${message}; skipping recall`);"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.on",
+      "kind": "api-member",
+      "identity": "api.on",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 212,
+          "snippet": "    api.on("
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 604,
+          "snippet": "    api.on(\"agent_end\", (event, ctx) => {"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig",
+      "kind": "api-member",
+      "identity": "api.pluginConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 75,
+          "snippet": "      api.pluginConfig,"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerCommand",
+      "kind": "api-member",
+      "identity": "api.registerCommand",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 110,
+          "snippet": "    api.registerCommand({"
+        }
+      ]
+    },
+    {
+      "key": "hook:hook.agent_end",
+      "kind": "hook",
+      "identity": "hook.agent_end",
+      "classification": "runtime",
+      "referenceKinds": [
+        "hook-registration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 604,
+          "snippet": "    api.on(\"agent_end\", (event, ctx) => {"
+        }
+      ]
+    },
+    {
+      "key": "hook:hook.before_prompt_build",
+      "kind": "hook",
+      "identity": "hook.before_prompt_build",
+      "classification": "runtime",
+      "referenceKinds": [
+        "hook-registration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 212,
+          "snippet": "    api.on(\n      \"before_prompt_build\",\n      async (event, ctx) => {",
+          "note": "Literal named hook registered with the typed plugin API."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.agent.resolveCliBackendDispatchEligibilityAsync",
+      "kind": "runtime-member",
+      "identity": "runtime.agent.resolveCliBackendDispatchEligibilityAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 237,
+          "snippet": "          await api.runtime.agent.resolveCliBackendDispatchEligibilityAsync({"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.agent.runEmbeddedAgent",
+      "kind": "runtime-member",
+      "identity": "runtime.agent.runEmbeddedAgent",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 266,
+          "snippet": "    const result = await params.api.runtime.agent\n      .runEmbeddedAgent({",
+          "note": "Typed api runtime call spans the next line."
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 123,
+          "snippet": "    OpenClawPluginApi[\"runtime\"][\"agent\"][\"runEmbeddedAgent\"]",
+          "note": "Maximal public indexed type path ends at runEmbeddedAgent; Parameters then projects its result argument type."
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 97,
+          "snippet": "    OpenClawPluginApi[\"runtime\"][\"agent\"][\"runEmbeddedAgent\"]"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.agent.session.getSessionEntryAsync",
+      "kind": "runtime-member",
+      "identity": "runtime.agent.session.getSessionEntryAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 35,
+          "snippet": "      const entry = await params.api.runtime.agent.session.getSessionEntryAsync({"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.agent.session.getSessionEntryByIdAsync",
+      "kind": "runtime-member",
+      "identity": "runtime.agent.session.getSessionEntryByIdAsync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 44,
+          "snippet": "      ? await params.api.runtime.agent.session.getSessionEntryByIdAsync({"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.agent.session.prepareSessionEntryPatch",
+      "kind": "runtime-member",
+      "identity": "runtime.agent.session.prepareSessionEntryPatch",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 233,
+          "snippet": "    await params.api.runtime.agent.session.prepareSessionEntryPatch({"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.agent.session.resolveStorePath",
+      "kind": "runtime-member",
+      "identity": "runtime.agent.session.resolveStorePath",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 276,
+          "snippet": "            const storePath = api.runtime.agent.session.resolveStorePath("
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.config.current",
+      "kind": "runtime-member",
+      "identity": "runtime.config.current",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 252,
+          "snippet": "    return api.runtime.config.current() as OpenClawConfig;"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 93,
+          "snippet": "        () => api.runtime.config.current() as OpenClawConfig,"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.config.mutateConfigFile",
+      "kind": "runtime-member",
+      "identity": "runtime.config.mutateConfigFile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 146,
+          "snippet": "            await api.runtime.config.mutateConfigFile({"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.openKeyedStore",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openKeyedStore",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 24,
+          "snippet": "  return api.runtime.state.openKeyedStore<ActiveMemoryToggleEntry>({",
+          "note": "The wrapper returns a plugin state store; its lookup/register/delete operations are not PluginRuntime members."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.state.resolveStateDir",
+      "kind": "runtime-member",
+      "identity": "runtime.state.resolveStateDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 124,
+          "snippet": "    api.runtime.state.resolveStateDir(),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-runtime#DEFAULT_PROVIDER",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-runtime#DEFAULT_PROVIDER",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 2,
+          "snippet": "  DEFAULT_PROVIDER,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-runtime#parseModelRef",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-runtime#parseModelRef",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 3,
+          "snippet": "  parseModelRef,"
+        },
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 239,
+          "snippet": "        parseModelRef(candidate, defaultProvider) ?? { provider: defaultProvider, model: candidate }"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-runtime#resolveAgentConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-runtime#resolveAgentConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 1,
+          "snippet": "import { resolveAgentConfig } from \"openclaw/plugin-sdk/agent-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 245,
+          "snippet": "      resolveAgentConfig(params.runtimeConfig, params.agentId)?.fastModeDefault,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-runtime#resolveAgentDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-runtime#resolveAgentDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 1,
+          "snippet": "import { resolveAgentDir, resolveAgentWorkspaceDir } from \"openclaw/plugin-sdk/agent-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 5,
+          "snippet": "import { resolveAgentDir, resolveAgentWorkspaceDir } from \"openclaw/plugin-sdk/agent-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 244,
+          "snippet": "                  agentDir: resolveAgentDir(liveConfig, timeoutAgentId),"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 133,
+          "snippet": "  const agentDir = resolveAgentDir(params.runtimeConfig, params.agentId);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-runtime#resolveAgentEffectiveModelPrimary",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-runtime#resolveAgentEffectiveModelPrimary",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 4,
+          "snippet": "  resolveAgentEffectiveModelPrimary,"
+        },
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 224,
+          "snippet": "  const configuredDefaultModel = resolveAgentEffectiveModelPrimary(runtimeConfig, agentId)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-runtime#resolveAgentWorkspaceDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-runtime#resolveAgentWorkspaceDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 1,
+          "snippet": "import { resolveAgentDir, resolveAgentWorkspaceDir } from \"openclaw/plugin-sdk/agent-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 5,
+          "snippet": "import { resolveAgentDir, resolveAgentWorkspaceDir } from \"openclaw/plugin-sdk/agent-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 245,
+          "snippet": "                  workspaceDir: resolveAgentWorkspaceDir(liveConfig, timeoutAgentId),"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 132,
+          "snippet": "  const workspaceDir = resolveAgentWorkspaceDir(params.runtimeConfig, params.agentId);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-runtime#resolveDefaultModelForAgent",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-runtime#resolveDefaultModelForAgent",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 5,
+          "snippet": "  resolveDefaultModelForAgent,"
+        },
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 225,
+          "snippet": "    ? resolveDefaultModelForAgent({ cfg: runtimeConfig, agentId })"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/concurrency-runtime#createDeferred",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/concurrency-runtime#createDeferred",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/transcript-watch.ts",
+          "line": 1,
+          "snippet": "import { createDeferred } from \"openclaw/plugin-sdk/concurrency-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 1,
+          "snippet": "import { createDeferred } from \"openclaw/plugin-sdk/concurrency-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript-watch.ts",
+          "line": 111,
+          "snippet": "  } = createDeferred<TerminalMemorySearchResult>();"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 159,
+          "snippet": "  const { promise, resolve: resolveTimeout } = createDeferred<symbol>();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/doctor-contract-api.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 7,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 6,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 89,
+          "snippet": "  cfg: OpenClawConfig | undefined,"
+        },
+        {
+          "path": "extensions/active-memory/doctor-contract-api.ts",
+          "line": 16,
+          "snippet": "export function normalizeCompatibilityConfig({ cfg }: { cfg: OpenClawConfig }): {"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 65,
+          "snippet": "    const resolveSelectedRecallToolNames = (cfg: OpenClawConfig) => {"
+        },
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 214,
+          "snippet": "  runtimeConfig: OpenClawConfig,"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 110,
+          "snippet": "  runtimeConfig: OpenClawConfig;"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 75,
+          "snippet": "  runtimeConfig: OpenClawConfig;"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 108,
+          "snippet": "export function isActiveMemoryGloballyEnabled(cfg: OpenClawConfig): boolean {"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 128,
+          "snippet": "  cfg: OpenClawConfig;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#coerceErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#coerceErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 2,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 266,
+          "snippet": "  return toSingleLineLogValue(coerceErrorMessage(error));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#isPathInside",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#isPathInside",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 3,
+          "snippet": "import { isPathInside } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 113,
+          "snippet": "  if (!isPathInside(resolvedBase, candidate)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-storage#MemorySearchResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-storage#MemorySearchResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 5,
+          "snippet": "  type MemorySearchResult,"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 261,
+          "snippet": "function toLegacyTriggerRecallHit(entry: MemorySearchResult, providerId: string): MemorySearchHit {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-storage#isAutomaticMemoryEntryEligible",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-storage#isAutomaticMemoryEntryEligible",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 3,
+          "snippet": "  isAutomaticMemoryEntryEligible,"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 282,
+          "snippet": "        isAutomaticMemoryEntryEligible(entry) &&"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-engine-storage#stripMemoryAnnotationCarriers",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-storage#stripMemoryAnnotationCarriers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 4,
+          "snippet": "  stripMemoryAnnotationCarriers,"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 274,
+          "snippet": "    excerpt: stripMemoryAnnotationCarriers(entry.snippet),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-core-host-runtime-core#resolveRememberAcrossConversations",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-core-host-runtime-core#resolveRememberAcrossConversations",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 3,
+          "snippet": "import { resolveRememberAcrossConversations } from \"openclaw/plugin-sdk/memory-core-host-runtime-core\";"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 177,
+          "snippet": "          config.enabled && resolveRememberAcrossConversations(liveConfig, commandAgentId);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-core#getMemoryCapabilityRegistration",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-core#getMemoryCapabilityRegistration",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 4,
+          "snippet": "import { getMemoryCapabilityRegistration } from \"openclaw/plugin-sdk/memory-host-core\";"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 67,
+          "snippet": "      const registration = getMemoryCapabilityRegistration();"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-search#MemoryCallerContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-search#MemoryCallerContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 10,
+          "snippet": "  type MemoryCallerContext,"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 124,
+          "snippet": "  | { kind: \"native\"; context: MemoryCallerContext }"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-search#MemorySearchHit",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-search#MemorySearchHit",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 11,
+          "snippet": "  type MemorySearchHit,"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 29,
+          "snippet": "type TriggerRecallMatch = MemorySearchHit & { matchScore: number };"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-search#closeActiveMemorySearchManager",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-search#closeActiveMemorySearchManager",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 3,
+          "snippet": "import { closeActiveMemorySearchManager } from \"openclaw/plugin-sdk/memory-host-search\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 99,
+          "snippet": "      void closeActiveMemorySearchManager({ cfg, agentId })"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-search#getActiveMemoryProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-search#getActiveMemoryProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 8,
+          "snippet": "  getActiveMemoryProvider,"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 174,
+          "snippet": "    getActiveMemoryProvider({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/memory-host-search#getActiveMemorySearchManager",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/memory-host-search#getActiveMemorySearchManager",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 9,
+          "snippet": "  getActiveMemorySearchManager,"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 295,
+          "snippet": "    getActiveMemorySearchManager({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#asDateTimestampMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#asDateTimestampMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 5,
+          "snippet": "  asDateTimestampMs,"
+        },
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 205,
+          "snippet": "  const now = asDateTimestampMs(Date.now());"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#asPositiveFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#asPositiveFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 2,
+          "snippet": "import { asPositiveFiniteNumber, resolveIntegerOption } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 184,
+          "snippet": "    asPositiveFiniteNumber(details?.expandedSummaryCount) !== undefined &&"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#parseStrictPositiveInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#parseStrictPositiveInteger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 5,
+          "snippet": "  parseStrictPositiveInteger,"
+        },
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 54,
+          "snippet": "        ? parseStrictPositiveInteger(value)"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolveExpiresAtMsFromDurationMs",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolveExpiresAtMsFromDurationMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 6,
+          "snippet": "  resolveExpiresAtMsFromDurationMs,"
+        },
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 225,
+          "snippet": "  const expiresAt = resolveExpiresAtMsFromDurationMs(ttlMs, { nowMs: rawNow });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#resolveIntegerOption",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#resolveIntegerOption",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 6,
+          "snippet": "  resolveIntegerOption,"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 2,
+          "snippet": "import { asPositiveFiniteNumber, resolveIntegerOption } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 191,
+          "snippet": "    timeoutMs: resolveIntegerOption("
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 34,
+          "snippet": "    maxChars: resolveIntegerOption(limits?.maxChars, DEFAULT_PARTIAL_TRANSCRIPT_MAX_CHARS, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-config-runtime#normalizePluginsConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-config-runtime#normalizePluginsConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 6,
+          "snippet": "  normalizePluginsConfig,"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 4,
+          "snippet": "  normalizePluginsConfig,"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 13,
+          "snippet": "import { normalizePluginsConfig } from \"openclaw/plugin-sdk/plugin-config-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 66,
+          "snippet": "      const selectedPluginId = normalizePluginsConfig(cfg.plugins).slots.memory;"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 118,
+          "snippet": "  const plugins = normalizePluginsConfig(cfg.plugins);"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 322,
+          "snippet": "  const providerId = normalizePluginsConfig(params.cfg.plugins).slots.memory ?? \"memory\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-config-runtime#resolveLivePluginConfigObject",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-config-runtime#resolveLivePluginConfigObject",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 7,
+          "snippet": "  resolveLivePluginConfigObject,"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 92,
+          "snippet": "      const livePluginConfig = resolveLivePluginConfigObject("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-config-runtime#resolvePluginConfigObject",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-config-runtime#resolvePluginConfigObject",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 5,
+          "snippet": "  resolvePluginConfigObject,"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 113,
+          "snippet": "  const pluginConfig = resolvePluginConfigObject(cfg, \"active-memory\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 8,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 9,
+          "snippet": "import { definePluginEntry, type OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 9,
+          "snippet": "  OpenClawPluginApi,"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 7,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 7,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 120,
+          "snippet": "  api: OpenClawPluginApi,"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 63,
+          "snippet": "  register(api: OpenClawPluginApi) {"
+        },
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 92,
+          "snippet": "  api: OpenClawPluginApi,"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 109,
+          "snippet": "  api: OpenClawPluginApi;"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 74,
+          "snippet": "  api: OpenClawPluginApi;"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 23,
+          "snippet": "function openActiveMemoryToggleStore(api: OpenClawPluginApi) {"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 25,
+          "snippet": "  api: OpenClawPluginApi;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginToolContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginToolContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/types.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginToolContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 10,
+          "snippet": "  OpenClawPluginToolContext,"
+        },
+        {
+          "path": "extensions/active-memory/types.ts",
+          "line": 270,
+          "snippet": "  OpenClawPluginToolContext[\"conversationRecall\"]"
+        },
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 31,
+          "snippet": "type MemoryAudience = NonNullable<OpenClawPluginToolContext[\"memoryAudience\"]>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 9,
+          "snippet": "import { definePluginEntry, type OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 59,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/retry-runtime#sleepWithAbort",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/retry-runtime#sleepWithAbort",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/transcript-watch.ts",
+          "line": 2,
+          "snippet": "import { sleepWithAbort } from \"openclaw/plugin-sdk/retry-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript-watch.ts",
+          "line": 133,
+          "snippet": "      await sleepWithAbort(TERMINAL_MEMORY_SEARCH_POLL_INTERVAL_MS, signal, { ref: false }).catch("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/routing#isIncognitoSessionKey",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/routing#isIncognitoSessionKey",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 8,
+          "snippet": "import { isIncognitoSessionKey, parseAgentSessionKey } from \"openclaw/plugin-sdk/routing\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 140,
+          "snippet": "  const incognito = isIncognitoSessionKey(parentSessionKey);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/routing#parseAgentSessionKey",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/routing#parseAgentSessionKey",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 8,
+          "snippet": "import { parseAgentSessionKey, parseThreadSessionSuffix } from \"openclaw/plugin-sdk/routing\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 8,
+          "snippet": "import { isIncognitoSessionKey, parseAgentSessionKey } from \"openclaw/plugin-sdk/routing\";"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 175,
+          "snippet": "  const rest = parseAgentSessionKey(normalized)?.rest ?? normalized;"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 77,
+          "snippet": "    parseAgentSessionKey(params.sessionKey)?.rest ?? params.sessionKey;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/routing#parseThreadSessionSuffix",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/routing#parseThreadSessionSuffix",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 8,
+          "snippet": "import { parseAgentSessionKey, parseThreadSessionSuffix } from \"openclaw/plugin-sdk/routing\";"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 237,
+          "snippet": "  const { baseSessionKey } = parseThreadSessionSuffix(rawSessionKey);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-doctor-migrations#asObjectRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations#asObjectRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/doctor-contract-api.ts",
+          "line": 2,
+          "snippet": "import { asObjectRecord } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";"
+        },
+        {
+          "path": "extensions/active-memory/doctor-contract-api.ts",
+          "line": 20,
+          "snippet": "  const entry = asObjectRecord(cfg.plugins?.entries?.[\"active-memory\"]);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-store-runtime#SessionEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-store-runtime#SessionEntry",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 15,
+          "snippet": "  type SessionEntry,"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 6,
+          "snippet": "  type SessionEntry,"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 6,
+          "snippet": "  type SessionEntry,"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 114,
+          "snippet": "  parentSessionEntry?: SessionEntry;"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 80,
+          "snippet": "  sessionEntry: SessionEntry | undefined;"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 19,
+          "snippet": "  entry: SessionEntry | undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-store-runtime#cleanupSessionLifecycleArtifacts",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-store-runtime#cleanupSessionLifecycleArtifacts",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 10,
+          "snippet": "  cleanupSessionLifecycleArtifacts,"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 84,
+          "snippet": "      const result = await cleanupSessionLifecycleArtifacts({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-store-runtime#deliveryContextFromSession",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-store-runtime#deliveryContextFromSession",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 3,
+          "snippet": "  deliveryContextFromSession,"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 87,
+          "snippet": "    deliveryContextFromSession(params.sessionEntry)?.channel,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-store-runtime#formatSqliteSessionFileMarker",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-store-runtime#formatSqliteSessionFileMarker",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 11,
+          "snippet": "  formatSqliteSessionFileMarker,"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 162,
+          "snippet": "  const runtimeSessionFile = formatSqliteSessionFileMarker({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-store-runtime#parseSqliteSessionFileMarker",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-store-runtime#parseSqliteSessionFileMarker",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 12,
+          "snippet": "  parseSqliteSessionFileMarker,"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 322,
+          "snippet": "    const marker = parseSqliteSessionFileMarker(activeSessionFile);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-store-runtime#prepareSessionEntryPatch",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-store-runtime#prepareSessionEntryPatch",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 13,
+          "snippet": "  prepareSessionEntryPatch,"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 235,
+          "snippet": "    const createdEntry = await prepareSessionEntryPatch({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-store-runtime#rethrowIncognitoSessionError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-store-runtime#rethrowIncognitoSessionError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 10,
+          "snippet": "import { rethrowIncognitoSessionError } from \"openclaw/plugin-sdk/session-store-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 14,
+          "snippet": "  rethrowIncognitoSessionError,"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 5,
+          "snippet": "  rethrowIncognitoSessionError,"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 9,
+          "snippet": "import { rethrowIncognitoSessionError } from \"openclaw/plugin-sdk/session-store-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 4,
+          "snippet": "  rethrowIncognitoSessionError,"
+        },
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 1,
+          "snippet": "import { rethrowIncognitoSessionError } from \"openclaw/plugin-sdk/session-store-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript-watch.ts",
+          "line": 3,
+          "snippet": "import { rethrowIncognitoSessionError } from \"openclaw/plugin-sdk/session-store-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 3,
+          "snippet": "import { rethrowIncognitoSessionError } from \"openclaw/plugin-sdk/session-store-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 457,
+          "snippet": "                  rethrowIncognitoSessionError(error);"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 53,
+          "snippet": "      rethrowIncognitoSessionError(error);"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 390,
+          "snippet": "    rethrowIncognitoSessionError(error);"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 44,
+          "snippet": "    rethrowIncognitoSessionError(error);"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 57,
+          "snippet": "    rethrowIncognitoSessionError(error);"
+        },
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 155,
+          "snippet": "        rethrowIncognitoSessionError(error);"
+        },
+        {
+          "path": "extensions/active-memory/transcript-watch.ts",
+          "line": 130,
+          "snippet": "        rethrowIncognitoSessionError(error);"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 63,
+          "snippet": "    rethrowIncognitoSessionError(error);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-store-runtime#sessionDeliveryOrigin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-store-runtime#sessionDeliveryOrigin",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 5,
+          "snippet": "  sessionDeliveryOrigin,"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 92,
+          "snippet": "    sessionDeliveryOrigin(params.sessionEntry)?.provider,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-transcript-runtime#SessionTranscriptTargetParams",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-transcript-runtime#SessionTranscriptTargetParams",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/types.ts",
+          "line": 2,
+          "snippet": "import type { SessionTranscriptTargetParams } from \"openclaw/plugin-sdk/session-transcript-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 37,
+          "snippet": "  type ActiveMemoryTranscriptSource,",
+          "note": "Inline type import of ActiveMemoryTranscriptSource follows its unchanged alias in types.ts:224."
+        },
+        {
+          "path": "extensions/active-memory/transcript-watch.ts",
+          "line": 12,
+          "snippet": "  type ActiveMemoryTranscriptSource,",
+          "note": "Inline type import follows the unchanged SessionTranscriptTargetParams alias."
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 39,
+          "snippet": "  ActiveMemoryTranscriptSource,",
+          "note": "The surrounding import type makes this local direct alias a type-import site."
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 26,
+          "snippet": "  type ActiveMemoryTranscriptSource,",
+          "note": "Inline type import follows the unchanged SessionTranscriptTargetParams alias."
+        },
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 21,
+          "snippet": "  type ActiveMemoryTranscriptSource,",
+          "note": "Inline type import follows the unchanged SessionTranscriptTargetParams alias."
+        },
+        {
+          "path": "extensions/active-memory/types.ts",
+          "line": 224,
+          "snippet": "export type ActiveMemoryTranscriptSource = SessionTranscriptTargetParams;",
+          "note": "Exported type declaration is a direct alias and a type-reference, not an export specifier/type-reexport."
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 44,
+          "snippet": "  sources: readonly ActiveMemoryTranscriptSource[];"
+        },
+        {
+          "path": "extensions/active-memory/transcript-watch.ts",
+          "line": 18,
+          "snippet": "  sources: readonly ActiveMemoryTranscriptSource[];"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 266,
+          "snippet": "  let transcriptSources: readonly ActiveMemoryTranscriptSource[] = [];"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 50,
+          "snippet": "  source: ActiveMemoryTranscriptSource;"
+        },
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 76,
+          "snippet": "  source: ActiveMemoryTranscriptSource,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-transcript-runtime#readSessionTranscriptEvents",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-transcript-runtime#readSessionTranscriptEvents",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 17,
+          "snippet": "import { readSessionTranscriptEvents } from \"openclaw/plugin-sdk/session-transcript-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 51,
+          "snippet": "      sourceEvents = await readSessionTranscriptEvents(source);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/session-transcript-runtime#readSessionTranscriptRawDelta",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/session-transcript-runtime#readSessionTranscriptRawDelta",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 4,
+          "snippet": "import { readSessionTranscriptRawDelta } from \"openclaw/plugin-sdk/session-transcript-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 57,
+          "snippet": "    page = await readSessionTranscriptRawDelta({"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 55,
+          "snippet": "  let page: Awaited<ReturnType<typeof readSessionTranscriptRawDelta>>;",
+          "note": "Direct typeof of the imported SDK function is a type reference; its import is still a runtime module site."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 6,
+          "snippet": "  asFiniteNumber,"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 100,
+          "snippet": "    searchMs: asFiniteNumber(debug?.searchMs),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalObjectRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalObjectRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 8,
+          "snippet": "import { asOptionalObjectRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 141,
+          "snippet": "    const typed = asOptionalObjectRecord(item);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 10,
+          "snippet": "  asOptionalRecord,"
+        },
+        {
+          "path": "extensions/active-memory/prompt.ts",
+          "line": 2,
+          "snippet": "  asOptionalRecord,"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 10,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 3,
+          "snippet": "  asOptionalRecord,"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 7,
+          "snippet": "  asOptionalRecord,"
+        },
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 102,
+          "snippet": "  const raw = asOptionalRecord(pluginConfig);"
+        },
+        {
+          "path": "extensions/active-memory/prompt.ts",
+          "line": 189,
+          "snippet": "  const record = asOptionalRecord(source);"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 109,
+          "snippet": "  const entry = asOptionalRecord(cfg.plugins?.entries?.[\"active-memory\"]);"
+        },
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 38,
+          "snippet": "  const result = asOptionalRecord(params.result);"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 79,
+          "snippet": "  const record = asOptionalRecord(value);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/transcript-watch.ts",
+          "line": 4,
+          "snippet": "import { normalizeLowercaseStringOrEmpty } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 8,
+          "snippet": "  normalizeLowercaseStringOrEmpty,"
+        },
+        {
+          "path": "extensions/active-memory/transcript-watch.ts",
+          "line": 50,
+          "snippet": "      .map((toolName) => normalizeLowercaseStringOrEmpty(toolName))"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 116,
+          "snippet": "  const toolName = normalizeLowercaseStringOrEmpty(message?.toolName);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 11,
+          "snippet": "  normalizeOptionalString,"
+        },
+        {
+          "path": "extensions/active-memory/prompt.ts",
+          "line": 3,
+          "snippet": "  normalizeOptionalString,"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 18,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 8,
+          "snippet": "import { normalizeOptionalString, uniqueStrings } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 4,
+          "snippet": "  normalizeOptionalString,"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 9,
+          "snippet": "  normalizeOptionalString,"
+        },
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 64,
+          "snippet": "  const raw = normalizeOptionalString(value);"
+        },
+        {
+          "path": "extensions/active-memory/prompt.ts",
+          "line": 162,
+          "snippet": "  const status = normalizeOptionalString(source.status)"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 321,
+          "snippet": "    const activeSessionFile = normalizeOptionalString(agentMeta?.sessionFile);"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 72,
+          "snippet": "  const explicitChannel = normalizeOptionalString(params.channelId);"
+        },
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 41,
+          "snippet": "    normalizeOptionalString(result?.detailedContent) ??"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 82,
+          "snippet": "  return message && normalizeOptionalString(message.role) === \"toolResult\" ? message : undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeStringEntries",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeStringEntries",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 12,
+          "snippet": "  normalizeStringEntries,"
+        },
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 148,
+          "snippet": "  const sourceParts = normalizeStringEntries(sources.split(\";\"));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeTrimmedStringList",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeTrimmedStringList",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 13,
+          "snippet": "  normalizeTrimmedStringList,"
+        },
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 75,
+          "snippet": "  return uniqueStrings(normalizeTrimmedStringList(value).map((entry) => entry.toLowerCase()));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#uniqueStrings",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#uniqueStrings",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 14,
+          "snippet": "  uniqueStrings,"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 8,
+          "snippet": "import { normalizeOptionalString, uniqueStrings } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 75,
+          "snippet": "  return uniqueStrings(normalizeTrimmedStringList(value).map((entry) => entry.toLowerCase()));"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 181,
+          "snippet": "  const messages = uniqueStrings("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#safeParseJson",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#safeParseJson",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 11,
+          "snippet": "import { safeParseJson } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 228,
+          "snippet": "      hasExpandedSummary(details) || hasExpandedSummary(asOptionalRecord(safeParseJson(content)))"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 12,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/prompt.ts",
+          "line": 5,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 9,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 6,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 14,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 261,
+          "snippet": "    ? `${truncateUtf16Safe(singleLine, MAX_LOG_VALUE_CHARS)}...`"
+        },
+        {
+          "path": "extensions/active-memory/prompt.ts",
+          "line": 288,
+          "snippet": "  const bounded = truncateUtf16Safe(trimmed, contentMaxChars).trimEnd();"
+        },
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 53,
+          "snippet": "      text: truncateUtf16Safe("
+        },
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 93,
+          "snippet": "        const nextText = truncateUtf16Safe(text, remaining);"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 116,
+          "snippet": "  return buildPromptPrefix(truncateUtf16Safe(summary, MAX_TRIGGER_CONTEXT_CHARS));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/time-runtime#raceWithTimeout",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/time-runtime#raceWithTimeout",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 7,
+          "snippet": "import { raceWithTimeout } from \"openclaw/plugin-sdk/time-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 147,
+          "snippet": "  return await raceWithTimeout("
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 1,
+          "snippet": "import { resolveAgentDir, resolveAgentWorkspaceDir } from \"openclaw/plugin-sdk/agent-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/agent-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 5,
+          "snippet": "import { resolveAgentDir, resolveAgentWorkspaceDir } from \"openclaw/plugin-sdk/agent-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 1,
+          "snippet": "import { resolveAgentConfig } from \"openclaw/plugin-sdk/agent-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/concurrency-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/concurrency-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/transcript-watch.ts",
+          "line": 1,
+          "snippet": "import { createDeferred } from \"openclaw/plugin-sdk/concurrency-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 1,
+          "snippet": "import { createDeferred } from \"openclaw/plugin-sdk/concurrency-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-contracts",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-contracts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/doctor-contract-api.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 7,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 6,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 2,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/file-access-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/file-access-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 3,
+          "snippet": "import { isPathInside } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/memory-core-host-engine-storage",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/memory-core-host-engine-storage",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 2,
+          "snippet": "import {\n  isAutomaticMemoryEntryEligible,\n  stripMemoryAnnotationCarriers,\n  type MemorySearchResult,\n} from \"openclaw/plugin-sdk/memory-core-host-engine-storage\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/memory-core-host-runtime-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/memory-core-host-runtime-core",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 3,
+          "snippet": "import { resolveRememberAcrossConversations } from \"openclaw/plugin-sdk/memory-core-host-runtime-core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/memory-host-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/memory-host-core",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 4,
+          "snippet": "import { getMemoryCapabilityRegistration } from \"openclaw/plugin-sdk/memory-host-core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/memory-host-search",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/memory-host-search",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 3,
+          "snippet": "import { closeActiveMemorySearchManager } from \"openclaw/plugin-sdk/memory-host-search\";"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 7,
+          "snippet": "import {\n  getActiveMemoryProvider,\n  getActiveMemorySearchManager,\n  type MemoryCallerContext,\n  type MemorySearchHit,\n} from \"openclaw/plugin-sdk/memory-host-search\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 2,
+          "snippet": "import { asPositiveFiniteNumber, resolveIntegerOption } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-config-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-config-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-config-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-config-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 13,
+          "snippet": "import { normalizePluginsConfig } from \"openclaw/plugin-sdk/plugin-config-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 9,
+          "snippet": "import { definePluginEntry, type OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 8,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 8,
+          "snippet": "import type {\n  OpenClawPluginApi,\n  OpenClawPluginToolContext,\n} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 7,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 7,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/active-memory/types.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginToolContext } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/retry-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/retry-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/transcript-watch.ts",
+          "line": 2,
+          "snippet": "import { sleepWithAbort } from \"openclaw/plugin-sdk/retry-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/routing",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/routing",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 8,
+          "snippet": "import { parseAgentSessionKey, parseThreadSessionSuffix } from \"openclaw/plugin-sdk/routing\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 8,
+          "snippet": "import { isIncognitoSessionKey, parseAgentSessionKey } from \"openclaw/plugin-sdk/routing\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-doctor-migrations",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/doctor-contract-api.ts",
+          "line": 2,
+          "snippet": "import { asObjectRecord } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/session-store-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/session-store-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/index.ts",
+          "line": 10,
+          "snippet": "import { rethrowIncognitoSessionError } from \"openclaw/plugin-sdk/session-store-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 9,
+          "snippet": "import {\n  cleanupSessionLifecycleArtifacts,\n  formatSqliteSessionFileMarker,\n  parseSqliteSessionFileMarker,\n  prepareSessionEntryPatch,\n  rethrowIncognitoSessionError,\n  type SessionEntry,\n} from \"openclaw/plugin-sdk/session-store-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/recall.ts",
+          "line": 4,
+          "snippet": "import {\n  rethrowIncognitoSessionError,\n  type SessionEntry,\n} from \"openclaw/plugin-sdk/session-store-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 9,
+          "snippet": "import { rethrowIncognitoSessionError } from \"openclaw/plugin-sdk/session-store-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 2,
+          "snippet": "import {\n  deliveryContextFromSession,\n  rethrowIncognitoSessionError,\n  sessionDeliveryOrigin,\n  type SessionEntry,\n} from \"openclaw/plugin-sdk/session-store-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 1,
+          "snippet": "import { rethrowIncognitoSessionError } from \"openclaw/plugin-sdk/session-store-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript-watch.ts",
+          "line": 3,
+          "snippet": "import { rethrowIncognitoSessionError } from \"openclaw/plugin-sdk/session-store-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 3,
+          "snippet": "import { rethrowIncognitoSessionError } from \"openclaw/plugin-sdk/session-store-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/session-transcript-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/session-transcript-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 17,
+          "snippet": "import { readSessionTranscriptEvents } from \"openclaw/plugin-sdk/session-transcript-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 4,
+          "snippet": "import { readSessionTranscriptRawDelta } from \"openclaw/plugin-sdk/session-transcript-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/types.ts",
+          "line": 2,
+          "snippet": "import type { SessionTranscriptTargetParams } from \"openclaw/plugin-sdk/session-transcript-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/config.ts",
+          "line": 15,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/prompt.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 8,
+          "snippet": "import { asOptionalObjectRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/recall-run.ts",
+          "line": 18,
+          "snippet": "import { normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/session-policy.ts",
+          "line": 10,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/session.ts",
+          "line": 8,
+          "snippet": "import { normalizeOptionalString, uniqueStrings } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript-watch.ts",
+          "line": 4,
+          "snippet": "import { normalizeLowercaseStringOrEmpty } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 10,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/text-utility-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/recall-state.ts",
+          "line": 12,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/prompt.ts",
+          "line": 5,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/query.ts",
+          "line": 9,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 6,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/trigger-recall.ts",
+          "line": 14,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/active-memory/transcript.ts",
+          "line": 11,
+          "snippet": "import { safeParseJson } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/time-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/time-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/active-memory/transcript-result.ts",
+          "line": 7,
+          "snippet": "import { raceWithTimeout } from \"openclaw/plugin-sdk/time-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independent manual audit of all 16 eligible production TypeScript files and the full manifest; all 33 plugin files are explicitly reviewed or excluded. Verified every plugin file byte-for-byte against pinned commit d912f0c06e7af29a4a40c4211bec0bb76d473f10. No Inspector implementation, helpers, detector output, other fixture, or extraction tool was read or used.",
+    "No package.json exists under extensions/active-memory. Root package metadata publishes dist/ and provides the exact 20 consumed SDK subpath exports. This fixture is source-phase only; no claim is made that erased type references or every source file appears in a published artifact.",
+    "All production relative imports remain inside extensions/active-memory; there is no additional plugin-owned/shared shipped source boundary. Public SDK facades were checked for exported symbol identity and API/runtime type contracts only; their implementation dependencies and installed dependencies are not recursively attributed to this plugin.",
+    "The manifest declares doctorContract.configRepair, startup activation, categories, config/UI metadata, but no channels/providers/skills/commandAliases/cliCommands/contracts entries covered by the agreed manifest identity rules. Consequently it contributes no manifest-contract findings.",
+    "All three index.*.test-support.ts helpers have only index.test.ts callers. Functions named ForTests inside otherwise production modules remain in the reviewed source scope.",
+    "api aliases inside typed helper parameter objects normalize to api; api.runtime members normalize to runtime. api.config.session.mainKey is independently observed alongside bare api.config; prefixes of longer member paths are not invented.",
+    "OpenClawPluginApi[\"runtime\"][\"agent\"][\"runEmbeddedAgent\"] supplies type references in recall.ts and recall-run.ts. Its runtime invocation makes that member mixed. readSessionTranscriptRawDelta is also mixed because transcript.ts uses a direct typeof type query, while its module receives runtime classification only at that file import site.",
+    "ActiveMemoryTranscriptSource is a direct type alias of SessionTranscriptTargetParams. Local type-import sites and downstream annotations retain that SDK-export provenance. Exported type declarations are not reexport specifiers. Projected ConversationRecallContext, MemoryAudience, ActiveRecallParams and other plugin-owned composites do not re-enumerate inferred SDK members.",
+    "Callback ctx/event/toolAuthority objects, config objects, provider/manager/capability values returned by SDK free functions, and keyed stores returned by runtime.state.openKeyedStore are not API/runtime handles. Their members do not become additional API/runtime or SDK-export reference kinds. SDK helper internals and plugin-owned forwarding wrapper invocations are not inferred.",
+    "SDK function call sites retain call kinds, explicit imported types retain type-reference kinds, and ordinary imports retain runtime dependency classification even for bare value use such as DEFAULT_PROVIDER. Finding evidence is representative per file/kind; findingCount counts distinct identities occurring in each reviewed file."
+  ]
+}

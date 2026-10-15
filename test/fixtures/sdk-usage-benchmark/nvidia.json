@@ -1,0 +1,567 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "nvidia",
+    "path": "extensions/nvidia"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_nvidia",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/nvidia/api.ts",
+      "sha256": "49e6dc63ca923389cedd85ee38accc17a1741b140073907fc4ce55aff18d1085",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/nvidia/index.ts",
+      "sha256": "d43fcdf7dcfdbf6bf42002226b24b1597c93d5582b6c856c7f46c41e69b45496",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/nvidia/onboard.ts",
+      "sha256": "7bb70e891418ad62feb55c16748250306b34a5d656d43bb6d82cfb65a8cbd0d7",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/nvidia/openclaw.plugin.json",
+      "sha256": "dde2ca242d7e336245f45ca8841912c367c72b623003f4ee6c9ad4549b607018",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/nvidia/package.json",
+      "sha256": "a05fcfce2875457741a11db1a7c8631b76001a5daf09899810179f1be1a9ced3",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/nvidia/provider-catalog.ts",
+      "sha256": "39c1104a8b712ea2ee1cf2483215924ff1ccf0ca1ddc8582960a9d7aee281890",
+      "role": "production-source",
+      "findingCount": 16
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/nvidia/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation; .md is outside the source extension scope."
+    },
+    {
+      "path": "extensions/nvidia/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG image asset; not a JavaScript/TypeScript-family source file."
+    },
+    {
+      "path": "extensions/nvidia/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG image asset; not a JavaScript/TypeScript-family source file."
+    },
+    {
+      "path": "extensions/nvidia/index.test.ts",
+      "rule": "test-file",
+      "reason": "Basename contains .test.; no reviewed production file imports this test."
+    },
+    {
+      "path": "extensions/nvidia/nvidia.live.test.ts",
+      "rule": "test-file",
+      "reason": "Basename contains .test.; no reviewed production file imports this live test."
+    },
+    {
+      "path": "extensions/nvidia/onboard.test.ts",
+      "rule": "test-file",
+      "reason": "Basename contains .test.; no reviewed production file imports this test."
+    },
+    {
+      "path": "extensions/nvidia/provider-catalog.test.ts",
+      "rule": "test-file",
+      "reason": "Basename contains .test.; no reviewed production file imports this test."
+    },
+    {
+      "path": "extensions/nvidia/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript project configuration; .json is outside source scope and this is neither package metadata nor the plugin manifest."
+    }
+  ],
+  "findings": [
+    {
+      "key": "manifest-contract:manifest.providers:nvidia",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:nvidia",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/openclaw.plugin.json",
+          "line": 8,
+          "snippet": "  \"providers\": [\"nvidia\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#getCachedLiveProviderModelRows",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#getCachedLiveProviderModelRows",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 4,
+          "snippet": "  getCachedLiveProviderModelRows,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-catalog-live-runtime."
+        },
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 85,
+          "snippet": "    getCachedLiveProviderModelRows({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-live-runtime#readLiveModelCatalogStringField",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime#readLiveModelCatalogStringField",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 5,
+          "snippet": "  readLiveModelCatalogStringField,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-catalog-live-runtime."
+        },
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 93,
+          "snippet": "        if (payload.data.some((row) => !readLiveModelCatalogStringField(row, \"id\"))) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-catalog-shared#buildManifestModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared#buildManifestModelProviderConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 7,
+          "snippet": "import { buildManifestModelProviderConfig } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        },
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 62,
+          "snippet": "  const provider = buildManifestModelProviderConfig({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-entry#defineSingleProviderPluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-entry#defineSingleProviderPluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/index.ts",
+          "line": 1,
+          "snippet": "import { defineSingleProviderPluginEntry } from \"openclaw/plugin-sdk/provider-entry\";"
+        },
+        {
+          "path": "extensions/nvidia/index.ts",
+          "line": 8,
+          "snippet": "export default defineSingleProviderPluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelDefinitionConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 9,
+          "snippet": "  ModelDefinitionConfig,",
+          "note": "Named import in the import type declaration from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 82,
+          "snippet": "  bundledModels: ModelDefinitionConfig[],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-model-shared#ModelProviderConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 10,
+          "snippet": "  ModelProviderConfig,",
+          "note": "Named import in the import type declaration from openclaw/plugin-sdk/provider-model-shared."
+        },
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 61,
+          "snippet": "export function buildNvidiaProvider(): ModelProviderConfig {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#createDefaultModelsConnectionPresetAppliers",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#createDefaultModelsConnectionPresetAppliers",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/onboard.ts",
+          "line": 3,
+          "snippet": "  createDefaultModelsConnectionPresetAppliers,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-onboard."
+        },
+        {
+          "path": "extensions/nvidia/onboard.ts",
+          "line": 22,
+          "snippet": "} satisfies Parameters<typeof createDefaultModelsConnectionPresetAppliers<[]>>[0];",
+          "note": "Direct typeof of the imported SDK function contributes a type reference; the module import site remains runtime."
+        },
+        {
+          "path": "extensions/nvidia/onboard.ts",
+          "line": 27,
+          "snippet": "  createDefaultModelsConnectionPresetAppliers(nvidiaPreset);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/provider-onboard#createDefaultModelsPresetAppliers",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/provider-onboard#createDefaultModelsPresetAppliers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/onboard.ts",
+          "line": 2,
+          "snippet": "  createDefaultModelsPresetAppliers,",
+          "note": "Named value import from openclaw/plugin-sdk/provider-onboard."
+        },
+        {
+          "path": "extensions/nvidia/onboard.ts",
+          "line": 25,
+          "snippet": "  createDefaultModelsPresetAppliers(nvidiaPreset);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#LookupFn",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#LookupFn",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 13,
+          "snippet": "  type LookupFn,",
+          "note": "Inline type import from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 59,
+          "snippet": "}) as LookupFn;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#ssrfPolicyFromHttpBaseUrlAllowedHostname",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 14,
+          "snippet": "  ssrfPolicyFromHttpBaseUrlAllowedHostname,",
+          "note": "Named value import from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 150,
+          "snippet": "    policy: ssrfPolicyFromHttpBaseUrlAllowedHostname(NVIDIA_FEATURED_MODELS_URL),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalObjectRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalObjectRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 17,
+          "snippet": "  asOptionalObjectRecord,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 199,
+          "snippet": "  const entry = asOptionalObjectRecord(row);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asSafeIntegerInRange",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asSafeIntegerInRange",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 18,
+          "snippet": "  asSafeIntegerInRange,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 205,
+          "snippet": "  const contextWindow = asSafeIntegerInRange(entry?.context, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 19,
+          "snippet": "  isRecord,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 90,
+          "snippet": "        if (!isRecord(payload) || !Array.isArray(payload.data)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeBoundedOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeBoundedOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 20,
+          "snippet": "  normalizeBoundedOptionalString,",
+          "note": "Named value import from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 200,
+          "snippet": "  const id = normalizeBoundedOptionalString(entry?.model, FEATURED_MODEL_MAX_ID_LENGTH);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-live-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-catalog-live-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-catalog-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-catalog-shared",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 7,
+          "snippet": "import { buildManifestModelProviderConfig } from \"openclaw/plugin-sdk/provider-catalog-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/index.ts",
+          "line": 1,
+          "snippet": "import { defineSingleProviderPluginEntry } from \"openclaw/plugin-sdk/provider-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-model-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-model-shared",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 8,
+          "snippet": "import type {\n  ModelDefinitionConfig,\n  ModelProviderConfig,\n} from \"openclaw/plugin-sdk/provider-model-shared\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/provider-onboard",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/provider-onboard",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/onboard.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/provider-onboard\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 12,
+          "snippet": "import {\n  type LookupFn,\n  ssrfPolicyFromHttpBaseUrlAllowedHostname,\n} from \"openclaw/plugin-sdk/ssrf-runtime\";",
+          "note": "The same dependency statement contains an inline type-only specifier and an ordinary value specifier."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/nvidia/provider-catalog.ts",
+          "line": 21,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Manually reviewed all four production source files (api.ts, index.ts, onboard.ts, provider-catalog.ts), package.json, and openclaw.plugin.json. The 14 plugin files partition into 6 reviewed files and 8 exclusions; all 14 match the pinned commit byte-for-byte.",
+    "Read Inspector root AGENTS.md, the entire benchmark README.md and contract.json, and OpenClaw root, extensions, and src/plugin-sdk AGENTS.md. No plugin-local or nested AGENTS.md exists. Public SDK export declarations and root package exports confirm the seven imported facade specifiers.",
+    "All production relative imports resolve inside extensions/nvidia. No additional plugin-owned or shared shipped source lies outside that root. package.json names index.ts as the entrypoint and declares no generated source exception; api.ts and onboarding/catalog source remain eligible regardless of runtime reachability.",
+    "api.ts reexports plugin-owned provider functions, constants, and functions returned by SDK preset factories. Those are not direct aliases of imported SDK exports; no extra SDK reexport or inferred API/runtime member findings are added. SDK helper implementation internals are outside the audit population.",
+    "onboard.ts directly queries typeof createDefaultModelsConnectionPresetAppliers in Parameters at line 22, making that export mixed with a type-reference. The provider-onboard module retains runtime classification because its only dependency site is an ordinary value import.",
+    "The ssrf-runtime import combines a type-only LookupFn specifier with a value import, so the module is mixed. ModelDefinitionConfig, ModelProviderConfig, and LookupFn are explicit type dependencies with direct type-reference uses.",
+    "Provider configuration objects and SDK-returned catalog/preset values are not OpenClawPluginApi or PluginRuntime handles. No proven public API/runtime member access, API hook registration, opaque runtime escape, or genuinely unresolved dependency occurs.",
+    "Only the agreed top-level providers declaration yields a manifest-contract identity. modelCatalog, setup, providerAuthChoices, providerEndpoints, normalization, categories, and configSchema metadata are outside the agreed contract identity fields."
+  ]
+}

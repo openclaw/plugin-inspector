@@ -1,0 +1,777 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "talk-voice",
+    "path": "extensions/talk-voice"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_talk_voice",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/talk-voice/api.ts",
+      "sha256": "469cd7f987508dfc2eabf8feab9a939cfa0279afb6ebf3918888d9de3be94204",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/talk-voice/index.ts",
+      "sha256": "348ae6680a63e7b12350071d8258d6c31264b26187b0afd1356cd92ccbcd755f",
+      "role": "production-source",
+      "findingCount": 23
+    },
+    {
+      "path": "extensions/talk-voice/openclaw.plugin.json",
+      "sha256": "8059c2cfe2a42a364594b740e95b7592e8600cae4e2bdb00b699a2a512f97d53",
+      "role": "manifest",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/talk-voice/tool.ts",
+      "sha256": "b331de462095fb193f426c88c5c4e53e8d5db66ca66858ea38bd3ff25c81fbb8",
+      "role": "production-source",
+      "findingCount": 10
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/talk-voice/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG activity artwork; outside the eligible JS/TS-family extensions."
+    },
+    {
+      "path": "extensions/talk-voice/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG plugin icon; outside the eligible JS/TS-family extensions."
+    },
+    {
+      "path": "extensions/talk-voice/index.test.ts",
+      "rule": "test-file",
+      "reason": "Explicit .test.ts file. Complete production-source review shows no production import of this test."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerCommand",
+      "kind": "api-member",
+      "identity": "api.registerCommand",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 140,
+          "snippet": "    api.registerCommand({",
+          "note": "api is the register parameter annotated OpenClawPluginApi on line 115."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerTool",
+      "kind": "api-member",
+      "identity": "api.registerTool",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 117,
+          "snippet": "    api.registerTool(",
+          "note": "api is the register parameter annotated OpenClawPluginApi on line 115."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.commandAliases.name:voice",
+      "kind": "manifest-contract",
+      "identity": "manifest.commandAliases.name:voice",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/openclaw.plugin.json",
+          "line": 15,
+          "snippet": "      \"name\": \"voice\",",
+          "note": "Entry in commandAliases; its kind is descriptive metadata, not another contract identity."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.tools:talk_voice",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.tools:talk_voice",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/openclaw.plugin.json",
+          "line": 11,
+          "snippet": "    \"tools\": [\"talk_voice\"]"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.config.current",
+      "kind": "runtime-member",
+      "identity": "runtime.config.current",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 155,
+          "snippet": "        const cfg = api.runtime.config.current() as OpenClawConfig;"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.config.mutateConfigFile",
+      "kind": "runtime-member",
+      "identity": "runtime.config.mutateConfigFile",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 234,
+          "snippet": "          await api.runtime.config.mutateConfigFile({"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.tts.listVoices",
+      "kind": "runtime-member",
+      "identity": "runtime.tts.listVoices",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 185,
+          "snippet": "            const voices = await api.runtime.tts.listVoices({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-harness-runtime#callGatewayTool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime#callGatewayTool",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 1,
+          "snippet": "import { callGatewayTool } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        },
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 32,
+          "snippet": "    await callGatewayTool(method, { timeoutMs: 65_000 }, request, {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 155,
+          "snippet": "        const cfg = api.runtime.config.current() as OpenClawConfig;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reexport",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/api.ts",
+          "line": 3,
+          "snippet": "export type { OpenClawPluginApi, PluginRuntime } from \"openclaw/plugin-sdk/core\";"
+        },
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 12,
+          "snippet": "import { definePluginEntry, type OpenClawPluginApi } from \"./api.js\";",
+          "note": "Inline type import resolves through api.ts to the original core export."
+        },
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 115,
+          "snippet": "  register(api: OpenClawPluginApi) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#PluginRuntime",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#PluginRuntime",
+      "classification": "type",
+      "referenceKinds": [
+        "type-reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/api.ts",
+          "line": 3,
+          "snippet": "export type { OpenClawPluginApi, PluginRuntime } from \"openclaw/plugin-sdk/core\";",
+          "note": "Unused public type reexport is still a syntactic source dependency."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 2,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 195,
+          "snippet": "            const message = formatErrorMessage(error);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 3,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        },
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 116,
+          "snippet": "    const loadTool = createLazyRuntimeModule(() => import(\"./tool.js\"));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/number-runtime#parseStrictPositiveInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/number-runtime#parseStrictPositiveInteger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 4,
+          "snippet": "import { parseStrictPositiveInteger } from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 183,
+          "snippet": "          const limit = parseStrictPositiveInteger(tokens[1]) ?? 12;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/param-readers#readStringParam",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/param-readers#readStringParam",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 2,
+          "snippet": "import { readStringParam } from \"openclaw/plugin-sdk/param-readers\";"
+        },
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 13,
+          "snippet": "  const action = readStringParam(params, \"action\", { required: true });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#AnyAgentTool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#AnyAgentTool",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 3,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 9,
+          "snippet": "  ...toolArgs: Parameters<AnyAgentTool[\"execute\"]>"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import",
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/api.ts",
+          "line": 2,
+          "snippet": "export { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 12,
+          "snippet": "import { definePluginEntry, type OpenClawPluginApi } from \"./api.js\";",
+          "note": "Local value import preserves original plugin-entry export provenance."
+        },
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 111,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/speech#SpeechVoiceOption",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/speech#SpeechVoiceOption",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 5,
+          "snippet": "import type { SpeechVoiceOption } from \"openclaw/plugin-sdk/speech\";"
+        },
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 43,
+          "snippet": "function formatVoiceMeta(voice: SpeechVoiceOption): string | undefined {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 4,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 12,
+          "snippet": "  const params = asOptionalRecord(args) ?? {};"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeLowercaseStringOrEmpty",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 7,
+          "snippet": "  normalizeLowercaseStringOrEmpty,",
+          "note": "Named binding in the string-coerce-runtime import ending on line 10."
+        },
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 85,
+          "snippet": "  const lower = normalizeLowercaseStringOrEmpty(q);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalLowercaseString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalLowercaseString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 8,
+          "snippet": "  normalizeOptionalLowercaseString,",
+          "note": "Named binding in the string-coerce-runtime import ending on line 10."
+        },
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 88,
+          "snippet": "    voices.find((v) => normalizeOptionalLowercaseString(v.name) === lower) ??"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 9,
+          "snippet": "  normalizeOptionalString,",
+          "note": "Named binding in the string-coerce-runtime import ending on line 10."
+        },
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 167,
+          "snippet": "        const apiKey = normalizeOptionalString(active.config.apiKey);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/talk-config-runtime#resolveActiveTalkProviderConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/talk-config-runtime#resolveActiveTalkProviderConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 11,
+          "snippet": "import { resolveActiveTalkProviderConfig } from \"openclaw/plugin-sdk/talk-config-runtime\";"
+        },
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 156,
+          "snippet": "        const active = resolveActiveTalkProviderConfig(cfg.talk);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/tool-results#jsonResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/tool-results#jsonResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 5,
+          "snippet": "import { jsonResult } from \"openclaw/plugin-sdk/tool-results\";"
+        },
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 31,
+          "snippet": "  return jsonResult("
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-harness-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-harness-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 1,
+          "snippet": "import { callGatewayTool } from \"openclaw/plugin-sdk/agent-harness-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-contracts",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-contracts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/api.ts",
+          "line": 3,
+          "snippet": "export type { OpenClawPluginApi, PluginRuntime } from \"openclaw/plugin-sdk/core\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 2,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/lazy-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/lazy-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 3,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/number-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/number-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 4,
+          "snippet": "import { parseStrictPositiveInteger } from \"openclaw/plugin-sdk/number-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/param-readers",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/param-readers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 2,
+          "snippet": "import { readStringParam } from \"openclaw/plugin-sdk/param-readers\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "reexport",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/api.ts",
+          "line": 2,
+          "snippet": "export { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 3,
+          "snippet": "import type { AnyAgentTool } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/speech",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/speech",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 5,
+          "snippet": "import type { SpeechVoiceOption } from \"openclaw/plugin-sdk/speech\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 10,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 4,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/talk-config-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/talk-config-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/index.ts",
+          "line": 11,
+          "snippet": "import { resolveActiveTalkProviderConfig } from \"openclaw/plugin-sdk/talk-config-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/tool-results",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/tool-results",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/talk-voice/tool.ts",
+          "line": 5,
+          "snippet": "import { jsonResult } from \"openclaw/plugin-sdk/tool-results\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read every production source file and the manifest at the pinned commit. All seven plugin-root files are partitioned; the plugin has no package.json, declaration files, or ambiguous support helpers. Production source content matches the pin.",
+    "api.ts is a plugin-local public barrel. Its explicit SDK reexports and index.ts local import sites preserve original SDK-export identities and kinds. The unused PluginRuntime type reexport remains a finding. Local imports add no SDK-module site.",
+    "The plugin-entry SDK module is mixed: api.ts contains a value reexport, while tool.ts explicitly imports AnyAgentTool as a type. The individual definePluginEntry and AnyAgentTool exports remain runtime and type respectively.",
+    "index.ts dynamically imports only ./tool.js; that local module exports a plugin-owned executeTalkVoiceTool wrapper. This creates no additional SDK-module or SDK-export dynamic-import finding. The lazy loader return and wrapper are not public runtime handles.",
+    "All local imports stay within extensions/talk-voice. Public SDK facades and root package exports were checked for boundary/provenance; SDK implementations and installed dependencies are outside audited shipped plugin source.",
+    "Only the annotated registration api object establishes API/runtime provenance. Tool and command ctx values, configuration snapshots/drafts, SpeechVoiceOption fields, resolved provider config, and arbitrary helper results do not become API/runtime handles. AnyAgentTool[\"execute\"] references the imported tool type and is not an OpenClawPluginApi/PluginRuntime member.",
+    "Runtime accesses normalize directly from api.runtime and record only maximal calls: config.current, config.mutateConfigFile, and tts.listVoices. No hooks, unresolved runtime escapes, or genuinely nonstatic SDK accesses occur.",
+    "Manifest contracts are contracts.tools talk_voice and commandAliases.name voice. Manifest categories, activation, enabledByDefault, identity/descriptive/configSchema fields, and commandAliases.kind are not contract identities."
+  ]
+}

@@ -1,0 +1,3702 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "crabbox",
+    "path": "extensions/crabbox"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/sdk_benchmark_coordinator/audit_crabbox",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/crabbox/cli-runtime-api.ts",
+      "sha256": "426a81a4238599508712fdce1b80816d2ac155f26afde195f98b78967689b866",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/crabbox/doctor-contract-api.ts",
+      "sha256": "087fd12ecb03014aa882da8448e269507bae81f2c69a07812558aa0f098ef4d2",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/crabbox/doctor-health-api.ts",
+      "sha256": "a99ce79949b6918dc6b40c38496631951943d78d26f7ef0ede87892eab1ec2b9",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/crabbox/index.ts",
+      "sha256": "cc52b13315b0931264f8e3b44014e33bedde00e29712337aed783f4b3406f6a4",
+      "role": "production-source",
+      "findingCount": 16
+    },
+    {
+      "path": "extensions/crabbox/openclaw.plugin.json",
+      "sha256": "8d369da09724b859816c28ddd09171a7f3095e5ca6fbc3fb9699b911e530ac30",
+      "role": "manifest",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/crabbox/package.json",
+      "sha256": "82e7b914c834932b585008d0c16a7c8708842e133fa608d36ad5a61d81596118",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-binary.ts",
+      "sha256": "22e1cd06de53bd47a06e8b448e5775c856341a952258445e348bebc5b53a389d",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+      "sha256": "96a5df142e343082c6d1145f42563f7e75fe85639b8fb4af277c59e2e73f7b0c",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+      "sha256": "febb743a54155bd11c3512053ac2bc37d8a2e81d8d55e97bfc671c96e74b06c1",
+      "role": "production-source",
+      "findingCount": 18
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-model-run-cli.ts",
+      "sha256": "3094367fb55c6538404f25659cdc4afd0af9711e424011cb3d21f99490907b3c",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-model-run.ts",
+      "sha256": "b1129f2942fb46e909ceb437f6bc7c74080962a0c61a693b85af9915d7d44eb6",
+      "role": "production-source",
+      "findingCount": 10
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-process.ts",
+      "sha256": "c9e15c1eaf89c3f20e094afeb16c7475bac2d59ee37db7aa1124d1fe5c6ace3d",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+      "sha256": "cf4d74770075266d3e041ed597835e4063b0295e05026c7833fb2345fbc61498",
+      "role": "production-source",
+      "findingCount": 14
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+      "sha256": "26814325307d5ccbdcb58552745912499d548e06f32f3ee1b82468afa3b3b6d3",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-sandbox-lease.ts",
+      "sha256": "d5d88b133d19f02b0fbe52983649d5585e79d201859787f30893ddcd1591eba2",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-tool.ts",
+      "sha256": "218539c68be1ebf0af164625b49b629c05598c2305434d4daa7448a7227addc2",
+      "role": "production-source",
+      "findingCount": 13
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-command.ts",
+      "sha256": "837fcc9b9d82aafe27351837f2178350565ec94382c6c3043576accfcaf8076d",
+      "role": "production-source",
+      "findingCount": 8
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-desktop-macos.ts",
+      "sha256": "3f445721fbd0f23a8c6679b08b4939b4b2c8fdff8246f52f7513a5c876543daa",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-desktop-setup.ts",
+      "sha256": "12fbfaf1c930d08c06bc5021fea972824670cacdbcd3dfa3ca673ebf6f88827a",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-desktop-windows.ts",
+      "sha256": "0bb822f874776ad7bcaf4c2eb9ffadc8044ed59dfd27912409a682401ea111e7",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-env-profile.ts",
+      "sha256": "4aa9e8995faf70a309b158331b6b4f461e93f0c203fd55b4babc7b7d30d48db7",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-heartbeat.ts",
+      "sha256": "7c4bc486c9b04d015aae8307bb2fb4ba8fdc83e76f05422ba75727997086afed",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-inspect.ts",
+      "sha256": "141f226b0a0f9b277e787efc363b7a922788ce6b99867803838a5d55e164ce7f",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-lifetime.ts",
+      "sha256": "976e3a860b37b6e9421c927544a2cd60cc2d60893fc018b07ddc540a2be6e6dd",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-machine-options.ts",
+      "sha256": "28ec679f92be4e3b925a663e64abb0b30b0d2e9239a031390ac90e2c7d9eff19",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-node-enrollment-diagnostics.ts",
+      "sha256": "1c7d1109b4c198837ee185e1aac24fcf14b2cf04a2f45950aa46f02f1bd9f85f",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-node-enrollment.ts",
+      "sha256": "d19c3f4d482fd0e0319e7298476194e7c0036df0bbc442f0d3b9615a359369ec",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-node-process.ts",
+      "sha256": "64fc7cf2eee506a69a538f318a69737a16baef89a2f6027b1857890e062ad953",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-preflight.ts",
+      "sha256": "3d6356a8b379f1b8736dc0194071d2115443691b5c52b6ee7c2d5c518315791e",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-profile-suggestion.ts",
+      "sha256": "4308c66e5d36669b908cb849024ec6687a902f041c914834549b4649f419b675",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+      "sha256": "8c4e387825065ce63c2e982f8bce464ab838a0c6ebe863a213a60c9271398864",
+      "role": "production-source",
+      "findingCount": 12
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-project.ts",
+      "sha256": "1b91a5f2a4b51e30ad2a8de8d9a059e62afc70034f25cdffe63b1ab11cea7208",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-provider-binary.ts",
+      "sha256": "03d2410a6f237fad4d59e90921c5afd13825f579f793450784b8933d03ddfd8f",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-provider.ts",
+      "sha256": "eaa688b6eefd01e5eaa64210b785c1ab1c799106043267b4eeef0e56fd312206",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-provision-commands.ts",
+      "sha256": "43cf91aa4fcfe1137c08bacb68efb96cc450e24671804ddc811216109729332f",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-script.ts",
+      "sha256": "a8c9e1e2003958ed99d37361820c2e8b8b8880c7d8670d14e4fab36416298b5a",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-setup-egress.ts",
+      "sha256": "a1ef8e6f6ed237a69fcda18e1d7cdb440ff614b7bc2a73bd4f61e842dc8d8453",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-snapshot-actions.ts",
+      "sha256": "e87da244feb29842c102a041daed6f039d874377695d15cb1bf8dcfd777a2b80",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-timeouts.ts",
+      "sha256": "9f79a24174ff7fd704488881117368126b5efae9e4468bfc017e2d65144be4e2",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-wallpaper.ts",
+      "sha256": "89fd1d18985c1a50b9cf731fec4ef97358b30319f7b981fa92c446cd9fe86018",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-allocation.ts",
+      "sha256": "f84fdac093dcc4ad97fd73a3172a1f3b2b5b13ada975e882e6a84fc40126d3de",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-capture.ts",
+      "sha256": "8cb73a0864233ce9585ef8bb4f25cba52a65355a7d1494753f36bb5c448046ce",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-checkpoint.ts",
+      "sha256": "c5959b335d44efc7c8347452a540dd38caeae759b6d3a4fee4e3687b9fc3fdbf",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-cli.ts",
+      "sha256": "8007c4fe4a9c6f71c9bb66fa03d1472274f40bfa897b0f0cb3b778d9a75e7893",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-policy.ts",
+      "sha256": "d19104de6670ee3e8d7cc3aa245011d09889dd0cd072e5768d614eb6023b16ce",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-recipe.ts",
+      "sha256": "4b3472b842345f9ae1d268442a02f76e9b683001eb11f24331a4eb6b7b03baa4",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-records.ts",
+      "sha256": "06022f3a26f67a22eeec0eb4e805686b149fbba3e1490c66f098a83c86f8b0e3",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-scrub.ts",
+      "sha256": "a398ed59be7e77861b49dc890149561cc51c320bf53bdc49b956fb373f4e870b",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
+      "sha256": "ebb69dce139a3fd21aca8e6204362373ce394b8845276d6c0f406f2a634a3157",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image.ts",
+      "sha256": "87f7e8718aad1acd5293bd15308ab0a42988542fee05e3f985c831d4b75af83c",
+      "role": "production-source",
+      "findingCount": 2
+    },
+    {
+      "path": "extensions/crabbox/src/doctor.ts",
+      "sha256": "f2bc776323eb5b4f6ac0256d475dbfe4bda4c274bd8ece9cc40eeec9e0bc90af",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/crabbox/worker-profile-api.ts",
+      "sha256": "4f8ad52ae765b09ede659bc76c2e8cb528af8a2d10b01c0659b20fa982fa89b7",
+      "role": "production-source",
+      "findingCount": 6
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/crabbox/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Static SVG artwork, outside eligible JS/TS extensions."
+    },
+    {
+      "path": "extensions/crabbox/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Static PNG artwork, outside eligible JS/TS extensions."
+    },
+    {
+      "path": "extensions/crabbox/assets/openclaw-worker-wallpaper.png",
+      "rule": "non-source",
+      "reason": "Static PNG asset, outside eligible JS/TS extensions; the wallpaper asset is explicitly copied by package build metadata."
+    },
+    {
+      "path": "extensions/crabbox/doctor-contract-api.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/index.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/skills/crabbox-apps/SKILL.md",
+      "rule": "non-source",
+      "reason": "Plugin skill instructions (Markdown), outside eligible JS/TS extensions."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-binary.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-gateway-methods.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-managed-binary.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-model-run.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-process.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-sandbox-backend.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-state.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Provides test-only plugin-state stores; all callers are .test.ts files or the provider test-support module, verified across the source tree."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-tool.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-bootstrap-download.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-capture-nonblocking.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-command.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-coordinator-retry.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-desktop-macos.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-desktop-setup.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-desktop-windows.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-enrollment-overlap.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-heartbeat.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-inspect.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-lifetime.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-node-enrollment-diagnostics.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-node-enrollment-errors.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-node-enrollment-replay.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-node-enrollment-windows.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-node-enrollment.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Creates synthetic bootstrap/package/receipt fixtures and Vitest assertions; every caller is a .test.ts file or another verified test-support module."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-node-enrollment.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-node-install.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-prepared-image.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-presentation.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-profile-suggestion.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-profile.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-project.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-provider-binary.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-provider-desktop.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-provider.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Creates Vitest spies, fake command results and teardown receipts; callers are .test.ts files or warm-image test support, never production source."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-provider.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-provision-cancellation.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-read-budget.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-script.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-stop-lifetime.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-stop.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-allocation.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-cli.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-lifecycle.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-maintenance.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-policy.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-recovery.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-retirement.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Registers Vitest cleanup, synthetic leases and mocked providers; only .test.ts callers exist across the source tree."
+    },
+    {
+      "path": "extensions/crabbox/src/crabbox-worker-warm-image.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    },
+    {
+      "path": "extensions/crabbox/src/doctor.test.ts",
+      "rule": "test-file",
+      "reason": "Vitest test file; basename contains .test. and no production source imports it."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.lifecycle.registerRuntimeLifecycle",
+      "kind": "api-member",
+      "identity": "api.lifecycle.registerRuntimeLifecycle",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 102,
+          "snippet": "api.lifecycle.registerRuntimeLifecycle({",
+          "note": "The register parameter is the public OpenClawPluginApi supplied to definePluginEntry."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.logger.warn",
+      "kind": "api-member",
+      "identity": "api.logger.warn",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 74,
+          "snippet": "warn: (message) => api.logger.warn(message),",
+          "note": "The register parameter is the public OpenClawPluginApi supplied to definePluginEntry."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.pluginConfig",
+      "kind": "api-member",
+      "identity": "api.pluginConfig",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 75,
+          "snippet": "warmImagePolicy: resolveCrabboxWarmImagePolicy(api.pluginConfig),"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.registerCli",
+      "kind": "api-member",
+      "identity": "api.registerCli",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 36,
+          "snippet": "api.registerCli(",
+          "note": "The register parameter is the public OpenClawPluginApi supplied to definePluginEntry."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run-cli.ts",
+          "line": 5,
+          "snippet": "type CliContext = Parameters<Parameters<OpenClawPluginApi[\"registerCli\"]>[0]>[0];",
+          "note": "Explicit indexed access selects registerCli; Parameters projects its callback type without adding other API paths."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-cli.ts",
+          "line": 12,
+          "snippet": "type CliProgram = Parameters<Parameters<OpenClawPluginApi[\"registerCli\"]>[0]>[0][\"program\"];"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "api-member:api.registerGatewayMethod",
+      "kind": "api-member",
+      "identity": "api.registerGatewayMethod",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 54,
+          "snippet": "api.registerGatewayMethod(",
+          "note": "The register parameter is the public OpenClawPluginApi supplied to definePluginEntry."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.registerService",
+      "kind": "api-member",
+      "identity": "api.registerService",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 115,
+          "snippet": "api.registerService({",
+          "note": "The register parameter is the public OpenClawPluginApi supplied to definePluginEntry."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.registerTool",
+      "kind": "api-member",
+      "identity": "api.registerTool",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 26,
+          "snippet": "api.registerTool((context) => createCrabboxTool({ context, gateway: api.runtime.gateway }), {",
+          "note": "The register parameter is the public OpenClawPluginApi supplied to definePluginEntry."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.registerToolMetadata",
+      "kind": "api-member",
+      "identity": "api.registerToolMetadata",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 29,
+          "snippet": "api.registerToolMetadata({",
+          "note": "The register parameter is the public OpenClawPluginApi supplied to definePluginEntry."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.registerWorkerProvider",
+      "kind": "api-member",
+      "identity": "api.registerWorkerProvider",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 87,
+          "snippet": "api.registerWorkerProvider(provider);",
+          "note": "The register parameter is the public OpenClawPluginApi supplied to definePluginEntry."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.registrationMode",
+      "kind": "api-member",
+      "identity": "api.registrationMode",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 91,
+          "snippet": "if (sandboxConfig && api.registrationMode === \"full\") {"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "api-member:api.rootDir",
+      "kind": "api-member",
+      "identity": "api.rootDir",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 72,
+          "snippet": "openclawRoot: resolveOpenClawRoot(api.rootDir),"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "manifest-contract:manifest.cliCommands.name:crabbox",
+      "kind": "manifest-contract",
+      "identity": "manifest.cliCommands.name:crabbox",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/openclaw.plugin.json",
+          "line": 11,
+          "snippet": "\"name\": \"crabbox\","
+        }
+      ],
+      "classification": "declarative"
+    },
+    {
+      "key": "manifest-contract:manifest.commandAliases.name:crabbox",
+      "kind": "manifest-contract",
+      "identity": "manifest.commandAliases.name:crabbox",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/openclaw.plugin.json",
+          "line": 21,
+          "snippet": "\"commandAliases\": [{ \"name\": \"crabbox\", \"kind\": \"cli\" }],"
+        }
+      ],
+      "classification": "declarative"
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.tools:crabbox",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.tools:crabbox",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/openclaw.plugin.json",
+          "line": 25,
+          "snippet": "\"tools\": [\"crabbox\"]"
+        }
+      ],
+      "classification": "declarative"
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.workerProfileSuggestions:crabbox",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.workerProfileSuggestions:crabbox",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/openclaw.plugin.json",
+          "line": 24,
+          "snippet": "\"workerProfileSuggestions\": [\"crabbox\"],"
+        }
+      ],
+      "classification": "declarative"
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.workerProviders:crabbox",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.workerProviders:crabbox",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/openclaw.plugin.json",
+          "line": 23,
+          "snippet": "\"workerProviders\": [\"crabbox\"],"
+        }
+      ],
+      "classification": "declarative"
+    },
+    {
+      "key": "manifest-contract:manifest.skills:./skills",
+      "kind": "manifest-contract",
+      "identity": "manifest.skills:./skills",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/openclaw.plugin.json",
+          "line": 27,
+          "snippet": "\"skills\": [\"./skills\"],"
+        }
+      ],
+      "classification": "declarative"
+    },
+    {
+      "key": "runtime-member:runtime.config.current",
+      "kind": "runtime-member",
+      "identity": "runtime.config.current",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 57,
+          "snippet": "const profiles = Object.values(api.runtime.config.current().cloudWorkers?.profiles ?? {})",
+          "note": "api is annotated OpenClawPluginApi; the config returned by current() is not itself PluginRuntime."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "runtime-member:runtime.gateway",
+      "kind": "runtime-member",
+      "identity": "runtime.gateway",
+      "referenceKinds": [
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 67,
+          "snippet": "gateway: OpenClawPluginApi[\"runtime\"][\"gateway\"];",
+          "note": "Maximal explicit indexed path OpenClawPluginApi[\"runtime\"][\"gateway\"]."
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "runtime-member:runtime.gateway.request",
+      "kind": "runtime-member",
+      "identity": "runtime.gateway.request",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 113,
+          "snippet": "const catalog = await gateway.request<{",
+          "note": "gateway is typed OpenClawPluginApi[\"runtime\"][\"gateway\"] at line 67 and receives api.runtime.gateway from index.ts:26."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "runtime-member:runtime.state.openKeyedStore",
+      "kind": "runtime-member",
+      "identity": "runtime.state.openKeyedStore",
+      "referenceKinds": [
+        "call",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
+          "line": 20,
+          "snippet": "export type CrabboxState = Pick<OpenClawPluginApi[\"runtime\"][\"state\"], \"openKeyedStore\">;",
+          "note": "Literal Pick explicitly selects openKeyedStore from the public runtime state type; no separate state prefix."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
+          "line": 103,
+          "snippet": "state.openKeyedStore<unknown>({",
+          "note": "CrabboxState is the Pick defined at line 20; entrypoint api.runtime.state passes through the plugin-owned state helpers."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
+          "line": 304,
+          "snippet": "const store = state.openKeyedStore<WarmProfileRecord>({"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/archive#extractArchive",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/archive#extractArchive",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 330,
+          "snippet": "const { extractArchive } = await import(\"openclaw/plugin-sdk/archive\");"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 334,
+          "snippet": "await extractArchive({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#coerceErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#coerceErrorMessage",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 3,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 77,
+          "snippet": "throw new Error(`Crabbox sandbox ${action} could not start: ${coerceErrorMessage(error)}`, {"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 2,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-machine-options.ts",
+          "line": 1,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provider.ts",
+          "line": 3,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-snapshot-actions.ts",
+          "line": 1,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-capture.ts",
+          "line": 3,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image.ts",
+          "line": 2,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#extractErrorCode",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#extractErrorCode",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 211,
+          "snippet": "const { extractErrorCode } = await import(\"openclaw/plugin-sdk/error-runtime\");"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 212,
+          "snippet": "if (extractErrorCode(error) === \"ENOENT\") {"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 1,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 68,
+          "snippet": "const payload = { error: formatErrorMessage(error) };"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#toErrorObject",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#toErrorObject",
+      "referenceKinds": [
+        "call",
+        "dynamic-import",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 402,
+          "snippet": "const { toErrorObject } = await import(\"openclaw/plugin-sdk/error-runtime\");"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 445,
+          "snippet": "reject(toErrorObject(signal?.reason, \"Crabbox acquisition aborted\"));"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provider-binary.ts",
+          "line": 1,
+          "snippet": "import { toErrorObject } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/extension-shared#buildTimeoutAbortSignal",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/extension-shared#buildTimeoutAbortSignal",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 122,
+          "snippet": "const [{ buildTimeoutAbortSignal }, { fetchWithSsrFGuard }] = await Promise.all([",
+          "note": "Resolved named export from openclaw/plugin-sdk/extension-shared."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 127,
+          "snippet": "const deadline = buildTimeoutAbortSignal({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#root",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#root",
+      "referenceKinds": [
+        "call",
+        "dynamic-import",
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 4,
+          "snippet": "import type { root } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 117,
+          "snippet": "destination: Awaited<ReturnType<typeof root>>,"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 309,
+          "snippet": "const { root, sha256File } = await import(\"openclaw/plugin-sdk/file-access-runtime\");"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 310,
+          "snippet": "const stagingRoot = await root(staging);"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#sha256File",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#sha256File",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 309,
+          "snippet": "const { root, sha256File } = await import(\"openclaw/plugin-sdk/file-access-runtime\");"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 326,
+          "snippet": "(await sha256File(archivePath, { maxBytes: MAX_ARCHIVE_BYTES, signal })).digest !== hashes[0]"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-lock#withFileLock",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-lock#withFileLock",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 232,
+          "snippet": "const { withFileLock } = await import(\"openclaw/plugin-sdk/file-lock\");"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 234,
+          "snippet": "return withFileLock("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#ErrorCodes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#ErrorCodes",
+      "referenceKinds": [
+        "import",
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 3,
+          "snippet": "ErrorCodes,",
+          "note": "Resolved named export from openclaw/plugin-sdk/gateway-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 73,
+          "snippet": "invalidRequest ? ErrorCodes.INVALID_REQUEST : ErrorCodes.UNAVAILABLE,",
+          "note": "Non-call reads of ErrorCodes.INVALID_REQUEST and ErrorCodes.UNAVAILABLE."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#GatewayRequestHandlerOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#GatewayRequestHandlerOptions",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 5,
+          "snippet": "type GatewayRequestHandlerOptions,",
+          "note": "Explicit type import from openclaw/plugin-sdk/gateway-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 25,
+          "snippet": "type Request = Pick<GatewayRequestHandlerOptions, \"respond\"> & { params?: unknown };"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#errorShape",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#errorShape",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 4,
+          "snippet": "errorShape,",
+          "note": "Resolved named export from openclaw/plugin-sdk/gateway-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 72,
+          "snippet": "errorShape("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/health#HealthCheck",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/health#HealthCheck",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/doctor.ts",
+          "line": 1,
+          "snippet": "import type { HealthCheck, HealthFinding } from \"openclaw/plugin-sdk/health\";"
+        },
+        {
+          "path": "extensions/crabbox/src/doctor.ts",
+          "line": 36,
+          "snippet": "readonly getHealthCheck: (id: string) => HealthCheck | undefined;"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/health#HealthFinding",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/health#HealthFinding",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/doctor.ts",
+          "line": 1,
+          "snippet": "import type { HealthCheck, HealthFinding } from \"openclaw/plugin-sdk/health\";"
+        },
+        {
+          "path": "extensions/crabbox/src/doctor.ts",
+          "line": 82,
+          "snippet": "const findings: HealthFinding[] = [];"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/logging-core#createSubsystemLogger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/logging-core#createSubsystemLogger",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/worker-profile-api.ts",
+          "line": 1,
+          "snippet": "import { createSubsystemLogger } from \"openclaw/plugin-sdk/logging-core\";"
+        },
+        {
+          "path": "extensions/crabbox/worker-profile-api.ts",
+          "line": 14,
+          "snippet": "const log = createSubsystemLogger(\"crabbox\");"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/logging-core#redactSensitiveText",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/logging-core#redactSensitiveText",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-command.ts",
+          "line": 2,
+          "snippet": "import { redactSensitiveText, redactToolPayloadText } from \"openclaw/plugin-sdk/logging-core\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-command.ts",
+          "line": 102,
+          "snippet": "const compressed = redactSensitiveText(raw).replace(/\\s+/gu, \" \");"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-inspect.ts",
+          "line": 1,
+          "snippet": "import { redactSensitiveText } from \"openclaw/plugin-sdk/logging-core\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/logging-core#redactToolPayloadText",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/logging-core#redactToolPayloadText",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-command.ts",
+          "line": 2,
+          "snippet": "import { redactSensitiveText, redactToolPayloadText } from \"openclaw/plugin-sdk/logging-core\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-command.ts",
+          "line": 11,
+          "snippet": "return sliceUtf16Safe(redactToolPayloadText(text).replace(/\\s+/gu, \" \").trim(), 0, 512);"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-node-enrollment-diagnostics.ts",
+          "line": 1,
+          "snippet": "import { redactToolPayloadText } from \"openclaw/plugin-sdk/logging-core\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/model-ref-parse#parseModelRef",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/model-ref-parse#parseModelRef",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 2,
+          "snippet": "import { parseModelRef } from \"openclaw/plugin-sdk/model-ref-parse\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 60,
+          "snippet": "const model = parseModelRef(params.model, \"\");"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/param-readers#readPositiveIntegerParam",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/param-readers#readPositiveIntegerParam",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 3,
+          "snippet": "import { readPositiveIntegerParam, readStringParam } from \"openclaw/plugin-sdk/param-readers\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 183,
+          "snippet": "const timeoutMs = readPositiveIntegerParam(params, \"timeoutMs\", { max: 600_000 });"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/param-readers#readStringParam",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/param-readers#readStringParam",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 3,
+          "snippet": "import { readPositiveIntegerParam, readStringParam } from \"openclaw/plugin-sdk/param-readers\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 109,
+          "snippet": "const action = readStringParam(params, \"action\", { required: true });"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#AnyAgentTool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#AnyAgentTool",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 5,
+          "snippet": "AnyAgentTool,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 88,
+          "snippet": "export function createCrabboxTool({ context, gateway }: CrabboxToolOptions): AnyAgentTool | null {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawConfig",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 16,
+          "snippet": "config: OpenClawConfig;"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 7,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 28,
+          "snippet": "api: OpenClawPluginApi,"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run-cli.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 6,
+          "snippet": "OpenClawPluginApi,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-cli.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi, WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginService",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginService",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 2,
+          "snippet": "import { definePluginEntry, type OpenClawPluginService } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 121,
+          "snippet": "} satisfies OpenClawPluginService);"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginToolContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginToolContext",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 7,
+          "snippet": "OpenClawPluginToolContext,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 66,
+          "snippet": "context: OpenClawPluginToolContext;"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#SuggestedWorkerProfile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#SuggestedWorkerProfile",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile-suggestion.ts",
+          "line": 2,
+          "snippet": "SuggestedWorkerProfile,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile-suggestion.ts",
+          "line": 20,
+          "snippet": "let cached: Promise<SuggestedWorkerProfile | undefined> | undefined;"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#WorkerDesktopEndpoint",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#WorkerDesktopEndpoint",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-desktop-macos.ts",
+          "line": 1,
+          "snippet": "import type { WorkerDesktopEndpoint } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-desktop-macos.ts",
+          "line": 149,
+          "snippet": "): WorkerDesktopEndpoint {"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-desktop-setup.ts",
+          "line": 1,
+          "snippet": "import type { WorkerDesktopEndpoint } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-desktop-windows.ts",
+          "line": 1,
+          "snippet": "import type { WorkerDesktopEndpoint } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provision-commands.ts",
+          "line": 3,
+          "snippet": "type WorkerDesktopEndpoint,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#WorkerLeaseStatus",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#WorkerLeaseStatus",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provider.ts",
+          "line": 6,
+          "snippet": "type WorkerLeaseStatus,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provider.ts",
+          "line": 656,
+          "snippet": "async inspect(lease): Promise<WorkerLeaseStatus> {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#WorkerMachineOption",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#WorkerMachineOption",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 5,
+          "snippet": "type WorkerMachineOption,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 414,
+          "snippet": "): readonly WorkerMachineOption[] {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#WorkerProfile",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#WorkerProfile",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-machine-options.ts",
+          "line": 2,
+          "snippet": "import type { WorkerProfile, WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-machine-options.ts",
+          "line": 126,
+          "snippet": "const resolveCatalog = async (profile: WorkerProfile) => {"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 6,
+          "snippet": "type WorkerProfile,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provider.ts",
+          "line": 7,
+          "snippet": "type WorkerProfile,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#WorkerProfileSuggestionDiscovery",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#WorkerProfileSuggestionDiscovery",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile-suggestion.ts",
+          "line": 3,
+          "snippet": "WorkerProfileSuggestionDiscovery,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/crabbox/worker-profile-api.ts",
+          "line": 2,
+          "snippet": "import type { WorkerProfileSuggestionDiscovery } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/worker-profile-api.ts",
+          "line": 6,
+          "snippet": "const discovery = createPluginRuntimeStore<WorkerProfileSuggestionDiscovery>({"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#WorkerProvider",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#WorkerProvider",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-machine-options.ts",
+          "line": 2,
+          "snippet": "import type { WorkerProfile, WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-machine-options.ts",
+          "line": 124,
+          "snippet": "): Required<Pick<WorkerProvider, \"listMachineOptions\" | \"listOperatingSystems\">> {"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-node-enrollment.ts",
+          "line": 1,
+          "snippet": "import type { WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-project.ts",
+          "line": 1,
+          "snippet": "import type { WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provider.ts",
+          "line": 8,
+          "snippet": "type WorkerProvider,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provision-commands.ts",
+          "line": 4,
+          "snippet": "type WorkerProvider,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-setup-egress.ts",
+          "line": 2,
+          "snippet": "import { WorkerProviderError, type WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-allocation.ts",
+          "line": 1,
+          "snippet": "import type { WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-recipe.ts",
+          "line": 1,
+          "snippet": "import type { WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi, WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#WorkerProviderError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#WorkerProviderError",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-env-profile.ts",
+          "line": 3,
+          "snippet": "import { WorkerProviderError } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-env-profile.ts",
+          "line": 19,
+          "snippet": "throw new WorkerProviderError(",
+          "note": "Construction of the exported class is a call reference."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-preflight.ts",
+          "line": 1,
+          "snippet": "import { WorkerProviderError } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 4,
+          "snippet": "WorkerProviderError,",
+          "note": "Resolved named export from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provider.ts",
+          "line": 5,
+          "snippet": "WorkerProviderError,",
+          "note": "Resolved named export from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provision-commands.ts",
+          "line": 2,
+          "snippet": "WorkerProviderError,",
+          "note": "Resolved named export from openclaw/plugin-sdk/plugin-entry."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provision-commands.ts",
+          "line": 364,
+          "snippet": "throw WorkerProviderError.cleanupIndeterminate(params.id, provisionError, cleanupError);",
+          "note": "Call of cleanupIndeterminate on the exported class; this is an exported-root call, not an API/runtime member."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-setup-egress.ts",
+          "line": 2,
+          "snippet": "import { WorkerProviderError, type WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 2,
+          "snippet": "import { definePluginEntry, type OpenClawPluginService } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 21,
+          "snippet": "export default definePluginEntry({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#OpenKeyedStoreOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#OpenKeyedStoreOptions",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/doctor.ts",
+          "line": 3,
+          "snippet": "OpenKeyedStoreOptions,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/doctor.ts",
+          "line": 39,
+          "snippet": "options: OpenKeyedStoreOptions,"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#PluginStateCompareIntent",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#PluginStateCompareIntent",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
+          "line": 3,
+          "snippet": "PluginStateCompareIntent,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
+          "line": 283,
+          "snippet": "prepare: (current: T | undefined) => PluginStateCompareIntent<T>,"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#PluginStateEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#PluginStateEntry",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/doctor.ts",
+          "line": 4,
+          "snippet": "PluginStateEntry,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/doctor.ts",
+          "line": 40,
+          "snippet": ") => Promise<PluginStateEntry<T>[]>;"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#PluginStateKeyedStore",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#PluginStateKeyedStore",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
+          "line": 4,
+          "snippet": "PluginStateKeyedStore,",
+          "note": "Explicit type import from openclaw/plugin-sdk/plugin-state-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
+          "line": 281,
+          "snippet": "store: PluginStateKeyedStore<T>,"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#CommandOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#CommandOptions",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 4,
+          "snippet": "import type { CommandOptions, SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 71,
+          "snippet": "options: Pick<CommandOptions, \"env\" | \"input\" | \"onOutputChunk\"> = {},"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-process.ts",
+          "line": 3,
+          "snippet": "import { runCommandWithTimeout, type CommandOptions } from \"openclaw/plugin-sdk/process-runtime\";"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#SpawnResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#SpawnResult",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 5,
+          "snippet": "import type { SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 4,
+          "snippet": "import type { CommandOptions, SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 59,
+          "snippet": "export async function runCrabboxModelCommand(params: CrabboxModelRunOptions): Promise<SpawnResult> {"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 4,
+          "snippet": "import type { SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-command.ts",
+          "line": 3,
+          "snippet": "import type { SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-heartbeat.ts",
+          "line": 1,
+          "snippet": "import type { SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-setup-egress.ts",
+          "line": 3,
+          "snippet": "import type { SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-checkpoint.ts",
+          "line": 1,
+          "snippet": "import type { SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#runCommandWithTimeout",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#runCommandWithTimeout",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-process.ts",
+          "line": 3,
+          "snippet": "import { runCommandWithTimeout, type CommandOptions } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-process.ts",
+          "line": 11,
+          "snippet": "return runCommandWithTimeout(command, { ...options, cwd: options.cwd ?? homedir() });"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-doctor-migrations#PluginDoctorStateMigration",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations#PluginDoctorStateMigration",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/doctor-contract-api.ts",
+          "line": 2,
+          "snippet": "PluginDoctorStateMigration,",
+          "note": "Explicit type import from openclaw/plugin-sdk/runtime-doctor-migrations."
+        },
+        {
+          "path": "extensions/crabbox/doctor-contract-api.ts",
+          "line": 165,
+          "snippet": "export const stateMigrations: PluginDoctorStateMigration[] = ["
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-doctor-migrations#PluginDoctorStateMigrationContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations#PluginDoctorStateMigrationContext",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/doctor-contract-api.ts",
+          "line": 3,
+          "snippet": "PluginDoctorStateMigrationContext,",
+          "note": "Explicit type import from openclaw/plugin-sdk/runtime-doctor-migrations."
+        },
+        {
+          "path": "extensions/crabbox/doctor-contract-api.ts",
+          "line": 153,
+          "snippet": "async function listLegacyWarmLeases(context: PluginDoctorStateMigrationContext) {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-store#createPluginRuntimeStore",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-store#createPluginRuntimeStore",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/worker-profile-api.ts",
+          "line": 3,
+          "snippet": "import { createPluginRuntimeStore } from \"openclaw/plugin-sdk/runtime-store\";"
+        },
+        {
+          "path": "extensions/crabbox/worker-profile-api.ts",
+          "line": 6,
+          "snippet": "const discovery = createPluginRuntimeStore<WorkerProfileSuggestionDiscovery>({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sandbox#CreateSandboxBackendParams",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sandbox#CreateSandboxBackendParams",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 10,
+          "snippet": "type CreateSandboxBackendParams,",
+          "note": "Explicit type import from openclaw/plugin-sdk/sandbox."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 269,
+          "snippet": "export function resolveCrabboxSandboxWorkdir(params: CreateSandboxBackendParams): string {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sandbox#ReservedSandboxBackendFactoryV1",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sandbox#ReservedSandboxBackendFactoryV1",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 11,
+          "snippet": "type ReservedSandboxBackendFactoryV1,",
+          "note": "Explicit type import from openclaw/plugin-sdk/sandbox."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 178,
+          "snippet": "): ReservedSandboxBackendFactoryV1 {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sandbox#SandboxBackendManager",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sandbox#SandboxBackendManager",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 12,
+          "snippet": "type SandboxBackendManager,",
+          "note": "Explicit type import from openclaw/plugin-sdk/sandbox."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 233,
+          "snippet": "): SandboxBackendManager {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sandbox#SandboxRuntimeRetiredError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sandbox#SandboxRuntimeRetiredError",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 9,
+          "snippet": "SandboxRuntimeRetiredError,",
+          "note": "Resolved named export from openclaw/plugin-sdk/sandbox."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 196,
+          "snippet": "throw new SandboxRuntimeRetiredError(runtimeId);",
+          "note": "Construction of the exported class is a call reference."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sandbox#createRemoteShellSandboxBackend",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sandbox#createRemoteShellSandboxBackend",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 6,
+          "snippet": "createRemoteShellSandboxBackend,",
+          "note": "Resolved named export from openclaw/plugin-sdk/sandbox."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 201,
+          "snippet": "return createRemoteShellSandboxBackend(params, {"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sandbox#createRemoteShellSandboxSession",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sandbox#createRemoteShellSandboxSession",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 7,
+          "snippet": "createRemoteShellSandboxSession,",
+          "note": "Resolved named export from openclaw/plugin-sdk/sandbox."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 207,
+          "snippet": "createRemoteShellSandboxSession({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sandbox#getSandboxBackendWorkdirResolver",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sandbox#getSandboxBackendWorkdirResolver",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 8,
+          "snippet": "getSandboxBackendWorkdirResolver,",
+          "note": "Resolved named export from openclaw/plugin-sdk/sandbox."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 270,
+          "snippet": "const resolver = getSandboxBackendWorkdirResolver(\"ssh\");"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sandbox#registerSandboxBackend",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sandbox#registerSandboxBackend",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 3,
+          "snippet": "import { registerSandboxBackend } from \"openclaw/plugin-sdk/sandbox\";"
+        },
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 96,
+          "snippet": "const unregister = registerSandboxBackend(CRABBOX_SANDBOX_BACKEND_ID, {"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-egress-runtime#ConfiguredModelEgress",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-egress-runtime#ConfiguredModelEgress",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 7,
+          "snippet": "type ConfiguredModelEgress,",
+          "note": "Explicit type import from openclaw/plugin-sdk/secret-egress-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 34,
+          "snippet": "function remoteCommandScript(egress: ConfiguredModelEgress): string {"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-egress-runtime#withConfiguredModelEgress",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-egress-runtime#withConfiguredModelEgress",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 6,
+          "snippet": "withConfiguredModelEgress,",
+          "note": "Resolved named export from openclaw/plugin-sdk/secret-egress-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 92,
+          "snippet": "return await withConfiguredModelEgress("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-egress-runtime#withSetupSecretEgress",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-egress-runtime#withSetupSecretEgress",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-setup-egress.ts",
+          "line": 4,
+          "snippet": "import { withSetupSecretEgress } from \"openclaw/plugin-sdk/secret-egress-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-setup-egress.ts",
+          "line": 107,
+          "snippet": "return await withSetupSecretEgress({ secrets: params.secrets, signal }, async (egress) => {"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input#isSecretRef",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input#isSecretRef",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 8,
+          "snippet": "import { isSecretRef, isValidSecretRef } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 274,
+          "snippet": "if (!isSecretRef(ref) || !isValidSecretRef(ref) || ref.source !== \"store\") {"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-input#isValidSecretRef",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-input#isValidSecretRef",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 8,
+          "snippet": "import { isSecretRef, isValidSecretRef } from \"openclaw/plugin-sdk/secret-input\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 274,
+          "snippet": "if (!isSecretRef(ref) || !isValidSecretRef(ref) || ref.source !== \"store\") {"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/secret-ref-runtime#SecretRef",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/secret-ref-runtime#SecretRef",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 9,
+          "snippet": "import type { SecretRef } from \"openclaw/plugin-sdk/secret-ref-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 57,
+          "snippet": "setupSecrets?: Record<string, SecretRef & { source: \"store\" }>;"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-project.ts",
+          "line": 2,
+          "snippet": "import type { SecretRef } from \"openclaw/plugin-sdk/secret-ref-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-setup-egress.ts",
+          "line": 5,
+          "snippet": "import type { SecretRef } from \"openclaw/plugin-sdk/secret-ref-runtime\";"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime#fetchWithSsrFGuard",
+      "referenceKinds": [
+        "call",
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 122,
+          "snippet": "const [{ buildTimeoutAbortSignal }, { fetchWithSsrFGuard }] = await Promise.all([",
+          "note": "Resolved named export from openclaw/plugin-sdk/ssrf-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 132,
+          "snippet": "const { response, release, refreshTimeout } = await fetchWithSsrFGuard({"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/state-paths#resolveStateDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/state-paths#resolveStateDir",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 6,
+          "snippet": "import { resolveStateDir } from \"openclaw/plugin-sdk/state-paths\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 107,
+          "snippet": "resolveStateDir(env),"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalRecord",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/doctor-contract-api.ts",
+          "line": 5,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/doctor-contract-api.ts",
+          "line": 65,
+          "snippet": "const operation = asOptionalRecord(value);"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 11,
+          "snippet": "asOptionalRecord,",
+          "note": "Resolved named export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/doctor.ts",
+          "line": 7,
+          "snippet": "asOptionalRecord as readRecord,",
+          "note": "Resolved named export from openclaw/plugin-sdk/string-coerce-runtime."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asPositiveSafeInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asPositiveSafeInteger",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-machine-options.ts",
+          "line": 4,
+          "snippet": "asPositiveSafeInteger,",
+          "note": "Resolved named export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-machine-options.ts",
+          "line": 68,
+          "snippet": "const cpu = asPositiveSafeInteger(raw.primary.vcpu);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#isRecord",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 8,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 33,
+          "snippet": "const checkpointId = isRecord(params) ? normalizeOptionalString(params.checkpointId) : undefined;"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 14,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 1,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-inspect.ts",
+          "line": 3,
+          "snippet": "isRecord,",
+          "note": "Resolved named export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-lifetime.ts",
+          "line": 1,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-machine-options.ts",
+          "line": 5,
+          "snippet": "isRecord,",
+          "note": "Resolved named export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-preflight.ts",
+          "line": 3,
+          "snippet": "isRecord,",
+          "note": "Resolved named export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile-suggestion.ts",
+          "line": 5,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-checkpoint.ts",
+          "line": 3,
+          "snippet": "isRecord,",
+          "note": "Resolved named export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-policy.ts",
+          "line": 1,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-recipe.ts",
+          "line": 2,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-records.ts",
+          "line": 3,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
+          "line": 6,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 8,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 33,
+          "snippet": "const checkpointId = isRecord(params) ? normalizeOptionalString(params.checkpointId) : undefined;"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 1,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-inspect.ts",
+          "line": 4,
+          "snippet": "normalizeOptionalString as nonEmptyString,",
+          "note": "Resolved named export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-machine-options.ts",
+          "line": 6,
+          "snippet": "normalizeOptionalString as nonEmptyString,",
+          "note": "Resolved named export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-preflight.ts",
+          "line": 4,
+          "snippet": "normalizeOptionalString as nonEmptyString,",
+          "note": "Resolved named export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile-suggestion.ts",
+          "line": 5,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 12,
+          "snippet": "normalizeOptionalString as nonEmptyString,",
+          "note": "Resolved named export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-checkpoint.ts",
+          "line": 4,
+          "snippet": "normalizeOptionalString as nonEmptyString,",
+          "note": "Resolved named export from openclaw/plugin-sdk/string-coerce-runtime."
+        },
+        {
+          "path": "extensions/crabbox/src/doctor.ts",
+          "line": 8,
+          "snippet": "normalizeOptionalString as nonEmptyString,",
+          "note": "Resolved named export from openclaw/plugin-sdk/string-coerce-runtime."
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-env-profile.ts",
+          "line": 4,
+          "snippet": "import { resolvePreferredOpenClawTmpDir } from \"openclaw/plugin-sdk/temp-path\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-env-profile.ts",
+          "line": 26,
+          "snippet": "directory = await mkdtemp(join(resolvePreferredOpenClawTmpDir(), \"openclaw-crabbox-env-\"));"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#escapeRegExp",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#escapeRegExp",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-command.ts",
+          "line": 4,
+          "snippet": "import { escapeRegExp, sliceUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-command.ts",
+          "line": 224,
+          "snippet": "!new RegExp(`(?:^|[^\\\\w-])${escapeRegExp(identifier)}(?=$|[^\\\\w-])`, \"u\").test(output) ||"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#sliceUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#sliceUtf16Safe",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-command.ts",
+          "line": 4,
+          "snippet": "import { escapeRegExp, sliceUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-command.ts",
+          "line": 11,
+          "snippet": "return sliceUtf16Safe(redactToolPayloadText(text).replace(/\\s+/gu, \" \").trim(), 0, 512);"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf16Safe",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-inspect.ts",
+          "line": 6,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-inspect.ts",
+          "line": 111,
+          "snippet": "failureError: truncateUtf16Safe("
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/text-utility-runtime#truncateUtf8Prefix",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime#truncateUtf8Prefix",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-node-enrollment-diagnostics.ts",
+          "line": 2,
+          "snippet": "import { truncateUtf8Prefix } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-node-enrollment-diagnostics.ts",
+          "line": 85,
+          "snippet": "prefix += `node-runtime=${truncateUtf8Prefix(evidence[1]!, 256)} node-pid=${evidence[2]} node.log tail: `;"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/time-runtime#racePromiseWithAbortSignal",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/time-runtime#racePromiseWithAbortSignal",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provider-binary.ts",
+          "line": 2,
+          "snippet": "import { racePromiseWithAbortSignal } from \"openclaw/plugin-sdk/time-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provider-binary.ts",
+          "line": 41,
+          "snippet": "const resolved = await racePromiseWithAbortSignal(resolution, signal, ({ reason }) =>"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/tool-results#jsonResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/tool-results#jsonResult",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 9,
+          "snippet": "import { jsonResult } from \"openclaw/plugin-sdk/tool-results\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 126,
+          "snippet": "return jsonResult({ profiles: machineProfiles });"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/archive",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/archive",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 330,
+          "snippet": "const { extractArchive } = await import(\"openclaw/plugin-sdk/archive\");"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "referenceKinds": [
+        "dynamic-import",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 1,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 211,
+          "snippet": "const { extractErrorCode } = await import(\"openclaw/plugin-sdk/error-runtime\");"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 402,
+          "snippet": "const { toErrorObject } = await import(\"openclaw/plugin-sdk/error-runtime\");"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 3,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 2,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-machine-options.ts",
+          "line": 1,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provider-binary.ts",
+          "line": 1,
+          "snippet": "import { toErrorObject } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provider.ts",
+          "line": 3,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-snapshot-actions.ts",
+          "line": 1,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-capture.ts",
+          "line": 3,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image.ts",
+          "line": 2,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/extension-shared",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/extension-shared",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 123,
+          "snippet": "import(\"openclaw/plugin-sdk/extension-shared\"),"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/file-access-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/file-access-runtime",
+      "referenceKinds": [
+        "dynamic-import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 4,
+          "snippet": "import type { root } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 309,
+          "snippet": "const { root, sha256File } = await import(\"openclaw/plugin-sdk/file-access-runtime\");"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/file-lock",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/file-lock",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 232,
+          "snippet": "const { withFileLock } = await import(\"openclaw/plugin-sdk/file-lock\");"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/gateway-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/gateway-runtime",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 6,
+          "snippet": "} from \"openclaw/plugin-sdk/gateway-runtime\";"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/health",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/health",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/doctor.ts",
+          "line": 1,
+          "snippet": "import type { HealthCheck, HealthFinding } from \"openclaw/plugin-sdk/health\";"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/logging-core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/logging-core",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-command.ts",
+          "line": 2,
+          "snippet": "import { redactSensitiveText, redactToolPayloadText } from \"openclaw/plugin-sdk/logging-core\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-inspect.ts",
+          "line": 1,
+          "snippet": "import { redactSensitiveText } from \"openclaw/plugin-sdk/logging-core\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-node-enrollment-diagnostics.ts",
+          "line": 1,
+          "snippet": "import { redactToolPayloadText } from \"openclaw/plugin-sdk/logging-core\";"
+        },
+        {
+          "path": "extensions/crabbox/worker-profile-api.ts",
+          "line": 1,
+          "snippet": "import { createSubsystemLogger } from \"openclaw/plugin-sdk/logging-core\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/model-ref-parse",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/model-ref-parse",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 2,
+          "snippet": "import { parseModelRef } from \"openclaw/plugin-sdk/model-ref-parse\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/param-readers",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/param-readers",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 3,
+          "snippet": "import { readPositiveIntegerParam, readStringParam } from \"openclaw/plugin-sdk/param-readers\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 2,
+          "snippet": "import { definePluginEntry, type OpenClawPluginService } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 7,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run-cli.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 3,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-desktop-macos.ts",
+          "line": 1,
+          "snippet": "import type { WorkerDesktopEndpoint } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-desktop-setup.ts",
+          "line": 1,
+          "snippet": "import type { WorkerDesktopEndpoint } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-desktop-windows.ts",
+          "line": 1,
+          "snippet": "import type { WorkerDesktopEndpoint } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-env-profile.ts",
+          "line": 3,
+          "snippet": "import { WorkerProviderError } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-machine-options.ts",
+          "line": 2,
+          "snippet": "import type { WorkerProfile, WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-node-enrollment.ts",
+          "line": 1,
+          "snippet": "import type { WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-preflight.ts",
+          "line": 1,
+          "snippet": "import { WorkerProviderError } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile-suggestion.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-project.ts",
+          "line": 1,
+          "snippet": "import type { WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provider.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provision-commands.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-setup-egress.ts",
+          "line": 2,
+          "snippet": "import { WorkerProviderError, type WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-allocation.ts",
+          "line": 1,
+          "snippet": "import type { WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-cli.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-recipe.ts",
+          "line": 1,
+          "snippet": "import type { WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
+          "line": 1,
+          "snippet": "import type { OpenClawPluginApi, WorkerProvider } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/crabbox/worker-profile-api.ts",
+          "line": 2,
+          "snippet": "import type { WorkerProfileSuggestionDiscovery } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-state-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-state-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/doctor.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-state-runtime\";"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/process-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/process-runtime",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 5,
+          "snippet": "import type { SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 4,
+          "snippet": "import type { CommandOptions, SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-process.ts",
+          "line": 3,
+          "snippet": "import { runCommandWithTimeout, type CommandOptions } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 4,
+          "snippet": "import type { SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-command.ts",
+          "line": 3,
+          "snippet": "import type { SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-heartbeat.ts",
+          "line": 1,
+          "snippet": "import type { SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-setup-egress.ts",
+          "line": 3,
+          "snippet": "import type { SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-checkpoint.ts",
+          "line": 1,
+          "snippet": "import type { SpawnResult } from \"openclaw/plugin-sdk/process-runtime\";"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-doctor-migrations",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/doctor-contract-api.ts",
+          "line": 4,
+          "snippet": "} from \"openclaw/plugin-sdk/runtime-doctor-migrations\";"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-store",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-store",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/worker-profile-api.ts",
+          "line": 3,
+          "snippet": "import { createPluginRuntimeStore } from \"openclaw/plugin-sdk/runtime-store\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/sandbox",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/sandbox",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/index.ts",
+          "line": 3,
+          "snippet": "import { registerSandboxBackend } from \"openclaw/plugin-sdk/sandbox\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 13,
+          "snippet": "} from \"openclaw/plugin-sdk/sandbox\";"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/secret-egress-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/secret-egress-runtime",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-model-run.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/secret-egress-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-setup-egress.ts",
+          "line": 4,
+          "snippet": "import { withSetupSecretEgress } from \"openclaw/plugin-sdk/secret-egress-runtime\";"
+        }
+      ],
+      "classification": "mixed"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/secret-input",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/secret-input",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 8,
+          "snippet": "import { isSecretRef, isValidSecretRef } from \"openclaw/plugin-sdk/secret-input\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/secret-ref-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/secret-ref-runtime",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 9,
+          "snippet": "import type { SecretRef } from \"openclaw/plugin-sdk/secret-ref-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-project.ts",
+          "line": 2,
+          "snippet": "import type { SecretRef } from \"openclaw/plugin-sdk/secret-ref-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-setup-egress.ts",
+          "line": 5,
+          "snippet": "import type { SecretRef } from \"openclaw/plugin-sdk/secret-ref-runtime\";"
+        }
+      ],
+      "classification": "type"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/ssrf-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/ssrf-runtime",
+      "referenceKinds": [
+        "dynamic-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 124,
+          "snippet": "import(\"openclaw/plugin-sdk/ssrf-runtime\"),"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/state-paths",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/state-paths",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-managed-binary.ts",
+          "line": 6,
+          "snippet": "import { resolveStateDir } from \"openclaw/plugin-sdk/state-paths\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/doctor-contract-api.ts",
+          "line": 5,
+          "snippet": "import { asOptionalRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-gateway-methods.ts",
+          "line": 8,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-backend.ts",
+          "line": 14,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-sandbox-config.ts",
+          "line": 1,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-inspect.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-lifetime.ts",
+          "line": 1,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-machine-options.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-preflight.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile-suggestion.ts",
+          "line": 5,
+          "snippet": "import { isRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-profile.ts",
+          "line": 13,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-checkpoint.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-policy.ts",
+          "line": 1,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-recipe.ts",
+          "line": 2,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-records.ts",
+          "line": 3,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-warm-image-store.ts",
+          "line": 6,
+          "snippet": "import { isRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/doctor.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/temp-path",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/temp-path",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-env-profile.ts",
+          "line": 4,
+          "snippet": "import { resolvePreferredOpenClawTmpDir } from \"openclaw/plugin-sdk/temp-path\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/text-utility-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/text-utility-runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-command.ts",
+          "line": 4,
+          "snippet": "import { escapeRegExp, sliceUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-inspect.ts",
+          "line": 6,
+          "snippet": "import { truncateUtf16Safe } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        },
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-node-enrollment-diagnostics.ts",
+          "line": 2,
+          "snippet": "import { truncateUtf8Prefix } from \"openclaw/plugin-sdk/text-utility-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/time-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/time-runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-worker-provider-binary.ts",
+          "line": 2,
+          "snippet": "import { racePromiseWithAbortSignal } from \"openclaw/plugin-sdk/time-runtime\";"
+        }
+      ],
+      "classification": "runtime"
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/tool-results",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/tool-results",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/crabbox/src/crabbox-tool.ts",
+          "line": 9,
+          "snippet": "import { jsonResult } from \"openclaw/plugin-sdk/tool-results\";"
+        }
+      ],
+      "classification": "runtime"
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all 50 production TypeScript files, package.json and openclaw.plugin.json at the pinned source commit; all 109 plugin files are partitioned into 52 reviewed and 57 excluded files. No declaration files or build-output exceptions exist.",
+    "Read Inspector root AGENTS.md, the frozen contract and entire benchmark README only; no Inspector implementation, helper, detector output or other plugin fixture was consulted. Source root, extensions, SDK and plugins scoped AGENTS.md were read.",
+    "All relative production imports remain within extensions/crabbox. cli-runtime-api.ts, doctor-contract-api.ts, doctor-health-api.ts and worker-profile-api.ts are included even though the runtime entry is index.ts. Local barrels/wrappers expose only plugin-owned symbols; no additional shared shipped source boundary or transitive installed dependency is included.",
+    "Package exports ./cli-runtime-api.js to ./cli-runtime-api.ts and the build copies the PNG wallpaper. These metadata declarations do not create SDK or manifest-contract identities. Source-phase findings include explicit erased types and do not claim a published-artifact audit.",
+    "Verified each SDK subpath against root package exports and each imported name against its public src/plugin-sdk facade. Original public names are preserved: normalizeOptionalString is locally nonEmptyString, and asOptionalRecord is locally readRecord. readStringParam is the public SDK export despite its core implementation name readToolStringParam.",
+    "Managed binary download helpers use narrowed dynamic imports, including destructured Promise.all imports of buildTimeoutAbortSignal and fetchWithSsrFGuard. root is both explicitly type-imported/typeof-referenced and dynamically imported/called; its export and module are mixed. toErrorObject has both static and dynamic imports. No unused syntactic SDK dependencies were dropped.",
+    "Public indexed types contribute api.registerCli and runtime.gateway. CrabboxState uses literal Pick to select runtime.state.openKeyedStore; the state prefix is not separately emitted. Runtime state/gateway handles passed through owned helpers are traced to concrete calls. Downstream projected CrabboxState and other composite types do not re-enumerate public members.",
+    "worker-profile-api.ts stores WorkerProfileSuggestionDiscovery, a plugin-owned discovery function, in createPluginRuntimeStore. discovery.tryGetRuntime/setRuntime and calling the stored function are not PluginRuntime members. The logger returned by createSubsystemLogger is likewise not the plugin API logger; api.logger.warn in index.ts is proven API usage.",
+    "Doctor migration contexts, CrabboxDoctorRegistrationHost, tool context, WorkerProvider and its provision/enrollment/project capabilities are distinct contracts, not OpenClawPluginApi or PluginRuntime handles. Store objects returned by openKeyedStore, sandbox helpers, file-access root, timeout/SSRF helpers and egress helpers are not recursively expanded into API/runtime paths.",
+    "WorkerProviderError construction and its static cleanup methods contribute SDK-export call references; ErrorCodes constants contribute member-access. Direct helper calls retain only their public SDK dependency, without attributing internal runtime effects. Embedded remote shell/PowerShell/Node/C# scripts contain no SDK dependencies; ordinary EventEmitter .on calls are not plugin hook registrations.",
+    "Manifest contract identities are limited to cliCommands.name, commandAliases.name, contracts.workerProviders, contracts.workerProfileSuggestions, contracts.tools and skills. Doctor migration metadata, activation rules, toolMetadata, category and config schema fields are not agreed manifest-contract identities. No named plugin hooks are registered.",
+    "All four .test-support.ts helpers were read and their callers verified repository-wide: only test files and mutually test-only helpers consume them. Their SDK testing dependencies are excluded individually. No genuine nonstatic SDK/API/runtime use or opaque handle escape remains unresolved."
+  ]
+}

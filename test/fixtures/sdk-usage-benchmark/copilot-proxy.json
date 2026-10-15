@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "copilot-proxy",
+    "path": "extensions/copilot-proxy"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_copilot_proxy",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/copilot-proxy/index.ts",
+      "sha256": "f8a35a082be24c398d74e4929f059b5887900ceb727389bb81453070b401fdd2",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/copilot-proxy/openclaw.plugin.json",
+      "sha256": "aaf0301557ddff790240996a6f257619ba1344140c9428b70c2729fef73eb180",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/copilot-proxy/package.json",
+      "sha256": "81e7a6eddeab93631aea7f551d908f18b89e6ac94b580a4fc815bf29f22b3873",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/copilot-proxy/runtime-api.ts",
+      "sha256": "a12d0ac57bba3ec92e7b408597311de1baf866e4d199ad77985f75551e7edb99",
+      "role": "production-source",
+      "findingCount": 6
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/copilot-proxy/README.md",
+      "rule": "non-source",
+      "reason": "Markdown usage documentation; not an eligible JS/TS-family source file."
+    },
+    {
+      "path": "extensions/copilot-proxy/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Static SVG image asset; not an eligible JS/TS-family source file."
+    },
+    {
+      "path": "extensions/copilot-proxy/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Static PNG image asset; not an eligible JS/TS-family source file."
+    },
+    {
+      "path": "extensions/copilot-proxy/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript compiler configuration; not an eligible source file or package/manifest metadata. Its extends entry references shared compiler configuration, not shipped source."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.registerProvider",
+      "kind": "api-member",
+      "identity": "api.registerProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/copilot-proxy/index.ts",
+          "line": 56,
+          "snippet": "    api.registerProvider({",
+          "note": "The register callback passed to definePluginEntry receives OpenClawPluginApi: plugin-entry.ts DefinePluginEntryOptions.register uses OpenClawPluginDefinition.register, declared with that API parameter in src/plugins/plugin-definition.types.ts:27."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.providers:copilot-proxy",
+      "kind": "manifest-contract",
+      "identity": "manifest.providers:copilot-proxy",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/copilot-proxy/openclaw.plugin.json",
+          "line": 8,
+          "snippet": "  \"providers\": [\"copilot-proxy\"],"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/copilot-proxy/runtime-api.ts",
+          "line": 4,
+          "snippet": "  OpenClawPluginApi,",
+          "note": "Explicit export type from openclaw/plugin-sdk/core at lines 3-7; preserved despite having no local consumer."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#ProviderAuthContext",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#ProviderAuthContext",
+      "classification": "type",
+      "referenceKinds": [
+        "type-reexport",
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/copilot-proxy/runtime-api.ts",
+          "line": 5,
+          "snippet": "  ProviderAuthContext,",
+          "note": "Explicit export type from openclaw/plugin-sdk/core at lines 3-7."
+        },
+        {
+          "path": "extensions/copilot-proxy/index.ts",
+          "line": 4,
+          "snippet": "  type ProviderAuthContext,",
+          "note": "Inline type import from ./runtime-api.js resolves to the original core SDK export."
+        },
+        {
+          "path": "extensions/copilot-proxy/index.ts",
+          "line": 66,
+          "snippet": "          run: async (ctx: ProviderAuthContext): Promise<ProviderAuthResult> => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/core#ProviderAuthResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/core#ProviderAuthResult",
+      "classification": "type",
+      "referenceKinds": [
+        "type-reexport",
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/copilot-proxy/runtime-api.ts",
+          "line": 6,
+          "snippet": "  ProviderAuthResult,",
+          "note": "Explicit export type from openclaw/plugin-sdk/core at lines 3-7."
+        },
+        {
+          "path": "extensions/copilot-proxy/index.ts",
+          "line": 5,
+          "snippet": "  type ProviderAuthResult,",
+          "note": "Inline type import from ./runtime-api.js resolves to the original core SDK export."
+        },
+        {
+          "path": "extensions/copilot-proxy/index.ts",
+          "line": 66,
+          "snippet": "          run: async (ctx: ProviderAuthContext): Promise<ProviderAuthResult> => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "reexport",
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/copilot-proxy/runtime-api.ts",
+          "line": 2,
+          "snippet": "export { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/copilot-proxy/index.ts",
+          "line": 3,
+          "snippet": "  definePluginEntry,",
+          "note": "Ordinary value import from ./runtime-api.js at lines 2-6 resolves to the unchanged SDK reexport."
+        },
+        {
+          "path": "extensions/copilot-proxy/index.ts",
+          "line": 51,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeUniqueStringEntries",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeUniqueStringEntries",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/copilot-proxy/index.ts",
+          "line": 1,
+          "snippet": "import { normalizeUniqueStringEntries } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/copilot-proxy/index.ts",
+          "line": 35,
+          "snippet": "  return normalizeUniqueStringEntries(input.split(/[\\n,]/));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/core",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/core",
+      "classification": "type",
+      "referenceKinds": [
+        "type-reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/copilot-proxy/runtime-api.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/core\";",
+          "note": "The export type block begins at line 3 and exports OpenClawPluginApi, ProviderAuthContext, and ProviderAuthResult."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "reexport"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/copilot-proxy/runtime-api.ts",
+          "line": 2,
+          "snippet": "export { definePluginEntry } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/copilot-proxy/index.ts",
+          "line": 1,
+          "snippet": "import { normalizeUniqueStringEntries } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Read both complete production sources, package.json, openclaw.plugin.json, README.md and tsconfig.json. All eight files under the plugin root are partitioned; there are no tests, ambiguous test helpers, generated JS/TS, declarations, or additional local source files.",
+    "The only local production import is ./runtime-api.js from index.ts. It resolves to runtime-api.ts and exposes SDK reexports. No local production import leaves extensions/copilot-proxy; no additional plugin-owned/shared shipped source enters scope. SDK facade/contract reads establish provenance only and are not recursively audited.",
+    "package.json declares ./index.ts as the extension entry. This source-phase audit also includes runtime-api.ts, including its unused OpenClawPluginApi type reexport. Local imports retain original SDK-export identities without creating synthetic SDK-module import sites.",
+    "definePluginEntry provides the typed OpenClawPluginApi registration callback; api.registerProvider is the sole API member consumed. The ctx at index.ts:66 is ProviderAuthContext, and ctx.prompter.text at lines 67 and 73 belongs to its WizardPrompter field, not OpenClawPluginApi or PluginRuntime. No runtime handle, hook registration, computed SDK access, or opaque runtime escape occurs.",
+    "The manifest declares the providers contract copilot-proxy. categories, activation, enabledByDefault, autoEnableWhenConfiguredProviders, providerAuthChoices and configSchema are metadata/configuration, not additional contract identities under the frozen contract.",
+    "Public export mappings were verified in package.json and src/plugin-sdk/{core,plugin-entry,string-coerce-runtime}.ts. Original explicit SDK module specifiers are retained. Production files match the pinned commit; the pre-existing scoped AGENTS.md and skill documentation edits are outside audited production source."
+  ]
+}

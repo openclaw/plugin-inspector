@@ -1,0 +1,1506 @@
+{
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "plugins": [
+    {
+      "id": "a2a",
+      "path": "extensions/a2a",
+      "manifestPath": "extensions/a2a/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/a2a",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "channels": [
+          "a2a"
+        ]
+      }
+    },
+    {
+      "id": "active-memory",
+      "path": "extensions/active-memory",
+      "manifestPath": "extensions/active-memory/openclaw.plugin.json",
+      "package": null,
+      "distribution": "core",
+      "declaredSurfaces": {}
+    },
+    {
+      "id": "admin-http-rpc",
+      "path": "extensions/admin-http-rpc",
+      "manifestPath": "extensions/admin-http-rpc/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/admin-http-rpc",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "gatewayMethodDispatch": [
+            "authenticated-request"
+          ]
+        }
+      }
+    },
+    {
+      "id": "advisor",
+      "path": "extensions/advisor",
+      "manifestPath": "extensions/advisor/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/advisor",
+        "version": "2026.9.9"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {}
+    },
+    {
+      "id": "agentsapi",
+      "path": "extensions/agentsapi",
+      "manifestPath": "extensions/agentsapi/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/agentsapi",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {}
+    },
+    {
+      "id": "alibaba",
+      "path": "extensions/alibaba",
+      "manifestPath": "extensions/alibaba/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/alibaba-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "videoGenerationProviders": [
+            "alibaba"
+          ]
+        }
+      }
+    },
+    {
+      "id": "anthropic",
+      "path": "extensions/anthropic",
+      "manifestPath": "extensions/anthropic/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/anthropic-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "anthropic"
+        ],
+        "contracts": {
+          "mediaUnderstandingProviders": [
+            "anthropic"
+          ],
+          "usageProviders": [
+            "anthropic"
+          ]
+        }
+      }
+    },
+    {
+      "id": "apple-fm",
+      "path": "extensions/apple-fm",
+      "manifestPath": "extensions/apple-fm/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/apple-fm-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "apple-fm"
+        ]
+      }
+    },
+    {
+      "id": "azure-speech",
+      "path": "extensions/azure-speech",
+      "manifestPath": "extensions/azure-speech/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/azure-speech",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "speechProviders": [
+            "azure-speech",
+            "azure"
+          ]
+        }
+      }
+    },
+    {
+      "id": "beam",
+      "path": "extensions/beam",
+      "manifestPath": "extensions/beam/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/beam",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {}
+    },
+    {
+      "id": "bonjour",
+      "path": "extensions/bonjour",
+      "manifestPath": "extensions/bonjour/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/bonjour",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {}
+    },
+    {
+      "id": "browser",
+      "path": "extensions/browser",
+      "manifestPath": "extensions/browser/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/browser-plugin",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "tools": [
+            "browser"
+          ]
+        },
+        "cliCommands": [
+          {
+            "name": "browser",
+            "description": "Manage OpenClaw's dedicated browser (Chrome/Chromium)",
+            "hasSubcommands": true
+          }
+        ],
+        "commandAliases": [
+          {
+            "name": "browser"
+          }
+        ],
+        "skills": [
+          "./skills"
+        ]
+      }
+    },
+    {
+      "id": "canvas",
+      "path": "extensions/canvas",
+      "manifestPath": "extensions/canvas/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/canvas-plugin",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "tools": [
+            "canvas"
+          ]
+        },
+        "skills": [
+          "./skills"
+        ]
+      }
+    },
+    {
+      "id": "clawrouter",
+      "path": "extensions/clawrouter",
+      "manifestPath": "extensions/clawrouter/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/clawrouter",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "clawrouter"
+        ],
+        "contracts": {
+          "usageProviders": [
+            "clawrouter"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cloudflare",
+      "path": "extensions/cloudflare",
+      "manifestPath": "extensions/cloudflare/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/cloudflare",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "storageProviders": [
+            "r2"
+          ]
+        }
+      }
+    },
+    {
+      "id": "code-mode-quickjs",
+      "path": "extensions/code-mode-quickjs",
+      "manifestPath": "extensions/code-mode-quickjs/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/code-mode-quickjs",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "codeModeExecutors": [
+            "quickjs"
+          ]
+        }
+      }
+    },
+    {
+      "id": "copilot-proxy",
+      "path": "extensions/copilot-proxy",
+      "manifestPath": "extensions/copilot-proxy/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/copilot-proxy",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "copilot-proxy"
+        ]
+      }
+    },
+    {
+      "id": "crabbox",
+      "path": "extensions/crabbox",
+      "manifestPath": "extensions/crabbox/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/crabbox-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "workerProviders": [
+            "crabbox"
+          ],
+          "workerProfileSuggestions": [
+            "crabbox"
+          ],
+          "tools": [
+            "crabbox"
+          ]
+        },
+        "cliCommands": [
+          {
+            "name": "crabbox",
+            "description": "Run model-backed commands and manage Crabbox warm images",
+            "hasSubcommands": true
+          }
+        ],
+        "commandAliases": [
+          {
+            "name": "crabbox",
+            "kind": "cli"
+          }
+        ],
+        "skills": [
+          "./skills"
+        ]
+      }
+    },
+    {
+      "id": "cua-computer",
+      "path": "extensions/cua-computer",
+      "manifestPath": "extensions/cua-computer/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/cua-computer",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {}
+    },
+    {
+      "id": "deepgram",
+      "path": "extensions/deepgram",
+      "manifestPath": "extensions/deepgram/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/deepgram-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "mediaUnderstandingProviders": [
+            "deepgram"
+          ],
+          "realtimeTranscriptionProviders": [
+            "deepgram"
+          ]
+        }
+      }
+    },
+    {
+      "id": "device-pair",
+      "path": "extensions/device-pair",
+      "manifestPath": "extensions/device-pair/openclaw.plugin.json",
+      "package": null,
+      "distribution": "core",
+      "declaredSurfaces": {
+        "commandAliases": [
+          {
+            "name": "pair",
+            "kind": "runtime-slash"
+          }
+        ]
+      }
+    },
+    {
+      "id": "document-extract",
+      "path": "extensions/document-extract",
+      "manifestPath": "extensions/document-extract/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/document-extract-plugin",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "documentExtractors": [
+            "pdf"
+          ]
+        }
+      }
+    },
+    {
+      "id": "elevenlabs",
+      "path": "extensions/elevenlabs",
+      "manifestPath": "extensions/elevenlabs/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/elevenlabs-speech",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "speechProviders": [
+            "elevenlabs"
+          ],
+          "mediaUnderstandingProviders": [
+            "elevenlabs"
+          ],
+          "realtimeTranscriptionProviders": [
+            "elevenlabs"
+          ]
+        }
+      }
+    },
+    {
+      "id": "fal",
+      "path": "extensions/fal",
+      "manifestPath": "extensions/fal/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/fal-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "fal"
+        ],
+        "contracts": {
+          "imageGenerationProviders": [
+            "fal"
+          ],
+          "musicGenerationProviders": [
+            "fal"
+          ],
+          "videoGenerationProviders": [
+            "fal"
+          ]
+        }
+      }
+    },
+    {
+      "id": "file-transfer",
+      "path": "extensions/file-transfer",
+      "manifestPath": "extensions/file-transfer/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/file-transfer",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "tools": [
+            "file_fetch",
+            "dir_list",
+            "dir_fetch",
+            "file_write"
+          ]
+        },
+        "cliCommands": [
+          {
+            "name": "file-transfer",
+            "description": "Review file-transfer standing approvals",
+            "hasSubcommands": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "geolocation",
+      "path": "extensions/geolocation",
+      "manifestPath": "extensions/geolocation/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/geolocation-plugin",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {}
+    },
+    {
+      "id": "github",
+      "path": "extensions/github",
+      "manifestPath": "extensions/github/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/github",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "gatewayMethodDispatch": [
+            "authenticated-request"
+          ]
+        }
+      }
+    },
+    {
+      "id": "github-copilot",
+      "path": "extensions/github-copilot",
+      "manifestPath": "extensions/github-copilot/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/github-copilot-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "github-copilot"
+        ],
+        "contracts": {
+          "embeddingProviders": [
+            "github-copilot"
+          ],
+          "usageProviders": [
+            "github-copilot"
+          ]
+        }
+      }
+    },
+    {
+      "id": "google",
+      "path": "extensions/google",
+      "manifestPath": "extensions/google/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/google-plugin",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "google",
+          "google-gemini-cli",
+          "google-vertex"
+        ],
+        "contracts": {
+          "mediaUnderstandingProviders": [
+            "google"
+          ],
+          "embeddingProviders": [
+            "gemini"
+          ],
+          "imageGenerationProviders": [
+            "google"
+          ],
+          "musicGenerationProviders": [
+            "google"
+          ],
+          "realtimeVoiceProviders": [
+            "google"
+          ],
+          "speechProviders": [
+            "google"
+          ],
+          "videoGenerationProviders": [
+            "google"
+          ],
+          "webSearchProviders": [
+            "gemini"
+          ]
+        }
+      }
+    },
+    {
+      "id": "huggingface",
+      "path": "extensions/huggingface",
+      "manifestPath": "extensions/huggingface/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/huggingface-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "huggingface"
+        ]
+      }
+    },
+    {
+      "id": "imap",
+      "path": "extensions/imap",
+      "manifestPath": "extensions/imap/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/imap",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {}
+    },
+    {
+      "id": "kie",
+      "path": "extensions/kie",
+      "manifestPath": "extensions/kie/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/kie-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "kie"
+        ],
+        "contracts": {
+          "videoGenerationProviders": [
+            "kie"
+          ]
+        }
+      }
+    },
+    {
+      "id": "linux-node",
+      "path": "extensions/linux-node",
+      "manifestPath": "extensions/linux-node/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/linux-node",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {}
+    },
+    {
+      "id": "litellm",
+      "path": "extensions/litellm",
+      "manifestPath": "extensions/litellm/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/litellm-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "litellm"
+        ],
+        "contracts": {
+          "imageGenerationProviders": [
+            "litellm"
+          ]
+        }
+      }
+    },
+    {
+      "id": "llm-task",
+      "path": "extensions/llm-task",
+      "manifestPath": "extensions/llm-task/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/llm-task",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "tools": [
+            "llm-task"
+          ]
+        }
+      }
+    },
+    {
+      "id": "lmstudio",
+      "path": "extensions/lmstudio",
+      "manifestPath": "extensions/lmstudio/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/lmstudio-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "lmstudio"
+        ],
+        "contracts": {
+          "embeddingProviders": [
+            "lmstudio"
+          ]
+        }
+      }
+    },
+    {
+      "id": "logbook",
+      "path": "extensions/logbook",
+      "manifestPath": "extensions/logbook/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/logbook",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {}
+    },
+    {
+      "id": "mcp-events",
+      "path": "extensions/mcp-events",
+      "manifestPath": "extensions/mcp-events/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/mcp-events",
+        "version": "2026.9.6"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "tools": [
+            "mcp_events"
+          ]
+        }
+      }
+    },
+    {
+      "id": "mcp-relay",
+      "path": "extensions/mcp-relay",
+      "manifestPath": "extensions/mcp-relay/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/mcp-relay",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "cliCommands": [
+          {
+            "name": "mcp-relay",
+            "description": "Inspect the MCP relay connection and manage client grants",
+            "hasSubcommands": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "memory-core",
+      "path": "extensions/memory-core",
+      "manifestPath": "extensions/memory-core/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/memory-core",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "tools": [
+            "intent",
+            "memory_get",
+            "memory_search"
+          ]
+        },
+        "cliCommands": [
+          {
+            "name": "memory",
+            "description": "Search, inspect, and reindex memory files",
+            "hasSubcommands": true
+          }
+        ],
+        "commandAliases": [
+          {
+            "name": "dreaming",
+            "kind": "runtime-slash",
+            "cliCommand": "memory"
+          }
+        ]
+      }
+    },
+    {
+      "id": "memory-wiki",
+      "path": "extensions/memory-wiki",
+      "manifestPath": "extensions/memory-wiki/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/memory-wiki",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "tools": [
+            "wiki_apply",
+            "wiki_get",
+            "wiki_lint",
+            "wiki_search",
+            "wiki_status"
+          ]
+        },
+        "cliCommands": [
+          {
+            "name": "wiki",
+            "description": "Inspect and initialize the memory wiki vault",
+            "hasSubcommands": true
+          }
+        ],
+        "commandAliases": [
+          {
+            "name": "wiki"
+          }
+        ],
+        "skills": [
+          "./skills"
+        ]
+      }
+    },
+    {
+      "id": "microsoft",
+      "path": "extensions/microsoft",
+      "manifestPath": "extensions/microsoft/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/microsoft-speech",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "speechProviders": [
+            "microsoft",
+            "edge"
+          ]
+        }
+      }
+    },
+    {
+      "id": "microsoft-foundry",
+      "path": "extensions/microsoft-foundry",
+      "manifestPath": "extensions/microsoft-foundry/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/microsoft-foundry",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "microsoft-foundry"
+        ],
+        "contracts": {
+          "imageGenerationProviders": [
+            "microsoft-foundry"
+          ]
+        }
+      }
+    },
+    {
+      "id": "migrate-claude",
+      "path": "extensions/migrate-claude",
+      "manifestPath": "extensions/migrate-claude/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/migrate-claude",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "migrationProviders": [
+            "claude"
+          ]
+        }
+      }
+    },
+    {
+      "id": "migrate-hermes",
+      "path": "extensions/migrate-hermes",
+      "manifestPath": "extensions/migrate-hermes/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/migrate-hermes",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "migrationProviders": [
+            "hermes"
+          ]
+        }
+      }
+    },
+    {
+      "id": "minimax",
+      "path": "extensions/minimax",
+      "manifestPath": "extensions/minimax/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/minimax-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "minimax",
+          "minimax-portal"
+        ],
+        "contracts": {
+          "speechProviders": [
+            "minimax"
+          ],
+          "mediaUnderstandingProviders": [
+            "minimax",
+            "minimax-portal"
+          ],
+          "imageGenerationProviders": [
+            "minimax",
+            "minimax-portal"
+          ],
+          "musicGenerationProviders": [
+            "minimax",
+            "minimax-portal"
+          ],
+          "videoGenerationProviders": [
+            "minimax",
+            "minimax-portal"
+          ],
+          "webSearchProviders": [
+            "minimax"
+          ],
+          "usageProviders": [
+            "minimax"
+          ]
+        }
+      }
+    },
+    {
+      "id": "nvidia",
+      "path": "extensions/nvidia",
+      "manifestPath": "extensions/nvidia/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/nvidia-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "nvidia"
+        ]
+      }
+    },
+    {
+      "id": "oc-path",
+      "path": "extensions/oc-path",
+      "manifestPath": "extensions/oc-path/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/oc-path",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "cliCommands": [
+          {
+            "name": "path",
+            "description": "Inspect and edit workspace files via oc:// paths",
+            "hasSubcommands": true
+          }
+        ],
+        "commandAliases": [
+          {
+            "name": "path",
+            "kind": "cli"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ollama",
+      "path": "extensions/ollama",
+      "manifestPath": "extensions/ollama/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/ollama-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "ollama",
+          "ollama-cloud"
+        ],
+        "contracts": {
+          "embeddingProviders": [
+            "ollama"
+          ],
+          "tools": [
+            "node_inference"
+          ],
+          "usageProviders": [
+            "ollama"
+          ],
+          "webSearchProviders": [
+            "ollama"
+          ]
+        }
+      }
+    },
+    {
+      "id": "onepassword",
+      "path": "extensions/onepassword",
+      "manifestPath": "extensions/onepassword/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/onepassword",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "tools": [
+            "onepassword"
+          ]
+        },
+        "cliCommands": [
+          {
+            "name": "onepassword",
+            "description": "Manage the 1Password integration",
+            "hasSubcommands": true
+          }
+        ],
+        "commandAliases": [
+          {
+            "name": "onepassword",
+            "cliCommand": "onepassword"
+          }
+        ]
+      }
+    },
+    {
+      "id": "openai",
+      "path": "extensions/openai",
+      "manifestPath": "extensions/openai/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/openai-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "openai"
+        ],
+        "contracts": {
+          "decisionProviders": [
+            "openai"
+          ],
+          "speechProviders": [
+            "openai"
+          ],
+          "realtimeTranscriptionProviders": [
+            "openai"
+          ],
+          "realtimeVoiceProviders": [
+            "openai"
+          ],
+          "embeddingProviders": [
+            "openai"
+          ],
+          "mediaUnderstandingProviders": [
+            "openai"
+          ],
+          "imageGenerationProviders": [
+            "openai"
+          ],
+          "usageProviders": [
+            "openai"
+          ]
+        }
+      }
+    },
+    {
+      "id": "opencode-go",
+      "path": "extensions/opencode-go",
+      "manifestPath": "extensions/opencode-go/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/opencode-go-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "opencode-go"
+        ],
+        "contracts": {
+          "mediaUnderstandingProviders": [
+            "opencode-go"
+          ]
+        }
+      }
+    },
+    {
+      "id": "openrouter",
+      "path": "extensions/openrouter",
+      "manifestPath": "extensions/openrouter/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/openrouter-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "openrouter"
+        ],
+        "contracts": {
+          "mediaUnderstandingProviders": [
+            "openrouter"
+          ],
+          "imageGenerationProviders": [
+            "openrouter"
+          ],
+          "musicGenerationProviders": [
+            "openrouter"
+          ],
+          "videoGenerationProviders": [
+            "openrouter"
+          ],
+          "speechProviders": [
+            "openrouter"
+          ],
+          "usageProviders": [
+            "openrouter"
+          ]
+        }
+      }
+    },
+    {
+      "id": "policy",
+      "path": "extensions/policy",
+      "manifestPath": "extensions/policy/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/policy",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "cliCommands": [
+          {
+            "name": "policy",
+            "description": "Check policy requirements and emit audit evidence",
+            "hasSubcommands": true
+          }
+        ],
+        "commandAliases": [
+          {
+            "name": "policy",
+            "kind": "cli"
+          }
+        ]
+      }
+    },
+    {
+      "id": "reef",
+      "path": "extensions/reef",
+      "manifestPath": "extensions/reef/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/reef",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "channels": [
+          "reef"
+        ],
+        "cliCommands": [
+          {
+            "name": "reef",
+            "description": "Register on a Reef relay and manage guarded claw-to-claw friendships",
+            "hasSubcommands": true
+          }
+        ],
+        "commandAliases": [
+          {
+            "name": "reef"
+          }
+        ]
+      }
+    },
+    {
+      "id": "runway",
+      "path": "extensions/runway",
+      "manifestPath": "extensions/runway/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/runway-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "videoGenerationProviders": [
+            "runway"
+          ]
+        }
+      }
+    },
+    {
+      "id": "senseaudio",
+      "path": "extensions/senseaudio",
+      "manifestPath": "extensions/senseaudio/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/senseaudio-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "mediaUnderstandingProviders": [
+            "senseaudio"
+          ]
+        }
+      }
+    },
+    {
+      "id": "session-share",
+      "path": "extensions/session-share",
+      "manifestPath": "extensions/session-share/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/session-share",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {}
+    },
+    {
+      "id": "sglang",
+      "path": "extensions/sglang",
+      "manifestPath": "extensions/sglang/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/sglang-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "sglang"
+        ]
+      }
+    },
+    {
+      "id": "talk-voice",
+      "path": "extensions/talk-voice",
+      "manifestPath": "extensions/talk-voice/openclaw.plugin.json",
+      "package": null,
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "tools": [
+            "talk_voice"
+          ]
+        },
+        "commandAliases": [
+          {
+            "name": "voice",
+            "kind": "runtime-slash"
+          }
+        ]
+      }
+    },
+    {
+      "id": "telegram",
+      "path": "extensions/telegram",
+      "manifestPath": "extensions/telegram/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/telegram",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "channels": [
+          "telegram"
+        ]
+      }
+    },
+    {
+      "id": "together",
+      "path": "extensions/together",
+      "manifestPath": "extensions/together/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/together-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "together"
+        ],
+        "contracts": {
+          "videoGenerationProviders": [
+            "together"
+          ]
+        }
+      }
+    },
+    {
+      "id": "tts-local-cli",
+      "path": "extensions/tts-local-cli",
+      "manifestPath": "extensions/tts-local-cli/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/tts-local-cli",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "speechProviders": [
+            "tts-local-cli",
+            "cli"
+          ]
+        }
+      }
+    },
+    {
+      "id": "vault",
+      "path": "extensions/vault",
+      "manifestPath": "extensions/vault/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/vault",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "cliCommands": [
+          {
+            "name": "vault",
+            "description": "Manage the Vault SecretRef provider integration",
+            "hasSubcommands": true
+          }
+        ],
+        "commandAliases": [
+          {
+            "name": "vault",
+            "kind": "cli"
+          }
+        ]
+      }
+    },
+    {
+      "id": "vllm",
+      "path": "extensions/vllm",
+      "manifestPath": "extensions/vllm/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/vllm-provider",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "vllm"
+        ]
+      }
+    },
+    {
+      "id": "web-readability",
+      "path": "extensions/web-readability",
+      "manifestPath": "extensions/web-readability/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/web-readability-plugin",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "webContentExtractors": [
+            "readability"
+          ]
+        }
+      }
+    },
+    {
+      "id": "workboard",
+      "path": "extensions/workboard",
+      "manifestPath": "extensions/workboard/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/workboard",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "contracts": {
+          "tools": [
+            "workboard_list",
+            "workboard_create",
+            "workboard_link",
+            "workboard_read",
+            "workboard_claim",
+            "workboard_heartbeat",
+            "workboard_complete",
+            "workboard_attachment_add",
+            "workboard_attachment_read",
+            "workboard_attachment_delete",
+            "workboard_block",
+            "workboard_boards",
+            "workboard_board_create",
+            "workboard_board_archive",
+            "workboard_board_delete",
+            "workboard_sessions_board_read",
+            "workboard_sessions_board_update",
+            "workboard_sessions_board_move",
+            "workboard_stats",
+            "workboard_runs",
+            "workboard_specify",
+            "workboard_decompose",
+            "workboard_notify_subscribe",
+            "workboard_notify_list",
+            "workboard_notify_events",
+            "workboard_notify_advance",
+            "workboard_notify_unsubscribe",
+            "workboard_promote",
+            "workboard_reassign",
+            "workboard_reclaim",
+            "workboard_dispatch",
+            "workboard_release",
+            "workboard_comment",
+            "workboard_proof",
+            "workboard_worker_log",
+            "workboard_protocol_violation",
+            "workboard_unblock",
+            "workboard_move"
+          ]
+        },
+        "cliCommands": [
+          {
+            "name": "workboard",
+            "description": "Manage Workboard cards and worker dispatch",
+            "hasSubcommands": true
+          }
+        ],
+        "commandAliases": [
+          {
+            "name": "workboard"
+          }
+        ],
+        "dashboard": {
+          "dataBindings": [
+            {
+              "id": "cards.list",
+              "method": "workboard.cards.list",
+              "description": "List Workboard cards and statuses."
+            },
+            {
+              "id": "stats",
+              "method": "workboard.cards.stats",
+              "description": "Read Workboard card statistics."
+            },
+            {
+              "id": "boards.list",
+              "method": "workboard.boards.list",
+              "description": "List Workboard boards."
+            }
+          ],
+          "actionVerbs": [
+            {
+              "id": "dispatch",
+              "method": "workboard.cards.dispatch",
+              "description": "Dispatch ready Workboard cards.",
+              "paramShape": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "boardId": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "x",
+      "path": "extensions/x",
+      "manifestPath": "extensions/x/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/x",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "channels": [
+          "x"
+        ]
+      }
+    },
+    {
+      "id": "xai",
+      "path": "extensions/xai",
+      "manifestPath": "extensions/xai/openclaw.plugin.json",
+      "package": {
+        "name": "@openclaw/xai-plugin",
+        "version": "2026.10.3"
+      },
+      "distribution": "core",
+      "declaredSurfaces": {
+        "providers": [
+          "xai"
+        ],
+        "contracts": {
+          "webSearchProviders": [
+            "grok"
+          ],
+          "usageProviders": [
+            "xai"
+          ],
+          "videoGenerationProviders": [
+            "xai"
+          ],
+          "mediaUnderstandingProviders": [
+            "xai"
+          ],
+          "speechProviders": [
+            "xai"
+          ],
+          "realtimeTranscriptionProviders": [
+            "xai"
+          ],
+          "realtimeVoiceProviders": [
+            "xai",
+            "grok-voice",
+            "xai-realtime-voice"
+          ],
+          "imageGenerationProviders": [
+            "xai"
+          ],
+          "tools": [
+            "code_execution",
+            "x_search"
+          ]
+        }
+      }
+    }
+  ]
+}

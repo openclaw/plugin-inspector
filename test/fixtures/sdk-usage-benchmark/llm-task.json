@@ -1,0 +1,985 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "llm-task",
+    "path": "extensions/llm-task"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_llm_task",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/llm-task/doctor-contract-api.ts",
+      "sha256": "3612e9f664533e13ade849628198d8089871504b0bf438adfc80610dc784f317",
+      "role": "production-source",
+      "findingCount": 6
+    },
+    {
+      "path": "extensions/llm-task/index.ts",
+      "sha256": "b8c17fc84a267311634a0b035fa79de35e1f0c6f9c81860591cbb67e636eb50e",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/llm-task/openclaw.plugin.json",
+      "sha256": "45c11fbf4c8eb0780b9da196ef80cb7819c0aa8a75d782667bee8faa23570c4d",
+      "role": "manifest",
+      "findingCount": 1
+    },
+    {
+      "path": "extensions/llm-task/package.json",
+      "sha256": "b1d41d8e2541e411fe54e56674105e058b68fbc845f76d293e2491e850e83cd6",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/llm-task/src/llm-task-tool-definition.ts",
+      "sha256": "e2bc8bfdab03483e152f527060858d2e0f572cd12bf234519011826f623c1366",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/llm-task/src/llm-task-tool.ts",
+      "sha256": "3e930c856e688775c0ee9e2aa2fba3a1542c87f81d9c6503c3d37bda7b629ec6",
+      "role": "production-source",
+      "findingCount": 30
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/llm-task/README.md",
+      "rule": "non-source",
+      "reason": "Plugin documentation is outside the eligible JavaScript/TypeScript source extensions."
+    },
+    {
+      "path": "extensions/llm-task/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "Static SVG icon asset is outside the eligible source extensions."
+    },
+    {
+      "path": "extensions/llm-task/assets/icon.png",
+      "rule": "non-source",
+      "reason": "Static PNG icon asset is outside the eligible source extensions."
+    },
+    {
+      "path": "extensions/llm-task/doctor-contract-api.test.ts",
+      "rule": "test-file",
+      "reason": "Unit test basename contains .test.; no production source imports this test."
+    },
+    {
+      "path": "extensions/llm-task/index.test.ts",
+      "rule": "test-file",
+      "reason": "Unit test basename contains .test.; no production source imports this test."
+    },
+    {
+      "path": "extensions/llm-task/src/llm-task-tool.test.ts",
+      "rule": "test-file",
+      "reason": "Unit test basename contains .test.; no production source imports this test."
+    },
+    {
+      "path": "extensions/llm-task/tsconfig.json",
+      "rule": "non-source",
+      "reason": "TypeScript compiler configuration is not eligible production source or the separately reviewed package/manifest metadata."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.config",
+      "kind": "api-member",
+      "identity": "api.config",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 47,
+          "snippet": "  const cfg = params.api.config;",
+          "note": "params.api is explicitly typed OpenClawPluginApi. The whole config read is an independent occurrence."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.agents.defaults.model",
+      "kind": "api-member",
+      "identity": "api.config.agents.defaults.model",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 75,
+          "snippet": "      const defaultsModel = api.config?.agents?.defaults?.model;"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.config.agents.defaults.model.primary",
+      "kind": "api-member",
+      "identity": "api.config.agents.defaults.model.primary",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 79,
+          "snippet": "          : normalizeOptionalString(defaultsModel?.primary);",
+          "note": "defaultsModel aliases api.config.agents.defaults.model from line 75; this branch narrows to its object form."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig",
+      "kind": "api-member",
+      "identity": "api.pluginConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 73,
+          "snippet": "      const pluginCfg = api.pluginConfig ?? {};",
+          "note": "The whole pluginConfig read is independently observed before the unchanged alias is consumed."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.defaultAuthProfileId",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.defaultAuthProfileId",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 103,
+          "snippet": "        normalizeOptionalString(pluginCfg.defaultAuthProfileId);",
+          "note": "pluginCfg aliases api.pluginConfig via the nullish-empty-object fallback at line 73."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.defaultModel",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.defaultModel",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 87,
+          "snippet": "      const configuredModel = normalizeOptionalString(pluginCfg.defaultModel);",
+          "note": "pluginCfg aliases api.pluginConfig via the nullish-empty-object fallback at line 73."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.defaultProvider",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.defaultProvider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 85,
+          "snippet": "      const configuredProvider = normalizeOptionalString(pluginCfg.defaultProvider);",
+          "note": "pluginCfg aliases api.pluginConfig via the nullish-empty-object fallback at line 73."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.maxTokens",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.maxTokens",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 128,
+          "snippet": "        readPositiveIntegerParam(params, \"maxTokens\") ?? asPositiveSafeInteger(pluginCfg.maxTokens);",
+          "note": "pluginCfg aliases api.pluginConfig via the nullish-empty-object fallback at line 73."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.pluginConfig.timeoutMs",
+      "kind": "api-member",
+      "identity": "api.pluginConfig.timeoutMs",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 123,
+          "snippet": "        asPositiveSafeInteger(pluginCfg.timeoutMs) ??",
+          "note": "pluginCfg aliases api.pluginConfig via the nullish-empty-object fallback at line 73."
+        }
+      ]
+    },
+    {
+      "key": "manifest-contract:manifest.contracts.tools:llm-task",
+      "kind": "manifest-contract",
+      "identity": "manifest.contracts.tools:llm-task",
+      "classification": "declarative",
+      "referenceKinds": [
+        "manifest-declaration"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/openclaw.plugin.json",
+          "line": 50,
+          "snippet": "  \"contracts\": {\n    \"tools\": [\n      \"llm-task\"\n    ]\n  },"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.agent.defaults.provider",
+      "kind": "runtime-member",
+      "identity": "runtime.agent.defaults.provider",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 33,
+          "snippet": "    normalizeOptionalString(params.api.runtime.agent.defaults.provider);",
+          "note": "params.api is explicitly typed OpenClawPluginApi; its runtime maps to public PluginRuntime."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.agent.normalizeThinkingLevel",
+      "kind": "runtime-member",
+      "identity": "runtime.agent.normalizeThinkingLevel",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 115,
+          "snippet": "        ? api.runtime.agent.normalizeThinkingLevel(thinkingRaw)"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.llm.complete",
+      "kind": "runtime-member",
+      "identity": "runtime.llm.complete",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 146,
+          "snippet": "      const result = await api.runtime.llm.complete({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-runtime#buildModelAliasIndex",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-runtime#buildModelAliasIndex",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 1,
+          "snippet": "import { buildModelAliasIndex, resolveModelRefFromString } from \"openclaw/plugin-sdk/agent-runtime\";"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 48,
+          "snippet": "  const aliasIndex = cfg ? buildModelAliasIndex({ cfg, defaultProvider }) : undefined;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/agent-runtime#resolveModelRefFromString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/agent-runtime#resolveModelRefFromString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 1,
+          "snippet": "import { buildModelAliasIndex, resolveModelRefFromString } from \"openclaw/plugin-sdk/agent-runtime\";"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 49,
+          "snippet": "  const resolved = resolveModelRefFromString({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-actions#optionalFiniteNumberSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-actions#optionalFiniteNumberSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool-definition.ts",
+          "line": 2,
+          "snippet": "  optionalFiniteNumberSchema,"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool-definition.ts",
+          "line": 24,
+          "snippet": "    temperature: optionalFiniteNumberSchema({ description: \"Best-effort temperature override.\" }),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/channel-actions#optionalPositiveIntegerSchema",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/channel-actions#optionalPositiveIntegerSchema",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/index.ts",
+          "line": 1,
+          "snippet": "import { optionalPositiveIntegerSchema } from \"openclaw/plugin-sdk/channel-actions\";"
+        },
+        {
+          "path": "extensions/llm-task/index.ts",
+          "line": 28,
+          "snippet": "      maxTokens: optionalPositiveIntegerSchema(),"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool-definition.ts",
+          "line": 3,
+          "snippet": "  optionalPositiveIntegerSchema,"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool-definition.ts",
+          "line": 25,
+          "snippet": "    maxTokens: optionalPositiveIntegerSchema({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/config-contracts#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/doctor-contract-api.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        },
+        {
+          "path": "extensions/llm-task/doctor-contract-api.ts",
+          "line": 37,
+          "snippet": "export function normalizeCompatibilityConfig({ cfg }: { cfg: OpenClawConfig }): {"
+        },
+        {
+          "path": "extensions/llm-task/doctor-contract-api.ts",
+          "line": 106,
+          "snippet": "      } as OpenClawConfig[\"plugins\"],",
+          "note": "Config type selection is not an OpenClawPluginApi indexed access."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/json-schema-runtime#JsonSchemaObject",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/json-schema-runtime#JsonSchemaObject",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 3,
+          "snippet": "  type JsonSchemaObject,"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 178,
+          "snippet": "          schema: schema as JsonSchemaObject,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/json-schema-runtime#validateJsonSchemaValue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/json-schema-runtime#validateJsonSchemaValue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 4,
+          "snippet": "  validateJsonSchemaValue,"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 177,
+          "snippet": "        const validation = validateJsonSchemaValue({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/lazy-runtime#createLazyRuntimeModule",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/index.ts",
+          "line": 2,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        },
+        {
+          "path": "extensions/llm-task/index.ts",
+          "line": 10,
+          "snippet": "  const loadTool = createLazyRuntimeModule(() =>"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/model-ref-parse#parseModelRef",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/model-ref-parse#parseModelRef",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/doctor-contract-api.ts",
+          "line": 3,
+          "snippet": "import { parseModelRef } from \"openclaw/plugin-sdk/model-ref-parse\";"
+        },
+        {
+          "path": "extensions/llm-task/doctor-contract-api.ts",
+          "line": 13,
+          "snippet": "    const normalized = parseModelRef(value, \"\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/param-readers#readFiniteNumberParam",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/param-readers#readFiniteNumberParam",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 6,
+          "snippet": "import { readFiniteNumberParam, readPositiveIntegerParam } from \"openclaw/plugin-sdk/param-readers\";"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 126,
+          "snippet": "      const temperature = readFiniteNumberParam(params, \"temperature\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/param-readers#readPositiveIntegerParam",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/param-readers#readPositiveIntegerParam",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 6,
+          "snippet": "import { readFiniteNumberParam, readPositiveIntegerParam } from \"openclaw/plugin-sdk/param-readers\";"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 122,
+          "snippet": "        readPositiveIntegerParam(params, \"timeoutMs\") ??"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#AnyAgentTool",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#AnyAgentTool",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/index.ts",
+          "line": 3,
+          "snippet": "import type { AnyAgentTool, OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/llm-task/index.ts",
+          "line": 8,
+          "snippet": "function createLazyLlmTaskTool(api: OpenClawPluginApi): AnyAgentTool {"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 7,
+          "snippet": "import type { AnyAgentTool, OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 195,
+          "snippet": "  } satisfies AnyAgentTool;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/index.ts",
+          "line": 3,
+          "snippet": "import type { AnyAgentTool, OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/llm-task/index.ts",
+          "line": 8,
+          "snippet": "function createLazyLlmTaskTool(api: OpenClawPluginApi): AnyAgentTool {"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 7,
+          "snippet": "import type { AnyAgentTool, OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 26,
+          "snippet": "  api: OpenClawPluginApi;"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 62,
+          "snippet": "export function createLlmTaskTool(api: OpenClawPluginApi) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/runtime-doctor-migrations#asObjectRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations#asObjectRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/doctor-contract-api.ts",
+          "line": 4,
+          "snippet": "import { asObjectRecord } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";"
+        },
+        {
+          "path": "extensions/llm-task/doctor-contract-api.ts",
+          "line": 30,
+          "snippet": "      const entry = asObjectRecord(value);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asPositiveSafeInteger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asPositiveSafeInteger",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 9,
+          "snippet": "  asPositiveSafeInteger,"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 123,
+          "snippet": "        asPositiveSafeInteger(pluginCfg.timeoutMs) ??"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 10,
+          "snippet": "  normalizeOptionalString,"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 32,
+          "snippet": "    normalizeOptionalString(params.provider) ??"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#readNonBlankString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#readNonBlankString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 11,
+          "snippet": "  readNonBlankString,"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 113,
+          "snippet": "      const thinkingRaw = readNonBlankString(params.thinking);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/tool-plugin#defineToolPlugin",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/tool-plugin#defineToolPlugin",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/index.ts",
+          "line": 4,
+          "snippet": "import { defineToolPlugin } from \"openclaw/plugin-sdk/tool-plugin\";"
+        },
+        {
+          "path": "extensions/llm-task/index.ts",
+          "line": 19,
+          "snippet": "export default defineToolPlugin({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/tool-results#textResult",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/tool-results#textResult",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 13,
+          "snippet": "import { textResult } from \"openclaw/plugin-sdk/tool-results\";"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 189,
+          "snippet": "      return textResult(JSON.stringify(parsed, null, 2), {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/agent-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/agent-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 1,
+          "snippet": "import { buildModelAliasIndex, resolveModelRefFromString } from \"openclaw/plugin-sdk/agent-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/channel-actions",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/channel-actions",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/index.ts",
+          "line": 1,
+          "snippet": "import { optionalPositiveIntegerSchema } from \"openclaw/plugin-sdk/channel-actions\";"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool-definition.ts",
+          "line": 1,
+          "snippet": "import {\n  optionalFiniteNumberSchema,\n  optionalPositiveIntegerSchema,\n} from \"openclaw/plugin-sdk/channel-actions\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/config-contracts",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/config-contracts",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/doctor-contract-api.ts",
+          "line": 2,
+          "snippet": "import type { OpenClawConfig } from \"openclaw/plugin-sdk/config-contracts\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/json-schema-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/json-schema-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 2,
+          "snippet": "import {\n  type JsonSchemaObject,\n  validateJsonSchemaValue,\n} from \"openclaw/plugin-sdk/json-schema-runtime\";",
+          "note": "The inline type import and ordinary value import establish distinct source classifications."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/lazy-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/lazy-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/index.ts",
+          "line": 2,
+          "snippet": "import { createLazyRuntimeModule } from \"openclaw/plugin-sdk/lazy-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/model-ref-parse",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/model-ref-parse",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/doctor-contract-api.ts",
+          "line": 3,
+          "snippet": "import { parseModelRef } from \"openclaw/plugin-sdk/model-ref-parse\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/param-readers",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/param-readers",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 6,
+          "snippet": "import { readFiniteNumberParam, readPositiveIntegerParam } from \"openclaw/plugin-sdk/param-readers\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/index.ts",
+          "line": 3,
+          "snippet": "import type { AnyAgentTool, OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        },
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 7,
+          "snippet": "import type { AnyAgentTool, OpenClawPluginApi } from \"openclaw/plugin-sdk/plugin-entry\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/runtime-doctor-migrations",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/runtime-doctor-migrations",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/doctor-contract-api.ts",
+          "line": 4,
+          "snippet": "import { asObjectRecord } from \"openclaw/plugin-sdk/runtime-doctor-migrations\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 8,
+          "snippet": "import {\n  asPositiveSafeInteger,\n  normalizeOptionalString,\n  readNonBlankString,\n} from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/tool-plugin",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/tool-plugin",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/index.ts",
+          "line": 4,
+          "snippet": "import { defineToolPlugin } from \"openclaw/plugin-sdk/tool-plugin\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/tool-results",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/tool-results",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/llm-task/src/llm-task-tool.ts",
+          "line": 13,
+          "snippet": "import { textResult } from \"openclaw/plugin-sdk/tool-results\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Manually reviewed all four eligible production TypeScript files and both metadata files; all 13 files beneath extensions/llm-task are partitioned. The source files and reviewed metadata match the pinned commit byte-for-byte.",
+    "The only local imports are the shipped tool definition and lazily imported tool implementation, both inside the plugin root. doctor-contract-api.ts is an eligible shipped public doctor artifact even though index.ts does not import it. There are no additional plugin-owned/shared shipped files outside this root, declaration files, or ambiguous test helpers.",
+    "SDK imports retain exact public subpaths and original export names. The package openclaw block names index.ts; the typebox runtime dependency and workspace SDK package metadata are not additional syntactic SDK imports. Installed dependencies and SDK implementation bodies are outside the audited source boundary.",
+    "OpenClawPluginApi annotations establish api and params.api provenance; the tool-plugin factory context also declares its api as OpenClawPluginApi. Public runtime type contracts confirm agent.defaults.provider, agent.normalizeThinkingLevel and llm.complete. api.runtime itself is propagation, not a separate identity.",
+    "Whole config/pluginConfig reads are independently observed. Unchanged defaultsModel and pluginCfg aliases preserve subsequent maximal paths, including plugin-defined config keys; incidental unobserved prefixes are not enumerated. The doctor cfg parameter is OpenClawConfig, not an OpenClawPluginApi alias.",
+    "defineToolPlugin and createLazyRuntimeModule are SDK helpers: no registerTool or helper-internal public-member dependencies are inferred. The tool factory callback and loadTool wrapper are not direct unchanged aliases of SDK exports.",
+    "Model-parser, record-coercion, JSON-validation and llm.complete return values are ordinary data, not API/runtime handles; their provider/model/text/errors/ok properties do not create public-member findings. Standard string/array operations are not SDK members.",
+    "The only agreed manifest contract is contracts.tools llm-task. doctorContract, activation, categories, toolMetadata and configuration/descriptive fields are not manifest-contract identities. No hook registrations or genuinely unresolved SDK/API/runtime references were found."
+  ]
+}

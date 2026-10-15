@@ -1,0 +1,1673 @@
+{
+  "schemaVersion": 1,
+  "plugin": {
+    "id": "logbook",
+    "path": "extensions/logbook"
+  },
+  "source": {
+    "commit": "d912f0c06e7af29a4a40c4211bec0bb76d473f10",
+    "tree": "ec27570097d3926715575908b12104d07e7c577b",
+    "inventorySha256": "17d341f03ef4b4f8752b892b0969b1c090d0526fa7018cb7f6d9e1f08ce97de2"
+  },
+  "auditor": {
+    "agentId": "/root/audit_logbook",
+    "independent": true
+  },
+  "reviewedFiles": [
+    {
+      "path": "extensions/logbook/index.ts",
+      "sha256": "e02d10c1f0110dd0750f9f34f3df9c8f2f0a052d4b0e8a45f7d7192dae67b8c2",
+      "role": "production-source",
+      "findingCount": 16
+    },
+    {
+      "path": "extensions/logbook/openclaw.plugin.json",
+      "sha256": "42b8a4a7d2fa3d7ff299618a9f1cd569d24ae1f9de3bf28e0f6002582bfa68f7",
+      "role": "manifest",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/logbook/package.json",
+      "sha256": "fe60fda9fa0438a27785d483de922ebeac7a507f217068247a0332bdaa90caad",
+      "role": "package-metadata",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/logbook/src/analyze.ts",
+      "sha256": "935a722de243522d2cb49f60983f66e9e2f27a30459d02afb61c5516822790a7",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/logbook/src/config.ts",
+      "sha256": "9e100943bb46be85abc979d4761e9b6ee7c2ae13a1112c5c8bb170c47a48fa7d",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/logbook/src/day.ts",
+      "sha256": "483751fb173b7ca5d6115d678af3b7aa0a83621b7d7bb7b2ad0dc4a214a9787b",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/logbook/src/frame-io.ts",
+      "sha256": "88dd0292cc15cd2e006a1584feb06f1b488c555471a85364dff2833c693fdb4e",
+      "role": "production-source",
+      "findingCount": 4
+    },
+    {
+      "path": "extensions/logbook/src/node-host.ts",
+      "sha256": "34687e5651b5a88f7baa4d964c7b494ec8a0987958907aa7ca11f76e45a3a7c0",
+      "role": "production-source",
+      "findingCount": 9
+    },
+    {
+      "path": "extensions/logbook/src/prompts.ts",
+      "sha256": "1f86d8e56a32713bbd10dcaf666e508f4d933c2e4d6f0df35fe920441a039d8b",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/logbook/src/service.ts",
+      "sha256": "635446576b93cb55f57b6efc1c8a737f478159fdd90da044591048bcb5c86ff7",
+      "role": "production-source",
+      "findingCount": 13
+    },
+    {
+      "path": "extensions/logbook/src/store-contract.ts",
+      "sha256": "f5f2e67fff3040acad33fa66ed231d27004faf1d9e0e0ae5691105aec41e964e",
+      "role": "production-source",
+      "findingCount": 0
+    },
+    {
+      "path": "extensions/logbook/src/store-frame-queries.ts",
+      "sha256": "874b14354200a4e6d541603fe720ad6f52c9ac0665c2afbcdb3e7fb601c8a81c",
+      "role": "production-source",
+      "findingCount": 3
+    },
+    {
+      "path": "extensions/logbook/src/store-schema.ts",
+      "sha256": "e6a445dd58e2040779e027535d9dae32879128ccb00a14068bcb9d7d625db9f0",
+      "role": "production-source",
+      "findingCount": 5
+    },
+    {
+      "path": "extensions/logbook/src/store.ts",
+      "sha256": "8e00ed8b6952181b0bcf27249f72751b1a9c53de7e6f78af2a5040072b9f012b",
+      "role": "production-source",
+      "findingCount": 7
+    },
+    {
+      "path": "extensions/logbook/src/store.worker.ts",
+      "sha256": "c4313c0230c4ca8bfe547d5ef78a33cf723f70e2952bd8c5706eae4c2cb6709e",
+      "role": "production-source",
+      "findingCount": 17
+    },
+    {
+      "path": "extensions/logbook/src/types.ts",
+      "sha256": "2f00d13dc52f834c2344a37f07a1b3102b35c917f534f112c2fde60544382927",
+      "role": "production-source",
+      "findingCount": 0
+    }
+  ],
+  "excludedFiles": [
+    {
+      "path": "extensions/logbook/README.md",
+      "rule": "non-source",
+      "reason": "Plugin usage documentation, outside the source-extension set."
+    },
+    {
+      "path": "extensions/logbook/assets/activity.svg",
+      "rule": "non-source",
+      "reason": "SVG image asset, outside the source-extension set."
+    },
+    {
+      "path": "extensions/logbook/assets/icon.png",
+      "rule": "non-source",
+      "reason": "PNG image asset, outside the source-extension set."
+    },
+    {
+      "path": "extensions/logbook/index.test.ts",
+      "rule": "test-file",
+      "reason": "Plugin registration, service startup and RPC behavior tests."
+    },
+    {
+      "path": "extensions/logbook/src/analyze.test.ts",
+      "rule": "test-file",
+      "reason": "Unit tests for observation/card parsing and analysis-window helpers."
+    },
+    {
+      "path": "extensions/logbook/src/card-reads.test.ts",
+      "rule": "test-file",
+      "reason": "Database card-read regression tests."
+    },
+    {
+      "path": "extensions/logbook/src/node-host.test.ts",
+      "rule": "test-file",
+      "reason": "Node-host screenshot command tests with mocked SDK process execution."
+    },
+    {
+      "path": "extensions/logbook/src/observation-reads.test.ts",
+      "rule": "test-file",
+      "reason": "Database observation-read regression tests."
+    },
+    {
+      "path": "extensions/logbook/src/service-lifecycle.test.ts",
+      "rule": "test-file",
+      "reason": "Logbook service lifecycle and retained-operation tests."
+    },
+    {
+      "path": "extensions/logbook/src/service.test.ts",
+      "rule": "test-file",
+      "reason": "Logbook service behavior tests."
+    },
+    {
+      "path": "extensions/logbook/src/sqlite-backend-entrypoint.test-support.ts",
+      "rule": "test-helper",
+      "reason": "Six-line test worker-entrypoint descriptor. Callers are eight .test.ts files plus scripts/lib/vitest-worker-build-entries.mts (test-only build roots) and vitest-worker-declarations.mts (test module mapping); no production plugin import. The actual shipped store.worker.ts remains included."
+    },
+    {
+      "path": "extensions/logbook/src/store-batch-images.test.ts",
+      "rule": "test-file",
+      "reason": "Stored frame sampling and batch-image tests."
+    },
+    {
+      "path": "extensions/logbook/src/store-frame-io.test.ts",
+      "rule": "test-file",
+      "reason": "Frame I/O and worker-store coordination tests."
+    },
+    {
+      "path": "extensions/logbook/src/store-prune.test.ts",
+      "rule": "test-file",
+      "reason": "Database frame-pruning tests."
+    },
+    {
+      "path": "extensions/logbook/src/store-read-budgets.test.ts",
+      "rule": "test-file",
+      "reason": "SQLite read-budget tests."
+    },
+    {
+      "path": "extensions/logbook/src/store.test.ts",
+      "rule": "test-file",
+      "reason": "Logbook SQLite store behavior tests."
+    }
+  ],
+  "findings": [
+    {
+      "key": "api-member:api.pluginConfig",
+      "kind": "api-member",
+      "identity": "api.pluginConfig",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 69,
+          "snippet": "const config = logbookConfigSchema.parse(api.pluginConfig);"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerGatewayMethod",
+      "kind": "api-member",
+      "identity": "api.registerGatewayMethod",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 160,
+          "snippet": "api.registerGatewayMethod(method, handle(run), { scope: \"operator.read\" });",
+          "note": "registerRead/registerWrite are plugin-owned forwarding wrappers; their bodies contain the API calls."
+        },
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 165,
+          "snippet": "api.registerGatewayMethod("
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerNodeInvokePolicy",
+      "kind": "api-member",
+      "identity": "api.registerNodeInvokePolicy",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 104,
+          "snippet": "api.registerNodeInvokePolicy({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.registerService",
+      "kind": "api-member",
+      "identity": "api.registerService",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 123,
+          "snippet": "api.registerService({"
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.runtimeSource",
+      "kind": "api-member",
+      "identity": "api.runtimeSource",
+      "classification": "runtime",
+      "referenceKinds": [
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 127,
+          "snippet": "if (!api.runtimeSource) {"
+        },
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 137,
+          "snippet": "`./src/store.worker${path.extname(api.runtimeSource)}`,",
+          "note": "Source entrypoint metadata is a separate API member, not the runtime handle."
+        }
+      ]
+    },
+    {
+      "key": "api-member:api.session.controls.registerControlUiDescriptor",
+      "kind": "api-member",
+      "identity": "api.session.controls.registerControlUiDescriptor",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 92,
+          "snippet": "api.session.controls.registerControlUiDescriptor({"
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.llm.complete",
+      "kind": "runtime-member",
+      "identity": "runtime.llm.complete",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 544,
+          "snippet": "const first = await this.deps.runtime.llm.complete({",
+          "note": "Also called for card repair, standup, and ask; all are call occurrences through the same proven runtime handle."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.mediaUnderstanding.extractStructuredWithModel",
+      "kind": "runtime-member",
+      "identity": "runtime.mediaUnderstanding.extractStructuredWithModel",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 463,
+          "snippet": "await this.deps.runtime.mediaUnderstanding.extractStructuredWithModel({",
+          "note": "deps.runtime is the public runtime passed by index.ts."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.nodes.invoke",
+      "kind": "runtime-member",
+      "identity": "runtime.nodes.invoke",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 254,
+          "snippet": "const invoked = await this.deps.runtime.nodes.invoke({",
+          "note": "deps.runtime is the public runtime passed by index.ts."
+        }
+      ]
+    },
+    {
+      "key": "runtime-member:runtime.nodes.list",
+      "kind": "runtime-member",
+      "identity": "runtime.nodes.list",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 187,
+          "snippet": "const { nodes } = await this.deps.runtime.nodes.list({ connected: true });",
+          "note": "deps.runtime is typed OpenClawPluginApi[\"runtime\"] at line 93 and receives api.runtime from index.ts line 131."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/database-engine-runtime#openEngineWorkerStore",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/database-engine-runtime#openEngineWorkerStore",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.ts",
+          "line": 4,
+          "snippet": "import { openEngineWorkerStore } from \"openclaw/plugin-sdk/database-engine-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/store.ts",
+          "line": 29,
+          "snippet": "const worker = await openEngineWorkerStore<LogbookOperations>("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#coerceErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#coerceErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/node-host.ts",
+          "line": 7,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/node-host.ts",
+          "line": 66,
+          "snippet": "return { error: coerceErrorMessage(err) };"
+        },
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 2,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 301,
+          "snippet": "this.lastCaptureError = coerceErrorMessage(err);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/error-runtime#formatErrorMessage",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 3,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 85,
+          "snippet": "const message = formatErrorMessage(err);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/expect-runtime#expectDefined",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/expect-runtime#expectDefined",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/analyze.ts",
+          "line": 1,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/analyze.ts",
+          "line": 314,
+          "snippet": "const first = expectDefined(params.frames[0], \"first pending Logbook frame\");"
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 3,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 280,
+          "snippet": "return Number(expectDefined(result.insertId, \"Logbook inserted frame ID\"));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/file-access-runtime#canonicalPathFromExistingAncestor",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/file-access-runtime#canonicalPathFromExistingAncestor",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.ts",
+          "line": 5,
+          "snippet": "import { canonicalPathFromExistingAncestor } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/store.ts",
+          "line": 28,
+          "snippet": "const root = await canonicalPathFromExistingAncestor(path.resolve(dataDir));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#ErrorCodes",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#ErrorCodes",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import",
+        "member-access"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 5,
+          "snippet": "ErrorCodes,",
+          "note": "Named value import from gateway-runtime."
+        },
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 86,
+          "snippet": "respond(false, { error: message }, errorShape(ErrorCodes.UNAVAILABLE, message));",
+          "note": "ErrorCodes.UNAVAILABLE reads a property on the imported SDK object."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#GatewayRequestHandlerOptions",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#GatewayRequestHandlerOptions",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 7,
+          "snippet": "type GatewayRequestHandlerOptions,"
+        },
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 81,
+          "snippet": "async ({ params, respond }: GatewayRequestHandlerOptions) => {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/gateway-runtime#errorShape",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/gateway-runtime#errorShape",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 6,
+          "snippet": "errorShape,",
+          "note": "Named value import from gateway-runtime."
+        },
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 86,
+          "snippet": "respond(false, { error: message }, errorShape(ErrorCodes.UNAVAILABLE, message));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/global-singleton#resolveGlobalSingleton",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/global-singleton#resolveGlobalSingleton",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/frame-io.ts",
+          "line": 1,
+          "snippet": "import { resolveGlobalSingleton } from \"openclaw/plugin-sdk/global-singleton\";"
+        },
+        {
+          "path": "extensions/logbook/src/frame-io.ts",
+          "line": 8,
+          "snippet": "const state = resolveGlobalSingleton(Symbol.for(\"openclaw.logbookFrameIo\"), () => ({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/keyed-async-queue#KeyedAsyncQueue",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/keyed-async-queue#KeyedAsyncQueue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/frame-io.ts",
+          "line": 2,
+          "snippet": "import { KeyedAsyncQueue } from \"openclaw/plugin-sdk/keyed-async-queue\";"
+        },
+        {
+          "path": "extensions/logbook/src/frame-io.ts",
+          "line": 9,
+          "snippet": "queue: new KeyedAsyncQueue(),",
+          "note": "Constructs the imported SDK class. The queue instance is not PluginRuntime."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/media-runtime#canonicalizeBase64",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/media-runtime#canonicalizeBase64",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 3,
+          "snippet": "import { canonicalizeBase64 } from \"openclaw/plugin-sdk/media-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 276,
+          "snippet": "const base64 = canonicalizeBase64(rawBase64);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawConfig",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawConfig",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 5,
+          "snippet": "OpenClawConfig,",
+          "note": "Inside import type from plugin-entry."
+        },
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 94,
+          "snippet": "fullConfig: OpenClawConfig;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginApi",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 11,
+          "snippet": "type OpenClawPluginApi,"
+        },
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 68,
+          "snippet": "register(api: OpenClawPluginApi) {"
+        },
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 6,
+          "snippet": "OpenClawPluginApi,",
+          "note": "Inside import type from plugin-entry."
+        },
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 93,
+          "snippet": "runtime: NonNullable<OpenClawPluginApi[\"runtime\"]>;",
+          "note": "This selects the runtime handle itself; concrete runtime consumers are recorded separately, without an api.runtime or runtime-root finding."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeHostCommand",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#OpenClawPluginNodeHostCommand",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 12,
+          "snippet": "type OpenClawPluginNodeHostCommand,"
+        },
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 43,
+          "snippet": "const logbookNodeHostCommands: OpenClawPluginNodeHostCommand[] = ["
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginLogger",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginLogger",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 7,
+          "snippet": "PluginLogger,",
+          "note": "Inside import type from plugin-entry."
+        },
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 95,
+          "snippet": "logger: PluginLogger;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#PluginServiceSchedulerV1",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#PluginServiceSchedulerV1",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 8,
+          "snippet": "PluginServiceSchedulerV1,",
+          "note": "Inside import type from plugin-entry."
+        },
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 98,
+          "snippet": "scheduler: PluginServiceSchedulerV1;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-entry#definePluginEntry",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 10,
+          "snippet": "definePluginEntry,",
+          "note": "Named value import from plugin-entry."
+        },
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 62,
+          "snippet": "export default definePluginEntry({"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#configureSqliteConnectionPragmas",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#configureSqliteConnectionPragmas",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 5,
+          "snippet": "configureSqliteConnectionPragmas,",
+          "note": "Ordinary value import from plugin-state-runtime."
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 82,
+          "snippet": "walMaintenance = configureSqliteConnectionPragmas(db, {"
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 66,
+          "snippet": "private readonly walMaintenance: ReturnType<typeof configureSqliteConnectionPragmas>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/plugin-state-runtime#migrateSqliteSchemaToStrict",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime#migrateSqliteSchemaToStrict",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 6,
+          "snippet": "migrateSqliteSchemaToStrict,",
+          "note": "Ordinary value import from plugin-state-runtime."
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 99,
+          "snippet": "migrateSqliteSchemaToStrict(db, SCHEMA, { databaseLabel: dbPath });"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/process-runtime#runExec",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/process-runtime#runExec",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/node-host.ts",
+          "line": 8,
+          "snippet": "import { runExec } from \"openclaw/plugin-sdk/process-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/node-host.ts",
+          "line": 43,
+          "snippet": "await runExec("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-runtime#SqliteWorkerError",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-runtime#SqliteWorkerError",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.ts",
+          "line": 6,
+          "snippet": "import { SqliteWorkerError, type SqliteWorkerStore } from \"openclaw/plugin-sdk/sqlite-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/store.ts",
+          "line": 61,
+          "snippet": "return Promise.reject(new SqliteWorkerError(\"Logbook store is closed\", \"closed\"));",
+          "note": "Constructs the imported SDK error class."
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-runtime#SqliteWorkerStore",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-runtime#SqliteWorkerStore",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.ts",
+          "line": 6,
+          "snippet": "import { SqliteWorkerError, type SqliteWorkerStore } from \"openclaw/plugin-sdk/sqlite-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/store.ts",
+          "line": 42,
+          "snippet": "private readonly worker: SqliteWorkerStore<LogbookOperations>,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-worker-runtime#Generated",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-worker-runtime#Generated",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store-schema.ts",
+          "line": 1,
+          "snippet": "import type { Generated, Selectable } from \"openclaw/plugin-sdk/sqlite-worker-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/store-schema.ts",
+          "line": 15,
+          "snippet": "id: Generated<number>;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-worker-runtime#Selectable",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-worker-runtime#Selectable",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store-schema.ts",
+          "line": 1,
+          "snippet": "import type { Generated, Selectable } from \"openclaw/plugin-sdk/sqlite-worker-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/store-schema.ts",
+          "line": 131,
+          "snippet": "type FrameRow = Omit<Selectable<LogbookDatabase[\"frames\"]>, \"content_hash\" | \"batch_id\">;"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-worker-runtime#SqliteDatabaseAdmissionKey",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-worker-runtime#SqliteDatabaseAdmissionKey",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 18,
+          "snippet": "type SqliteDatabaseAdmissionKey,"
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 53,
+          "snippet": "const schemaAdmission: SqliteDatabaseAdmissionKey<true> = {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-worker-runtime#SqliteWorkerBackend",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-worker-runtime#SqliteWorkerBackend",
+      "classification": "type",
+      "referenceKinds": [
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 19,
+          "snippet": "type SqliteWorkerBackend,"
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 639,
+          "snippet": "): SqliteWorkerBackend<LogbookOperations> {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-worker-runtime#enableNodeSqliteKyselyStatementCache",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-worker-runtime#enableNodeSqliteKyselyStatementCache",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 9,
+          "snippet": "enableNodeSqliteKyselyStatementCache,",
+          "note": "Named import from sqlite-worker-runtime."
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 79,
+          "snippet": "enableNodeSqliteKyselyStatementCache(db);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-worker-runtime#executeSqliteQuerySync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-worker-runtime#executeSqliteQuerySync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 10,
+          "snippet": "executeSqliteQuerySync,",
+          "note": "Named import from sqlite-worker-runtime."
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 297,
+          "snippet": "return executeSqliteQuerySync("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-worker-runtime#executeSqliteQueryTakeFirstSync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-worker-runtime#executeSqliteQueryTakeFirstSync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 11,
+          "snippet": "executeSqliteQueryTakeFirstSync,",
+          "note": "Named import from sqlite-worker-runtime."
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 284,
+          "snippet": "const row = executeSqliteQueryTakeFirstSync("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-worker-runtime#getNodeSqliteKysely",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-worker-runtime#getNodeSqliteKysely",
+      "classification": "mixed",
+      "referenceKinds": [
+        "call",
+        "import",
+        "type-import",
+        "type-reference"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 12,
+          "snippet": "getNodeSqliteKysely,",
+          "note": "Ordinary value import from sqlite-worker-runtime."
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 106,
+          "snippet": "this.query = getNodeSqliteKysely<LogbookDatabase>(db);"
+        },
+        {
+          "path": "extensions/logbook/src/store-frame-queries.ts",
+          "line": 4,
+          "snippet": "type getNodeSqliteKysely,"
+        },
+        {
+          "path": "extensions/logbook/src/store-frame-queries.ts",
+          "line": 11,
+          "snippet": "query: ReturnType<typeof getNodeSqliteKysely<LogbookDatabase>>,"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-worker-runtime#getSqliteDatabaseAdmission",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-worker-runtime#getSqliteDatabaseAdmission",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 13,
+          "snippet": "getSqliteDatabaseAdmission,",
+          "note": "Named import from sqlite-worker-runtime."
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 89,
+          "snippet": "if (!getSqliteDatabaseAdmission(db, schemaAdmission)) {"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-worker-runtime#openNodeSqliteDatabase",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-worker-runtime#openNodeSqliteDatabase",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 14,
+          "snippet": "openNodeSqliteDatabase,",
+          "note": "Named import from sqlite-worker-runtime."
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 76,
+          "snippet": "const db = openNodeSqliteDatabase(dbPath);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-worker-runtime#prepareSqliteQuerySync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-worker-runtime#prepareSqliteQuerySync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 15,
+          "snippet": "prepareSqliteQuerySync,",
+          "note": "Named import from sqlite-worker-runtime."
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 119,
+          "snippet": "insertFrame: prepareSqliteQuerySync<LogbookFrameInput>(db, (p) =>"
+        },
+        {
+          "path": "extensions/logbook/src/store-frame-queries.ts",
+          "line": 3,
+          "snippet": "prepareSqliteQuerySync,",
+          "note": "Named import from sqlite-worker-runtime."
+        },
+        {
+          "path": "extensions/logbook/src/store-frame-queries.ts",
+          "line": 29,
+          "snippet": "const sampledBatchFrames = prepareSqliteQuerySync<number, Parameters<typeof toFrame>[0]>("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-worker-runtime#publishSqliteDatabaseAdmission",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-worker-runtime#publishSqliteDatabaseAdmission",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 16,
+          "snippet": "publishSqliteDatabaseAdmission,",
+          "note": "Named import from sqlite-worker-runtime."
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 102,
+          "snippet": "publishSqliteDatabaseAdmission(db, schemaAdmission, true);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/sqlite-worker-runtime#runSqliteImmediateTransactionSync",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/sqlite-worker-runtime#runSqliteImmediateTransactionSync",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 17,
+          "snippet": "runSqliteImmediateTransactionSync,",
+          "note": "Named import from sqlite-worker-runtime."
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 341,
+          "snippet": "return runSqliteImmediateTransactionSync("
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asFiniteNumber",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/node-host.ts",
+          "line": 9,
+          "snippet": "import { asFiniteNumber, asRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/node-host.ts",
+          "line": 21,
+          "snippet": "const screenIndex = Math.max(0, Math.round(asFiniteNumber(params.screenIndex) ?? 0));"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asOptionalObjectRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asOptionalObjectRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store-schema.ts",
+          "line": 2,
+          "snippet": "import { asOptionalObjectRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/store-schema.ts",
+          "line": 168,
+          "snippet": "const record = asOptionalObjectRecord(entry);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#asRecord",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#asRecord",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/analyze.ts",
+          "line": 2,
+          "snippet": "import { asRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/analyze.ts",
+          "line": 88,
+          "snippet": "const candidate = Array.isArray(parsed) ? parsed : asRecord(parsed).segments;"
+        },
+        {
+          "path": "extensions/logbook/src/config.ts",
+          "line": 1,
+          "snippet": "import { asRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/config.ts",
+          "line": 23,
+          "snippet": "const value = asRecord(raw);"
+        },
+        {
+          "path": "extensions/logbook/src/node-host.ts",
+          "line": 9,
+          "snippet": "import { asFiniteNumber, asRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/node-host.ts",
+          "line": 20,
+          "snippet": "const params = asRecord(rawParams);"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime#normalizeOptionalString",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/analyze.ts",
+          "line": 2,
+          "snippet": "import { asRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/analyze.ts",
+          "line": 96,
+          "snippet": "const description = normalizeOptionalString(record.description);"
+        },
+        {
+          "path": "extensions/logbook/src/config.ts",
+          "line": 1,
+          "snippet": "import { asRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/config.ts",
+          "line": 38,
+          "snippet": "nodeId: normalizeOptionalString(value.nodeId),"
+        }
+      ]
+    },
+    {
+      "key": "sdk-export:openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "kind": "sdk-export",
+      "identity": "openclaw/plugin-sdk/temp-path#resolvePreferredOpenClawTmpDir",
+      "classification": "runtime",
+      "referenceKinds": [
+        "call",
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/node-host.ts",
+          "line": 10,
+          "snippet": "import { resolvePreferredOpenClawTmpDir } from \"openclaw/plugin-sdk/temp-path\";"
+        },
+        {
+          "path": "extensions/logbook/src/node-host.ts",
+          "line": 31,
+          "snippet": "const captureDir = path.join(resolvePreferredOpenClawTmpDir(), \"logbook\");"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/database-engine-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/database-engine-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.ts",
+          "line": 4,
+          "snippet": "import { openEngineWorkerStore } from \"openclaw/plugin-sdk/database-engine-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/error-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/error-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 3,
+          "snippet": "import { formatErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/node-host.ts",
+          "line": 7,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 2,
+          "snippet": "import { coerceErrorMessage } from \"openclaw/plugin-sdk/error-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/expect-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/expect-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/analyze.ts",
+          "line": 1,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 3,
+          "snippet": "import { expectDefined } from \"openclaw/plugin-sdk/expect-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/file-access-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/file-access-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.ts",
+          "line": 5,
+          "snippet": "import { canonicalPathFromExistingAncestor } from \"openclaw/plugin-sdk/file-access-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/gateway-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/gateway-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 8,
+          "snippet": "} from \"openclaw/plugin-sdk/gateway-runtime\";",
+          "note": "The declaration imports ErrorCodes/errorShape as values and GatewayRequestHandlerOptions with an inline type specifier."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/global-singleton",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/global-singleton",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/frame-io.ts",
+          "line": 1,
+          "snippet": "import { resolveGlobalSingleton } from \"openclaw/plugin-sdk/global-singleton\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/keyed-async-queue",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/keyed-async-queue",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/frame-io.ts",
+          "line": 2,
+          "snippet": "import { KeyedAsyncQueue } from \"openclaw/plugin-sdk/keyed-async-queue\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/media-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/media-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 3,
+          "snippet": "import { canonicalizeBase64 } from \"openclaw/plugin-sdk/media-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-entry",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-entry",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/index.ts",
+          "line": 13,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "definePluginEntry is a value import; OpenClawPluginApi and OpenClawPluginNodeHostCommand are inline type imports."
+        },
+        {
+          "path": "extensions/logbook/src/service.ts",
+          "line": 9,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-entry\";",
+          "note": "Explicit import type declaration for OpenClawConfig, OpenClawPluginApi, PluginLogger and PluginServiceSchedulerV1."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/plugin-state-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/plugin-state-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 7,
+          "snippet": "} from \"openclaw/plugin-sdk/plugin-state-runtime\";",
+          "note": "Both configureSqliteConnectionPragmas and migrateSqliteSchemaToStrict are ordinary value imports; later typeof usage does not change the module import classification."
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/process-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/process-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/node-host.ts",
+          "line": 8,
+          "snippet": "import { runExec } from \"openclaw/plugin-sdk/process-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/sqlite-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/sqlite-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.ts",
+          "line": 6,
+          "snippet": "import { SqliteWorkerError, type SqliteWorkerStore } from \"openclaw/plugin-sdk/sqlite-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/sqlite-worker-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/sqlite-worker-runtime",
+      "classification": "mixed",
+      "referenceKinds": [
+        "import",
+        "type-import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/store.worker.ts",
+          "line": 20,
+          "snippet": "} from \"openclaw/plugin-sdk/sqlite-worker-runtime\";",
+          "note": "Nine value imports plus inline type imports SqliteDatabaseAdmissionKey and SqliteWorkerBackend."
+        },
+        {
+          "path": "extensions/logbook/src/store-frame-queries.ts",
+          "line": 5,
+          "snippet": "} from \"openclaw/plugin-sdk/sqlite-worker-runtime\";",
+          "note": "prepareSqliteQuerySync is a value import; getNodeSqliteKysely is an inline type import."
+        },
+        {
+          "path": "extensions/logbook/src/store-schema.ts",
+          "line": 1,
+          "snippet": "import type { Generated, Selectable } from \"openclaw/plugin-sdk/sqlite-worker-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/string-coerce-runtime",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/string-coerce-runtime",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/analyze.ts",
+          "line": 2,
+          "snippet": "import { asRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/config.ts",
+          "line": 1,
+          "snippet": "import { asRecord, normalizeOptionalString } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/node-host.ts",
+          "line": 9,
+          "snippet": "import { asFiniteNumber, asRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        },
+        {
+          "path": "extensions/logbook/src/store-schema.ts",
+          "line": 2,
+          "snippet": "import { asOptionalObjectRecord } from \"openclaw/plugin-sdk/string-coerce-runtime\";"
+        }
+      ]
+    },
+    {
+      "key": "sdk-module:openclaw/plugin-sdk/temp-path",
+      "kind": "sdk-module",
+      "identity": "openclaw/plugin-sdk/temp-path",
+      "classification": "runtime",
+      "referenceKinds": [
+        "import"
+      ],
+      "evidence": [
+        {
+          "path": "extensions/logbook/src/node-host.ts",
+          "line": 10,
+          "snippet": "import { resolvePreferredOpenClawTmpDir } from \"openclaw/plugin-sdk/temp-path\";"
+        }
+      ]
+    }
+  ],
+  "unknowns": [],
+  "auditedEmpty": false,
+  "notes": [
+    "Independently read all 14 eligible production TypeScript files and both metadata files at the pinned source commit. All 32 files beneath the plugin root are partitioned into 16 reviewed and 16 excluded records. No Inspector implementation, helpers, output, other plugin fixtures, or expectation extractor was consulted.",
+    "No plugin-local relative import leaves extensions/logbook. index.ts dynamically imports src/node-host.ts and selects the shipped src/store.worker entrypoint using runtimeSource; package.json explicitly declares src/store.worker.ts in openclaw.build.workerEntries. Both modules and all their local production dependencies are included. SDK facade imports are boundaries, not recursively audited plugin-owned shared source.",
+    "Public SDK identities were checked against package.json exports and the corresponding src/plugin-sdk facades. Imported names remain the public exported names even where the facade itself forwards an internal implementation. No installed dependency implementation contributes findings.",
+    "api is explicitly OpenClawPluginApi. index.ts passes api.runtime to LogbookService, whose deps.runtime has type NonNullable<OpenClawPluginApi[\"runtime\"]>; the only concrete consumed runtime paths are nodes.list, nodes.invoke, mediaUnderstanding.extractStructuredWithModel and llm.complete. Bare runtime propagation and the root indexed type do not create api.runtime or runtime-root identities.",
+    "The service callback ctx.config/logger/scheduler/stateDir, policy callback ctx.config/invokeNode, Gateway handler params/respond, and the separately typed fullConfig/logger/scheduler fields are context values, not aliases of OpenClawPluginApi or PluginRuntime. Their member accesses do not become API/runtime findings.",
+    "SDK function results (SQLite stores, Kysely query builders, prepared statements, WAL maintenance, and singleton state) and the KeyedAsyncQueue instance are not public API/runtime handles. Calls inside known SDK helpers are not inferred. Wrapper calls registerRead/registerWrite retain only their actual api.registerGatewayMethod body dependencies.",
+    "configureSqliteConnectionPragmas is mixed because an ordinary value import and call coexist with explicit ReturnType<typeof ...> type references. getNodeSqliteKysely is mixed because the worker imports/calls its value and store-frame-queries imports it with type syntax and uses typeof. Later type usage alone does not change a module import classification.",
+    "No API on/registerHook calls or manifest channels/providers/skills/commandAliases/cliCommands/contracts fields occur. uiCapabilities, categories, activation, uiHints, configGroups and configSchema are metadata outside the agreed manifest-contract identity set. Runtime node-command and gateway-method strings are not fabricated manifest contracts or named hooks.",
+    "The ambiguous sqlite-backend-entrypoint.test-support.ts was read and its callers verified: only .test.ts modules and Vitest build/declaration tooling use it. It is excluded as test-helper; all production store and worker files are included. Production source under extensions/logbook matches the pinned commit."
+  ]
+}
