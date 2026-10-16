@@ -30,7 +30,10 @@ const cases = [
   ["object property arrow", "const helpers = { use: (value) => { value.registerTool({}); } };", (argument) => `helpers.use(${argument});`],
   ["shorthand method alias", "function use(value) { value.registerTool({}); } const helpers = { use };", (argument) => `helpers.use(${argument});`],
   ["destructured method", "const helpers = { use(value) { value.registerTool({}); } }; const { use } = helpers;", (argument) => `use(${argument});`],
+  ["nested destructured method", "const helpers = { nested: { use(value) { value.registerTool({}); } } }; const { nested: { use } } = helpers;", (argument) => `use(${argument});`],
   ["function returned by a factory", "function factory() { return (value) => { value.registerTool({}); }; }", (argument) => `factory()(${argument});`],
+  ["defaulted factory parameter", "function use(value) { value.registerTool({}); } function factory(fn = use) { return fn; }", (argument) => `factory()(${argument});`],
+  ["assigned function variable", "let use; use = (value) => { value.registerTool({}); };", (argument) => `use(${argument});`],
   ["inherited constructor", "class Base { constructor(value) { value.registerTool({}); } } class Child extends Base {}", (argument) => `new Child(${argument});`],
 ];
 
@@ -48,3 +51,19 @@ for (const [name, helper, invoke] of cases) {
     assert.deepEqual(unrelated.entries.filter(({ kind }) => kind === "api-member"), []);
   });
 }
+
+test("an overriding external spread does not execute the earlier local method", async (t) => {
+  const helper = `import external from "external-helper";
+function use(value) { value.registerTool({}); }
+const helpers = { use, ...{ use: external } };`;
+  const invoke = (argument) => `helpers.use(${argument});`;
+  const sdk = await inspectCall(t, helper, invoke, "api");
+  assert.equal(sdk.status, "partial");
+  assert.ok(sdk.unknowns.some(({ reason }) => reason === "SDK handle escapes into an unresolved external call"));
+  assert.deepEqual(sdk.entries.filter(({ kind }) => kind === "api-member"), []);
+
+  const unrelated = await inspectCall(t, helper, invoke, "{}");
+  assert.equal(unrelated.status, "complete");
+  assert.deepEqual(unrelated.unknowns, []);
+  assert.deepEqual(unrelated.entries.filter(({ kind }) => kind === "api-member"), []);
+});
