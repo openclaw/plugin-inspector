@@ -97,10 +97,11 @@ export function collectSdkImports({ sources, checker, report, provenance }) {
       if ((ts.isPropertyAccessExpression(node.parent) || ts.isElementAccessExpression(node.parent)) && node.parent.expression === node) return;
       if (ts.isPropertyAccessExpression(node.parent) && node.parent.name === node || ts.isQualifiedName(node.parent) && node.parent.right === node) return;
       if (node.parent.name === node && !ts.isShorthandPropertyAssignment(node.parent)) return;
+      const kind = referenceKind(node);
+      if (!kind) return;
       const value = resolve(node);
       if (value?.kind === "namespace") return;
-      const kind = referenceKind(node);
-      if (kind) record(value, kind, node);
+      record(value, kind, node);
     }
     if (ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node) || ts.isQualifiedName(node)) {
       if (ts.isPropertyAccessExpression(node) && node.name.text === "then" && resolve(node.expression)?.kind === "namespace") return;

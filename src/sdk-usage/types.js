@@ -69,6 +69,8 @@ export function createTypeProvenance({ checker, program, resolve, select, module
     return value;
   }
   function inferred(node) {
+    // Without an explicit host, inferred types cannot establish SDK ownership.
+    if (!targetRoot) return undefined;
     const type = checker.getTypeAtLocation(node);
     function fromType(type) {
       // Only host definitions reached through the public SDK can infer an unannotated API handle.

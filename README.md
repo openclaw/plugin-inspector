@@ -569,6 +569,14 @@ Each entry retains at most 12 evidence sites with source excerpts of at most
 500 UTF-16 code units. Long or minified lines are excerpted around the reference;
 the path and line identify the full source. These bounds never truncate identities.
 
+Complex provenance analysis has a deterministic limit of 1,000,000 steps per
+plugin, including call indexing, alias resolution, member selection, literal
+resolution and caller-context traversal. Exhaustion adds one source-located
+unknown and makes the inventory `partial`. All supplied files remain in scope;
+syntax scanning, literal SDK imports, and direct references to declared entry
+APIs continue. Deep argument-flow references may be missing from a partial
+inventory. The allowance resets for each plugin.
+
 The public `pluginRoot.runCheck` and fixture-suite APIs accept
 `sdkUsageInputKind: "source" | "artifact"`. The default is `"source"`, except
 npm package fixtures default to `"artifact"`; an explicit option takes precedence.
