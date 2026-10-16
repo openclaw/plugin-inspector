@@ -28,7 +28,7 @@ export function collectSdkMembers({ sources, report, provenance }) {
     if (ts.isCallExpression(node)) {
       const value = resolve(node.expression);
       record(value, "call", node.expression);
-      if (!value || provenance.hasUnresolvedArrayCall(node)) for (const argument of node.arguments) {
+      if (!value || provenance.hasUnresolvedCallTarget(node)) for (const argument of node.arguments) {
         const handle = resolve(argument);
         if (["api", "runtime"].includes(handle?.kind) && !handle.path.length) report.unknown(node, "SDK handle escapes into an unresolved external call");
       }

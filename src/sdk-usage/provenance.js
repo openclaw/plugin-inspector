@@ -42,24 +42,49 @@ export function createProvenance({ checker, program, localSource, sources, targe
       assignments.set(symbol, [...(assignments.get(symbol) ?? []), node.right]);
     }
   });
-  const unresolvedArrayCalls = new WeakSet();
-  const callDeclarations = createCallTargetResolver({ checker, program, localSource, sourceNames, consumeWork, assignments, onUnresolvedArrayCall: (node) => unresolvedArrayCalls.add(node) });
-  for (const source of sources) walk(source, (node) => {
-    if (workLimitReached) return;
-    if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
-      for (const declaration of callDeclarations(node)) {
-        callsByFunction.set(declaration, [...(callsByFunction.get(declaration) ?? []), node]);
-        for (const [index, parameter] of declaration.parameters.entries()) {
-          if (parameter.dotDotDotToken) {
-            restArgumentsByParameter.set(parameter, [...(restArgumentsByParameter.get(parameter) ?? []), [...(node.arguments ?? [])].slice(index)]);
-            continue;
-          }
-          const argument = node.arguments?.[index];
-          if (argument) argumentsByParameter.set(parameter, [...(argumentsByParameter.get(parameter) ?? []), argument]);
+  const unresolvedCallTargets = new WeakSet();
+  const deferredCalls = new Set();
+  const resolverOptions = { checker, program, localSource, sourceNames, consumeWork, assignments, onUnresolvedCall: (node) => unresolvedCallTargets.add(node), onDeferredParameterCall: (node) => deferredCalls.add(node) };
+  const callDeclarations = createCallTargetResolver(resolverOptions);
+  function indexCall(node, resolveTargets) {
+    let added = false;
+    for (const declaration of resolveTargets(node)) {
+      const calls = callsByFunction.get(declaration) ?? [];
+      if (calls.includes(node)) continue;
+      callsByFunction.set(declaration, [...calls, node]);
+      added = true;
+      for (const [index, parameter] of declaration.parameters.entries()) {
+        if (parameter.dotDotDotToken) {
+          restArgumentsByParameter.set(parameter, [...(restArgumentsByParameter.get(parameter) ?? []), [...(node.arguments ?? [])].slice(index)]);
+          continue;
         }
+        const argument = node.arguments?.[index];
+        if (argument) argumentsByParameter.set(parameter, [...(argumentsByParameter.get(parameter) ?? []), argument]);
       }
     }
+    return added;
+  }
+  for (const source of sources) walk(source, (node) => {
+    if (!workLimitReached && (ts.isCallExpression(node) || ts.isNewExpression(node))) indexCall(node, callDeclarations);
   });
+  let addedDefaultCalls = deferredCalls.size > 0;
+  while (addedDefaultCalls && !workLimitReached) {
+    addedDefaultCalls = false;
+    // Defaults depend on the completed caller map; each changed pass gets fresh memoization.
+    const resolveDefaults = createCallTargetResolver({ ...resolverOptions, parameterArguments(parameter) {
+      const index = parameter.parent.parameters.indexOf(parameter);
+      return (callsByFunction.get(parameter.parent) ?? []).map((call) => {
+        const argument = call.arguments?.[index];
+        const isUndefined = argument && ts.isIdentifier(argument) && argument.text === "undefined" && !checker.getSymbolAtLocation(argument)?.valueDeclaration;
+        return !argument || isUndefined || ts.isVoidExpression(argument) ? parameter.initializer : argument;
+      });
+    } });
+    for (const node of deferredCalls) {
+      if (workLimitReached) break;
+      unresolvedCallTargets.delete(node);
+      addedDefaultCalls = indexCall(node, resolveDefaults) || addedDefaultCalls;
+    }
+  }
 
   let directCache = new WeakMap();
   const directResolving = new Set();
@@ -528,5 +553,5 @@ export function createProvenance({ checker, program, localSource, sources, targe
   // Direct entry discovery may also have observed an as-yet unmarked parameter.
   directCache = new WeakMap();
 
-  return { resolve, select, exported, moduleValue, literal, literals, hasUnresolvedArrayCall: (node) => unresolvedArrayCalls.has(node), typeValue: (node) => consumeWork(node) ? typeValue(node) : undefined };
+  return { resolve, select, exported, moduleValue, literal, literals, hasUnresolvedCallTarget: (node) => unresolvedCallTargets.has(node), typeValue: (node) => consumeWork(node) ? typeValue(node) : undefined };
 }

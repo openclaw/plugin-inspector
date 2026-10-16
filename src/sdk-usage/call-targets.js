@@ -2,7 +2,7 @@ import ts from "typescript";
 import { nameText } from "./syntax.js";
 
 /** Index argument flow through actual local bodies without instantiating generic signatures. */
-export function createCallTargetResolver({ checker, program, localSource, sourceNames, consumeWork, assignments, onUnresolvedArrayCall }) {
+export function createCallTargetResolver({ checker, program, localSource, sourceNames, consumeWork, assignments, onUnresolvedCall, onDeferredParameterCall, parameterArguments }) {
   const visiting = new Set();
   const constructing = new Set();
   const expandingArrays = new Set();
@@ -10,12 +10,24 @@ export function createCallTargetResolver({ checker, program, localSource, source
   const bindingCaches = new WeakMap();
   const emptyBindings = new Map();
   let cycleGeneration = 0;
-  let unresolvedArrayGeneration = 0;
+  let unresolvedGeneration = 0;
+  let deferredGeneration = 0;
+  let currentCall;
   function declarations(symbol, bindings) {
     if (symbol?.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol);
     return [...(symbol?.declarations ?? []).flatMap((declaration) => {
       if (!sourceNames.has(declaration.getSourceFile().fileName)) return [];
       if (bindings.has(declaration)) return values(bindings.get(declaration), bindings);
+      if (ts.isParameter(declaration) && declaration.initializer) {
+        if (!parameterArguments) {
+          deferredGeneration++;
+          onDeferredParameterCall(currentCall);
+          return [];
+        }
+        const actual = parameterArguments(declaration).flatMap((argument) => values(argument, bindings));
+        if (!actual.length) unresolvedGeneration++;
+        return actual;
+      }
       if (ts.isVariableDeclaration(declaration) || ts.isPropertyAssignment(declaration) || ts.isPropertyDeclaration(declaration)) return values(declaration.initializer, bindings);
       if (ts.isBindingElement(declaration)) {
         const key = ts.isArrayBindingPattern(declaration.parent) ? String(declaration.parent.elements.indexOf(declaration)) : nameText(declaration.propertyName ?? declaration.name);
@@ -24,7 +36,7 @@ export function createCallTargetResolver({ checker, program, localSource, source
       if (ts.isShorthandPropertyAssignment(declaration)) return declarations(checker.getShorthandAssignmentValueSymbol(declaration), bindings);
       if (ts.isGetAccessorDeclaration(declaration) || ts.isSetAccessorDeclaration(declaration)) return values(declaration, bindings);
       return [declaration];
-    }), ...(assignments.get(symbol) ?? []).flatMap((expression) => values(expression, bindings))];
+    }), ...(assignments.get(symbol) ?? []).filter((expression) => !visiting.has(expression.parent)).flatMap((expression) => values(expression, bindings))];
   }
   function bindingValues(declaration, key, bindings) {
     const owner = declaration.parent.parent;
@@ -92,10 +104,10 @@ export function createCallTargetResolver({ checker, program, localSource, source
         for (const offset of remaining) {
           if (ts.isSpreadElement(element)) {
             const spreads = values(element.expression, bindings);
-            if (!spreads.length) unresolvedArrayGeneration++;
+            if (!spreads.length) unresolvedGeneration++;
             for (const spread of spreads) {
               // An unknown spread has no known length, so later positions cannot be guessed.
-              if (!ts.isArrayLiteralExpression(spread)) { unresolvedArrayGeneration++; continue; }
+              if (!ts.isArrayLiteralExpression(spread)) { unresolvedGeneration++; continue; }
               const result = arraySelection(spread, offset, bindings);
               for (const value of result.selected) selected.add(value);
               for (const rest of result.remaining) next.add(rest);
@@ -117,16 +129,17 @@ export function createCallTargetResolver({ checker, program, localSource, source
     if (cache.has(expression)) {
       const cached = cache.get(expression);
       // An alias must preserve uncertainty even when its target list is memoized.
-      if (cached.unresolvedArray) unresolvedArrayGeneration++;
+      if (cached.unresolved) unresolvedGeneration++;
       return cached.result;
     }
     visiting.add(expression);
     try {
       const generation = cycleGeneration;
-      const arrayGeneration = unresolvedArrayGeneration;
+      const unresolvedBefore = unresolvedGeneration;
+      const deferredBefore = deferredGeneration;
       const result = [...new Set(evaluate(expression, bindings))];
       // A cycle cut depends on the current traversal, not only these bindings.
-      if (generation === cycleGeneration) cache.set(expression, { result, unresolvedArray: arrayGeneration !== unresolvedArrayGeneration });
+      if (generation === cycleGeneration && deferredBefore === deferredGeneration) cache.set(expression, { result, unresolved: unresolvedBefore !== unresolvedGeneration });
       return result;
     } finally { visiting.delete(expression); }
   }
@@ -142,32 +155,72 @@ export function createCallTargetResolver({ checker, program, localSource, source
       return base ? values(base.expression, bindings) : [];
     }
     if (ts.isPropertyAccessExpression(expression) || ts.isElementAccessExpression(expression)) {
-      const key = ts.isPropertyAccessExpression(expression) ? expression.name.text : expression.argumentExpression && (ts.isStringLiteralLike(expression.argumentExpression) || ts.isNumericLiteral(expression.argumentExpression)) ? expression.argumentExpression.text : undefined;
-      const direct = properties(expression.expression, key, bindings);
-      return direct ?? declarations(checker.getSymbolAtLocation(expression), bindings);
+      const keys = ts.isPropertyAccessExpression(expression) ? [expression.name.text] : literalKeys(expression.argumentExpression, bindings);
+      const fallback = () => declarations(checker.getSymbolAtLocation(expression), bindings);
+      return keys.length ? keys.flatMap((key) => properties(expression.expression, key, bindings) ?? fallback()) : fallback();
     }
     if (ts.isConditionalExpression(expression)) return [...values(expression.whenTrue, bindings), ...values(expression.whenFalse, bindings)];
-    if (ts.isBinaryExpression(expression) && [ts.SyntaxKind.QuestionQuestionToken, ts.SyntaxKind.BarBarToken].includes(expression.operatorToken.kind)) return [...values(expression.left, bindings), ...values(expression.right, bindings)];
-    if (ts.isCallExpression(expression)) {
+    if (ts.isBinaryExpression(expression)) {
+      const operator = expression.operatorToken.kind;
+      if ([ts.SyntaxKind.EqualsToken, ts.SyntaxKind.CommaToken].includes(operator)) return values(expression.right, bindings);
+      const nullish = [ts.SyntaxKind.QuestionQuestionToken, ts.SyntaxKind.QuestionQuestionEqualsToken].includes(operator);
+      const either = [ts.SyntaxKind.BarBarToken, ts.SyntaxKind.BarBarEqualsToken].includes(operator);
+      const both = [ts.SyntaxKind.AmpersandAmpersandToken, ts.SyntaxKind.AmpersandAmpersandEqualsToken].includes(operator);
+      if (nullish || either || both) {
+        const left = values(expression.left, bindings);
+        const takeRight = (value) => {
+          const truth = truthiness(value);
+          if (nullish) return value.kind === ts.SyntaxKind.NullKeyword ? true : truth === undefined ? undefined : false;
+          return both || truth === undefined ? truth : !truth;
+        };
+        return [...left.filter((value) => takeRight(value) !== true), ...(!left.length || left.some((value) => takeRight(value) !== false) ? values(expression.right, bindings) : [])];
+      }
+    }
+    if (ts.isCallExpression(expression) || ts.isTaggedTemplateExpression(expression)) {
+      if (ts.isTaggedTemplateExpression(expression)) {
+        const args = [expression.template, ...(ts.isTemplateExpression(expression.template) ? expression.template.templateSpans.map((span) => span.expression) : [])];
+        return callReturns(expression.tag, args, bindings);
+      }
       if (expression.expression.kind === ts.SyntaxKind.ImportKeyword && expression.arguments[0] && ts.isStringLiteralLike(expression.arguments[0])) {
         const source = localSource(expression.arguments[0].text, expression.getSourceFile());
         return source && sourceNames.has(source.fileName) ? [source] : [];
       }
       const callee = expression.expression;
-      if (ts.isPropertyAccessExpression(callee) && callee.name.text === "all" && ts.isIdentifier(callee.expression) && callee.expression.text === "Promise") {
+      if (ts.isPropertyAccessExpression(callee) && ["all", "resolve"].includes(callee.name.text) && ts.isIdentifier(callee.expression) && callee.expression.text === "Promise") {
         const declarations = checker.getSymbolAtLocation(callee.expression)?.declarations;
         if (declarations?.length && declarations.every((declaration) => program.isSourceFileDefaultLibrary(declaration.getSourceFile()))) return values(expression.arguments[0], bindings);
       }
-      return targets(expression.expression, false, bindings).flatMap((fn) => {
-        const inner = new Map(bindings);
-        for (const [index, parameter] of fn.parameters.entries()) {
-          const argument = expression.arguments[index] ?? parameter.initializer;
-          if (argument) inner.set(parameter, argument);
-        }
-        return returnedValues(fn, inner);
-      });
+      if (ts.isPropertyAccessExpression(callee) && callee.name.text === "bind" && expression.arguments.length <= 1) {
+        const declarations = checker.getSymbolAtLocation(callee.name)?.declarations;
+        if (declarations?.length && declarations.every((declaration) => program.isSourceFileDefaultLibrary(declaration.getSourceFile()))) return values(callee.expression, bindings);
+      }
+      return callReturns(expression.expression, expression.arguments, bindings);
     }
     return [expression];
+  }
+  function truthiness(value) {
+    if (value.kind === ts.SyntaxKind.TrueKeyword || ts.isFunctionLike(value) || ts.isClassLike(value) || ts.isArrayLiteralExpression(value) || ts.isObjectLiteralExpression(value) || ts.isRegularExpressionLiteral(value) || ts.isNewExpression(value)) return true;
+    if (value.kind === ts.SyntaxKind.FalseKeyword || value.kind === ts.SyntaxKind.NullKeyword) return false;
+    if (ts.isNumericLiteral(value)) return Number(value.text) !== 0;
+    if (ts.isStringLiteralLike(value)) return Boolean(value.text);
+    return undefined;
+  }
+  function literalKeys(expression, bindings) {
+    return values(expression, bindings).flatMap((value) => {
+      if (ts.isStringLiteralLike(value) || ts.isNumericLiteral(value)) return [value.text];
+      if (ts.isPrefixUnaryExpression(value) && [ts.SyntaxKind.MinusToken, ts.SyntaxKind.PlusToken].includes(value.operator)) return values(value.operand, bindings).filter(ts.isNumericLiteral).map((number) => String(Number(number.text) * (value.operator === ts.SyntaxKind.MinusToken ? -1 : 1)));
+      return [];
+    });
+  }
+  function callReturns(callee, args, bindings) {
+    return targets(callee, false, bindings).flatMap((fn) => {
+      const inner = new Map(bindings);
+      for (const [index, parameter] of fn.parameters.entries()) {
+        const argument = args[index] ?? parameter.initializer;
+        if (argument) inner.set(parameter, argument);
+      }
+      return returnedValues(fn, inner);
+    });
   }
   function returnedValues(fn, bindings) {
     const results = [];
@@ -195,9 +248,12 @@ export function createCallTargetResolver({ checker, program, localSource, source
     }))];
   }
   return (node) => {
-    const generation = unresolvedArrayGeneration;
-    const result = targets(node.expression, ts.isNewExpression(node) || node.expression.kind === ts.SyntaxKind.SuperKeyword);
-    if (generation !== unresolvedArrayGeneration) onUnresolvedArrayCall(node);
-    return result;
+    const generation = unresolvedGeneration;
+    currentCall = node;
+    try {
+      const result = targets(node.expression, ts.isNewExpression(node) || node.expression.kind === ts.SyntaxKind.SuperKeyword);
+      if (generation !== unresolvedGeneration) onUnresolvedCall(node);
+      return result;
+    } finally { currentCall = undefined; }
   };
 }
