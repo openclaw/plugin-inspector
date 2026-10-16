@@ -115,10 +115,15 @@ export async function inspectPlugin(fixture, options = {}) {
   const checkoutPath = fixtureCheckoutPath(config, fixture);
   const sourceRoot = fixtureSourceRoot(config, fixture);
 
-  if (!existsSync(checkoutPath)) {
+  if (!existsSync(checkoutPath) || fixture.package && !existsSync(sourceRoot)) {
     return emptyInspection(fixture, "missing");
   }
 
+  // Fixture suites may wrap a standalone nested plugin or an npm payload.
+  // A source-only subdirectory still needs its package-root entrypoint metadata.
+  const sdkUsageRoot = fixture.package || !isPluginRootConfig(config) && fixture.subdir && existsSync(path.join(sourceRoot, "package.json"))
+    ? sourceRoot
+    : checkoutPath;
   const packageInspection = await readPackageMetadata(config, checkoutPath, sourceRoot);
   const includeBuildArtifacts = shouldScanBuildArtifacts(fixture, packageInspection);
   const files = await listSourceFiles(sourceRoot, {
@@ -175,7 +180,7 @@ export async function inspectPlugin(fixture, options = {}) {
     packageEntrypoints: packageInspection.entrypoints,
     sdkImports: uniqueDetails(sdkImportDetails),
     sdkDeprecations: uniqueSdkDeprecations(sdkDeprecationDetails),
-    sdkUsage: await inspectSdkUsage({ root: checkoutPath, inputKind: options.sdkUsageInputKind, targetRoot: options.sdkTargetRoot, compatDeprecations: options.targetOpenClaw?.compatDeprecations, hostCache: options.sdkUsageHostCache }),
+    sdkUsage: await inspectSdkUsage({ root: sdkUsageRoot, inputKind: options.sdkUsageInputKind ?? (fixture.package ? "artifact" : "source"), targetRoot: options.sdkTargetRoot, compatDeprecations: options.targetOpenClaw?.compatDeprecations, hostCache: options.sdkUsageHostCache }),
     sourceFiles: sourceFiles.map((filePath) => path.relative(config.rootDir ?? process.cwd(), filePath)).sort(),
   };
 }
