@@ -7,6 +7,7 @@ export function createCallTargetResolver({ checker, program, localSource, source
   const constructing = new Set();
   const selecting = new Map();
   const bindingCaches = new WeakMap();
+  const emptyBindings = new Map();
   let cycleGeneration = 0;
   function declarations(symbol, bindings) {
     if (symbol?.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol);
@@ -127,7 +128,7 @@ export function createCallTargetResolver({ checker, program, localSource, source
     }
     return [expression];
   }
-  function targets(expression, construct, bindings = new Map()) {
+  function targets(expression, construct, bindings = emptyBindings) {
     return [...new Set(values(expression, bindings).flatMap((value) => {
       if (construct && ts.isClassLike(value)) {
         if (constructing.has(value)) { cycleGeneration++; return []; }
