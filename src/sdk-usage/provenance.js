@@ -42,7 +42,7 @@ export function createProvenance({ checker, program, localSource, sources, targe
       assignments.set(symbol, [...(assignments.get(symbol) ?? []), node.right]);
     }
   });
-  const callDeclarations = createCallTargetResolver({ checker, sourceNames, consumeWork, assignments });
+  const callDeclarations = createCallTargetResolver({ checker, program, localSource, sourceNames, consumeWork, assignments });
   for (const source of sources) walk(source, (node) => {
     if (workLimitReached) return;
     if (ts.isCallExpression(node) || ts.isNewExpression(node)) {

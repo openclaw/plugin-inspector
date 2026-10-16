@@ -2,7 +2,7 @@ import ts from "typescript";
 import { nameText } from "./syntax.js";
 
 /** Index argument flow through actual local bodies without instantiating generic signatures. */
-export function createCallTargetResolver({ checker, sourceNames, consumeWork, assignments }) {
+export function createCallTargetResolver({ checker, program, localSource, sourceNames, consumeWork, assignments }) {
   const visiting = new Set();
   const constructing = new Set();
   const selecting = new Map();
@@ -25,7 +25,7 @@ export function createCallTargetResolver({ checker, sourceNames, consumeWork, as
   function bindingValues(declaration, key, bindings) {
     const owner = declaration.parent.parent;
     if (ts.isBindingElement(owner)) {
-      const parentKey = nameText(owner.propertyName ?? owner.name);
+      const parentKey = ts.isArrayBindingPattern(owner.parent) ? String(owner.parent.elements.indexOf(owner)) : nameText(owner.propertyName ?? owner.name);
       return bindingValues(owner, parentKey, bindings).flatMap((value) => properties(value, key, bindings) ?? []);
     }
     return properties(owner.initializer, key, bindings) ?? values(declaration.initializer, bindings);
@@ -39,6 +39,12 @@ export function createCallTargetResolver({ checker, sourceNames, consumeWork, as
     try {
       let found = false;
       const result = values(expression, bindings).flatMap((value) => {
+        if (ts.isSourceFile(value)) {
+          const symbol = checker.getSymbolAtLocation(value);
+          const exported = symbol && checker.getExportsOfModule(symbol).find((item) => item.name === key);
+          if (exported) { found = true; return declarations(exported, bindings); }
+          return [];
+        }
         if (ts.isArrayLiteralExpression(value) && value.elements[Number(key)]) { found = true; return values(value.elements[Number(key)], bindings); }
         if (!ts.isObjectLiteralExpression(value)) return [];
         for (const property of [...value.properties].reverse()) {
@@ -78,7 +84,7 @@ export function createCallTargetResolver({ checker, sourceNames, consumeWork, as
     } finally { visiting.delete(expression); }
   }
   function evaluate(expression, bindings) {
-    if (ts.isParenthesizedExpression(expression) || ts.isAsExpression(expression) || ts.isTypeAssertionExpression(expression) || ts.isNonNullExpression(expression) || ts.isSatisfiesExpression(expression) || ts.isExpressionWithTypeArguments(expression)) return values(expression.expression, bindings);
+    if (ts.isParenthesizedExpression(expression) || ts.isAsExpression(expression) || ts.isTypeAssertionExpression(expression) || ts.isNonNullExpression(expression) || ts.isSatisfiesExpression(expression) || ts.isExpressionWithTypeArguments(expression) || ts.isAwaitExpression(expression)) return values(expression.expression, bindings);
     if (ts.isIdentifier(expression)) return declarations(checker.getSymbolAtLocation(expression), bindings);
     if (expression.kind === ts.SyntaxKind.SuperKeyword) {
       let owner = expression.parent;
@@ -94,6 +100,15 @@ export function createCallTargetResolver({ checker, sourceNames, consumeWork, as
     if (ts.isConditionalExpression(expression)) return [...values(expression.whenTrue, bindings), ...values(expression.whenFalse, bindings)];
     if (ts.isBinaryExpression(expression) && [ts.SyntaxKind.QuestionQuestionToken, ts.SyntaxKind.BarBarToken].includes(expression.operatorToken.kind)) return [...values(expression.left, bindings), ...values(expression.right, bindings)];
     if (ts.isCallExpression(expression)) {
+      if (expression.expression.kind === ts.SyntaxKind.ImportKeyword && expression.arguments[0] && ts.isStringLiteralLike(expression.arguments[0])) {
+        const source = localSource(expression.arguments[0].text, expression.getSourceFile());
+        return source && sourceNames.has(source.fileName) ? [source] : [];
+      }
+      const callee = expression.expression;
+      if (ts.isPropertyAccessExpression(callee) && callee.name.text === "all" && ts.isIdentifier(callee.expression) && callee.expression.text === "Promise") {
+        const declarations = checker.getSymbolAtLocation(callee.expression)?.declarations;
+        if (declarations?.length && declarations.every((declaration) => program.isSourceFileDefaultLibrary(declaration.getSourceFile()))) return values(expression.arguments[0], bindings);
+      }
       return targets(expression.expression, false, bindings).flatMap((fn) => {
         const inner = new Map(bindings);
         for (const [index, parameter] of fn.parameters.entries()) {
