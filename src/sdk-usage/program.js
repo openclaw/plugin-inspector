@@ -40,7 +40,7 @@ export function createUsageProgram(files, targetRoot, hostCache) {
     ...(targetRoot ? { paths: publicTypePaths(targetRoot) } : {}),
   };
   const host = ts.createCompilerHost(options);
-  const resolutionCache = hostCache?.resolutionCache ?? ts.createModuleResolutionCache(process.cwd(), (name) => host.getCanonicalFileName(name), options);
+  const resolutionCache = hostCache?.resolutionCache ?? ts.createModuleResolutionCache(process.cwd(), host.getCanonicalFileName, options);
   if (hostCache) hostCache.resolutionCache = resolutionCache;
   const realpath = host.realpath?.bind(host);
   host.realpath = (name) => byPath.has(name) ? name : realpath?.(name) ?? name;
@@ -51,7 +51,12 @@ export function createUsageProgram(files, targetRoot, hostCache) {
     if (byPath.has(name)) return byPath.get(name);
     const library = path.dirname(name) === libraryDirectory && /^lib(?:\..+)?\.d\.ts$/.test(path.basename(name));
     if (!library && !hostFiles.has(name)) return undefined;
-    let source = hostCache?.sources.get(name);
+    const cached = hostCache?.sources.get(name);
+    let source;
+    if (cached) {
+      source = ts.createSourceFile(name, cached.text, languageVersion, true);
+      source.isDeclarationFile = cached.isDeclarationFile;
+    }
     if (!source && hostFiles.has(name) && /\.[cm]?tsx?$/.test(name) && !/\.d\.[cm]?ts$/.test(name)) {
       const text = host.readFile(name);
       // Declaration emit may drop reference directives without diagnostics.
@@ -71,7 +76,9 @@ export function createUsageProgram(files, targetRoot, hostCache) {
       }
     }
     source ??= readSource(name, languageVersion);
-    if (source && hostCache) hostCache.sources.set(name, source);
+    // Bound ASTs retain symbols and checker graphs from earlier plugins.
+    // Cache immutable declaration/source text, then bind fresh ASTs per program.
+    if (source && hostCache && !cached) hostCache.sources.set(name, { text: source.text, isDeclarationFile: source.isDeclarationFile });
     // Public host declarations may reference their own declaration files.
     // Plugin reference directives never authorize files outside the input set.
     if (source && hostFiles.has(name)) for (const reference of source.referencedFiles) {
@@ -96,9 +103,10 @@ export function createUsageProgram(files, targetRoot, hostCache) {
     return undefined;
   });
   host.writeFile = () => {};
-  const program = ts.createProgram(sources.map((source) => source.fileName), options, host, hostCache?.program);
+  // Share immutable host inputs, not the previous plugin's program/checker.
+  // Retaining that graph overlaps two large published artifacts in memory.
+  const program = ts.createProgram(sources.map((source) => source.fileName), options, host);
   const checker = program.getTypeChecker();
-  if (hostCache) hostCache.program = program;
   function localSource(specifier, from) {
     const resolved = host.resolveModuleNames([specifier], from.fileName)[0];
     return resolved && program.getSourceFile(resolved.resolvedFileName);
