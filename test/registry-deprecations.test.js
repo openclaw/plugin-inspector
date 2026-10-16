@@ -4,6 +4,7 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import { readOpenClawTargetSurface } from "../src/openclaw-target.js";
+import { retirementRecordsForPackedTarget } from "../src/registry-deprecations.js";
 import { inspectCompatibilityFixtureSet, inspectSourceText } from "../src/inspector.js";
 import sdkRetirements from "../src/sdk-retirements.json" with { type: "json" };
 
@@ -142,6 +143,7 @@ test("ClawHub-style packed targets use the pinned retirement inventory without r
   await mkdir(plugin);
   await writeFile(path.join(target, "package.json"), JSON.stringify({ name: "openclaw", version: "2026.10.1", exports: { "./plugin-sdk/sqlite-runtime": "./dist/sqlite.js" } }));
   await writeFile(path.join(target, "dist/index.d.ts"), "export type PluginManifest = { id: string };\n");
+  await writeFile(path.join(target, "dist/sqlite.d.ts"), "export declare function openOpenClawAgentSqliteWorkerStoreV2(): void;\n");
   await writeFile(path.join(plugin, "index.js"), 'import { executeSqliteQuerySync } from "openclaw/plugin-sdk/sqlite-runtime";');
   const report = await inspectCompatibilityFixtureSet({ rootDir, fixtures: [{ id: "packed", path: "plugin", seams: [], expect: {} }] }, { openclawPath: target, authorFacing: true });
   assert.equal(report.targetOpenClaw.compatRegistryPath, null);
@@ -152,6 +154,288 @@ test("ClawHub-style packed targets use the pinned retirement inventory without r
   assert.equal(issue?.removeAfter, "2026-12-31");
   assert.match(issue?.replacement, /openOpenClawAgentSqliteWorkerStoreV2/);
   assert.equal(report.status, "pass");
+});
+
+test("packed targets omit retirement advice when the replacement export is absent", async (t) => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "inspector-packed-missing-replacement-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const target = path.join(rootDir, "openclaw");
+  const plugin = path.join(rootDir, "plugin");
+  await mkdir(path.join(target, "dist/plugin-sdk"), { recursive: true });
+  await mkdir(plugin);
+  await writeFile(path.join(target, "package.json"), JSON.stringify({
+    name: "openclaw",
+    version: "2026.10.3",
+    exports: { "./plugin-sdk/session-store-runtime": "./dist/plugin-sdk/session-store-runtime.js" },
+  }));
+  await writeFile(path.join(target, "dist/plugin-sdk/session-store-runtime.d.ts"), [
+    "export declare function getSessionEntry(sessionKey: string): unknown;",
+    "",
+  ].join("\n"));
+  await writeFile(path.join(plugin, "index.js"), [
+    'import { getSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";',
+    "export function register(api) { api.runtime.agent.session.getSessionEntry(getSessionEntry); }",
+    "",
+  ].join("\n"));
+  const report = await inspectCompatibilityFixtureSet({
+    rootDir,
+    fixtures: [{ id: "packed", path: "plugin", seams: [], expect: {} }],
+  }, { openclawPath: target, authorFacing: true });
+  const sessionRecord = report.targetOpenClaw.compatDeprecations.find((record) => record.code === "session-store-sync-readers");
+  assert.equal(sessionRecord, undefined);
+  assert.equal(report.targetOpenClaw.compatRecords.includes("session-store-sync-readers"), true);
+  const prescribed = JSON.stringify(report.issues.concat(report.warnings, report.fixtures[0].sdkDeprecations));
+  assert.equal(prescribed.includes("getSessionEntryAsync"), false);
+  assert.equal(report.issues.some((item) => item.deprecatedApi === "openclaw/plugin-sdk/session-store-runtime.getSessionEntry"), false);
+});
+
+test("packed targets keep retirement advice when the replacement export exists", async (t) => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "inspector-packed-present-replacement-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const target = path.join(rootDir, "openclaw");
+  const plugin = path.join(rootDir, "plugin");
+  await mkdir(path.join(target, "dist/plugin-sdk"), { recursive: true });
+  await mkdir(plugin);
+  await writeFile(path.join(target, "package.json"), JSON.stringify({
+    name: "openclaw",
+    version: "2026.10.16",
+    exports: { "./plugin-sdk/session-store-runtime": "./dist/plugin-sdk/session-store-runtime.js" },
+  }));
+  await writeFile(path.join(target, "dist/plugin-sdk/session-store-runtime.d.ts"), [
+    "export declare function getSessionEntry(sessionKey: string): unknown;",
+    "export declare function getSessionEntryAsync(sessionKey: string): Promise<unknown>;",
+    "export declare function getConversationSessionAsync(sessionKey: string): Promise<unknown>;",
+    "export declare function readAmbientTranscriptWatermarkAsync(sessionKey: string): Promise<unknown>;",
+    "export declare function loadTranscriptEvents(sessionKey: string): unknown;",
+    "",
+  ].join("\n"));
+  await writeFile(path.join(plugin, "index.js"), 'import { getSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";\n');
+  const report = await inspectCompatibilityFixtureSet({
+    rootDir,
+    fixtures: [{ id: "packed", path: "plugin", seams: [], expect: {} }],
+  }, { openclawPath: target, authorFacing: true });
+  const issue = report.issues.find((item) => item.deprecatedApi === "openclaw/plugin-sdk/session-store-runtime.getSessionEntry");
+  assert.equal(issue?.code, "sdk-deprecated-api");
+  assert.match(issue?.replacement ?? "", /getSessionEntryAsync/);
+  assert.equal(issue?.removeAfter, "2026-12-31");
+});
+
+test("packed targets omit session advice until every named replacement is exported", async (t) => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "inspector-packed-partial-replacement-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const target = path.join(rootDir, "openclaw");
+  const plugin = path.join(rootDir, "plugin");
+  await mkdir(path.join(target, "dist/plugin-sdk"), { recursive: true });
+  await mkdir(plugin);
+  await writeFile(path.join(target, "package.json"), JSON.stringify({
+    name: "openclaw",
+    version: "2026.10.16",
+    exports: {
+      ".": "./dist/index.js",
+      "./plugin-sdk/session-store-runtime": "./dist/plugin-sdk/session-store-runtime.js",
+    },
+  }));
+  await writeFile(path.join(target, "dist/plugin-sdk/session-store-runtime.d.ts"), [
+    "export declare function getSessionEntryAsync(sessionKey: string): Promise<unknown>;",
+    "export declare function getConversationSessionAsync(sessionKey: string): Promise<unknown>;",
+    "export declare function readAmbientTranscriptWatermarkAsync(sessionKey: string): Promise<unknown>;",
+    "/* loadTranscriptEvents is mentioned only in this comment */",
+    "",
+  ].join("\n"));
+  await writeFile(path.join(target, "dist/index.d.ts"), "export declare function loadTranscriptEvents(): unknown;\n");
+  await writeFile(path.join(plugin, "index.js"), 'import { getSessionEntry } from "openclaw/plugin-sdk/session-store-runtime";\nvoid getSessionEntry;\n');
+  const report = await inspectCompatibilityFixtureSet({
+    rootDir,
+    fixtures: [{ id: "packed", path: "plugin", seams: [], expect: {} }],
+  }, { openclawPath: target, authorFacing: true });
+  const prescribed = JSON.stringify(report.issues.concat(report.warnings, report.fixtures[0].sdkDeprecations));
+  assert.equal(prescribed.includes("loadTranscriptEvents"), false);
+  assert.equal(report.issues.some((item) => item.code === "sdk-deprecated-api"), false);
+});
+
+test("reachable public type members satisfy a runtime replacement", () => {
+  const packageJson = { exports: { "./plugin-sdk": "./dist/plugin-sdk/index.js" } };
+  const declarations = [
+    {
+      filePath: "/openclaw/dist/plugin-sdk/index.d.ts",
+      source: 'import type { PluginRuntimeCore } from "./runtime-core.js";\nexport interface PluginRuntime extends PluginRuntimeCore {}\n',
+    },
+    {
+      filePath: "/openclaw/dist/plugin-sdk/runtime-core.d.ts",
+      source: [
+        "export interface PluginRuntimeCore {",
+        "  buildSystemPromptHintAsync(): string;",
+        "  openKeyedStoreV2: <T>(value: T) => T;",
+        "}",
+        "export declare function loadTranscriptEvents(): unknown;",
+        "",
+      ].join("\n"),
+    },
+  ];
+  const kept = retirementRecordsForPackedTarget([
+    { code: "tts", status: "deprecated", replacementExports: ["buildSystemPromptHintAsync"] },
+    { code: "state", status: "deprecated", replacementExports: ["openKeyedStoreV2"] },
+    { code: "session", status: "deprecated", replacementExports: ["loadTranscriptEvents"] },
+  ], { packageRoot: "/openclaw", packageJson, declarations });
+  assert.deepEqual(kept.map((record) => record.code), ["tts", "state"]);
+});
+
+test("an intersection runtime type keeps reachable members and drops sibling exports", () => {
+  const kept = retirementRecordsForPackedTarget([
+    { code: "tts", status: "deprecated", replacementExports: ["buildSystemPromptHintAsync"] },
+    { code: "web", status: "deprecated", replacementExports: ["listProvidersAsync"] },
+    { code: "session", status: "deprecated", replacementExports: ["loadTranscriptEvents"] },
+  ], {
+    packageRoot: "/openclaw",
+    packageJson: { exports: { "./plugin-sdk": "./dist/plugin-sdk/index.js" } },
+    declarations: [
+      {
+        filePath: "/openclaw/dist/plugin-sdk/index.d.ts",
+        source: [
+          'import type { PluginRuntimeCore } from "./core.js";',
+          "export type PluginRuntime = PluginRuntimeCore & {",
+          "  webSearch: { listProvidersAsync(): Promise<string>; };",
+          "};",
+          "",
+        ].join("\n"),
+      },
+      {
+        filePath: "/openclaw/dist/plugin-sdk/core.d.ts",
+        source: [
+          "export interface PluginRuntimeCore {",
+          "  buildSystemPromptHintAsync(): string;",
+          "}",
+          "export declare function loadTranscriptEvents(): unknown;",
+          "",
+        ].join("\n"),
+      },
+    ],
+  });
+  assert.deepEqual(kept.map((record) => record.code), ["tts", "web"]);
+});
+
+test("an export alias resolves to the declared runtime type", () => {
+  const kept = retirementRecordsForPackedTarget([
+    { code: "web", status: "deprecated", replacementExports: ["listProvidersAsync"] },
+    { code: "session", status: "deprecated", replacementExports: ["loadTranscriptEvents"] },
+  ], {
+    packageRoot: "/openclaw",
+    packageJson: { exports: { "./plugin-sdk": "./dist/plugin-sdk/index.js" } },
+    declarations: [
+      {
+        filePath: "/openclaw/dist/plugin-sdk/index.d.ts",
+        source: 'import { ma as PluginRuntime } from "./runtime.js";\nexport { type PluginRuntime };\n',
+      },
+      {
+        filePath: "/openclaw/dist/plugin-sdk/runtime.d.ts",
+        source: [
+          "export interface PluginRuntime {",
+          "  webSearch: { listProvidersAsync(): Promise<string>; };",
+          "}",
+          "export { PluginRuntime as ma };",
+          "export declare function loadTranscriptEvents(): unknown;",
+          "",
+        ].join("\n"),
+      },
+    ],
+  });
+  assert.deepEqual(kept.map((record) => record.code), ["web"]);
+  const binding = sdkRetirements.records.find((item) => item.code === "conversation-binding-sync-persistence");
+  assert.equal(binding.replacementExports.includes("createIMessageConversationBindingManagerV2"), false);
+});
+
+test("a local export list publishes the imported type, not its sibling exports", () => {
+  const kept = retirementRecordsForPackedTarget([
+    { code: "web", status: "deprecated", replacementExports: ["listProvidersAsync"] },
+    { code: "session", status: "deprecated", replacementExports: ["loadTranscriptEvents"] },
+  ], {
+    packageRoot: "/openclaw",
+    packageJson: { exports: { "./plugin-sdk": "./dist/plugin-sdk/index.js" } },
+    declarations: [
+      {
+        filePath: "/openclaw/dist/plugin-sdk/index.d.ts",
+        source: 'import type { PluginRuntime } from "./runtime.js";\nexport { type PluginRuntime };\n',
+      },
+      {
+        filePath: "/openclaw/dist/plugin-sdk/runtime.d.ts",
+        source: [
+          "export interface PluginRuntime {",
+          "  webSearch: {",
+          "    listProviders(): string;",
+          "    listProvidersAsync(): Promise<string>;",
+          "  };",
+          "}",
+          "export declare function loadTranscriptEvents(): unknown;",
+          "",
+        ].join("\n"),
+      },
+    ],
+  });
+  assert.deepEqual(kept.map((record) => record.code), ["web"]);
+});
+
+test("watched-session advice does not require the caller assertCurrent callback", () => {
+  const record = sdkRetirements.records.find((item) => item.code === "watched-sessions-sync-harness-context");
+  assert.equal(record.replacementExports.includes("assertCurrent"), false);
+  assert.equal(
+    sdkRetirements.records.find((item) => item.code === "tts-preferences-sync-resolution").replacementExports.includes("prepareTtsPreferences"),
+    false,
+  );
+  assert.equal(
+    sdkRetirements.records.find((item) => item.code === "auth-profile-sync-operations").replacementExports.includes("resolvePathForDisplayAsync"),
+    false,
+  );
+  assert.equal(
+    sdkRetirements.records.find((item) => item.code === "approval-routing-sync-preparation").replacementExports.includes("createChannelExecApprovalProfileAsync"),
+    true,
+  );
+});
+
+test("transcript write replacements do not require the caller prepareMessage callback", () => {
+  const record = sdkRetirements.records.find((item) => item.code === "transcript-lock-sync-message-preparation");
+  assert.equal(record.replacementExports.includes("prepareMessage"), false);
+  const kept = retirementRecordsForPackedTarget([record], {
+    packageRoot: "/openclaw",
+    packageJson: { exports: { "./plugin-sdk/transcript": "./dist/plugin-sdk/transcript.js" } },
+    declarations: [{
+      filePath: "/openclaw/dist/plugin-sdk/transcript.d.ts",
+      source: [
+        "export declare function withSessionTranscriptWrite(): unknown;",
+        "export declare function withCodexSessionTranscriptMirrorWrite(): unknown;",
+        "",
+      ].join("\n"),
+    }],
+  });
+  assert.equal(kept.length, 1);
+});
+
+test("session retirement lists every replacement the guidance names", () => {
+  const record = sdkRetirements.records.find((item) => item.code === "session-store-sync-readers");
+  assert.deepEqual(record.replacementExports, [
+    "getSessionEntryAsync",
+    "getConversationSessionAsync",
+    "readAmbientTranscriptWatermarkAsync",
+    "loadTranscriptEvents",
+  ]);
+  const available = new Set(record.replacementExports);
+  const kept = retirementRecordsForPackedTarget([record], {
+    declarations: [{
+      filePath: "/openclaw/dist/plugin-sdk/session-store-runtime.d.ts",
+      source: [...available].map((name) => `export declare function ${name}(): unknown;`).join("\n"),
+    }],
+    packageJson: { exports: { "./plugin-sdk/session-store-runtime": "./dist/plugin-sdk/session-store-runtime.js" } },
+    packageRoot: "/openclaw",
+  });
+  assert.equal(kept.length, 1);
+  const commented = retirementRecordsForPackedTarget([record], {
+    declarations: [{
+      filePath: "/openclaw/dist/plugin-sdk/session-store-runtime.d.ts",
+      source: `export declare function getSessionEntryAsync(): unknown;\n/* ${[...available].slice(1).join(" ")} */\n`,
+    }],
+    packageJson: { exports: { "./plugin-sdk/session-store-runtime": "./dist/plugin-sdk/session-store-runtime.js" } },
+    packageRoot: "/openclaw",
+  });
+  assert.deepEqual(commented, []);
 });
 
 test("packed inventory matches space-separated member names", () => {

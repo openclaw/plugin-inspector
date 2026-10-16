@@ -3,6 +3,7 @@ import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import { resolveJailedPluginPath } from "./path-utils.js";
 import { readCompatRegistryRecords } from "./compat-registry.js";
+import { retirementRecordsForPackedTarget } from "./registry-deprecations.js";
 import sdkRetirements from "./sdk-retirements.json" with { type: "json" };
 
 export const defaultOpenClawCheckoutPaths = ["./openclaw", "../openclaw"];
@@ -484,7 +485,11 @@ async function readPackedOpenClawTargetSurface({ rootDir, requestedPaths, reques
     compatRecordCount: sdkRetirements.records.length,
     compatRecords: sdkRetirements.records.map((record) => record.code),
     compatRecordStatuses: Object.fromEntries(sdkRetirements.records.map((record) => [record.code, record.status])),
-    compatDeprecations: sdkRetirements.records,
+    compatDeprecations: retirementRecordsForPackedTarget(sdkRetirements.records, {
+      declarations,
+      packageJson,
+      packageRoot: resolvedPath,
+    }),
     compatDeprecationsSource: sdkRetirements.source,
     compatRecordTests: {},
     compatRecordMissingTests: {},
