@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.4.2 - 2026-10-16
+
+- Reduce SDK inventory memory use for OpenClaw source targets by using diagnostic-checked host declarations and reusing host analysis within a fixture suite. Keep source intact when exported types require inference, preserve separate plugin inventories, and refresh host analysis for each new suite.
+
 ## 0.4.1 - 2026-10-16
 
 - Add a versioned static SDK usage inventory to serialized plugin reports, including supported and deprecated references, runtime/type classifications, evidence, unresolved references and coverage. Associate target registry retirement notices with inventory entries while preserving existing compatibility findings and author-facing filtering. Validate extraction against independently audited core-plugin source fixtures.
