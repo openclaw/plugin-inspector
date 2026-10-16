@@ -1,0 +1,85 @@
+import ts from "typescript";
+import { nameText } from "./syntax.js";
+
+/** Index argument flow through actual local bodies without instantiating generic signatures. */
+export function createCallTargetResolver({ checker, sourceNames, consumeWork }) {
+  const visiting = new Set();
+  const constructing = new Set();
+  function declarations(symbol, bindings) {
+    if (symbol?.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol);
+    return (symbol?.declarations ?? []).flatMap((declaration) => {
+      if (!sourceNames.has(declaration.getSourceFile().fileName)) return [];
+      if (bindings.has(declaration)) return values(bindings.get(declaration), bindings);
+      if (ts.isVariableDeclaration(declaration) || ts.isPropertyAssignment(declaration) || ts.isPropertyDeclaration(declaration)) return values(declaration.initializer, bindings);
+      if (ts.isBindingElement(declaration)) {
+        const owner = declaration.parent.parent;
+        const key = ts.isArrayBindingPattern(declaration.parent) ? String(declaration.parent.elements.indexOf(declaration)) : nameText(declaration.propertyName ?? declaration.name);
+        return properties(owner.initializer, key, bindings);
+      }
+      if (ts.isShorthandPropertyAssignment(declaration)) return declarations(checker.getShorthandAssignmentValueSymbol(declaration), bindings);
+      return [declaration];
+    });
+  }
+  function properties(expression, key, bindings) {
+    return values(expression, bindings).flatMap((value) => {
+      if (ts.isArrayLiteralExpression(value)) return values(value.elements[Number(key)], bindings);
+      if (!ts.isObjectLiteralExpression(value)) return [];
+      for (const property of [...value.properties].reverse()) {
+        if (ts.isSpreadAssignment(property)) {
+          const found = properties(property.expression, key, bindings);
+          if (found.length) return found;
+        } else if (nameText(property.name) === key) {
+          return ts.isShorthandPropertyAssignment(property)
+            ? declarations(checker.getShorthandAssignmentValueSymbol(property), bindings)
+            : values(property.initializer ?? property, bindings);
+        }
+      }
+      return [];
+    });
+  }
+  function values(expression, bindings) {
+    if (!expression || visiting.has(expression) || !consumeWork(expression)) return [];
+    visiting.add(expression);
+    try {
+      if (ts.isParenthesizedExpression(expression) || ts.isAsExpression(expression) || ts.isTypeAssertionExpression(expression) || ts.isNonNullExpression(expression) || ts.isSatisfiesExpression(expression)) return values(expression.expression, bindings);
+      if (ts.isIdentifier(expression)) return declarations(checker.getSymbolAtLocation(expression), bindings);
+      if (ts.isPropertyAccessExpression(expression) || ts.isElementAccessExpression(expression)) {
+        const key = ts.isPropertyAccessExpression(expression) ? expression.name.text : expression.argumentExpression && ts.isStringLiteralLike(expression.argumentExpression) ? expression.argumentExpression.text : undefined;
+        const direct = properties(expression.expression, key, bindings);
+        return direct.length ? direct : declarations(checker.getSymbolAtLocation(expression), bindings);
+      }
+      if (ts.isConditionalExpression(expression)) return [...values(expression.whenTrue, bindings), ...values(expression.whenFalse, bindings)];
+      if (ts.isCallExpression(expression)) {
+        return targets(expression.expression, false, bindings).flatMap((fn) => {
+          const inner = new Map(bindings);
+          for (const [index, parameter] of fn.parameters.entries()) if (expression.arguments[index]) inner.set(parameter, expression.arguments[index]);
+          const results = [];
+          function returns(node) {
+            if (ts.isReturnStatement(node)) results.push(...values(node.expression, inner));
+            else if (!ts.isFunctionLike(node)) ts.forEachChild(node, returns);
+          }
+          if (ts.isBlock(fn.body)) returns(fn.body);
+          else results.push(...values(fn.body, inner));
+          return results;
+        });
+      }
+      return [expression];
+    } finally { visiting.delete(expression); }
+  }
+  function targets(expression, construct, bindings = new Map()) {
+    return [...new Set(values(expression, bindings).flatMap((value) => {
+      if (construct && ts.isClassLike(value)) {
+        if (constructing.has(value)) return [];
+        constructing.add(value);
+        try {
+          const constructors = value.members.filter((member) => ts.isConstructorDeclaration(member) && member.body);
+          if (constructors.length) return constructors;
+          const base = value.heritageClauses?.find((clause) => clause.token === ts.SyntaxKind.ExtendsKeyword)?.types[0];
+          return base ? targets(base.expression, true, bindings) : [];
+        } finally { constructing.delete(value); }
+      }
+      return ts.isFunctionLike(value) && value.body ? [value] : [];
+    }))];
+  }
+  return (node) => targets(node.expression, ts.isNewExpression(node));
+}

@@ -2,6 +2,7 @@ import ts from "typescript";
 import { isSdkSpecifier, nameText, stringExpressionPrefix, walk } from "./syntax.js";
 import { createTypeProvenance } from "./types.js";
 import { capabilityContextMember } from "./host-context.js";
+import { createCallTargetResolver } from "./call-targets.js";
 
 const sdkExport = (module, name) => ({ kind: "export", module, name });
 
@@ -35,27 +36,11 @@ export function createProvenance({ checker, program, localSource, sources, targe
     scope = next;
     try { return operation(); } finally { scope = previous; }
   }
-  function callDeclaration(node) {
-    if (!consumeWork(node.expression)) return undefined;
-    // Argument flow follows the executed implementation, even when a callable
-    // annotation or overload describes a different public signature.
-    let symbol = checker.getSymbolAtLocation(node.expression);
-    if (symbol?.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol);
-    const implementations = [];
-    for (const declaration of symbol?.declarations ?? []) {
-      if ((ts.isFunctionDeclaration(declaration) || ts.isMethodDeclaration(declaration)) && declaration.body) implementations.push(declaration);
-      if (ts.isVariableDeclaration(declaration) && declaration.initializer && (ts.isArrowFunction(declaration.initializer) || ts.isFunctionExpression(declaration.initializer))) implementations.push(declaration.initializer);
-      if (ts.isNewExpression(node) && ts.isClassLike(declaration)) implementations.push(...declaration.members.filter((member) => ts.isConstructorDeclaration(member) && member.body));
-    }
-    if (implementations.length === 1) return implementations[0];
-    if (symbol?.declarations?.length && symbol.declarations.every((declaration) => !sourceNames.has(declaration.getSourceFile().fileName))) return undefined;
-    return checker.getResolvedSignature(node)?.declaration;
-  }
+  const callDeclarations = createCallTargetResolver({ checker, sourceNames, consumeWork });
   for (const source of sources) walk(source, (node) => {
     if (workLimitReached) return;
     if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
-      const declaration = callDeclaration(node);
-      if (declaration && sourceNames.has(declaration.getSourceFile().fileName)) {
+      for (const declaration of callDeclarations(node)) {
         callsByFunction.set(declaration, [...(callsByFunction.get(declaration) ?? []), node]);
         for (const [index, parameter] of declaration.parameters.entries()) {
           if (parameter.dotDotDotToken) {
