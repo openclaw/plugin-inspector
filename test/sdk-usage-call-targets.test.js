@@ -30,6 +30,9 @@ const cases = [
   ["immediately invoked arrow", "", (argument) => `((value) => { value.registerTool({}); })(${argument});`],
   ["immediately invoked function", "", (argument) => `(function (value) { value.registerTool({}); })(${argument});`],
   ["object property arrow", "const helpers = { use: (value) => { value.registerTool({}); } };", (argument) => `helpers.use(${argument});`],
+  ["numeric array element", "const helpers = [(value) => { value.registerTool({}); }];", (argument) => `helpers[0](${argument});`],
+  ["numeric object property", "const helpers = { 0: (value) => { value.registerTool({}); } };", (argument) => `helpers[0](${argument});`],
+  ["quoted numeric array element", "const helpers = [(value) => { value.registerTool({}); }];", (argument) => `helpers["0"](${argument});`],
   ["object getter returning a function", "const helpers = { get use() { return (value) => { value.registerTool({}); }; } };", (argument) => `helpers.use(${argument});`, true],
   ["class getter returning a function", "class Helpers { get use() { return (value) => { value.registerTool({}); }; } } const helpers = new Helpers();", (argument) => `helpers.use(${argument});`, true],
   ["static class getter returning a function", "class Helpers { static get use() { return (value) => { value.registerTool({}); }; } }", (argument) => `Helpers.use(${argument});`, true],
@@ -63,6 +66,15 @@ for (const [name, helper, invoke, getterValueUnknown = false] of cases) {
     assert.deepEqual(unrelated.entries.filter(({ kind }) => kind === "api-member"), []);
   });
 }
+
+test("noncanonical array property strings do not select numeric elements", async (t) => {
+  for (const key of ["01", "1e0", ""]) {
+    const sdk = await inspectCall(t,
+      "const helpers = [value => value.registerTool({}), value => value.registerTool({})];",
+      (argument) => `helpers[${JSON.stringify(key)}](${argument});`, "api");
+    assert.deepEqual(sdk.entries.filter(({ kind }) => kind === "api-member"), [], key);
+  }
+});
 
 for (const [name, helper] of [
   ["object setter", "const helpers = { set use(value) { value.registerTool({}); } };"],

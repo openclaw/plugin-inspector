@@ -47,7 +47,7 @@ export function createCallTargetResolver({ checker, program, localSource, source
           if (exported) { found = true; return declarations(exported, bindings); }
           return [];
         }
-        if (ts.isArrayLiteralExpression(value) && value.elements[Number(key)]) { found = true; return values(value.elements[Number(key)], bindings); }
+        if (ts.isArrayLiteralExpression(value) && String(Number(key)) === key && value.elements[Number(key)]) { found = true; return values(value.elements[Number(key)], bindings); }
         if (!ts.isObjectLiteralExpression(value)) return [];
         let setterOnly = false;
         for (const property of [...value.properties].reverse()) {
@@ -101,7 +101,7 @@ export function createCallTargetResolver({ checker, program, localSource, source
       return base ? values(base.expression, bindings) : [];
     }
     if (ts.isPropertyAccessExpression(expression) || ts.isElementAccessExpression(expression)) {
-      const key = ts.isPropertyAccessExpression(expression) ? expression.name.text : expression.argumentExpression && ts.isStringLiteralLike(expression.argumentExpression) ? expression.argumentExpression.text : undefined;
+      const key = ts.isPropertyAccessExpression(expression) ? expression.name.text : expression.argumentExpression && (ts.isStringLiteralLike(expression.argumentExpression) || ts.isNumericLiteral(expression.argumentExpression)) ? expression.argumentExpression.text : undefined;
       const direct = properties(expression.expression, key, bindings);
       return direct ?? declarations(checker.getSymbolAtLocation(expression), bindings);
     }
