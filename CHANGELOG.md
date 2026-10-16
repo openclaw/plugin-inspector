@@ -2,7 +2,9 @@
 
 ## Unreleased
 
-- Add a versioned static SDK usage inventory to serialized plugin reports, including supported and deprecated references, runtime/type classifications, evidence, unresolved references and coverage. Preserve existing compatibility findings and author-facing filtering. Validate extraction against independently audited core-plugin source fixtures.
+## 0.4.1 - 2026-10-16
+
+- Add a versioned static SDK usage inventory to serialized plugin reports, including supported and deprecated references, runtime/type classifications, evidence, unresolved references and coverage. Associate target registry retirement notices with inventory entries while preserving existing compatibility findings and author-facing filtering. Validate extraction against independently audited core-plugin source fixtures.
 
 ## 0.4.0 - 2026-10-14
 
