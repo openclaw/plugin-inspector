@@ -9,8 +9,19 @@ export function pluginEntrypointSources({ root, files, sources, inputKind, repor
   const source = ts.createSourceFile(metadata.path, metadata.text, ts.ScriptTarget.Latest, true, ts.ScriptKind.JSON);
   const unresolved = (reason) => report.unknown(source, reason);
   try { pkg = JSON.parse(metadata.text); } catch { unresolved("Package metadata could not be parsed"); return []; }
-  const entries = pkg.openclaw?.extensions;
-  if (!Array.isArray(entries)) return [];
+  // Published packages may omit their TypeScript source entries. The runtime
+  // peer is authoritative when declared; a missing peer must remain unresolved.
+  const field = inputKind === "artifact" && pkg.openclaw?.runtimeExtensions !== undefined
+    ? "runtimeExtensions" : "extensions";
+  const entries = pkg.openclaw?.[field];
+  if (entries === undefined) return [];
+  if (!Array.isArray(entries)) {
+    unresolved(`Declared plugin ${field} must be an array`);
+    return [];
+  }
+  if (field === "runtimeExtensions" && Array.isArray(pkg.openclaw.extensions) && entries.length !== pkg.openclaw.extensions.length) {
+    unresolved("Declared runtime entrypoints do not match the source entrypoint count");
+  }
   const byPath = new Map(sources.map((source) => [source.fileName, source]));
   const found = new Set();
   for (const entry of entries) {
