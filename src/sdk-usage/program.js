@@ -54,7 +54,9 @@ export function createUsageProgram(files, targetRoot, hostCache) {
     let source = hostCache?.sources.get(name);
     if (!source && hostFiles.has(name) && /\.[cm]?tsx?$/.test(name) && !/\.d\.[cm]?ts$/.test(name)) {
       const text = host.readFile(name);
-      if (text !== undefined) {
+      // Declaration emit may drop reference directives without diagnostics.
+      // Retain those sources so referenced host types keep their authorization.
+      if (text !== undefined && !/\/\/\/\s*<reference\b/.test(text)) {
         // Host implementation bodies can pull the entire core into the type
         // graph. Keep its declaration view only when TypeScript can preserve
         // exported types without inference; otherwise retain the source intact.

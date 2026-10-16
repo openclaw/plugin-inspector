@@ -93,3 +93,30 @@ installWithHost({ bootstrap(api) { api.registerTool({}); } });
   });
   assert.ok(report.fixtures[0].sdkUsage.entries.some((entry) => entry.key === "api-member:api.registerTool"));
 });
+
+for (const prefix of ["", "/* license */ ", "/* license\n */ "]) {
+test(`host reference directives retain SDK types after ${JSON.stringify(prefix)}`, async (t) => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-reference-host-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const targetRoot = path.join(directory, "host");
+  const sdkRoot = path.join(targetRoot, "src/plugin-sdk");
+  const plugin = path.join(directory, "plugins/example");
+  await mkdir(sdkRoot, { recursive: true });
+  await mkdir(plugin, { recursive: true });
+  await writeFile(path.join(sdkRoot, "example.ts"), `
+${prefix}/// <reference path="./types.d.ts" />
+export function installWithHost(options: { bootstrap(api: OpenClawPluginApi): void }): void {}
+`);
+  await writeFile(path.join(sdkRoot, "types.d.ts"), "interface OpenClawPluginApi { registerTool(tool: unknown): void; }");
+  await writeFile(path.join(plugin, "package.json"), JSON.stringify({ name: "example", version: "1.0.0" }));
+  await writeFile(path.join(plugin, "index.ts"), `
+import { installWithHost } from "openclaw/plugin-sdk/example";
+installWithHost({ bootstrap(api) { api.registerTool({}); } });
+`);
+  const report = await fixtureSuites.inspect({
+    config: { version: 1, submoduleRoot: "plugins", rootDir: directory, fixtures: [{ id: "example", path: "plugins/example" }] },
+    openclawPath: false, sdkUsageTargetPath: targetRoot,
+  });
+  assert.ok(report.fixtures[0].sdkUsage.entries.some((entry) => entry.key === "api-member:api.registerTool"));
+});
+}
