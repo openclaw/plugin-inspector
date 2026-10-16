@@ -7,6 +7,7 @@ export function createCallTargetResolver({ checker, sourceNames, consumeWork, as
   const constructing = new Set();
   const selecting = new Map();
   const bindingCaches = new WeakMap();
+  let cycleGeneration = 0;
   function declarations(symbol, bindings) {
     if (symbol?.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol);
     return [...(symbol?.declarations ?? []).flatMap((declaration) => {
@@ -32,7 +33,7 @@ export function createCallTargetResolver({ checker, sourceNames, consumeWork, as
   function properties(expression, key, bindings) {
     if (!expression || key === undefined) return undefined;
     const keys = selecting.get(expression) ?? new Set();
-    if (keys.has(key)) return [];
+    if (keys.has(key)) { cycleGeneration++; return []; }
     selecting.set(expression, keys);
     keys.add(key);
     try {
@@ -62,14 +63,17 @@ export function createCallTargetResolver({ checker, sourceNames, consumeWork, as
     }
   }
   function values(expression, bindings) {
-    if (!expression || visiting.has(expression) || !consumeWork(expression)) return [];
+    if (!expression || !consumeWork(expression)) return [];
+    if (visiting.has(expression)) { cycleGeneration++; return []; }
     let cache = bindingCaches.get(bindings);
     if (!cache) { cache = new WeakMap(); bindingCaches.set(bindings, cache); }
     if (cache.has(expression)) return cache.get(expression);
     visiting.add(expression);
     try {
+      const generation = cycleGeneration;
       const result = [...new Set(evaluate(expression, bindings))];
-      cache.set(expression, result);
+      // A cycle cut depends on the current traversal, not only these bindings.
+      if (generation === cycleGeneration) cache.set(expression, result);
       return result;
     } finally { visiting.delete(expression); }
   }
@@ -111,7 +115,7 @@ export function createCallTargetResolver({ checker, sourceNames, consumeWork, as
   function targets(expression, construct, bindings = new Map()) {
     return [...new Set(values(expression, bindings).flatMap((value) => {
       if (construct && ts.isClassLike(value)) {
-        if (constructing.has(value)) return [];
+        if (constructing.has(value)) { cycleGeneration++; return []; }
         constructing.add(value);
         try {
           const constructors = value.members.filter((member) => ts.isConstructorDeclaration(member) && member.body);
