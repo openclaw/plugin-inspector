@@ -4,7 +4,7 @@
 
 ## 0.4.3 - 2026-10-16
 
-- Resolve declared SDK entrypoints on Windows by normalizing TypeScript source filenames to native paths. Preserve runtime ownership and inventory completeness for published and source plugins, with real Windows report checks in CI.
+- Normalize paths at SDK entrypoint and host-declaration reference boundaries on Windows. Preserve runtime ownership, referenced host types, and inventory completeness for published and source plugins, with real Windows report checks in CI.
 
 ## 0.4.2 - 2026-10-16
 

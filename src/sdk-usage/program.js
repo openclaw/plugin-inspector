@@ -84,7 +84,8 @@ export function createUsageProgram(files, targetRoot, hostCache) {
     // Plugin reference directives never authorize files outside the input set.
     if (source && hostFiles.has(name)) for (const reference of source.referencedFiles) {
       const referenced = path.resolve(path.dirname(name), reference.fileName);
-      if (insideTarget(referenced)) hostFiles.add(referenced);
+      // Compiler-host requests use TypeScript's forward-slash filenames.
+      if (insideTarget(referenced)) hostFiles.add(referenced.split(path.sep).join("/"));
     }
     return source;
   };

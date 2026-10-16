@@ -52,7 +52,8 @@ installWithHost({ bootstrap(api) { api.${method}({}); } });
   const originalRead = ts.sys.readFile;
   const reads = new Map();
   ts.sys.readFile = (file, ...args) => {
-    if (file.startsWith(targetRoot)) reads.set(file, (reads.get(file) ?? 0) + 1);
+    const resolved = path.resolve(file);
+    if (resolved.startsWith(targetRoot)) reads.set(resolved, (reads.get(resolved) ?? 0) + 1);
     return originalRead(file, ...args);
   };
   t.after(() => { ts.sys.readFile = originalRead; });

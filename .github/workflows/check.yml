@@ -25,8 +25,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Check source and published SDK entrypoints
-        run: node --test test/sdk-usage-runtime-entrypoints.test.js
+      - name: Check SDK entrypoints and referenced host types
+        run: node --test test/sdk-usage-runtime-entrypoints.test.js test/sdk-usage-host.test.js
 
   check:
     name: Node 22
