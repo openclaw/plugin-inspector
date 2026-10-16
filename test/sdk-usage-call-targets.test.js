@@ -69,3 +69,18 @@ const helpers = { use, ...{ use: external } };`;
   assert.deepEqual(unrelated.unknowns, []);
   assert.deepEqual(unrelated.entries.filter(({ kind }) => kind === "api-member"), []);
 });
+
+test("cyclic callable aliases retain later executable alternatives", async (t) => {
+  const helper = `function use(value) { value.registerTool({}); }
+let first, second;
+first = second || use;
+second = first;`;
+  const invoke = (argument) => `(first.notCallable ?? second)(${argument});`;
+  const sdk = await inspectCall(t, helper, invoke, "api");
+  assert.deepEqual(sdk.entries.filter(({ kind }) => kind === "api-member").map(({ key }) => key), ["api-member:api.registerTool"]);
+
+  const unrelated = await inspectCall(t, helper, invoke, "{}");
+  assert.equal(unrelated.status, "complete");
+  assert.deepEqual(unrelated.unknowns, []);
+  assert.deepEqual(unrelated.entries.filter(({ kind }) => kind === "api-member"), []);
+});
