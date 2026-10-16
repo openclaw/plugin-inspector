@@ -2,7 +2,7 @@ import ts from "typescript";
 import { nameText } from "./syntax.js";
 
 /** Index argument flow through actual local bodies without instantiating generic signatures. */
-export function createCallTargetResolver({ checker, program, localSource, sourceNames, consumeWork, assignments, onUnresolvedCall, onDeferredParameterCall, parameterArguments }) {
+export function createCallTargetResolver({ checker, program, localSource, sourceNames, consumeWork, assignments, overwrittenNativeMembers, onUnresolvedCall, onDeferredParameterCall, parameterArguments }) {
   const visiting = new Set();
   const constructing = new Set();
   const expandingArrays = new Set();
@@ -24,9 +24,13 @@ export function createCallTargetResolver({ checker, program, localSource, source
           onDeferredParameterCall(currentCall);
           return [];
         }
-        const actual = parameterArguments(declaration).flatMap((argument) => values(argument, bindings));
-        if (!actual.length) unresolvedGeneration++;
-        return actual;
+        const choices = parameterArguments(declaration).map((argument) => [...new Set(values(argument, bindings))]);
+        const first = choices[0] ?? [];
+        if (!first.length || choices.some((choice) => choice.length !== first.length || choice.some((value) => !first.includes(value)))) {
+          unresolvedGeneration++;
+          return [];
+        }
+        return first;
       }
       if (ts.isVariableDeclaration(declaration) || ts.isPropertyAssignment(declaration) || ts.isPropertyDeclaration(declaration)) return values(declaration.initializer, bindings);
       if (ts.isBindingElement(declaration)) {
@@ -36,7 +40,7 @@ export function createCallTargetResolver({ checker, program, localSource, source
       if (ts.isShorthandPropertyAssignment(declaration)) return declarations(checker.getShorthandAssignmentValueSymbol(declaration), bindings);
       if (ts.isGetAccessorDeclaration(declaration) || ts.isSetAccessorDeclaration(declaration)) return values(declaration, bindings);
       return [declaration];
-    }), ...(assignments.get(symbol) ?? []).filter((expression) => !visiting.has(expression.parent)).flatMap((expression) => values(expression, bindings))];
+    }), ...(assignments.get(symbol) ?? []).filter((expression) => !visiting.has(expression.parent)).flatMap((expression) => values(ts.isBinaryExpression(expression.parent) && [ts.SyntaxKind.QuestionQuestionEqualsToken, ts.SyntaxKind.BarBarEqualsToken].includes(expression.parent.operatorToken.kind) ? expression.parent : expression, bindings))];
   }
   function bindingValues(declaration, key, bindings) {
     const owner = declaration.parent.parent;
@@ -147,7 +151,10 @@ export function createCallTargetResolver({ checker, program, localSource, source
     if (ts.isGetAccessorDeclaration(expression)) return expression.body ? returnedValues(expression, bindings) : [];
     if (ts.isSetAccessorDeclaration(expression)) return [];
     if (ts.isParenthesizedExpression(expression) || ts.isAsExpression(expression) || ts.isTypeAssertionExpression(expression) || ts.isNonNullExpression(expression) || ts.isSatisfiesExpression(expression) || ts.isExpressionWithTypeArguments(expression) || ts.isAwaitExpression(expression)) return values(expression.expression, bindings);
-    if (ts.isIdentifier(expression)) return declarations(checker.getSymbolAtLocation(expression), bindings);
+    if (ts.isIdentifier(expression)) {
+      const resolved = declarations(checker.getSymbolAtLocation(expression), bindings);
+      return resolved.length || !undefinedValue(expression) ? resolved : [expression];
+    }
     if (expression.kind === ts.SyntaxKind.SuperKeyword) {
       let owner = expression.parent;
       while (owner && !ts.isClassLike(owner)) owner = owner.parent;
@@ -159,7 +166,12 @@ export function createCallTargetResolver({ checker, program, localSource, source
       const fallback = () => declarations(checker.getSymbolAtLocation(expression), bindings);
       return keys.length ? keys.flatMap((key) => properties(expression.expression, key, bindings) ?? fallback()) : fallback();
     }
-    if (ts.isConditionalExpression(expression)) return [...values(expression.whenTrue, bindings), ...values(expression.whenFalse, bindings)];
+    if (ts.isConditionalExpression(expression)) {
+      const whenTrue = values(expression.whenTrue, bindings);
+      const whenFalse = values(expression.whenFalse, bindings);
+      if (!whenTrue.length || !whenFalse.length) unresolvedGeneration++;
+      return [...whenTrue, ...whenFalse];
+    }
     if (ts.isBinaryExpression(expression)) {
       const operator = expression.operatorToken.kind;
       if ([ts.SyntaxKind.EqualsToken, ts.SyntaxKind.CommaToken].includes(operator)) return values(expression.right, bindings);
@@ -170,7 +182,7 @@ export function createCallTargetResolver({ checker, program, localSource, source
         const left = values(expression.left, bindings);
         const takeRight = (value) => {
           const truth = truthiness(value);
-          if (nullish) return value.kind === ts.SyntaxKind.NullKeyword ? true : truth === undefined ? undefined : false;
+          if (nullish) return value.kind === ts.SyntaxKind.NullKeyword || undefinedValue(value) ? true : truth === undefined ? undefined : false;
           return both || truth === undefined ? truth : !truth;
         };
         return [...left.filter((value) => takeRight(value) !== true), ...(!left.length || left.some((value) => takeRight(value) !== false) ? values(expression.right, bindings) : [])];
@@ -188,17 +200,21 @@ export function createCallTargetResolver({ checker, program, localSource, source
       const callee = expression.expression;
       if (ts.isPropertyAccessExpression(callee) && ["all", "resolve"].includes(callee.name.text) && ts.isIdentifier(callee.expression) && callee.expression.text === "Promise") {
         const declarations = checker.getSymbolAtLocation(callee.expression)?.declarations;
-        if (declarations?.length && declarations.every((declaration) => program.isSourceFileDefaultLibrary(declaration.getSourceFile()))) return values(expression.arguments[0], bindings);
+        if (declarations?.length && declarations.every((declaration) => program.isSourceFileDefaultLibrary(declaration.getSourceFile())) && !overwrittenNativeMembers.has(checker.getSymbolAtLocation(callee.name))) return values(expression.arguments[0], bindings);
       }
       if (ts.isPropertyAccessExpression(callee) && callee.name.text === "bind" && expression.arguments.length <= 1) {
         const declarations = checker.getSymbolAtLocation(callee.name)?.declarations;
-        if (declarations?.length && declarations.every((declaration) => program.isSourceFileDefaultLibrary(declaration.getSourceFile()))) return values(callee.expression, bindings);
+        if (declarations?.length && declarations.every((declaration) => program.isSourceFileDefaultLibrary(declaration.getSourceFile())) && !overwrittenNativeMembers.has(checker.getSymbolAtLocation(callee.name))) return values(callee.expression, bindings);
       }
       return callReturns(expression.expression, expression.arguments, bindings);
     }
     return [expression];
   }
+  function undefinedValue(value) {
+    return ts.isVoidExpression(value) || ts.isIdentifier(value) && value.text === "undefined" && !checker.getSymbolAtLocation(value)?.valueDeclaration;
+  }
   function truthiness(value) {
+    if (undefinedValue(value)) return false;
     if (value.kind === ts.SyntaxKind.TrueKeyword || ts.isFunctionLike(value) || ts.isClassLike(value) || ts.isArrayLiteralExpression(value) || ts.isObjectLiteralExpression(value) || ts.isRegularExpressionLiteral(value) || ts.isNewExpression(value)) return true;
     if (value.kind === ts.SyntaxKind.FalseKeyword || value.kind === ts.SyntaxKind.NullKeyword) return false;
     if (ts.isNumericLiteral(value)) return Number(value.text) !== 0;

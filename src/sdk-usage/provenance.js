@@ -30,6 +30,7 @@ export function createProvenance({ checker, program, localSource, sources, targe
   const restArgumentsByParameter = new Map();
   const callsByFunction = new Map();
   const assignments = new Map();
+  const overwrittenNativeMembers = new Set();
   const entryParameters = new Set();
   function inScope(next, operation) {
     const previous = scope;
@@ -37,6 +38,13 @@ export function createProvenance({ checker, program, localSource, sources, targe
     try { return operation(); } finally { scope = previous; }
   }
   for (const source of sources) walk(source, (node) => {
+    if (ts.isBinaryExpression(node) && node.operatorToken.kind === ts.SyntaxKind.EqualsToken && (ts.isPropertyAccessExpression(node.left) || ts.isElementAccessExpression(node.left))) {
+      const name = ts.isPropertyAccessExpression(node.left) ? node.left.name.text : nameText(node.left.argumentExpression);
+      if (["all", "resolve", "bind"].includes(name)) {
+        const symbol = checker.getSymbolAtLocation(node.left);
+        if (symbol) overwrittenNativeMembers.add(symbol);
+      }
+    }
     if (ts.isBinaryExpression(node) && [ts.SyntaxKind.EqualsToken, ts.SyntaxKind.QuestionQuestionEqualsToken, ts.SyntaxKind.BarBarEqualsToken].includes(node.operatorToken.kind) && (ts.isIdentifier(node.left) || ts.isPropertyAccessExpression(node.left) && node.left.expression.kind === ts.SyntaxKind.ThisKeyword)) {
       const symbol = checker.getSymbolAtLocation(node.left);
       assignments.set(symbol, [...(assignments.get(symbol) ?? []), node.right]);
@@ -44,15 +52,31 @@ export function createProvenance({ checker, program, localSource, sources, targe
   });
   const unresolvedCallTargets = new WeakSet();
   const deferredCalls = new Set();
-  const resolverOptions = { checker, program, localSource, sourceNames, consumeWork, assignments, onUnresolvedCall: (node) => unresolvedCallTargets.add(node), onDeferredParameterCall: (node) => deferredCalls.add(node) };
+  const deferredTargets = new WeakMap();
+  const resolverOptions = { checker, program, localSource, sourceNames, consumeWork, assignments, overwrittenNativeMembers, onUnresolvedCall: (node) => unresolvedCallTargets.add(node), onDeferredParameterCall: (node) => deferredCalls.add(node) };
   const callDeclarations = createCallTargetResolver(resolverOptions);
   function indexCall(node, resolveTargets) {
-    let added = false;
-    for (const declaration of resolveTargets(node)) {
+    let changed = false;
+    const targets = resolveTargets(node);
+    for (const previous of deferredTargets.get(node) ?? []) {
+      if (targets.includes(previous)) continue;
+      changed = true;
+      callsByFunction.set(previous, (callsByFunction.get(previous) ?? []).filter((call) => call !== node));
+      for (const [index, parameter] of previous.parameters.entries()) {
+        if (parameter.dotDotDotToken) {
+          const prior = restArgumentsByParameter.get(parameter) ?? [];
+          const args = [...(node.arguments ?? [])].slice(index);
+          const remove = prior.findIndex((items) => items.length === args.length && items.every((item, position) => item === args[position]));
+          restArgumentsByParameter.set(parameter, prior.filter((_, position) => position !== remove));
+        } else argumentsByParameter.set(parameter, (argumentsByParameter.get(parameter) ?? []).filter((argument) => argument !== node.arguments?.[index]));
+      }
+    }
+    if (deferredCalls.has(node)) deferredTargets.set(node, targets);
+    for (const declaration of targets) {
       const calls = callsByFunction.get(declaration) ?? [];
       if (calls.includes(node)) continue;
       callsByFunction.set(declaration, [...calls, node]);
-      added = true;
+      changed = true;
       for (const [index, parameter] of declaration.parameters.entries()) {
         if (parameter.dotDotDotToken) {
           restArgumentsByParameter.set(parameter, [...(restArgumentsByParameter.get(parameter) ?? []), [...(node.arguments ?? [])].slice(index)]);
@@ -62,14 +86,14 @@ export function createProvenance({ checker, program, localSource, sources, targe
         if (argument) argumentsByParameter.set(parameter, [...(argumentsByParameter.get(parameter) ?? []), argument]);
       }
     }
-    return added;
+    return changed;
   }
   for (const source of sources) walk(source, (node) => {
     if (!workLimitReached && (ts.isCallExpression(node) || ts.isNewExpression(node))) indexCall(node, callDeclarations);
   });
-  let addedDefaultCalls = deferredCalls.size > 0;
-  while (addedDefaultCalls && !workLimitReached) {
-    addedDefaultCalls = false;
+  let changedDefaultCalls = deferredCalls.size > 0;
+  while (changedDefaultCalls && !workLimitReached) {
+    changedDefaultCalls = false;
     // Defaults depend on the completed caller map; each changed pass gets fresh memoization.
     const resolveDefaults = createCallTargetResolver({ ...resolverOptions, parameterArguments(parameter) {
       const index = parameter.parent.parameters.indexOf(parameter);
@@ -82,7 +106,7 @@ export function createProvenance({ checker, program, localSource, sources, targe
     for (const node of deferredCalls) {
       if (workLimitReached) break;
       unresolvedCallTargets.delete(node);
-      addedDefaultCalls = indexCall(node, resolveDefaults) || addedDefaultCalls;
+      changedDefaultCalls = indexCall(node, resolveDefaults) || changedDefaultCalls;
     }
   }
 

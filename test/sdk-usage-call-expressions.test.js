@@ -59,6 +59,12 @@ for (const [name, source, invoke] of [
   ["short-circuited or assignment", `let fn = () => {}; ${helper}`, (arg) => `(fn ||= use)(${arg});`],
   ["short-circuited nullish assignment", `let fn = () => {}; ${helper}`, (arg) => `(fn ??= use)(${arg});`],
   ["short-circuited and", helper, (arg) => `(false && use)(${arg});`],
+  ["undefined and", helper, (arg) => `(undefined && use)(${arg});`],
+  ["void and", helper, (arg) => `(void 0 && use)(${arg});`],
+  ["overwritten Promise.resolve", `${helper} Promise.resolve = function() { return Promise.reject(); };`, (arg) => `(await Promise.resolve(use))(${arg});`],
+  ["overwritten native bind", `${helper} use.bind = () => () => {};`, (arg) => `use.bind(null)(${arg});`],
+  ["later call after short-circuited or assignment", `let fn = () => {}; ${helper} fn ||= use;`, (arg) => `fn(${arg});`],
+  ["later call after short-circuited nullish assignment", `let fn = () => {}; ${helper} fn ??= use;`, (arg) => `fn(${arg});`],
   ["discarded comma left side", helper, (arg) => `(use, () => {})(${arg});`],
   ["arithmetic coercion", helper, (arg) => `(+use)(${arg});`],
 ]) {
@@ -75,3 +81,38 @@ test("an unresolved default-parameter override remains explicitly partial", asyn
   assert.deepEqual(sdk.entries.filter(({ kind }) => kind === "api-member"), []);
   assert.ok(sdk.unknowns.some(({ expression, reason }) => expression === "fn(value)" && reason === "SDK handle escapes into an unresolved external call"));
 });
+
+test("a mixed known and unresolved default override preserves uncertainty", async (t) => {
+  const source = `import unknown from 'external-helper'; function invoke(value, fn = use) { fn(value); } ${helper}`;
+  const sdk = await inspect(t, source, (arg) => `invoke(${arg}, condition ? use : unknown);`, "api");
+  assert.equal(sdk.status, "partial");
+  assert.deepEqual(sdk.entries.filter(({ kind }) => kind === "api-member").map(({ key }) => key), ["api-member:api.registerTool"]);
+  assert.ok(sdk.unknowns.some(({ expression, reason }) => expression === "fn(value)" && reason === "SDK handle escapes into an unresolved external call"));
+});
+
+for (const [name, calls] of [
+  ["override before default", "invoke(api, () => {}); invoke({});"],
+  ["override after default", "invoke({}); invoke(api, () => {});"],
+  ["real SDK default beside an unrelated override", "invoke({}, () => {}); invoke(api);"],
+]) {
+  test(`mixed default caller choices stay unresolved: ${name}`, async (t) => {
+    const source = `function invoke(value, fn = use) { fn(value); } ${helper}`;
+    const sdk = await inspect(t, source, () => calls, "api");
+    assert.equal(sdk.status, "partial");
+    // Target/argument correlation across different callers is not inferred.
+    assert.deepEqual(sdk.entries.filter(({ kind }) => kind === "api-member"), []);
+    assert.ok(sdk.unknowns.some(({ expression, reason }) => expression === "fn(value)" && reason === "SDK handle escapes into an unresolved external call"));
+  });
+}
+
+for (const source of [
+  `function inner(value, fn = use) { fn(value); } function forward(value, fn = inner) { fn(value, () => {}); } ${helper}`,
+  `function forward(value, fn = inner) { fn(value, () => {}); } function inner(value, fn = use) { fn(value); } ${helper}`,
+]) {
+  test("later mixed callers remove stale default target argument edges", async (t) => {
+    const sdk = await inspect(t, source, () => "inner({}); forward(api);", "api");
+    assert.equal(sdk.status, "partial");
+    assert.deepEqual(sdk.entries.filter(({ kind }) => kind === "api-member"), []);
+    assert.ok(sdk.unknowns.some(({ expression }) => expression === "fn(value)"));
+  });
+}

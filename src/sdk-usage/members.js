@@ -17,6 +17,9 @@ export function collectSdkMembers({ sources, report, provenance }) {
     if (value?.kind === "union") return value.values.some(unresolvedSdkReceiver);
     return ["api", "runtime"].includes(value?.kind) || value?.kind === "namespace" && Boolean(value.module);
   }
+  function rootSdkHandle(value) {
+    return value?.kind === "union" ? value.values.some(rootSdkHandle) : ["api", "runtime"].includes(value?.kind) && !value.path.length;
+  }
   for (const source of sources) walk(source, (node) => {
     if (ts.isQualifiedName(node) && !ts.isQualifiedName(node.parent)) record(resolve(node), "type-reference", node, "type");
     if (ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node)) {
@@ -28,9 +31,10 @@ export function collectSdkMembers({ sources, report, provenance }) {
     if (ts.isCallExpression(node)) {
       const value = resolve(node.expression);
       record(value, "call", node.expression);
-      if (!value || provenance.hasUnresolvedCallTarget(node)) for (const argument of node.arguments) {
+      const unresolvedTarget = provenance.hasUnresolvedCallTarget(node);
+      if (!value || unresolvedTarget) for (const argument of node.arguments) {
         const handle = resolve(argument);
-        if (["api", "runtime"].includes(handle?.kind) && !handle.path.length) report.unknown(node, "SDK handle escapes into an unresolved external call");
+        if (unresolvedTarget ? rootSdkHandle(handle) : ["api", "runtime"].includes(handle?.kind) && !handle.path.length) report.unknown(node, "SDK handle escapes into an unresolved external call");
       }
       if (value?.kind === "api" && value.path.length === 1 && ["on", "registerHook"].includes(value.path[0])) {
         const names = hookNames(node.arguments[0]);
