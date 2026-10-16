@@ -36,7 +36,13 @@ export function createProvenance({ checker, program, localSource, sources, targe
     scope = next;
     try { return operation(); } finally { scope = previous; }
   }
-  const callDeclarations = createCallTargetResolver({ checker, sourceNames, consumeWork });
+  for (const source of sources) walk(source, (node) => {
+    if (ts.isBinaryExpression(node) && [ts.SyntaxKind.EqualsToken, ts.SyntaxKind.QuestionQuestionEqualsToken, ts.SyntaxKind.BarBarEqualsToken].includes(node.operatorToken.kind) && (ts.isIdentifier(node.left) || ts.isPropertyAccessExpression(node.left) && node.left.expression.kind === ts.SyntaxKind.ThisKeyword)) {
+      const symbol = checker.getSymbolAtLocation(node.left);
+      assignments.set(symbol, [...(assignments.get(symbol) ?? []), node.right]);
+    }
+  });
+  const callDeclarations = createCallTargetResolver({ checker, sourceNames, consumeWork, assignments });
   for (const source of sources) walk(source, (node) => {
     if (workLimitReached) return;
     if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
@@ -51,10 +57,6 @@ export function createProvenance({ checker, program, localSource, sources, targe
           if (argument) argumentsByParameter.set(parameter, [...(argumentsByParameter.get(parameter) ?? []), argument]);
         }
       }
-    }
-    if (ts.isBinaryExpression(node) && [ts.SyntaxKind.EqualsToken, ts.SyntaxKind.QuestionQuestionEqualsToken, ts.SyntaxKind.BarBarEqualsToken].includes(node.operatorToken.kind) && (ts.isIdentifier(node.left) || ts.isPropertyAccessExpression(node.left) && node.left.expression.kind === ts.SyntaxKind.ThisKeyword)) {
-      const symbol = checker.getSymbolAtLocation(node.left);
-      assignments.set(symbol, [...(assignments.get(symbol) ?? []), node.right]);
     }
   });
 

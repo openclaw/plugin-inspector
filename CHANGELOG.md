@@ -4,9 +4,10 @@
 
 ## 0.4.2 - 2026-10-16
 
-- Reduce SDK inventory memory use for OpenClaw source targets by using diagnostic-checked host declarations and reusing host analysis within a fixture suite. Keep source intact when exported types require inference, preserve separate plugin inventories, and refresh host analysis for each new suite.
+- Reduce SDK inventory memory use for OpenClaw source targets by using diagnostic-checked host declarations. Keep source intact when exported types require inference and preserve separate plugin inventories.
 - Inspect configured nested plugin packages and compiled npm payloads instead of their repository or fixture wrappers. Recognize declared runtime entrypoints in published packages while retaining unresolved metadata as partial coverage.
 - Bind each physical copy of bundled dependencies independently so duplicate package identities cannot crash inventory analysis or hide references.
+- Follow local callable implementations without expanding unrelated generic signatures. Bound complex provenance analysis per plugin, mark unresolved analysis as partial, and retain direct SDK references and existing deprecation findings after the limit.
 
 ## 0.4.1 - 2026-10-16
 
