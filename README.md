@@ -569,7 +569,7 @@ Each entry retains at most 12 evidence sites with source excerpts of at most
 500 UTF-16 code units. Long or minified lines are excerpted around the reference;
 the path and line identify the full source. These bounds never truncate identities.
 
-Complex provenance analysis has a deterministic limit of 1,000,000 steps per
+Complex provenance analysis has a deterministic limit of 2,000,000 steps per
 plugin, including call indexing, alias resolution, member selection, literal
 resolution and caller-context traversal. Exhaustion adds one source-located
 unknown and makes the inventory `partial`. All supplied files remain in scope;

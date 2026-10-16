@@ -8,7 +8,7 @@ const sdkExport = (module, name) => ({ kind: "export", module, name });
 
 /** Follow unchanged values; wrappers and arbitrary SDK return values do not inherit identity. */
 export function createProvenance({ checker, program, localSource, sources, targetRoot, entrypoints = [], onWorkLimit }) {
-  const maxWork = 1_000_000;
+  const maxWork = 2_000_000;
   let remainingWork = maxWork;
   let workLimitReached = false;
   let lastWorkNode;
@@ -393,8 +393,8 @@ export function createProvenance({ checker, program, localSource, sources, targe
 
   function resolve(node) {
     if (!node) return undefined;
-    if (!consumeWork(node)) return directResolve(node);
     if (scope.cache.has(node)) return scope.cache.get(node);
+    if (!consumeWork(node)) return directResolve(node);
     if (resolving.has(node)) return undefined;
     resolving.add(node);
     let value;
