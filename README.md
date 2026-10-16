@@ -570,7 +570,11 @@ Each entry retains at most 12 evidence sites with source excerpts of at most
 the path and line identify the full source. These bounds never truncate identities.
 
 The public `pluginRoot.runCheck` and fixture-suite APIs accept
-`sdkUsageInputKind: "source" | "artifact"` (default `"source"`). Source analysis
+`sdkUsageInputKind: "source" | "artifact"`. The default is `"source"`, except
+npm package fixtures default to `"artifact"`; an explicit option takes precedence.
+Fixture inventories use the npm payload or a configured nested plugin package
+as their root, retaining package-root metadata for source-only subdirectories.
+Source analysis
 includes explicit type syntax; artifact analysis describes the supplied
 published files, including embedded vendor code and dependencies actually
 bundled inside that artifact. Source scans exclude separately installed
@@ -578,7 +582,9 @@ bundled inside that artifact. Source scans exclude separately installed
 types are not inferred back into JavaScript. Inspection does not execute code.
 
 Declared `openclaw.extensions` entrypoints establish the host API parameter for
-plain registration functions and default/CommonJS wrappers. Source mode can
+plain registration functions and default/CommonJS wrappers. Artifact mode uses
+`openclaw.runtimeExtensions` when declared, including packages that omit source
+files. A missing runtime peer does not fall back to source code. Source mode can
 resolve a unique source equivalent of a compiled entrypoint. A missing or
 ambiguous declared entrypoint is an explicit unknown, so the report is partial.
 
