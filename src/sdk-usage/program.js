@@ -52,8 +52,9 @@ export function createUsageProgram(files, targetRoot, hostCache) {
     const library = path.dirname(name) === libraryDirectory && /^lib(?:\..+)?\.d\.ts$/.test(path.basename(name));
     if (!library && !hostFiles.has(name)) return undefined;
     const cached = hostCache?.sources.get(name);
-    let source;
-    if (cached) {
+    const cachedSource = cached?.source?.deref();
+    let source = cachedSource;
+    if (!source && cached) {
       source = ts.createSourceFile(name, cached.text, languageVersion, true);
       source.isDeclarationFile = cached.isDeclarationFile;
     }
@@ -76,9 +77,9 @@ export function createUsageProgram(files, targetRoot, hostCache) {
       }
     }
     source ??= readSource(name, languageVersion);
-    // Bound ASTs retain symbols and checker graphs from earlier plugins.
-    // Cache immutable declaration/source text, then bind fresh ASTs per program.
-    if (source && hostCache && !cached) hostCache.sources.set(name, { text: source.text, isDeclarationFile: source.isDeclarationFile });
+    // Reuse host syntax while it remains live, but let memory pressure collect
+    // unused trees. The current program keeps its own input trees alive.
+    if (source && hostCache && !cachedSource) hostCache.sources.set(name, { text: source.text, isDeclarationFile: source.isDeclarationFile, source: new WeakRef(source) });
     // Public host declarations may reference their own declaration files.
     // Plugin reference directives never authorize files outside the input set.
     if (source && hostFiles.has(name)) for (const reference of source.referencedFiles) {
