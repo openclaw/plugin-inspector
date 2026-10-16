@@ -696,7 +696,7 @@
       "path": "extensions/workboard/src/store-core.ts",
       "sha256": "f18032e8a8d5f9bf81948f0bc7406ebc608e44cb1ce99ed4f12e0932e7a2040b",
       "role": "production-source",
-      "findingCount": 0
+      "findingCount": 1
     },
     {
       "path": "extensions/workboard/src/store-enrichment.ts",
@@ -720,7 +720,7 @@
       "path": "extensions/workboard/src/store-normalizers.ts",
       "sha256": "94ffa62f4f4055acb266ac5a2f26615183caacda6efe52ec44bf69a5a385efb7",
       "role": "production-source",
-      "findingCount": 5
+      "findingCount": 6
     },
     {
       "path": "extensions/workboard/src/store-notifications.ts",
@@ -756,7 +756,7 @@
       "path": "extensions/workboard/src/store-workflow.ts",
       "sha256": "44522bddde059dffaf60385e7f21142f3bbadf125075bae93bf4ec8f283d2a58",
       "role": "production-source",
-      "findingCount": 0
+      "findingCount": 1
     },
     {
       "path": "extensions/workboard/src/store.ts",
@@ -3611,13 +3611,49 @@
       "identity": "openclaw/plugin-sdk/number-runtime#MAX_DATE_TIMESTAMP_MS",
       "classification": "runtime",
       "referenceKinds": [
-        "import"
+        "import",
+        "member-access"
       ],
       "evidence": [
         {
           "path": "extensions/workboard/src/store-constants.ts",
           "line": 7,
           "snippet": "import {\n  isFutureDateTimestampMs,\n  MAX_DATE_TIMESTAMP_MS,\n  resolveExpiresAtMsFromDurationMs,\n} from \"openclaw/plugin-sdk/number-runtime\";"
+        },
+        {
+          "path": "extensions/workboard/src/store-constants.ts",
+          "line": 82,
+          "snippet": "return resolveExpiresAtMsFromDurationMs(durationMs, { nowMs: now }) ?? MAX_DATE_TIMESTAMP_MS;"
+        },
+        {
+          "path": "extensions/workboard/src/store-workflow.ts",
+          "line": 163,
+          "snippet": "claim: { ownerId, token, claimedAt: now, lastHeartbeatAt: now, expiresAt },"
+        },
+        {
+          "path": "extensions/workboard/src/store-core.ts",
+          "line": 530,
+          "snippet": "let effectivePatch = patch;"
+        },
+        {
+          "path": "extensions/workboard/src/store-core.ts",
+          "line": 573,
+          "snippet": "let metadata = normalizeMetadata(effectivePatch.metadata, existing.metadata, {"
+        },
+        {
+          "path": "extensions/workboard/src/store-normalizers.ts",
+          "line": 679,
+          "snippet": "const expiresAt = normalizeTimestamp(record.expiresAt, fallback?.expiresAt ?? 0);"
+        },
+        {
+          "path": "extensions/workboard/src/store-normalizers.ts",
+          "line": 846,
+          "snippet": "const record = isRecord(value) ? value : {};"
+        },
+        {
+          "path": "extensions/workboard/src/store-normalizers.ts",
+          "line": 916,
+          "snippet": "? normalizeClaim(record.claim, fallback.claim)"
         }
       ]
     },
@@ -5180,6 +5216,7 @@
     "Service contexts (logger/getCron/gatewayEvents), command/tool contexts, doctor migration contexts, worktree/config/database results and other SDK helper return objects do not become API/runtime handles. No calls are inferred from SDK helper implementation bodies.",
     "Manifest contracts cover cliCommands.name, commandAliases.name and all 38 contracts.tools declarations. backupResources, uiCapabilities, categories, doctorContract, activation, dashboard, catalog, toolMetadata, configSchema and controlUi are metadata outside the specified manifest identity fields.",
     "ReferenceKinds include every established syntax/use category with representative evidence per kind. reviewedFiles.findingCount counts distinct findings evidenced in that file; zero does not mean the file was skipped.",
-    "Original-owner canonicalization correction: the frozen contract names cliCommands.name and commandAliases.name as manifest fields. The object name declarations at openclaw.plugin.json:21 and :126 therefore use manifest.cliCommands.name:workboard and manifest.commandAliases.name:workboard. Only these two identities/keys are corrected; their evidence, classifications, reference kinds and all counts are unchanged."
+    "Original-owner canonicalization correction: the frozen contract names cliCommands.name and commandAliases.name as manifest fields. The object name declarations at openclaw.plugin.json:21 and :126 therefore use manifest.cliCommands.name:workboard and manifest.commandAliases.name:workboard. Only these two identities/keys are corrected; their evidence, classifications, reference kinds and all counts are unchanged.",
+    "Original-owner source-only reconciliation: MAX_DATE_TIMESTAMP_MS can pass unchanged through the explicit fallback in store-constants.ts:82, the expiresAt binding and metadata.claim.expiresAt container in store-workflow.ts:95-98/163, the patch alias and metadata argument in store-core.ts:530/573, and the guarded local objects in store-normalizers.ts:846/916. The read record.expiresAt at store-normalizers.ts:679 therefore contributes member-access to the imported constant under the existing unchanged-local-container rule. This does not infer SDK helper return values or add a call kind. The original auditor reread the pinned source without candidate implementation/output and confirmed import plus member-access; identities, classifications, coverage and unknowns are unchanged."
   ]
 }

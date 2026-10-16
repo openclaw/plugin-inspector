@@ -811,7 +811,7 @@
       "pluginId": "workboard",
       "path": "workboard.json",
       "agentId": "/root/sdk_benchmark_coordinator/audit_workboard",
-      "sha256": "9e753cb0320f8dd03f60c432a52298bc2225f6ba1dcc4a1fe1dd8617d7d5b857",
+      "sha256": "83ae7f2057bdaf2e0f1769aecbb91839956e42f1dc54932af4ea4a40019fc19e",
       "counts": {
         "findings": 183,
         "reviewedFiles": 133,
@@ -958,6 +958,12 @@
       "agentId": "/root/sdk_benchmark_coordinator/audit_google",
       "previousFreezeSha256": "342af048276029fe861845a54c04b478f0db85884621c38ad79bdc562fd3e5af",
       "reason": "Original auditor independently traced REALTIME_VOICE_AUDIO_FORMAT_G711_ULAW_8KHZ through unchanged this.audioFormat storage and later encoding/sampleRateHz reads before viewing the candidate report. Added member-access alongside import with exact source evidence; identities, classifications, counts, coverage and unknowns are unchanged."
+    },
+    {
+      "pluginId": "workboard",
+      "agentId": "/root/sdk_benchmark_coordinator/audit_workboard",
+      "previousFreezeSha256": "0a6d679e99cc25808d0e1da23e3731542853368f229aa3d024397069cc2e3ad5",
+      "reason": "Original auditor independently traced MAX_DATE_TIMESTAMP_MS unchanged through the explicit fallback and local metadata.claim.expiresAt container to store-normalizers.ts:679, confirming the missing member-access kind. See the source-only fixture note and exact evidence; identities, classifications, population, file scope and aggregate counts are unchanged."
     }
   ]
 }
