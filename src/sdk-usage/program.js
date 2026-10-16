@@ -83,7 +83,9 @@ export function createUsageProgram(files, targetRoot, hostCache) {
   host.resolveModuleNames = (names, containingFile) => names.map((name) => {
     const resolved = ts.resolveModuleName(name, containingFile, options, host, resolutionCache).resolvedModule;
     if (!resolved) return undefined;
-    if (byPath.has(resolved.resolvedFileName)) return resolved;
+    // TypeScript redirects equal package IDs to one copy, leaving other input
+    // ASTs unbound. Inventory every physical bundled file with its own evidence.
+    if (byPath.has(resolved.resolvedFileName)) return { ...resolved, packageId: undefined };
     // Only the explicit public host target may add files outside the inspected
     // set. A plugin-relative import must not crawl neighboring source trees.
     if (!insideTarget(resolved.resolvedFileName)) return undefined;
