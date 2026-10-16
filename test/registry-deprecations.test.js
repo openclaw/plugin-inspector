@@ -54,6 +54,7 @@ test("reads delegated shared retirement metadata and emits a nonblocking author-
   assert.deepEqual(record.surfaces, [api]);
   assert.deepEqual(report.targetOpenClaw.compatRecordTests[record.code], ["src/plugins/compat/registry.test.ts"]);
   assert.equal(report.status, "pass");
+  assert.deepEqual(report.fixtures[0].sdkUsage.entries.find(entry => entry.identity === "openclaw/plugin-sdk/session-store-runtime#getSessionEntry").deprecationCodes, ["sdk-deprecated-api"]);
   const issue = report.issues.find((item) => item.code === "sdk-deprecated-api");
   assert.ok(issue);
   assert.equal(issue.issueClass, "deprecation-warning");

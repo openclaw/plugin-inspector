@@ -1,7 +1,8 @@
 import path from "node:path";
 import { sdkUsageDeprecationCodes } from "../sdk-deprecation-rules.js";
+import { registryUsageDeprecationCodes } from "../registry-deprecations.js";
 
-export function createUsageReport({ root, inputKind = "source" }) {
+export function createUsageReport({ root, inputKind = "source", compatDeprecations }) {
   const entries = new Map();
   const unknowns = new Map();
   const coverage = { filesDiscovered: 0, filesAnalyzed: 0, filesExcluded: 0 };
@@ -27,7 +28,9 @@ export function createUsageReport({ root, inputKind = "source" }) {
     const key = `${kind}:${identity}`;
     let entry = entries.get(key);
     if (!entry) {
-      entry = { key, kind, identity, classifications: new Set(), referenceKinds: new Set(), evidence: new Map(), deprecationCodes: new Set(sdkUsageDeprecationCodes(kind, identity)) };
+      entry = { key, kind, identity, classifications: new Set(), referenceKinds: new Set(), evidence: new Map(), deprecationCodes: new Set([
+        ...sdkUsageDeprecationCodes(kind, identity), ...registryUsageDeprecationCodes(kind, identity, compatDeprecations),
+      ]) };
       entries.set(key, entry);
     }
     entry.classifications.add(classification);

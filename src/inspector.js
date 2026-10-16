@@ -172,7 +172,7 @@ export async function inspectPlugin(fixture, options = {}) {
     packageEntrypoints: packageInspection.entrypoints,
     sdkImports: uniqueDetails(sdkImportDetails),
     sdkDeprecations: uniqueSdkDeprecations(sdkDeprecationDetails),
-    sdkUsage: await inspectSdkUsage({ root: checkoutPath, inputKind: options.sdkUsageInputKind, targetRoot: options.sdkTargetRoot }),
+    sdkUsage: await inspectSdkUsage({ root: checkoutPath, inputKind: options.sdkUsageInputKind, targetRoot: options.sdkTargetRoot, compatDeprecations: options.targetOpenClaw?.compatDeprecations }),
     sourceFiles: sourceFiles.map((filePath) => path.relative(config.rootDir ?? process.cwd(), filePath)).sort(),
   };
 }

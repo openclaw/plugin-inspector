@@ -718,3 +718,31 @@ test("fully resolved SDK string fragments produce concrete module inventories", 
   assert.ok(keys.includes("sdk-export:openclaw/plugin-sdk/core#createLogger"));
   assert.ok(keys.includes("sdk-export:openclaw/plugin-sdk/example#helper"));
 });
+
+test("serialized inventory associates target retirement records without changing author findings", async (t) => {
+  const report = await inspectPublishedJson(t, `
+import { retired as alias, supported } from "openclaw/plugin-sdk/example";
+import type { RetiredOptions } from "openclaw/plugin-sdk/example";
+import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";
+export default { register(api: OpenClawPluginApi) {
+  alias(); supported(); api.runtime.state.retired();
+} };
+`, {
+    authorFacing: true,
+    targetOpenClaw: { available: false, compatDeprecations: [
+      { code: "retired-export", status: "deprecated", surfaces: ["openclaw/plugin-sdk/example.retired"], replacement: "Use supported", removeAfter: "2026-12-31" },
+      { code: "retired-type", status: "deprecated", surfaces: ["RetiredOptions"], replacement: "Use current options" },
+      { code: "retired-runtime", status: "deprecated", surfaces: ["api.runtime.state.retired"], replacement: "Use current state" },
+      { code: "active-export", status: "active", surfaces: ["openclaw/plugin-sdk/example.supported"] },
+      { code: "conditional", status: "deprecated", surfaces: ["openclaw/plugin-sdk/example.supported (writable handles)"] },
+    ] },
+  });
+  assert.deepEqual(report.sdkUsage.entries.filter(entry => entry.deprecationCodes.includes("sdk-deprecated-api")).map(entry => entry.key), [
+    "runtime-member:runtime.state.retired",
+    "sdk-export:openclaw/plugin-sdk/example#RetiredOptions",
+    "sdk-export:openclaw/plugin-sdk/example#retired",
+  ]);
+  const warnings = report.warnings.filter(item => item.code === "sdk-deprecated-api");
+  assert.equal(warnings.length, 2, "type-only references annotate inventory without adding author warnings");
+  assert.ok(warnings.some(item => item.deprecatedApi === "openclaw/plugin-sdk/example.retired" && item.removeAfter === "2026-12-31"));
+});

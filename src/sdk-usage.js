@@ -10,8 +10,8 @@ import { collectSdkMembers } from "./sdk-usage/members.js";
 import { pluginEntrypointSources } from "./sdk-usage/entrypoints.js";
 
 /** Offline static inventory. Neither plugin modules nor target modules are imported. */
-export async function inspectSdkUsage({ root, inputKind = "source", targetRoot }) {
-  const report = createUsageReport({ root, inputKind });
+export async function inspectSdkUsage({ root, inputKind = "source", targetRoot, compatDeprecations }) {
+  const report = createUsageReport({ root, inputKind, compatDeprecations });
   const files = await readUsageFiles(root, report);
   const context = createUsageProgram(files, targetRoot);
   const { sources, checker } = context;
