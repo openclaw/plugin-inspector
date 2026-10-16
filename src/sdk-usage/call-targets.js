@@ -20,6 +20,7 @@ export function createCallTargetResolver({ checker, program, localSource, source
         return bindingValues(declaration, key, bindings);
       }
       if (ts.isShorthandPropertyAssignment(declaration)) return declarations(checker.getShorthandAssignmentValueSymbol(declaration), bindings);
+      if (ts.isGetAccessorDeclaration(declaration) || ts.isSetAccessorDeclaration(declaration)) return values(declaration, bindings);
       return [declaration];
     }), ...(assignments.get(symbol) ?? []).flatMap((expression) => values(expression, bindings))];
   }
@@ -48,14 +49,18 @@ export function createCallTargetResolver({ checker, program, localSource, source
         }
         if (ts.isArrayLiteralExpression(value) && value.elements[Number(key)]) { found = true; return values(value.elements[Number(key)], bindings); }
         if (!ts.isObjectLiteralExpression(value)) return [];
+        let setterOnly = false;
         for (const property of [...value.properties].reverse()) {
           if (ts.isSpreadAssignment(property)) {
             const spread = properties(property.expression, key, bindings);
-            if (spread !== undefined) { found = true; return spread; }
+            if (spread !== undefined) { found = true; return setterOnly ? [] : spread; }
             const spreadValues = values(property.expression, bindings);
             if (!spreadValues.length || !spreadValues.every(ts.isObjectLiteralExpression)) { found = true; return []; }
           } else if (nameText(property.name) === key) {
             found = true;
+            // A setter preserves an earlier getter, but replaces a data property.
+            if (ts.isSetAccessorDeclaration(property)) { setterOnly = true; continue; }
+            if (setterOnly && !ts.isGetAccessorDeclaration(property)) return [];
             return ts.isShorthandPropertyAssignment(property)
               ? declarations(checker.getShorthandAssignmentValueSymbol(property), bindings)
               : values(property.initializer ?? property, bindings);
@@ -85,6 +90,8 @@ export function createCallTargetResolver({ checker, program, localSource, source
     } finally { visiting.delete(expression); }
   }
   function evaluate(expression, bindings) {
+    if (ts.isGetAccessorDeclaration(expression)) return expression.body ? returnedValues(expression, bindings) : [];
+    if (ts.isSetAccessorDeclaration(expression)) return [];
     if (ts.isParenthesizedExpression(expression) || ts.isAsExpression(expression) || ts.isTypeAssertionExpression(expression) || ts.isNonNullExpression(expression) || ts.isSatisfiesExpression(expression) || ts.isExpressionWithTypeArguments(expression) || ts.isAwaitExpression(expression)) return values(expression.expression, bindings);
     if (ts.isIdentifier(expression)) return declarations(checker.getSymbolAtLocation(expression), bindings);
     if (expression.kind === ts.SyntaxKind.SuperKeyword) {
@@ -116,17 +123,20 @@ export function createCallTargetResolver({ checker, program, localSource, source
           const argument = expression.arguments[index] ?? parameter.initializer;
           if (argument) inner.set(parameter, argument);
         }
-        const results = [];
-        function returns(node) {
-          if (ts.isReturnStatement(node)) results.push(...values(node.expression, inner));
-          else if (!ts.isFunctionLike(node)) ts.forEachChild(node, returns);
-        }
-        if (ts.isBlock(fn.body)) returns(fn.body);
-        else results.push(...values(fn.body, inner));
-        return results;
+        return returnedValues(fn, inner);
       });
     }
     return [expression];
+  }
+  function returnedValues(fn, bindings) {
+    const results = [];
+    function returns(node) {
+      if (ts.isReturnStatement(node)) results.push(...values(node.expression, bindings));
+      else if (!ts.isFunctionLike(node)) ts.forEachChild(node, returns);
+    }
+    if (ts.isBlock(fn.body)) returns(fn.body);
+    else results.push(...values(fn.body, bindings));
+    return results;
   }
   function targets(expression, construct, bindings = emptyBindings) {
     return [...new Set(values(expression, bindings).flatMap((value) => {

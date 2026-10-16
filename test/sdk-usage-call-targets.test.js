@@ -30,6 +30,12 @@ const cases = [
   ["immediately invoked arrow", "", (argument) => `((value) => { value.registerTool({}); })(${argument});`],
   ["immediately invoked function", "", (argument) => `(function (value) { value.registerTool({}); })(${argument});`],
   ["object property arrow", "const helpers = { use: (value) => { value.registerTool({}); } };", (argument) => `helpers.use(${argument});`],
+  ["object getter returning a function", "const helpers = { get use() { return (value) => { value.registerTool({}); }; } };", (argument) => `helpers.use(${argument});`, true],
+  ["class getter returning a function", "class Helpers { get use() { return (value) => { value.registerTool({}); }; } } const helpers = new Helpers();", (argument) => `helpers.use(${argument});`, true],
+  ["static class getter returning a function", "class Helpers { static get use() { return (value) => { value.registerTool({}); }; } }", (argument) => `Helpers.use(${argument});`, true],
+  ["getter returning a function alias", "function use(value) { value.registerTool({}); } const helpers = { get use() { return use; } }; const { use: alias } = helpers;", (argument) => `alias(${argument});`, true],
+  ["getter paired with a setter", "const helpers = { get use() { return (value) => { value.registerTool({}); }; }, set use(value) { value.registerService({}); } };", (argument) => `helpers.use(${argument});`, true],
+  ["class getter paired with a setter", "class Helpers { get use() { return (value) => { value.registerTool({}); }; } set use(value) { value.registerService({}); } } const helpers = new Helpers();", (argument) => `helpers.use(${argument});`, true],
   ["shorthand method alias", "function use(value) { value.registerTool({}); } const helpers = { use };", (argument) => `helpers.use(${argument});`],
   ["destructured method", "const helpers = { use(value) { value.registerTool({}); } }; const { use } = helpers;", (argument) => `use(${argument});`],
   ["nested destructured method", "const helpers = { nested: { use(value) { value.registerTool({}); } } }; const { nested: { use } } = helpers;", (argument) => `use(${argument});`],
@@ -39,11 +45,15 @@ const cases = [
   ["inherited constructor", "class Base { constructor(value) { value.registerTool({}); } } class Child extends Base {}", (argument) => `new Child(${argument});`],
 ];
 
-for (const [name, helper, invoke] of cases) {
+for (const [name, helper, invoke, getterValueUnknown = false] of cases) {
   test(`serialized inventory follows the executed ${name}`, async (t) => {
     const sdk = await inspectCall(t, helper, invoke, "api");
-    assert.equal(sdk.status, "complete");
-    assert.deepEqual(sdk.unknowns, []);
+    // Getter callable indexing is precise; value provenance stays conservative.
+    assert.equal(sdk.status, getterValueUnknown ? "partial" : "complete");
+    assert.deepEqual(sdk.unknowns, getterValueUnknown ? [{
+      path: "index.ts", line: 2, expression: invoke("api").replace(/;$/, ""),
+      reason: "SDK handle escapes into an unresolved external call",
+    }] : []);
     assert.deepEqual(sdk.entries.filter(({ kind }) => kind === "api-member").map(({ key }) => key), ["api-member:api.registerTool"]);
     assert.ok(sdk.entries.find(({ key }) => key === "api-member:api.registerTool").evidence.every(({ path }) => path === "index.ts"));
 
@@ -51,6 +61,20 @@ for (const [name, helper, invoke] of cases) {
     assert.equal(unrelated.status, "complete");
     assert.deepEqual(unrelated.unknowns, []);
     assert.deepEqual(unrelated.entries.filter(({ kind }) => kind === "api-member"), []);
+  });
+}
+
+for (const [name, helper] of [
+  ["object setter", "const helpers = { set use(value) { value.registerTool({}); } };"],
+  ["class setter", "class Helpers { set use(value) { value.registerTool({}); } } const helpers = new Helpers();"],
+  ["shadowed getter", "const original = { get use() { return value => value.registerTool({}); } }; const helpers = { ...original, use(value) {} };"],
+  ["getter replaced by a setter", "const helpers = { get use() { return value => value.registerTool({}); }, use(value) { value.registerService({}); }, set use(value) { value.registerProvider({}); } };"],
+  ["getter replaced through a spread and setter", "const helpers = { get use() { return value => value.registerTool({}); }, ...{ use(value) { value.registerService({}); } }, set use(value) { value.registerProvider({}); } };"],
+  ["recursive getter", "const helpers = { get use() { return helpers.use; } };"],
+]) {
+  test(`serialized inventory does not call a ${name}`, async (t) => {
+    const sdk = await inspectCall(t, helper, (argument) => `helpers.use(${argument});`, "api");
+    assert.deepEqual(sdk.entries.filter(({ kind }) => kind === "api-member"), []);
   });
 }
 
