@@ -22,7 +22,8 @@ export function pluginEntrypointSources({ root, files, sources, inputKind, repor
   if (field === "runtimeExtensions" && Array.isArray(pkg.openclaw.extensions) && entries.length !== pkg.openclaw.extensions.length) {
     unresolved("Declared runtime entrypoints do not match the source entrypoint count");
   }
-  const byPath = new Map(sources.map((source) => [source.fileName, source]));
+  // TypeScript uses forward slashes on Windows; entrypoint lookups use native paths.
+  const byPath = new Map(sources.map((source) => [path.resolve(source.fileName), source]));
   const found = new Set();
   for (const entry of entries) {
     if (typeof entry !== "string") { unresolved("Declared plugin entrypoint is not a string"); continue; }

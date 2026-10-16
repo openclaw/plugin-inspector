@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.4.3 - 2026-10-16
+
+- Resolve declared SDK entrypoints on Windows by normalizing TypeScript source filenames to native paths. Preserve runtime ownership and inventory completeness for published and source plugins, with real Windows report checks in CI.
+
 ## 0.4.2 - 2026-10-16
 
 - Reduce SDK inventory memory use for OpenClaw source targets by using diagnostic-checked host declarations. Keep source intact when exported types require inference and preserve separate plugin inventories.

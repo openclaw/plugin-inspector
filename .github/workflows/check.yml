@@ -10,6 +10,24 @@ permissions:
   contents: read
 
 jobs:
+  windows-sdk-entrypoints:
+    name: Windows SDK entrypoints
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check source and published SDK entrypoints
+        run: node --test test/sdk-usage-runtime-entrypoints.test.js
+
   check:
     name: Node 22
     runs-on: ubuntu-latest
