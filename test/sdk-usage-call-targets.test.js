@@ -33,6 +33,10 @@ const cases = [
   ["numeric array element", "const helpers = [(value) => { value.registerTool({}); }];", (argument) => `helpers[0](${argument});`],
   ["numeric object property", "const helpers = { 0: (value) => { value.registerTool({}); } };", (argument) => `helpers[0](${argument});`],
   ["quoted numeric array element", "const helpers = [(value) => { value.registerTool({}); }];", (argument) => `helpers["0"](${argument});`],
+  ["empty array spread", "const helpers = [...[], value => value.registerTool({})];", (argument) => `helpers[0](${argument});`, true],
+  ["nonempty array spread", "const helpers = [...[() => {}], value => value.registerTool({})];", (argument) => `helpers[1](${argument});`],
+  ["helper within array spread", "const helpers = [...[value => value.registerTool({})], () => {}];", (argument) => `helpers[0](${argument});`, true],
+  ["nested aliased array spread", "const inner = [() => {}, value => value.registerTool({})]; const outer = [...inner]; const helpers = [...[], ...outer];", (argument) => `helpers[1](${argument});`, true],
   ["object getter returning a function", "const helpers = { get use() { return (value) => { value.registerTool({}); }; } };", (argument) => `helpers.use(${argument});`, true],
   ["class getter returning a function", "class Helpers { get use() { return (value) => { value.registerTool({}); }; } } const helpers = new Helpers();", (argument) => `helpers.use(${argument});`, true],
   ["static class getter returning a function", "class Helpers { static get use() { return (value) => { value.registerTool({}); }; } }", (argument) => `Helpers.use(${argument});`, true],
@@ -48,12 +52,12 @@ const cases = [
   ["inherited constructor", "class Base { constructor(value) { value.registerTool({}); } } class Child extends Base {}", (argument) => `new Child(${argument});`],
 ];
 
-for (const [name, helper, invoke, getterValueUnknown = false] of cases) {
+for (const [name, helper, invoke, valueUnknown = false] of cases) {
   test(`serialized inventory follows the executed ${name}`, async (t) => {
     const sdk = await inspectCall(t, helper, invoke, "api");
-    // Getter callable indexing is precise; value provenance stays conservative.
-    assert.equal(sdk.status, getterValueUnknown ? "partial" : "complete");
-    assert.deepEqual(sdk.unknowns, getterValueUnknown ? [{
+    // Callable indexing is precise; getter/spread value provenance stays conservative.
+    assert.equal(sdk.status, valueUnknown ? "partial" : "complete");
+    assert.deepEqual(sdk.unknowns, valueUnknown ? [{
       path: "index.ts", line: 2, expression: invoke("api").replace(/;$/, ""),
       reason: "SDK handle escapes into an unresolved external call",
     }] : []);
@@ -75,6 +79,40 @@ test("noncanonical array property strings do not select numeric elements", async
     assert.deepEqual(sdk.entries.filter(({ kind }) => kind === "api-member"), [], key);
   }
 });
+
+test("array spreads retain both statically possible callable positions", async (t) => {
+  const helper = "const prefix = flag ? [] : [value => value.registerService({})]; const helpers = [...prefix, value => value.registerTool({})];";
+  const invoke = (argument) => `helpers[0](${argument});`;
+  const sdk = await inspectCall(t, helper, invoke, "api");
+  assert.deepEqual(sdk.entries.filter(({ kind }) => kind === "api-member").map(({ key }) => key), ["api-member:api.registerService", "api-member:api.registerTool"]);
+  const unrelated = await inspectCall(t, helper, invoke, "{}");
+  assert.deepEqual(unrelated.entries.filter(({ kind }) => kind === "api-member"), []);
+});
+
+for (const [name, helper, key] of [
+  ["shifted array element", "const helpers = [...[() => {}, () => {}], value => value.registerTool({})];", 1],
+  ["array hole", "const helpers = [...[,], value => value.registerTool({})];", 0],
+  ["recursive array spread", "let helpers; helpers = [...helpers, value => value.registerTool({})];", 1],
+]) {
+  test(`array lookup does not invent a callable for ${name}`, async (t) => {
+    const sdk = await inspectCall(t, helper, (argument) => `helpers[${key}](${argument});`, "api");
+    assert.deepEqual(sdk.entries.filter(({ kind }) => kind === "api-member"), []);
+  });
+}
+
+for (const invoke of [(argument) => `helpers[1](${argument});`, (argument) => `alias(${argument});`]) {
+  test("an unresolved spread length reports uncertain SDK argument flow through aliases", async (t) => {
+    const helper = "import prefix from 'unknown'; const helpers = [...prefix, value => value.registerTool({})]; const alias = helpers[1];";
+    const sdk = await inspectCall(t, helper, invoke, "api");
+    assert.equal(sdk.status, "partial");
+    assert.deepEqual(sdk.entries.filter(({ kind }) => kind === "api-member"), []);
+    assert.deepEqual(sdk.unknowns, [{ path: "index.ts", line: 2, expression: invoke("api").replace(/;$/, ""), reason: "SDK handle escapes into an unresolved external call" }]);
+    const unrelated = await inspectCall(t, helper, invoke, "{}");
+    assert.equal(unrelated.status, "complete");
+    assert.deepEqual(unrelated.unknowns, []);
+    assert.deepEqual(unrelated.entries.filter(({ kind }) => kind === "api-member"), []);
+  });
+}
 
 for (const [name, helper] of [
   ["object setter", "const helpers = { set use(value) { value.registerTool({}); } };"],

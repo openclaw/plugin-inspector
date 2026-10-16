@@ -42,7 +42,8 @@ export function createProvenance({ checker, program, localSource, sources, targe
       assignments.set(symbol, [...(assignments.get(symbol) ?? []), node.right]);
     }
   });
-  const callDeclarations = createCallTargetResolver({ checker, program, localSource, sourceNames, consumeWork, assignments });
+  const unresolvedArrayCalls = new WeakSet();
+  const callDeclarations = createCallTargetResolver({ checker, program, localSource, sourceNames, consumeWork, assignments, onUnresolvedArrayCall: (node) => unresolvedArrayCalls.add(node) });
   for (const source of sources) walk(source, (node) => {
     if (workLimitReached) return;
     if (ts.isCallExpression(node) || ts.isNewExpression(node)) {
@@ -527,5 +528,5 @@ export function createProvenance({ checker, program, localSource, sources, targe
   // Direct entry discovery may also have observed an as-yet unmarked parameter.
   directCache = new WeakMap();
 
-  return { resolve, select, exported, moduleValue, literal, literals, typeValue: (node) => consumeWork(node) ? typeValue(node) : undefined };
+  return { resolve, select, exported, moduleValue, literal, literals, hasUnresolvedArrayCall: (node) => unresolvedArrayCalls.has(node), typeValue: (node) => consumeWork(node) ? typeValue(node) : undefined };
 }

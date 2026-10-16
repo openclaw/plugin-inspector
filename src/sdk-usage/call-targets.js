@@ -2,13 +2,15 @@ import ts from "typescript";
 import { nameText } from "./syntax.js";
 
 /** Index argument flow through actual local bodies without instantiating generic signatures. */
-export function createCallTargetResolver({ checker, program, localSource, sourceNames, consumeWork, assignments }) {
+export function createCallTargetResolver({ checker, program, localSource, sourceNames, consumeWork, assignments, onUnresolvedArrayCall }) {
   const visiting = new Set();
   const constructing = new Set();
+  const expandingArrays = new Set();
   const selecting = new Map();
   const bindingCaches = new WeakMap();
   const emptyBindings = new Map();
   let cycleGeneration = 0;
+  let unresolvedArrayGeneration = 0;
   function declarations(symbol, bindings) {
     if (symbol?.flags & ts.SymbolFlags.Alias) symbol = checker.getAliasedSymbol(symbol);
     return [...(symbol?.declarations ?? []).flatMap((declaration) => {
@@ -47,7 +49,10 @@ export function createCallTargetResolver({ checker, program, localSource, source
           if (exported) { found = true; return declarations(exported, bindings); }
           return [];
         }
-        if (ts.isArrayLiteralExpression(value) && String(Number(key)) === key && value.elements[Number(key)]) { found = true; return values(value.elements[Number(key)], bindings); }
+        if (ts.isArrayLiteralExpression(value) && String(Number(key)) === key && Number.isInteger(Number(key)) && Number(key) >= 0) {
+          found = true;
+          return arraySelection(value, Number(key), bindings).selected;
+        }
         if (!ts.isObjectLiteralExpression(value)) return [];
         let setterOnly = false;
         for (const property of [...value.properties].reverse()) {
@@ -74,18 +79,54 @@ export function createCallTargetResolver({ checker, program, localSource, source
       if (!keys.size) selecting.delete(expression);
     }
   }
+  function arraySelection(array, index, bindings) {
+    const selected = new Set();
+    let remaining = new Set([index]);
+    if (!consumeWork(array)) return { selected: [], remaining: [] };
+    if (expandingArrays.has(array)) { cycleGeneration++; return { selected: [], remaining: [] }; }
+    expandingArrays.add(array);
+    try {
+      for (const element of array.elements) {
+        if (!remaining.size || !consumeWork(element)) break;
+        const next = new Set();
+        for (const offset of remaining) {
+          if (ts.isSpreadElement(element)) {
+            const spreads = values(element.expression, bindings);
+            if (!spreads.length) unresolvedArrayGeneration++;
+            for (const spread of spreads) {
+              // An unknown spread has no known length, so later positions cannot be guessed.
+              if (!ts.isArrayLiteralExpression(spread)) { unresolvedArrayGeneration++; continue; }
+              const result = arraySelection(spread, offset, bindings);
+              for (const value of result.selected) selected.add(value);
+              for (const rest of result.remaining) next.add(rest);
+            }
+          } else if (offset === 0) {
+            for (const value of values(element, bindings)) selected.add(value);
+          } else next.add(offset - 1);
+        }
+        remaining = next;
+      }
+      return { selected: [...selected], remaining: [...remaining] };
+    } finally { expandingArrays.delete(array); }
+  }
   function values(expression, bindings) {
     if (!expression || !consumeWork(expression)) return [];
     if (visiting.has(expression)) { cycleGeneration++; return []; }
     let cache = bindingCaches.get(bindings);
     if (!cache) { cache = new WeakMap(); bindingCaches.set(bindings, cache); }
-    if (cache.has(expression)) return cache.get(expression);
+    if (cache.has(expression)) {
+      const cached = cache.get(expression);
+      // An alias must preserve uncertainty even when its target list is memoized.
+      if (cached.unresolvedArray) unresolvedArrayGeneration++;
+      return cached.result;
+    }
     visiting.add(expression);
     try {
       const generation = cycleGeneration;
+      const arrayGeneration = unresolvedArrayGeneration;
       const result = [...new Set(evaluate(expression, bindings))];
       // A cycle cut depends on the current traversal, not only these bindings.
-      if (generation === cycleGeneration) cache.set(expression, result);
+      if (generation === cycleGeneration) cache.set(expression, { result, unresolvedArray: arrayGeneration !== unresolvedArrayGeneration });
       return result;
     } finally { visiting.delete(expression); }
   }
@@ -153,5 +194,10 @@ export function createCallTargetResolver({ checker, program, localSource, source
       return ts.isFunctionLike(value) && value.body ? [value] : [];
     }))];
   }
-  return (node) => targets(node.expression, ts.isNewExpression(node) || node.expression.kind === ts.SyntaxKind.SuperKeyword);
+  return (node) => {
+    const generation = unresolvedArrayGeneration;
+    const result = targets(node.expression, ts.isNewExpression(node) || node.expression.kind === ts.SyntaxKind.SuperKeyword);
+    if (generation !== unresolvedArrayGeneration) onUnresolvedArrayCall(node);
+    return result;
+  };
 }
