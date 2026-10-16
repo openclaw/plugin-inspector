@@ -24,6 +24,8 @@ async function inspectCall(t, helper, invoke, argument) {
 const cases = [
   ["local function alias", "function use(value) { value.registerTool({}); } const alias = use;", (argument) => `alias(${argument});`],
   ["chained function aliases", "function use(value) { value.registerTool({}); } const first = use; const second = first;", (argument) => `second(${argument});`],
+  ["nullish callable alias", "function use(value) { value.registerTool({}); } const alias = use ?? (() => {});", (argument) => `alias(${argument});`],
+  ["logical callable alias", "function use(value) { value.registerTool({}); } const alias = use || (() => {});", (argument) => `alias(${argument});`],
   ["parenthesized function", "function use(value) { value.registerTool({}); }", (argument) => `(use)(${argument});`],
   ["immediately invoked arrow", "", (argument) => `((value) => { value.registerTool({}); })(${argument});`],
   ["immediately invoked function", "", (argument) => `(function (value) { value.registerTool({}); })(${argument});`],
