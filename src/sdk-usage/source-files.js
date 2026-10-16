@@ -31,7 +31,7 @@ export async function readUsageFiles(root, report) {
     for (const specifier of file.dependencies) {
       if (!specifier.startsWith(".")) continue;
       const base = path.resolve(path.dirname(file.path), specifier);
-      const variants = [base, ...[".ts", ".tsx", ".mts", ".cts"].map((extension) => base.replace(/\.[cm]?jsx?$/, "") + extension), ...[".ts", ".js"].map((extension) => path.join(base, `index${extension}`))];
+      const variants = [base, ...[".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs"].map((extension) => base.replace(/\.[cm]?jsx?$/, "") + extension), ...[".ts", ".js"].map((extension) => path.join(base, `index${extension}`))];
       const imported = variants.map((variant) => candidates.get(variant)).find(Boolean);
       if (imported && !imported.included) { imported.included = true; includeLocal(imported); }
     }

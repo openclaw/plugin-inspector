@@ -20,10 +20,10 @@ export function collectSdkMembers({ sources, report, provenance }) {
   for (const source of sources) walk(source, (node) => {
     if (ts.isQualifiedName(node) && !ts.isQualifiedName(node.parent)) record(resolve(node), "type-reference", node, "type");
     if (ts.isPropertyAccessExpression(node) || ts.isElementAccessExpression(node)) {
+      if (ts.isElementAccessExpression(node) && !literals(node.argumentExpression).length && unresolvedSdkReceiver(resolve(node.expression))) report.unknown(node, "Computed SDK member is not statically resolvable");
       if (node.parent.expression === node && (ts.isPropertyAccessExpression(node.parent) || ts.isElementAccessExpression(node.parent))) return;
       const value = resolve(node);
       record(value, referenceKind(node) ?? "member-access", node);
-      if (ts.isElementAccessExpression(node) && !literals(node.argumentExpression).length && unresolvedSdkReceiver(resolve(node.expression))) report.unknown(node, "Computed SDK member is not statically resolvable");
     }
     if (ts.isCallExpression(node)) {
       const value = resolve(node.expression);

@@ -181,6 +181,19 @@ sdk[process.env.METHOD]();
   assert.ok(report.sdkUsage.entries.some((entry) => entry.key === "sdk-export:openclaw/plugin-sdk/core#*"));
 });
 
+test("dynamic intermediate SDK receivers cannot report complete coverage", async (t) => {
+  const report = await inspectPublishedJson(t, `
+export default { register(api) {
+  const name = process.env.CHANNEL;
+  api.runtime.channel[name].send();
+} };
+`);
+  assert.equal(report.sdkUsage.status, "partial");
+  assert.equal(report.sdkUsage.unknowns.length, 1);
+  assert.equal(report.sdkUsage.unknowns[0].expression, "api.runtime.channel[name]");
+  assert.ok(!report.sdkUsage.entries.some((entry) => entry.key.endsWith(".send")));
+});
+
 test("relative imports cannot attribute SDK usage from outside the inspected package", async (t) => {
   for (const nestedUnderTarget of [false, true]) {
     const report = await inspectPublishedJson(t, `
@@ -193,6 +206,24 @@ helper();
     });
     assert.deepEqual(report.sdkUsage.entries.filter((entry) => entry.kind === "sdk-export"), []);
   }
+});
+
+test("extensionless production requires include JavaScript helpers in excluded directories", async (t) => {
+  const report = await inspectPublishedJson(t, "", {
+    sdkUsageInputKind: "artifact",
+    files: {
+      "package.json": JSON.stringify({ name: "@example/inventory", version: "1.0.0", type: "commonjs", openclaw: { extensions: ["./index.cjs"] } }),
+      "index.cjs": 'require("./test-utils/helper");',
+      "test-utils/helper.js": 'const { run } = require("openclaw/plugin-sdk/example"); run();',
+    },
+  });
+  const entry = report.sdkUsage.entries.find((item) => item.key === "sdk-export:openclaw/plugin-sdk/example#run");
+  assert.ok(entry, "production dependency must contribute its SDK usage");
+  assert.equal(entry.classification, "runtime");
+  assert.ok(entry.referenceKinds.includes("call"));
+  assert.ok(entry.evidence.every((site) => site.path === "test-utils/helper.js"));
+  assert.equal(report.sdkUsage.coverage.filesExcluded, 0);
+  assert.equal(report.sdkUsage.status, "complete");
 });
 
 test("ambient SDK declarations must be part of the inspected files", async (t) => {
