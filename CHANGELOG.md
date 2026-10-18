@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Preserve bounded process output and truncation metadata for failed runtime and import-loop profile samples so Node version footers cannot hide the underlying exception. Keep existing previews, execution limits, and successful-sample output unchanged.
+
 ## 0.4.3 - 2026-10-16
 
 - Normalize paths at SDK entrypoint and host-declaration reference boundaries on Windows. Preserve runtime ownership, referenced host types, and inventory completeness for published and source plugins, with real Windows report checks in CI.

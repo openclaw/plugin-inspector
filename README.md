@@ -356,6 +356,14 @@ fails if its JSON response is truncated; intercepted plugin stdout/stderr
 inside that response retains at most 1 MiB each. The optional `ps` sampler
 also has bounded output, execution, and cleanup.
 
+Runtime-profile and import-loop samples from failed process outcomes (nonzero
+exit, timeout, or cancellation) include `processOutput` in their JSON artifacts:
+the bounded stdout/stderr prefix and an `outputTruncated` flag.
+The existing two-line previews are unchanged. Samples also record the process
+signal and timeout budget. Successful process outcomes omit `processOutput`.
+This output is not automatically redacted; use credential-free workloads and
+review raw diagnostics before sharing them publicly.
+
 Default import-loop profiles launch the mock capture runner directly under one
 profile budget, for both baseline and plugin samples. Their JSON artifacts
 retain capture's 10 MiB default limit (`PLUGIN_INSPECTOR_CAPTURE_MAX_OUTPUT_BYTES`,

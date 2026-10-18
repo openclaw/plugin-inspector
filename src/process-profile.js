@@ -209,8 +209,19 @@ export async function runProfiledProcess(options) {
       timedOut: outcome.timedOut,
       cancelled: outcome.cancelled,
       pid: outcome.pid,
+      signal: outcome.signal,
+      timeoutMs: outcome.timeoutMs,
       stdoutPreview: previewLines(outcome.stdout),
       stderrPreview: previewLines(outcome.stderr),
+      // A Node version footer can hide the exception in the two-line preview.
+      // Preserve the already bounded output only for failed process outcomes.
+      ...(outcome.exitCode !== 0 || outcome.timedOut || outcome.cancelled ? {
+        processOutput: {
+          stdout: outcome.stdout,
+          stderr: outcome.stderr,
+          outputTruncated: outcome.outputTruncated,
+        },
+      } : {}),
     };
   } finally {
     stopSampling();

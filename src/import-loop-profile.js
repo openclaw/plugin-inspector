@@ -298,6 +298,9 @@ async function runCaptureSample(options) {
     exitCode: profile.exitCode,
     timedOut: profile.timedOut === true,
     cancelled: profile.cancelled === true,
+    pid: profile.pid,
+    signal: profile.signal,
+    timeoutMs: profile.timeoutMs,
     status: output?.status ?? "failed",
     capturedCount: output?.captured?.length ?? 0,
     openClawLifecycle: output?.openClawLifecycle ?? null,
@@ -309,6 +312,7 @@ async function runCaptureSample(options) {
     rssSampleCount: profile.rssSampleCount,
     cpuSampleCount: profile.cpuSampleCount,
     stderrPreview: profile.stderrPreview,
+    ...(profile.processOutput ? { processOutput: profile.processOutput } : {}),
   };
 }
 
