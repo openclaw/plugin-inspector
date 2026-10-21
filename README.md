@@ -542,8 +542,14 @@ is already removed. These are non-blocking, author-facing deprecation warnings.
 The replacement text is preserved verbatim because some migrations require more
 than renaming a function. Packed npm targets, including ClawHub's compact target,
 use the bundled December 31, 2026 retirement inventory in `src/sdk-retirements.json`.
-Its upstream commit is exposed as `targetOpenClaw.compatDeprecationsSource`;
-these notices describe the announced retirement policy even for older packages.
+Its upstream commit is exposed as `targetOpenClaw.compatDeprecationsSource`.
+The full inventory stays on `compatRecords`. Each record lists
+`replacementExports`, every call its guidance tells the author to use.
+Author-facing `compatDeprecations` include that record only when each of
+those names is reachable from a `./plugin-sdk` declaration export. A root
+package export does not count. A public declaration may import the type
+that declares the member. A name in a comment does not count. A missing
+replacement is not prescribed.
 An explicit source checkout uses its own registry instead of the snapshot.
 Conditional prose surfaces and untyped instance-method calls are
 not inferred from method names alone. The reader resolves literal data and

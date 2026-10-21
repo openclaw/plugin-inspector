@@ -1,4 +1,92 @@
+import path from "node:path";
+import ts from "typescript";
 import { collectRuntimeModuleImports } from "./runtime-imports.js";
+
+// Packed packages may predate the pinned inventory. Only prescribe replacements
+// exposed by that package's public SDK declarations.
+export function retirementRecordsForPackedTarget(records, { declarations = [], packageJson = {}, packageRoot = "" } = {}) {
+  const available = publicReplacementNames(declarations, packageJson, packageRoot);
+  return records.filter((record) => !Array.isArray(record.replacementExports)
+    || record.replacementExports.every((name) => available.has(name)));
+}
+
+function publicReplacementNames(declarations, packageJson, packageRoot) {
+  const normalize = (file) => path.resolve(file).split(path.sep).join("/");
+  const sources = new Map(declarations.map(({ filePath, source }) => {
+    const name = normalize(filePath);
+    return [name, ts.createSourceFile(name, source ?? "", ts.ScriptTarget.Latest, true)];
+  }));
+  const options = { noLib: true, noEmit: true, types: [], module: ts.ModuleKind.ESNext, moduleResolution: ts.ModuleResolutionKind.Bundler };
+  // Use only the already-read declaration snapshot; resolution must never read
+  // installed dependencies or execute the selected package.
+  const host = {
+    getSourceFile: (file) => sources.get(normalize(file)),
+    fileExists: (file) => sources.has(normalize(file)),
+    readFile: (file) => sources.get(normalize(file))?.text,
+    getDefaultLibFileName: () => "",
+    writeFile: () => {},
+    getCurrentDirectory: () => normalize(packageRoot || "."),
+    getDirectories: () => [],
+    getCanonicalFileName: normalize,
+    useCaseSensitiveFileNames: () => true,
+    getNewLine: () => "\n",
+  };
+  const program = ts.createProgram([...sources.keys()], options, host);
+  const checker = program.getTypeChecker();
+  const names = new Set();
+  const seen = new Set();
+  function collectMembers(type) {
+    if (!type || seen.has(type)) return;
+    seen.add(type);
+    if (type.isUnionOrIntersection()) {
+      for (const part of type.types) collectMembers(part);
+    }
+    for (const signature of checker.getSignaturesOfType(type, ts.SignatureKind.Call)) {
+      collectMembers(checker.getReturnTypeOfSignature(signature));
+    }
+    for (const member of checker.getPropertiesOfType(type)) {
+      names.add(member.name);
+      const declaration = member.valueDeclaration ?? member.declarations?.[0];
+      if (declaration) collectMembers(checker.getTypeOfSymbolAtLocation(member, declaration));
+    }
+  }
+  for (const file of publicSdkDeclarations(packageJson, packageRoot, sources)) {
+    const source = program.getSourceFile(file);
+    const module = source && checker.getSymbolAtLocation(source);
+    if (!module || source.parseDiagnostics.length) continue;
+    for (const exported of checker.getExportsOfModule(module)) {
+      const symbol = exported.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(exported) : exported;
+      if (symbol.flags & (ts.SymbolFlags.Value | ts.SymbolFlags.Type)) names.add(exported.name);
+      if (symbol.flags & ts.SymbolFlags.Type) collectMembers(checker.getDeclaredTypeOfSymbol(symbol));
+      if (symbol.flags & ts.SymbolFlags.Value) {
+        const declaration = symbol.valueDeclaration ?? symbol.declarations?.[0];
+        if (declaration) collectMembers(checker.getTypeOfSymbolAtLocation(symbol, declaration));
+      }
+    }
+  }
+  return names;
+}
+
+function publicSdkDeclarations(packageJson, packageRoot, sources) {
+  const files = new Set();
+  const visit = (value) => {
+    if (typeof value === "string") {
+      const resolved = path.resolve(packageRoot, value).split(path.sep).join("/");
+      const candidates = /\.d\.[cm]?ts$/.test(resolved) ? [resolved]
+        : /\.mjs$/.test(resolved) ? [resolved.replace(/\.mjs$/, ".d.mts"), resolved.replace(/\.mjs$/, ".d.ts")]
+        : /\.cjs$/.test(resolved) ? [resolved.replace(/\.cjs$/, ".d.cts"), resolved.replace(/\.cjs$/, ".d.ts")]
+        : [resolved.replace(/\.js$/, ".d.ts")];
+      const declaration = candidates.find((candidate) => sources.has(candidate));
+      if (declaration) files.add(declaration);
+    } else if (value && typeof value === "object") {
+      for (const child of Object.values(value)) visit(child);
+    }
+  };
+  for (const [specifier, value] of Object.entries(packageJson.exports ?? {})) {
+    if (specifier === "./plugin-sdk" || specifier.startsWith("./plugin-sdk/")) visit(value);
+  }
+  return files;
+}
 
 function parseSurface(api) {
   const sdk = /^(openclaw\/plugin-sdk(?:\/[\w-]+)?)(?:(?:\.|\s+)([\w$]+))?$/.exec(api);

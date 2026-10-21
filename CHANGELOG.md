@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Only prescribe packed-target SDK retirement migrations when the selected host publicly exposes every replacement; resolve declaration exports and runtime type members without treating comments or strings as APIs. Thanks @SebTardif.
+
 - Preserve bounded process output and truncation metadata for failed runtime and import-loop profile samples so Node version footers cannot hide the underlying exception. Keep existing previews, execution limits, and successful-sample output unchanged.
 
 ## 0.4.3 - 2026-10-16
