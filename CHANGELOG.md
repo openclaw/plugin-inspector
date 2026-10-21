@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.4.4 - 2026-10-20
+
+**Highlights:** Give plugin authors usable retirement advice for their selected host and retain underlying errors in failed profile diagnostics.
+
 - Only prescribe packed-target SDK retirement migrations when the selected host publicly exposes every replacement; resolve declaration exports and runtime type members without treating comments or strings as APIs. Thanks @SebTardif.
 
 - Preserve bounded process output and truncation metadata for failed runtime and import-loop profile samples so Node version footers cannot hide the underlying exception. Keep existing previews, execution limits, and successful-sample output unchanged.
