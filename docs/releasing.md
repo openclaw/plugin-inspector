@@ -119,6 +119,12 @@ local smoke proof, and Crabpot CI proof are all current.
 
 ## Publish
 
+After merging release preparation, dispatch `release.yml` on `main` with
+`tag_name=v<version>` and `dry_run=true`. This validates the selected commit,
+package contents, and versioned release notes without creating a tag or publishing.
+Require that run to pass before pushing the signed annotated release tag.
+
+
 For the initial release:
 
 ```bash
@@ -127,7 +133,8 @@ git push origin v0.1.0
 ```
 
 The same workflow can be triggered manually from GitHub Actions with
-`tag_name=v0.1.0`.
+`tag_name=v0.1.0` and `dry_run=false` to retry publication of an existing tag.
+Manual runs default to `dry_run=true`; tag pushes publish normally.
 
 If npm publish fails with `ENEEDAUTH` or a misleading package-not-found error,
 check that the npm trusted publisher configuration exactly matches the GitHub
