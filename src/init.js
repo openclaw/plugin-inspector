@@ -111,7 +111,7 @@ jobs:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
-          node-version: 24
+          node-version: 24.22.1
 ${setup.cache ? `          cache: ${setup.cache}\n` : "          package-manager-cache: false\n"}${setup.corepack ? "      - run: corepack enable\n" : packageManager === "bun" ? "      - uses: oven-sh/setup-bun@v2\n" : ""}      - run: ${setup.install}
       - run: ${setup.exec} @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute
       - uses: actions/upload-artifact@v7

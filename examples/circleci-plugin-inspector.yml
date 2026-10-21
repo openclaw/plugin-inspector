@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   plugin-inspector:
     docker:
-      - image: cimg/node:24.0
+      - image: cimg/node:24.22.1@sha256:af46387c805de6dc3bc101a66de590daf4d01d5565ea66a99cf438fba323a055
     steps:
       - checkout
       - run: npm ci
