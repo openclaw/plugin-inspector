@@ -1,5 +1,5 @@
 plugin_inspector:
-  image: node:24
+  image: node:24.22.1-trixie@sha256:e8bc2eedd0e82fb45a4d9a68aff03d1fbe478fc5794a67d7dc06b72a2caaa2ec
   script:
     - npm ci
     - npx @openclaw/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute
