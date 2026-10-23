@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Read source-host hook names from the exhaustive metadata registry used by current OpenClaw, preserving generated-surface validation after the host removes its separate name array.
+
 - Keep inferred host exports while excluding imports used only by explicitly typed function bodies from SDK analysis, reducing source-target memory use without increasing the heap limit.
 
 ## 0.4.4 - 2026-10-20

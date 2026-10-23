@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
+import ts from "typescript";
 import { resolveJailedPluginPath } from "./path-utils.js";
 import { readCompatRegistryRecords } from "./compat-registry.js";
 import { retirementRecordsForPackedTarget } from "./registry-deprecations.js";
@@ -72,7 +73,7 @@ export async function readOpenClawTargetSurface(options = {}) {
     ]),
   );
   const hookTypesSource = existsSync(hookTypesPath) ? await readFile(hookTypesPath, "utf8") : "";
-  const hookNames = hookTypesSource ? parseConstStringArray(hookTypesSource, "PLUGIN_HOOK_NAMES") : [];
+  const hookNames = parseCheckoutHookNames(hookTypesSource);
   const apiBuilderSource = existsSync(apiBuilderPath) ? await readFile(apiBuilderPath, "utf8") : "";
   const apiRegistrars = apiBuilderSource ? parseApiRegistrars(apiBuilderSource) : [];
   const currentManifestTypesSource = existsSync(currentManifestTypesPath)
@@ -624,6 +625,30 @@ function readObjectTypeBody(source, typeName) {
     if (depth === 0) return source.slice(start, index);
   }
   return null;
+}
+
+function parseCheckoutHookNames(source) {
+  const names = parseConstStringArray(source, "PLUGIN_HOOK_NAMES");
+  if (names.length > 0) return names;
+
+  // Current hosts derive hook names from this exhaustive metadata registry.
+  const tree = ts.createSourceFile("hook-types.ts", source, ts.ScriptTarget.Latest, true);
+  if (tree.parseDiagnostics.length > 0) return [];
+  for (const statement of tree.statements) {
+    if (!ts.isVariableStatement(statement)) continue;
+    for (const declaration of statement.declarationList.declarations) {
+      if (!ts.isIdentifier(declaration.name) || declaration.name.text !== "PLUGIN_HOOK_METADATA" ||
+          !declaration.initializer || !ts.isObjectLiteralExpression(declaration.initializer)) continue;
+      const keys = [];
+      for (const property of declaration.initializer.properties) {
+        if (!ts.isPropertyAssignment(property) ||
+            !(ts.isIdentifier(property.name) || ts.isStringLiteral(property.name))) return [];
+        keys.push(property.name.text);
+      }
+      return unique(keys).sort();
+    }
+  }
+  return [];
 }
 
 function parseStringUnion(source, typeName) {
