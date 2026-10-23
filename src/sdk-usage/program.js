@@ -24,6 +24,48 @@ function publicTypePaths(targetRoot) {
   return paths;
 }
 
+// A single inferred export can prevent declaration emit for an otherwise typed
+// facade. Keep inferred code, but avoid crawling imports used only by typed bodies.
+function withoutTypedImplementations(text, fileName, canDropImport) {
+  const source = ts.createSourceFile(fileName, text, ts.ScriptTarget.Latest, true);
+  if (source.parseDiagnostics.length) return text;
+  const edits = [];
+  const used = new Set();
+  function visit(node) {
+    if (ts.isImportDeclaration(node) || ts.isImportEqualsDeclaration(node)) return;
+    if (ts.isIdentifier(node)) used.add(node.text);
+    const body = ts.isFunctionLike(node) && node.type && node.body;
+    if (body) {
+      edits.push({ start: body.getStart(source), end: body.end,
+        text: ts.isBlock(body) ? "{ throw null; }" : "(null as never)" });
+    }
+    ts.forEachChild(node, (child) => { if (child !== body) visit(child); });
+  }
+  visit(source);
+  if (!edits.length) return text;
+  for (const statement of source.statements) {
+    let names;
+    if (ts.isImportDeclaration(statement) && statement.importClause) {
+      const clause = statement.importClause;
+      const bindings = clause.namedBindings;
+      names = [clause.name, ...(bindings
+        ? ts.isNamespaceImport(bindings) ? [bindings.name] : bindings.elements.map((item) => item.name)
+        : [])].filter(Boolean);
+    } else if (ts.isImportEqualsDeclaration(statement)) names = [statement.name];
+    const specifier = ts.isImportDeclaration(statement) ? statement.moduleSpecifier
+      : ts.isImportEqualsDeclaration(statement) && ts.isExternalModuleReference(statement.moduleReference)
+        ? statement.moduleReference.expression : undefined;
+    if (names?.length && names.every((name) => !used.has(name.text)) &&
+        specifier && ts.isStringLiteralLike(specifier) && canDropImport(specifier.text)) {
+      edits.push({ start: statement.getStart(source), end: statement.end, text: "" });
+    }
+  }
+  for (const edit of edits.sort((left, right) => right.start - left.start)) {
+    text = text.slice(0, edit.start) + edit.text + text.slice(edit.end);
+  }
+  return text;
+}
+
 /** Resolve inspected files and the explicit host; never crawl installed dependencies. */
 export function createUsageProgram(files, targetRoot, hostCache) {
   const sources = files.filter((file) => !file.metadata).map((file) => ts.createSourceFile(file.path, file.text, ts.ScriptTarget.Latest, true));
@@ -45,6 +87,48 @@ export function createUsageProgram(files, targetRoot, hostCache) {
   const realpath = host.realpath?.bind(host);
   host.realpath = (name) => byPath.has(name) ? name : realpath?.(name) ?? name;
   const readSource = host.getSourceFile.bind(host);
+  const declarationEffects = hostCache?.declarationEffects ?? new Map();
+  if (hostCache) hostCache.declarationEffects = declarationEffects;
+  const effectDecisions = new Map();
+  function canDropImport(specifier, from) {
+    const resolve = (name, containing) => {
+      const resolved = ts.resolveModuleName(name, containing, options, host, resolutionCache).resolvedModule?.resolvedFileName;
+      return resolved && insideTarget(resolved) ? resolved : null;
+    };
+    const root = resolve(specifier, from);
+    if (!root) return true;
+    const pending = [root];
+    const seen = new Set();
+    while (pending.length) {
+      const name = pending.pop();
+      if (seen.has(name) || effectDecisions.get(name) === false) continue;
+      if (effectDecisions.get(name) === true) return false;
+      seen.add(name);
+      let facts = declarationEffects.get(name);
+      if (!facts) {
+        const raw = host.readFile(name);
+        if (raw === undefined) return false;
+        const syntax = ts.createSourceFile(name, raw, options.target, true);
+        let effects = !ts.isExternalModule(syntax) || /\.[cm]?jsx?$/.test(name) || syntax.referencedFiles.length > 0 ||
+          syntax.typeReferenceDirectives.length > 0 || syntax.libReferenceDirectives.length > 0 ||
+          syntax.hasNoDefaultLib || syntax.parseDiagnostics.length > 0;
+        function visit(node) {
+          if (ts.isModuleDeclaration(node) || ts.isNamespaceExportDeclaration(node)) effects = true;
+          else ts.forEachChild(node, visit);
+        }
+        visit(syntax);
+        facts = { effects, imports: ts.preProcessFile(raw, true, true).importedFiles.map((entry) => entry.fileName) };
+        declarationEffects.set(name, facts);
+      }
+      if (facts.effects) { effectDecisions.set(root, true); return false; }
+      for (const dependency of facts.imports) {
+        const resolved = resolve(dependency, name);
+        if (resolved) pending.push(resolved);
+      }
+    }
+    for (const name of seen) effectDecisions.set(name, false);
+    return true;
+  }
   const hostFiles = new Set();
   const libraryDirectory = path.dirname(ts.getDefaultLibFilePath(options));
   host.getSourceFile = (name, languageVersion) => {
@@ -73,6 +157,9 @@ export function createUsageProgram(files, targetRoot, hostCache) {
         if (!declaration.diagnostics?.some((diagnostic) => diagnostic.category === ts.DiagnosticCategory.Error)) {
           source = ts.createSourceFile(name, declaration.outputText, languageVersion, true);
           source.isDeclarationFile = true;
+        } else {
+          source = ts.createSourceFile(name, withoutTypedImplementations(text, name,
+            (specifier) => canDropImport(specifier, name)), languageVersion, true);
         }
       }
     }

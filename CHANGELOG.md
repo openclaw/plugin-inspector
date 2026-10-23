@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Keep inferred host exports while excluding imports used only by explicitly typed function bodies from SDK analysis, reducing source-target memory use without increasing the heap limit.
+
 ## 0.4.4 - 2026-10-20
 
 **Highlights:** Give plugin authors usable retirement advice for their selected host and retain underlying errors in failed profile diagnostics.
