@@ -535,6 +535,9 @@ as `loadSessionStore(...)` when a plugin still depends on the legacy whole-store
 session shape.
 
 When inspecting a source checkout with `--openclaw`, the inspector also reads
+hook names from its explicit name array or exhaustive hook metadata registry.
+Computed or spread registry keys remain unparsed rather than reporting an incomplete surface.
+It reads
 deprecated records from the target's compatibility registry, including imported
 literal record modules and shared record metadata. Individual SDK member imports,
 re-exports, namespace accesses, and literal CommonJS/dynamic imports are matched

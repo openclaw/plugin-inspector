@@ -139,6 +139,38 @@ export const publicPluginOwnedSdkEntrypoints = ["speech-core"] as const;\n`,
   assert.equal(target.compatRegistryPath, "openclaw/src/plugins/compat/registry.ts");
 });
 
+test("OpenClaw target reads hook names from the metadata registry", async (t) => {
+  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-hook-metadata-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const pluginDir = path.join(rootDir, "openclaw/src/plugins");
+  await mkdir(path.join(pluginDir, "compat"), { recursive: true });
+  await writeFile(path.join(pluginDir, "compat/registry.ts"), "export const records = [];\n");
+  await writeFile(path.join(pluginDir, "hook-types.ts"), `
+export type PluginHookName = keyof PluginHookHandlerMap;
+export const PLUGIN_HOOK_METADATA: Readonly<Record<PluginHookName, PluginHookMetadata>> = {
+  // A nested metadata field is not a hook.
+  before_tool_call: { modifyingTimeoutMs: 15_000 },
+  "llm_input": { conversationAccess: true },
+  gateway_start: {},
+};
+`);
+  const target = await readOpenClawTargetSurface({ rootDir, configuredPath: "./openclaw" });
+  assert.deepEqual(target.hookNames, ["before_tool_call", "gateway_start", "llm_input"]);
+  assert.equal(target.hookNameCount, 3);
+  assert.equal(target.hookTypesPath, "openclaw/src/plugins/hook-types.ts");
+
+  for (const source of [
+    '// const PLUGIN_HOOK_METADATA = { fake_hook: {} };',
+    'const example = "const PLUGIN_HOOK_METADATA = { fake_hook: {} };";',
+    'function example() { const PLUGIN_HOOK_METADATA = { fake_hook: {} }; }',
+    'const PLUGIN_HOOK_METADATA = { known: {}, ...otherHooks };',
+    'const PLUGIN_HOOK_METADATA = { [dynamicName]: {} };',
+  ]) {
+    await writeFile(path.join(pluginDir, "hook-types.ts"), source);
+    assert.deepEqual((await readOpenClawTargetSurface({ rootDir, configuredPath: "./openclaw" })).hookNames, [], source);
+  }
+});
+
 test("split compat registry records retain their statuses and report coverage", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-split-registry-"));
   t.after(() => rm(rootDir, { recursive: true, force: true }));
