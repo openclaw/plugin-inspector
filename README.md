@@ -34,6 +34,12 @@ checkout. If an OpenClaw checkout is supplied with `--openclaw <path>`, the
 inspector only reads public compatibility surfaces such as compat records, SDK
 exports, hook names, manifest fields, and registrar metadata.
 
+Source-target SDK analysis preserves inferred exports while omitting explicitly
+typed function bodies and imports used only by those bodies. Imports with
+declaration effects and inferred declarations remain intact.
+This keeps runtime implementation dependencies out of the host type graph when
+a facade mixes explicit signatures with exports that need inference.
+
 Pass `--openclaw-version latest`, `--openclaw-version beta`, or an exact
 published version to resolve an official OpenClaw npm target. Reports keep the
 exact resolved version and npm source metadata. Prepared targets are cached, so

@@ -5,6 +5,7 @@ import path from "node:path";
 import { test } from "node:test";
 import ts from "typescript";
 import { fixtureSuites } from "../src/index.js";
+import { createUsageProgram } from "../src/sdk-usage/program.js";
 
 test("fixture reports reuse host declarations without sharing plugin bindings or stale host state", async (t) => {
   const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-host-"));
@@ -94,6 +95,117 @@ installWithHost({ bootstrap(api) { api.registerTool({}); } });
   });
   assert.ok(report.fixtures[0].sdkUsage.entries.some((entry) => entry.key === "api-member:api.registerTool"));
 });
+
+test("an inferred host export does not pull typed function implementations into the program", async (t) => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-mixed-host-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const targetRoot = path.join(directory, "host");
+  const sdkRoot = path.join(targetRoot, "src/plugin-sdk");
+  const plugin = path.join(directory, "plugins/example");
+  await mkdir(sdkRoot, { recursive: true });
+  await mkdir(plugin, { recursive: true });
+  await writeFile(path.join(targetRoot, "package.json"), "{}");
+  await writeFile(path.join(sdkRoot, "example.ts"), `
+import { implementation } from "../implementation.js";
+export type OpenClawPluginApi = { registerTool(tool: unknown): void };
+function install(options: { bootstrap(api: OpenClawPluginApi): void }): unknown {
+  return implementation(options);
+}
+export const installWithHost = install;
+`);
+  const implementationFile = path.join(targetRoot, "src/implementation.ts");
+  await writeFile(implementationFile, "export function implementation(value: unknown): unknown { return value; }");
+  await writeFile(path.join(plugin, "package.json"), JSON.stringify({ name: "example", version: "1.0.0" }));
+  await writeFile(path.join(plugin, "index.ts"), `
+import { installWithHost } from "openclaw/plugin-sdk/example";
+installWithHost({ bootstrap(api) { api.registerTool({}); } });
+`);
+  const context = createUsageProgram([{
+    path: path.join(plugin, "index.ts"), text: await readFile(path.join(plugin, "index.ts"), "utf8"),
+  }], targetRoot, { sources: new Map() });
+  assert.equal(context.program.getSourceFile(implementationFile), undefined,
+    "inferred exports must not retain imports used only by explicitly typed bodies");
+  const report = await fixtureSuites.inspect({
+    config: { version: 1, submoduleRoot: "plugins", rootDir: directory, fixtures: [{ id: "example", path: "plugins/example" }] },
+    openclawPath: false, sdkUsageTargetPath: targetRoot,
+  });
+  assert.ok(report.fixtures[0].sdkUsage.entries.some((entry) => entry.key === "api-member:api.registerTool"));
+});
+
+test("inferred host facades retain transitive declaration augmentations", async (t) => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-augmented-host-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const sdk = path.join(directory, "src/plugin-sdk");
+  await mkdir(sdk, { recursive: true });
+  await writeFile(path.join(directory, "package.json"), "{}");
+  await writeFile(path.join(directory, "src/augmentation.ts"), `
+export {};
+declare global { interface OpenClawPluginApi { registerTool(tool: unknown): void } }
+`);
+  await writeFile(path.join(directory, "src/implementation.ts"), `
+import "./augmentation.js";
+export function implementation(value: unknown): unknown { return value; }
+`);
+  await writeFile(path.join(sdk, "example.ts"), `
+import { implementation } from "../implementation.js";
+function install(options: { bootstrap(api: OpenClawPluginApi): void }): unknown { return implementation(options); }
+export const installWithHost = install;
+`);
+  const context = createUsageProgram([{
+    path: path.join(directory, "plugin.ts"),
+    text: 'import { installWithHost } from "openclaw/plugin-sdk/example"; installWithHost({ bootstrap(api) {} });',
+  }], directory, { sources: new Map() });
+  const parameter = context.sources[0].statements[1].expression.arguments[0].properties[0].parameters[0];
+  assert.ok(context.checker.getTypeAtLocation(parameter).getProperty("registerTool"),
+    "body-only imports may still contribute to the public type environment");
+});
+
+test("inferred host function properties survive typed-body pruning", async (t) => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-expando-host-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const sdk = path.join(directory, "src/plugin-sdk");
+  await mkdir(sdk, { recursive: true });
+  await writeFile(path.join(directory, "package.json"), "{}");
+  await writeFile(path.join(sdk, "example.ts"), `
+export type OpenClawPluginApi = { registerTool(tool: unknown): void };
+function initialize(): void {}
+initialize.register = (api: OpenClawPluginApi): void => {};
+export const initializeWithHost = initialize;
+`);
+  const context = createUsageProgram([{
+    path: path.join(directory, "plugin.ts"),
+    text: 'import { initializeWithHost } from "openclaw/plugin-sdk/example"; initializeWithHost.register({ registerTool() {} });',
+  }], directory, { sources: new Map() });
+  const call = context.sources[0].statements[1].expression;
+  assert.ok(context.checker.getTypeAtLocation(call.expression.expression).getProperty("register"),
+    "top-level function properties must retain their inferred signatures");
+});
+
+for (const [label, declaration] of [
+  ["library references", '/// <reference lib="dom" />\nexport declare function implementation(value: unknown): unknown;'],
+  ["UMD namespace exports", 'export as namespace HostSurface;\nexport declare function implementation(value: unknown): unknown;'],
+]) {
+test(`body-only imports retain ${label}`, async (t) => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-declaration-effect-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const sdk = path.join(directory, "src/plugin-sdk");
+  await mkdir(sdk, { recursive: true });
+  await writeFile(path.join(directory, "package.json"), "{}");
+  const implementation = path.join(directory, "src/implementation.d.ts");
+  await writeFile(implementation, declaration);
+  await writeFile(path.join(sdk, "example.ts"), `
+import { implementation } from "../implementation.js";
+function install(options: unknown): unknown { return implementation(options); }
+export const installWithHost = install;
+`);
+  const context = createUsageProgram([{
+    path: path.join(directory, "plugin.ts"),
+    text: 'import { installWithHost } from "openclaw/plugin-sdk/example"; installWithHost({});',
+  }], directory, { sources: new Map() });
+  assert.ok(context.program.getSourceFile(implementation), "declaration effects must remain in the public type graph");
+  if (label === "library references") assert.ok(context.program.getSourceFiles().some((file) => path.basename(file.fileName) === "lib.dom.d.ts"));
+});
+}
 
 for (const prefix of ["", "/* license */ ", "/* license\n */ "]) {
 test(`host reference directives retain SDK types after ${JSON.stringify(prefix)}`, async (t) => {
