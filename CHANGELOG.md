@@ -2,9 +2,13 @@
 
 ## Unreleased
 
-- Read source-host hook names from the exhaustive metadata registry used by current OpenClaw, preserving generated-surface validation after the host removes its separate name array.
+## 0.4.5 - 2026-10-26
+
+**Highlights:** Prevent heap exhaustion when inspecting source hosts and keep hook validation compatible with OpenClaw’s metadata registry.
 
 - Keep inferred host exports while excluding imports used only by explicitly typed function bodies from SDK analysis, reducing source-target memory use without increasing the heap limit.
+
+- Read source-host hook names from the exhaustive metadata registry used by current OpenClaw, preserving generated-surface validation after the host removes its separate name array.
 
 ## 0.4.4 - 2026-10-20
 
