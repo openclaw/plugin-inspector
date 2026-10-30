@@ -337,6 +337,33 @@ test("ci command writes CI summary artifacts", async () => {
   assert.match(junit, /failures="0"/);
 });
 
+test("ci command with a plugin-root config still runs requested runtime capture", async () => {
+  const rootDir = await createCliPluginRoot("plugin-inspector-cli-ci-config-runtime-");
+  const cliPath = path.resolve("src/cli.js");
+
+  await execFileAsync(
+    process.execPath,
+    [
+      cliPath,
+      "ci",
+      "--config",
+      path.join(rootDir, "plugin-inspector.config.json"),
+      "--out",
+      "reports",
+      "--no-openclaw",
+      "--runtime",
+      "--mock-sdk",
+      "--allow-execute",
+    ],
+    { cwd: os.tmpdir() },
+  );
+
+  const capture = JSON.parse(
+    await readFile(path.join(rootDir, "reports", "plugin-inspector-runtime-capture.json"), "utf8"),
+  );
+  assert.equal(capture.summary.capturedCount, 1);
+});
+
 test("ci command applies author-facing filtering to report, summary, and CI artifacts", async () => {
   const rootDir = await createCliPluginRoot("plugin-inspector-cli-ci-author-facing-");
   await writeFile(

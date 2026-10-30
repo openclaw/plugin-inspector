@@ -22,6 +22,7 @@ import {
   writeArtifacts,
   writeReport,
 } from "./advanced.js";
+import { isPluginRootConfig } from "./config.js";
 
 const args = process.argv.slice(2);
 const command = args[0]?.startsWith("-") ? "check" : (args[0] ?? "check");
@@ -271,14 +272,21 @@ async function runCiCompatibilityReport({
   outDir,
   pluginRoot,
 }) {
+  let rootConfigPath;
+  let checkRoot = pluginRoot;
   if (configPath) {
     const config = await loadInspectorConfig(configPath, { cwd: pluginRoot });
-    const report = await inspectCompatibilityFixtureSet(config, { authorFacing, openclawPath, openclawVersion });
-    await writeCompatibilityReport(report, { cwd: config.rootDir, outDir });
-    return {
-      report,
-      reportDir: path.resolve(config.rootDir, outDir),
-    };
+    if (!isPluginRootConfig(config)) {
+      const report = await inspectCompatibilityFixtureSet(config, { authorFacing, openclawPath, openclawVersion });
+      await writeCompatibilityReport(report, { cwd: config.rootDir, outDir });
+      return {
+        report,
+        reportDir: path.resolve(config.rootDir, outDir),
+      };
+    }
+    // A plugin-root config (what `init` writes) needs the plugin check, or --runtime is silently dropped.
+    rootConfigPath = config.configPath;
+    checkRoot = config.rootDir;
   }
 
   const { report } = await runPluginCheck({
@@ -286,15 +294,16 @@ async function runCiCompatibilityReport({
     allowExecution,
     authorFacing,
     capture,
+    configPath: rootConfigPath,
     mockSdk,
     openclawPath,
     openclawVersion,
     outDir,
-    pluginRoot,
+    pluginRoot: checkRoot,
   });
   return {
     report,
-    reportDir: path.resolve(pluginRoot ?? process.cwd(), outDir),
+    reportDir: path.resolve(checkRoot ?? process.cwd(), outDir),
   };
 }
 
