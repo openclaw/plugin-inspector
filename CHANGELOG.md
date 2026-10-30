@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Run the requested runtime capture when `ci --config` points at a plugin-root config, such as the one `init` writes, instead of silently skipping it and passing. Thanks @KrasimirKralev.
+
 ## 0.4.5 - 2026-10-26
 
 **Highlights:** Prevent heap exhaustion when inspecting source hosts and keep hook validation compatible with OpenClaw’s metadata registry.
