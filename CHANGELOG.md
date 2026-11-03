@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Keep enum-containing TypeScript import classification compatible with Node 26 while preserving source offsets and conservative malformed-source handling.
+
 ## 0.4.5 - 2026-10-26
 
 **Highlights:** Prevent heap exhaustion when inspecting source hosts and keep hook validation compatible with OpenClaw’s metadata registry.
