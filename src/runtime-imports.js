@@ -4,6 +4,8 @@ import { analyze } from "eslint-scope";
 
 const literalModuleImport = /(?<![$\w.])(?<kind>[$A-Z_a-z][$\w]*)\s*\(\s*(?<quote>["'`])(?<specifier>[^"'`\\\r\n]+)\k<quote>/dg;
 
+let typeScript;
+
 export function collectRuntimeModuleImports(text, { includeStaticNamespaces = false, includeStaticMembers = false, includeRuntimeMembers = false } = {}) {
   // Preserve possible-import offsets through erasure; AST and scopes classify them.
   // Named factories use createRequire or a \u escape. Avoid parsing unrelated
@@ -233,7 +235,10 @@ function classifyRuntimeImports(text, entries, { preservePositions = false } = {
     runtimeText = preservePositions && typeof nodeModule.stripTypeScriptTypes === "function"
       ? nodeModule.stripTypeScriptTypes(markedText, { mode: "strip" })
       : eraseTypeScript(markedText);
-  } catch {
+  } catch (error) {
+    if (error?.code === "ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX") {
+      runtimeText = maskImportTypes(markedText);
+    }
     // Unsupported or incomplete TypeScript cannot prove an import is type-only.
   }
   // Scan once, including overlapping suffixes inside a specifier. The full marker
@@ -252,6 +257,37 @@ function classifyRuntimeImports(text, entries, { preservePositions = false } = {
     imports: runtimeText === null ? markedImports : markedImports.filter((entry) => retained.has(entry)),
     sourceOffset: sourceOffsetMapper(markedImports),
   };
+}
+
+function maskImportTypes(text) {
+  try {
+    const ts = typeScript ??= nodeModule.createRequire(import.meta.url)("typescript");
+    const source = ts.createSourceFile(
+      "runtime-imports.ts", text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS,
+    );
+    if (source.parseDiagnostics.length) return null;
+
+    const ranges = [];
+    function visit(node) {
+      if (ts.isImportTypeNode(node)) {
+        ranges.push([node.getStart(source), node.end]);
+        return;
+      }
+      ts.forEachChild(node, visit);
+    }
+    visit(source);
+
+    let result = "";
+    let cursor = 0;
+    for (const [start, end] of ranges) {
+      result += text.slice(cursor, start);
+      result += text.slice(start, end).replace(/[^\r\n]/g, " ");
+      cursor = end;
+    }
+    return result + text.slice(cursor);
+  } catch {
+    return null;
+  }
 }
 
 function sourceOffsetMapper(markedImports) {
