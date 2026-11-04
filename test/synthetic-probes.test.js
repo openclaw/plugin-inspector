@@ -388,21 +388,36 @@ test("default hook payloads cover message and agent lifecycle readers", () => {
   assert.equal(defaultSyntheticHookContexts.message_sent.channelId, "fixture-channel");
 });
 
-test("synthetic probes invoke retained hook and tool handlers", async () => {
-  const capture = await captureLocalFixture([
-    "export function register(api) {",
-    "  api.on('before_tool_call', (event, ctx) => ({ seen: event.toolName, ctxTool: ctx.toolName }));",
-    "  api.registerTool({",
-    "    name: 'fixture_tool',",
-    "    execute(toolCallId, params) { return { toolCallId, sawParams: typeof params === 'object' }; },",
-    "  });",
-    "}",
-  ]);
+test("synthetic probes invoke retained hook and tool handlers with configured inputs", async () => {
+  const invoked = [];
+  const params = { query: "retained callback input" };
+  const capture = captureRetained((api) => {
+    api.on("before_tool_call", (event, context) => {
+      invoked.push("hook");
+      assert.equal(event.params, params);
+      assert.equal(event.toolName, "custom_tool");
+      assert.equal(context.toolName, "custom_tool");
+    });
+    api.registerTool({
+      name: "custom_tool",
+      execute(toolCallId, receivedParams, signal) {
+        invoked.push("execute");
+        assert.equal(toolCallId, "custom-call");
+        assert.deepEqual(receivedParams, {});
+        assert.ok(signal instanceof AbortSignal);
+        assert.equal(signal.aborted, false);
+      },
+    });
+  });
 
-  const result = await runCapturedSyntheticProbes(capture);
+  const result = await runCapturedSyntheticProbes(capture, {
+    hookEvents: { before_tool_call: { toolName: "custom_tool", toolCallId: "custom-call", params } },
+    hookContexts: { before_tool_call: { toolName: "custom_tool" } },
+  });
 
-  assert.equal(result.summary.failCount, 0);
+  assert.equal(result.summary.failCount, 0, JSON.stringify(result.results));
   assert.equal(result.summary.blockedCount, 0);
+  assert.deepEqual(invoked, ["hook", "execute"]);
   assert.deepEqual(
     result.results.map((item) => `${item.status}:${item.kind}:${item.label}`),
     ["pass:hook:before_tool_call", "pass:registration:registerTool.execute"],
@@ -452,23 +467,38 @@ test("synthetic probes execute gateway lifecycle around ordinary probes without 
 });
 
 test("synthetic probes pass registrar-specific handler inputs", async () => {
-  const capture = await captureLocalFixture([
-    "export function register(api) {",
-    "  api.registerTool({",
-    "    name: 'fixture_tool',",
-    "    run(params, ctx) { return { sawParams: typeof params === 'object', toolName: ctx.toolName }; },",
-    "  });",
-    "  api.registerHttpRoute({",
-    "    method: 'POST',",
-    "    path: '/fixture',",
-    "    handler(req, ctx) { return { method: req.method, hasLogger: Boolean(ctx.logger) }; },",
-    "  });",
-    "}",
-  ]);
+  const invoked = [];
+  const capture = captureRetained((api) => {
+    api.registerTool({
+      name: "custom_tool",
+      run(receivedParams, context) {
+        invoked.push("tool");
+        assert.deepEqual(receivedParams, {});
+        assert.equal(context.toolName, "custom_tool");
+        assert.equal(context.toolCallId, "custom-call");
+        assert.ok(context.signal instanceof AbortSignal);
+        assert.equal(context.signal.aborted, false);
+      },
+    });
+    api.registerHttpRoute({
+      method: "POST",
+      path: "/fixture",
+      handler(request, context) {
+        invoked.push("http");
+        assert.equal(request.method, "POST");
+        assert.equal(typeof request.json, "function");
+        assert.deepEqual(context.params, {});
+        assert.equal(typeof context.logger.info, "function");
+      },
+    });
+  });
 
-  const result = await runCapturedSyntheticProbes(capture);
+  const result = await runCapturedSyntheticProbes(capture, {
+    hookEvents: { before_tool_call: { toolName: "custom_tool", toolCallId: "custom-call" } },
+  });
 
-  assert.equal(result.summary.failCount, 0);
+  assert.equal(result.summary.failCount, 0, JSON.stringify(result.results));
+  assert.deepEqual(invoked, ["tool", "http"]);
   assert.deepEqual(
     result.results.map((item) => `${item.status}:${item.label}`),
     ["pass:registerTool.run", "pass:registerHttpRoute.handler"],
@@ -498,25 +528,6 @@ test("synthetic probes pass channel envelopes and gateway responders", async () 
     [
       "pass:registerChannel.send",
       "pass:registerChannel.receive",
-      "pass:registerGatewayMethod.handler",
-    ],
-  );
-});
-
-test("synthetic probes can execute string plus handler registrations", async () => {
-  const capture = await captureLocalFixture([
-    "export function register(api) {",
-    "  api.registerGatewayMethod('fixture.ping', (event) => ({ method: event.registrar, property: event.property }));",
-    "}",
-  ]);
-
-  const result = await runCapturedSyntheticProbes(capture);
-
-  assert.equal(result.summary.failCount, 0);
-  assert.equal(result.summary.blockedCount, 0);
-  assert.deepEqual(
-    result.results.map((item) => `${item.status}:${item.label}`),
-    [
       "pass:registerGatewayMethod.handler",
     ],
   );
