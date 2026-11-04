@@ -1,3 +1,4 @@
+import { listDeclarationFiles } from "./declaration-files.js";
 import { dedupeBy, unique } from "./collections.js";
 import { existsSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
@@ -520,20 +521,6 @@ async function readPackedOpenClawTargetSurface({ rootDir, requestedPaths, reques
     manifestContractFieldCount: manifestContractFields.length,
     manifestContractFields,
   };
-}
-
-async function listDeclarationFiles(rootDir) {
-  const files = [];
-  const entries = await readdir(rootDir, { withFileTypes: true });
-  for (const entry of entries) {
-    const entryPath = path.join(rootDir, entry.name);
-    if (entry.isDirectory()) {
-      files.push(...(await listDeclarationFiles(entryPath)));
-    } else if (entry.isFile() && /\.d\.[cm]?ts$/.test(entry.name)) {
-      files.push(entryPath);
-    }
-  }
-  return files.sort();
 }
 
 function parseObjectTypeFields(source, typeName, filter = () => true) {
