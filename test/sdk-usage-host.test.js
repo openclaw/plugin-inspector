@@ -1,6 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import ts from "typescript";
@@ -8,8 +8,7 @@ import { fixtureSuites } from "../src/index.js";
 import { createUsageProgram } from "../src/sdk-usage/program.js";
 
 test("fixture reports reuse host declarations without sharing plugin bindings or stale host state", async (t) => {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-host-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, "sdk-usage-host-");
   const targetRoot = path.join(directory, "host");
   const hostFile = path.join(targetRoot, "src/plugin-sdk/example.ts");
   const implementationFile = path.join(targetRoot, "src/implementation.ts");
@@ -73,8 +72,7 @@ installWithHost({ bootstrap(api) { api.${method}({}); } });
 });
 
 test("host declarations that require inferred exported types retain their original source", async (t) => {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-inferred-host-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, "sdk-usage-inferred-host-");
   const targetRoot = path.join(directory, "host");
   const plugin = path.join(directory, "plugins/example");
   await mkdir(path.join(targetRoot, "src/plugin-sdk"), { recursive: true });
@@ -97,8 +95,7 @@ installWithHost({ bootstrap(api) { api.registerTool({}); } });
 });
 
 test("an inferred host export does not pull typed function implementations into the program", async (t) => {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-mixed-host-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, "sdk-usage-mixed-host-");
   const targetRoot = path.join(directory, "host");
   const sdkRoot = path.join(targetRoot, "src/plugin-sdk");
   const plugin = path.join(directory, "plugins/example");
@@ -133,8 +130,7 @@ installWithHost({ bootstrap(api) { api.registerTool({}); } });
 });
 
 test("inferred host facades retain transitive declaration augmentations", async (t) => {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-augmented-host-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, "sdk-usage-augmented-host-");
   const sdk = path.join(directory, "src/plugin-sdk");
   await mkdir(sdk, { recursive: true });
   await writeFile(path.join(directory, "package.json"), "{}");
@@ -161,8 +157,7 @@ export const installWithHost = install;
 });
 
 test("inferred host function properties survive typed-body pruning", async (t) => {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-expando-host-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, "sdk-usage-expando-host-");
   const sdk = path.join(directory, "src/plugin-sdk");
   await mkdir(sdk, { recursive: true });
   await writeFile(path.join(directory, "package.json"), "{}");
@@ -186,8 +181,7 @@ for (const [label, declaration] of [
   ["UMD namespace exports", 'export as namespace HostSurface;\nexport declare function implementation(value: unknown): unknown;'],
 ]) {
 test(`body-only imports retain ${label}`, async (t) => {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-declaration-effect-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, "sdk-usage-declaration-effect-");
   const sdk = path.join(directory, "src/plugin-sdk");
   await mkdir(sdk, { recursive: true });
   await writeFile(path.join(directory, "package.json"), "{}");
@@ -209,8 +203,7 @@ export const installWithHost = install;
 
 for (const prefix of ["", "/* license */ ", "/* license\n */ "]) {
 test(`host reference directives retain SDK types after ${JSON.stringify(prefix)}`, async (t) => {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-reference-host-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, "sdk-usage-reference-host-");
   const targetRoot = path.join(directory, "host");
   const sdkRoot = path.join(targetRoot, "src/plugin-sdk");
   const plugin = path.join(directory, "plugins/example");

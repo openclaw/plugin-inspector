@@ -1,6 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { pathToFileURL } from "node:url";
@@ -26,8 +26,7 @@ test("static namespace members follow their binding, closures and erased types",
 });
 
 test("namespace-only SDK consumers execute with generated member exports", async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-namespace-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "plugin-inspector-namespace-");
   const entrypoint = path.join(root, "index.mjs");
   await writeFile(entrypoint, [
     'import * as sdk from "openclaw/plugin-sdk/namespace-proof";',
@@ -42,8 +41,7 @@ test("namespace-only SDK consumers execute with generated member exports", async
 });
 
 test("compiled doctor namespace descriptors capture without claiming migration execution", async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-doctor-namespace-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "plugin-inspector-doctor-namespace-");
   await writeFile(path.join(root, "index.mjs"), [
     'import * as imported from "openclaw/plugin-sdk/runtime-doctor-migrations";',
     'const doctor = {};',

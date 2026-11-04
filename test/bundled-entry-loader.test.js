@@ -1,7 +1,7 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import * as nodeModule from "node:module";
-import os from "node:os";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { test } from "node:test";
@@ -11,8 +11,7 @@ import { createMockSdkPackage, installMockSdkLoader } from "../src/sdk-mock.js";
 const supportsSyncMocks = typeof nodeModule.registerHooks === "function";
 
 async function fixture(t, files) {
-  const root = await mkdtemp(path.join(os.tmpdir(), "inspector-bundled-loader-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "inspector-bundled-loader-");
   for (const [name, source] of Object.entries(files)) {
     await writeFile(path.join(root, name), source);
   }

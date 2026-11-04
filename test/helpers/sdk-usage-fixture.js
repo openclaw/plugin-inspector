@@ -1,11 +1,10 @@
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { createTempDir } from "./temp-dir.js";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pluginRoot } from "../../src/index.js";
 
 export async function inspectSdkUsageFixture(t, { prefix, packageJson, files }) {
-  const directory = await mkdtemp(path.join(os.tmpdir(), prefix));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, prefix);
   const root = path.join(directory, "plugin");
   await mkdir(root);
   await writeFile(path.join(root, "package.json"), JSON.stringify(packageJson));

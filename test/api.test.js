@@ -1,6 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm, readFile, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { packageId } from "../src/config.js";
@@ -190,8 +190,7 @@ test("public API exposes static source and fixture-set inspection primitives", a
   );
   const config = await loadInspectorConfig("test/fixtures/inspector.config.json");
   const report = await inspectFixtureSet(config);
-  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-root-report-"));
-  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const outDir = await createTempDir(t, "plugin-inspector-root-report-");
   const paths = await writeReport(report, { outDir, basename: "static-inspection" });
 
   assert.deepEqual(sourceInspection.hooks.map((hook) => hook.name), ["before_tool_call"]);
@@ -205,8 +204,7 @@ test("public API exposes static source and fixture-set inspection primitives", a
 });
 
 test("public API writes compatibility fixture-set reports with custom render options", async (t) => {
-  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-fixture-api-"));
-  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const outDir = await createTempDir(t, "plugin-inspector-fixture-api-");
   const report = await inspectCompatibilityFixtureSetConfig({
     configPath: "test/fixtures/inspector.config.json",
     openclawPath: false,
@@ -240,8 +238,7 @@ test("public API writes compatibility fixture-set reports with custom render opt
 });
 
 test("public API builds fixture-set cold import readiness from config", async (t) => {
-  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-cold-import-api-"));
-  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const outDir = await createTempDir(t, "plugin-inspector-cold-import-api-");
   const readiness = await buildFixtureSetColdImportReadiness({
     configPath: "test/fixtures/inspector.config.json",
     openclawPath: false,
@@ -266,8 +263,7 @@ test("public API builds fixture-set cold import readiness from config", async (t
 });
 
 test("public API builds fixture-set workspace and platform plans from config", async (t) => {
-  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-plan-api-"));
-  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const outDir = await createTempDir(t, "plugin-inspector-plan-api-");
   const plan = await buildFixtureSetWorkspacePlan({
     configPath: "test/fixtures/inspector.config.json",
     openclawPath: false,
@@ -330,8 +326,7 @@ test("public API builds fixture-set workspace and platform plans from config", a
 });
 
 test("public API exposes capture through an explicit entrypoint helper", async (t) => {
-  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-api-capture-"));
-  t.after(() => rm(dir, { recursive: true, force: true }));
+  const dir = await createTempDir(t, "plugin-inspector-api-capture-");
   const entrypoint = path.join(dir, "fixture.mjs");
   await writeFile(
     entrypoint,
@@ -425,8 +420,7 @@ test("public API exposes report issue metadata helpers", () => {
 });
 
 test("public API exposes contract capture and coverage helpers", async (t) => {
-  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-contract-api-"));
-  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const outDir = await createTempDir(t, "plugin-inspector-contract-api-");
   const report = await inspectCompatibilityFixtureSetConfig({
     configPath: "test/fixtures/inspector.config.json",
     openclawPath: false,
@@ -445,8 +439,7 @@ test("public API exposes contract capture and coverage helpers", async (t) => {
 });
 
 test("public API exposes execution and CI rollup helpers", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-ci-api-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-ci-api-");
   const resultDir = path.join(rootDir, ".plugin-inspector", "results", "weather");
   const outDir = path.join(rootDir, "reports");
   await mkdir(resultDir, { recursive: true });
@@ -507,8 +500,7 @@ test("public API exposes execution and CI rollup helpers", async (t) => {
 });
 
 test("public API exposes synthetic probe helpers", async (t) => {
-  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-synthetic-api-"));
-  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const outDir = await createTempDir(t, "plugin-inspector-synthetic-api-");
   const plan = buildSyntheticProbePlanFromReport({
     generatedAt: "test",
     targetOpenClaw: {
@@ -553,8 +545,7 @@ test("public API honors config-driven runtime capture", async (t) => {
 });
 
 async function createPluginRoot(t, options = {}) {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-api-root-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-api-root-");
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   const packageJson = {
     name: "@example/openclaw-weather",

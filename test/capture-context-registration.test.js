@@ -1,13 +1,12 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { captureEntrypoint, runEntrypointSyntheticProbes } from "@openclaw/plugin-inspector/advanced";
 
 test("child capture and retained callbacks read the explicit config without masking rejections", async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "inspector-config-registration-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "inspector-config-registration-");
   await writeFile(path.join(root, "index.mjs"), `
 export default { register(api) {
   if (api.runtime.config.current() !== api.config) throw new Error("split config snapshots");
@@ -41,8 +40,7 @@ export default { register(api) {
 });
 
 test("registration descriptors do not turn unsupported state or lifecycle execution into success", async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "inspector-context-registration-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "inspector-context-registration-");
   await writeFile(path.join(root, "index.mjs"), `
 import { definePluginEntry } from "openclaw/plugin-sdk";
 export default definePluginEntry({ register(api) {
@@ -66,8 +64,7 @@ export default definePluginEntry({ register(api) {
 });
 
 test("singleton factory state remains real through retained callbacks", async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "inspector-singleton-registration-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "inspector-singleton-registration-");
   await writeFile(path.join(root, "index.mjs"), `
 import { resolveGlobalSingleton } from "openclaw/plugin-sdk/global-singleton";
 import { resolveGlobalSingleton as shared } from "openclaw/plugin-sdk/memory-core-host-engine-foundation";

@@ -1,3 +1,4 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
@@ -296,8 +297,7 @@ for (const [name, source, expected] of [
 }
 
 test("capture and synthetic helper CLIs default to the mocked SDK", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-helper-cli-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-helper-cli-");
   await mkdir(path.join(rootDir, "src"), { recursive: true });
 
   await writeFile(
@@ -346,8 +346,7 @@ test("capture and synthetic helper CLIs default to the mocked SDK", async (t) =>
 });
 
 test("capture CLIs ignore values consumed by flags when finding entrypoint", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-capture-cli-args-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-capture-cli-args-");
   await mkdir(path.join(rootDir, "src"), { recursive: true });
 
   const pluginSource = [
@@ -390,8 +389,7 @@ test("capture CLIs ignore values consumed by flags when finding entrypoint", asy
 });
 
 test("capture CLI does not overwrite an output path when positional entrypoint is missing", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-capture-cli-missing-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-capture-cli-missing-");
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   const entrypointPath = path.join(rootDir, "src", "index.js");
   const originalSource = "export const untouched = true;\n";

@@ -1,14 +1,13 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import { compareSdkUsage } from "../scripts/lib/sdk-usage-benchmark.mjs";
 import { loadFrozenBenchmark } from "../scripts/lib/sdk-usage-benchmark-freeze.mjs";
 
 async function fixture(t) {
-  const sourceRoot = await mkdtemp(path.join(os.tmpdir(), "sdk-benchmark-test-"));
-  t.after(() => rm(sourceRoot, { recursive: true, force: true }));
+  const sourceRoot = await createTempDir(t, "sdk-benchmark-test-");
   await mkdir(path.join(sourceRoot, "extensions/demo"), { recursive: true });
   await writeFile(path.join(sourceRoot, "extensions/demo/index.ts"), "api.registerTool(tool);\napi[dynamicName](tool);\n");
   const entry = {

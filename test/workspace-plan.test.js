@@ -1,6 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { access, mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { access, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import {
@@ -11,8 +11,7 @@ import {
 } from "../src/advanced.js";
 
 test("workspace plan maps blocked entrypoints to opt-in install/build/capture steps", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-workspace-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-workspace-");
 
   await mkdir(path.join(rootDir, "plugins/fixture"), { recursive: true });
   await writeFile(
@@ -103,8 +102,7 @@ test("workspace plan maps blocked entrypoints to opt-in install/build/capture st
 });
 
 test("workspace plan defaults point at packaged helper wrappers", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-workspace-defaults-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-workspace-defaults-");
 
   await mkdir(path.join(rootDir, "plugins/fixture"), { recursive: true });
   await writeFile(
@@ -158,8 +156,7 @@ test("workspace plan defaults point at packaged helper wrappers", async (t) => {
 });
 
 test("workspace plan shell-quotes fixture-controlled command values", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-workspace-quote-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-workspace-quote-");
 
   await mkdir(path.join(rootDir, "plugins/fixture"), { recursive: true });
   await writeFile(

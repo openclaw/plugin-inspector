@@ -1,11 +1,11 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { createServer } from "node:http";
 import fs from "node:fs";
-import fsPromises, { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
+import fsPromises, { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { syncBuiltinESMExports } from "node:module";
-import os from "node:os";
 import path from "node:path";
 import { c as createTar, Header } from "tar";
 import { gzipSync, gunzipSync } from "node:zlib";
@@ -400,8 +400,7 @@ test("public CLI rejects an openclaw-version flag without a value", async () => 
 
 test("batch CLI prepares one resolved beta target for multiple plugin inspections", async (t) => {
   const fixture = await createRegistryFixture(t);
-  const corpusRoot = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-version-batch-"));
-  t.after(() => rm(corpusRoot, { recursive: true, force: true }));
+  const corpusRoot = await createTempDir(t, "plugin-inspector-version-batch-");
   await writeHonchoPlugin(path.join(corpusRoot, "honcho-a"), ">=2026.3.22");
   await writeHonchoPlugin(path.join(corpusRoot, "honcho-b"), ">=2026.3.22");
   const cliPath = path.resolve("src/cli.js");
@@ -425,8 +424,7 @@ test("batch CLI prepares one resolved beta target for multiple plugin inspection
 });
 
 async function createHonchoPlugin(t, compatibilityRange) {
-  const pluginRoot = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-honcho-"));
-  t.after(() => rm(pluginRoot, { recursive: true, force: true }));
+  const pluginRoot = await createTempDir(t, "plugin-inspector-honcho-");
   await writeHonchoPlugin(pluginRoot, compatibilityRange);
   return pluginRoot;
 }
@@ -468,8 +466,7 @@ async function writeHonchoPlugin(pluginRoot, compatibilityRange) {
 }
 
 async function createRegistryFixture(t, options = {}) {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-registry-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-registry-");
   const cacheDir = path.join(rootDir, "cache");
   const packageRoot = path.join(rootDir, "archive", "package");
   const tarballPath = path.join(rootDir, `openclaw-${affectedBeta}.tgz`);

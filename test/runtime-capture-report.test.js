@@ -1,6 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm, readFile, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import {
@@ -12,8 +12,7 @@ import {
 } from "../src/advanced.js";
 
 test("runtime capture report imports plugin entrypoints with mocked SDK", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-capture-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-runtime-capture-");
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   await writeFile(
     path.join(rootDir, "package.json"),
@@ -54,8 +53,7 @@ test("runtime capture report imports plugin entrypoints with mocked SDK", async 
   assert.equal(captureReport.summary.registrationCount, 1);
   assert.equal(captureReport.summary.hookCount, 1);
 
-  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-capture-out-"));
-  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const outDir = await createTempDir(t, "plugin-inspector-runtime-capture-out-");
   await writeRuntimeCaptureReport(captureReport, {
     jsonPath: path.join(outDir, "capture.json"),
     markdownPath: path.join(outDir, "capture.md"),
@@ -65,8 +63,7 @@ test("runtime capture report imports plugin entrypoints with mocked SDK", async 
 });
 
 test("runtime capture records conversation binding resolved callbacks", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-binding-resolved-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-runtime-binding-resolved-");
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   await writeFile(
     path.join(rootDir, "package.json"),
@@ -111,8 +108,7 @@ test("runtime capture records conversation binding resolved callbacks", async (t
 });
 
 test("runtime capture report synthesizes newly imported mocked SDK exports", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-capture-dynamic-export-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-runtime-capture-dynamic-export-");
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   await writeFile(
     path.join(rootDir, "package.json"),
@@ -154,8 +150,7 @@ test("runtime capture report synthesizes newly imported mocked SDK exports", asy
     "registration:registerTool",
   ]);
 
-  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-capture-dynamic-export-out-"));
-  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const outDir = await createTempDir(t, "plugin-inspector-runtime-capture-dynamic-export-out-");
   await writeRuntimeCaptureReport(captureReport, {
     jsonPath: path.join(outDir, "capture.json"),
     markdownPath: path.join(outDir, "capture.md"),
@@ -164,8 +159,7 @@ test("runtime capture report synthesizes newly imported mocked SDK exports", asy
 });
 
 test("runtime capture report classifies registration execution failures", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-capture-registration-error-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-runtime-capture-registration-error-");
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   await writeFile(
     path.join(rootDir, "package.json"),
@@ -206,8 +200,7 @@ test("runtime capture report classifies registration execution failures", async 
 });
 
 test("runtime capture supports TypeScript entrypoints, SDK subpaths, external mocks, and noisy output", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-ts-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-runtime-ts-");
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   await writeFile(
     path.join(rootDir, "package.json"),
@@ -288,8 +281,7 @@ test("runtime capture supports TypeScript entrypoints, SDK subpaths, external mo
 });
 
 test("runtime capture synthesizes manifest config before plugin registration", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-config-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-runtime-config-");
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   await writeFile(
     path.join(rootDir, "package.json"),
@@ -364,8 +356,7 @@ test("runtime capture synthesizes manifest config before plugin registration", a
 });
 
 test("runtime capture supports namespace imports from mocked externals", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-zod-namespace-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-runtime-zod-namespace-");
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   await writeFile(
     path.join(rootDir, "package.json"),
@@ -407,8 +398,7 @@ test("runtime capture supports namespace imports from mocked externals", async (
 });
 
 test("runtime capture mock SDK supports config schemas and provider catalogs", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-provider-catalog-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-runtime-provider-catalog-");
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   await writeFile(
     path.join(rootDir, "package.json"),
@@ -466,8 +456,7 @@ test("runtime capture mock SDK supports config schemas and provider catalogs", a
 });
 
 test("runtime capture mock SDK supports channel entries, gateway responders, and action gates", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-channel-entry-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-runtime-channel-entry-");
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   await writeFile(
     path.join(rootDir, "package.json"),
@@ -537,8 +526,7 @@ test("runtime capture mock SDK supports channel entries, gateway responders, and
 });
 
 test("runtime capture keeps dist chunk imports rooted at their original package", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-dist-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-runtime-dist-");
   await mkdir(path.join(rootDir, "dist", "extensions", "weather"), { recursive: true });
   await writeFile(path.join(rootDir, "dist", "package-shared.js"), "export const toolName = 'weather_dist';\n", "utf8");
   const packageRoot = path.join(rootDir, "dist", "extensions", "weather");

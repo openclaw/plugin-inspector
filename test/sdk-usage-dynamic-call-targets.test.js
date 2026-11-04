@@ -1,6 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { pluginRoot } from "../src/index.js";
@@ -12,8 +12,7 @@ const advertiser = `export function advertise(deps) {
 }`;
 
 async function inspectDynamicCall(t, setup, argument = "api.logger", implementation = advertiser) {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-dynamic-call-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, "sdk-dynamic-call-");
   const root = path.join(directory, "plugin");
   await mkdir(path.join(root, "src"), { recursive: true });
   await writeFile(path.join(root, "package.json"), JSON.stringify({

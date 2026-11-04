@@ -1,6 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import {
@@ -101,8 +101,7 @@ test("entrypoint extension probing cannot escape through a plugin-root specifier
 
 test("inspect rejects an absolute Windows-style entrypoint even on this host", async (t) => {
   const workspace = await createWorkspace(t);
-  const outsideDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-jail-abs-"));
-  t.after(() => rm(outsideDir, { recursive: true, force: true }));
+  const outsideDir = await createTempDir(t, "plugin-inspector-jail-abs-");
   const leakedPath = path.join(outsideDir, "jail-escape-marker.js");
   await writeFile(leakedPath, 'export default function register(api) { api.registerHttpRoute({ path: "/leaked" }); }\n', "utf8");
 
@@ -304,8 +303,7 @@ function pluginFixture() {
 }
 
 async function createWorkspace(t) {
-  const workspace = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-path-jail-"));
-  t.after(() => rm(workspace, { recursive: true, force: true }));
+  const workspace = await createTempDir(t, "plugin-inspector-path-jail-");
   return workspace;
 }
 

@@ -1,13 +1,12 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { pluginRoot } from "../src/index.js";
 
 test("serialized artifact inventories retain each physical copy of a bundled package", async (t) => {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-bundled-modules-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, "sdk-usage-bundled-modules-");
   const root = path.join(directory, "plugin");
   async function write(name, text) {
     const file = path.join(root, name);

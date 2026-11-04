@@ -1,14 +1,13 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { captureEntrypoint, runEntrypointSyntheticProbes } from "@openclaw/plugin-inspector/advanced";
 
 for (const specifier of ["zod", "openclaw/plugin-sdk/zod"]) {
   test(`mock ${specifier} enums retain options used by composed plugin schemas`, async (t) => {
-    const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-enum-"));
-    t.after(() => rm(root, { recursive: true, force: true }));
+    const root = await createTempDir(t, "plugin-inspector-enum-");
     await writeFile(path.join(root, "index.mjs"), `
       import { z } from ${JSON.stringify(specifier)};
       import assert from "node:assert/strict";
