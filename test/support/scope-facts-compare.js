@@ -57,7 +57,7 @@ export function compareScopeFacts(text) {
     lightError = String(error?.message ?? error);
   }
   if (fullError || lightError) {
-    return { skipped: false, differences: fullError === lightError ? [] : [`analysis error: full ${fullError} / facts ${lightError}`] };
+    return { skipped: false, differences: [`analysis error: full ${fullError} / facts ${lightError}`] };
   }
   const signature = (variable) => JSON.stringify({
     defs: variable.defs.length,
