@@ -34,17 +34,7 @@ export function buildReport({ config, inspections, failures = [], generatedAt = 
       packageEntrypoints: inspection.packageEntrypoints,
     });
 
-    logs.push({
-      fixture: fixture.id,
-      code: "seam-inventory",
-      level: "log",
-      message: `observed ${inspection.hooks.length} hooks, ${inspection.registrations.length} registrations, and ${inspection.manifestContracts.length} manifest contracts`,
-      evidence: [
-        ...inspection.hooks.map((hook) => `hook:${hook}`),
-        ...inspection.registrations.map((registration) => `registration:${registration}`),
-        ...inspection.manifestContracts.map((contract) => `manifestContract:${contract}`),
-      ],
-    });
+    logs.push(seamInventoryFinding(fixture, inspection));
   }
 
   for (const failure of failures) {

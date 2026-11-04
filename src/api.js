@@ -42,16 +42,7 @@ export async function loadPluginConfig(options = {}) {
 
 export async function inspectPluginRoot(options = {}) {
   const config = await loadPluginConfig(options);
-  return inspectCompatibilityFixtureSet(config, {
-    authorFacing: options.authorFacing,
-    generatedAt: options.generatedAt,
-    openclawPath: options.openclawPath,
-    openclawVersion: options.openclawVersion,
-    executionResults: options.executionResults,
-    targetOpenClaw: options.targetOpenClaw,
-    sdkUsageInputKind: options.sdkUsageInputKind,
-    sdkUsageTargetPath: options.sdkUsageTargetPath,
-  });
+  return inspectConfiguredCompatibility(config, options);
 }
 
 export async function inspectFixtureSetConfig(options = {}) {
@@ -61,16 +52,7 @@ export async function inspectFixtureSetConfig(options = {}) {
 
 export async function inspectCompatibilityFixtureSetConfig(options = {}) {
   const config = await loadFixtureSetConfig(options);
-  return inspectCompatibilityFixtureSet(config, {
-    authorFacing: options.authorFacing,
-    generatedAt: options.generatedAt,
-    openclawPath: options.openclawPath,
-    openclawVersion: options.openclawVersion,
-    executionResults: options.executionResults,
-    targetOpenClaw: options.targetOpenClaw,
-    sdkUsageInputKind: options.sdkUsageInputKind,
-    sdkUsageTargetPath: options.sdkUsageTargetPath,
-  });
+  return inspectConfiguredCompatibility(config, options);
 }
 
 export async function writePluginReports(report, options = {}) {
@@ -116,17 +98,7 @@ export async function runFixtureSetReport(options = {}) {
 }
 
 export async function buildFixtureSetColdImportReadiness(options = {}) {
-  const config = options.report ? null : await loadFixtureSetConfig(options);
-  const report =
-    options.report ??
-    (await inspectCompatibilityFixtureSet(config, {
-      authorFacing: options.authorFacing,
-      generatedAt: options.generatedAt,
-      openclawPath: options.openclawPath,
-      openclawVersion: options.openclawVersion,
-      executionResults: options.executionResults,
-      targetOpenClaw: options.targetOpenClaw,
-    }));
+  const { config, report } = await loadFixtureSetReport(options);
 
   return buildColdImportReadiness({
     ...options,
@@ -150,17 +122,7 @@ export async function runFixtureSetColdImportReadiness(options = {}) {
 }
 
 export async function buildFixtureSetWorkspacePlan(options = {}) {
-  const config = options.report ? null : await loadFixtureSetConfig(options);
-  const report =
-    options.report ??
-    (await inspectCompatibilityFixtureSet(config, {
-      authorFacing: options.authorFacing,
-      generatedAt: options.generatedAt,
-      openclawPath: options.openclawPath,
-      openclawVersion: options.openclawVersion,
-      executionResults: options.executionResults,
-      targetOpenClaw: options.targetOpenClaw,
-    }));
+  const { config, report } = await loadFixtureSetReport(options);
   const rootDir = options.rootDir ?? config?.rootDir ?? options.cwd;
   const readiness = options.readiness ?? buildColdImportReadiness({ ...options, report, rootDir });
 
@@ -278,4 +240,32 @@ async function loadFixtureSetConfig(options) {
     };
   }
   return loadInspectorConfig(options.configPath, { cwd: options.cwd ?? options.rootDir });
+}
+
+function inspectConfiguredCompatibility(config, options) {
+  return inspectCompatibilityFixtureSet(config, {
+    authorFacing: options.authorFacing,
+    generatedAt: options.generatedAt,
+    openclawPath: options.openclawPath,
+    openclawVersion: options.openclawVersion,
+    executionResults: options.executionResults,
+    targetOpenClaw: options.targetOpenClaw,
+    sdkUsageInputKind: options.sdkUsageInputKind,
+    sdkUsageTargetPath: options.sdkUsageTargetPath,
+  });
+}
+
+async function loadFixtureSetReport(options) {
+  const config = options.report ? null : await loadFixtureSetConfig(options);
+  const report =
+    options.report ??
+    (await inspectCompatibilityFixtureSet(config, {
+      authorFacing: options.authorFacing,
+      generatedAt: options.generatedAt,
+      openclawPath: options.openclawPath,
+      openclawVersion: options.openclawVersion,
+      executionResults: options.executionResults,
+      targetOpenClaw: options.targetOpenClaw,
+    }));
+  return { config, report };
 }
