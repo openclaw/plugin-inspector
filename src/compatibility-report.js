@@ -106,33 +106,7 @@ export function renderCompatibilityMarkdownReport(report, options = {}) {
     "",
     contractProbesTable(report.contractProbes, options),
     "",
-    "## Fixture Seam Inventory",
-    "",
-    markdownTable(
-      report.fixtures.map((fixture) => [
-        fixture.id,
-        fixture.priority,
-        fixture.seams.join(", "),
-        fixture.hooks.join(", ") || "-",
-        fixture.registrations.join(", ") || "-",
-        fixture.manifestContracts.join(", ") || "-",
-      ]),
-      ["Fixture", "Priority", "Seams", "Hooks", "Registrations", "Manifest contracts"],
-    ),
-    "",
-    "## Decision Matrix",
-    "",
-    markdownTable(
-      report.decisions.map((decision) => [
-        decision.fixture,
-        decision.decision,
-        decision.seam,
-        decision.action,
-        decision.evidence,
-      ]),
-      ["Fixture", "Decision", "Seam", "Action", "Evidence"],
-    ),
-    "",
+    ...renderFixtureDecisionSections(report, markdownTable),
     "## Raw Logs",
     "",
     findingsTable(report.logs),
@@ -410,5 +384,37 @@ function runtimeCoverageList(issue, options) {
     "  - runtime coverage:",
     ...evidenceList(runtimeCoverage.captured, options).map((item) => `    - captured ${item}`),
     ...evidenceList(runtimeCoverage.artifacts, options).map((item) => `    - ${item}`),
+  ];
+}
+
+export function renderFixtureDecisionSections(report, renderTable) {
+  return [
+    "## Fixture Seam Inventory",
+    "",
+    renderTable(
+      report.fixtures.map((fixture) => [
+        fixture.id,
+        fixture.priority,
+        fixture.seams.join(", "),
+        fixture.hooks.join(", ") || "-",
+        fixture.registrations.join(", ") || "-",
+        fixture.manifestContracts.join(", ") || "-",
+      ]),
+      ["Fixture", "Priority", "Seams", "Hooks", "Registrations", "Manifest contracts"],
+    ),
+    "",
+    "## Decision Matrix",
+    "",
+    renderTable(
+      report.decisions.map((decision) => [
+        decision.fixture,
+        decision.decision,
+        decision.seam,
+        decision.action,
+        decision.evidence,
+      ]),
+      ["Fixture", "Decision", "Seam", "Action", "Evidence"],
+    ),
+    "",
   ];
 }

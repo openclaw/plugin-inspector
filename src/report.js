@@ -1,6 +1,6 @@
 import path from "node:path";
 import { renderMarkdownTable as markdownTable, writeArtifacts, writeJsonMarkdownArtifacts } from "./artifacts.js";
-import { renderCompatibilityIssuesReport, renderCompatibilityMarkdownReport } from "./compatibility-report.js";
+import { renderFixtureDecisionSections, renderCompatibilityIssuesReport, renderCompatibilityMarkdownReport } from "./compatibility-report.js";
 import { buildContractProbes } from "./contract-probes.js";
 import { classifyCompatibilityFixture } from "./fixture-summary.js";
 import { buildIssues, isAuthorFacingFinding, summarizeIssueClasses } from "./issues.js";
@@ -408,33 +408,7 @@ export function renderMarkdownReport(report) {
     "",
     findingsTable(report.breakages),
     "",
-    "## Fixture Seam Inventory",
-    "",
-    markdownTable(
-      report.fixtures.map((fixture) => [
-        fixture.id,
-        fixture.priority,
-        fixture.seams.join(", "),
-        fixture.hooks.join(", ") || "-",
-        fixture.registrations.join(", ") || "-",
-        fixture.manifestContracts.join(", ") || "-",
-      ]),
-      ["Fixture", "Priority", "Seams", "Hooks", "Registrations", "Manifest contracts"],
-    ),
-    "",
-    "## Decision Matrix",
-    "",
-    markdownTable(
-      report.decisions.map((decision) => [
-        decision.fixture,
-        decision.decision,
-        decision.seam,
-        decision.action,
-        decision.evidence,
-      ]),
-      ["Fixture", "Decision", "Seam", "Action", "Evidence"],
-    ),
-    "",
+    ...renderFixtureDecisionSections(report, markdownTable),
     "## Raw Logs",
     "",
     findingsTable(report.logs),

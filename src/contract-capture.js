@@ -199,45 +199,21 @@ export function renderContractCaptureMarkdown(capture, options = {}) {
     "## Registration Capture",
     "",
     markdownTable(
-      capture.fixtures.flatMap((fixture) =>
-        fixture.registrations.map((item) => [
-          fixture.id,
-          item.registrar,
-          item.support,
-          item.ref,
-          item.assertions.join("; "),
-        ]),
-      ),
+      captureFixtureRows(capture.fixtures, "registrations", "registrar"),
       ["Fixture", "Registrar", "Support", "Evidence", "Assertions"],
     ),
     "",
     "## Hook Probes",
     "",
     markdownTable(
-      capture.fixtures.flatMap((fixture) =>
-        fixture.hooks.map((item) => [
-          fixture.id,
-          item.hook,
-          item.support,
-          item.ref,
-          item.assertions.join("; "),
-        ]),
-      ),
+      captureFixtureRows(capture.fixtures, "hooks", "hook"),
       ["Fixture", "Hook", "Support", "Evidence", "Assertions"],
     ),
     "",
     "## SDK Import Probes",
     "",
     markdownTable(
-      capture.fixtures.flatMap((fixture) =>
-        fixture.sdkImports.map((item) => [
-          fixture.id,
-          item.specifier,
-          item.support,
-          item.ref,
-          item.assertions.join("; "),
-        ]),
-      ),
+      captureFixtureRows(capture.fixtures, "sdkImports", "specifier"),
       ["Fixture", "Specifier", "Support", "Evidence", "Assertions"],
     ),
     "",
@@ -282,4 +258,14 @@ function assertionsForProbeTarget(target) {
     "tool-runtime": ["tool schema is captured", "tool result metadata is retained"],
   };
   return assertions[target] ?? ["probe has fixture evidence and a target contract"];
+}
+
+function captureFixtureRows(fixtures, collection, key) {
+  return fixtures.flatMap((fixture) => fixture[collection].map((item) => [
+    fixture.id,
+    item[key],
+    item.support,
+    item.ref,
+    item.assertions.join("; "),
+  ]));
 }

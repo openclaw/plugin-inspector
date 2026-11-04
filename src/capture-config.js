@@ -175,3 +175,16 @@ function sampleString(key = "") {
 function isPlainObject(value) {
   return value !== null && typeof value === "object" && !Array.isArray(value);
 }
+
+export function findRegisterExport(module) {
+  if (typeof module.register === "function") {
+    return module.register;
+  }
+  if (typeof module.default === "function") {
+    return module.default;
+  }
+  if (typeof module.default?.register === "function") {
+    return module.default.register;
+  }
+  return null;
+}
