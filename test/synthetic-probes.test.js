@@ -506,23 +506,37 @@ test("synthetic probes pass registrar-specific handler inputs", async () => {
 });
 
 test("synthetic probes pass channel envelopes and gateway responders", async () => {
-  const capture = await captureLocalFixture([
-    "export function register(api) {",
-    "  api.registerChannel({",
-    "    id: 'fixture_channel',",
-    "    async send(ctx) { return { messageId: ctx.replyToId, to: ctx.to }; },",
-    "    async receive(ctx) { return { messageId: ctx.message.id, peer: ctx.route.peer.id }; },",
-    "  });",
-    "  api.registerGatewayMethod('fixture.ping', ({ respond, params }) => respond(true, { sawParams: typeof params === 'object' }));",
-    "}",
-  ]);
+  const invoked = [];
+  const capture = captureRetained((api) => {
+    api.registerChannel({
+      id: "fixture_channel",
+      async send(context) {
+        invoked.push("send");
+        assert.equal(typeof context.replyToId, "string");
+        assert.equal(typeof context.to, "string");
+      },
+      async receive(context) {
+        invoked.push("receive");
+        assert.equal(typeof context.message.id, "string");
+        assert.equal(typeof context.route.peer.id, "string");
+      },
+    });
+    api.registerGatewayMethod("fixture.ping", ({ respond, params }) => {
+      invoked.push("gateway");
+      assert.deepEqual(params, {});
+      respond(true, { healthy: true });
+    });
+  });
 
   const blocked = await runCapturedSyntheticProbes(capture);
   assert.equal(blocked.summary.blockedCount, 1);
+  assert.deepEqual(invoked, ["gateway"]);
+  invoked.length = 0;
 
   const result = await runCapturedSyntheticProbes(capture, { includeChannelRuntime: true });
 
-  assert.equal(result.summary.failCount, 0);
+  assert.equal(result.summary.failCount, 0, JSON.stringify(result.results));
+  assert.deepEqual(invoked, ["send", "receive", "gateway"]);
   assert.deepEqual(
     result.results.map((item) => `${item.status}:${item.label}`),
     [
