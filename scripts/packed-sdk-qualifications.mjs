@@ -10,12 +10,13 @@
 //
 // Both modes download from the npm registry (verified against dist.integrity);
 // neither runs in the default offline checks.
-import { mkdtemp, readdir, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs } from "node:util";
 import { packedSdkSnapshotDigest, PACKED_SDK_QUALIFICATION_ALGORITHM, replacementNames } from "../src/registry-deprecations.js";
+import { listDeclarationFiles } from "../src/declaration-files.js";
 import { publicSdkSurfaceNames } from "../src/packed-sdk-surface.js";
 import sdkRetirements from "../src/sdk-retirements.json" with { type: "json" };
 import { downloadNpmPackage, isPackedOpenClawSurfaceEntry } from "./lib/npm-package.mjs";
@@ -109,14 +110,4 @@ async function qualify(version) {
   } finally {
     await rm(workspace, { recursive: true, force: true });
   }
-}
-
-async function listDeclarationFiles(directory) {
-  const files = [];
-  for (const entry of await readdir(directory, { withFileTypes: true })) {
-    const entryPath = path.join(directory, entry.name);
-    if (entry.isDirectory()) files.push(...(await listDeclarationFiles(entryPath)));
-    else if (entry.isFile() && /\.d\.[cm]?ts$/.test(entry.name)) files.push(entryPath);
-  }
-  return files.sort();
 }

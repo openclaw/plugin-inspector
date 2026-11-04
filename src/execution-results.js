@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
-import { renderPaddedMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderPaddedMarkdownTable as markdownTable, writeDefaultReportArtifacts } from "./artifacts.js";
 import { resolveFromRoot, toRepoPath } from "./path-utils.js";
 
 export const defaultExecutionResultsOptions = {
@@ -47,16 +47,7 @@ export async function buildExecutionResultsReport(options = {}) {
 }
 
 export async function writeExecutionResultsReport(report, options = {}) {
-  const rootDir = path.resolve(options.rootDir ?? process.cwd());
-  const jsonPath = resolveFromRoot(rootDir, options.jsonPath ?? defaultExecutionResultsOptions.jsonPath);
-  const markdownPath = resolveFromRoot(rootDir, options.markdownPath ?? defaultExecutionResultsOptions.markdownPath);
-  return writeJsonMarkdownArtifacts({
-    jsonPath,
-    markdownPath,
-    json: report,
-    markdown: renderExecutionResultsMarkdown(report, options),
-    check: options.check,
-  });
+  return writeDefaultReportArtifacts(report, options, defaultExecutionResultsOptions, renderExecutionResultsMarkdown);
 }
 
 export function renderExecutionResultsMarkdown(report, options = {}) {

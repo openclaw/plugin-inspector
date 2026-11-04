@@ -1,6 +1,5 @@
 import path from "node:path";
-import { formatSampledMetric, renderPaddedMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
-import { resolveFromRoot } from "./path-utils.js";
+import { formatSampledMetric, renderPaddedMarkdownTable as markdownTable, writeDefaultReportArtifacts } from "./artifacts.js";
 import { runProfiledProcess } from "./process-profile.js";
 import { assertRunCount, percentile } from "./stats.js";
 
@@ -72,16 +71,7 @@ export function validateRuntimeProfile(profile) {
 }
 
 export async function writeRuntimeProfile(profile, options = {}) {
-  const rootDir = path.resolve(options.rootDir ?? process.cwd());
-  const jsonPath = resolveFromRoot(rootDir, options.jsonPath ?? defaultRuntimeProfileOptions.jsonPath);
-  const markdownPath = resolveFromRoot(rootDir, options.markdownPath ?? defaultRuntimeProfileOptions.markdownPath);
-  return writeJsonMarkdownArtifacts({
-    jsonPath,
-    markdownPath,
-    json: profile,
-    markdown: renderRuntimeProfileMarkdown(profile, options),
-    check: options.check,
-  });
+  return writeDefaultReportArtifacts(profile, options, defaultRuntimeProfileOptions, renderRuntimeProfileMarkdown);
 }
 
 export function renderRuntimeProfileMarkdown(profile, options = {}) {
