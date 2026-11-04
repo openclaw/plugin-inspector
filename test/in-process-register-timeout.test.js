@@ -70,7 +70,7 @@ for (const route of cliRoutes) {
     ["pending import", "await new Promise(() => { setInterval(() => {}, 1000); }); export function register() {}"],
     ["pending registration", "export async function register() { await new Promise(() => { setInterval(() => {}, 1000); }); }"],
   ]) {
-    test(`real SDK ${route.name} owns a ${name}`, { timeout: 10000 }, async (t) => {
+    test(`unmocked fixture ${route.name} owns a ${name}`, { timeout: 10000 }, async (t) => {
       const { dir } = await fixture(t, `
         import { writeFileSync } from 'node:fs';
         writeFileSync(new URL('./pid', import.meta.url), String(process.pid));
@@ -93,7 +93,7 @@ for (const route of cliRoutes) {
     });
   }
 
-  test(`real SDK ${route.name} flushes healthy JSON and sheds retained intervals`, { timeout: 10000 }, async (t) => {
+  test(`unmocked fixture ${route.name} flushes healthy JSON and sheds retained intervals`, { timeout: 10000 }, async (t) => {
     const { dir } = await fixture(t, `
       import { writeFileSync } from 'node:fs';
       import { fixtureName } from 'openclaw/plugin-sdk';
@@ -127,7 +127,7 @@ for (const route of cliRoutes) {
     await assertGone(Number(await readFile(path.join(dir, "pid"), "utf8")));
   });
 
-  test(`real SDK ${route.name} rejects partial JSON followed by registration failure`, { timeout: 10000 }, async (t) => {
+  test(`unmocked fixture ${route.name} rejects partial JSON followed by registration failure`, { timeout: 10000 }, async (t) => {
     const { dir } = await fixture(t, `
       import { writeSync } from 'node:fs';
       export async function register() {

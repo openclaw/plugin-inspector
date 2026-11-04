@@ -469,6 +469,7 @@ async function writeHonchoPlugin(pluginRoot, compatibilityRange) {
 
 async function createRegistryFixture(t, options = {}) {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-registry-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   const cacheDir = path.join(rootDir, "cache");
   const packageRoot = path.join(rootDir, "archive", "package");
   const tarballPath = path.join(rootDir, `openclaw-${affectedBeta}.tgz`);
@@ -570,7 +571,6 @@ async function createRegistryFixture(t, options = {}) {
     server.closeAllConnections();
     return new Promise((resolve) => server.close(resolve));
   });
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
 
   return { cacheDir, disconnected, distMetadata, distTags, registryUrl: registryUrl(server), requests };
 }
