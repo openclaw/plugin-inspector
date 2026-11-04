@@ -6,6 +6,8 @@ import { captureEntrypoint } from "./inspector.js";
 import { createMockSdkPackage, installMockSdkLoader } from "./sdk-mock.js";
 import { runCapturedSyntheticProbes } from "./synthetic-probes.js";
 
+const cleanupDirs = new Set();
+
 export async function runEntrypointSyntheticProbes(entrypoint, options = {}) {
   const captureOptions = {
     ...options,
@@ -41,7 +43,10 @@ export async function runEntrypointSyntheticProbes(entrypoint, options = {}) {
 }
 
 function cleanupTempDirOnExit(dir) {
-  process.once("exit", () => {
-    rmSync(dir, { force: true, recursive: true });
-  });
+  if (cleanupDirs.size === 0) {
+    process.once("exit", () => {
+      for (const workspace of cleanupDirs) rmSync(workspace, { force: true, recursive: true });
+    });
+  }
+  cleanupDirs.add(dir);
 }
