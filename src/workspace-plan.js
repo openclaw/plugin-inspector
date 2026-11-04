@@ -2,7 +2,7 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderPaddedMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { buildColdImportReadiness } from "./cold-import-readiness.js";
 import { normalizeRepoPath, posixJoin, slugForArtifact } from "./path-utils.js";
 
@@ -535,8 +535,4 @@ function shellQuote(value) {
     return text;
   }
   return `'${text.replaceAll("'", "'\\''")}'`;
-}
-
-function markdownTable(rows, headers) {
-  return renderPaddedMarkdownTable(rows, headers);
 }

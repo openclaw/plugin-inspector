@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
-import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderPaddedMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { resolveFromRoot, toRepoPath } from "./path-utils.js";
 
 export const defaultExecutionResultsOptions = {
@@ -300,8 +300,4 @@ function repoRelative(value, options = {}) {
     return toRepoPath(relative || ".");
   }
   return toRepoPath(value);
-}
-
-function markdownTable(rows, headers) {
-  return renderPaddedMarkdownTable(rows, headers);
 }
