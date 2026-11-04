@@ -47,25 +47,18 @@ export function certifyPublicSdkNames({ declarations, packageJson = {}, packageR
     return byFile.get(specifier);
   };
   const entries = publicSdkDeclarationFiles(packageJson, packageRoot, texts, normalize);
-
-  if (process.env.PI_MARK) console.error("MARK cert-start");
-  ts.createSourceFile("x.ts", "let a", ts.ScriptTarget.Latest);
-  if (process.env.PI_MARK) console.error("MARK ts-loaded");
   const environment = { globals: new Map(), ambientModules: new Map(), ambientPattern: false };
   const modules = new Map();
   for (const [fileName, text] of texts) modules.set(fileName, bindModule(fileName, text, environment));
-  if (process.env.PI_MARK) console.error("MARK cert-bind");
   const context = { modules, texts, environment, resolveModule, queried, statementNode: statementParser(modules, texts) };
 
   // A single conservative pass when the snapshot can infer at all, instead of
   // a second pass after finding a conditional that infers from parameters.
   const mayInfer = [...texts.values()].some((text) => /\binfer\s/.test(text));
   const reachable = reachableNameEvidence(context, entries, mayInfer);
-  if (process.env.PI_MARK) console.error("MARK cert-negative");
   const unavailable = new Set([...queried].filter((name) => !reachable.mayProduce(name)));
   const candidates = new Set([...queried].filter((name) => !unavailable.has(name)));
   const available = candidates.size ? positiveNames(context, entries, candidates) : new Set();
-  if (process.env.PI_MARK) console.error("MARK cert-positive");
   const undecided = new Set([...candidates].filter((name) => !available.has(name)));
   return { available, unavailable, undecided };
 }
