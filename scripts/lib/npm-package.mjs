@@ -11,7 +11,7 @@ const registry = "https://registry.npmjs.org";
  * Returns the unpacked package root (`destination/package`).
  */
 export async function downloadNpmPackage(name, version, destination, { filter = () => true } = {}) {
-  const metadataResponse = await fetch(`${registry}/${name.replace("/", "%2F")}/${encodeURIComponent(version)}`);
+  const metadataResponse = await fetch(`${registry}/${encodeURIComponent(name)}/${encodeURIComponent(version)}`);
   if (!metadataResponse.ok) throw new Error(`${name}@${version}: npm metadata HTTP ${metadataResponse.status}`);
   const { dist } = await metadataResponse.json();
   const archiveResponse = await fetch(dist.tarball);

@@ -20,10 +20,12 @@ jobs:
     name: Publish-time peak RSS
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    env:
-      FIXTURES: ${{ runner.temp }}/publish-memory
-      BASELINE: ${{ runner.temp }}/baseline-0.4.5
     steps:
+      - name: Locate scratch directories
+        run: |
+          echo "FIXTURES=$RUNNER_TEMP/publish-memory" >> "$GITHUB_ENV"
+          echo "BASELINE=$RUNNER_TEMP/baseline-0.4.5" >> "$GITHUB_ENV"
+
       - name: Checkout
         uses: actions/checkout@v7
 
