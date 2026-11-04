@@ -3,7 +3,7 @@ import { mkdtemp, readFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
-import { buildRefDiff, renderRefDiffMarkdown, validateRefDiff, writeRefDiff } from "../src/ref-diff.js";
+import { buildRefDiff, renderRefDiffMarkdown, validateRefDiff, writeRefDiff } from "../src/index.js";
 
 test("ref diff fails removed plugin-facing hooks and SDK exports", async () => {
   const baseReport = reportFixture({

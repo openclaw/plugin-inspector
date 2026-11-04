@@ -1,14 +1,15 @@
 import assert from "node:assert/strict";
-import { mkdtemp } from "node:fs/promises";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import {
   buildProfileDiff,
-  defaultProfileDiffOptions,
   renderProfileDiffMarkdown,
   validateProfileDiff,
-} from "../src/advanced.js";
+  writeProfileDiff,
+} from "../src/index.js";
+import { defaultProfileDiffOptions } from "../src/advanced.js";
 
 const policy = {
   thresholds: {
@@ -19,7 +20,7 @@ const policy = {
   },
 };
 
-test("profile diff warns on noisy regressions by default", async () => {
+test("profile diff warns on noisy regressions by default and writes artifacts", async (t) => {
   const diff = await buildProfileDiff({
     baseline: profile({ p95WallMs: 100, maxPeakRssMb: 100, nodeBootMs: 50, runs: 1 }),
     current: profile({ p95WallMs: 200, maxPeakRssMb: 180, nodeBootMs: 700, runs: 1 }),
@@ -31,6 +32,15 @@ test("profile diff warns on noisy regressions by default", async () => {
   assert.equal(diff.summary.warnCount, 3);
   assert.deepEqual(validateProfileDiff(diff), []);
   assert.match(renderProfileDiffMarkdown(diff), /Runtime Profile Diff/);
+
+  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-profile-diff-"));
+  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const paths = await writeProfileDiff(diff, {
+    jsonPath: path.join(outDir, "diff.json"),
+    markdownPath: path.join(outDir, "diff.md"),
+  });
+  assert.deepEqual(JSON.parse(await readFile(paths.jsonPath, "utf8")), diff);
+  assert.equal(await readFile(paths.markdownPath, "utf8"), `${renderProfileDiffMarkdown(diff)}\n`);
 });
 
 test("profile diff fails strict regressions after enough samples", async () => {
