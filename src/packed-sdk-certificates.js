@@ -96,6 +96,41 @@ function push(map, key, value) {
   (map.get(key) ?? map.set(key, []).get(key)).push(value);
 }
 
+// Module tables live through the whole certification, so they are compact:
+// single entries are stored directly (arrays only for repeated keys), plain
+// declarations are small integers, local exports are their local name, and
+// statement spans sit in an off-heap typed array.
+function add(map, key, value) {
+  const current = map.get(key);
+  if (current === undefined) map.set(key, value);
+  else if (Array.isArray(current)) current.push(value);
+  else map.set(key, [current, value]);
+}
+
+function tableEntries(map, key) {
+  const value = map.get(key);
+  return value === undefined ? [] : Array.isArray(value) ? value : [value];
+}
+
+const KINDS = ["alias", "interface", "alias-type", "class", "function", "enum", "namespace", "other", "variable", "binding"];
+const EXPRESSION = Object.freeze({ expression: true });
+
+function declarationEntry(value) {
+  return typeof value === "number" ? { index: value >> 3, kind: KINDS[value & 7] } : value;
+}
+
+function exportEntry(value) {
+  return typeof value === "string" ? { local: value } : value;
+}
+
+function statementCount(module) {
+  return module.count;
+}
+
+function statementSpan(module, index) {
+  return [module.spans[index * 2], module.spans[index * 2 + 1]];
+}
+
 // ---------------------------------------------------------------------------
 // Pass 1: module tables (declarations, imports, exports) and the environment.
 
@@ -138,12 +173,12 @@ function bindModule(fileName, text, environment) {
   for (const [name, entry] of environmentEntries.ambientModules) push(environment.ambientModules, name, entry);
   environment.ambientPattern ||= environmentEntries.ambientPattern;
   if (!module.isModule) {
-    for (const [name, list] of module.declarations) for (const { index } of list) push(environment.globals, name, { fileName, index });
+    for (const name of module.declarations.keys()) for (const { index } of tableEntries(module.declarations, name).map(declarationEntry)) push(environment.globals, name, { fileName, index });
   }
   // An ambient module without export declarations exports every declaration.
-  for (const [name, entry] of module.pendingExports) push(module.exports, name, entry);
+  for (const [name, entry] of module.pendingExports) add(module.exports, name, entry);
   if (module.isModule && !module.hasExportDeclarations) {
-    for (const name of module.declarations.keys()) if (!module.exports.has(name)) push(module.exports, name, { local: name });
+    for (const name of module.declarations.keys()) if (!module.exports.has(name)) add(module.exports, name, name);
   }
   delete module.pendingExports;
   return module;
@@ -154,7 +189,8 @@ function newModule(fileName) {
     fileName,
     isModule: false,
     uncertain: false,
-    statements: [],
+    spans: new Int32Array(64),
+    count: 0,
     declarations: new Map(),
     imports: new Map(),
     exports: new Map(),
@@ -169,8 +205,14 @@ function bindStatement(module, environment, node, index, source, offset) {
   const fileName = module.fileName;
   const pendingExports = module.pendingExports;
   {
-    const statement = { start: offset + node.getStart(source), end: offset + node.end };
-    module.statements[index] = statement;
+    if ((index + 1) * 2 > module.spans.length) {
+      const grown = new Int32Array(module.spans.length * 2);
+      grown.set(module.spans);
+      module.spans = grown;
+    }
+    module.spans[index * 2] = offset + node.getStart(source);
+    module.spans[index * 2 + 1] = offset + node.end;
+    module.count = index + 1;
     if (ts.isImportDeclaration(node)) {
       const clause = node.importClause;
       if (!clause || !ts.isStringLiteralLike(node.moduleSpecifier)) return;
@@ -185,9 +227,9 @@ function bindStatement(module, environment, node, index, source, offset) {
       if (ts.isExternalModuleReference(node.moduleReference) && ts.isStringLiteralLike(node.moduleReference.expression)) {
         module.imports.set(node.name.text, { from: node.moduleReference.expression.text, name: ALL, index });
       } else {
-        push(module.declarations, node.name.text, { index, kind: "alias" });
+        add(module.declarations, node.name.text, index * 8);
       }
-      if (hasModifier(node, ts.SyntaxKind.ExportKeyword)) pendingExports.push([node.name.text, { local: node.name.text }]);
+      if (hasModifier(node, ts.SyntaxKind.ExportKeyword)) pendingExports.push([node.name.text, node.name.text]);
       return;
     }
     if (ts.isExportDeclaration(node)) {
@@ -198,17 +240,17 @@ function bindStatement(module, environment, node, index, source, offset) {
         return;
       }
       if (!node.exportClause) module.stars.push(from);
-      else if (ts.isNamespaceExport(node.exportClause)) push(module.exports, node.exportClause.name.text, { from, name: ALL });
+      else if (ts.isNamespaceExport(node.exportClause)) add(module.exports, node.exportClause.name.text, { from, name: ALL });
       else for (const element of node.exportClause.elements) {
         const local = (element.propertyName ?? element.name).text;
-        push(module.exports, element.name.text, from === undefined ? { local } : { from, name: local });
+        add(module.exports, element.name.text, from === undefined ? local : { from, name: local });
       }
       return;
     }
     if (ts.isExportAssignment(node)) {
       module.hasExportDeclarations = true;
       if (node.isExportEquals) module.exportEquals = true;
-      else pendingExports.push(["default", { expression: true }]);
+      else pendingExports.push(["default", EXPRESSION]);
       return;
     }
     if (ts.isModuleDeclaration(node)) {
@@ -231,8 +273,8 @@ function bindStatement(module, environment, node, index, source, offset) {
     if (ts.isVariableStatement(node)) {
       for (const declaration of node.declarationList.declarations) {
         if (ts.isIdentifier(declaration.name)) {
-          push(module.declarations, declaration.name.text, { index, kind: "variable", declarationIndex: node.declarationList.declarations.indexOf(declaration) });
-          if (exported) pendingExports.push([declaration.name.text, { local: declaration.name.text }]);
+          add(module.declarations, declaration.name.text, { index, kind: "variable", declarationIndex: node.declarationList.declarations.indexOf(declaration) });
+          if (exported) pendingExports.push([declaration.name.text, declaration.name.text]);
           continue;
         }
         const bind = (pattern, top) => {
@@ -243,8 +285,8 @@ function bindStatement(module, environment, node, index, source, offset) {
               continue;
             }
             const property = top && ts.isObjectBindingPattern(pattern) && !element.dotDotDotToken ? (element.propertyName ?? element.name).text : undefined;
-            push(module.declarations, element.name.text, { index, kind: "binding", property, declarationIndex: node.declarationList.declarations.indexOf(declaration) });
-            if (exported) pendingExports.push([element.name.text, { local: element.name.text }]);
+            add(module.declarations, element.name.text, { index, kind: "binding", property, declarationIndex: node.declarationList.declarations.indexOf(declaration) });
+            if (exported) pendingExports.push([element.name.text, element.name.text]);
           }
         };
         bind(declaration.name, true);
@@ -253,14 +295,14 @@ function bindStatement(module, environment, node, index, source, offset) {
     }
     const name = node.name && ts.isIdentifier(node.name) ? node.name.text : undefined;
     if (name === undefined) {
-      if (isDefault && exported) pendingExports.push(["default", { expression: true }]);
+      if (isDefault && exported) pendingExports.push(["default", EXPRESSION]);
       return;
     }
     const kind = ts.isInterfaceDeclaration(node) ? "interface" : ts.isTypeAliasDeclaration(node) ? "alias-type"
       : ts.isClassDeclaration(node) ? "class" : ts.isFunctionDeclaration(node) ? "function"
         : ts.isEnumDeclaration(node) ? "enum" : ts.isModuleDeclaration(node) ? "namespace" : "other";
-    push(module.declarations, name, { index, kind });
-    if (exported) pendingExports.push([isDefault ? "default" : name, { local: name }]);
+    add(module.declarations, name, index * 8 + KINDS.indexOf(kind));
+    if (exported) pendingExports.push([isDefault ? "default" : name, name]);
   }
 }
 
@@ -285,8 +327,8 @@ function declaredNames(node) {
 
 function statementParser(modules, texts) {
   return (fileName, index) => {
-    const statement = modules.get(fileName).statements[index];
-    const source = ts.createSourceFile(fileName, texts.get(fileName).slice(statement.start, statement.end), LANGUAGE, false);
+    const [start, end] = statementSpan(modules.get(fileName), index);
+    const source = ts.createSourceFile(fileName, texts.get(fileName).slice(start, end), LANGUAGE, false);
     return source.statements.length === 1 && !source.parseDiagnostics.length ? source.statements[0] : null;
   };
 }
@@ -330,7 +372,7 @@ function resolveLocal(context, fileName, name, seen = new Set()) {
   seen.add(key);
   const module = context.modules.get(fileName);
   if (!module || module.uncertain) return undefined;
-  const declarations = module.declarations.get(name) ?? [];
+  const declarations = tableEntries(module.declarations, name).map(declarationEntry);
   const imported = module.imports.get(name);
   if (imported) {
     if (declarations.length) return undefined;
@@ -345,7 +387,7 @@ function resolveLocal(context, fileName, name, seen = new Set()) {
 function resolveExport(context, fileName, name, seen = new Set()) {
   const module = context.modules.get(fileName);
   if (!module || module.uncertain || module.exportEquals) return undefined;
-  const direct = module.exports.get(name);
+  const direct = module.exports.has(name) ? tableEntries(module.exports, name).map(exportEntry) : undefined;
   if (direct) {
     if (direct.length !== 1 || direct[0].expression) return undefined;
     const entry = direct[0];
@@ -612,12 +654,12 @@ function reachableNameEvidence(context, entries, mayInfer) {
       }
       const module = modules.get(fileName);
       // Modules whose shape is uncertain contribute everything they contain.
-      if (module && (module.uncertain || module.exportEquals)) for (const index of module.statements.keys()) reachStatement(fileName, index, deep);
+      if (module && (module.uncertain || module.exportEquals)) for (let index = 0; index < statementCount(module); index += 1) reachStatement(fileName, index, deep);
     };
     const reachName = (fileName, name, deep) => {
       const module = modules.get(fileName);
       if (!module) return;
-      for (const { index } of module.declarations.get(name) ?? []) reachStatement(fileName, index, deep);
+      for (const { index } of tableEntries(module.declarations, name).map(declarationEntry)) reachStatement(fileName, index, deep);
       const imported = module.imports.get(name);
       if (imported) {
         const target = resolveModule(imported.from, fileName);
@@ -640,9 +682,9 @@ function reachableNameEvidence(context, entries, mayInfer) {
       seen.add(key);
       const module = modules.get(fileName);
       if (!module) return;
-      for (const entry of module.exports.get(name) ?? []) {
+      for (const entry of tableEntries(module.exports, name).map(exportEntry)) {
         if (entry.expression) {
-          for (const index of module.statements.keys()) reachStatement(fileName, index, deep);
+          for (let index = 0; index < statementCount(module); index += 1) reachStatement(fileName, index, deep);
         } else if (entry.local !== undefined) {
           reachName(fileName, entry.local, deep);
         } else {
@@ -738,7 +780,7 @@ function reachableNameEvidence(context, entries, mayInfer) {
     for (const list of environment.ambientModules.values()) for (const { fileName, index } of list) reachStatement(fileName, index, false);
     if (environment.ambientPattern) computesNames = true;
     for (const module of modules.values()) {
-      if (module.uncertain || !module.isModule) for (const index of module.statements.keys()) reachStatement(module.fileName, index, false);
+      if (module.uncertain || !module.isModule) for (let index = 0; index < statementCount(module); index += 1) reachStatement(module.fileName, index, false);
     }
     while (work.length) {
       const [fileName, index, deep] = work.pop();
