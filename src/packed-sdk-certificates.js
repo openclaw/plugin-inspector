@@ -51,15 +51,14 @@ export function certifyPublicSdkNames({ declarations, packageJson = {}, packageR
   for (const [fileName, text] of texts) modules.set(fileName, bindModule(fileName, text, environment));
   const context = { modules, texts, environment, resolveModule, queried, statementNode: statementParser(modules, texts) };
 
-  const available = positiveNames(context, entries);
-  const reachable = reachableNameEvidence(context, entries);
-  const unavailable = new Set();
-  const undecided = new Set();
-  for (const name of queried) {
-    if (available.has(name)) continue;
-    if (!reachable.mayProduce(name)) unavailable.add(name);
-    else undecided.add(name);
-  }
+  // A single conservative pass when the snapshot can infer at all, instead of
+  // a second pass after finding a conditional that infers from parameters.
+  const mayInfer = [...texts.values()].some((text) => /\binfer\s/.test(text));
+  const reachable = reachableNameEvidence(context, entries, mayInfer);
+  const unavailable = new Set([...queried].filter((name) => !reachable.mayProduce(name)));
+  const candidates = new Set([...queried].filter((name) => !unavailable.has(name)));
+  const available = candidates.size ? positiveNames(context, entries, candidates) : new Set();
+  const undecided = new Set([...candidates].filter((name) => !available.has(name)));
   return { available, unavailable, undecided };
 }
 
@@ -384,8 +383,7 @@ function exportNames(context, fileName, seen = new Set()) {
 // ---------------------------------------------------------------------------
 // Positive certificates.
 
-function positiveNames(context, entries) {
-  const { queried } = context;
+function positiveNames(context, entries, queried) {
   const available = new Set();
   const statementNode = context.statementNode;
   const typeLike = (declaration) => ["interface", "alias-type", "class", "enum"].includes(declaration.kind);
@@ -509,7 +507,8 @@ function positiveNames(context, entries) {
     }
   };
 
-  while (work.length) {
+  // Stop as soon as every candidate is proven available.
+  while (work.length && available.size < queried.size) {
     const { declaration, meaning } = work.pop();
     const node = declarationNode(declaration);
     if (!node) continue;
@@ -588,7 +587,7 @@ function literalConditionalBranch(alias, reference) {
 // ---------------------------------------------------------------------------
 // Negative certificates.
 
-function reachableNameEvidence(context, entries) {
+function reachableNameEvidence(context, entries, mayInfer) {
   const { modules, environment, resolveModule, queried } = context;
   const run = (followContexts, everythingDeep) => {
     const tokens = new Set();
@@ -748,13 +747,12 @@ function reachableNameEvidence(context, entries) {
     return { tokens, templates, computesNames, infersFromParameters, conditionalOnThis };
   };
 
-  let result = run(false, false);
   // A conditional that infers from a parameter position can surface parameter
   // types of whatever reaches it: follow its operands and type arguments deeply.
-  if (result.infersFromParameters) {
-    result = run(true, false);
-    if (result.conditionalOnThis) result = run(true, true);
-  }
+  // When the snapshot can infer at all, do so from the start.
+  let result = run(mayInfer, false);
+  if (result.infersFromParameters && !mayInfer) result = run(true, false);
+  if (result.infersFromParameters && result.conditionalOnThis) result = run(true, true);
   const patterns = result.templates.map((parts) => new RegExp(`^${parts.map((part) => part.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("[\\s\\S]*")}$`));
   return {
     mayProduce: (name) => result.computesNames || SYNTHESIZED.test(name) || name.startsWith("__")

@@ -1,10 +1,48 @@
 import * as nodeModule from "node:module";
-import { parse } from "acorn";
+import { Node as AcornNode, Parser } from "acorn";
 import { analyze } from "eslint-scope";
 
 const literalModuleImport = /(?<![$\w.])(?<kind>[$A-Z_a-z][$\w]*)\s*\(\s*(?<quote>["'`])(?<specifier>[^"'`\\\r\n]+)\k<quote>/dg;
 
 let typeScript;
+
+// Large bundles parse into hundreds of thousands of nodes, all alive while a
+// file is analyzed. Keep that working set small without changing what the
+// analysis sees: ranges are computed on demand (eslint-scope reads range[0]),
+// and each node carries preallocated slots for its parent and for whether it
+// is a resolved lexical reference, instead of a range array per node plus a
+// Map entry and a Set entry. Symbol keys stay invisible to for...in and to
+// eslint-scope's traversal.
+const PARENT = Symbol("parent");
+const RESOLVED = Symbol("resolved");
+class AnalyzedNode extends AcornNode {
+  constructor(parser, pos, loc) {
+    super(parser, pos, loc);
+    this[PARENT] = undefined;
+    this[RESOLVED] = false;
+  }
+
+  get range() {
+    return [this.start, this.end];
+  }
+}
+const AnalyzedParser = Parser.extend((Base) => class extends Base {
+  startNode() {
+    return new AnalyzedNode(this, this.start, this.startLoc);
+  }
+
+  startNodeAt(pos, loc) {
+    return new AnalyzedNode(this, pos, loc);
+  }
+
+  copyNode(node) {
+    const copy = new AnalyzedNode(this, node.start, this.startLoc);
+    for (const key in node) copy[key] = node[key];
+    return copy;
+  }
+});
+const parents = { get: (node) => node?.[PARENT] };
+const lexicalReferences = { has: (node) => node?.[RESOLVED] === true };
 
 // Callers that classify the same source more than once (inspectSourceText runs
 // both SDK-import and registry-deprecation passes over every file) can share
@@ -42,7 +80,7 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
       ["require", "import"].includes(entry.kind) && retained.has(entry.specifierStart))
       .map((entry) => ({ ...entry, names: new Set() }));
   }
-  const { scopes, parents, nodes, lexicalReferences, requireReferences } = analysis;
+  const { scopes, nodes, requireReferences } = analysis;
 
   const byMarker = new Map(imports.map(({ marker, entry }) => [marker, entry]));
   const result = [];
@@ -137,8 +175,8 @@ function analyzeRuntimeText(runtimeText) {
   let scopes;
   try {
     // Accept both source modules and CommonJS wrappers without changing their runtime.
-    ast = parse(runtimeText, {
-      ecmaVersion: "latest", ranges: true, sourceType: "script",
+    ast = AnalyzedParser.parse(runtimeText, {
+      ecmaVersion: "latest", sourceType: "script",
       allowAwaitOutsideFunction: true, allowReturnOutsideFunction: true, allowImportExportEverywhere: true,
     });
     scopes = analyze(ast, {
@@ -149,14 +187,13 @@ function analyzeRuntimeText(runtimeText) {
     return { runtimeText };
   }
 
-  const parents = new Map();
   const nodes = [];
   visit(ast);
   // Same pre-order as walking Object.values(node), without allocating a value
   // array and a callback per node: large bundles have millions of nodes.
   function visit(node, parent) {
     if (!node || typeof node.type !== "string") return;
-    parents.set(node, parent);
+    node[PARENT] = parent;
     nodes.push(node);
     for (const key in node) {
       const value = node[key];
@@ -166,8 +203,9 @@ function analyzeRuntimeText(runtimeText) {
     }
   }
   const requireReferences = new Set();
-  const lexicalReferences = new Set(scopes.scopes.flatMap((scope) =>
-    scope.references.filter((reference) => reference.resolved).map((reference) => reference.identifier)));
+  for (const scope of scopes.scopes) {
+    for (const reference of scope.references) if (reference.resolved) reference.identifier[RESOLVED] = true;
+  }
   for (const declaration of nodes) {
     if (declaration.type !== "ImportDeclaration" || !["module", "node:module"].includes(declaration.source.value)) continue;
     for (const binding of declaration.specifiers) {
@@ -190,7 +228,7 @@ function analyzeRuntimeText(runtimeText) {
     }
   }
 
-  return { runtimeText, scopes, parents, nodes, lexicalReferences, requireReferences };
+  return { runtimeText, scopes, nodes, requireReferences };
 }
 
 function* scanLiteralModuleImports(text) {
