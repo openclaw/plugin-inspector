@@ -15,6 +15,7 @@ import { buildCompatibilityReport, buildReport } from "./report.js";
 import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
 import { inspectRegistryDeprecations } from "./registry-deprecations.js";
 import { collectRuntimeModuleImports, createRuntimeImportAnalysisCache, releaseRuntimeImportAnalysis } from "./runtime-imports.js";
+import { readText } from "./read-text.js";
 
 const pluginFactoryNames = "defineBundledChannelEntry|defineChannelPluginEntry|createChatChannelPlugin|definePluginEntry";
 // Bundlers emit unbound calls as (0, sdk.factory)(...), including inline require receivers.
@@ -144,7 +145,7 @@ export async function inspectPlugin(fixture, options = {}) {
   const sdkDeprecationDetails = [];
 
   for (const filePath of sourceFiles) {
-    const text = await readFile(filePath, "utf8");
+    const text = await readText(filePath);
     const relativePath = path.relative(config.rootDir ?? process.cwd(), filePath);
     const sourceInspection = inspectSourceText(text, relativePath, options);
 

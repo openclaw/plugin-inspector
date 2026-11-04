@@ -1,6 +1,7 @@
-import { readdir, readFile } from "node:fs/promises";
+import { readdir } from "node:fs/promises";
 import path from "node:path";
 import ts from "../typescript.cjs";
+import { readText } from "../read-text.js";
 
 const sourceExtension = /\.(?:[cm]?[jt]s|[jt]sx)$/i;
 const testFile = /(?:\.(?:test|spec)[.-]|(?:^|[-.])test-(?:support|helpers)|^test-|^vitest\.|^jest\.|^(?:bench|benchmark)[-.])/i;
@@ -54,7 +55,7 @@ export async function readUsageFiles(root, report) {
 }
 
 async function readCandidate(file, metadata) {
-  const text = await readFile(file, "utf8");
+  const text = await readText(file);
   const dependencies = metadata ? [] : ts.preProcessFile(text, true, true).importedFiles.map((dependency) => dependency.fileName);
   return { text, dependencies };
 }

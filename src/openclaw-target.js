@@ -6,6 +6,7 @@ import { resolveJailedPluginPath } from "./path-utils.js";
 import { readCompatRegistryRecords } from "./compat-registry.js";
 import { retirementRecordsForPackedTarget } from "./registry-deprecations.js";
 import sdkRetirements from "./sdk-retirements.json" with { type: "json" };
+import { readText } from "./read-text.js";
 
 export const defaultOpenClawCheckoutPaths = ["./openclaw", "../openclaw"];
 
@@ -455,7 +456,7 @@ async function readPackedOpenClawTargetSurface({ rootDir, requestedPaths, reques
   const declarationFiles = await listDeclarationFiles(distPath);
   const declarations = [];
   for (const filePath of declarationFiles) {
-    declarations.push({ filePath, source: await readFile(filePath, "utf8") });
+    declarations.push({ filePath, source: await readText(filePath) });
   }
   const apiDeclaration = declarations
     .map((declaration) => ({
