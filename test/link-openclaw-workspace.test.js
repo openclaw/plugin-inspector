@@ -1,13 +1,12 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { linkOpenClawWorkspace } from "../src/link-openclaw-workspace-cli.js";
 
 test("links OpenClaw runtime dependencies without rewriting peer contracts", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-link-openclaw-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-link-openclaw-");
   const packageJsonPath = path.join(rootDir, "package.json");
   await writeFile(
     packageJsonPath,
@@ -31,8 +30,7 @@ test("links OpenClaw runtime dependencies without rewriting peer contracts", asy
 });
 
 test("links peer-only and optional OpenClaw host inputs in their runtime section", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-link-openclaw-sections-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-link-openclaw-sections-");
   const peerOnlyPath = path.join(rootDir, "peer-only.json");
   const optionalPath = path.join(rootDir, "optional.json");
   await writeFile(peerOnlyPath, '{"name":"peer-only","peerDependencies":{"openclaw":"*"}}\n', "utf8");

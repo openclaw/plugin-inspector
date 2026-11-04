@@ -1,15 +1,14 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, stat, writeFile } from "node:fs/promises";
 import * as nodeModule from "node:module";
-import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import { createMockSdkPackage, runEntrypointSyntheticProbes } from "@openclaw/plugin-inspector/advanced";
 
 for (const extension of ["mjs", "cjs"]) {
   test(`packaged .setup ${extension} modules retain SDK imports through execution`, async (t) => {
-    const root = await mkdtemp(path.join(os.tmpdir(), "inspector-setup-"));
-    t.after(() => rm(root, { recursive: true, force: true }));
+    const root = await createTempDir(t, "inspector-setup-");
     const dist = path.join(root, "dist");
     await mkdir(path.join(dist, ".setup"), { recursive: true });
     const commonJs = extension === "cjs";
@@ -45,8 +44,7 @@ for (const extension of ["mjs", "cjs"]) {
 }
 
 test("SDK discovery keeps unrelated hidden directories excluded", async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "inspector-hidden-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "inspector-hidden-");
   await mkdir(path.join(root, "plugin", ".private"), { recursive: true });
   await writeFile(path.join(root, "plugin", ".private", "ignored.mjs"),
     'import { privateHelper } from "openclaw/plugin-sdk/private-fixture";\n');

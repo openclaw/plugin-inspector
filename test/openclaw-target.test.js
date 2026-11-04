@@ -1,6 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import {
@@ -14,8 +14,7 @@ import {
 } from "../src/advanced.js";
 
 test("OpenClaw target parser reads public target surface facts", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-openclaw-target-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-openclaw-target-");
 
   const targetRoot = path.join(rootDir, "openclaw");
   await mkdir(path.join(targetRoot, "src/plugins/compat"), { recursive: true });
@@ -140,8 +139,7 @@ export const publicPluginOwnedSdkEntrypoints = ["speech-core"] as const;\n`,
 });
 
 test("OpenClaw target reads hook names from the metadata registry", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-hook-metadata-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-hook-metadata-");
   const pluginDir = path.join(rootDir, "openclaw/src/plugins");
   await mkdir(path.join(pluginDir, "compat"), { recursive: true });
   await writeFile(path.join(pluginDir, "compat/registry.ts"), "export const records = [];\n");
@@ -172,8 +170,7 @@ export const PLUGIN_HOOK_METADATA: Readonly<Record<PluginHookName, PluginHookMet
 });
 
 test("split compat registry records retain their statuses and report coverage", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-split-registry-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-split-registry-");
   const registryDir = path.join(rootDir, "openclaw/src/plugins/compat");
   await mkdir(registryDir, { recursive: true });
   await writeFile(path.join(registryDir, "registry.ts"), `
@@ -223,8 +220,7 @@ ${codes.map((code) => `  { code: "${code}", status: "active" },`).join("\n")}
 });
 
 test("compat registry delegation requires an explicit value import", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-registry-selection-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-registry-selection-");
   const registryDir = path.join(rootDir, "openclaw/src/plugins/compat");
   await mkdir(registryDir, { recursive: true });
   await writeFile(path.join(registryDir, "registry-records.ts"),
@@ -259,8 +255,7 @@ test("compat registry delegation requires an explicit value import", async (t) =
 });
 
 test("a missing explicitly delegated compat registry fails instead of falling back", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-missing-registry-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-missing-registry-");
   const registryDir = path.join(rootDir, "openclaw/src/plugins/compat");
   await mkdir(registryDir, { recursive: true });
   await writeFile(path.join(registryDir, "registry.ts"),
@@ -272,8 +267,7 @@ test("a missing explicitly delegated compat registry fails instead of falling ba
 });
 
 test("OpenClaw target parser prefers the refactored manifest types module", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-openclaw-target-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-openclaw-target-");
 
   const targetRoot = path.join(rootDir, "openclaw");
   await mkdir(path.join(targetRoot, "src/plugins/compat"), { recursive: true });
@@ -306,8 +300,7 @@ export type PluginManifestContracts = {
 });
 
 test("OpenClaw target parser reads manifest contract keys from the canonical tuple", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-openclaw-target-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-openclaw-target-");
 
   const targetRoot = path.join(rootDir, "openclaw");
   await mkdir(path.join(targetRoot, "src/plugins/compat"), { recursive: true });
@@ -345,8 +338,7 @@ export type PluginManifestContracts = Partial<
 });
 
 test("OpenClaw target parser ignores transitional manifest types modules without the manifest contract", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-openclaw-target-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-openclaw-target-");
 
   const targetRoot = path.join(rootDir, "openclaw");
   await mkdir(path.join(targetRoot, "src/plugins/compat"), { recursive: true });
@@ -379,8 +371,7 @@ export type PluginManifestContracts = {
 });
 
 test("packed OpenClaw target parser reads raw manifest fields", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-openclaw-target-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-openclaw-target-");
 
   const targetRoot = path.join(rootDir, "openclaw");
   await mkdir(path.join(targetRoot, "dist"), { recursive: true });
@@ -419,8 +410,7 @@ type PluginManifestRecord = {
 test("packed OpenClaw target parser reads manifest contract keys from the declared tuple", async (t) => {
   // OpenClaw 2026.10.1-beta.1 ships the contract type mapped over the key tuple,
   // and the tuple itself as a declared readonly const, in bundled .d.ts chunks.
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-openclaw-target-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-openclaw-target-");
 
   const targetRoot = path.join(rootDir, "openclaw");
   await mkdir(path.join(targetRoot, "dist"), { recursive: true });
@@ -459,8 +449,7 @@ type PluginManifestContracts = Partial<Record<(typeof PLUGIN_MANIFEST_CONTRACT_K
 test("packed OpenClaw target parser does not guess contract keys for an unrecognized type", async (t) => {
   // A declaration that is neither an object type nor mapped over the key tuple
   // stays unread, so genuine unknown-key findings are not silenced by a stray tuple.
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-openclaw-target-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-openclaw-target-");
 
   const targetRoot = path.join(rootDir, "openclaw");
   await mkdir(path.join(targetRoot, "dist"), { recursive: true });

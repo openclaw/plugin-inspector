@@ -1,6 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdtemp, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
@@ -933,8 +933,7 @@ test("synthetic probes finish registerService start before stop and dispose", as
 });
 
 test("mock SDK capture preserves retained registration metadata across subprocesses", async (t) => {
-  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-mock-sdk-"));
-  t.after(() => rm(dir, { recursive: true, force: true }));
+  const dir = await createTempDir(t, "plugin-inspector-probes-mock-sdk-");
   const entrypoint = path.join(dir, "fixture.mjs");
   await writeFile(
     entrypoint,
@@ -962,8 +961,7 @@ test("mock SDK capture preserves retained registration metadata across subproces
 });
 
 test("mock SDK entrypoint synthetic probes execute retained handlers in-process", async (t) => {
-  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-mock-sdk-entrypoint-"));
-  t.after(() => rm(dir, { recursive: true, force: true }));
+  const dir = await createTempDir(t, "plugin-inspector-probes-mock-sdk-entrypoint-");
   const entrypoint = path.join(dir, "fixture.ts");
   await writeFile(
     entrypoint,
@@ -994,8 +992,7 @@ test("mock SDK entrypoint synthetic probes execute retained handlers in-process"
 });
 
 test("mock SDK agent runtime path helpers return concrete paths", async (t) => {
-  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-agent-dir-"));
-  t.after(() => rm(dir, { recursive: true, force: true }));
+  const dir = await createTempDir(t, "plugin-inspector-probes-agent-dir-");
   const entrypoint = path.join(dir, "fixture.mjs");
   await writeFile(
     entrypoint,
@@ -1028,8 +1025,7 @@ test("mock SDK agent runtime path helpers return concrete paths", async (t) => {
 });
 
 test("mock SDK windows spawn helpers return concrete invocations", async (t) => {
-  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-windows-spawn-"));
-  t.after(() => rm(dir, { recursive: true, force: true }));
+  const dir = await createTempDir(t, "plugin-inspector-probes-windows-spawn-");
   const entrypoint = path.join(dir, "fixture.mjs");
   await writeFile(
     entrypoint,
@@ -1102,8 +1098,7 @@ test("mock SDK windows spawn helpers return concrete invocations", async (t) => 
 
 for (const mockSdk of [false, true]) {
   test(`synthetic modelAuth executes no-auth handlers and fails uncaught auth (mockSdk=${mockSdk})`, async (t) => {
-    const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-model-auth-"));
-    t.after(() => rm(dir, { recursive: true, force: true }));
+    const dir = await createTempDir(t, "plugin-inspector-probes-model-auth-");
     const entrypoint = path.join(dir, "fixture.mjs");
     await writeFile(entrypoint, [
       'import assert from "node:assert/strict";',
@@ -1146,8 +1141,7 @@ function captureRetained(register) {
 }
 
 async function captureLocalFixture(t, lines, options = {}) {
-  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-"));
-  t.after(() => rm(dir, { recursive: true, force: true }));
+  const dir = await createTempDir(t, "plugin-inspector-probes-");
   const entrypoint = path.join(dir, "fixture.mjs");
   await writeFile(entrypoint, `${lines.join("\n")}\n`, "utf8");
   return captureEntrypoint(entrypoint, {

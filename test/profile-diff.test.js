@@ -1,6 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
-import os from "node:os";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import {
@@ -33,8 +33,7 @@ test("profile diff warns on noisy regressions by default and writes artifacts", 
   assert.deepEqual(validateProfileDiff(diff), []);
   assert.match(renderProfileDiffMarkdown(diff), /Runtime Profile Diff/);
 
-  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-profile-diff-"));
-  t.after(() => rm(outDir, { recursive: true, force: true }));
+  const outDir = await createTempDir(t, "plugin-inspector-profile-diff-");
   const paths = await writeProfileDiff(diff, {
     jsonPath: path.join(outDir, "diff.json"),
     markdownPath: path.join(outDir, "diff.md"),
@@ -111,8 +110,7 @@ test("profile diff counts array-valued registry surfaces", async () => {
 });
 
 test("profile diff warns but does not fail when baseline is missing", async (t) => {
-  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-profile-baseline-"));
-  t.after(() => rm(dir, { recursive: true, force: true }));
+  const dir = await createTempDir(t, "plugin-inspector-profile-baseline-");
   const diff = await buildProfileDiff({
     baselinePath: path.join(dir, "missing.json"),
     current: profile({ p95WallMs: 100, maxPeakRssMb: 100, nodeBootMs: 50, runs: 3 }),

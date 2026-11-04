@@ -1,13 +1,12 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm, open, readFile, readdir, symlink, writeFile, chmod, lstat } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, open, readFile, readdir, symlink, writeFile, chmod, lstat } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { writeJsonFileAtomic } from "../src/json-file.js";
 
 test("writeJsonFileAtomic writes formatted JSON with trailing newline", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-json-file-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-json-file-");
   const jsonPath = path.join(rootDir, "package.json");
 
   await writeJsonFileAtomic(jsonPath, { name: "fixture" });
@@ -16,8 +15,7 @@ test("writeJsonFileAtomic writes formatted JSON with trailing newline", async (t
 });
 
 test("writeJsonFileAtomic preserves an existing file mode", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-json-file-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-json-file-");
   const jsonPath = path.join(rootDir, "package.json");
   await writeFile(jsonPath, "{}\n", "utf8");
   await chmod(jsonPath, 0o600);
@@ -28,8 +26,7 @@ test("writeJsonFileAtomic preserves an existing file mode", async (t) => {
 });
 
 test("writeJsonFileAtomic preserves package.json symlinks and updates their targets", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-json-file-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-json-file-");
   const targetPath = path.join(rootDir, "target-package.json");
   const linkPath = path.join(rootDir, "package.json");
   await writeFile(targetPath, "{}\n", "utf8");
@@ -42,8 +39,7 @@ test("writeJsonFileAtomic preserves package.json symlinks and updates their targ
 });
 
 test("writeJsonFileAtomic removes the temp file when staging fails", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-json-file-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-json-file-");
   const jsonPath = path.join(rootDir, "package.json");
   await writeFile(jsonPath, "{}\n", "utf8");
 
@@ -67,8 +63,7 @@ test("writeJsonFileAtomic removes the temp file when staging fails", async (t) =
 });
 
 test("writeJsonFileAtomic removes the temp file when the rename fails", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-json-file-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-json-file-");
   const jsonPath = path.join(rootDir, "package.json");
   await mkdir(jsonPath);
 
@@ -78,8 +73,7 @@ test("writeJsonFileAtomic removes the temp file when the rename fails", async (t
 });
 
 test("writeJsonFileAtomic resolves a dangling manifest symlink to its target", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-json-file-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-json-file-");
   const linkPath = path.join(rootDir, "package.json");
   const targetPath = path.join(rootDir, "target-package.json");
   await symlink("target-package.json", linkPath);
@@ -91,8 +85,7 @@ test("writeJsonFileAtomic resolves a dangling manifest symlink to its target", a
 });
 
 test("writeJsonFileAtomic rejects a manifest symlink cycle", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-json-file-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-json-file-");
   const firstPath = path.join(rootDir, "a.json");
   const secondPath = path.join(rootDir, "b.json");
   await symlink("b.json", firstPath);

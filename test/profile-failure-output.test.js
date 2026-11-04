@@ -1,7 +1,7 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import { assertGone } from "./helpers/process-liveness.js";
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
-import os from "node:os";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { buildImportLoopProfile } from "../src/import-loop-profile.js";
@@ -9,8 +9,7 @@ import { runProfiledProcess } from "../src/process-profile.js";
 import { buildRuntimeProfile, validateRuntimeProfile, writeRuntimeProfile } from "../src/runtime-profile.js";
 
 async function tempDir(t) {
-  const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-failure-profile-"));
-  t.after(() => rm(dir, { recursive: true, force: true }));
+  const dir = await createTempDir(t, "plugin-inspector-failure-profile-");
   return dir;
 }
 
@@ -95,8 +94,7 @@ test("import-loop retains failure diagnostics for baseline and plugin samples", 
 });
 
 test("runtime profile writes ordered failed-sample diagnostics before validation", { timeout: 8000 }, async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-failure-profile-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-failure-profile-");
   const orderPath = path.join(rootDir, "order.json");
   const command = (id) => ({
     id, args: ["-e", `

@@ -1,5 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdtemp, rm, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
@@ -134,8 +135,7 @@ test("runtime profile validation treats Windows RSS sampling as optional", () =>
 });
 
 test("runtime profile writer emits JSON and Markdown artifacts", async (t) => {
-  const outputDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-runtime-profile-"));
-  t.after(() => rm(outputDir, { recursive: true, force: true }));
+  const outputDir = await createTempDir(t, "plugin-inspector-runtime-profile-");
   const jsonPath = path.join(outputDir, "profile.json");
   const markdownPath = path.join(outputDir, "profile.md");
   const profile = await buildRuntimeProfile({ runs: 1 });

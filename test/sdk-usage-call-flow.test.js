@@ -1,8 +1,8 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import { inspectSdkUsageFixture } from "./helpers/sdk-usage-fixture.js";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { pluginRoot } from "../src/index.js";
@@ -64,8 +64,7 @@ export default { register(api) { call(api, "registerTool"); call({}, "fake"); ca
 
 
 test("shared alternative graphs preserve inventory within a bounded subprocess", async (t) => {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-shared-alternatives-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, "sdk-shared-alternatives-");
   await writeFile(path.join(directory, "package.json"), JSON.stringify({
     name: "shared-alternatives", version: "1.0.0", openclaw: { extensions: ["./index.js"] },
   }));
@@ -89,8 +88,7 @@ test("shared alternative graphs preserve inventory within a bounded subprocess",
 
 
 test("nested array alternatives retain SDK bases without inventing builtin length members", async (t) => {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-nested-array-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, "sdk-nested-array-");
   await writeFile(path.join(directory, "package.json"), JSON.stringify({ name: "nested-array", version: "1.0.0", openclaw: { extensions: ["./index.js"] } }));
   await writeFile(path.join(directory, "index.js"), "export default { register(api) { const inner = flag ? api.runtime.channel : api.runtime.media; const mixed = other ? [] : inner; mixed.length; } };");
   const result = await pluginRoot.runCheck({ pluginRoot: directory, outDir: path.join(directory, "report"), openclawPath: false, capture: false, allowExecution: false });

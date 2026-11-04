@@ -1,13 +1,12 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { fixtureSuites, pluginRoot } from "../src/index.js";
 
 async function workspace(t) {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-usage-fixture-roots-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, "sdk-usage-fixture-roots-");
   const root = path.join(directory, "plugins/example");
   async function write(name, content) {
     const file = path.join(root, name);

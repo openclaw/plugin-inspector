@@ -1,6 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { buildCrabpotFollowthroughChecklist } from "../scripts/check-crabpot-followthrough.mjs";
@@ -77,8 +77,7 @@ test("crabpot follow-through checklist fails advanced bundle script consumers", 
 });
 
 async function createFixtureRoots(t, { ref, packagePin, scripts = {} }) {
-  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-release-followthrough-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "plugin-inspector-release-followthrough-");
   const pluginInspectorRoot = path.join(root, "plugin-inspector");
   const crabpotRoot = path.join(root, "crabpot");
   await mkdir(path.join(crabpotRoot, "scripts"), { recursive: true });

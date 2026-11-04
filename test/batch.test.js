@@ -1,7 +1,7 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdir, mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { promisify } from "node:util";
@@ -11,8 +11,7 @@ const execFileAsync = promisify(execFile);
 const cliPath = path.resolve("src/cli.js");
 
 async function createCorpus(t) {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-batch-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-batch-");
   return rootDir;
 }
 

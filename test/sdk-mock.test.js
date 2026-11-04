@@ -1,8 +1,8 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdir, mkdtemp, rm, stat, symlink, writeFile } from "node:fs/promises";
+import { mkdir, stat, symlink, writeFile } from "node:fs/promises";
 import * as nodeModule from "node:module";
-import os from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { promisify } from "node:util";
@@ -37,8 +37,7 @@ for (const rejected of [false, true]) {
   test(`createRequire aliases generate SDK modules and retained handlers ${rejected ? "preserve rejection" : "compute values"}`, {
     skip: !supportsCommonJsMocks,
   }, async (t) => {
-    const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-require-alias-"));
-    t.after(() => rm(root, { recursive: true, force: true }));
+    const root = await createTempDir(t, "plugin-inspector-require-alias-");
     const source = [
       'import { createRequire as nodeCreateRequire } from "node:module";',
       'function initializeSchema() {',
@@ -90,8 +89,7 @@ for (const rejected of [false, true]) {
 for (const [form, entryLines] of Object.entries(cjsEntries)) {
   for (const boundary of ["API", "CLI", "synthetic"]) {
     test(`CommonJS ${form} SDK calls execute through ${boundary}`, async (t) => {
-      const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-cjs-"));
-      t.after(() => rm(root, { recursive: true, force: true }));
+      const root = await createTempDir(t, "plugin-inspector-cjs-");
       await writeFile(path.join(root, "index.cjs"), [
         "#!/usr/bin/env node",
         '"use strict";',
@@ -158,8 +156,7 @@ for (const [form, entryLines] of Object.entries(cjsEntries)) {
 }
 
 test("mock capture preserves CommonJS hashbang and strict-mode semantics", async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-cjs-directives-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "plugin-inspector-cjs-directives-");
   await writeFile(path.join(root, "index.cjs"), [
     "#!/usr/bin/env node",
     '"use strict";',
@@ -205,8 +202,7 @@ test("source inspection discovers CommonJS SDK requirements with source referenc
 
 for (const phase of ["entrypoint-import-error", "registration-execution-error"]) {
   test(`CommonJS mock capture preserves ${phase}`, async (t) => {
-    const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-cjs-failure-"));
-    t.after(() => rm(root, { recursive: true, force: true }));
+    const root = await createTempDir(t, "plugin-inspector-cjs-failure-");
     await writeFile(path.join(root, "index.cjs"), [
       'const { definePluginEntry } = require("openclaw/plugin-sdk");',
       phase === "entrypoint-import-error"
@@ -225,8 +221,7 @@ for (const phase of ["entrypoint-import-error", "registration-execution-error"])
 test("CommonJS synthetic hooks stay scoped and are removed after success and failure", {
   skip: !supportsCommonJsMocks,
 }, async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-cjs-isolation-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "plugin-inspector-cjs-isolation-");
   for (const id of ["first", "second"]) {
     const dir = path.join(root, id);
     await mkdir(dir);
@@ -253,8 +248,7 @@ test("CommonJS synthetic hooks stay scoped and are removed after success and fai
 });
 
 test("CommonJS SDK traversal is rejected at runtime", { skip: !supportsCommonJsMocks }, async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-cjs-traversal-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "plugin-inspector-cjs-traversal-");
   await writeFile(path.join(root, "index.cjs"), 'require("openclaw/plugin-sdk/../../escape");\n');
   await assert.rejects(
     runEntrypointSyntheticProbes("index.cjs", { cwd: root, mockSdk: true }),
@@ -264,8 +258,7 @@ test("CommonJS SDK traversal is rejected at runtime", { skip: !supportsCommonJsM
 
 for (const extension of ["mjs", "ts"]) {
   test(`mock ${extension} capture and synthetic invocation remain available with scoped hooks`, async (t) => {
-    const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-sibling-"));
-    t.after(() => rm(root, { recursive: true, force: true }));
+    const root = await createTempDir(t, "plugin-inspector-sdk-sibling-");
     await writeFile(path.join(root, `index.${extension}`), [
       'import { definePluginEntry } from "openclaw/plugin-sdk";',
       extension === "ts" ? "const marker: string = 'sibling';" : "const marker = 'sibling';",
@@ -289,8 +282,7 @@ for (const extension of ["mjs", "ts"]) {
 }
 
 test("dynamic mock generation agrees with runtime source imports and excludes promise methods", async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-dynamic-imports-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "plugin-inspector-dynamic-imports-");
   const source = [
     'type Shape = import("openclaw/plugin-sdk/dynamic-shared").Shape;',
     'type Only = import("openclaw/plugin-sdk/type-only").Only;',
@@ -341,8 +333,7 @@ for (const extension of ["mjs", "ts", "cjs"]) {
     test(`mock ${extension} dynamic imports load in retained handlers and ${rejected ? "preserve rejection" : "respond successfully"}`, {
       skip: extension === "cjs" && !supportsCommonJsMocks,
     }, async (t) => {
-      const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-dynamic-handler-"));
-      t.after(() => rm(root, { recursive: true, force: true }));
+      const root = await createTempDir(t, "plugin-inspector-dynamic-handler-");
       await writeFile(path.join(root, `index.${extension}`), [
         extension === "cjs"
           ? 'const { formatErrorMessage } = require("openclaw/plugin-sdk/error-runtime");'
@@ -390,8 +381,7 @@ for (const extension of ["mjs", "ts", "cjs"]) {
 
 for (const extension of ["mjs", "cjs"]) {
   test(`mock ${extension} capture follows a symlinked plugin root`, async (t) => {
-    const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-symlink-"));
-    t.after(() => rm(root, { recursive: true, force: true }));
+    const root = await createTempDir(t, "plugin-inspector-sdk-symlink-");
     const real = path.join(root, "real");
     const alias = path.join(root, "alias");
     await mkdir(real);
@@ -421,8 +411,7 @@ for (const extension of ["mjs", "cjs"]) {
 }
 
 test("CommonJS template expressions discover and load SDK requirements without template text", async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-template-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "plugin-inspector-sdk-template-");
   const source = [
     'const marker = `require("openclaw/plugin-sdk/text-before") ${(() => {',
     '  const value = { kind: typeof require("openclaw/plugin-sdk/template-fixture").templateHelper };',
@@ -452,8 +441,7 @@ for (const extension of ["mjs", "cjs"]) {
   test(`mock ${extension} Gateway rejections preserve error-runtime messages`, {
     skip: extension === "cjs" && !supportsCommonJsMocks,
   }, async (t) => {
-    const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-error-"));
-    t.after(() => rm(root, { recursive: true, force: true }));
+    const root = await createTempDir(t, "plugin-inspector-sdk-error-");
     await writeFile(path.join(root, `index.${extension}`), [
       extension === "mjs"
         ? 'import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";'
@@ -479,8 +467,7 @@ for (const extension of ["mjs", "cjs"]) {
 }
 
 async function loadLazyRuntimeMock(t) {
-  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-lazy-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "plugin-inspector-sdk-lazy-");
   const { pluginSdkDir } = await createMockSdkPackage(root);
   return import(pathToFileURL(path.join(pluginSdkDir, "lazy-runtime.js")).href);
 }
@@ -586,8 +573,7 @@ for (const extension of ["mjs", "cjs"]) {
     test(`mock ${extension} Gateway lazy runtime ${rejected ? "rejection remains failed" : "loads after registration"}`, {
       skip: extension === "cjs" && !supportsCommonJsMocks,
     }, async (t) => {
-      const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-lazy-gateway-"));
-      t.after(() => rm(root, { recursive: true, force: true }));
+      const root = await createTempDir(t, "plugin-inspector-sdk-lazy-gateway-");
       await writeFile(path.join(root, "runtime.mjs"), [
         'import { formatErrorMessage } from "openclaw/plugin-sdk/error-runtime";',
         'export const value = formatErrorMessage(new Error("fixture runtime value"));',
@@ -634,8 +620,7 @@ for (const extension of ["mjs", "cjs"]) {
 }
 
 test("mock SDK ignores subpaths that would escape the plugin-sdk package", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-mock-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-sdk-mock-");
   const pluginRoot = path.join(rootDir, "plugin");
   await mkdir(pluginRoot, { recursive: true });
   await writeFile(
@@ -650,8 +635,7 @@ test("mock SDK ignores subpaths that would escape the plugin-sdk package", async
 });
 
 test("mock SDK preserves string and record coercion contracts", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-mock-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-sdk-mock-");
   const pluginRoot = path.join(rootDir, "plugin");
   await mkdir(pluginRoot, { recursive: true });
   await writeFile(
@@ -694,8 +678,7 @@ test("mock SDK preserves string and record coercion contracts", async (t) => {
 });
 
 test("repeated synthetic calls share one workspace cleanup listener", async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-synthetic-cleanup-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "plugin-inspector-synthetic-cleanup-");
   await writeFile(path.join(root, "index.mjs"), `export function register(api) {
     api.on("before_tool_call", () => ({ ok: true }));
   }`);
@@ -708,8 +691,7 @@ test("repeated synthetic calls share one workspace cleanup listener", async (t) 
 });
 
 test("synthetic workspaces survive calls and are removed on process exit", async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-synthetic-exit-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "plugin-inspector-synthetic-exit-");
   const temporaryRoot = path.join(root, "temporary");
   await mkdir(temporaryRoot);
   await writeFile(path.join(root, "good.mjs"), "export function register(api) { api.on('before_tool_call', () => ({})); }");

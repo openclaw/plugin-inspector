@@ -1,13 +1,12 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { pluginRoot } from "../src/index.js";
 
 async function reportFor(t, openclaw, files, inputKind = "artifact") {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-runtime-entry-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, "sdk-runtime-entry-");
   const root = path.join(directory, "plugin");
   await mkdir(root);
   await writeFile(path.join(root, "package.json"), JSON.stringify({ name: "runtime-entry", version: "1.0.0", type: "module", openclaw }));

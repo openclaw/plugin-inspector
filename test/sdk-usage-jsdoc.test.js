@@ -1,6 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import ts from "typescript";
@@ -8,8 +8,7 @@ import { inspectSdkUsage } from "../src/sdk-usage.js";
 import { createUsageProgram } from "../src/sdk-usage/program.js";
 
 test("SDK programs discard typed documentation while retaining JavaScript-only API types", async (t) => {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-jsdoc-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
+  const directory = await createTempDir(t, "sdk-jsdoc-");
   const target = path.join(directory, "host");
   const sdk = path.join(target, "src/plugin-sdk");
   await mkdir(sdk, { recursive: true });
@@ -51,8 +50,7 @@ export function activate(value) { value.registerTool({}); }
 });
 
 test("TypeScript and declaration documentation do not change complete SDK inventory evidence", async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "sdk-typed-docs-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "sdk-typed-docs-");
   const files = {
     "index.ts": `
 import type { OpenClawPluginApi } from "openclaw/plugin-sdk/core";

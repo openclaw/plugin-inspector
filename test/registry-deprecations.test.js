@@ -1,6 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm, writeFile, symlink } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, rm, writeFile, symlink } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import { readOpenClawTargetSurface } from "../src/openclaw-target.js";
@@ -12,8 +12,7 @@ const api = "openclaw/plugin-sdk/session-store-runtime.getSessionEntry";
 const replacement = "Await getSessionEntryAsync, then use the prepared session entry.";
 
 async function fixture(t) {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "inspector-retirement-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "inspector-retirement-");
   const registryDir = path.join(rootDir, "openclaw/src/plugins/compat");
   await mkdir(registryDir, { recursive: true });
   await writeFile(path.join(registryDir, "registry.ts"), 'import { PLUGIN_COMPAT_RECORDS } from "./registry-records.js";');
@@ -135,8 +134,7 @@ test("keeps member locations and each record's own metadata; direct runtime memb
 });
 
 test("ClawHub-style packed targets use the pinned retirement inventory without registry source", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "inspector-packed-retirement-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "inspector-packed-retirement-");
   const target = path.join(rootDir, "openclaw");
   const plugin = path.join(rootDir, "plugin");
   await mkdir(path.join(target, "dist"), { recursive: true });
@@ -157,8 +155,7 @@ test("ClawHub-style packed targets use the pinned retirement inventory without r
 });
 
 test("packed targets omit retirement advice when the replacement export is absent", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "inspector-packed-missing-replacement-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "inspector-packed-missing-replacement-");
   const target = path.join(rootDir, "openclaw");
   const plugin = path.join(rootDir, "plugin");
   await mkdir(path.join(target, "dist/plugin-sdk"), { recursive: true });
@@ -190,8 +187,7 @@ test("packed targets omit retirement advice when the replacement export is absen
 });
 
 test("packed targets keep retirement advice when the replacement export exists", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "inspector-packed-present-replacement-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "inspector-packed-present-replacement-");
   const target = path.join(rootDir, "openclaw");
   const plugin = path.join(rootDir, "plugin");
   await mkdir(path.join(target, "dist/plugin-sdk"), { recursive: true });
@@ -221,8 +217,7 @@ test("packed targets keep retirement advice when the replacement export exists",
 });
 
 test("packed targets omit session advice until every named replacement is exported", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "inspector-packed-partial-replacement-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "inspector-packed-partial-replacement-");
   const target = path.join(rootDir, "openclaw");
   const plugin = path.join(rootDir, "plugin");
   await mkdir(path.join(target, "dist/plugin-sdk"), { recursive: true });
@@ -336,8 +331,7 @@ test("packed replacements preserve ESM and CommonJS declaration extensions", asy
         declarations: [{ filePath: `/openclaw/dist/sdk.${declaration}`, source: "export declare function replacementAsync(): void;" }],
       }), [record]);
     }
-    const rootDir = await mkdtemp(path.join(os.tmpdir(), "inspector-declaration-extension-"));
-    t.after(() => rm(rootDir, { recursive: true, force: true }));
+    const rootDir = await createTempDir(t, "inspector-declaration-extension-");
     await mkdir(path.join(rootDir, "dist"));
     await writeFile(path.join(rootDir, "package.json"), JSON.stringify({ name: "openclaw", exports: {
       "./plugin-sdk/sqlite-runtime": { types: `./dist/sqlite.${declaration}`, default: `./dist/sqlite.${runtime}` },

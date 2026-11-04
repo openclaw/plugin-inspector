@@ -1,14 +1,13 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { test } from "node:test";
 import { createMockSdkPackage } from "@openclaw/plugin-inspector/advanced";
 
 test("SDK singleton factories share capture-local slots across barrels without changing globals", async (t) => {
-  const root = await mkdtemp(path.join(os.tmpdir(), "inspector-sdk-singleton-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  const root = await createTempDir(t, "inspector-sdk-singleton-");
   const pluginRoot = path.join(root, "plugin");
   await mkdir(pluginRoot);
   await writeFile(path.join(pluginRoot, "index.mjs"), `

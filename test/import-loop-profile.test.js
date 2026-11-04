@@ -1,6 +1,6 @@
+import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
-import { mkdtemp, rm, readFile, writeFile } from "node:fs/promises";
-import os from "node:os";
+import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { test } from "node:test";
 import {
@@ -11,8 +11,7 @@ import {
 } from "../src/index.js";
 
 test("import loop profile measures repeated cold capture subprocesses", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-import-loop-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-import-loop-");
   const entrypoint = path.join(rootDir, "fixture.mjs");
   await writeFile(
     entrypoint,
@@ -47,8 +46,7 @@ test("import loop profile measures repeated cold capture subprocesses", async (t
 });
 
 test("import loop profile can use a custom capture script and opt-in env", async (t) => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-import-loop-"));
-  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  const rootDir = await createTempDir(t, "plugin-inspector-import-loop-");
   const captureScript = path.join(rootDir, "capture.mjs");
   const entrypoint = "fixture.js";
   await writeFile(
@@ -97,8 +95,7 @@ test("import loop profile validation rejects failed or empty captures", () => {
 });
 
 test("import loop profile writer emits JSON and Markdown artifacts", async (t) => {
-  const outputDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-import-loop-report-"));
-  t.after(() => rm(outputDir, { recursive: true, force: true }));
+  const outputDir = await createTempDir(t, "plugin-inspector-import-loop-report-");
   const jsonPath = path.join(outputDir, "profile.json");
   const markdownPath = path.join(outputDir, "profile.md");
   const report = {
