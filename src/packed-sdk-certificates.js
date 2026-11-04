@@ -48,18 +48,24 @@ export function certifyPublicSdkNames({ declarations, packageJson = {}, packageR
   };
   const entries = publicSdkDeclarationFiles(packageJson, packageRoot, texts, normalize);
 
+  if (process.env.PI_MARK) console.error("MARK cert-start");
+  ts.createSourceFile("x.ts", "let a", ts.ScriptTarget.Latest);
+  if (process.env.PI_MARK) console.error("MARK ts-loaded");
   const environment = { globals: new Map(), ambientModules: new Map(), ambientPattern: false };
   const modules = new Map();
   for (const [fileName, text] of texts) modules.set(fileName, bindModule(fileName, text, environment));
+  if (process.env.PI_MARK) console.error("MARK cert-bind");
   const context = { modules, texts, environment, resolveModule, queried, statementNode: statementParser(modules, texts) };
 
   // A single conservative pass when the snapshot can infer at all, instead of
   // a second pass after finding a conditional that infers from parameters.
   const mayInfer = [...texts.values()].some((text) => /\binfer\s/.test(text));
   const reachable = reachableNameEvidence(context, entries, mayInfer);
+  if (process.env.PI_MARK) console.error("MARK cert-negative");
   const unavailable = new Set([...queried].filter((name) => !reachable.mayProduce(name)));
   const candidates = new Set([...queried].filter((name) => !unavailable.has(name)));
   const available = candidates.size ? positiveNames(context, entries, candidates) : new Set();
+  if (process.env.PI_MARK) console.error("MARK cert-positive");
   const undecided = new Set([...candidates].filter((name) => !available.has(name)));
   return { available, unavailable, undecided };
 }
@@ -426,6 +432,84 @@ function exportNames(context, fileName, seen = new Set()) {
 }
 
 // ---------------------------------------------------------------------------
+// The exact set of strings a type denotes, when it is a finite union of
+// literals: string, number and boolean literals, unions, template literals
+// whose holes are themselves finite, and references to non-generic aliases of
+// such types (or to bound mapped-type keys). Anything else is null (unknown).
+// TypeScript computes template literal and mapped-type names from exactly
+// these sets, so names they produce can be enumerated instead of guessed.
+const MAX_FINITE_STRINGS = 4096;
+
+function finiteStrings(context, node, fileName, { bindings = new Map(), unknown = new Set(), keysOnly = false } = {}, depth = 0) {
+  if (!node || depth > 16) return null;
+  const recurse = (child, file = fileName, options = { bindings, unknown, keysOnly }) => finiteStrings(context, child, file, options, depth + 1);
+  switch (node.kind) {
+    case ts.SyntaxKind.ParenthesizedType: return recurse(node.type);
+    case ts.SyntaxKind.LiteralType: {
+      const literal = node.literal;
+      if (ts.isStringLiteralLike(literal)) return [literal.text];
+      if (ts.isNumericLiteral(literal)) return [String(Number(literal.text))];
+      if (ts.isPrefixUnaryExpression(literal) && literal.operator === ts.SyntaxKind.MinusToken && ts.isNumericLiteral(literal.operand)) return [String(-Number(literal.operand.text))];
+      if (keysOnly) return null;
+      if (literal.kind === ts.SyntaxKind.TrueKeyword) return ["true"];
+      if (literal.kind === ts.SyntaxKind.FalseKeyword) return ["false"];
+      if (literal.kind === ts.SyntaxKind.NullKeyword) return ["null"];
+      return null;
+    }
+    case ts.SyntaxKind.UnionType: {
+      const values = new Set();
+      for (const part of node.types) {
+        const set = recurse(part);
+        if (!set) return null;
+        for (const value of set) values.add(value);
+        if (values.size > MAX_FINITE_STRINGS) return null;
+      }
+      return [...values];
+    }
+    case ts.SyntaxKind.TemplateLiteralType: {
+      let values = [node.head.text];
+      for (const span of node.templateSpans) {
+        // Template holes accept booleans and null as text even where keys may not.
+        const set = finiteStrings(context, span.type, fileName, { bindings, unknown, keysOnly: false }, depth + 1);
+        if (!set || values.length * set.length > MAX_FINITE_STRINGS) return null;
+        values = values.flatMap((prefix) => set.map((value) => `${prefix}${value}${span.literal.text}`));
+      }
+      return values;
+    }
+    case ts.SyntaxKind.TypeReference: {
+      if (!ts.isIdentifier(node.typeName) || node.typeArguments) return null;
+      const name = node.typeName.text;
+      if (bindings.has(name)) return bindings.get(name);
+      if (unknown.has(name)) return null;
+      const resolved = resolveLocal(context, fileName, name);
+      if (!resolved || resolved.length !== 1 || resolved[0].kind !== "alias-type") return null;
+      const alias = context.statementNode(resolved[0].fileName, resolved[0].index);
+      if (!alias || !ts.isTypeAliasDeclaration(alias) || alias.typeParameters) return null;
+      return recurse(alias.type, resolved[0].fileName, { bindings: new Map(), unknown: new Set(), keysOnly });
+    }
+    default: return null;
+  }
+}
+
+// Property names of `{ [K in C as N]: ... }` when C is a finite set of string
+// or number literal keys and N (if present) is finite for each key. A mapped
+// type over such keys is not homomorphic and is always an object type.
+function mappedTypeNames(context, node, fileName, unknown) {
+  const parameter = node.typeParameter;
+  if (!parameter.constraint || ts.isTypeOperatorNode(parameter.constraint)) return null;
+  const keys = finiteStrings(context, parameter.constraint, fileName, { unknown, keysOnly: true });
+  if (!keys) return null;
+  if (!node.nameType) return keys;
+  const names = new Set();
+  for (const key of keys) {
+    const mapped = finiteStrings(context, node.nameType, fileName, { bindings: new Map([[parameter.name.text, [key]]]), unknown, keysOnly: true });
+    if (!mapped) return null;
+    for (const name of mapped) names.add(name);
+  }
+  return [...names];
+}
+
+// ---------------------------------------------------------------------------
 // Positive certificates.
 
 function positiveNames(context, entries, queried) {
@@ -520,6 +604,7 @@ function positiveNames(context, entries, queried) {
       case ts.SyntaxKind.UnionType: return !objectOnly && node.types.every((type) => safe(type, fileName, tainted, false, depth + 1));
       case ts.SyntaxKind.IntersectionType: return node.types.every((type) => safe(type, fileName, tainted, true, depth + 1));
       case ts.SyntaxKind.TypeOperator: return node.operator === ts.SyntaxKind.ReadonlyKeyword && (ts.isArrayTypeNode(node.type) || ts.isTupleTypeNode(node.type));
+      case ts.SyntaxKind.MappedType: return mappedTypeNames(context, node, fileName, tainted) !== null;
       case ts.SyntaxKind.TypeQuery: {
         // typeof a class, function or enum is an object type.
         if (node.typeArguments || !ts.isIdentifier(node.exprName)) return false;
@@ -578,6 +663,13 @@ function positiveNames(context, entries, queried) {
       case ts.SyntaxKind.TupleType: for (const element of node.elements) certainType(ts.isNamedTupleMember(element) ? element.type : element, fileName, tainted); return;
       case ts.SyntaxKind.UnionType: if (safe(node, fileName, tainted, false)) for (const type of node.types) certainType(type, fileName, tainted); return;
       case ts.SyntaxKind.IntersectionType: if (safe(node, fileName, tainted, true)) for (const type of node.types) certainType(type, fileName, tainted); return;
+      case ts.SyntaxKind.MappedType: {
+        const names = mappedTypeNames(context, node, fileName, tainted);
+        if (!names) return;
+        for (const name of names) if (queried.has(name)) available.add(name);
+        if (node.type) certainType(node.type, fileName, union(tainted, new Set([node.typeParameter.name.text])));
+        return;
+      }
       case ts.SyntaxKind.TypeQuery: {
         // typeof walks the value meaning of the name.
         if (node.typeArguments || !ts.isIdentifier(node.exprName)) return;
@@ -767,6 +859,8 @@ function reachableNameEvidence(context, entries, mayInfer) {
     // everything; others skip what the walk never visits, and with
     // followContexts follow the operands a conditional can infer from deeply.
     let skipTokens = new Set();
+    // Mapped-type keys in scope, bound to their finite key sets (or null).
+    const mappedKeys = new Map();
     const absorbStatement = (fileName, index, statementDeep) => {
       const module = modules.get(fileName);
       const node = context.statementNode(fileName, index);
@@ -789,7 +883,12 @@ function reachableNameEvidence(context, entries, mayInfer) {
         if (ts.isStringLiteralLike(current) || ts.isPrivateIdentifier(current) || ts.isNumericLiteral(current)) {
           if (queried.has(current.text) && (!ts.isNumericLiteral(current) || producesName(current, parent, inNamespace)) && !skipTokens.has(current)) tokens.add(current.text);
         }
-        if (ts.isTemplateLiteralTypeNode(current)) templates.push([current.head.text, ...current.templateSpans.map((span) => span.literal.text)]);
+        if (ts.isTemplateLiteralTypeNode(current)) {
+          // Enumerate what a finite template computes; otherwise match its shape.
+          const values = finiteStrings(context, current, fileName, { bindings: mappedKeys, unknown: new Set([...scope].filter((name) => !mappedKeys.has(name))) });
+          if (values) for (const value of values) { if (queried.has(value)) tokens.add(value); }
+          else templates.push([current.head.text, ...current.templateSpans.map((span) => span.literal.text)]);
+        }
         if (current.kind === ts.SyntaxKind.IntrinsicKeyword) computesNames = true;
         if (ts.isImportTypeNode(current)) {
           const argument = current.argument;
@@ -824,6 +923,19 @@ function reachableNameEvidence(context, entries, mayInfer) {
             visit(head, deep, scope, inNamespace, current);
             return;
           }
+        }
+        if (ts.isMappedTypeNode(current)) {
+          const key = current.typeParameter.name.text;
+          const previous = mappedKeys.get(key);
+          const hadPrevious = mappedKeys.has(key);
+          const constraint = current.typeParameter.constraint;
+          mappedKeys.set(key, constraint && !ts.isTypeOperatorNode(constraint)
+            ? finiteStrings(context, constraint, fileName, { bindings: mappedKeys, unknown: new Set([...scope].filter((name) => !mappedKeys.has(name) && name !== key)) })
+            : null);
+          ts.forEachChild(current, (child) => visit(child, deep, scope, inNamespace, current));
+          if (hadPrevious) mappedKeys.set(key, previous);
+          else mappedKeys.delete(key);
+          return;
         }
         const deepChildren = followContexts && !deep ? new Set([
           ...(typeArguments ?? []),

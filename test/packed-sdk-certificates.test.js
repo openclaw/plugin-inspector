@@ -127,7 +127,7 @@ test("unions and intersections that could collapse are not trusted", () => {
   }), ["liveAsync", "otherAsync"], { available: ["liveAsync", "otherAsync"] });
 });
 
-test("template literal types, tuples and intrinsic types block negative certificates for names they can compute", () => {
+test("finite template literal keys are computed exactly; open templates, tuples and intrinsic types block negative certificates", () => {
   const result = assertCertified(snapshot({
     "dist/plugin-sdk/index.d.ts": 'export { api } from "../chunk.js";\n',
     "dist/chunk.d.ts": [
@@ -137,9 +137,15 @@ test("template literal types, tuples and intrinsic types block negative certific
       "",
     ].join("\n"),
   }), ["readAsync", "writeAsync", "deleteSync", "1", "length"]);
-  assert.ok(result.undecided.has("readAsync") && result.undecided.has("writeAsync"));
+  assert.ok(result.available.has("readAsync") && result.available.has("writeAsync"));
   assert.ok(result.unavailable.has("deleteSync"));
   assert.ok(result.undecided.has("1") && result.undecided.has("length"));
+  const open = assertCertified(snapshot({
+    "dist/plugin-sdk/index.d.ts": 'export { api } from "../chunk.js";\n',
+    "dist/chunk.d.ts": "type Handlers = { [K in `on${string}`]: () => void };\ndeclare const api: Handlers & { name: `${number}-id` };\nexport { api };\n",
+  }), ["onReadAsync", "readAsync", "12-id"]);
+  // `on${string}` is an index pattern, not a property, but it could match.
+  assert.ok(open.undecided.has("onReadAsync") && open.unavailable.has("readAsync") && open.undecided.has("12-id"));
 });
 
 test("global scripts, global augmentations and ambient modules are reachable from anywhere", () => {
@@ -233,9 +239,9 @@ test("future entrypoints, typeof, globals, merging, defaults and literal conditi
   assert.deepEqual([...result.undecided].sort(), ["appendMessageAsync", "linkAsync", "listLinksAsync", "selectV1"]);
 });
 
-test("computed future names are left to the type check", () => {
+test("names a future release computes from finite template keys are certified exactly", () => {
   const result = assertCertified(futureSnapshot({ computedNames: true }), futureNames);
-  assert.ok(result.undecided.has("unlinkAsync") && result.undecided.has("personalStatusAsync"));
+  assert.ok(result.available.has("unlinkAsync") && result.available.has("personalStatusAsync"));
 });
 
 test("retirement qualification of a future release equals the full type check, with or without the fallback", async () => {

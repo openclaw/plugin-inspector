@@ -90,16 +90,34 @@ jobs:
             --baseline "$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js" \
             --runs 3 --max-ratio 0.5 --diagnose --json publish-memory-future.json
 
-      # Computed (template literal) replacement names cannot be certified; the
-      # exact type-checked fallback answers them. Outputs must still be identical.
-      - name: Future release with computed names takes the exact fallback
+      # Replacement names computed from template literals over finite unions are
+      # enumerated exactly, so this release is held to the same budget.
+      - name: Future release with computed names, at most 50% of 0.4.5
         if: success() || failure()
         run: |
           node scripts/make-future-openclaw-fixture.mjs --from "$FIXTURES/openclaw/package" --out "$RUNNER_TEMP/future-computed/package" --computed-names
           node scripts/publish-memory-benchmark.mjs --target "$RUNNER_TEMP/future-computed/package" \
+            --plugin @openclaw/discord="$FIXTURES/plugins/discord/package" \
+            --plugin @openclaw/matrix="$FIXTURES/plugins/matrix/package" \
             --plugin @openclaw/whatsapp="$FIXTURES/plugins/whatsapp/package" \
             --baseline "$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js" \
-            --runs 1 --json publish-memory-future-computed.json
+            --runs 3 --max-ratio 0.5 --diagnose --json publish-memory-future-computed.json
+
+      # Names whose availability needs TypeScript's assignability (a conditional
+      # type over object types) are answered by the exact type-checked fallback.
+      # Outputs must stay identical to 0.4.5. Its memory does NOT meet the 50%
+      # budget (an exact type check of the SDK closure cannot); this guards it
+      # against regressions while that trade-off is decided.
+      - name: Undecidable future names take the exact fallback (identical outputs, at most 85% of 0.4.5)
+        if: success() || failure()
+        run: |
+          node scripts/make-future-openclaw-fixture.mjs --from "$FIXTURES/openclaw/package" --out "$RUNNER_TEMP/future-undecidable/package" --undecidable
+          node scripts/publish-memory-benchmark.mjs --target "$RUNNER_TEMP/future-undecidable/package" \
+            --plugin @openclaw/discord="$FIXTURES/plugins/discord/package" \
+            --plugin @openclaw/matrix="$FIXTURES/plugins/matrix/package" \
+            --plugin @openclaw/whatsapp="$FIXTURES/plugins/whatsapp/package" \
+            --baseline "$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js" \
+            --runs 1 --max-ratio 0.85 --json publish-memory-future-undecidable.json
 
       # ClawHub's Convex actions run the inspector from an esbuild bundle, so a
       # dependency hidden from bundlers would only fail after deploy.
@@ -120,7 +138,7 @@ jobs:
             --plugin @openclaw/whatsapp="$FIXTURES/plugins/whatsapp/package" \
             --inspector "$RUNNER_TEMP/bundled/candidate/index.mjs" \
             --baseline "$RUNNER_TEMP/bundled/baseline/index.mjs" \
-            --runs 3 --max-ratio 0.5 --diagnose --json publish-memory-bundled.json
+            --runs 5 --max-ratio 0.5 --diagnose --json publish-memory-bundled.json
 
       # Certified answers must match the full type check for every name the
       # snapshot spells, not only the retirement inventory.
@@ -131,6 +149,14 @@ jobs:
           --target "$FIXTURES/openclaw/package"
           --target "$RUNNER_TEMP/future/package"
           --target "$RUNNER_TEMP/future-computed/package"
+          --target "$RUNNER_TEMP/future-undecidable/package"
+
+      # The runtime-import analysis reads scope facts from a light scope manager
+      # driven by eslint-scope's Referencer; they must equal the full analysis on
+      # every file of the plugin packages, dependencies included.
+      - name: Scope facts agree with eslint-scope
+        if: success() || failure()
+        run: node scripts/verify-scope-facts.mjs "$FIXTURES/plugins"
 
       - name: Upload measurements
         if: always()

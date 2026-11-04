@@ -6,17 +6,20 @@
 // the result must match the full type check (0.4.5 computes it), and the
 // publish path must stay within its memory budget without any per-release data.
 //
-//   node scripts/make-future-openclaw-fixture.mjs --from <unpacked openclaw package> --out <dir> [--computed-names]
+//   node scripts/make-future-openclaw-fixture.mjs --from <unpacked openclaw package> --out <dir> [--computed-names] [--undecidable]
 //
-// --computed-names adds a mapped type whose keys come from a template literal,
-// so one replacement name is computed rather than spelled. Certificates cannot
-// decide such a name; it exercises the exact type-checked fallback.
+// --computed-names adds a mapped type whose keys come from a template literal
+// over a finite union, so replacement names are computed rather than spelled
+// (certified exactly by enumerating the template).
+// --undecidable adds a conditional type over object types: deciding it needs
+// TypeScript's assignability, so certificates leave its names to the exact
+// type-checked fallback.
 import { cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { parseArgs } from "node:util";
 
 const { values } = parseArgs({
-  options: { from: { type: "string" }, out: { type: "string" }, "computed-names": { type: "boolean" } },
+  options: { from: { type: "string" }, out: { type: "string" }, "computed-names": { type: "boolean" }, undecidable: { type: "boolean" } },
 });
 if (!values.from || !values.out) {
   console.error("Usage: node scripts/make-future-openclaw-fixture.mjs --from <unpacked openclaw package> --out <dir> [--computed-names]");
@@ -86,6 +89,12 @@ if (values["computed-names"]) {
 export type FutureComputed = { [K in Verbs as \`\${K}Async\`]: () => Promise<void> };
 `;
   packageJson.exports["./plugin-sdk/future-computed"] = { types: "./dist/plugin-sdk/future-computed.d.ts", default: "./dist/plugin-sdk/future-computed.js" };
+}
+if (values.undecidable) {
+  files["dist/plugin-sdk/future-conditional.d.ts"] = `type Narrow<T, Kind> = T extends { kind: Kind } ? { disconnectAsync(): Promise<void> } : { retireProfileAsync(): Promise<void> };
+export type FutureConditional = Narrow<{ kind: "session"; id: string }, "session">;
+`;
+  packageJson.exports["./plugin-sdk/future-conditional"] = { types: "./dist/plugin-sdk/future-conditional.d.ts", default: "./dist/plugin-sdk/future-conditional.js" };
 }
 for (const [name, source] of Object.entries(files)) await writeFile(path.join(out, name), source);
 packageJson.exports["./plugin-sdk/future-runtime"] = { types: "./dist/plugin-sdk/future-runtime.d.ts", default: "./dist/plugin-sdk/future-runtime.js" };
