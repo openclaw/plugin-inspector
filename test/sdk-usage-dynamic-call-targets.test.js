@@ -47,7 +47,9 @@ for (const [name, setup] of [
     assert.deepEqual(loggerMethods(sdk).map(({ key }) => key), [
       "api-member:api.logger.debug", "api-member:api.logger.info", "api-member:api.logger.warn",
     ]);
-    assert.ok(loggerMethods(sdk).every(({ evidence }) => evidence.every(({ path }) => path === "src/advertiser.ts")));
+    for (const entry of loggerMethods(sdk)) {
+      assert.deepEqual([...new Set(entry.evidence.map(({ path }) => path))], ["src/advertiser.ts"], entry.key);
+    }
 
     const unrelated = await inspectDynamicCall(t, setup, "{ info() {}, warn() {}, debug() {} }");
     assert.deepEqual(loggerMethods(unrelated), []);

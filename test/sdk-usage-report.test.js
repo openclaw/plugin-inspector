@@ -221,7 +221,7 @@ test("extensionless production requires include JavaScript helpers in excluded d
   assert.ok(entry, "production dependency must contribute its SDK usage");
   assert.equal(entry.classification, "runtime");
   assert.ok(entry.referenceKinds.includes("call"));
-  assert.ok(entry.evidence.every((site) => site.path === "test-utils/helper.js"));
+  assert.deepEqual([...new Set(entry.evidence.map((site) => site.path))], ["test-utils/helper.js"]);
   assert.equal(report.sdkUsage.coverage.filesExcluded, 0);
   assert.equal(report.sdkUsage.status, "complete");
 });
