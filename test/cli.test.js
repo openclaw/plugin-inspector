@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
-import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
@@ -8,8 +8,8 @@ import { test } from "node:test";
 
 const execFileAsync = promisify(execFile);
 
-test("check command runs from a plugin root without fixture config", async () => {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-cli-root-"));
+test("check command runs from a plugin root without fixture config", async (t) => {
+  const rootDir = await createTempDir(t, "plugin-inspector-cli-root-");
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   await writeFile(
     path.join(rootDir, "package.json"),
@@ -67,8 +67,8 @@ test("check command runs from a plugin root without fixture config", async () =>
   assert.equal(capture.summary.registrationCount, 1);
 });
 
-test("check command can target a plugin root and use runtime aliases", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-target-");
+test("check command can target a plugin root and use runtime aliases", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-target-");
   const cliPath = path.resolve("src/cli.js");
 
   await execFileAsync(
@@ -87,8 +87,8 @@ test("check command can target a plugin root and use runtime aliases", async () 
   assert.equal(capture.summary.capturedCount, 1);
 });
 
-test("check command sanitizes absolute OpenClaw paths in JSON output and artifacts", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-sanitize-");
+test("check command sanitizes absolute OpenClaw paths in JSON output and artifacts", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-sanitize-");
   const openclawPath = await createTargetOpenClaw(rootDir);
   const cliPath = path.resolve("src/cli.js");
 
@@ -106,8 +106,8 @@ test("check command sanitizes absolute OpenClaw paths in JSON output and artifac
   assert.doesNotMatch(stdout, new RegExp(escapeRegExp(openclawPath)));
 });
 
-test("inspect command runs from a plugin root and can write CI outputs", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-inspect-");
+test("inspect command runs from a plugin root and can write CI outputs", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-inspect-");
   const cliPath = path.resolve("src/cli.js");
 
   const { stdout } = await execFileAsync(process.execPath, [
@@ -130,8 +130,8 @@ test("inspect command runs from a plugin root and can write CI outputs", async (
   assert.match(junit, /<testsuite name="plugin-inspector"/);
 });
 
-test("inspect command only fails plugin-root findings when check mode is requested", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-inspect-non-check-");
+test("inspect command only fails plugin-root findings when check mode is requested", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-inspect-non-check-");
   await writeFile(
     path.join(rootDir, "plugin-inspector.config.json"),
     `${JSON.stringify(
@@ -159,8 +159,8 @@ test("inspect command only fails plugin-root findings when check mode is request
   );
 });
 
-test("capture command defaults to the mock SDK", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-capture-mock-default-");
+test("capture command defaults to the mock SDK", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-capture-mock-default-");
   const cliPath = path.resolve("src/cli.js");
 
   const { stdout } = await execFileAsync(
@@ -177,8 +177,8 @@ test("capture command defaults to the mock SDK", async () => {
   assert.equal(capture.captured.some((item) => item.kind === "registration" && item.name === "registerTool"), true);
 });
 
-test("inspect command with config applies author-facing filtering", async () => {
-  const rootDir = await createFixtureSetRoot("plugin-inspector-cli-inspect-config-author-");
+test("inspect command with config applies author-facing filtering", async (t) => {
+  const rootDir = await createFixtureSetRoot(t, "plugin-inspector-cli-inspect-config-author-");
   const cliPath = path.resolve("src/cli.js");
 
   await execFileAsync(process.execPath, [
@@ -199,8 +199,8 @@ test("inspect command with config applies author-facing filtering", async () => 
   assert.ok(report.issues.every((issue) => issue.authorRemediation?.docsUrl));
 });
 
-test("report command with config rejects the legacy inspector-gap flag", async () => {
-  const rootDir = await createFixtureSetRoot("plugin-inspector-cli-report-config-legacy-");
+test("report command with config rejects the legacy inspector-gap flag", async (t) => {
+  const rootDir = await createFixtureSetRoot(t, "plugin-inspector-cli-report-config-legacy-");
   const cliPath = path.resolve("src/cli.js");
 
   await assert.rejects(
@@ -221,8 +221,8 @@ test("report command with config rejects the legacy inspector-gap flag", async (
   );
 });
 
-test("check command can enable runtime capture from plugin config", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-config-runtime-");
+test("check command can enable runtime capture from plugin config", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-config-runtime-");
   await writeFile(
     path.join(rootDir, "plugin-inspector.config.json"),
     `${JSON.stringify({ version: 1, capture: { runtime: true, mockSdk: true } }, null, 2)}\n`,
@@ -240,8 +240,8 @@ test("check command can enable runtime capture from plugin config", async () => 
   assert.equal(capture.summary.registrationCount, 1);
 });
 
-test("check command filters author-facing output and rejects the legacy inspector-gap flag", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-inspector-gaps-");
+test("check command filters author-facing output and rejects the legacy inspector-gap flag", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-inspector-gaps-");
   await writeFile(
     path.join(rootDir, "openclaw.plugin.json"),
     `${JSON.stringify({ id: "weather", name: "Weather", version: "1.0.0" }, null, 2)}\n`,
@@ -284,8 +284,8 @@ test("check command filters author-facing output and rejects the legacy inspecto
   );
 });
 
-test("config command prints resolved plugin root config", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-config-print-");
+test("config command prints resolved plugin root config", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-config-print-");
   const cliPath = path.resolve("src/cli.js");
 
   const { stdout } = await execFileAsync(process.execPath, [cliPath, "config", "--plugin-root", rootDir]);
@@ -304,8 +304,8 @@ test("config command prints resolved plugin root config", async () => {
   assert.equal(config.fixtures[0].subdir, "src");
 });
 
-test("ci command writes CI summary artifacts", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-ci-");
+test("ci command writes CI summary artifacts", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-ci-");
   const cliPath = path.resolve("src/cli.js");
 
   const { stdout } = await execFileAsync(
@@ -337,8 +337,8 @@ test("ci command writes CI summary artifacts", async () => {
   assert.match(junit, /failures="0"/);
 });
 
-test("ci command with a plugin-root config still runs requested runtime capture", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-ci-config-runtime-");
+test("ci command with a plugin-root config still runs requested runtime capture", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-ci-config-runtime-");
   const cliPath = path.resolve("src/cli.js");
 
   await execFileAsync(
@@ -364,8 +364,8 @@ test("ci command with a plugin-root config still runs requested runtime capture"
   assert.equal(capture.summary.capturedCount, 1);
 });
 
-test("ci command applies author-facing filtering to report, summary, and CI artifacts", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-ci-author-facing-");
+test("ci command applies author-facing filtering to report, summary, and CI artifacts", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-ci-author-facing-");
   await writeFile(
     path.join(rootDir, "openclaw.plugin.json"),
     `${JSON.stringify({ id: "weather", name: "Weather", version: "1.0.0" }, null, 2)}\n`,
@@ -405,8 +405,8 @@ test("ci command applies author-facing filtering to report, summary, and CI arti
   assert.doesNotMatch(junit, /runtime-tool-capture/);
 });
 
-test("init command writes plugin config and CI workflow", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-init-");
+test("init command writes plugin config and CI workflow", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-init-");
   const cliPath = path.resolve("src/cli.js");
 
   const { stdout } = await execFileAsync(
@@ -430,8 +430,8 @@ test("init command writes plugin config and CI workflow", async () => {
   assert.match(workflow, /pnpm dlx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute/);
 });
 
-test("init command detects plugin package managers", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-init-pm-");
+test("init command detects plugin package managers", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-init-pm-");
   const cliPath = path.resolve("src/cli.js");
   await writeFile(path.join(rootDir, "pnpm-lock.yaml"), "lockfileVersion: '9.0'\n", "utf8");
 
@@ -444,8 +444,8 @@ test("init command detects plugin package managers", async () => {
   assert.match(workflow, /pnpm dlx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute/);
 });
 
-test("init command can add package scripts", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-init-scripts-");
+test("init command can add package scripts", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-init-scripts-");
   const cliPath = path.resolve("src/cli.js");
 
   await execFileAsync(process.execPath, [cliPath, "init", "--plugin-root", rootDir, "--scripts", "--force"]);
@@ -455,8 +455,8 @@ test("init command can add package scripts", async () => {
   assert.equal(packageJson.scripts["plugin:ci"], "plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute");
 });
 
-test("init command can preview generated files", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-init-dry-run-");
+test("init command can preview generated files", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-init-dry-run-");
   const cliPath = path.resolve("src/cli.js");
   const beforeConfig = await readFile(path.join(rootDir, "plugin-inspector.config.json"), "utf8");
   const beforePackageJson = await readFile(path.join(rootDir, "package.json"), "utf8");
@@ -481,8 +481,8 @@ test("init command can preview generated files", async () => {
   });
 });
 
-test("init command can print a JSON summary", async () => {
-  const rootDir = await createCliPluginRoot("plugin-inspector-cli-init-json-");
+test("init command can print a JSON summary", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-init-json-");
   const cliPath = path.resolve("src/cli.js");
 
   const { stdout } = await execFileAsync(process.execPath, [
@@ -507,10 +507,10 @@ test("init command can print a JSON summary", async () => {
   ]);
 });
 
-test("batch command scans plugin roots and writes aggregate impact reports", async () => {
-  const corpusDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-cli-batch-corpus-"));
-  const goodRoot = await createCliPluginRoot("plugin-inspector-cli-batch-good-");
-  const brokenRoot = await createCliPluginRoot("plugin-inspector-cli-batch-broken-");
+test("batch command scans plugin roots and writes aggregate impact reports", async (t) => {
+  const corpusDir = await createTempDir(t, "plugin-inspector-cli-batch-corpus-");
+  const goodRoot = await createCliPluginRoot(t, "plugin-inspector-cli-batch-good-");
+  const brokenRoot = await createCliPluginRoot(t, "plugin-inspector-cli-batch-broken-");
   await mkdir(path.join(corpusDir, "plugins"), { recursive: true });
   await copyPluginRoot(goodRoot, path.join(corpusDir, "plugins", "good-plugin"));
   await copyPluginRoot(brokenRoot, path.join(corpusDir, "plugins", "broken-plugin"));
@@ -579,9 +579,9 @@ test("batch command scans plugin roots and writes aggregate impact reports", asy
   );
 });
 
-test("batch command applies author-facing filtering to aggregate summaries", async () => {
-  const corpusDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-cli-batch-author-facing-"));
-  const pluginRoot = await createCliPluginRoot("plugin-inspector-cli-batch-author-plugin-");
+test("batch command applies author-facing filtering to aggregate summaries", async (t) => {
+  const corpusDir = await createTempDir(t, "plugin-inspector-cli-batch-author-facing-");
+  const pluginRoot = await createCliPluginRoot(t, "plugin-inspector-cli-batch-author-plugin-");
   await mkdir(path.join(corpusDir, "plugins"), { recursive: true });
   await copyPluginRoot(pluginRoot, path.join(corpusDir, "plugins", "weather"));
   await writeFile(
@@ -612,8 +612,14 @@ test("batch command applies author-facing filtering to aggregate summaries", asy
   );
 });
 
-async function createCliPluginRoot(prefix) {
+async function createTempDir(t, prefix) {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), prefix));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
+  return rootDir;
+}
+
+async function createCliPluginRoot(t, prefix) {
+  const rootDir = await createTempDir(t, prefix);
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   await writeFile(
     path.join(rootDir, "package.json"),
@@ -662,8 +668,8 @@ async function copyPluginRoot(sourceDir, targetDir) {
   );
 }
 
-async function createFixtureSetRoot(prefix) {
-  const rootDir = await mkdtemp(path.join(os.tmpdir(), prefix));
+async function createFixtureSetRoot(t, prefix) {
+  const rootDir = await createTempDir(t, prefix);
   const fixtureDir = path.join(rootDir, "fixture");
   await mkdir(path.join(fixtureDir, "src"), { recursive: true });
   await writeFile(
