@@ -1,4 +1,4 @@
-import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderPaddedMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 
 export const defaultPlatformTargets = ["linux", "macos", "windows", "container"];
 
@@ -299,8 +299,4 @@ function buildRecommendations(portabilityFindings, entrypoints) {
     });
   }
   return recommendations;
-}
-
-function markdownTable(rows, headers) {
-  return renderPaddedMarkdownTable(rows, headers);
 }

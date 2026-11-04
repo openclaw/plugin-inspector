@@ -1,6 +1,6 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
-import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { formatSampledMetric, renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { readOptionalJsonFile } from "./json-file.js";
 
 export const defaultCiReportPaths = {
@@ -260,11 +260,4 @@ function importLoopSummaryLabel(summary) {
       ? ` / OpenClaw import ${summary.importLoopOpenClawImportP50Ms} ms / activate ${summary.importLoopOpenClawActivationP50Ms} ms`
       : "";
   return `p50 ${summary.importLoopP50Ms} ms / p95 ${summary.importLoopP95Ms} ms / ${metricLabel} RSS ${formatSampledMetric(summary.importLoopMaxRssMb, summary.importLoopRssSampleCount)} / ${metricLabel} CPU ${formatSampledMetric(summary.importLoopMaxCpuMs, summary.importLoopCpuSampleCount, "ms")}${lifecycle}`;
-}
-
-function formatSampledMetric(value, count, unit = "MB") {
-  if ((count ?? 0) <= 0) {
-    return "n/a";
-  }
-  return `${value} ${unit}`;
 }

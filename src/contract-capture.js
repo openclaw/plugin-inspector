@@ -1,4 +1,4 @@
-import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderPaddedMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { slugForArtifact } from "./path-utils.js";
 import {
   defaultSyntheticHookContexts,
@@ -282,8 +282,4 @@ function assertionsForProbeTarget(target) {
     "tool-runtime": ["tool schema is captured", "tool result metadata is retained"],
   };
   return assertions[target] ?? ["probe has fixture evidence and a target contract"];
-}
-
-function markdownTable(rows, headers) {
-  return renderPaddedMarkdownTable(rows, headers);
 }

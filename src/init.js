@@ -1,8 +1,8 @@
 import { existsSync } from "node:fs";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { inferPluginSeams, packageId } from "./config.js";
-import { writeJsonFileAtomic } from "./json-file.js";
+import { readOptionalJsonFile as readJsonIfExists, writeJsonFileAtomic } from "./json-file.js";
 
 export const defaultInitConfigPath = "plugin-inspector.config.json";
 export const defaultInitWorkflowPath = ".github/workflows/plugin-inspector.yml";
@@ -176,13 +176,6 @@ function entrypointStrings(value) {
 
 function stripRelativePrefix(filePath) {
   return filePath.replace(/^\.\//, "");
-}
-
-async function readJsonIfExists(filePath) {
-  if (!existsSync(filePath)) {
-    return null;
-  }
-  return JSON.parse(await readFile(filePath, "utf8"));
 }
 
 function normalizePackageManager(packageManager = "npm") {

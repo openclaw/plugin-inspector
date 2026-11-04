@@ -1,6 +1,7 @@
+import { unique } from "./collections.js";
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderPaddedMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { slugForArtifact } from "./path-utils.js";
 
 const hostLinkedRuntimeDependencies = new Set(["openclaw"]);
@@ -262,12 +263,4 @@ function assertionForBlocker(code) {
     "unknown-entrypoint-extension": "entrypoint extension has an explicit loader",
   };
   return assertions[code] ?? "cold import blocker has a documented mitigation";
-}
-
-function unique(values) {
-  return [...new Set(values)];
-}
-
-function markdownTable(rows, headers) {
-  return renderPaddedMarkdownTable(rows, headers);
 }

@@ -1,3 +1,6 @@
+import { priorityRank } from "./severity.js";
+import { dedupeBy } from "./collections.js";
+
 export const contractProbeRules = {
   "before-tool-call-probe": {
     id: "hook.before_tool_call.terminal-block-approval",
@@ -189,16 +192,4 @@ export function probePriority(code, fixturePriority) {
     return "P2";
   }
   return "P3";
-}
-
-function dedupeBy(values, keyForValue) {
-  const output = new Map();
-  for (const value of values) {
-    output.set(keyForValue(value), value);
-  }
-  return [...output.values()];
-}
-
-function priorityRank(priority) {
-  return { P0: 0, P1: 1, P2: 2, P3: 3 }[priority] ?? 4;
 }

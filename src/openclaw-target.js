@@ -1,3 +1,4 @@
+import { dedupeBy, unique } from "./collections.js";
 import { existsSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
@@ -723,16 +724,4 @@ function parseApiRegistrars(source) {
 
 function relativePath(rootDir, filePath) {
   return path.relative(rootDir, filePath).replaceAll("\\", "/");
-}
-
-function dedupeBy(values, keyForValue) {
-  const byKey = new Map();
-  for (const value of values) {
-    byKey.set(keyForValue(value), value);
-  }
-  return [...byKey.values()];
-}
-
-function unique(values) {
-  return [...new Set(values)];
 }

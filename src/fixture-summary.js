@@ -1,3 +1,4 @@
+import { unique } from "./collections.js";
 import { existsSync } from "node:fs";
 import { readdir } from "node:fs/promises";
 import path from "node:path";
@@ -1570,8 +1571,4 @@ function normalizeRepoPath(value) {
 
 function detailEvidence(details, key = "name") {
   return unique(details.map((detail) => `${detail[key]} @ ${detail.ref}`));
-}
-
-function unique(values) {
-  return [...new Set(values)];
 }

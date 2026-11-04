@@ -1,3 +1,4 @@
+import { lineForOffset } from "./source-text.js";
 const sessionStoreReadReplacement =
   "getSessionEntry(...) / listSessionEntries(...) for reads and patchSessionEntry(...) / upsertSessionEntry(...) for writes";
 const sessionStoreWriteReplacement = "patchSessionEntry(...) / upsertSessionEntry(...) for row-scoped writes";
@@ -597,14 +598,4 @@ function uniqueFindings(findings) {
     byKey.set(`${finding.code}:${finding.symbol}:${finding.surface}:${finding.ref}`, finding);
   }
   return [...byKey.values()];
-}
-
-function lineForOffset(text, offset) {
-  let line = 1;
-  for (let index = 0; index < offset; index += 1) {
-    if (text.charCodeAt(index) === 10) {
-      line += 1;
-    }
-  }
-  return line;
 }

@@ -1,5 +1,5 @@
 import path from "node:path";
-import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderPaddedMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { readJsonFile, readOptionalJsonFile } from "./json-file.js";
 import { resolveRequiredFromRoot } from "./path-utils.js";
 
@@ -219,8 +219,4 @@ function profileSummary(profile) {
 
 function profileDiffPath(rootDir, candidatePath) {
   return resolveRequiredFromRoot(rootDir, candidatePath, "profile diff");
-}
-
-function markdownTable(rows, headers) {
-  return renderPaddedMarkdownTable(rows, headers);
 }
