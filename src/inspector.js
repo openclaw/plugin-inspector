@@ -4,7 +4,7 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { createCaptureApi } from "./capture-api.js";
-import { captureApiOptionsForPlugin } from "./capture-config.js";
+import { captureApiOptionsForPlugin, findRegisterExport } from "./capture-config.js";
 import { fixtureCheckoutPath, fixtureSourceRoot, isPluginRootConfig } from "./config.js";
 import { buildCompatibilityFixtureReport } from "./fixture-summary.js";
 import { readOpenClawTargetSurface } from "./openclaw-target.js";
@@ -424,19 +424,6 @@ function firstMeaningfulErrorLine(message) {
     .split("\n")
     .map((line) => line.trim())
     .find((line) => line && !line.startsWith("Command failed:"));
-}
-
-function findRegisterExport(module) {
-  if (typeof module.register === "function") {
-    return module.register;
-  }
-  if (typeof module.default === "function") {
-    return module.default;
-  }
-  if (typeof module.default?.register === "function") {
-    return module.default.register;
-  }
-  return null;
 }
 
 function emptyInspection(fixture, status) {

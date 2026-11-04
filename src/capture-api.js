@@ -61,6 +61,25 @@ export function createCaptureApi(options = {}) {
   const knownRegistrars = new Set(options.knownRegistrars ?? Object.keys(registrarProfiles));
   const retainHandlers = options.retainHandlers === true;
 
+  function recordHook(name, handler, args) {
+    const captureIndex =
+      captured.push({
+        kind: "hook",
+        name,
+        handlerType: typeof handler,
+        arguments: summarizeArguments(args),
+      }) - 1;
+    if (retainHandlers) {
+      retained.push({
+        kind: "hook",
+        name,
+        handler,
+        captureIndex,
+      });
+  }
+  return api;
+  }
+
   const api = new Proxy(
     {
       ...createCaptureContext(options),
@@ -71,40 +90,10 @@ export function createCaptureApi(options = {}) {
         },
       },
       on(name, handler) {
-        const captureIndex =
-          captured.push({
-            kind: "hook",
-            name,
-            handlerType: typeof handler,
-            arguments: summarizeArguments([name, handler]),
-          }) - 1;
-        if (retainHandlers) {
-          retained.push({
-            kind: "hook",
-            name,
-            handler,
-            captureIndex,
-          });
-        }
-        return api;
+        return recordHook(name, handler, [name, handler]);
       },
       onConversationBindingResolved(handler) {
-        const captureIndex =
-          captured.push({
-            kind: "hook",
-            name: "onConversationBindingResolved",
-            handlerType: typeof handler,
-            arguments: summarizeArguments([handler]),
-          }) - 1;
-        if (retainHandlers) {
-          retained.push({
-            kind: "hook",
-            name: "onConversationBindingResolved",
-            handler,
-            captureIndex,
-          });
-        }
-        return api;
+        return recordHook("onConversationBindingResolved", handler, [handler]);
       },
     },
     {

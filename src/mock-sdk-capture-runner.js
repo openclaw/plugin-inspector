@@ -6,7 +6,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { writeArtifacts } from "./artifacts.js";
 import { createCaptureApi } from "./capture-api.js";
-import { captureApiOptionsForPlugin } from "./capture-config.js";
+import { captureApiOptionsForPlugin, findRegisterExport } from "./capture-config.js";
 import { createCappedCollector, resolveProcessLimits } from "./process-profile.js";
 import { createMockSdkPackage, installMockSdkLoader } from "./sdk-mock.js";
 
@@ -137,19 +137,6 @@ function withProcessOutput(result, outputCapture) {
 function capturePhaseError(error, failureClass) {
   error.failureClass = failureClass;
   return error;
-}
-
-function findRegisterExport(module) {
-  if (typeof module.register === "function") {
-    return module.register;
-  }
-  if (typeof module.default === "function") {
-    return module.default;
-  }
-  if (typeof module.default?.register === "function") {
-    return module.default.register;
-  }
-  return null;
 }
 
 function installProcessOutputCapture() {
