@@ -465,14 +465,16 @@ async function readPackedOpenClawTargetSurface({ rootDir, requestedPaths, reques
   const hookDeclaration = declarations.find((declaration) => declaration.source.includes("type PluginHookName ="));
   const manifestDeclaration = declarations.find((declaration) => declaration.source.includes("type PluginManifest ="));
   const manifestContractDeclaration = declarations.find((declaration) => declaration.source.includes("type PluginManifestContracts ="));
-  const apiRegistrars = apiDeclaration?.values ?? [];
-  const hookNames = hookDeclaration ? parseStringUnion(hookDeclaration.source, "PluginHookName") : [];
-  const manifestFields = manifestDeclaration
+  // Names matched out of a declaration file are slices that keep the whole
+  // file alive (several MB) for as long as the surface is; copy them.
+  const apiRegistrars = ownStrings(apiDeclaration?.values ?? []);
+  const hookNames = ownStrings(hookDeclaration ? parseStringUnion(hookDeclaration.source, "PluginHookName") : []);
+  const manifestFields = ownStrings(manifestDeclaration
     ? parseObjectTypeFields(manifestDeclaration.source, "PluginManifest")
-    : [];
-  const manifestContractFields = manifestContractDeclaration
+    : []);
+  const manifestContractFields = ownStrings(manifestContractDeclaration
     ? parsePackedManifestContractFields(manifestContractDeclaration, declarations)
-    : [];
+    : []);
   const sdkExports = parsePluginSdkExports(packageJson);
 
   return {
@@ -519,6 +521,10 @@ async function readPackedOpenClawTargetSurface({ rootDir, requestedPaths, reques
     manifestContractFieldCount: manifestContractFields.length,
     manifestContractFields,
   };
+}
+
+function ownStrings(values) {
+  return JSON.parse(JSON.stringify(values));
 }
 
 async function listDeclarationFiles(rootDir) {

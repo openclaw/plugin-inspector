@@ -1,11 +1,14 @@
 import * as nodeModule from "node:module";
 import { Node as AcornNode, Parser } from "acorn";
 import { analyze } from "eslint-scope";
+import { plainJavaScriptTokens } from "./plain-javascript.js";
 import { analyzeScopeFacts, UnsupportedScope } from "./scope-facts.js";
 
 const literalModuleImport = /(?<![$\w.])(?<kind>[$A-Z_a-z][$\w]*)\s*\(\s*(?<quote>["'`])(?<specifier>[^"'`\\\r\n]+)\k<quote>/dg;
 
 let typeScript;
+// A tree parsed by isPlainJavaScript, until analyzeRuntimeText takes it.
+let parsedPlainText;
 
 // Large bundles parse into hundreds of thousands of nodes, all alive while a
 // file is analyzed. Keep that working set small without changing what the
@@ -131,6 +134,7 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
     analysis = analyzeRuntimeText(runtimeText);
     if (analysisCache) analysisCache.analysis = analysis;
   }
+  parsedPlainText = undefined;
   if (!analysis.scoped) {
     // Keep known imports if syntax is incomplete/unsupported; never guess namespace exports.
     // Type erasure has already classified each occurrence, even when AST analysis fails.
@@ -239,14 +243,22 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
 // decides whether an analysis overflows (and falls back).
 const MAX_FACT_DEPTH = 500;
 
+// Accept both source modules and CommonJS wrappers without changing their runtime.
+function parseRuntimeText(runtimeText, { onToken, onComment } = {}) {
+  return AnalyzedParser.parse(runtimeText, {
+    ecmaVersion: "latest", sourceType: "script",
+    allowAwaitOutsideFunction: true, allowReturnOutsideFunction: true, allowImportExportEverywhere: true,
+    ...(onToken ? { onToken, onComment } : {}),
+  });
+}
+
 function analyzeRuntimeText(runtimeText) {
   let ast;
+  // The tree parsed while checking for type syntax is the tree of this text.
+  if (parsedPlainText?.text === runtimeText) ast = parsedPlainText.ast;
+  parsedPlainText = undefined;
   try {
-    // Accept both source modules and CommonJS wrappers without changing their runtime.
-    ast = AnalyzedParser.parse(runtimeText, {
-      ecmaVersion: "latest", sourceType: "script",
-      allowAwaitOutsideFunction: true, allowReturnOutsideFunction: true, allowImportExportEverywhere: true,
-    });
+    ast ??= parseRuntimeText(runtimeText);
   } catch {
     return { runtimeText };
   }
@@ -515,9 +527,31 @@ function sourceOffsetMapper(markedImports) {
 // Strip-mode erasure is deterministic; reuse it for identical input.
 function stripTypes(text, analysisCache) {
   if (analysisCache?.stripped?.text === text) return analysisCache.stripped.output;
-  const output = nodeModule.stripTypeScriptTypes(text, { mode: "strip" });
+  // A previous source's tree is released before this one is parsed.
+  if (analysisCache && analysisCache.analysis?.runtimeText !== text) analysisCache.analysis = undefined;
+  const output = isPlainJavaScript(text) ? text : nodeModule.stripTypeScriptTypes(text, { mode: "strip" });
   if (analysisCache) analysisCache.stripped = { text, output };
   return output;
+}
+
+// JavaScript without anything the TypeScript grammar reads differently strips
+// to itself (see plain-javascript.js). Deciding that from the parse the
+// analysis needs anyway avoids loading Node's type stripper, whose WebAssembly
+// memory never shrinks, for packages that ship JavaScript. The tree is kept
+// for analyzeRuntimeText, which receives the same text.
+
+function isPlainJavaScript(text) {
+  parsedPlainText = undefined;
+  const tokens = plainJavaScriptTokens(text);
+  let ast;
+  try {
+    ast = parseRuntimeText(text, tokens);
+  } catch {
+    return false;
+  }
+  if (!tokens.isPlain()) return false;
+  parsedPlainText = { text, ast };
+  return true;
 }
 
 function eraseTypeScript(text, analysisCache) {
