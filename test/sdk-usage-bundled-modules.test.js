@@ -50,6 +50,8 @@ export interface Config {
   for (const name of ["left", "right"]) {
     const entry = report.sdkUsage.entries.find((item) => item.key === `sdk-export:openclaw/plugin-sdk/example#${name}Options`);
     assert.equal(entry.classification, "type");
-    assert.ok(entry.evidence.every((site) => site.path === `node_modules/${name}/node_modules/shared/index.d.ts`));
+    assert.deepEqual([...new Set(entry.evidence.map((site) => site.path))], [
+      `node_modules/${name}/node_modules/shared/index.d.ts`,
+    ]);
   }
 });
