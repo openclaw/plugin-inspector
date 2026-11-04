@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
@@ -77,8 +77,8 @@ test("package ids collapse separators and trim hyphen edges", () => {
   assert.equal(packageId("@openclaw/openclaw---Weather_Plugin!!!"), "weather-plugin");
 });
 
-test("public API runs the plugin-root check and writes reports", async () => {
-  const pluginRoot = await createPluginRoot();
+test("public API runs the plugin-root check and writes reports", async (t) => {
+  const pluginRoot = await createPluginRoot(t);
 
   const config = await loadPluginConfig({ pluginRoot });
   assert.equal(config.fixtures[0].id, "weather");
@@ -116,8 +116,8 @@ test("public API exposes grouped facades for common workflows", () => {
   assert.equal(synthetic.runEntrypoint, runEntrypointSyntheticProbes);
 });
 
-test("public API reads plugin config from package.json", async () => {
-  const pluginRoot = await createPluginRoot({
+test("public API reads plugin config from package.json", async (t) => {
+  const pluginRoot = await createPluginRoot(t, {
     packageConfig: {
       plugin: {
         id: "weather-pkg",
@@ -143,8 +143,8 @@ test("public API reads plugin config from package.json", async () => {
   assert.equal(config.capture.mockSdk, true);
 });
 
-test("public API reads a package.json with one leading UTF-8 BOM", async () => {
-  const pluginRoot = await createPluginRoot();
+test("public API reads a package.json with one leading UTF-8 BOM", async (t) => {
+  const pluginRoot = await createPluginRoot(t);
   const packageJsonPath = path.join(pluginRoot, "package.json");
   const packageJson = await readFile(packageJsonPath, "utf8");
   await writeFile(packageJsonPath, `\uFEFF${packageJson}`, "utf8");
@@ -154,15 +154,15 @@ test("public API reads a package.json with one leading UTF-8 BOM", async () => {
   assert.equal(config.fixtures[0].id, "weather");
 });
 
-test("public API still rejects invalid package.json after BOM compatibility handling", async () => {
-  const pluginRoot = await createPluginRoot();
+test("public API still rejects invalid package.json after BOM compatibility handling", async (t) => {
+  const pluginRoot = await createPluginRoot(t);
   await writeFile(path.join(pluginRoot, "package.json"), '{"name":', "utf8");
 
   await assert.rejects(loadPluginConfig({ pluginRoot }), SyntaxError);
 });
 
-test("public API strips only one leading UTF-8 BOM from package.json", async () => {
-  const pluginRoot = await createPluginRoot();
+test("public API strips only one leading UTF-8 BOM from package.json", async (t) => {
+  const pluginRoot = await createPluginRoot(t);
   const packageJsonPath = path.join(pluginRoot, "package.json");
   const packageJson = await readFile(packageJsonPath, "utf8");
   await writeFile(packageJsonPath, `\uFEFF\uFEFF${packageJson}`, "utf8");
@@ -177,7 +177,7 @@ test("public API keeps crabpot-style fixture configs behind an explicit helper",
   assert.equal(report.summary.fixtureCount, 1);
 });
 
-test("public API exposes static source and fixture-set inspection primitives", async () => {
+test("public API exposes static source and fixture-set inspection primitives", async (t) => {
   const sourceInspection = inspectSourceText(
     [
       'import { definePluginEntry } from "openclaw/plugin-sdk";',
@@ -191,6 +191,7 @@ test("public API exposes static source and fixture-set inspection primitives", a
   const config = await loadInspectorConfig("test/fixtures/inspector.config.json");
   const report = await inspectFixtureSet(config);
   const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-root-report-"));
+  t.after(() => rm(outDir, { recursive: true, force: true }));
   const paths = await writeReport(report, { outDir, basename: "static-inspection" });
 
   assert.deepEqual(sourceInspection.hooks.map((hook) => hook.name), ["before_tool_call"]);
@@ -203,8 +204,9 @@ test("public API exposes static source and fixture-set inspection primitives", a
   assert.equal(paths.jsonPath, path.join(outDir, "static-inspection.json"));
 });
 
-test("public API writes compatibility fixture-set reports with custom render options", async () => {
+test("public API writes compatibility fixture-set reports with custom render options", async (t) => {
   const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-fixture-api-"));
+  t.after(() => rm(outDir, { recursive: true, force: true }));
   const report = await inspectCompatibilityFixtureSetConfig({
     configPath: "test/fixtures/inspector.config.json",
     openclawPath: false,
@@ -237,8 +239,9 @@ test("public API writes compatibility fixture-set reports with custom render opt
   assert.equal(result.paths.jsonPath, path.join(outDir, "run.json"));
 });
 
-test("public API builds fixture-set cold import readiness from config", async () => {
+test("public API builds fixture-set cold import readiness from config", async (t) => {
   const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-cold-import-api-"));
+  t.after(() => rm(outDir, { recursive: true, force: true }));
   const readiness = await buildFixtureSetColdImportReadiness({
     configPath: "test/fixtures/inspector.config.json",
     openclawPath: false,
@@ -262,8 +265,9 @@ test("public API builds fixture-set cold import readiness from config", async ()
   assert.equal(result.readiness.summary.fixtureCount, 1);
 });
 
-test("public API builds fixture-set workspace and platform plans from config", async () => {
+test("public API builds fixture-set workspace and platform plans from config", async (t) => {
   const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-plan-api-"));
+  t.after(() => rm(outDir, { recursive: true, force: true }));
   const plan = await buildFixtureSetWorkspacePlan({
     configPath: "test/fixtures/inspector.config.json",
     openclawPath: false,
@@ -325,8 +329,9 @@ test("public API builds fixture-set workspace and platform plans from config", a
   assert.equal(platformResult.paths, null);
 });
 
-test("public API exposes capture through an explicit entrypoint helper", async () => {
+test("public API exposes capture through an explicit entrypoint helper", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-api-capture-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const entrypoint = path.join(dir, "fixture.mjs");
   await writeFile(
     entrypoint,
@@ -350,8 +355,8 @@ test("public API exposes capture through an explicit entrypoint helper", async (
   );
 });
 
-test("public API can initialize plugin inspector files", async () => {
-  const pluginRoot = await createPluginRoot();
+test("public API can initialize plugin inspector files", async (t) => {
+  const pluginRoot = await createPluginRoot(t);
 
   const result = await setupPluginInspector({ pluginRoot, ci: true, scripts: true, packageManager: "npm" });
   const config = JSON.parse(await readFile(path.join(pluginRoot, "plugin-inspector.config.json"), "utf8"));
@@ -367,8 +372,8 @@ test("public API can initialize plugin inspector files", async () => {
   assert.match(workflow, /npx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute/);
 });
 
-test("public API initializes source root from package export maps", async () => {
-  const pluginRoot = await createPluginRoot({
+test("public API initializes source root from package export maps", async (t) => {
+  const pluginRoot = await createPluginRoot(t, {
     packageJson: {
       openclaw: null,
       exports: {
@@ -419,8 +424,9 @@ test("public API exposes report issue metadata helpers", () => {
   assert.ok(openClawTargetPathCandidates().some((candidate) => candidate.includes("openclaw")));
 });
 
-test("public API exposes contract capture and coverage helpers", async () => {
+test("public API exposes contract capture and coverage helpers", async (t) => {
   const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-contract-api-"));
+  t.after(() => rm(outDir, { recursive: true, force: true }));
   const report = await inspectCompatibilityFixtureSetConfig({
     configPath: "test/fixtures/inspector.config.json",
     openclawPath: false,
@@ -438,8 +444,9 @@ test("public API exposes contract capture and coverage helpers", async () => {
   assert.equal(JSON.parse(await readFile(paths.jsonPath, "utf8")).summary.fixtureCount, 1);
 });
 
-test("public API exposes execution and CI rollup helpers", async () => {
+test("public API exposes execution and CI rollup helpers", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-ci-api-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   const resultDir = path.join(rootDir, ".plugin-inspector", "results", "weather");
   const outDir = path.join(rootDir, "reports");
   await mkdir(resultDir, { recursive: true });
@@ -499,8 +506,9 @@ test("public API exposes execution and CI rollup helpers", async () => {
   assert.equal(JSON.parse(await readFile(summaryPaths.jsonPath, "utf8")).status, "pass");
 });
 
-test("public API exposes synthetic probe helpers", async () => {
+test("public API exposes synthetic probe helpers", async (t) => {
   const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-synthetic-api-"));
+  t.after(() => rm(outDir, { recursive: true, force: true }));
   const plan = buildSyntheticProbePlanFromReport({
     generatedAt: "test",
     targetOpenClaw: {
@@ -532,8 +540,8 @@ test("public API exposes synthetic probe helpers", async () => {
   assert.equal(JSON.parse(await readFile(paths.jsonPath, "utf8")).summary.probeCount, 2);
 });
 
-test("public API honors config-driven runtime capture", async () => {
-  const pluginRoot = await createPluginRoot();
+test("public API honors config-driven runtime capture", async (t) => {
+  const pluginRoot = await createPluginRoot(t);
   await writeFile(
     path.join(pluginRoot, "plugin-inspector.config.json"),
     `${JSON.stringify({ version: 1, capture: { runtime: true, mockSdk: true } }, null, 2)}\n`,
@@ -544,8 +552,9 @@ test("public API honors config-driven runtime capture", async () => {
   assert.equal(result.runtimeCapture.summary.registrationCount, 1);
 });
 
-async function createPluginRoot(options = {}) {
+async function createPluginRoot(t, options = {}) {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-api-root-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   const packageJson = {
     name: "@example/openclaw-weather",

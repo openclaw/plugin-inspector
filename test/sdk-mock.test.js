@@ -633,8 +633,9 @@ for (const extension of ["mjs", "cjs"]) {
   }
 }
 
-test("mock SDK ignores subpaths that would escape the plugin-sdk package", async () => {
+test("mock SDK ignores subpaths that would escape the plugin-sdk package", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-mock-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   const pluginRoot = path.join(rootDir, "plugin");
   await mkdir(pluginRoot, { recursive: true });
   await writeFile(
@@ -648,8 +649,9 @@ test("mock SDK ignores subpaths that would escape the plugin-sdk package", async
   await assert.rejects(stat(path.join(rootDir, "node_modules", "openclaw", "escape.js")), { code: "ENOENT" });
 });
 
-test("mock SDK preserves string and record coercion contracts", async () => {
+test("mock SDK preserves string and record coercion contracts", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sdk-mock-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   const pluginRoot = path.join(rootDir, "plugin");
   await mkdir(pluginRoot, { recursive: true });
   await writeFile(

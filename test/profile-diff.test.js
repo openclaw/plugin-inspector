@@ -110,8 +110,9 @@ test("profile diff counts array-valued registry surfaces", async () => {
   assert.equal(sdkExports.delta, 2);
 });
 
-test("profile diff warns but does not fail when baseline is missing", async () => {
+test("profile diff warns but does not fail when baseline is missing", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-profile-baseline-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const diff = await buildProfileDiff({
     baselinePath: path.join(dir, "missing.json"),
     current: profile({ p95WallMs: 100, maxPeakRssMb: 100, nodeBootMs: 50, runs: 3 }),

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, rm, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
@@ -10,8 +10,9 @@ import {
   writeImportLoopProfile,
 } from "../src/index.js";
 
-test("import loop profile measures repeated cold capture subprocesses", async () => {
+test("import loop profile measures repeated cold capture subprocesses", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-import-loop-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   const entrypoint = path.join(rootDir, "fixture.mjs");
   await writeFile(
     entrypoint,
@@ -45,8 +46,9 @@ test("import loop profile measures repeated cold capture subprocesses", async ()
   assert.match(renderImportLoopProfileMarkdown(profile), /Plugin CPU Delta/);
 });
 
-test("import loop profile can use a custom capture script and opt-in env", async () => {
+test("import loop profile can use a custom capture script and opt-in env", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-import-loop-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   const captureScript = path.join(rootDir, "capture.mjs");
   const entrypoint = "fixture.js";
   await writeFile(
@@ -94,8 +96,9 @@ test("import loop profile validation rejects failed or empty captures", () => {
   assert.ok(errors.some((error) => error.includes("wall-time")));
 });
 
-test("import loop profile writer emits JSON and Markdown artifacts", async () => {
+test("import loop profile writer emits JSON and Markdown artifacts", async (t) => {
   const outputDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-import-loop-report-"));
+  t.after(() => rm(outputDir, { recursive: true, force: true }));
   const jsonPath = path.join(outputDir, "profile.json");
   const markdownPath = path.join(outputDir, "profile.md");
   const report = {

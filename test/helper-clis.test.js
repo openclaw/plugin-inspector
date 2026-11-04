@@ -295,8 +295,9 @@ for (const [name, source, expected] of [
   });
 }
 
-test("capture and synthetic helper CLIs default to the mocked SDK", async () => {
+test("capture and synthetic helper CLIs default to the mocked SDK", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-helper-cli-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   await mkdir(path.join(rootDir, "src"), { recursive: true });
 
   await writeFile(
@@ -344,8 +345,9 @@ test("capture and synthetic helper CLIs default to the mocked SDK", async () => 
   assert.ok(synthetic.summary.passCount >= 1);
 });
 
-test("capture CLIs ignore values consumed by flags when finding entrypoint", async () => {
+test("capture CLIs ignore values consumed by flags when finding entrypoint", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-capture-cli-args-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   await mkdir(path.join(rootDir, "src"), { recursive: true });
 
   const pluginSource = [
@@ -387,8 +389,9 @@ test("capture CLIs ignore values consumed by flags when finding entrypoint", asy
   assert.equal(JSON.parse(await readFile(mainOut, "utf8")).status, "captured");
 });
 
-test("capture CLI does not overwrite an output path when positional entrypoint is missing", async () => {
+test("capture CLI does not overwrite an output path when positional entrypoint is missing", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-capture-cli-missing-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   await mkdir(path.join(rootDir, "src"), { recursive: true });
   const entrypointPath = path.join(rootDir, "src", "index.js");
   const originalSource = "export const untouched = true;\n";
