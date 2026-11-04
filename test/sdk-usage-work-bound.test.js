@@ -1,19 +1,14 @@
+import { inspectSdkUsageFixture } from "./helpers/sdk-usage-fixture.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
-import path from "node:path";
 import { test } from "node:test";
-import { pluginRoot } from "../src/index.js";
 
 async function inspect(t, files) {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-work-bound-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
-  const root = path.join(directory, "plugin");
-  await mkdir(root);
-  await writeFile(path.join(root, "package.json"), JSON.stringify({ name: "work-bound", version: "1.0.0", openclaw: { extensions: ["./z-index.ts"] } }));
-  for (const [name, text] of Object.entries(files)) await writeFile(path.join(root, name), text);
-  const run = await pluginRoot.runCheck({ pluginRoot: root, outDir: path.join(directory, "report"), openclawPath: false, capture: false, allowExecution: false });
-  return JSON.parse(await readFile(run.paths.jsonPath, "utf8"));
+  const report = await inspectSdkUsageFixture(t, {
+    prefix: "sdk-work-bound-",
+    packageJson: { name: "work-bound", version: "1.0.0", openclaw: { extensions: ["./z-index.ts"] } },
+    files: files,
+  });
+  return report;
 }
 
 function expensiveCallGraph() {

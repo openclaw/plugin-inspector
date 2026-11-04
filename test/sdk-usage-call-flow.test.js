@@ -1,3 +1,4 @@
+import { inspectSdkUsageFixture } from "./helpers/sdk-usage-fixture.js";
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
@@ -7,20 +8,14 @@ import { test } from "node:test";
 import { pluginRoot } from "../src/index.js";
 
 async function apiMembers(t, code, extension = "js") {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-call-flow-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
-  const root = path.join(directory, "plugin");
-  await mkdir(root);
   const entry = `index.${extension}`;
-  await writeFile(path.join(root, "package.json"), JSON.stringify({
+  const report = await inspectSdkUsageFixture(t, {
+    prefix: "sdk-call-flow-",
+    packageJson: {
     name: "call-flow", version: "1.0.0", type: "module", openclaw: { extensions: [`./${entry}`] },
-  }));
-  await writeFile(path.join(root, entry), code);
-  const run = await pluginRoot.runCheck({
-    pluginRoot: root, outDir: path.join(directory, "report"), openclawPath: false,
-    capture: false, allowExecution: false,
+  },
+    files: {[entry]: code},
   });
-  const report = JSON.parse(await readFile(run.paths.jsonPath, "utf8"));
   assert.equal(report.sdkUsage.status, "complete");
   return report.sdkUsage.entries.filter(({ kind }) => kind === "api-member").map(({ key }) => key);
 }

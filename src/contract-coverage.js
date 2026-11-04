@@ -26,37 +26,23 @@ export function validateContractCoverage(report, options = {}) {
   requireIssueEvidence(report, errors);
   requireP1ProbeCoverage(report, errors);
   requireFixtureEvidence(report, errors);
-  requireTargetHookRegistry(report, errors);
-  requireTargetApiBuilder(report, errors);
-  requireTargetCapturedRegistration(report, errors);
-  requireTargetSdkExports(report, errors);
+  requireTargetRegistryFields(report, errors);
   requireTargetManifestTypes(report, errors);
   requireCompatRecordReconciliation(report, errors);
 
   return errors;
 }
 
-function requireTargetHookRegistry(report, errors) {
-  if (report.targetOpenClaw.status === "ok" && report.targetOpenClaw.hookNames.length === 0) {
-    errors.push("target OpenClaw hook registry was found but no hook names were parsed");
-  }
-}
-
-function requireTargetApiBuilder(report, errors) {
-  if (report.targetOpenClaw.status === "ok" && report.targetOpenClaw.apiRegistrars.length === 0) {
-    errors.push("target OpenClaw API builder was found but no api.register* names were parsed");
-  }
-}
-
-function requireTargetCapturedRegistration(report, errors) {
-  if (report.targetOpenClaw.status === "ok" && report.targetOpenClaw.capturedRegistrars.length === 0) {
-    errors.push("target OpenClaw captured-registration helper was found but no api.register* names were parsed");
-  }
-}
-
-function requireTargetSdkExports(report, errors) {
-  if (report.targetOpenClaw.status === "ok" && report.targetOpenClaw.sdkExports.length === 0) {
-    errors.push("target OpenClaw package metadata was found but no plugin SDK exports were parsed");
+function requireTargetRegistryFields(report, errors) {
+  for (const [field, message] of [
+    ["hookNames", "target OpenClaw hook registry was found but no hook names were parsed"],
+    ["apiRegistrars", "target OpenClaw API builder was found but no api.register* names were parsed"],
+    ["capturedRegistrars", "target OpenClaw captured-registration helper was found but no api.register* names were parsed"],
+    ["sdkExports", "target OpenClaw package metadata was found but no plugin SDK exports were parsed"],
+  ]) {
+    if (report.targetOpenClaw.status === "ok" && report.targetOpenClaw[field].length === 0) {
+      errors.push(message);
+    }
   }
 }
 
