@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { Referencer } from "eslint-scope";
 import { compareScopeFacts } from "./support/scope-facts-compare.js";
 
 // The runtime-import analysis reads scope facts for a few names from a light
@@ -31,4 +32,15 @@ for (const [name, source] of Object.entries(cases)) {
 test("files with direct eval or with use the full scope analysis", () => {
   assert.equal(compareScopeFacts('eval("1"); require("x");').skipped, true);
   assert.equal(compareScopeFacts('with (o) { require("x"); }').skipped, true);
+});
+
+test("matching analyzer errors do not count as scope equivalence", (t) => {
+  const failure = t.mock.method(Referencer.prototype, "Identifier", () => {
+    throw new Error("fixture analyzer failure");
+  });
+  const result = compareScopeFacts('require("x");');
+  assert.equal(failure.mock.callCount(), 2, "both analyzers must exercise the failure");
+  assert.equal(result.skipped, false);
+  assert.notDeepEqual(result.differences, [], "failed analyses cannot establish equivalence");
+  assert.match(result.differences.join("\n"), /fixture analyzer failure/);
 });
