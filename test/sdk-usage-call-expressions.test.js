@@ -1,19 +1,14 @@
+import { inspectSdkUsageFixture } from "./helpers/sdk-usage-fixture.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
-import path from "node:path";
 import { test } from "node:test";
-import { pluginRoot } from "../src/index.js";
 
 async function inspect(t, helper, invoke, argument) {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-call-expression-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
-  const root = path.join(directory, "plugin");
-  await mkdir(root);
-  await writeFile(path.join(root, "package.json"), JSON.stringify({ name: "call-expression", version: "1.0.0", type: "module", openclaw: { extensions: ["./index.ts"] } }));
-  await writeFile(path.join(root, "index.ts"), `${helper}\nexport default { async register(api) { ${invoke(argument)} } };`);
-  const run = await pluginRoot.runCheck({ pluginRoot: root, outDir: path.join(directory, "report"), openclawPath: false, capture: false, allowExecution: false });
-  return JSON.parse(await readFile(run.paths.jsonPath, "utf8")).sdkUsage;
+  const report = await inspectSdkUsageFixture(t, {
+    prefix: "sdk-call-expression-",
+    packageJson: { name: "call-expression", version: "1.0.0", type: "module", openclaw: { extensions: ["./index.ts"] } },
+    files: {"index.ts": `${helper}\nexport default { async register(api) { ${invoke(argument)} } };`},
+  });
+  return report.sdkUsage;
 }
 const helper = "function use(value) { value.registerTool({}); }";
 const arrow = "value => value.registerTool({})";

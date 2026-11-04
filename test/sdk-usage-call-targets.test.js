@@ -1,24 +1,16 @@
+import { inspectSdkUsageFixture } from "./helpers/sdk-usage-fixture.js";
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
-import os from "node:os";
-import path from "node:path";
 import { test } from "node:test";
-import { pluginRoot } from "../src/index.js";
 
 async function inspectCall(t, helper, invoke, argument) {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "sdk-call-target-"));
-  t.after(() => rm(directory, { recursive: true, force: true }));
-  const root = path.join(directory, "plugin");
-  await mkdir(root);
-  await writeFile(path.join(root, "package.json"), JSON.stringify({
+  const report = await inspectSdkUsageFixture(t, {
+    prefix: "sdk-call-target-",
+    packageJson: {
     name: "call-target", version: "1.0.0", type: "module", openclaw: { extensions: ["./index.ts"] },
-  }));
-  await writeFile(path.join(root, "index.ts"), `${helper}\nexport default { register(api) { ${invoke(argument)} } };`);
-  const run = await pluginRoot.runCheck({
-    pluginRoot: root, outDir: path.join(directory, "report"), openclawPath: false,
-    capture: false, allowExecution: false,
+  },
+    files: {"index.ts": `${helper}\nexport default { register(api) { ${invoke(argument)} } };`},
   });
-  return JSON.parse(await readFile(run.paths.jsonPath, "utf8")).sdkUsage;
+  return report.sdkUsage;
 }
 
 const cases = [
