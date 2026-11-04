@@ -8,7 +8,7 @@ import {
   renderRuntimeProfileMarkdown,
   validateRuntimeProfile,
   writeRuntimeProfile,
-} from "../src/runtime-profile.js";
+} from "../src/index.js";
 
 test("runtime profile records command timings and plugin surface summaries", async () => {
   const report = {

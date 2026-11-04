@@ -8,7 +8,7 @@ import {
   renderImportLoopProfileMarkdown,
   validateImportLoopProfile,
   writeImportLoopProfile,
-} from "../src/import-loop-profile.js";
+} from "../src/index.js";
 
 test("import loop profile measures repeated cold capture subprocesses", async () => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-import-loop-"));

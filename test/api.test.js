@@ -10,10 +10,8 @@ import {
   buildContractCapture,
   buildExecutionResultsReport,
   buildFixtureSetColdImportReadiness,
-  buildImportLoopProfile,
   buildFixtureSetPlatformProbes,
   buildFixtureSetWorkspacePlan,
-  buildProfileDiff,
   buildRefDiff,
   buildRuntimeProfile,
   buildSyntheticProbePlanFromReport,
@@ -37,15 +35,11 @@ import {
   renderCiSummaryMarkdown,
   renderContractCaptureMarkdown,
   renderExecutionResultsMarkdown,
-  renderImportLoopProfileMarkdown,
   renderMarkdownReport,
   renderFixtureSetColdImportReadinessMarkdown,
   renderFixtureSetIssuesReport,
   renderFixtureSetPlatformProbesMarkdown,
   renderFixtureSetWorkspacePlanMarkdown,
-  renderProfileDiffMarkdown,
-  renderRefDiffMarkdown,
-  renderRuntimeProfileMarkdown,
   renderSyntheticProbeMarkdown,
   reports,
   runtime,
@@ -66,10 +60,6 @@ import {
   validateColdImportReadiness,
   validateFixtureSetPlatformProbes,
   validateFixtureSetWorkspacePlan,
-  validateImportLoopProfile,
-  validateProfileDiff,
-  validateRefDiff,
-  validateRuntimeProfile,
   validateSyntheticProbePlan,
   writeFixtureSetColdImportReadiness,
   writeFixtureSetPlatformProbes,
@@ -80,10 +70,6 @@ import {
   writeCiPolicyReport,
   writeCiSummary,
   writeExecutionResultsReport,
-  writeImportLoopProfile,
-  writeProfileDiff,
-  writeRefDiff,
-  writeRuntimeProfile,
   writeSyntheticProbePlan,
 } from "../src/index.js";
 
@@ -513,89 +499,6 @@ test("public API exposes execution and CI rollup helpers", async () => {
   assert.equal(JSON.parse(await readFile(summaryPaths.jsonPath, "utf8")).status, "pass");
 });
 
-test("public API exposes runtime profile and diff helpers", async () => {
-  const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-profile-api-"));
-  const runtimeProfile = await buildRuntimeProfile({ runs: 1 });
-  const profileDiff = await buildProfileDiff({
-    baseline: profileFixture({ p95WallMs: 100, maxPeakRssMb: 80, nodeBootMs: 25 }),
-    current: profileFixture({ p95WallMs: 120, maxPeakRssMb: 90, nodeBootMs: 30 }),
-    policy: {
-      thresholds: {
-        wallP95RegressionPercent: 50,
-        peakRssRegressionMb: 50,
-        bootRegressionMs: 500,
-        strictMinimumSamples: 3,
-      },
-    },
-  });
-  const refDiff = await buildRefDiff({
-    baseReport: diffReport({ hookNames: ["before_tool_call"], issues: [] }),
-    headReport: diffReport({ hookNames: ["before_tool_call"], issues: [] }),
-  });
-  const importLoopProfile = {
-    generatedAt: "deterministic",
-    mode: "subprocess-cold-import-loop",
-    entrypoint: "fixtures/plugin.mjs",
-    summary: {
-      runs: 1,
-      p50WallMs: 5,
-      p95WallMs: 5,
-      maxPeakRssMb: 10,
-      maxCpuMsEstimate: 2,
-      capturedCount: 1,
-      failCount: 0,
-    },
-    samples: [
-      {
-        index: 0,
-        status: "captured",
-        capturedCount: 1,
-        wallMs: 5,
-        peakRssMb: 10,
-        cpuMsEstimate: 2,
-        exitCode: 0,
-      },
-    ],
-  };
-
-  assert.equal(typeof buildImportLoopProfile, "function");
-  const portableRuntimeProfile = {
-    ...runtimeProfile,
-    platform: { ...runtimeProfile.platform, rssSampler: "unavailable" },
-  };
-
-  assert.deepEqual(validateRuntimeProfile(portableRuntimeProfile), []);
-  assert.deepEqual(validateProfileDiff(profileDiff), []);
-  assert.deepEqual(validateRefDiff(refDiff), []);
-  assert.deepEqual(validateImportLoopProfile(importLoopProfile), []);
-  assert.match(renderRuntimeProfileMarkdown(portableRuntimeProfile), /Runtime Profile/);
-  assert.match(renderProfileDiffMarkdown(profileDiff), /Runtime Profile Diff/);
-  assert.match(renderRefDiffMarkdown(refDiff), /Ref Diff/);
-  assert.match(renderImportLoopProfileMarkdown(importLoopProfile), /Import Loop Profile/);
-
-  const runtimePaths = await writeRuntimeProfile(portableRuntimeProfile, {
-    jsonPath: path.join(outDir, "runtime.json"),
-    markdownPath: path.join(outDir, "runtime.md"),
-  });
-  const profileDiffPaths = await writeProfileDiff(profileDiff, {
-    jsonPath: path.join(outDir, "profile-diff.json"),
-    markdownPath: path.join(outDir, "profile-diff.md"),
-  });
-  const refDiffPaths = await writeRefDiff(refDiff, {
-    jsonPath: path.join(outDir, "ref-diff.json"),
-    markdownPath: path.join(outDir, "ref-diff.md"),
-  });
-  const importLoopPaths = await writeImportLoopProfile(importLoopProfile, {
-    jsonPath: path.join(outDir, "import-loop.json"),
-    markdownPath: path.join(outDir, "import-loop.md"),
-  });
-
-  assert.equal(JSON.parse(await readFile(runtimePaths.jsonPath, "utf8")).summary.commandCount, 1);
-  assert.equal(JSON.parse(await readFile(profileDiffPaths.jsonPath, "utf8")).status, "pass");
-  assert.equal(JSON.parse(await readFile(refDiffPaths.jsonPath, "utf8")).status, "pass");
-  assert.equal(JSON.parse(await readFile(importLoopPaths.jsonPath, "utf8")).summary.runs, 1);
-});
-
 test("public API exposes synthetic probe helpers", async () => {
   const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-synthetic-api-"));
   const plan = buildSyntheticProbePlanFromReport({
@@ -640,57 +543,6 @@ test("public API honors config-driven runtime capture", async () => {
   const result = await runPluginCheck({ pluginRoot, outDir: "reports", openclawPath: false, allowExecution: true });
   assert.equal(result.runtimeCapture.summary.registrationCount, 1);
 });
-
-function profileFixture({ p95WallMs, maxPeakRssMb, nodeBootMs }) {
-  return {
-    runs: 3,
-    summary: { p95WallMs, maxPeakRssMb },
-    targetOpenClaw: {
-      compatRecords: 1,
-      hookNames: 1,
-      apiRegistrars: 1,
-      capturedRegistrars: 1,
-      sdkExports: 1,
-      manifestFields: 1,
-      manifestContractFields: 1,
-    },
-    fixtureInventory: {},
-    commands: [{ id: "node-boot", wallMs: { median: nodeBootMs } }],
-  };
-}
-
-function diffReport({ hookNames, issues }) {
-  return {
-    summary: {
-      fixtureCount: 1,
-      breakageCount: 0,
-      issueCount: issues.length,
-      p0IssueCount: issues.filter((issue) => issue.severity === "P0").length,
-      p1IssueCount: issues.filter((issue) => issue.severity === "P1").length,
-    },
-    targetOpenClaw: {
-      status: "available",
-      compatRecords: [],
-      hookNames,
-      apiRegistrars: ["registerTool"],
-      capturedRegistrars: ["registerTool"],
-      sdkExports: ["definePluginEntry"],
-      manifestFields: ["name"],
-      manifestContractFields: ["permissions"],
-    },
-    fixtures: [
-      {
-        id: "weather",
-        hooks: hookNames,
-        registrations: ["registerTool"],
-        sdkImports: ["definePluginEntry"],
-        pluginManifests: [{ name: "weather" }],
-        manifestContracts: ["permissions"],
-      },
-    ],
-    issues,
-  };
-}
 
 async function createPluginRoot(options = {}) {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-api-root-"));
