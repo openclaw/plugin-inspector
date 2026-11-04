@@ -1,10 +1,55 @@
 import * as nodeModule from "node:module";
-import { parse } from "acorn";
+import { Node as AcornNode, Parser } from "acorn";
 import { analyze } from "eslint-scope";
+import { plainJavaScriptTokens } from "./plain-javascript.js";
+import { analyzeScopeFacts, UnsupportedScope } from "./scope-facts.js";
 
 const literalModuleImport = /(?<![$\w.])(?<kind>[$A-Z_a-z][$\w]*)\s*\(\s*(?<quote>["'`])(?<specifier>[^"'`\\\r\n]+)\k<quote>/dg;
 
 let typeScript;
+// A tree parsed by isPlainJavaScript, until analyzeRuntimeText takes it.
+let parsedPlainText;
+
+// Large bundles parse into hundreds of thousands of nodes, all alive while a
+// file is analyzed. Keep that working set small without changing what the
+// analysis sees: ranges are computed on demand (eslint-scope reads range[0]),
+// and each node carries preallocated slots for its parent and for whether it
+// is a resolved lexical reference, instead of a range array per node plus a
+// Map entry and a Set entry. Symbol keys stay invisible to for...in and to
+// eslint-scope's traversal.
+const MODULE_DECLARATIONS = new Set(["ImportDeclaration", "ExportNamedDeclaration", "ExportAllDeclaration"]);
+const PARENT = Symbol("parent");
+const RESOLVED = Symbol("resolved");
+const REFERENCES = Symbol("references");
+class AnalyzedNode extends AcornNode {
+  constructor(parser, pos, loc) {
+    super(parser, pos, loc);
+    this[PARENT] = undefined;
+    this[RESOLVED] = false;
+    this[REFERENCES] = undefined;
+  }
+
+  get range() {
+    return [this.start, this.end];
+  }
+}
+const AnalyzedParser = Parser.extend((Base) => class extends Base {
+  startNode() {
+    return new AnalyzedNode(this, this.start, this.startLoc);
+  }
+
+  startNodeAt(pos, loc) {
+    return new AnalyzedNode(this, pos, loc);
+  }
+
+  copyNode(node) {
+    const copy = new AnalyzedNode(this, node.start, this.startLoc);
+    for (const key in node) copy[key] = node[key];
+    return copy;
+  }
+});
+const parents = { get: (node) => node?.[PARENT] };
+const lexicalReferences = { has: (node) => node?.[RESOLVED] === true };
 
 // Callers that classify the same source more than once (inspectSourceText runs
 // both SDK-import and registry-deprecation passes over every file) can share
@@ -13,6 +58,61 @@ let typeScript;
 // unchanged; large bundles just stop being parsed twice.
 export function createRuntimeImportAnalysisCache() {
   return { stripped: undefined, analysis: undefined };
+}
+
+// Free a finished analysis eagerly. Part of a large file's syntax tree and
+// scope graph is promoted while it is analyzed; dead old-space objects still
+// hold young ones through the remembered set until the next major collection,
+// so every later scavenge would promote the rest of the tree too (and grow the
+// young generation). Clearing the links after the last use makes the young part
+// unreachable. Callers must not use the analysis afterwards.
+export function releaseRuntimeImportAnalysis(analysisCache) {
+  const analysis = analysisCache?.analysis;
+  if (!analysisCache) return;
+  analysisCache.analysis = undefined;
+  analysisCache.stripped = undefined;
+  if (!analysis) return;
+  for (const node of analysis.nodes ?? []) {
+    for (const key in node) node[key] = null;
+    node[PARENT] = undefined;
+    node[REFERENCES] = undefined;
+  }
+  if (analysis.nodes) analysis.nodes.length = 0;
+  analysis.requireReferences?.clear();
+}
+
+function releaseScopes(scopeManager) {
+  const clearReference = (reference) => {
+    reference.identifier = null;
+    reference.from = null;
+    reference.resolved = null;
+    reference.writeExpr = null;
+  };
+  for (const scope of scopeManager.scopes) {
+    for (const reference of scope.references) clearReference(reference);
+    for (const variable of scope.variables) {
+      for (const reference of variable.references) clearReference(reference);
+      for (const definition of variable.defs) {
+        definition.name = null;
+        definition.node = null;
+        definition.parent = null;
+      }
+      variable.references.length = 0;
+      variable.identifiers.length = 0;
+      variable.defs.length = 0;
+      variable.scope = null;
+    }
+    scope.references.length = 0;
+    scope.through.length = 0;
+    scope.variables.length = 0;
+    scope.childScopes.length = 0;
+    scope.set?.clear();
+    scope.taints?.clear();
+    scope.block = null;
+    scope.upper = null;
+    scope.variableScope = null;
+  }
+  scopeManager.scopes.length = 0;
 }
 
 export function collectRuntimeModuleImports(text, { includeStaticNamespaces = false, includeStaticMembers = false, includeRuntimeMembers = false, analysisCache } = {}) {
@@ -34,7 +134,8 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
     analysis = analyzeRuntimeText(runtimeText);
     if (analysisCache) analysisCache.analysis = analysis;
   }
-  if (!analysis.scopes) {
+  parsedPlainText = undefined;
+  if (!analysis.scoped) {
     // Keep known imports if syntax is incomplete/unsupported; never guess namespace exports.
     // Type erasure has already classified each occurrence, even when AST analysis fails.
     const retained = new Set(imports.map(({ entry }) => entry.specifierStart));
@@ -42,24 +143,32 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
       ["require", "import"].includes(entry.kind) && retained.has(entry.specifierStart))
       .map((entry) => ({ ...entry, names: new Set() }));
   }
-  const { scopes, parents, nodes, lexicalReferences, requireReferences } = analysis;
+  const { nodes, requireReferences } = analysis;
 
   const byMarker = new Map(imports.map(({ marker, entry }) => [marker, entry]));
   const result = [];
   for (const node of nodes) {
     if (includeRuntimeMembers && node.type === "MemberExpression") {
-      const parts = [];
+      // Check the chain without allocating: large bundles have tens of
+      // thousands of member expressions and almost none are api.runtime.*.
       let receiver = node;
+      let depth = 0;
+      let innermost;
       while (receiver?.type === "MemberExpression" && !receiver.computed) {
-        parts.unshift(receiver.property.name);
+        innermost = receiver.property.name;
+        depth += 1;
         receiver = receiver.object;
       }
-      if (receiver?.type === "Identifier" && receiver.name === "api" && parts[0] === "runtime" && parts.length > 1) {
+      const parts = receiver?.type === "Identifier" && receiver.name === "api" && innermost === "runtime" && depth > 1 ? [] : undefined;
+      for (let current = node; parts && current?.type === "MemberExpression" && !current.computed; current = current.object) {
+        parts.unshift(current.property.name);
+      }
+      if (parts) {
         result.push({ specifier: "api.runtime", index: sourceOffset(node.start),
           names: new Set([parts.slice(1).join(".")]), kind: "runtime-member" });
       }
     }
-    if (includeStaticMembers && ["ImportDeclaration", "ExportNamedDeclaration", "ExportAllDeclaration"].includes(node.type) && node.source) {
+    if (includeStaticMembers && MODULE_DECLARATIONS.has(node.type) && node.source) {
       const names = new Set();
       for (const binding of node.specifiers ?? []) {
         if (binding.type === "ImportSpecifier") names.add(binding.imported.name ?? binding.imported.value);
@@ -110,7 +219,7 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
   }
   return result.sort((a, b) => a.index - b.index);
 
-  function collectBindingNames(binding, owner, names) {
+  function collectBindingNames(binding, _owner, names) {
     if (binding?.type === "ObjectPattern") {
       for (const property of binding.properties) {
         if (property.type === "Property" && !property.computed && property.key.type === "Identifier") {
@@ -118,56 +227,100 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
         }
       }
     } else if (binding?.type === "Identifier") {
-      // Resolve references to this declaration, including closures but excluding shadowed names.
-      for (const variable of scopes.getDeclaredVariables(owner)) {
-        if (!variable.identifiers.includes(binding)) continue;
-        for (const reference of variable.references) {
-          const access = parents.get(reference.identifier);
-          if (access?.type === "MemberExpression" && access.object === reference.identifier && !access.computed && access.property.type === "Identifier") {
-            names.add(access.property.name);
-          }
+      // References to this declaration, including closures but excluding shadowed
+      // names, as resolved by eslint-scope (copied onto the binding in analyzeRuntimeText).
+      for (const identifier of binding[REFERENCES] ?? []) {
+        const access = parents.get(identifier);
+        if (access?.type === "MemberExpression" && access.object === identifier && !access.computed && access.property.type === "Identifier") {
+          names.add(access.property.name);
         }
       }
     }
   }
 }
 
+// Deep trees go to the full ScopeManager, as before: its recursion is what
+// decides whether an analysis overflows (and falls back).
+const MAX_FACT_DEPTH = 500;
+
+// Accept both source modules and CommonJS wrappers without changing their runtime.
+function parseRuntimeText(runtimeText, { onToken, onComment } = {}) {
+  return AnalyzedParser.parse(runtimeText, {
+    ecmaVersion: "latest", sourceType: "script",
+    allowAwaitOutsideFunction: true, allowReturnOutsideFunction: true, allowImportExportEverywhere: true,
+    ...(onToken ? { onToken, onComment } : {}),
+  });
+}
+
 function analyzeRuntimeText(runtimeText) {
   let ast;
-  let scopes;
+  // The tree parsed while checking for type syntax is the tree of this text.
+  if (parsedPlainText?.text === runtimeText) ast = parsedPlainText.ast;
+  parsedPlainText = undefined;
   try {
-    // Accept both source modules and CommonJS wrappers without changing their runtime.
-    ast = parse(runtimeText, {
-      ecmaVersion: "latest", ranges: true, sourceType: "script",
-      allowAwaitOutsideFunction: true, allowReturnOutsideFunction: true, allowImportExportEverywhere: true,
-    });
-    scopes = analyze(ast, {
-      ecmaVersion: 2026,
-      sourceType: ast.body.some((node) => /^(?:Import|Export).*Declaration$/.test(node.type)) ? "module" : "commonjs",
-    });
+    ast ??= parseRuntimeText(runtimeText);
   } catch {
     return { runtimeText };
   }
+  const scopeOptions = {
+    ecmaVersion: 2026,
+    sourceType: ast.body.some((node) => /^(?:Import|Export).*Declaration$/.test(node.type)) ? "module" : "commonjs",
+  };
 
-  const parents = new Map();
   const nodes = [];
-  visit(ast);
+  let maxDepth = 0;
+  let dynamicScopes = false;
   // Same pre-order as walking Object.values(node), without allocating a value
   // array and a callback per node: large bundles have millions of nodes.
-  function visit(node, parent) {
+  function visit(node, parent, depth) {
     if (!node || typeof node.type !== "string") return;
-    parents.set(node, parent);
+    node[PARENT] = parent;
     nodes.push(node);
+    if (depth > maxDepth) maxDepth = depth;
+    if (node.type === "WithStatement" || (node.type === "CallExpression" && node.callee.type === "Identifier" && node.callee.name === "eval")) dynamicScopes = true;
     for (const key in node) {
       const value = node[key];
       if (Array.isArray(value)) {
-        for (let index = 0; index < value.length; index += 1) visit(value[index], node);
-      } else if (value && typeof value === "object") visit(value, node);
+        for (let index = 0; index < value.length; index += 1) visit(value[index], node, depth + 1);
+      } else if (value && typeof value === "object") visit(value, node, depth + 1);
     }
   }
+  try {
+    visit(ast, undefined, 0);
+  } catch (error) {
+    // Before, scope analysis ran first: keep its outcome when this walk fails.
+    try {
+      analyze(ast, scopeOptions);
+    } catch {
+      return { runtimeText };
+    }
+    throw error;
+  }
+
+  let scopes;
+  if (maxDepth <= MAX_FACT_DEPTH && !dynamicScopes) {
+    try {
+      scopes = analyzeScopeFacts(ast, scopeOptions, requestedScopeNames(nodes));
+      if (scopes.detectedEval) scopes = undefined;
+    } catch (error) {
+      if (!(error instanceof UnsupportedScope)) return { runtimeText };
+      scopes = undefined;
+    }
+  }
+  const full = !scopes;
+  if (full) {
+    try {
+      scopes = analyze(ast, scopeOptions);
+    } catch {
+      return { runtimeText };
+    }
+  }
+  const variables = full ? scopes.scopes.flatMap((scope) => scope.variables) : scopes.variables;
+
   const requireReferences = new Set();
-  const lexicalReferences = new Set(scopes.scopes.flatMap((scope) =>
-    scope.references.filter((reference) => reference.resolved).map((reference) => reference.identifier)));
+  for (const variable of variables) {
+    for (const reference of variable.references) reference.identifier[RESOLVED] = true;
+  }
   for (const declaration of nodes) {
     if (declaration.type !== "ImportDeclaration" || !["module", "node:module"].includes(declaration.source.value)) continue;
     for (const binding of declaration.specifiers) {
@@ -190,7 +343,40 @@ function analyzeRuntimeText(runtimeText) {
     }
   }
 
-  return { runtimeText, scopes, parents, nodes, lexicalReferences, requireReferences };
+  // Keep only the facts later passes read, then drop the scope graph so it
+  // does not live (and get promoted) through those passes: each binding's
+  // resolved reference identifiers. A binding identifier belongs to exactly
+  // one variable for the declarations those passes inspect (import locals,
+  // parameters, declarator ids).
+  for (const variable of variables) {
+    if (!variable.identifiers.length) continue;
+    const identifiers = variable.references.map((reference) => reference.identifier);
+    for (const identifier of variable.identifiers) identifier[REFERENCES] = identifiers;
+  }
+  if (full) releaseScopes(scopes);
+  return { runtimeText, scoped: true, nodes, requireReferences };
+}
+
+// Every name whose scope facts collectRuntimeModuleImports can read: `require`
+// callees, createRequire imports and their handles, namespace import locals,
+// first parameters of callbacks, and declarator ids initialized by calls or
+// awaits. Extra names are harmless.
+export function requestedScopeNames(nodes) {
+  const names = new Set(["require"]);
+  for (const node of nodes) {
+    if (node.type === "ImportDeclaration") {
+      const factoryModule = ["module", "node:module"].includes(node.source.value);
+      for (const specifier of node.specifiers) {
+        if (factoryModule || specifier.type === "ImportNamespaceSpecifier") names.add(specifier.local.name);
+      }
+    } else if (node.type === "VariableDeclarator" && node.id.type === "Identifier"
+      && (node.init?.type === "CallExpression" || node.init?.type === "AwaitExpression")) {
+      names.add(node.id.name);
+    } else if ((node.type === "ArrowFunctionExpression" || node.type === "FunctionExpression") && node.params[0]?.type === "Identifier") {
+      names.add(node.params[0].name);
+    }
+  }
+  return names;
 }
 
 function* scanLiteralModuleImports(text) {
@@ -341,9 +527,31 @@ function sourceOffsetMapper(markedImports) {
 // Strip-mode erasure is deterministic; reuse it for identical input.
 function stripTypes(text, analysisCache) {
   if (analysisCache?.stripped?.text === text) return analysisCache.stripped.output;
-  const output = nodeModule.stripTypeScriptTypes(text, { mode: "strip" });
+  // A previous source's tree is released before this one is parsed.
+  if (analysisCache && analysisCache.analysis?.runtimeText !== text) analysisCache.analysis = undefined;
+  const output = isPlainJavaScript(text) ? text : nodeModule.stripTypeScriptTypes(text, { mode: "strip" });
   if (analysisCache) analysisCache.stripped = { text, output };
   return output;
+}
+
+// JavaScript without anything the TypeScript grammar reads differently strips
+// to itself (see plain-javascript.js). Deciding that from the parse the
+// analysis needs anyway avoids loading Node's type stripper, whose WebAssembly
+// memory never shrinks, for packages that ship JavaScript. The tree is kept
+// for analyzeRuntimeText, which receives the same text.
+
+function isPlainJavaScript(text) {
+  parsedPlainText = undefined;
+  const tokens = plainJavaScriptTokens(text);
+  let ast;
+  try {
+    ast = parseRuntimeText(text, tokens);
+  } catch {
+    return false;
+  }
+  if (!tokens.isPlain()) return false;
+  parsedPlainText = { text, ast };
+  return true;
 }
 
 function eraseTypeScript(text, analysisCache) {

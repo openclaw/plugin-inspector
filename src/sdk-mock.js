@@ -3,6 +3,7 @@ import * as nodeModule from "node:module";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { collectRuntimeModuleImports } from "./runtime-imports.js";
+import { readText } from "./read-text.js";
 
 const SOURCE_EXTENSIONS = new Set([".js", ".mjs", ".cjs", ".ts", ".mts", ".cts"]);
 const SKIP_DIRS = new Set([".git", "coverage", "node_modules", "reports"]);
@@ -393,7 +394,7 @@ async function collectRuntimeImports(pluginRoot) {
   const bareSpecifiers = new Set();
   const requireFiles = new Set();
   for (const filePath of await listSourceFiles(pluginRoot)) {
-    const text = await readFile(filePath, "utf8");
+    const text = await readText(filePath);
     for (const entry of parseModuleImports(text)) {
       if (entry.specifier.startsWith("openclaw/plugin-sdk")) {
         openclawSdkSpecifiers.add(entry.specifier);

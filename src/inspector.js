@@ -14,7 +14,8 @@ import { resolveProcessLimits, startOwnedProcess } from "./process-profile.js";
 import { buildCompatibilityReport, buildReport } from "./report.js";
 import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
 import { inspectRegistryDeprecations } from "./registry-deprecations.js";
-import { collectRuntimeModuleImports, createRuntimeImportAnalysisCache } from "./runtime-imports.js";
+import { collectRuntimeModuleImports, createRuntimeImportAnalysisCache, releaseRuntimeImportAnalysis } from "./runtime-imports.js";
+import { readText } from "./read-text.js";
 
 const pluginFactoryNames = "defineBundledChannelEntry|defineChannelPluginEntry|createChatChannelPlugin|definePluginEntry";
 // Bundlers emit unbound calls as (0, sdk.factory)(...), including inline require receivers.
@@ -144,7 +145,7 @@ export async function inspectPlugin(fixture, options = {}) {
   const sdkDeprecationDetails = [];
 
   for (const filePath of sourceFiles) {
-    const text = await readFile(filePath, "utf8");
+    const text = await readText(filePath);
     const relativePath = path.relative(config.rootDir ?? process.cwd(), filePath);
     const sourceInspection = inspectSourceText(text, relativePath, options);
 
@@ -195,13 +196,14 @@ export function inspectSourceText(text, filePath = "source.js", options = {}) {
     ...collectDetailedMatches(searchableText, new RegExp(String.raw`\b(${pluginFactoryNames})\s*\(`, "g"), filePath, "name"),
     ...collectDetailedMatches(searchableText, compiledFactoryCall, filePath, "name"),
   ];
-  // Both passes classify the same text; share its erasure, parse and scopes.
+  // Both runtime-import passes classify the same text: share its erasure,
+  // parse and scopes, run them back to back, and free the analysis before the
+  // allocation-heavy rule pass so fewer young-generation collections see it.
   const analysisCache = createRuntimeImportAnalysisCache();
   const sdkImports = collectSdkImports(searchableText, filePath, text, analysisCache);
-  const sdkDeprecations = [
-    ...inspectSdkDeprecations(searchableText, filePath),
-    ...inspectRegistryDeprecations(text, filePath, options.targetOpenClaw?.compatDeprecations, { analysisCache }),
-  ];
+  const registryDeprecations = inspectRegistryDeprecations(text, filePath, options.targetOpenClaw?.compatDeprecations, { analysisCache });
+  releaseRuntimeImportAnalysis(analysisCache);
+  const sdkDeprecations = [...inspectSdkDeprecations(searchableText, filePath), ...registryDeprecations];
 
   return {
     hooks,

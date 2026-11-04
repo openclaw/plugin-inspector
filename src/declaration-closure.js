@@ -204,7 +204,8 @@ function summarizeDeclarationFile(fileName, text, { environment, resolveModule }
   // A file the environment scan skipped must really be a module, or its global
   // names were never collected and erasure is not provably safe.
   if (!isModule && environment.skippedAsModules.has(fileName)) throw new EnvironmentMismatch();
-  const keepWhole = !isModule || parsed.hasParseErrors || parsed.hasReferenceDirectives;
+  let keepWhole = !isModule || parsed.hasParseErrors || parsed.hasReferenceDirectives;
+  let hasExportDeclarations = false;
   const statements = [];
   const declarationsByName = new Map();
   const importBindings = new Map();
@@ -215,6 +216,7 @@ function summarizeDeclarationFile(fileName, text, { environment, resolveModule }
   // Bind file-level names before collecting references so erasure can tell
   // which type names resolve.
   parsed.forEachStatement((node, index) => {
+    hasExportDeclarations ||= ts.isExportDeclaration(node) || ts.isExportAssignment(node);
     if (ts.isImportDeclaration(node) && node.importClause && ts.isStringLiteralLike(node.moduleSpecifier)) {
       const from = node.moduleSpecifier.text;
       const clause = node.importClause;
@@ -233,6 +235,9 @@ function summarizeDeclarationFile(fileName, text, { environment, resolveModule }
       for (const name of declaredNames(node) ?? []) push(declarationsByName, name, index);
     }
   });
+  // An ambient module without export declarations exports every declaration
+  // implicitly; rendering it with an added `export {}` would undo that.
+  if (!hasExportDeclarations) keepWhole = true;
   const erasable = (name) => !keepWhole && environment.eraseTypeArguments && !environment.globals.has(name)
     && (unresolvedImports.has(name) ? !declarationsByName.has(name) : !declarationsByName.has(name) && !importBindings.has(name));
 
@@ -329,7 +334,7 @@ function summarizeDeclarationFile(fileName, text, { environment, resolveModule }
 // before a keyword that can only start a new declaration; if any piece fails to
 // parse, the whole file is parsed instead, so statement boundaries always match
 // TypeScript's own.
-function parseTopLevelStatements(fileName, text) {
+export function parseTopLevelStatements(fileName, text) {
   const pieces = splitTopLevelStatements(text);
   const parse = (pieceText) => ts.createSourceFile(fileName, pieceText, LANGUAGE_OPTIONS, false);
   if (pieces) {
@@ -387,8 +392,8 @@ const STATEMENT_KEYWORDS = new Set([
 ]);
 const PIECE_BYTES = 64 * 1024;
 
-function splitTopLevelStatements(text) {
-  if (text.length <= PIECE_BYTES) return null;
+export function splitTopLevelStatements(text, pieceBytes = PIECE_BYTES) {
+  if (text.length <= pieceBytes) return null;
   const scanner = ts.createScanner(ts.ScriptTarget.Latest, true, ts.LanguageVariant.Standard, text);
   const pieces = [];
   const templateDepths = [];
@@ -398,7 +403,7 @@ function splitTopLevelStatements(text) {
   for (let token = scanner.scan(); token !== ts.SyntaxKind.EndOfFileToken; token = scanner.scan()) {
     if (boundary && depth === 0 && STATEMENT_KEYWORDS.has(token)) {
       const start = scanner.getTokenFullStart();
-      if (start - pieceStart >= PIECE_BYTES) {
+      if (start - pieceStart >= pieceBytes) {
         pieces.push([pieceStart, start]);
         pieceStart = start;
       }
