@@ -26,10 +26,13 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
     preservePositions: includeStaticMembers || includeRuntimeMembers,
     analysisCache,
   });
-  const analysis = analysisCache?.analysis?.runtimeText === runtimeText
-    ? analysisCache.analysis
-    : analyzeRuntimeText(runtimeText);
-  if (analysisCache) analysisCache.analysis = analysis;
+  let analysis = analysisCache?.analysis;
+  if (analysis?.runtimeText !== runtimeText) {
+    // Release a different text's tree before building this one.
+    if (analysisCache) analysisCache.analysis = undefined;
+    analysis = analyzeRuntimeText(runtimeText);
+    if (analysisCache) analysisCache.analysis = analysis;
+  }
   if (!analysis.scopes) {
     // Keep known imports if syntax is incomplete/unsupported; never guess namespace exports.
     // Type erasure has already classified each occurrence, even when AST analysis fails.
@@ -344,6 +347,20 @@ function stripTypes(text, analysisCache) {
 
 function eraseTypeScript(text, analysisCache) {
   if (typeof nodeModule.stripTypeScriptTypes === "function") {
+    // Callers sharing an analysis also run the position-preserving pass, which
+    // strips the same text. When strip mode accepts a source it contains no
+    // TypeScript runtime constructs (enums, namespaces, parameter properties),
+    // so transform mode would only re-print the same JavaScript; Node 26
+    // already takes this path because it rejects "transform". Reuse the strip
+    // result rather than building a second erased text and syntax tree.
+    // Anything strip rejects still goes through transform exactly as before.
+    if (analysisCache) {
+      try {
+        return stripTypes(text, analysisCache);
+      } catch {
+        // Fall through to transform mode and its own error handling.
+      }
+    }
     try {
       return nodeModule.stripTypeScriptTypes(text, { mode: "transform" });
     } catch (error) {
