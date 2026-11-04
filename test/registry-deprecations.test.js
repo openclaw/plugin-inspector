@@ -253,28 +253,28 @@ test("packed targets omit session advice until every named replacement is export
   assert.equal(report.issues.some((item) => item.code === "sdk-deprecated-api"), false);
 });
 
-test("packed replacement discovery parses compact types and ignores declaration-shaped strings", () => {
+test("packed replacement discovery parses compact types and ignores declaration-shaped strings", async () => {
   const record = { code: "web", status: "deprecated", replacementExports: ["listProvidersAsync"] };
   const options = (source) => ({
     packageRoot: "/openclaw",
     packageJson: { exports: { "./plugin-sdk": "./dist/sdk.js" } },
     declarations: [{ filePath: "/openclaw/dist/sdk.d.ts", source }],
   });
-  assert.deepEqual(retirementRecordsForPackedTarget([record], options(
+  assert.deepEqual(await retirementRecordsForPackedTarget([record], options(
     "export interface PluginRuntime { webSearch: { listProvidersAsync(): Promise<string>; }; }",
   )), [record]);
-  assert.deepEqual(retirementRecordsForPackedTarget([record], options(
+  assert.deepEqual(await retirementRecordsForPackedTarget([record], options(
     'export declare const example: "export function listProvidersAsync";',
   )), []);
 });
 
-test("packed replacements include exported type names and factory-returned members", () => {
+test("packed replacements include exported type names and factory-returned members", async () => {
   const records = [
     { code: "provider", replacementExports: ["ProviderPlugin", "ReplayContext"] },
     { code: "binding", replacementExports: ["getSessionBindingService", "inspectByConversationAsync"] },
     { code: "private", replacementExports: ["PrivateHelper", "hiddenCallback"] },
   ];
-  const kept = retirementRecordsForPackedTarget(records, {
+  const kept = await retirementRecordsForPackedTarget(records, {
     packageRoot: "/openclaw",
     packageJson: { exports: { "./plugin-sdk": "./dist/sdk.js" } },
     declarations: [{ filePath: "/openclaw/dist/sdk.d.ts", source: [
@@ -291,9 +291,9 @@ test("packed replacements include exported type names and factory-returned membe
   assert.deepEqual(kept, records.slice(0, 2));
 });
 
-test("packed replacements include both static and instance class members", () => {
+test("packed replacements include both static and instance class members", async () => {
   const record = { code: "manager", replacementExports: ["openAsync", "appendMessageAsync"] };
-  const kept = retirementRecordsForPackedTarget([record], {
+  const kept = await retirementRecordsForPackedTarget([record], {
     packageRoot: "/openclaw",
     packageJson: { exports: { "./plugin-sdk/session-manager": "./dist/manager.js" } },
     declarations: [{ filePath: "/openclaw/dist/manager.d.ts", source: [
@@ -306,7 +306,7 @@ test("packed replacements include both static and instance class members", () =>
   assert.deepEqual(kept, [record]);
 });
 
-test("SessionManager advice requires every prescribed async persistence method", () => {
+test("SessionManager advice requires every prescribed async persistence method", async () => {
   const record = sdkRetirements.records.find((item) => item.code === "session-manager-sync-persistence");
   for (const surface of record.surfaces.filter((item) => item.split(".").length === 2)) {
     assert.ok(record.replacementExports.includes(`${surface.split(".")[1]}Async`), surface);
@@ -320,8 +320,8 @@ test("SessionManager advice requires every prescribed async persistence method",
       "}",
     ].join("\n") }],
   });
-  assert.deepEqual(retirementRecordsForPackedTarget([record], options(record.replacementExports)), [record]);
-  assert.deepEqual(retirementRecordsForPackedTarget([record], options(
+  assert.deepEqual(await retirementRecordsForPackedTarget([record], options(record.replacementExports)), [record]);
+  assert.deepEqual(await retirementRecordsForPackedTarget([record], options(
     record.replacementExports.filter((name) => name !== "appendMessageAsync"),
   )), []);
 });
@@ -330,7 +330,7 @@ test("packed replacements preserve ESM and CommonJS declaration extensions", asy
   for (const [runtime, declaration] of [["mjs", "d.mts"], ["cjs", "d.cts"]]) {
     const record = { code: "replacement", replacementExports: ["replacementAsync"] };
     for (const target of [`./dist/sdk.${declaration}`, `./dist/sdk.${runtime}`]) {
-      assert.deepEqual(retirementRecordsForPackedTarget([record], {
+      assert.deepEqual(await retirementRecordsForPackedTarget([record], {
         packageRoot: "/openclaw",
         packageJson: { exports: { "./plugin-sdk": target } },
         declarations: [{ filePath: `/openclaw/dist/sdk.${declaration}`, source: "export declare function replacementAsync(): void;" }],
@@ -348,7 +348,7 @@ test("packed replacements preserve ESM and CommonJS declaration extensions", asy
   }
 });
 
-test("reachable public type members satisfy a runtime replacement", () => {
+test("reachable public type members satisfy a runtime replacement", async () => {
   const packageJson = { exports: { "./plugin-sdk": "./dist/plugin-sdk/index.js" } };
   const declarations = [
     {
@@ -367,7 +367,7 @@ test("reachable public type members satisfy a runtime replacement", () => {
       ].join("\n"),
     },
   ];
-  const kept = retirementRecordsForPackedTarget([
+  const kept = await retirementRecordsForPackedTarget([
     { code: "tts", status: "deprecated", replacementExports: ["buildSystemPromptHintAsync"] },
     { code: "state", status: "deprecated", replacementExports: ["openKeyedStoreV2"] },
     { code: "session", status: "deprecated", replacementExports: ["loadTranscriptEvents"] },
@@ -375,8 +375,8 @@ test("reachable public type members satisfy a runtime replacement", () => {
   assert.deepEqual(kept.map((record) => record.code), ["tts", "state"]);
 });
 
-test("an intersection runtime type keeps reachable members and drops sibling exports", () => {
-  const kept = retirementRecordsForPackedTarget([
+test("an intersection runtime type keeps reachable members and drops sibling exports", async () => {
+  const kept = await retirementRecordsForPackedTarget([
     { code: "tts", status: "deprecated", replacementExports: ["buildSystemPromptHintAsync"] },
     { code: "web", status: "deprecated", replacementExports: ["listProvidersAsync"] },
     { code: "session", status: "deprecated", replacementExports: ["loadTranscriptEvents"] },
@@ -409,8 +409,8 @@ test("an intersection runtime type keeps reachable members and drops sibling exp
   assert.deepEqual(kept.map((record) => record.code), ["tts", "web"]);
 });
 
-test("an export alias resolves to the declared runtime type", () => {
-  const kept = retirementRecordsForPackedTarget([
+test("an export alias resolves to the declared runtime type", async () => {
+  const kept = await retirementRecordsForPackedTarget([
     { code: "web", status: "deprecated", replacementExports: ["listProvidersAsync"] },
     { code: "session", status: "deprecated", replacementExports: ["loadTranscriptEvents"] },
   ], {
@@ -439,8 +439,8 @@ test("an export alias resolves to the declared runtime type", () => {
   assert.equal(binding.replacementExports.includes("createIMessageConversationBindingManagerV2"), false);
 });
 
-test("a local export list publishes the imported type, not its sibling exports", () => {
-  const kept = retirementRecordsForPackedTarget([
+test("a local export list publishes the imported type, not its sibling exports", async () => {
+  const kept = await retirementRecordsForPackedTarget([
     { code: "web", status: "deprecated", replacementExports: ["listProvidersAsync"] },
     { code: "session", status: "deprecated", replacementExports: ["loadTranscriptEvents"] },
   ], {
@@ -486,10 +486,10 @@ test("watched-session advice does not require the caller assertCurrent callback"
   );
 });
 
-test("transcript write replacements do not require the caller prepareMessage callback", () => {
+test("transcript write replacements do not require the caller prepareMessage callback", async () => {
   const record = sdkRetirements.records.find((item) => item.code === "transcript-lock-sync-message-preparation");
   assert.equal(record.replacementExports.includes("prepareMessage"), false);
-  const kept = retirementRecordsForPackedTarget([record], {
+  const kept = await retirementRecordsForPackedTarget([record], {
     packageRoot: "/openclaw",
     packageJson: { exports: { "./plugin-sdk/transcript": "./dist/plugin-sdk/transcript.js" } },
     declarations: [{
@@ -504,7 +504,7 @@ test("transcript write replacements do not require the caller prepareMessage cal
   assert.equal(kept.length, 1);
 });
 
-test("session retirement lists every replacement the guidance names", () => {
+test("session retirement lists every replacement the guidance names", async () => {
   const record = sdkRetirements.records.find((item) => item.code === "session-store-sync-readers");
   assert.deepEqual(record.replacementExports, [
     "getSessionEntryAsync",
@@ -513,7 +513,7 @@ test("session retirement lists every replacement the guidance names", () => {
     "loadTranscriptEvents",
   ]);
   const available = new Set(record.replacementExports);
-  const kept = retirementRecordsForPackedTarget([record], {
+  const kept = await retirementRecordsForPackedTarget([record], {
     declarations: [{
       filePath: "/openclaw/dist/plugin-sdk/session-store-runtime.d.ts",
       source: [...available].map((name) => `export declare function ${name}(): unknown;`).join("\n"),
@@ -522,7 +522,7 @@ test("session retirement lists every replacement the guidance names", () => {
     packageRoot: "/openclaw",
   });
   assert.equal(kept.length, 1);
-  const commented = retirementRecordsForPackedTarget([record], {
+  const commented = await retirementRecordsForPackedTarget([record], {
     declarations: [{
       filePath: "/openclaw/dist/plugin-sdk/session-store-runtime.d.ts",
       source: `export declare function getSessionEntryAsync(): unknown;\n/* ${[...available].slice(1).join(" ")} */\n`,

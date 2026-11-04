@@ -1,7 +1,6 @@
 import { existsSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
-import ts from "typescript";
 import { resolveJailedPluginPath } from "./path-utils.js";
 import { readCompatRegistryRecords } from "./compat-registry.js";
 import { retirementRecordsForPackedTarget } from "./registry-deprecations.js";
@@ -73,7 +72,7 @@ export async function readOpenClawTargetSurface(options = {}) {
     ]),
   );
   const hookTypesSource = existsSync(hookTypesPath) ? await readFile(hookTypesPath, "utf8") : "";
-  const hookNames = parseCheckoutHookNames(hookTypesSource);
+  const hookNames = await parseCheckoutHookNames(hookTypesSource);
   const apiBuilderSource = existsSync(apiBuilderPath) ? await readFile(apiBuilderPath, "utf8") : "";
   const apiRegistrars = apiBuilderSource ? parseApiRegistrars(apiBuilderSource) : [];
   const currentManifestTypesSource = existsSync(currentManifestTypesPath)
@@ -486,7 +485,7 @@ async function readPackedOpenClawTargetSurface({ rootDir, requestedPaths, reques
     compatRecordCount: sdkRetirements.records.length,
     compatRecords: sdkRetirements.records.map((record) => record.code),
     compatRecordStatuses: Object.fromEntries(sdkRetirements.records.map((record) => [record.code, record.status])),
-    compatDeprecations: retirementRecordsForPackedTarget(sdkRetirements.records, {
+    compatDeprecations: await retirementRecordsForPackedTarget(sdkRetirements.records, {
       declarations,
       packageJson,
       packageRoot: resolvedPath,
@@ -627,9 +626,10 @@ function readObjectTypeBody(source, typeName) {
   return null;
 }
 
-function parseCheckoutHookNames(source) {
+async function parseCheckoutHookNames(source) {
   const names = parseConstStringArray(source, "PLUGIN_HOOK_NAMES");
   if (names.length > 0) return names;
+  const { default: ts } = await import("./typescript.cjs");
 
   // Current hosts derive hook names from this exhaustive metadata registry.
   const tree = ts.createSourceFile("hook-types.ts", source, ts.ScriptTarget.Latest, true);

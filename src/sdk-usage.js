@@ -1,5 +1,5 @@
 import path from "node:path";
-import ts from "typescript";
+import ts from "./typescript.cjs";
 import { collectSdkImports } from "./sdk-usage/imports.js";
 import { collectManifestContracts } from "./sdk-usage/manifest.js";
 import { createUsageReport } from "./sdk-usage/model.js";

@@ -1,4 +1,4 @@
-import ts from "typescript";
+import ts from "../typescript.cjs";
 import { inType, nameText, referenceKind, walk } from "./syntax.js";
 
 export function collectSdkMembers({ sources, report, provenance }) {

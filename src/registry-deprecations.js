@@ -1,91 +1,67 @@
+import { createHash } from "node:crypto";
 import path from "node:path";
-import ts from "typescript";
 import { collectRuntimeModuleImports } from "./runtime-imports.js";
+import qualifications from "./packed-sdk-qualifications.json" with { type: "json" };
 
 // Packed packages may predate the pinned inventory. Only prescribe replacements
 // exposed by that package's public SDK declarations.
-export function retirementRecordsForPackedTarget(records, { declarations = [], packageJson = {}, packageRoot = "" } = {}) {
-  const available = publicReplacementNames(declarations, packageJson, packageRoot);
+//
+// Answering that exactly means type-checking the package's public declarations
+// (packed-sdk-surface.js). That pass is the largest allocation of publish-time
+// inspection, and its answer depends only on the declaration snapshot, so
+// released OpenClaw snapshots ship precomputed in packed-sdk-qualifications.json
+// (regenerate and verify with scripts/packed-sdk-qualifications.mjs). Any other
+// snapshot is type-checked on demand with the same result.
+export async function retirementRecordsForPackedTarget(records, { declarations = [], packageJson = {}, packageRoot = "" } = {}) {
+  const available = await availableReplacementNames(records, { declarations, packageJson, packageRoot });
   return records.filter((record) => !Array.isArray(record.replacementExports)
     || record.replacementExports.every((name) => available.has(name)));
 }
 
-function publicReplacementNames(declarations, packageJson, packageRoot) {
-  const normalize = (file) => path.resolve(file).split(path.sep).join("/");
-  const sources = new Map(declarations.map(({ filePath, source }) => {
-    const name = normalize(filePath);
-    return [name, ts.createSourceFile(name, source ?? "", ts.ScriptTarget.Latest, true)];
-  }));
-  const options = { noLib: true, noEmit: true, types: [], module: ts.ModuleKind.ESNext, moduleResolution: ts.ModuleResolutionKind.Bundler };
-  // Use only the already-read declaration snapshot; resolution must never read
-  // installed dependencies or execute the selected package.
-  const host = {
-    getSourceFile: (file) => sources.get(normalize(file)),
-    fileExists: (file) => sources.has(normalize(file)),
-    readFile: (file) => sources.get(normalize(file))?.text,
-    getDefaultLibFileName: () => "",
-    writeFile: () => {},
-    getCurrentDirectory: () => normalize(packageRoot || "."),
-    getDirectories: () => [],
-    getCanonicalFileName: normalize,
-    useCaseSensitiveFileNames: () => true,
-    getNewLine: () => "\n",
-  };
-  const program = ts.createProgram([...sources.keys()], options, host);
-  const checker = program.getTypeChecker();
-  const names = new Set();
-  const seen = new Set();
-  function collectMembers(type) {
-    if (!type || seen.has(type)) return;
-    seen.add(type);
-    if (type.isUnionOrIntersection()) {
-      for (const part of type.types) collectMembers(part);
-    }
-    for (const signature of checker.getSignaturesOfType(type, ts.SignatureKind.Call)) {
-      collectMembers(checker.getReturnTypeOfSignature(signature));
-    }
-    for (const member of checker.getPropertiesOfType(type)) {
-      names.add(member.name);
-      const declaration = member.valueDeclaration ?? member.declarations?.[0];
-      if (declaration) collectMembers(checker.getTypeOfSymbolAtLocation(member, declaration));
-    }
-  }
-  for (const file of publicSdkDeclarations(packageJson, packageRoot, sources)) {
-    const source = program.getSourceFile(file);
-    const module = source && checker.getSymbolAtLocation(source);
-    if (!module || source.parseDiagnostics.length) continue;
-    for (const exported of checker.getExportsOfModule(module)) {
-      const symbol = exported.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(exported) : exported;
-      if (symbol.flags & (ts.SymbolFlags.Value | ts.SymbolFlags.Type)) names.add(exported.name);
-      if (symbol.flags & ts.SymbolFlags.Type) collectMembers(checker.getDeclaredTypeOfSymbol(symbol));
-      if (symbol.flags & ts.SymbolFlags.Value) {
-        const declaration = symbol.valueDeclaration ?? symbol.declarations?.[0];
-        if (declaration) collectMembers(checker.getTypeOfSymbolAtLocation(symbol, declaration));
-      }
-    }
-  }
-  return names;
+export async function availableReplacementNames(records, { declarations = [], packageJson = {}, packageRoot = "" } = {}) {
+  const wanted = replacementNames(records);
+  if (wanted.length === 0) return new Set();
+  const known = precomputedReplacementNames(wanted, packedSdkSnapshotDigest({ declarations, packageJson, packageRoot }));
+  if (known) return known;
+  const { publicSdkSurfaceNames } = await import("./packed-sdk-surface.js");
+  const names = publicSdkSurfaceNames(declarations, packageJson, packageRoot);
+  return new Set(wanted.filter((name) => names.has(name)));
 }
 
-function publicSdkDeclarations(packageJson, packageRoot, sources) {
-  const files = new Set();
-  const visit = (value) => {
-    if (typeof value === "string") {
-      const resolved = path.resolve(packageRoot, value).split(path.sep).join("/");
-      const candidates = /\.d\.[cm]?ts$/.test(resolved) ? [resolved]
-        : /\.mjs$/.test(resolved) ? [resolved.replace(/\.mjs$/, ".d.mts"), resolved.replace(/\.mjs$/, ".d.ts")]
-        : /\.cjs$/.test(resolved) ? [resolved.replace(/\.cjs$/, ".d.cts"), resolved.replace(/\.cjs$/, ".d.ts")]
-        : [resolved.replace(/\.js$/, ".d.ts")];
-      const declaration = candidates.find((candidate) => sources.has(candidate));
-      if (declaration) files.add(declaration);
-    } else if (value && typeof value === "object") {
-      for (const child of Object.values(value)) visit(child);
-    }
-  };
-  for (const [specifier, value] of Object.entries(packageJson.exports ?? {})) {
-    if (specifier === "./plugin-sdk" || specifier.startsWith("./plugin-sdk/")) visit(value);
+export function replacementNames(records) {
+  return [...new Set(records.flatMap((record) => Array.isArray(record.replacementExports) ? record.replacementExports : []))].sort();
+}
+
+export const PACKED_SDK_QUALIFICATION_ALGORITHM = 1;
+
+// Identifies everything the qualification reads: the ./plugin-sdk export map
+// and every declaration file's package-relative path and exact text.
+export function packedSdkSnapshotDigest({ declarations = [], packageJson = {}, packageRoot = "" }) {
+  const hash = createHash("sha256");
+  hash.update(`plugin-inspector packed SDK snapshot ${PACKED_SDK_QUALIFICATION_ALGORITHM}\0`);
+  const sdkExports = Object.entries(packageJson.exports ?? {})
+    .filter(([specifier]) => specifier === "./plugin-sdk" || specifier.startsWith("./plugin-sdk/"));
+  hash.update(`${JSON.stringify(sdkExports)}\0`);
+  const files = declarations.map(({ filePath, source }) => ({
+    name: path.relative(path.resolve(packageRoot || "."), path.resolve(filePath)).split(path.sep).join("/"),
+    source: source ?? "",
+  })).sort((left, right) => (left.name < right.name ? -1 : left.name > right.name ? 1 : 0));
+  for (const { name, source } of files) {
+    hash.update(`${name}\0${Buffer.byteLength(source)}\0`);
+    hash.update(source);
   }
-  return files;
+  return hash.digest("hex");
+}
+
+function precomputedReplacementNames(wanted, digest) {
+  if (qualifications.algorithm !== PACKED_SDK_QUALIFICATION_ALGORITHM) return null;
+  const target = qualifications.targets.find((entry) => entry.snapshotSha256 === digest);
+  if (!target) return null;
+  // The table answers only for names it checked; a newer inventory falls back.
+  const checked = new Set(qualifications.checkedNames);
+  if (!wanted.every((name) => checked.has(name))) return null;
+  const available = new Set(target.available);
+  return new Set(wanted.filter((name) => available.has(name)));
 }
 
 function parseSurface(api) {
@@ -114,10 +90,10 @@ export function registryUsageDeprecationCodes(kind, identity, records = []) {
     ? ["sdk-deprecated-api"] : [];
 }
 
-export function inspectRegistryDeprecations(text, filePath, records = []) {
+export function inspectRegistryDeprecations(text, filePath, records = [], { analysisCache } = {}) {
   if (records.length === 0) return [];
   if (!text.includes("openclaw/plugin-sdk") && !text.includes("runtime")) return [];
-  const imports = collectRuntimeModuleImports(text, { includeStaticMembers: true, includeRuntimeMembers: true });
+  const imports = collectRuntimeModuleImports(text, { includeStaticMembers: true, includeRuntimeMembers: true, analysisCache });
   const findings = [];
   for (const record of records) {
     if (record.status !== "deprecated") continue;

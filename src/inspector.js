@@ -13,8 +13,7 @@ import { resolveProcessLimits, startOwnedProcess } from "./process-profile.js";
 import { buildCompatibilityReport, buildReport } from "./report.js";
 import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
 import { inspectRegistryDeprecations } from "./registry-deprecations.js";
-import { inspectSdkUsage } from "./sdk-usage.js";
-import { collectRuntimeModuleImports } from "./runtime-imports.js";
+import { collectRuntimeModuleImports, createRuntimeImportAnalysisCache } from "./runtime-imports.js";
 
 const pluginFactoryNames = "defineBundledChannelEntry|defineChannelPluginEntry|createChatChannelPlugin|definePluginEntry";
 // Bundlers emit unbound calls as (0, sdk.factory)(...), including inline require receivers.
@@ -180,7 +179,9 @@ export async function inspectPlugin(fixture, options = {}) {
     packageEntrypoints: packageInspection.entrypoints,
     sdkImports: uniqueDetails(sdkImportDetails),
     sdkDeprecations: uniqueSdkDeprecations(sdkDeprecationDetails),
-    sdkUsage: await inspectSdkUsage({ root: sdkUsageRoot, inputKind: options.sdkUsageInputKind ?? (fixture.package ? "artifact" : "source"), targetRoot: options.sdkTargetRoot, compatDeprecations: options.targetOpenClaw?.compatDeprecations, hostCache: options.sdkUsageHostCache }),
+    // Loaded on first use: the SDK inventory is the only per-file pass that needs
+    // the TypeScript compiler, so source scanning runs without it resident.
+    sdkUsage: await (await import("./sdk-usage.js")).inspectSdkUsage({ root: sdkUsageRoot, inputKind: options.sdkUsageInputKind ?? (fixture.package ? "artifact" : "source"), targetRoot: options.sdkTargetRoot, compatDeprecations: options.targetOpenClaw?.compatDeprecations, hostCache: options.sdkUsageHostCache }),
     sourceFiles: sourceFiles.map((filePath) => path.relative(config.rootDir ?? process.cwd(), filePath)).sort(),
   };
 }
@@ -193,10 +194,12 @@ export function inspectSourceText(text, filePath = "source.js", options = {}) {
     ...collectDetailedMatches(searchableText, new RegExp(String.raw`\b(${pluginFactoryNames})\s*\(`, "g"), filePath, "name"),
     ...collectDetailedMatches(searchableText, compiledFactoryCall, filePath, "name"),
   ];
-  const sdkImports = collectSdkImports(searchableText, filePath, text);
+  // Both passes classify the same text; share its erasure, parse and scopes.
+  const analysisCache = createRuntimeImportAnalysisCache();
+  const sdkImports = collectSdkImports(searchableText, filePath, text, analysisCache);
   const sdkDeprecations = [
     ...inspectSdkDeprecations(searchableText, filePath),
-    ...inspectRegistryDeprecations(text, filePath, options.targetOpenClaw?.compatDeprecations),
+    ...inspectRegistryDeprecations(text, filePath, options.targetOpenClaw?.compatDeprecations, { analysisCache }),
   ];
 
   return {
@@ -467,7 +470,7 @@ function collectDetailedMatches(text, regex, filePath, key) {
   return details;
 }
 
-function collectSdkImports(text, filePath, sourceText) {
+function collectSdkImports(text, filePath, sourceText, analysisCache) {
   const details = [];
   for (const candidate of text.matchAll(/(?:^|;)[\t ]*(import|export)\b/gm)) {
     const keyword = candidate[1];
@@ -485,7 +488,7 @@ function collectSdkImports(text, filePath, sourceText) {
   }
 
   // Comment masking can erase executable interpolations after URL-like template text.
-  for (const { specifier, index } of collectRuntimeModuleImports(sourceText)) {
+  for (const { specifier, index } of collectRuntimeModuleImports(sourceText, { analysisCache })) {
     if (specifier !== "openclaw/plugin-sdk" && !specifier.startsWith("openclaw/plugin-sdk/")) continue;
     const line = lineForOffset(text, index);
     details.push({

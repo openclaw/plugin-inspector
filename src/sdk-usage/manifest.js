@@ -1,4 +1,4 @@
-import ts from "typescript";
+import ts from "../typescript.cjs";
 import { nameText } from "./syntax.js";
 
 export function collectManifestContracts(file, report) {

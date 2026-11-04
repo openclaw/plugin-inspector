@@ -1,4 +1,4 @@
-import ts from "typescript";
+import ts from "../typescript.cjs";
 import { isSdkSpecifier, nameText, stringExpressionPrefix, walk } from "./syntax.js";
 import { createTypeProvenance } from "./types.js";
 import { capabilityContextMember } from "./host-context.js";
