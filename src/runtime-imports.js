@@ -53,6 +53,57 @@ export function createRuntimeImportAnalysisCache() {
   return { stripped: undefined, analysis: undefined };
 }
 
+// Free a finished analysis eagerly. Part of a large file's syntax tree and
+// scope graph is promoted while it is analyzed; dead old-space objects still
+// hold young ones through the remembered set until the next major collection,
+// so every later scavenge would promote the rest of the tree too (and grow the
+// young generation). Clearing the links after the last use makes the young part
+// unreachable. Callers must not use the analysis afterwards.
+export function releaseRuntimeImportAnalysis(analysisCache) {
+  const analysis = analysisCache?.analysis;
+  if (!analysisCache) return;
+  analysisCache.analysis = undefined;
+  analysisCache.stripped = undefined;
+  if (!analysis) return;
+  const clearReference = (reference) => {
+    reference.identifier = null;
+    reference.from = null;
+    reference.resolved = null;
+    reference.writeExpr = null;
+  };
+  for (const scope of analysis.scopes?.scopes ?? []) {
+    for (const reference of scope.references) clearReference(reference);
+    for (const variable of scope.variables) {
+      for (const reference of variable.references) clearReference(reference);
+      for (const definition of variable.defs) {
+        definition.name = null;
+        definition.node = null;
+        definition.parent = null;
+      }
+      variable.references.length = 0;
+      variable.identifiers.length = 0;
+      variable.defs.length = 0;
+      variable.scope = null;
+    }
+    scope.references.length = 0;
+    scope.through.length = 0;
+    scope.variables.length = 0;
+    scope.childScopes.length = 0;
+    scope.set?.clear();
+    scope.taints?.clear();
+    scope.block = null;
+    scope.upper = null;
+    scope.variableScope = null;
+  }
+  if (analysis.scopes) analysis.scopes.scopes.length = 0;
+  for (const node of analysis.nodes ?? []) {
+    for (const key in node) node[key] = null;
+    node[PARENT] = undefined;
+  }
+  if (analysis.nodes) analysis.nodes.length = 0;
+  analysis.requireReferences?.clear();
+}
+
 export function collectRuntimeModuleImports(text, { includeStaticNamespaces = false, includeStaticMembers = false, includeRuntimeMembers = false, analysisCache } = {}) {
   // Preserve possible-import offsets through erasure; AST and scopes classify them.
   // Named factories use createRequire or a \u escape. Avoid parsing unrelated

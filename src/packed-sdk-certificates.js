@@ -35,14 +35,16 @@ export function certifyPublicSdkNames({ declarations, packageJson = {}, packageR
   const options = { noLib: true, noEmit: true, types: [], module: ts.ModuleKind.ESNext, moduleResolution: ts.ModuleResolutionKind.Bundler };
   const resolutionHost = { fileExists: (file) => texts.has(normalize(file)), readFile: (file) => texts.get(normalize(file)) };
   const resolutionCache = ts.createModuleResolutionCache(normalize(packageRoot || "."), normalize, options);
+  // Long-lived lookups avoid concatenated string keys (see bindModule).
   const resolvedModules = new Map();
   const resolveModule = (specifier, containingFile) => {
-    const key = `${containingFile}\0${specifier}`;
-    if (!resolvedModules.has(key)) {
+    let byFile = resolvedModules.get(containingFile);
+    if (!byFile) resolvedModules.set(containingFile, byFile = new Map());
+    if (!byFile.has(specifier)) {
       const resolved = ts.resolveModuleName(specifier, containingFile, options, resolutionHost, resolutionCache).resolvedModule;
-      resolvedModules.set(key, resolved ? normalize(resolved.resolvedFileName) : undefined);
+      byFile.set(specifier, resolved ? normalize(resolved.resolvedFileName) : undefined);
     }
-    return resolvedModules.get(key);
+    return byFile.get(specifier);
   };
   const entries = publicSdkDeclarationFiles(packageJson, packageRoot, texts, normalize);
 
@@ -431,12 +433,16 @@ function positiveNames(context, entries, queried) {
   const typeLike = (declaration) => ["interface", "alias-type", "class", "enum"].includes(declaration.kind);
   const valueLike = (declaration) => ["variable", "binding", "function", "class", "enum"].includes(declaration.kind);
   const work = [];
-  const visited = new Set();
-  const enqueue = (declaration, meaning, tainted) => {
-    const key = `${meaning}\0${declaration.fileName}\0${declaration.index}\0${declaration.property ?? ""}\0${[...tainted].sort().join(",")}`;
-    if (visited.has(key)) return;
-    visited.add(key);
-    work.push({ declaration, meaning, tainted });
+  const visited = new Map();
+  // Declarations are always walked from their own scope, so a declaration and
+  // meaning (plus the property of a destructured binding) identify a visit.
+  const enqueue = (declaration, meaning) => {
+    let seen = visited.get(declaration.fileName);
+    if (!seen) visited.set(declaration.fileName, seen = new Set());
+    const key = declaration.property === undefined ? declaration.index * 2 + (meaning === "type" ? 1 : 0) : `${declaration.index}\0${meaning}\0${declaration.property}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    work.push({ declaration, meaning });
   };
   for (const entry of entries) {
     for (const name of exportNames(context, entry)) {
@@ -444,8 +450,8 @@ function positiveNames(context, entries, queried) {
       if (!resolved || resolved.some((declaration) => declaration.module || declaration.kind === "namespace" || declaration.kind === "alias" || declaration.kind === "other")) continue;
       if (queried.has(name) && resolved.some((declaration) => typeLike(declaration) || valueLike(declaration))) available.add(name);
       for (const declaration of resolved) {
-        if (typeLike(declaration)) enqueue(declaration, "type", new Set());
-        if (valueLike(declaration)) enqueue(declaration, "value", new Set());
+        if (typeLike(declaration)) enqueue(declaration, "type");
+        if (valueLike(declaration)) enqueue(declaration, "value");
       }
     }
   }
@@ -542,7 +548,7 @@ function positiveNames(context, entries, queried) {
           if (branch) return certainType(branch, types[0].fileName, typeParameters(target));
         }
         if (!safe(node, fileName, tainted, false)) return;
-        for (const declaration of types) enqueue(declaration, "type", new Set());
+        for (const declaration of types) enqueue(declaration, "type");
         return;
       }
       default:
@@ -586,7 +592,7 @@ function positiveNames(context, entries, queried) {
       if (node.type) certainType(node.type, fileName, tainted);
     } else if (ts.isClassDeclaration(node)) {
       walkMembers(node.members, fileName, tainted, true);
-      if (!node.typeParameters) enqueue(declaration, "type", new Set());
+      if (!node.typeParameters) enqueue(declaration, "type");
     } else if (ts.isEnumDeclaration(node)) {
       for (const member of node.members) {
         const name = memberName(member);
@@ -637,14 +643,16 @@ function reachableNameEvidence(context, entries, mayInfer) {
     let computesNames = false;
     let infersFromParameters = false;
     let conditionalOnThis = false;
+    // Per module: 0 unreached, 1 reached, 2 reached deeply (off-heap).
     const reached = new Map();
     const work = [];
     const reachStatement = (fileName, index, deep) => {
       deep ||= everythingDeep;
-      const key = `${fileName}\0${index}`;
-      const previous = reached.get(key);
-      if (previous === true || previous === deep) return;
-      reached.set(key, deep || previous === true);
+      let states = reached.get(fileName);
+      if (!states) reached.set(fileName, states = new Uint8Array(statementCount(modules.get(fileName))));
+      const want = deep ? 2 : 1;
+      if (states[index] >= want) return;
+      states[index] = want;
       work.push([fileName, index, deep]);
     };
     const reachModule = (fileName, deep) => {
