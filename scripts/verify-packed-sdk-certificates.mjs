@@ -7,10 +7,11 @@
 // type checker.
 //
 //   node scripts/verify-packed-sdk-certificates.mjs --target <unpacked openclaw package> [--target ...]
-import { readdir, readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { parseArgs } from "node:util";
 import { certifyPublicSdkNames } from "../src/packed-sdk-certificates.js";
+import { listDeclarationFiles } from "../src/declaration-files.js";
 import { publicSdkSurfaceNames } from "../src/packed-sdk-surface.js";
 import { replacementNames } from "../src/registry-deprecations.js";
 import ts from "../src/typescript.cjs";
@@ -53,13 +54,3 @@ for (const target of values.target) {
   }
 }
 if (failed) process.exit(1);
-
-async function listDeclarationFiles(directory) {
-  const files = [];
-  for (const entry of await readdir(directory, { withFileTypes: true })) {
-    const entryPath = path.join(directory, entry.name);
-    if (entry.isDirectory()) files.push(...(await listDeclarationFiles(entryPath)));
-    else if (entry.isFile() && /\.d\.[cm]?ts$/.test(entry.name)) files.push(entryPath);
-  }
-  return files.sort();
-}
