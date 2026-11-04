@@ -76,31 +76,41 @@ export function sdkUsageDeprecationCodes(kind, identity) {
 }
 
 function collectSdkHelperDeprecations(findings, context) {
-  collectNamedImportDeprecations(findings, context);
-  collectNamedReexportDeprecations(findings, context);
-  collectNamedRequireDeprecations(findings, context);
-  collectNamespaceUsageDeprecations(findings, context);
-  collectNamespaceRequireDeprecations(findings, context);
-  collectDynamicImportNamespaceDeprecations(findings, context);
+  collectNamedBindingDeprecations(findings, context,
+    /\bimport\s+(?:type\s+)?(?:[A-Za-z_$][\w$]*\s*,\s*)?{([^}]+)}\s*from\s*["'`]([^"'`]+)["'`]/g,
+    "import");
+  collectNamedBindingDeprecations(findings, context,
+    /\bexport\s*{([^}]+)}\s*from\s*["'`]([^"'`]+)["'`]/g,
+    "re-export");
+  collectNamedBindingDeprecations(findings, context,
+    /\b(?:const|let|var)\s+{([^}]+)}\s*=\s*require\(\s*["'`]([^"'`]+)["'`]\s*\)/g,
+    "require", { aliasSeparator: ":" });
+  collectNamespaceDeprecations(findings, context,
+    /\bimport\s+(?:type\s+)?\*\s+as\s+([A-Za-z_$][\w$]*)\s*from\s*["'`]([^"'`]+)["'`]/g,
+    "namespace access");
+  collectNamespaceDeprecations(findings, context,
+    /\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*require\(\s*["'`]([^"'`]+)["'`]\s*\)/g,
+    "require namespace access");
+  collectNamespaceDeprecations(findings, context,
+    /\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*(?:await\s+)?import\(\s*["'`]([^"'`]+)["'`]\s*\)/g,
+    "dynamic import namespace access");
   collectRuntimeUsageDeprecations(findings, context);
   collectRuntimeAliasUsageDeprecations(findings, context);
 }
 
-function collectNamedImportDeprecations(findings, context) {
-  const regex =
-    /\bimport\s+(?:type\s+)?(?:[A-Za-z_$][\w$]*\s*,\s*)?{([^}]+)}\s*from\s*["'`]([^"'`]+)["'`]/g;
+function collectNamedBindingDeprecations(findings, context, regex, surfaceSuffix, bindingOptions = {}) {
   for (const match of context.text.matchAll(regex)) {
     const specifier = match[2];
     if (!sdkSessionSpecifiers.has(specifier)) {
       continue;
     }
-    for (const binding of parseNamedBindings(match[1])) {
+    for (const binding of parseNamedBindings(match[1], bindingOptions)) {
       if (!context.rule.symbols.has(binding.exported)) {
         continue;
       }
       findings.push(
         buildFinding(context.rule, {
-          surface: `${specifier} ${binding.exported} import`,
+          surface: `${specifier} ${binding.exported} ${surfaceSuffix}`,
           symbol: binding.exported,
           sourceText: context.text,
           filePath: context.filePath,
@@ -111,51 +121,17 @@ function collectNamedImportDeprecations(findings, context) {
   }
 }
 
-function collectNamedReexportDeprecations(findings, context) {
-  const regex = /\bexport\s*{([^}]+)}\s*from\s*["'`]([^"'`]+)["'`]/g;
+function collectNamespaceDeprecations(findings, context, regex, surfaceSuffix) {
   for (const match of context.text.matchAll(regex)) {
+    const local = match[1];
     const specifier = match[2];
     if (!sdkSessionSpecifiers.has(specifier)) {
       continue;
     }
-    for (const binding of parseNamedBindings(match[1])) {
-      if (!context.rule.symbols.has(binding.exported)) {
-        continue;
-      }
-      findings.push(
-        buildFinding(context.rule, {
-          surface: `${specifier} ${binding.exported} re-export`,
-          symbol: binding.exported,
-          sourceText: context.text,
-          filePath: context.filePath,
-          offset: (match.index ?? 0) + match[0].lastIndexOf(binding.local),
-        }),
-      );
-    }
-  }
-}
-
-function collectNamedRequireDeprecations(findings, context) {
-  const regex = /\b(?:const|let|var)\s+{([^}]+)}\s*=\s*require\(\s*["'`]([^"'`]+)["'`]\s*\)/g;
-  for (const match of context.text.matchAll(regex)) {
-    const specifier = match[2];
-    if (!sdkSessionSpecifiers.has(specifier)) {
-      continue;
-    }
-    for (const binding of parseNamedBindings(match[1], { aliasSeparator: ":" })) {
-      if (!context.rule.symbols.has(binding.exported)) {
-        continue;
-      }
-      findings.push(
-        buildFinding(context.rule, {
-          surface: `${specifier} ${binding.exported} require`,
-          symbol: binding.exported,
-          sourceText: context.text,
-          filePath: context.filePath,
-          offset: (match.index ?? 0) + match[0].lastIndexOf(binding.local),
-        }),
-      );
-    }
+    collectMemberCallDeprecations(findings, context, {
+      receiverMatcher: (receiver) => receiver === local,
+      surface: `${specifier} ${surfaceSuffix}`,
+    });
   }
 }
 
@@ -318,52 +294,6 @@ function isRuntimeSessionReceiver(receiver) {
     /^(?:runtime|[A-Za-z_$][A-Za-z0-9_$]*Runtime)\.agent\.session$/.test(receiver) ||
     /^(?:agentRuntime|[A-Za-z_$][A-Za-z0-9_$]*AgentRuntime)\.session$/.test(receiver)
   );
-}
-
-function collectNamespaceUsageDeprecations(findings, context) {
-  const regex = /\bimport\s+(?:type\s+)?\*\s+as\s+([A-Za-z_$][\w$]*)\s*from\s*["'`]([^"'`]+)["'`]/g;
-  for (const match of context.text.matchAll(regex)) {
-    const local = match[1];
-    const specifier = match[2];
-    if (!sdkSessionSpecifiers.has(specifier)) {
-      continue;
-    }
-    collectMemberCallDeprecations(findings, context, {
-      receiverMatcher: (receiver) => receiver === local,
-      surface: `${specifier} namespace access`,
-    });
-  }
-}
-
-function collectNamespaceRequireDeprecations(findings, context) {
-  const regex = /\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*require\(\s*["'`]([^"'`]+)["'`]\s*\)/g;
-  for (const match of context.text.matchAll(regex)) {
-    const local = match[1];
-    const specifier = match[2];
-    if (!sdkSessionSpecifiers.has(specifier)) {
-      continue;
-    }
-    collectMemberCallDeprecations(findings, context, {
-      receiverMatcher: (receiver) => receiver === local,
-      surface: `${specifier} require namespace access`,
-    });
-  }
-}
-
-function collectDynamicImportNamespaceDeprecations(findings, context) {
-  const regex =
-    /\b(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*(?:await\s+)?import\(\s*["'`]([^"'`]+)["'`]\s*\)/g;
-  for (const match of context.text.matchAll(regex)) {
-    const local = match[1];
-    const specifier = match[2];
-    if (!sdkSessionSpecifiers.has(specifier)) {
-      continue;
-    }
-    collectMemberCallDeprecations(findings, context, {
-      receiverMatcher: (receiver) => receiver === local,
-      surface: `${specifier} dynamic import namespace access`,
-    });
-  }
 }
 
 function collectRuntimeUsageDeprecations(findings, context) {
