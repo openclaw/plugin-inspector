@@ -53,10 +53,9 @@ jobs:
           npm init -y >/dev/null
           npm install --no-audit --no-fund --ignore-scripts @openclaw/plugin-inspector@0.4.5
 
-      # Local medians are 40–48% of 0.4.5 (Node 24 and 26). On these runners V8
-      # sometimes doubles the young generation to 128 MiB on discord's 351 KB
-      # bundle (40–57% across runs), so the gate leaves that headroom.
-      - name: Released OpenClaw target (shipped qualification), at most 60% of 0.4.5
+      # Every target is answered the same way: there is no per-release data, so
+      # the published release and a modified snapshot exercise the same path.
+      - name: OpenClaw 2026.10.10, at most 50% of 0.4.5
         run: >-
           node scripts/publish-memory-benchmark.mjs
           --target "$FIXTURES/openclaw/package"
@@ -64,9 +63,10 @@ jobs:
           --plugin @openclaw/matrix="$FIXTURES/plugins/matrix/package"
           --plugin @openclaw/whatsapp="$FIXTURES/plugins/whatsapp/package"
           --baseline "$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js"
-          --runs 5 --max-ratio 0.6 --diagnose --json publish-memory-released.json
+          --runs 5 --max-ratio 0.5 --diagnose --json publish-memory-released.json
 
-      - name: Unreleased OpenClaw target (on-demand type check), at most 90% of 0.4.5
+      - name: Unseen OpenClaw snapshot, at most 50% of 0.4.5
+        if: success() || failure()
         run: >-
           node scripts/publish-memory-benchmark.mjs --uncached-target
           --target "$FIXTURES/openclaw/package"
@@ -74,11 +74,12 @@ jobs:
           --plugin @openclaw/matrix="$FIXTURES/plugins/matrix/package"
           --plugin @openclaw/whatsapp="$FIXTURES/plugins/whatsapp/package"
           --baseline "$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js"
-          --runs 3 --max-ratio 0.9 --diagnose --json publish-memory-unreleased.json
+          --runs 3 --max-ratio 0.5 --diagnose --json publish-memory-unseen.json
 
       # ClawHub's Convex actions run the inspector from an esbuild bundle, so a
       # dependency hidden from bundlers would only fail after deploy.
-      - name: Bundled like ClawHub's Convex actions, at most 60% of 0.4.5
+      - name: Bundled like ClawHub's Convex actions, at most 50% of 0.4.5
+        if: success() || failure()
         run: |
           banner='import { createRequire as __createRequire } from "node:module"; import { fileURLToPath as __fileURLToPath } from "node:url"; import { dirname as __dirnameOf } from "node:path"; const require = __createRequire(import.meta.url); const __filename = __fileURLToPath(import.meta.url); const __dirname = __dirnameOf(__filename);'
           for implementation in candidate baseline; do
@@ -94,10 +95,13 @@ jobs:
             --plugin @openclaw/whatsapp="$FIXTURES/plugins/whatsapp/package" \
             --inspector "$RUNNER_TEMP/bundled/candidate/index.mjs" \
             --baseline "$RUNNER_TEMP/bundled/baseline/index.mjs" \
-            --runs 3 --max-ratio 0.6 --json publish-memory-bundled.json
+            --runs 3 --max-ratio 0.5 --diagnose --json publish-memory-bundled.json
 
-      - name: Shipped qualifications match a full type check
-        run: node scripts/packed-sdk-qualifications.mjs --check
+      # Certified answers must match the full type check for every name the
+      # snapshot spells, not only the retirement inventory.
+      - name: Retirement certificates agree with the full type check
+        if: success() || failure()
+        run: node --max-old-space-size=4096 scripts/verify-packed-sdk-certificates.mjs --target "$FIXTURES/openclaw/package"
 
       - name: Upload measurements
         if: always()

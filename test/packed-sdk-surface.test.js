@@ -1,14 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { publicSdkSurfaceNames } from "../src/packed-sdk-surface.js";
-import {
-  availableReplacementNames,
-  packedSdkSnapshotDigest,
-  PACKED_SDK_QUALIFICATION_ALGORITHM,
-  replacementNames,
-} from "../src/registry-deprecations.js";
-import qualifications from "../src/packed-sdk-qualifications.json" with { type: "json" };
-import sdkRetirements from "../src/sdk-retirements.json" with { type: "json" };
+import { availableReplacementNames } from "../src/registry-deprecations.js";
 
 const packageRoot = "/openclaw";
 
@@ -159,22 +152,7 @@ test("files that do not parse are kept whole", () => {
   }));
 });
 
-test("snapshot digests identify package-relative declaration text and the SDK export map", () => {
-  const input = snapshot({ "dist/a.d.ts": "export {};\n", "dist/b.d.ts": "export {};\n" });
-  const digest = packedSdkSnapshotDigest(input);
-  assert.equal(packedSdkSnapshotDigest({ ...input, declarations: [...input.declarations].reverse() }), digest);
-  assert.equal(packedSdkSnapshotDigest({
-    ...input,
-    packageRoot: "/elsewhere",
-    declarations: input.declarations.map((item) => ({ ...item, filePath: item.filePath.replace(packageRoot, "/elsewhere") })),
-  }), digest);
-  assert.notEqual(packedSdkSnapshotDigest({ ...input, declarations: [{ ...input.declarations[0], source: "export {}; " }, input.declarations[1]] }), digest);
-  assert.notEqual(packedSdkSnapshotDigest({ ...input, packageJson: { exports: { "./plugin-sdk/x": "./dist/a.js" } } }), digest);
-  // Only the SDK export map matters.
-  assert.equal(packedSdkSnapshotDigest({ ...input, packageJson: { ...input.packageJson, version: "9", exports: { ...input.packageJson.exports, "./cli": "./x.js" } } }), digest);
-});
-
-test("unknown snapshots are type-checked on demand", async () => {
+test("replacement availability is answered for any snapshot", async () => {
   const records = [
     { code: "kept", replacementExports: ["fresh"] },
     { code: "dropped", replacementExports: ["fresh", "absent"] },
@@ -182,16 +160,4 @@ test("unknown snapshots are type-checked on demand", async () => {
   const input = snapshot({ "dist/plugin-sdk/index.d.ts": "export declare function fresh(): void;\n" });
   assert.deepEqual([...await availableReplacementNames(records, input)], ["fresh"]);
   assert.deepEqual([...await availableReplacementNames([{ code: "none" }], input)], []);
-});
-
-test("the shipped qualification table answers for the pinned retirement inventory", () => {
-  assert.equal(qualifications.algorithm, PACKED_SDK_QUALIFICATION_ALGORITHM);
-  assert.deepEqual(qualifications.checkedNames, replacementNames(sdkRetirements.records),
-    "src/sdk-retirements.json changed: rerun node scripts/packed-sdk-qualifications.mjs --write");
-  const checked = new Set(qualifications.checkedNames);
-  for (const target of qualifications.targets) {
-    assert.match(target.snapshotSha256, /^[0-9a-f]{64}$/);
-    assert.deepEqual(target.available, [...target.available].sort());
-    for (const name of target.available) assert.ok(checked.has(name), `${target.version}: ${name}`);
-  }
 });

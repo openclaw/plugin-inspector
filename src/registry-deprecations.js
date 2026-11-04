@@ -1,17 +1,14 @@
-import { createHash } from "node:crypto";
-import path from "node:path";
 import { collectRuntimeModuleImports } from "./runtime-imports.js";
-import qualifications from "./packed-sdk-qualifications.json" with { type: "json" };
 
 // Packed packages may predate the pinned inventory. Only prescribe replacements
 // exposed by that package's public SDK declarations.
 //
-// Answering that exactly means type-checking the package's public declarations
-// (packed-sdk-surface.js). That pass is the largest allocation of publish-time
-// inspection, and its answer depends only on the declaration snapshot, so
-// released OpenClaw snapshots ship precomputed in packed-sdk-qualifications.json
-// (regenerate and verify with scripts/packed-sdk-qualifications.mjs). Any other
-// snapshot is type-checked on demand with the same result.
+// "Exposed" means one of the names publicSdkSurfaceNames finds by type-checking
+// the public declarations. Only the inventory's replacement names are asked
+// about, and packed-sdk-certificates.js decides each one from the declaration
+// text without a type checker, exactly when it claims a name is available and
+// soundly when it claims one is not. Any name it cannot decide is answered by
+// the (reduced) type check, so the result never depends on which path ran.
 export async function retirementRecordsForPackedTarget(records, { declarations = [], packageJson = {}, packageRoot = "" } = {}) {
   const available = await availableReplacementNames(records, { declarations, packageJson, packageRoot });
   return records.filter((record) => !Array.isArray(record.replacementExports)
@@ -21,47 +18,17 @@ export async function retirementRecordsForPackedTarget(records, { declarations =
 export async function availableReplacementNames(records, { declarations = [], packageJson = {}, packageRoot = "" } = {}) {
   const wanted = replacementNames(records);
   if (wanted.length === 0) return new Set();
-  const known = precomputedReplacementNames(wanted, packedSdkSnapshotDigest({ declarations, packageJson, packageRoot }));
-  if (known) return known;
+  const { certifyPublicSdkNames } = await import("./packed-sdk-certificates.js");
+  const { available, undecided } = certifyPublicSdkNames({ declarations, packageJson, packageRoot, names: wanted });
+  if (undecided.size === 0) return available;
   const { publicSdkSurfaceNames } = await import("./packed-sdk-surface.js");
   const names = publicSdkSurfaceNames(declarations, packageJson, packageRoot);
-  return new Set(wanted.filter((name) => names.has(name)));
+  for (const name of undecided) if (names.has(name)) available.add(name);
+  return available;
 }
 
 export function replacementNames(records) {
   return [...new Set(records.flatMap((record) => Array.isArray(record.replacementExports) ? record.replacementExports : []))].sort();
-}
-
-export const PACKED_SDK_QUALIFICATION_ALGORITHM = 1;
-
-// Identifies everything the qualification reads: the ./plugin-sdk export map
-// and every declaration file's package-relative path and exact text.
-export function packedSdkSnapshotDigest({ declarations = [], packageJson = {}, packageRoot = "" }) {
-  const hash = createHash("sha256");
-  hash.update(`plugin-inspector packed SDK snapshot ${PACKED_SDK_QUALIFICATION_ALGORITHM}\0`);
-  const sdkExports = Object.entries(packageJson.exports ?? {})
-    .filter(([specifier]) => specifier === "./plugin-sdk" || specifier.startsWith("./plugin-sdk/"));
-  hash.update(`${JSON.stringify(sdkExports)}\0`);
-  const files = declarations.map(({ filePath, source }) => ({
-    name: path.relative(path.resolve(packageRoot || "."), path.resolve(filePath)).split(path.sep).join("/"),
-    source: source ?? "",
-  })).sort((left, right) => (left.name < right.name ? -1 : left.name > right.name ? 1 : 0));
-  for (const { name, source } of files) {
-    hash.update(`${name}\0${Buffer.byteLength(source)}\0`);
-    hash.update(source);
-  }
-  return hash.digest("hex");
-}
-
-function precomputedReplacementNames(wanted, digest) {
-  if (qualifications.algorithm !== PACKED_SDK_QUALIFICATION_ALGORITHM) return null;
-  const target = qualifications.targets.find((entry) => entry.snapshotSha256 === digest);
-  if (!target) return null;
-  // The table answers only for names it checked; a newer inventory falls back.
-  const checked = new Set(qualifications.checkedNames);
-  if (!wanted.every((name) => checked.has(name))) return null;
-  const available = new Set(target.available);
-  return new Set(wanted.filter((name) => available.has(name)));
 }
 
 function parseSurface(api) {
