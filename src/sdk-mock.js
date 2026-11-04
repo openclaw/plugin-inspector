@@ -934,62 +934,7 @@ function resolveExistingSourcePath(target) {
   return candidates.find((candidate) => existsSync(candidate)) ?? target;
 }
 ` : ""}
-function createMockValue(name) {
-  function fn(...args) {
-    if (name === "resolveDefaultAgentDir") {
-      return mockAgentDir();
-    }
-    if (name === "resolveAgentDir") {
-      return mockAgentDir(args[1]);
-    }
-    if (name === "resolveUserPath") {
-      return typeof args[0] === "string" ? args[0] : mockAgentDir();
-    }
-    if (name === "resolveAuthProfileOrder") {
-      return [];
-    }
-    if (name === "resolveWindowsSpawnProgram") {
-      return mockWindowsSpawnProgram(args[0]);
-    }
-    if (name === "materializeWindowsSpawnProgram") {
-      return mockWindowsSpawnInvocation(args[0], args[1]);
-    }
-    if (name === "resolvePreferredOpenClawTmpDir") {
-      return process.env.TMPDIR || "/tmp";
-    }
-    if (name.startsWith("normalize")) {
-      return typeof args[0] === "string" ? args[0] : "";
-    }
-    if (name === "jsonResult") {
-      return { type: "json", value: args[0] };
-    }
-    if (name === "readStringParam") {
-      return typeof args[0] === "string" ? args[0] : "";
-    }
-    return createMockValue(name);
-  }
-  return new Proxy(fn, {
-    get(_target, property) {
-      if (property === "then") {
-        return undefined;
-      }
-      if (property === Symbol.toPrimitive) {
-        return () => name;
-      }
-      if (property === "toString") {
-        return () => name;
-      }
-      if (property === "valueOf") {
-        return () => name;
-      }
-      return createMockValue(\`\${name}.\${String(property)}\`);
-    },
-    construct() {
-      return createMockValue(name);
-    },
-  });
-}
-
+${mockValueRuntimeSource({ includeAgentResolvers: true })}
 function mockAgentDir(agentId = "main") {
   const base = process.env.TMPDIR || process.env.TEMP || process.env.TMP || "/tmp";
   const safeAgentId = String(agentId || "main").replace(/[^a-zA-Z0-9._-]/g, "-");
@@ -2083,10 +2028,28 @@ ${[...exportNames].map((name) => `  ${name},`).join("\n")}
   `;
 }
 
-function mockValueRuntimeSource() {
+function mockValueRuntimeSource({ includeAgentResolvers = false } = {}) {
   return `function createMockValue(name) {
   function fn(...args) {
-    if (name === "resolvePreferredOpenClawTmpDir") {
+${includeAgentResolvers ? `    if (name === "resolveDefaultAgentDir") {
+      return mockAgentDir();
+    }
+    if (name === "resolveAgentDir") {
+      return mockAgentDir(args[1]);
+    }
+    if (name === "resolveUserPath") {
+      return typeof args[0] === "string" ? args[0] : mockAgentDir();
+    }
+    if (name === "resolveAuthProfileOrder") {
+      return [];
+    }
+    if (name === "resolveWindowsSpawnProgram") {
+      return mockWindowsSpawnProgram(args[0]);
+    }
+    if (name === "materializeWindowsSpawnProgram") {
+      return mockWindowsSpawnInvocation(args[0], args[1]);
+    }
+` : ""}    if (name === "resolvePreferredOpenClawTmpDir") {
       return process.env.TMPDIR || "/tmp";
     }
     if (name.startsWith("normalize")) {

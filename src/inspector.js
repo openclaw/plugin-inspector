@@ -11,7 +11,7 @@ import { readOpenClawTargetSurface } from "./openclaw-target.js";
 import { preparedOpenClawTargetPath, prepareOpenClawTarget, resolveOpenClawTargetVersion } from "./openclaw-version.js";
 import { isWithinPluginRoot, resolveJailedPluginPath } from "./path-utils.js";
 import { resolveProcessLimits, startOwnedProcess } from "./process-profile.js";
-import { buildCompatibilityReport, buildReport } from "./report.js";
+import { buildCompatibilityReport, buildReport, normalizeInspection } from "./report.js";
 import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
 import { inspectRegistryDeprecations } from "./registry-deprecations.js";
 import { collectRuntimeModuleImports, createRuntimeImportAnalysisCache, releaseRuntimeImportAnalysis } from "./runtime-imports.js";
@@ -117,7 +117,7 @@ export async function inspectPlugin(fixture, options = {}) {
   const sourceRoot = fixtureSourceRoot(config, fixture);
 
   if (!existsSync(checkoutPath) || fixture.package && !existsSync(sourceRoot)) {
-    return emptyInspection(fixture, "missing");
+    return normalizeInspection(undefined, fixture);
   }
 
   // Fixture suites may wrap a standalone nested plugin or an npm payload.
@@ -424,26 +424,6 @@ function firstMeaningfulErrorLine(message) {
     .split("\n")
     .map((line) => line.trim())
     .find((line) => line && !line.startsWith("Command failed:"));
-}
-
-function emptyInspection(fixture, status) {
-  return {
-    id: fixture.id,
-    status,
-    hooks: [],
-    hookDetails: [],
-    registrations: [],
-    registrationDetails: [],
-    manifestContracts: [],
-    manifestFiles: [],
-    manifestErrors: [],
-    packageFiles: [],
-    packageErrors: [],
-    packageEntrypoints: [],
-    sdkImports: [],
-    sdkDeprecations: [],
-    sourceFiles: [],
-  };
 }
 
 function collectDetailedMatches(text, regex, filePath, key) {

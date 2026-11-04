@@ -473,7 +473,7 @@ function defaultCompatibilityFixtureReport({ fixture, inspection }) {
   };
 }
 
-function normalizeInspection(inspection, fixture) {
+export function normalizeInspection(inspection, fixture) {
   return {
     id: fixture.id,
     status: "missing",

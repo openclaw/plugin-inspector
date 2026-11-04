@@ -1,3 +1,4 @@
+import { publicSdkDeclarationFiles } from "./declaration-files.js";
 import path from "node:path";
 import { reduceDeclarationsToPublicClosure } from "./declaration-closure.js";
 import ts from "./typescript.cjs";
@@ -17,7 +18,7 @@ export function publicSdkSurfaceNames(declarations, packageJson, packageRoot, { 
   let entryFiles;
   if (reduce) {
     const texts = new Map(declarations.map(({ filePath, source }) => [normalize(filePath), source ?? ""]));
-    entryFiles = publicSdkDeclarations(packageJson, packageRoot, texts);
+    entryFiles = publicSdkDeclarationFiles(packageJson, packageRoot, texts, normalize);
     // Resolve exactly as the program below does: only the declaration snapshot exists.
     const resolutionHost = { fileExists: (file) => texts.has(normalize(file)), readFile: (file) => texts.get(normalize(file)) };
     const resolutionCache = ts.createModuleResolutionCache(normalize(packageRoot || "."), normalize, options);
@@ -34,7 +35,7 @@ export function publicSdkSurfaceNames(declarations, packageJson, packageRoot, { 
       const name = normalize(filePath);
       return [name, ts.createSourceFile(name, source ?? "", ts.ScriptTarget.Latest, true)];
     }));
-    entryFiles = publicSdkDeclarations(packageJson, packageRoot, sources);
+    entryFiles = publicSdkDeclarationFiles(packageJson, packageRoot, sources, normalize);
   }
   // Use only the already-read declaration snapshot; resolution must never read
   // installed dependencies or execute the selected package.
@@ -84,25 +85,4 @@ export function publicSdkSurfaceNames(declarations, packageJson, packageRoot, { 
     }
   }
   return names;
-}
-
-function publicSdkDeclarations(packageJson, packageRoot, sources) {
-  const files = new Set();
-  const visit = (value) => {
-    if (typeof value === "string") {
-      const resolved = path.resolve(packageRoot, value).split(path.sep).join("/");
-      const candidates = /\.d\.[cm]?ts$/.test(resolved) ? [resolved]
-        : /\.mjs$/.test(resolved) ? [resolved.replace(/\.mjs$/, ".d.mts"), resolved.replace(/\.mjs$/, ".d.ts")]
-        : /\.cjs$/.test(resolved) ? [resolved.replace(/\.cjs$/, ".d.cts"), resolved.replace(/\.cjs$/, ".d.ts")]
-        : [resolved.replace(/\.js$/, ".d.ts")];
-      const declaration = candidates.find((candidate) => sources.has(candidate));
-      if (declaration) files.add(declaration);
-    } else if (value && typeof value === "object") {
-      for (const child of Object.values(value)) visit(child);
-    }
-  };
-  for (const [specifier, value] of Object.entries(packageJson.exports ?? {})) {
-    if (specifier === "./plugin-sdk" || specifier.startsWith("./plugin-sdk/")) visit(value);
-  }
-  return files;
 }

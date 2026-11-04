@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { certifyPublicSdkNames } from "../src/packed-sdk-certificates.js";
+import { certifyPublicSdkNames, publicSdkDeclarationFiles } from "../src/packed-sdk-certificates.js";
 import { publicSdkSurfaceNames } from "../src/packed-sdk-surface.js";
 
 const packageRoot = "/openclaw";
@@ -315,4 +315,20 @@ test("retirement qualification of a future release equals the full type check, w
     const expected = records.filter((record) => record.replacementExports.every((name) => truth.has(name)));
     assert.deepEqual(await retirementRecordsForPackedTarget(records, input), expected, `computedNames=${computedNames}`);
   }
+});
+
+test("public SDK declaration selection preserves conditions, precedence, and snapshot filtering", () => {
+  const packageJson = { exports: {
+    "./unrelated": "./dist/ignored.d.ts",
+    "./plugin-sdk": { types: "./dist/root.d.ts", import: "./dist/index.mjs", require: "./dist/index.cjs" },
+    "./plugin-sdk/alias": "./dist/index.mjs",
+    "./plugin-sdk/missing": "./dist/missing.js",
+  } };
+  const names = ["root.d.ts", "index.d.mts", "index.d.cts", "index.d.ts", "ignored.d.ts"];
+  const sources = new Map(names.map((name) => [`${packageRoot}/dist/${name}`, ""]));
+  assert.deepEqual([...publicSdkDeclarationFiles(packageJson, packageRoot, sources)],
+    ["root.d.ts", "index.d.mts", "index.d.cts"].map((name) => `${packageRoot}/dist/${name}`));
+  const fallback = new Map([["/snapshot/dist/index.d.ts", ""]]);
+  assert.deepEqual([...publicSdkDeclarationFiles(packageJson, packageRoot, fallback, (file) => file.replace(packageRoot, "/snapshot"))],
+    ["/snapshot/dist/index.d.ts"]);
 });
