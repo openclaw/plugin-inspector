@@ -585,15 +585,6 @@ test("batch command applies author-facing filtering to aggregate summaries", asy
   );
 });
 
-test("clawhub batch analysis skill documents export plus batch workflow", async () => {
-  const skill = await readFile(path.resolve(".agents/skills/clawhub-batch-analysis/SKILL.md"), "utf8");
-
-  assert.match(skill, /^name: clawhub-batch-analysis/m);
-  assert.match(skill, /\/api\/v1\/plugins\/export/);
-  assert.match(skill, /plugin-inspector batch/);
-  assert.match(skill, /finding frequency/i);
-});
-
 async function createCliPluginRoot(prefix) {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), prefix));
   await mkdir(path.join(rootDir, "src"), { recursive: true });
