@@ -49,9 +49,9 @@ test("entry exports, members, statics, enums and bindings are certified availabl
     "dist/star.d.ts": "export declare function starredAsync(): void;\n",
   }), ["createStore", "getEntryAsync", "appendAsync", "listAsync", "openAsync", "closeAsync", "syncMode", "readAsync", "readMoreAsync", "starredAsync", "boxedAsync", "writeAsync"], {
     available: ["createStore", "getEntryAsync", "appendAsync", "listAsync", "openAsync", "closeAsync", "syncMode", "readAsync", "readMoreAsync", "starredAsync", "boxedAsync"],
-    // Spelled in a reached statement: the per-statement negative pass leaves
-    // it to the type checker (which finds it is not public).
-    undecided: ["writeAsync"],
+    // Only a member of a destructuring annotation, which is never itself
+    // walked: each binding has its property's type.
+    unavailable: ["writeAsync"],
   });
 });
 
@@ -175,4 +175,77 @@ test("files that do not parse are kept conservative", () => {
     "dist/plugin-sdk/index.d.ts": 'export { api } from "../chunk.js";\n',
     "dist/chunk.d.ts": "interface Api { okAsync(): void; broken: { ; }\ndeclare const api: Api;\nexport { api };\n",
   }), ["okAsync", "brokenAsync"]);
+});
+
+// A later OpenClaw release can add entrypoints and declaration shapes the
+// certificates have never seen; answers must still match the full type check.
+function futureSnapshot({ computedNames = false } = {}) {
+  const files = {
+    "dist/plugin-sdk/index.d.ts": 'export { a as Existing } from "../existing.js";\n',
+    "dist/existing.d.ts": "interface Existing { existingAsync(): void }\ninterface Existing { mergedFutureAsync(): void }\nexport { Existing as a };\n",
+    "dist/future-sessions.d.ts": [
+      'import { t as LinkStore } from "./future-links.js";',
+      "declare class SessionManager { static openAsync(): Promise<SessionManager>; appendMessageAsync(): Promise<void>; get links(): LinkStore; }",
+      "type Versioned<Version extends 1 | 2 = 1> = Version extends 2 ? { statusAsync(): void } : { selectV1(): void };",
+      "type Box<T> = { value: T; cancelAsync(): void };",
+      "declare const { readAsync, writeBack }: { readAsync: () => Recorder; writeBack: () => void };",
+      "interface Recorder { recordTurnAsync(): void }",
+      'declare enum Mode { selectAsync = "selectAsync" }',
+      "export { SessionManager as a, Versioned as n, Box as o, readAsync as r, Mode as s };",
+      "",
+    ].join("\n"),
+    "dist/future-links.d.ts": "interface LinkStore { listLinksAsync(): void; linkAsync(): void }\nexport { LinkStore as t };\n",
+    "dist/plugin-sdk/future-runtime.d.ts": [
+      'import { a as SessionManager, n as Versioned, o as Box, r as readAsync, s as Mode } from "../future-sessions.js";',
+      "type FutureRuntime = { sessions: typeof SessionManager; versioned: Versioned<2>; boxed: Box<string>; read: typeof readAsync; mode: typeof Mode };",
+      "declare function createFutureRuntime(): FutureRuntime;",
+      "declare global { interface FutureGlobalHook { resolveConfigAsync(): void } }",
+      "export declare const futureHook: FutureGlobalHook;",
+      "",
+    ].join("\n"),
+    "dist/plugin-sdk/future-default.d.ts": "declare const runtime: { defaultOpenAsync(): void };\nexport default runtime;\nexport * as futureNamespace from \"../future-links.js\";\n",
+  };
+  const exports = {
+    "./plugin-sdk": "./dist/plugin-sdk/index.js",
+    "./plugin-sdk/future-runtime": { types: "./dist/plugin-sdk/future-runtime.d.ts" },
+    "./plugin-sdk/future-default": { types: "./dist/plugin-sdk/future-default.d.ts" },
+  };
+  if (computedNames) {
+    files["dist/plugin-sdk/future-computed.d.ts"] = 'type Verbs = "unlink" | "personalStatus";\nexport type Computed = { [K in Verbs as `${K}Async`]: () => void };\n';
+    exports["./plugin-sdk/future-computed"] = { types: "./dist/plugin-sdk/future-computed.d.ts" };
+  }
+  return snapshot(files, exports);
+}
+
+const futureNames = ["existingAsync", "mergedFutureAsync", "createFutureRuntime", "openAsync", "appendMessageAsync", "listLinksAsync", "linkAsync",
+  "statusAsync", "selectV1", "cancelAsync", "recordTurnAsync", "readAsync", "writeBack", "selectAsync", "resolveConfigAsync", "defaultOpenAsync",
+  "futureNamespace", "unlinkAsync", "personalStatusAsync", "neverAsync"];
+
+test("future entrypoints, typeof, globals, merging, defaults and literal conditionals are certified like the type check", () => {
+  const result = assertCertified(futureSnapshot(), futureNames, {
+    available: ["existingAsync", "mergedFutureAsync", "createFutureRuntime", "openAsync", "statusAsync", "cancelAsync", "recordTurnAsync",
+      "selectAsync", "resolveConfigAsync", "defaultOpenAsync", "futureNamespace"],
+    unavailable: ["readAsync", "writeBack", "unlinkAsync", "personalStatusAsync", "neverAsync"],
+  });
+  // Instance members of a class reached only as a value (typeof exposes statics;
+  // `prototype` has no declaration) and the untaken branch of a conditional are
+  // not public, but are spelled in reached statements: the type check decides.
+  assert.deepEqual([...result.undecided].sort(), ["appendMessageAsync", "linkAsync", "listLinksAsync", "selectV1"]);
+});
+
+test("computed future names are left to the type check", () => {
+  const result = assertCertified(futureSnapshot({ computedNames: true }), futureNames);
+  assert.ok(result.undecided.has("unlinkAsync") && result.undecided.has("personalStatusAsync"));
+});
+
+test("retirement qualification of a future release equals the full type check, with or without the fallback", async () => {
+  const { retirementRecordsForPackedTarget } = await import("../src/registry-deprecations.js");
+  for (const computedNames of [false, true]) {
+    const input = futureSnapshot({ computedNames });
+    const records = futureNames.map((name) => ({ code: `record-${name}`, status: "deprecated", replacementExports: [name] }));
+    records.push({ code: "pair", status: "deprecated", replacementExports: ["linkAsync", "unlinkAsync"] });
+    const truth = publicSdkSurfaceNames(input.declarations, input.packageJson, input.packageRoot, { reduce: false });
+    const expected = records.filter((record) => record.replacementExports.every((name) => truth.has(name)));
+    assert.deepEqual(await retirementRecordsForPackedTarget(records, input), expected, `computedNames=${computedNames}`);
+  }
 });

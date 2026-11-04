@@ -76,6 +76,31 @@ jobs:
           --baseline "$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js"
           --runs 3 --max-ratio 0.5 --diagnose --json publish-memory-unseen.json
 
+      # A later release adds new SDK entrypoints and declaration shapes; nothing
+      # about it is known in advance. 0.4.5 type-checks it fully, so identical
+      # outputs prove the certificates answered exactly.
+      - name: Future OpenClaw release with new SDK surface, at most 50% of 0.4.5
+        if: success() || failure()
+        run: |
+          node scripts/make-future-openclaw-fixture.mjs --from "$FIXTURES/openclaw/package" --out "$RUNNER_TEMP/future/package"
+          node scripts/publish-memory-benchmark.mjs --target "$RUNNER_TEMP/future/package" \
+            --plugin @openclaw/discord="$FIXTURES/plugins/discord/package" \
+            --plugin @openclaw/matrix="$FIXTURES/plugins/matrix/package" \
+            --plugin @openclaw/whatsapp="$FIXTURES/plugins/whatsapp/package" \
+            --baseline "$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js" \
+            --runs 3 --max-ratio 0.5 --diagnose --json publish-memory-future.json
+
+      # Computed (template literal) replacement names cannot be certified; the
+      # exact type-checked fallback answers them. Outputs must still be identical.
+      - name: Future release with computed names takes the exact fallback
+        if: success() || failure()
+        run: |
+          node scripts/make-future-openclaw-fixture.mjs --from "$FIXTURES/openclaw/package" --out "$RUNNER_TEMP/future-computed/package" --computed-names
+          node scripts/publish-memory-benchmark.mjs --target "$RUNNER_TEMP/future-computed/package" \
+            --plugin @openclaw/whatsapp="$FIXTURES/plugins/whatsapp/package" \
+            --baseline "$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js" \
+            --runs 1 --json publish-memory-future-computed.json
+
       # ClawHub's Convex actions run the inspector from an esbuild bundle, so a
       # dependency hidden from bundlers would only fail after deploy.
       - name: Bundled like ClawHub's Convex actions, at most 50% of 0.4.5
@@ -101,7 +126,11 @@ jobs:
       # snapshot spells, not only the retirement inventory.
       - name: Retirement certificates agree with the full type check
         if: success() || failure()
-        run: node --max-old-space-size=4096 scripts/verify-packed-sdk-certificates.mjs --target "$FIXTURES/openclaw/package"
+        run: >-
+          node --max-old-space-size=4096 scripts/verify-packed-sdk-certificates.mjs
+          --target "$FIXTURES/openclaw/package"
+          --target "$RUNNER_TEMP/future/package"
+          --target "$RUNNER_TEMP/future-computed/package"
 
       - name: Upload measurements
         if: always()

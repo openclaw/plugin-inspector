@@ -252,7 +252,8 @@ function bindStatement(module, environment, node, index, source, offset) {
     if (ts.isExportAssignment(node)) {
       module.hasExportDeclarations = true;
       if (node.isExportEquals) module.exportEquals = true;
-      else pendingExports.push(["default", EXPRESSION]);
+      // `export default name` exports that local binding, like `export { name as default }`.
+      else pendingExports.push(["default", ts.isIdentifier(node.expression) ? node.expression.text : EXPRESSION]);
       return;
     }
     if (ts.isModuleDeclaration(node)) {
@@ -439,7 +440,8 @@ function positiveNames(context, entries, queried) {
   const enqueue = (declaration, meaning) => {
     let seen = visited.get(declaration.fileName);
     if (!seen) visited.set(declaration.fileName, seen = new Set());
-    const key = declaration.property === undefined ? declaration.index * 2 + (meaning === "type" ? 1 : 0) : `${declaration.index}\0${meaning}\0${declaration.property}`;
+    const key = declaration.property === undefined && declaration.innerIndex === undefined ? declaration.index * 2 + (meaning === "type" ? 1 : 0)
+      : `${declaration.index}\0${meaning}\0${declaration.property ?? ""}\0${declaration.innerIndex ?? ""}`;
     if (seen.has(key)) return;
     seen.add(key);
     work.push({ declaration, meaning });
@@ -447,6 +449,11 @@ function positiveNames(context, entries, queried) {
   for (const entry of entries) {
     for (const name of exportNames(context, entry)) {
       const resolved = resolveExport(context, entry, name);
+      // A source file's module symbol is a value module: `export * as ns` names it.
+      if (resolved?.length && resolved.every((declaration) => declaration.module)) {
+        if (queried.has(name)) available.add(name);
+        continue;
+      }
       if (!resolved || resolved.some((declaration) => declaration.module || declaration.kind === "namespace" || declaration.kind === "alias" || declaration.kind === "other")) continue;
       if (queried.has(name) && resolved.some((declaration) => typeLike(declaration) || valueLike(declaration))) available.add(name);
       for (const declaration of resolved) {
@@ -462,13 +469,41 @@ function positiveNames(context, entries, queried) {
     const name = member.name;
     return name && (ts.isIdentifier(name) || ts.isStringLiteral(name) || ts.isNumericLiteral(name) || ts.isPrivateIdentifier(name)) ? name.text : undefined;
   };
+  const kindOf = (node) => ts.isInterfaceDeclaration(node) ? "interface" : ts.isTypeAliasDeclaration(node) ? "alias-type"
+    : ts.isClassDeclaration(node) ? "class" : ts.isFunctionDeclaration(node) ? "function" : ts.isEnumDeclaration(node) ? "enum"
+      : ts.isVariableStatement(node) ? "variable" : "other";
+  // A name a module neither declares nor imports resolves to the global scope.
+  const globalDeclarations = (fileName, name) => {
+    const module = context.modules.get(fileName);
+    if (!module || module.uncertain || module.declarations.has(name) || module.imports.has(name)) return undefined;
+    const result = [];
+    for (const { fileName: globalFile, index } of context.environment.globals.get(name) ?? []) {
+      const node = statementNode(globalFile, index);
+      if (!node) return undefined;
+      const statements = ts.isModuleDeclaration(node) ? node.body && ts.isModuleBlock(node.body) ? node.body.statements : [] : [node];
+      for (const [innerIndex, statement] of statements.entries()) {
+        if (!declaredNames(statement).includes(name)) continue;
+        const declaration = { fileName: globalFile, index, kind: kindOf(statement), ...(statement !== node ? { innerIndex } : {}) };
+        if (declaration.kind === "variable") {
+          declaration.declarationIndex = statement.declarationList.declarations.findIndex((variable) => ts.isIdentifier(variable.name) && variable.name.text === name);
+          if (declaration.declarationIndex < 0) return undefined;
+        }
+        result.push(declaration);
+      }
+    }
+    return result.length ? result : undefined;
+  };
   const declarationsOf = (fileName, name, tainted) => {
     if (tainted.has(name)) return undefined;
-    const resolved = resolveLocal(context, fileName, name);
+    const resolved = resolveLocal(context, fileName, name) ?? globalDeclarations(fileName, name);
     if (!resolved || resolved.some((declaration) => declaration.module)) return undefined;
     return resolved;
   };
-  const declarationNode = (declaration) => statementNode(declaration.fileName, declaration.index);
+  const declarationNode = (declaration) => {
+    const node = statementNode(declaration.fileName, declaration.index);
+    if (declaration.innerIndex === undefined) return node;
+    return node && ts.isModuleDeclaration(node) && node.body && ts.isModuleBlock(node.body) ? node.body.statements[declaration.innerIndex] ?? null : null;
+  };
 
   // The type cannot be any, unknown, never or an error type, so a union or
   // intersection containing it still exists and the walk visits every part.
@@ -485,6 +520,12 @@ function positiveNames(context, entries, queried) {
       case ts.SyntaxKind.UnionType: return !objectOnly && node.types.every((type) => safe(type, fileName, tainted, false, depth + 1));
       case ts.SyntaxKind.IntersectionType: return node.types.every((type) => safe(type, fileName, tainted, true, depth + 1));
       case ts.SyntaxKind.TypeOperator: return node.operator === ts.SyntaxKind.ReadonlyKeyword && (ts.isArrayTypeNode(node.type) || ts.isTupleTypeNode(node.type));
+      case ts.SyntaxKind.TypeQuery: {
+        // typeof a class, function or enum is an object type.
+        if (node.typeArguments || !ts.isIdentifier(node.exprName)) return false;
+        const values = declarationsOf(fileName, node.exprName.text, new Set())?.filter(valueLike) ?? [];
+        return values.length > 0 && values.every((declaration) => ["class", "function", "enum"].includes(declaration.kind));
+      }
       case ts.SyntaxKind.TypeReference: {
         if (!ts.isIdentifier(node.typeName)) return false;
         const resolved = declarationsOf(fileName, node.typeName.text, tainted);
@@ -537,6 +578,13 @@ function positiveNames(context, entries, queried) {
       case ts.SyntaxKind.TupleType: for (const element of node.elements) certainType(ts.isNamedTupleMember(element) ? element.type : element, fileName, tainted); return;
       case ts.SyntaxKind.UnionType: if (safe(node, fileName, tainted, false)) for (const type of node.types) certainType(type, fileName, tainted); return;
       case ts.SyntaxKind.IntersectionType: if (safe(node, fileName, tainted, true)) for (const type of node.types) certainType(type, fileName, tainted); return;
+      case ts.SyntaxKind.TypeQuery: {
+        // typeof walks the value meaning of the name.
+        if (node.typeArguments || !ts.isIdentifier(node.exprName)) return;
+        const values = declarationsOf(fileName, node.exprName.text, new Set())?.filter(valueLike) ?? [];
+        for (const declaration of values) enqueue(declaration, "value");
+        return;
+      }
       case ts.SyntaxKind.TypeReference: {
         if (!ts.isIdentifier(node.typeName)) return;
         const resolved = declarationsOf(fileName, node.typeName.text, tainted);
@@ -591,8 +639,9 @@ function positiveNames(context, entries, queried) {
     } else if (ts.isFunctionDeclaration(node)) {
       if (node.type) certainType(node.type, fileName, tainted);
     } else if (ts.isClassDeclaration(node)) {
+      // Statics only: `prototype` has no declaration, so the walk never enters
+      // the instance type from the class value.
       walkMembers(node.members, fileName, tainted, true);
-      if (!node.typeParameters) enqueue(declaration, "type");
     } else if (ts.isEnumDeclaration(node)) {
       for (const member of node.members) {
         const name = memberName(member);
@@ -657,6 +706,8 @@ function reachableNameEvidence(context, entries, mayInfer) {
     };
     const reachModule = (fileName, deep) => {
       for (const name of exportNames(context, fileName)) {
+        // Every export name counts: even one that resolves to nothing becomes a
+        // name (TypeScript's unknown symbol is a property).
         if (queried.has(name)) tokens.add(name);
         reachExport(fileName, name, deep);
       }
@@ -715,6 +766,7 @@ function reachableNameEvidence(context, entries, mayInfer) {
     // Parse one reached statement and take its evidence. Deep statements count
     // everything; others skip what the walk never visits, and with
     // followContexts follow the operands a conditional can infer from deeply.
+    let skipTokens = new Set();
     const absorbStatement = (fileName, index, statementDeep) => {
       const module = modules.get(fileName);
       const node = context.statementNode(fileName, index);
@@ -730,12 +782,12 @@ function reachableNameEvidence(context, entries, mayInfer) {
         if (!arraysHaveMembers && (ts.isArrayTypeNode(current)
           || (ts.isTypeOperatorNode(current) && current.operator === ts.SyntaxKind.ReadonlyKeyword && ts.isArrayTypeNode(current.type)))) return;
         if (ts.isIdentifier(current)) {
-          if (queried.has(current.text) && producesName(current, parent, inNamespace)) tokens.add(current.text);
+          if (queried.has(current.text) && producesName(current, parent, inNamespace) && !skipTokens.has(current)) tokens.add(current.text);
           if (!parent || !isMemberName(current, parent)) reachName(fileName, current.text, deep);
           return;
         }
         if (ts.isStringLiteralLike(current) || ts.isPrivateIdentifier(current) || ts.isNumericLiteral(current)) {
-          if (queried.has(current.text) && (!ts.isNumericLiteral(current) || producesName(current, parent, inNamespace))) tokens.add(current.text);
+          if (queried.has(current.text) && (!ts.isNumericLiteral(current) || producesName(current, parent, inNamespace)) && !skipTokens.has(current)) tokens.add(current.text);
         }
         if (ts.isTemplateLiteralTypeNode(current)) templates.push([current.head.text, ...current.templateSpans.map((span) => span.literal.text)]);
         if (current.kind === ts.SyntaxKind.IntrinsicKeyword) computesNames = true;
@@ -779,6 +831,18 @@ function reachableNameEvidence(context, entries, mayInfer) {
         ]) : undefined;
         ts.forEachChild(current, (child) => visit(child, deep || Boolean(deepChildren?.has(child)), scope, inNamespace, current));
       };
+      // A destructured declaration's annotation is never itself the type of
+      // anything (each binding has its property's type), so without a rest
+      // element its own member names cannot become property names.
+      const unnamedMembers = new Set();
+      if (ts.isVariableStatement(node)) {
+        for (const declaration of node.declarationList.declarations) {
+          if (!ts.isObjectBindingPattern(declaration.name) || !declaration.type || !ts.isTypeLiteralNode(declaration.type)) continue;
+          if (declaration.name.elements.some((element) => element.dotDotDotToken)) continue;
+          for (const member of declaration.type.members) if (member.name) unnamedMembers.add(member.name);
+        }
+      }
+      skipTokens = unnamedMembers;
       visit(node, statementDeep, new Set(), false, undefined);
     };
 
