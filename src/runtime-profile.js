@@ -1,5 +1,5 @@
 import path from "node:path";
-import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { formatSampledMetric, renderPaddedMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { resolveFromRoot } from "./path-utils.js";
 import { runProfiledProcess } from "./process-profile.js";
 import { assertRunCount, percentile } from "./stats.js";
@@ -301,13 +301,6 @@ function cpuSampleCount(commands) {
   return commands.reduce((sum, command) => sum + (command.cpuSampleCount ?? 0), 0);
 }
 
-function formatSampledMetric(value, count, unit = "MB") {
-  if ((count ?? 0) <= 0) {
-    return "n/a";
-  }
-  return `${value} ${unit}`;
-}
-
 function summarizeNumbers(values) {
   return {
     min: values[0],
@@ -338,8 +331,4 @@ async function profileCommand(command, options) {
     killGraceMs: command.killGraceMs ?? options.killGraceMs,
     signal: options.signal,
   });
-}
-
-function markdownTable(rows, headers) {
-  return renderPaddedMarkdownTable(rows, headers);
 }

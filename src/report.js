@@ -1,5 +1,5 @@
 import path from "node:path";
-import { renderMarkdownTable, writeArtifacts, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderMarkdownTable as markdownTable, writeArtifacts, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { renderCompatibilityIssuesReport, renderCompatibilityMarkdownReport } from "./compatibility-report.js";
 import { buildContractProbes } from "./contract-probes.js";
 import { classifyCompatibilityFixture } from "./fixture-summary.js";
@@ -455,10 +455,6 @@ function findingsTable(findings) {
     ]),
     ["Fixture", "Level", "Code", "Message", "Evidence"],
   );
-}
-
-function markdownTable(rows, headers) {
-  return renderMarkdownTable(rows, headers);
 }
 
 function emptyFixtureReport(fixture) {

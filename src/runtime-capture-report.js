@@ -1,5 +1,5 @@
 import path from "node:path";
-import { renderMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { captureEntrypoint } from "./inspector.js";
 
 export async function buildRuntimeCaptureReport(options = {}) {
@@ -143,8 +143,4 @@ async function captureTarget(target, options) {
       captured: [],
     };
   }
-}
-
-function markdownTable(rows, headers) {
-  return renderMarkdownTable(rows, headers);
 }

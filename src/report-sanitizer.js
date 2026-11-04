@@ -1,3 +1,4 @@
+import { unique } from "./collections.js";
 import path from "node:path";
 
 export function sanitizeReportArtifact(report, options = {}) {
@@ -35,8 +36,4 @@ function sanitizeValue(value, sensitivePaths, placeholder) {
 
 function isAbsolutePath(value) {
   return path.isAbsolute(value) || /^[A-Za-z]:[\\/]/u.test(value) || value.startsWith("\\\\");
-}
-
-function unique(values) {
-  return [...new Set(values)];
 }

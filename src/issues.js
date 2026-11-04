@@ -1,3 +1,4 @@
+import { priorityRank } from "./severity.js";
 import { createHash } from "node:crypto";
 
 export const deprecatedCompatRecords = new Set([
@@ -726,8 +727,4 @@ function issueSort(left, right) {
 
 function issueTitle(finding) {
   return `${finding.fixture}: ${finding.title ?? finding.message}`;
-}
-
-function priorityRank(priority) {
-  return { P0: 0, P1: 1, P2: 2, P3: 3 }[priority] ?? 4;
 }

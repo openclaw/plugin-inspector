@@ -1,5 +1,5 @@
 import path from "node:path";
-import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderPaddedMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { resolveFromRoot } from "./path-utils.js";
 
 export const defaultCiPolicyReportOptions = {
@@ -254,8 +254,4 @@ function failedExecutionEvidence(executionResults) {
 
 function actionRank(value) {
   return { fail: 0, warn: 1, pass: 2 }[value] ?? 3;
-}
-
-function markdownTable(rows, headers) {
-  return renderPaddedMarkdownTable(rows, headers);
 }

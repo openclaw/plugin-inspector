@@ -1,4 +1,5 @@
-import { renderMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { priorityRank as severityRank } from "./severity.js";
+import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 
 export const defaultRefDiffOptions = {
   generatedAt: "deterministic",
@@ -317,19 +318,10 @@ function issueSort(left, right) {
   return severityRank(left.severity) - severityRank(right.severity) || left.id.localeCompare(right.id);
 }
 
-function severityRank(value) {
-  return { P0: 0, P1: 1, P2: 2, P3: 3 }[value] ?? 4;
-}
-
 function signed(value) {
   return value > 0 ? `+${value}` : String(value);
 }
 
 function markdownTable(rows, headers) {
-  return renderMarkdownTable(rows, headers, {
-    empty: "_none_",
-    escape: false,
-    nullValue: "-",
-    padding: true,
-  });
+  return renderPaddedMarkdownTable(rows, headers, { nullValue: "-" });
 }

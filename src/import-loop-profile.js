@@ -1,7 +1,7 @@
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { readBoundedJsonArtifact, renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { formatSampledMetric, readBoundedJsonArtifact, renderPaddedMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { resolveFromRoot } from "./path-utils.js";
 import { resolveProcessLimits, runProfiledProcess } from "./process-profile.js";
 import { assertRunCount, percentile } from "./stats.js";
@@ -380,13 +380,6 @@ function baselineRows(report) {
   ];
 }
 
-function formatSampledMetric(value, count, unit = "MB") {
-  if ((count ?? 0) <= 0) {
-    return "n/a";
-  }
-  return `${value} ${unit}`;
-}
-
 function formatOptionalMetric(value, unit) {
   if (!Number.isFinite(value)) {
     return "n/a";
@@ -465,8 +458,4 @@ async function readCaptureOutput(outputPath, maxOutputBytes) {
     throw new Error("expected a capture status and captured contracts");
   }
   return result;
-}
-
-function markdownTable(rows, headers) {
-  return renderPaddedMarkdownTable(rows, headers);
 }

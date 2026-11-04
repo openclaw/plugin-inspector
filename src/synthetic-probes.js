@@ -1,4 +1,4 @@
-import { renderPaddedMarkdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { renderPaddedMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
 import { resolveProcessLimits } from "./process-profile.js";
 import { isDeepStrictEqual } from "node:util";
 
@@ -1262,8 +1262,4 @@ function summarizeValue(value) {
     };
   }
   return { type: typeof value, value };
-}
-
-function markdownTable(rows, headers) {
-  return renderPaddedMarkdownTable(rows, headers);
 }

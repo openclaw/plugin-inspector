@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { readFlag, readMockSdkFlag } from "./cli-options.js";
 import { mkdtemp, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -118,32 +119,4 @@ function validateSyntheticReport(report) {
       throw new Error(`Invalid synthetic probe report: invalid or inconsistent ${key}`);
     }
   }
-}
-
-function readFlag(commandArgs, name) {
-  const index = commandArgs.indexOf(name);
-  if (index === -1) {
-    return null;
-  }
-  return commandArgs[index + 1] ?? null;
-}
-
-function readMockSdkFlag(commandArgs) {
-  const sdk = readFlag(commandArgs, "--sdk");
-  if (sdk === "mock") {
-    return true;
-  }
-  if (sdk === "real") {
-    return false;
-  }
-  if (sdk && !["mock", "real"].includes(sdk)) {
-    throw new Error("--sdk must be mock or real");
-  }
-  if (commandArgs.includes("--mock-sdk")) {
-    return true;
-  }
-  if (commandArgs.includes("--real-sdk")) {
-    return false;
-  }
-  return undefined;
 }
