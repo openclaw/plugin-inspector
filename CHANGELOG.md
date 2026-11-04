@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Run the requested runtime capture when `ci --config` points at a plugin-root config, such as the one `init` writes, instead of silently skipping it and passing. Thanks @KrasimirKralev.
+
 - Avoid retaining TypeScript documentation trees during SDK usage analysis while preserving JavaScript JSDoc types, host declarations, and inventory evidence.
 
 - Halve publish-time memory for packed OpenClaw targets while producing byte-identical target surfaces and findings. Released OpenClaw declaration snapshots ship with precomputed SDK-retirement qualifications (keyed by the exact declaration text, regenerated and verified against a full type check by `scripts/packed-sdk-qualifications.mjs`); any other snapshot is type-checked on demand over only the declarations its public entrypoints can reach. Load TypeScript on first use through a CommonJS re-export (bundler-visible, and ~18 MB lighter than importing the compiler as an ES module), read SDK-usage files excluded from analysis only when an analyzed file imports them, and parse each file once for both runtime-import passes (on Node 24 the SDK-import pass reuses strip-mode erasure whenever strip accepts the source, as Node 26 already does). A new CI gate measures the ClawHub publish path on the large official channel plugins against 0.4.5.
