@@ -1,3 +1,4 @@
+import { assertGone, processExists } from "./helpers/process-liveness.js";
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { chmod, mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
@@ -19,22 +20,6 @@ async function tempDir(t) {
     await rm(dir, { recursive: true, force: true });
   });
   return dir;
-}
-
-function processExists(pid) {
-  try {
-    process.kill(pid, 0);
-    return true;
-  } catch (error) {
-    if (error.code === "ESRCH") return false;
-    throw error;
-  }
-}
-
-async function assertGone(pid) {
-  assert.ok(Number.isInteger(pid) && pid > 0);
-  for (let i = 0; i < 100 && processExists(pid); i += 1) await delay(10);
-  assert.equal(processExists(pid), false, `owned PID ${pid} survived completion`);
 }
 
 async function cleanupPids(file) {

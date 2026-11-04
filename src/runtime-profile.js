@@ -1,7 +1,7 @@
 import path from "node:path";
 import { formatSampledMetric, renderPaddedMarkdownTable as markdownTable, writeDefaultReportArtifacts } from "./artifacts.js";
 import { runProfiledProcess } from "./process-profile.js";
-import { assertRunCount, percentile } from "./stats.js";
+import { assertRunCount, percentile, sortedMetric } from "./stats.js";
 
 export const defaultRuntimeProfileOptions = {
   generatedAt: "deterministic",
@@ -207,20 +207,18 @@ function summarizeProfile(commands) {
 }
 
 function summarizeCommand(command, samples) {
-  const wallMs = samples.map((sample) => sample.wallMs).sort((left, right) => left - right);
-  const peakRssMb = samples.map((sample) => sample.peakRssMb).sort((left, right) => left - right);
-  const rssDeltaMb = samples.map((sample) => sample.rssDeltaMb).sort((left, right) => left - right);
-  const peakCpuPercent = samples.map((sample) => sample.peakCpuPercent).sort((left, right) => left - right);
-  const cpuMsEstimate = samples.map((sample) => sample.cpuMsEstimate).sort((left, right) => left - right);
+  const wallMs = sortedMetric(samples, "wallMs");
+  const peakRssMb = sortedMetric(samples, "peakRssMb");
+  const rssDeltaMb = sortedMetric(samples, "rssDeltaMb");
+  const peakCpuPercent = sortedMetric(samples, "peakCpuPercent");
+  const cpuMsEstimate = sortedMetric(samples, "cpuMsEstimate");
   const statSampleCount = samples.reduce((sum, sample) => sum + (sample.statSampleCount ?? 0), 0);
   const rssSampleTotal = samples.reduce(
     (sum, sample) => sum + (sample.rssSampleCount ?? (sample.peakRssMb > 0 ? 1 : 0)),
     0,
   );
   const cpuSampleTotal = samples.reduce((sum, sample) => sum + (sample.cpuSampleCount ?? 0), 0);
-  const harnessHeapDeltaMb = samples
-    .map((sample) => sample.harnessHeapDeltaMb)
-    .sort((left, right) => left - right);
+  const harnessHeapDeltaMb = sortedMetric(samples, "harnessHeapDeltaMb");
   const commandName = command.command ?? process.execPath;
   return {
     id: command.id,

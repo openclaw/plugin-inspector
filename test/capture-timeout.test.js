@@ -1,3 +1,4 @@
+import { assertGone as assertProcessGone } from "./helpers/process-liveness.js";
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
@@ -7,6 +8,8 @@ import { test } from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
 import { promisify } from "node:util";
 import { captureEntrypoint } from "../src/inspector.js";
+
+const assertGone = (pid) => assertProcessGone(pid, `owned PID ${pid} survived capture`);
 
 const execFileAsync = promisify(execFile);
 const cliPath = path.resolve("src/cli.js");
@@ -27,22 +30,6 @@ async function fixture(t, source) {
   const entrypoint = path.join(dir, "index.mjs");
   await writeFile(entrypoint, source);
   return { dir, entrypoint };
-}
-
-function processExists(pid) {
-  try {
-    process.kill(pid, 0);
-    return true;
-  } catch (error) {
-    if (error.code === "ESRCH") return false;
-    throw error;
-  }
-}
-
-async function assertGone(pid) {
-  assert.ok(Number.isInteger(pid) && pid > 0);
-  for (let i = 0; i < 100 && processExists(pid); i += 1) await delay(10);
-  assert.equal(processExists(pid), false, `owned PID ${pid} survived capture`);
 }
 
 for (const [name, register] of [

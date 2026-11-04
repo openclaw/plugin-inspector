@@ -11,3 +11,7 @@ export function assertRunCount(runs, max) {
     throw new Error(`runs must be an integer between 1 and ${max}`);
   }
 }
+
+export function sortedMetric(samples, field) {
+  return samples.map((sample) => sample[field]).sort((left, right) => left - right);
+}

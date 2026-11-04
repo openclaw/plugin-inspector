@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 import { formatSampledMetric, readBoundedJsonArtifact, renderPaddedMarkdownTable as markdownTable, writeDefaultReportArtifacts } from "./artifacts.js";
 import { resolveFromRoot } from "./path-utils.js";
 import { resolveProcessLimits, runProfiledProcess } from "./process-profile.js";
-import { assertRunCount, percentile } from "./stats.js";
+import { assertRunCount, percentile, sortedMetric } from "./stats.js";
 
 const defaultRunnerPath = fileURLToPath(new URL("./mock-sdk-capture-runner.js", import.meta.url));
 
@@ -31,8 +31,8 @@ export async function buildImportLoopProfile(options = {}) {
     samples.push(applyBaselineAdjustment(sample, baseline));
   }
 
-  const wallMs = samples.map((sample) => sample.wallMs).sort((left, right) => left - right);
-  const pluginWallDeltaMs = samples.map((sample) => sample.pluginWallDeltaMs).sort((left, right) => left - right);
+  const wallMs = sortedMetric(samples, "wallMs");
+  const pluginWallDeltaMs = sortedMetric(samples, "pluginWallDeltaMs");
   const openClawImportMs = openClawLifecycleMetric(samples, "importMs");
   const openClawActivationMs = openClawLifecycleMetric(samples, "activationMs");
   const rssSampleCount = samples.reduce((sum, sample) => sum + (sample.rssSampleCount ?? (sample.peakRssMb > 0 ? 1 : 0)), 0);
@@ -396,10 +396,6 @@ function applyBaselineAdjustment(sample, baseline) {
     pluginPeakRssDeltaMb: roundNonNegative(sample.peakRssMb - baseline.reference.peakRssMb, 1),
     pluginCpuDeltaMsEstimate: roundNonNegative(sample.cpuMsEstimate - baseline.reference.cpuMsEstimate, 0),
   };
-}
-
-function sortedMetric(samples, field) {
-  return samples.map((sample) => sample[field]).sort((left, right) => left - right);
 }
 
 function roundNonNegative(value, digits) {

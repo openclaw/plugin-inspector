@@ -1,9 +1,9 @@
+import { assertGone } from "./helpers/process-liveness.js";
 import assert from "node:assert/strict";
 import { mkdtemp, readFile, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
-import { setTimeout as delay } from "node:timers/promises";
 import { buildImportLoopProfile } from "../src/import-loop-profile.js";
 import { runProfiledProcess } from "../src/process-profile.js";
 import { buildRuntimeProfile, validateRuntimeProfile, writeRuntimeProfile } from "../src/runtime-profile.js";
@@ -12,18 +12,6 @@ async function tempDir(t) {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-failure-profile-"));
   t.after(() => rm(dir, { recursive: true, force: true }));
   return dir;
-}
-
-async function assertGone(pid) {
-  assert.ok(Number.isInteger(pid) && pid > 0);
-  const exists = () => {
-    try { process.kill(pid, 0); return true; } catch (error) {
-      if (error.code === "ESRCH") return false;
-      throw error;
-    }
-  };
-  for (let i = 0; i < 100 && exists(); i += 1) await delay(10);
-  assert.equal(exists(), false, `owned PID ${pid} survived completion`);
 }
 
 test("profile retains full bounded failure output without changing previews", { timeout: 5000 }, async () => {
