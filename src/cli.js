@@ -106,7 +106,7 @@ async function runConfig(commandArgs) {
   }
 }
 
-async function runCheck(commandArgs, options = {}) {
+function readInspectionCommandOptions(commandArgs, ciOutputOptions) {
   const configPath = readFlag(commandArgs, "--config");
   const pluginRoot = readFlag(commandArgs, "--plugin-root") ?? readFlag(commandArgs, "--root");
   const outDir = readFlag(commandArgs, "--out") ?? "reports";
@@ -116,20 +116,28 @@ async function runCheck(commandArgs, options = {}) {
   const capture = readRuntimeFlag(commandArgs);
   const mockSdk = readMockSdkFlag(commandArgs);
   const allowExecution = readAllowExecutionFlag(commandArgs);
-  const ciOutputs = readCiOutputFlags(commandArgs);
+  const ciOutputs = readCiOutputFlags(commandArgs, ciOutputOptions);
   const authorFacing = readAuthorFacingFlag(commandArgs);
-  const { report, paths } = await runPluginCheck({
-    isolateCapture: true,
-    allowExecution,
-    authorFacing,
-    capture,
-    configPath,
-    mockSdk,
-    openclawPath,
-    openclawVersion,
-    outDir,
-    pluginRoot,
-  });
+  return {
+    json,
+    ciOutputs,
+    inspectionOptions: {
+      allowExecution,
+      authorFacing,
+      capture,
+      configPath,
+      mockSdk,
+      openclawPath,
+      openclawVersion,
+      outDir,
+      pluginRoot,
+    },
+  };
+}
+
+async function runCheck(commandArgs, options = {}) {
+  const { json, ciOutputs, inspectionOptions } = readInspectionCommandOptions(commandArgs);
+  const { report, paths } = await runPluginCheck({ isolateCapture: true, ...inspectionOptions });
   await writeCiOutputArtifacts(report, {
     ...ciOutputs,
     cwd: path.dirname(paths.jsonPath),
@@ -209,28 +217,8 @@ async function runReport(command, commandArgs) {
 }
 
 async function runCi(commandArgs) {
-  const configPath = readFlag(commandArgs, "--config");
-  const pluginRoot = readFlag(commandArgs, "--plugin-root") ?? readFlag(commandArgs, "--root");
-  const outDir = readFlag(commandArgs, "--out") ?? "reports";
-  const openclawPath = commandArgs.includes("--no-openclaw") ? false : readFlag(commandArgs, "--openclaw");
-  const openclawVersion = readOpenClawVersion(commandArgs);
-  const json = commandArgs.includes("--json");
-  const capture = readRuntimeFlag(commandArgs);
-  const mockSdk = readMockSdkFlag(commandArgs);
-  const allowExecution = readAllowExecutionFlag(commandArgs);
-  const ciOutputs = readCiOutputFlags(commandArgs, { defaultEnabled: true });
-  const authorFacing = readAuthorFacingFlag(commandArgs);
-  const { report, reportDir } = await runCiCompatibilityReport({
-    allowExecution,
-    authorFacing,
-    capture,
-    configPath,
-    mockSdk,
-    openclawPath,
-    openclawVersion,
-    outDir,
-    pluginRoot,
-  });
+  const { json, ciOutputs, inspectionOptions } = readInspectionCommandOptions(commandArgs, { defaultEnabled: true });
+  const { report, reportDir } = await runCiCompatibilityReport(inspectionOptions);
 
   const summary = await buildCiSummary({
     artifactBaseDir: reportDir,
