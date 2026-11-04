@@ -1,7 +1,5 @@
 import path from "node:path";
-import { loadTypeScript } from "../typescript.js";
-
-const ts = loadTypeScript();
+import ts from "../typescript.cjs";
 
 /** Declared plugin entrypoints receive the host API, even when they have no SDK imports. */
 export function pluginEntrypointSources({ root, files, sources, inputKind, report }) {

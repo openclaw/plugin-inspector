@@ -36,6 +36,7 @@ const { values } = parseArgs({
     "max-ratio": { type: "string" },
     "budget-mib": { type: "string" },
     "outputs-dir": { type: "string" },
+    diagnose: { type: "boolean" },
     json: { type: "string" },
     help: { type: "boolean" },
   },
@@ -56,7 +57,10 @@ const usage = `Usage: node scripts/publish-memory-benchmark.mjs --target <packed
 --uncached-target  Append a comment to one declaration file of a copy of the target,
                    so its snapshot misses the shipped qualification table and the
                    on-demand type check runs (outputs stay identical).
---outputs-dir      Write each implementation's normalized target surface and findings.`;
+--outputs-dir      Write each implementation's normalized target surface and findings.
+--diagnose         Sample memory between awaits and print what the largest samples before
+                   and after TypeScript loads were made of (heap, young generation,
+                   external, other).`;
 
 if (values.help) console.log(usage);
 else if (values.child) await runChild();
@@ -140,6 +144,7 @@ function summarize(samples) {
     findings: median.findingCount,
     targetSurfaceSha256: median.targetSurfaceSha256,
     findingsSha256: median.findingsSha256,
+    ...(median.sampledPeak ? { sampledPeak: median.sampledPeak } : {}),
   };
 }
 
@@ -166,6 +171,18 @@ function printSummary(summary) {
     }
   }
   console.table(rows);
+  const samples = [];
+  for (const row of summary.results) {
+    for (const label of Object.keys(summary.implementations)) {
+      for (const [phase, sample] of Object.entries(row[label].sampledPeak ?? {})) {
+        samples.push({ plugin: row.plugin, inspector: label, phase, ...sample });
+      }
+    }
+  }
+  if (samples.length) {
+    console.log("Largest sampled RSS between awaits (MiB):");
+    console.table(samples);
+  }
 }
 
 async function uncachedCopy(target, scratch) {
@@ -195,6 +212,7 @@ async function measureOnce({ plugin, target, inspector, scratch, outputs }) {
         "--inspector", inspector,
         "--json", resultPath,
         ...(outputs ? ["--outputs-dir", outputs] : []),
+        ...(values.diagnose ? ["--diagnose"] : []),
       ], { stdio: ["ignore", "inherit", "inherit"] });
       child.on("error", reject);
       child.on("exit", (code, signal) => (code === 0 ? resolve() : reject(new Error(`${plugin.name} benchmark child exited with ${signal ?? code}`))));
@@ -213,6 +231,31 @@ async function runChild() {
   const root = spec.slice(separator + 1);
   const target = values.target;
   const stages = {};
+  let sampled = null;
+  let sampler;
+  if (values.diagnose) {
+    const { createRequire } = await import("node:module");
+    const cache = createRequire(import.meta.url).cache;
+    const v8 = await import("node:v8");
+    sampler = setInterval(() => {
+      const usage = process.memoryUsage();
+      const typescriptLoaded = Object.keys(cache).some((key) => /[\\/]typescript[\\/]lib[\\/]typescript\.js$/.test(key));
+      const key = typescriptLoaded ? "withTypeScript" : "withoutTypeScript";
+      if (sampled?.[key] && usage.rss <= sampled[key].rss * MiB) return;
+      const space = (name) => round((v8.getHeapSpaceStatistics().find((item) => item.space_name === name)?.space_size ?? 0) / MiB);
+      sampled = {
+        ...sampled,
+        [key]: {
+          rss: round(usage.rss / MiB),
+          heapTotal: round(usage.heapTotal / MiB),
+          heapUsed: round(usage.heapUsed / MiB),
+          newSpace: space("new_space"),
+          external: round(usage.external / MiB),
+          other: round((usage.rss - usage.heapTotal - usage.external) / MiB),
+        },
+      };
+    }, 2);
+  }
   const mark = (stage, since) => {
     stages[stage] = { ms: performance.now() - since, peakRssBytes: peakRssBytes() };
   };
@@ -254,6 +297,7 @@ async function runChild() {
     generatedAt: FIXED_GENERATED_AT,
   });
   mark("inspection", since);
+  if (sampler) clearInterval(sampler);
 
   const normalize = (value) => JSON.parse(JSON.stringify(value).replaceAll(path.resolve(target), "<target>").replaceAll(root, "<plugin>"));
   const normalizedSurface = normalize(surface);
@@ -277,6 +321,7 @@ async function runChild() {
     findingCount: (report.breakages?.length ?? 0) + (report.warnings?.length ?? 0),
     targetSurfaceSha256: sha256(JSON.stringify(normalizedSurface)),
     findingsSha256: sha256(JSON.stringify(findings)),
+    ...(sampled ? { sampledPeak: sampled } : {}),
   }));
 }
 

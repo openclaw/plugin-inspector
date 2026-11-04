@@ -1,7 +1,5 @@
-import { loadTypeScript } from "../typescript.js";
+import ts from "../typescript.cjs";
 import { inType, nameText, referenceKind, walk } from "./syntax.js";
-
-const ts = loadTypeScript();
 
 export function collectSdkMembers({ sources, report, provenance }) {
   const { resolve, select, literal, literals, typeValue } = provenance;

@@ -1,9 +1,10 @@
 import * as nodeModule from "node:module";
 import { parse } from "acorn";
 import { analyze } from "eslint-scope";
-import { loadTypeScript } from "./typescript.js";
 
 const literalModuleImport = /(?<![$\w.])(?<kind>[$A-Z_a-z][$\w]*)\s*\(\s*(?<quote>["'`])(?<specifier>[^"'`\\\r\n]+)\k<quote>/dg;
+
+let typeScript;
 
 // Callers that classify the same source more than once (inspectSourceText runs
 // both SDK-import and registry-deprecation passes over every file) can share
@@ -290,7 +291,7 @@ function classifyRuntimeImports(text, entries, { preservePositions = false, anal
 
 function maskImportTypes(text) {
   try {
-    const ts = loadTypeScript();
+    const ts = typeScript ??= nodeModule.createRequire(import.meta.url)("typescript");
     const source = ts.createSourceFile(
       "runtime-imports.ts", text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS,
     );

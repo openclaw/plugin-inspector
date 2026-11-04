@@ -1,7 +1,5 @@
-import { loadTypeScript } from "../typescript.js";
+import ts from "../typescript.cjs";
 import { nameText } from "./syntax.js";
-
-const ts = loadTypeScript();
 
 export function collectManifestContracts(file, report) {
   const source = ts.createSourceFile(file.path, file.text, ts.ScriptTarget.Latest, true, ts.ScriptKind.JSON);

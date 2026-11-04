@@ -1,8 +1,6 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
-import { loadTypeScript } from "../typescript.js";
-
-const ts = loadTypeScript();
+import ts from "../typescript.cjs";
 
 const sourceExtension = /\.(?:[cm]?[jt]s|[jt]sx)$/i;
 const testFile = /(?:\.(?:test|spec)[.-]|(?:^|[-.])test-(?:support|helpers)|^test-|^vitest\.|^jest\.|^(?:bench|benchmark)[-.])/i;

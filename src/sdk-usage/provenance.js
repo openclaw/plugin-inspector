@@ -1,10 +1,8 @@
-import { loadTypeScript } from "../typescript.js";
+import ts from "../typescript.cjs";
 import { isSdkSpecifier, nameText, stringExpressionPrefix, walk } from "./syntax.js";
 import { createTypeProvenance } from "./types.js";
 import { capabilityContextMember } from "./host-context.js";
 import { createCallTargetResolver } from "./call-targets.js";
-
-const ts = loadTypeScript();
 
 const sdkExport = (module, name) => ({ kind: "export", module, name });
 

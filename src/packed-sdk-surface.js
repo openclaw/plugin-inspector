@@ -1,8 +1,6 @@
 import path from "node:path";
 import { reduceDeclarationsToPublicClosure } from "./declaration-closure.js";
-import { loadTypeScript } from "./typescript.js";
-
-const ts = loadTypeScript();
+import ts from "./typescript.cjs";
 
 // Names a packed OpenClaw package exposes through its public SDK declarations:
 // every export of a ./plugin-sdk entrypoint, plus every member name of the types

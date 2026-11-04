@@ -1,6 +1,4 @@
-import { loadTypeScript } from "./typescript.js";
-
-const ts = loadTypeScript();
+import ts from "./typescript.cjs";
 
 // Packed OpenClaw ships its public SDK as rolled-up dist/*.d.ts chunks: about
 // 5 MB of declarations. Type-checking all of them at once needs roughly 250 MB,

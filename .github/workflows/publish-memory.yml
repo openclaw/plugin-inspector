@@ -61,7 +61,7 @@ jobs:
           --plugin @openclaw/matrix="$FIXTURES/plugins/matrix/package"
           --plugin @openclaw/whatsapp="$FIXTURES/plugins/whatsapp/package"
           --baseline "$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js"
-          --runs 3 --max-ratio 0.5 --json publish-memory-released.json
+          --runs 3 --max-ratio 0.5 --diagnose --json publish-memory-released.json
 
       - name: Unreleased OpenClaw target (on-demand type check), at most 85% of 0.4.5
         run: >-
@@ -71,7 +71,7 @@ jobs:
           --plugin @openclaw/matrix="$FIXTURES/plugins/matrix/package"
           --plugin @openclaw/whatsapp="$FIXTURES/plugins/whatsapp/package"
           --baseline "$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js"
-          --runs 3 --max-ratio 0.85 --json publish-memory-unreleased.json
+          --runs 3 --max-ratio 0.85 --diagnose --json publish-memory-unreleased.json
 
       - name: Shipped qualifications match a full type check
         run: node scripts/packed-sdk-qualifications.mjs --check

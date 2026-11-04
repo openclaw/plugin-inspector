@@ -1,6 +1,4 @@
-import { loadTypeScript } from "../typescript.js";
-
-const ts = loadTypeScript();
+import ts from "../typescript.cjs";
 
 export function walk(node, visit) {
   visit(node);
