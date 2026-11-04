@@ -1022,3 +1022,28 @@ test("mock capture follows bundled channel linked registerFull exports", async (
     "registration:registerCommand",
   ]);
 });
+
+test("SDK deprecation aliases and dynamic namespaces preserve surfaces and line refs", () => {
+  const source = `import sdk, {
+  loadSessionStore as readStore,
+  type Other,
+} from "openclaw/plugin-sdk/config-runtime";
+export {
+  loadSessionStore as exportedStore,
+} from "openclaw/plugin-sdk/session-store-runtime";
+const {
+  loadSessionStore: requiredStore,
+} = require("openclaw/plugin-sdk/config-runtime");
+const awaited = await import("openclaw/plugin-sdk/config-runtime");
+const unawaited = import("openclaw/plugin-sdk/session-store-runtime");
+awaited.loadSessionStore();
+unawaited?.loadSessionStore?.();
+import { loadSessionStore as unrelated } from "./local.js";`;
+  assert.deepEqual(inspectSourceText(source, "fixture.ts").sdkDeprecations.map(({ surface, ref }) => [surface, ref]), [
+    ["openclaw/plugin-sdk/config-runtime loadSessionStore import", "fixture.ts:2"],
+    ["openclaw/plugin-sdk/session-store-runtime loadSessionStore re-export", "fixture.ts:6"],
+    ["openclaw/plugin-sdk/config-runtime loadSessionStore require", "fixture.ts:9"],
+    ["openclaw/plugin-sdk/config-runtime dynamic import namespace access loadSessionStore", "fixture.ts:13"],
+    ["openclaw/plugin-sdk/session-store-runtime dynamic import namespace access loadSessionStore", "fixture.ts:14"],
+  ]);
+});
