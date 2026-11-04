@@ -91,12 +91,14 @@ function sampleObjectSchema(schema) {
   const required = new Set(Array.isArray(schema.required) ? schema.required : []);
   const output = {};
 
+  function assignSample(key) {
+    const value = sampleJsonSchema(properties[key], { key });
+    if (value !== undefined) output[key] = value;
+  }
+
   for (const key of Object.keys(properties)) {
     if (required.has(key)) {
-      const value = sampleJsonSchema(properties[key], { key });
-      if (value !== undefined) {
-        output[key] = value;
-      }
+      assignSample(key);
     }
   }
 
@@ -109,20 +111,14 @@ function sampleObjectSchema(schema) {
   if (!hasNonBooleanSample(output, properties)) {
     const key = preferredNestedConfigKey(properties);
     if (key) {
-      const value = sampleJsonSchema(properties[key], { key });
-      if (value !== undefined) {
-        output[key] = value;
-      }
+      assignSample(key);
     }
   }
 
   if (Object.keys(output).length === 0 && Number(schema.minProperties ?? 0) > 0) {
     const key = preferredSamplePropertyKey(properties);
     if (key) {
-      const value = sampleJsonSchema(properties[key], { key });
-      if (value !== undefined) {
-        output[key] = value;
-      }
+      assignSample(key);
     }
   }
 
