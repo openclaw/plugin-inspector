@@ -76,6 +76,26 @@ jobs:
           --baseline "$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js"
           --runs 3 --max-ratio 0.9 --diagnose --json publish-memory-unreleased.json
 
+      # ClawHub's Convex actions run the inspector from an esbuild bundle, so a
+      # dependency hidden from bundlers would only fail after deploy.
+      - name: Bundled like ClawHub's Convex actions, at most 60% of 0.4.5
+        run: |
+          banner='import { createRequire as __createRequire } from "node:module"; import { fileURLToPath as __fileURLToPath } from "node:url"; import { dirname as __dirnameOf } from "node:path"; const require = __createRequire(import.meta.url); const __filename = __fileURLToPath(import.meta.url); const __dirname = __dirnameOf(__filename);'
+          for implementation in candidate baseline; do
+            entry=src/index.js
+            if [ "$implementation" = baseline ]; then entry="$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js"; fi
+            npx --yes esbuild@0.25.12 "$entry" --bundle --platform=node --format=esm --target=node24 \
+              --banner:js="$banner" --log-level=warning --outfile="$RUNNER_TEMP/bundled/$implementation/index.mjs"
+          done
+          node scripts/publish-memory-benchmark.mjs \
+            --target "$FIXTURES/openclaw/package" \
+            --plugin @openclaw/discord="$FIXTURES/plugins/discord/package" \
+            --plugin @openclaw/matrix="$FIXTURES/plugins/matrix/package" \
+            --plugin @openclaw/whatsapp="$FIXTURES/plugins/whatsapp/package" \
+            --inspector "$RUNNER_TEMP/bundled/candidate/index.mjs" \
+            --baseline "$RUNNER_TEMP/bundled/baseline/index.mjs" \
+            --runs 3 --max-ratio 0.6 --json publish-memory-bundled.json
+
       - name: Shipped qualifications match a full type check
         run: node scripts/packed-sdk-qualifications.mjs --check
 
