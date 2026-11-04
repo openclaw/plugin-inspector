@@ -54,7 +54,8 @@ for (const [name, helper, invoke, valueUnknown = false] of cases) {
       reason: "SDK handle escapes into an unresolved external call",
     }] : []);
     assert.deepEqual(sdk.entries.filter(({ kind }) => kind === "api-member").map(({ key }) => key), ["api-member:api.registerTool"]);
-    assert.ok(sdk.entries.find(({ key }) => key === "api-member:api.registerTool").evidence.every(({ path }) => path === "index.ts"));
+    const tool = sdk.entries.find(({ key }) => key === "api-member:api.registerTool");
+    assert.deepEqual([...new Set(tool.evidence.map(({ path }) => path))], ["index.ts"]);
 
     const unrelated = await inspectCall(t, helper, invoke, "{}");
     assert.equal(unrelated.status, "complete");
