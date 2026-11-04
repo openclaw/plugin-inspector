@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { printChecks } from "./lib/checklist.mjs";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -137,11 +138,5 @@ export function parseNpmPackResult(output) {
 function printChecklist(result) {
   console.log(`package contents: ${result.status}`);
   console.log(`package entries: ${result.entryCount}`);
-  for (const check of result.checks) {
-    console.log(`- ${check.status.toUpperCase()} ${check.id}: ${check.message}`);
-    if (check.status === "fail" && check.actual !== check.expected) {
-      console.log(`  expected: ${check.expected}`);
-      console.log(`  actual: ${check.actual}`);
-    }
-  }
+  printChecks(result.checks);
 }

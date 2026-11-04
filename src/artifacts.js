@@ -1,6 +1,7 @@
 import { constants } from "node:fs";
 import { mkdir, open, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { resolveFromRoot } from "./path-utils.js";
 
 export async function readBoundedJsonArtifact(filePath, maxBytes) {
   const file = await open(filePath, constants.O_RDONLY | constants.O_NONBLOCK);
@@ -138,4 +139,17 @@ export function formatSampledMetric(value, count, unit = "MB") {
     return "n/a";
   }
   return `${value} ${unit}`;
+}
+
+export async function writeDefaultReportArtifacts(report, options, defaults, render) {
+  const rootDir = path.resolve(options.rootDir ?? process.cwd());
+  const jsonPath = resolveFromRoot(rootDir, options.jsonPath ?? defaults.jsonPath);
+  const markdownPath = resolveFromRoot(rootDir, options.markdownPath ?? defaults.markdownPath);
+  return writeJsonMarkdownArtifacts({
+    jsonPath,
+    markdownPath,
+    json: report,
+    markdown: render(report, options),
+    check: options.check,
+  });
 }

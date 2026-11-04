@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { printChecks } from "./lib/checklist.mjs";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -38,6 +39,7 @@ export function buildReleasePlan({
   nextVersion,
 }) {
   const version = nextVersion ?? bumpPatch(packageVersion);
+  const releaseNotes = safeReleaseNotes(changelogText);
   const checks = [
     {
       id: "version-advance",
@@ -48,7 +50,7 @@ export function buildReleasePlan({
     },
     {
       id: "changelog-unreleased",
-      status: hasUnreleasedNotes(changelogText) ? "pass" : "fail",
+      status: releaseNotes.split(/\r?\n/).some((line) => line.trim().startsWith("- ")) ? "pass" : "fail",
       message: "CHANGELOG.md has non-empty Unreleased notes",
     },
   ];
@@ -64,7 +66,7 @@ export function buildReleasePlan({
     changelogHeading: `## ${version} - ${releaseDate}`,
     crabpotSourceRef: releaseRef,
     crabpotPackagePin: `${packageName}@${version}`,
-    releaseNotes: safeReleaseNotes(changelogText),
+    releaseNotes,
     checks,
     steps: [
       `update package.json version to ${version}`,
@@ -76,16 +78,6 @@ export function buildReleasePlan({
       "run npm run release:crabpot -- --published",
     ],
   };
-}
-
-function hasUnreleasedNotes(changelogText) {
-  try {
-    return extractReleaseNotes({ changelogText, version: "Unreleased" })
-      .split(/\r?\n/)
-      .some((line) => line.trim().startsWith("- "));
-  } catch {
-    return false;
-  }
 }
 
 function safeReleaseNotes(changelogText) {
@@ -180,13 +172,7 @@ function printReleasePlan(plan) {
   console.log(`release date: ${plan.releaseDate}`);
   console.log(`release ref: ${plan.releaseRef}`);
   console.log(`tag: ${plan.tagName}`);
-  for (const check of plan.checks) {
-    console.log(`- ${check.status.toUpperCase()} ${check.id}: ${check.message}`);
-    if (check.status === "fail" && check.actual !== check.expected) {
-      console.log(`  expected: ${check.expected}`);
-      console.log(`  actual: ${check.actual}`);
-    }
-  }
+  printChecks(plan.checks);
   console.log("steps:");
   for (const step of plan.steps) {
     console.log(`- ${step}`);

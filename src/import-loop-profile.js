@@ -1,7 +1,7 @@
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { formatSampledMetric, readBoundedJsonArtifact, renderPaddedMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
+import { formatSampledMetric, readBoundedJsonArtifact, renderPaddedMarkdownTable as markdownTable, writeDefaultReportArtifacts } from "./artifacts.js";
 import { resolveFromRoot } from "./path-utils.js";
 import { resolveProcessLimits, runProfiledProcess } from "./process-profile.js";
 import { assertRunCount, percentile } from "./stats.js";
@@ -91,16 +91,7 @@ export function validateImportLoopProfile(report) {
 }
 
 export async function writeImportLoopProfile(report, options = {}) {
-  const rootDir = path.resolve(options.rootDir ?? process.cwd());
-  const jsonPath = resolveFromRoot(rootDir, options.jsonPath ?? defaultImportLoopProfileOptions.jsonPath);
-  const markdownPath = resolveFromRoot(rootDir, options.markdownPath ?? defaultImportLoopProfileOptions.markdownPath);
-  return writeJsonMarkdownArtifacts({
-    jsonPath,
-    markdownPath,
-    json: report,
-    markdown: renderImportLoopProfileMarkdown(report, options),
-    check: options.check,
-  });
+  return writeDefaultReportArtifacts(report, options, defaultImportLoopProfileOptions, renderImportLoopProfileMarkdown);
 }
 
 export function renderImportLoopProfileMarkdown(report, options = {}) {

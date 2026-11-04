@@ -1,6 +1,4 @@
-import path from "node:path";
-import { renderPaddedMarkdownTable as markdownTable, writeJsonMarkdownArtifacts } from "./artifacts.js";
-import { resolveFromRoot } from "./path-utils.js";
+import { renderPaddedMarkdownTable as markdownTable, writeDefaultReportArtifacts } from "./artifacts.js";
 
 export const defaultCiPolicyReportOptions = {
   generatedAt: "deterministic",
@@ -67,16 +65,7 @@ export function validateCiPolicyReport(report) {
 }
 
 export async function writeCiPolicyReport(report, options = {}) {
-  const rootDir = path.resolve(options.rootDir ?? process.cwd());
-  const jsonPath = resolveFromRoot(rootDir, options.jsonPath ?? defaultCiPolicyReportOptions.jsonPath);
-  const markdownPath = resolveFromRoot(rootDir, options.markdownPath ?? defaultCiPolicyReportOptions.markdownPath);
-  return writeJsonMarkdownArtifacts({
-    jsonPath,
-    markdownPath,
-    json: report,
-    markdown: renderCiPolicyMarkdown(report, options),
-    check: options.check,
-  });
+  return writeDefaultReportArtifacts(report, options, defaultCiPolicyReportOptions, renderCiPolicyMarkdown);
 }
 
 export function renderCiPolicyMarkdown(report, options = {}) {
