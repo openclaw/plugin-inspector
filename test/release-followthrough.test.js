@@ -1,12 +1,12 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import { buildCrabpotFollowthroughChecklist } from "../scripts/check-crabpot-followthrough.mjs";
 
-test("crabpot follow-through checklist passes matching source refs", async () => {
-  const roots = await createFixtureRoots({
+test("crabpot follow-through checklist passes matching source refs", async (t) => {
+  const roots = await createFixtureRoots(t, {
     ref: "abc123",
     packagePin: "@openclaw/plugin-inspector@1.2.3",
   });
@@ -24,8 +24,8 @@ test("crabpot follow-through checklist passes matching source refs", async () =>
   assert.equal(result.checks.find((check) => check.id === "crabpot-package-pin").status, "pass");
 });
 
-test("crabpot follow-through checklist fails stale refs and optionally stale package pins", async () => {
-  const roots = await createFixtureRoots({
+test("crabpot follow-through checklist fails stale refs and optionally stale package pins", async (t) => {
+  const roots = await createFixtureRoots(t, {
     ref: "old-ref",
     packagePin: "@openclaw/plugin-inspector@1.0.0",
   });
@@ -50,8 +50,8 @@ test("crabpot follow-through checklist fails stale refs and optionally stale pac
   assert.equal(postRelease.checks.find((check) => check.id === "crabpot-package-pin").status, "fail");
 });
 
-test("crabpot follow-through checklist fails advanced bundle script consumers", async () => {
-  const roots = await createFixtureRoots({
+test("crabpot follow-through checklist fails advanced bundle script consumers", async (t) => {
+  const roots = await createFixtureRoots(t, {
     ref: "abc123",
     packagePin: "@openclaw/plugin-inspector@1.2.3",
     scripts: {
@@ -76,8 +76,9 @@ test("crabpot follow-through checklist fails advanced bundle script consumers", 
   assert.match(result.checks.find((check) => check.id === "crabpot-public-api-migration").actual, /synthetic-probes/);
 });
 
-async function createFixtureRoots({ ref, packagePin, scripts = {} }) {
+async function createFixtureRoots(t, { ref, packagePin, scripts = {} }) {
   const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-release-followthrough-"));
+  t.after(() => rm(root, { recursive: true, force: true }));
   const pluginInspectorRoot = path.join(root, "plugin-inspector");
   const crabpotRoot = path.join(root, "crabpot");
   await mkdir(path.join(crabpotRoot, "scripts"), { recursive: true });

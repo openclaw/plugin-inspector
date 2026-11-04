@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, writeFile } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
@@ -424,8 +424,8 @@ test("synthetic probes invoke retained hook and tool handlers with configured in
   );
 });
 
-test("synthetic probes execute gateway lifecycle around ordinary probes without reordering results", async () => {
-  const capture = await captureLocalFixture([
+test("synthetic probes execute gateway lifecycle around ordinary probes without reordering results", async (t) => {
+  const capture = await captureLocalFixture(t, [
     "let started = false;",
     "let ordinaryProbeCount = 0;",
     "export function register(api) {",
@@ -735,8 +735,8 @@ test("Gateway probes preserve thrown, rejected, and hanging handler outcomes aft
   }
 });
 
-test("synthetic probes keep opt-in registrations guarded", async () => {
-  const capture = await captureLocalFixture([
+test("synthetic probes keep opt-in registrations guarded", async (t) => {
+  const capture = await captureLocalFixture(t, [
     "export function register(api) {",
     "  api.registerService({ name: 'fixture_service', start() { return { started: true }; } });",
     "}",
@@ -751,8 +751,8 @@ test("synthetic probes keep opt-in registrations guarded", async () => {
   assert.equal(executed.results[0].label, "registerService.start");
 });
 
-test("synthetic probes fail a hanging invoke instead of waiting forever", { timeout: 2000 }, async () => {
-  const capture = await captureLocalFixture([
+test("synthetic probes fail a hanging invoke instead of waiting forever", { timeout: 2000 }, async (t) => {
+  const capture = await captureLocalFixture(t, [
     "export function register(api) {",
     "  api.on('before_tool_call', () => new Promise(() => {}));",
     "}",
@@ -875,12 +875,12 @@ test("synthetic probes observe late rejection without starting later work", { ti
   assert.equal(later, 0);
 });
 
-test("synthetic entrypoint API preserves supplied runtime and retained callback identity", async () => {
+test("synthetic entrypoint API preserves supplied runtime and retained callback identity", async (t) => {
   const event = { toolName: "identity-fixture" };
   let calls = 0;
   const handler = (actual) => { assert.equal(actual, event); calls += 1; return "identity-ok"; };
   const runtime = { handler };
-  const capture = await captureLocalFixture([
+  const capture = await captureLocalFixture(t, [
     "export function register(api) { api.on('before_tool_call', api.runtime.handler); }",
   ], { apiOptions: { runtime } });
   assert.equal(capture.retained[0].handler, handler);
@@ -892,8 +892,8 @@ test("synthetic entrypoint API preserves supplied runtime and retained callback 
   assert.deepEqual(Object.keys(runtime), ["handler"]);
 });
 
-test("synthetic probes finish registerService start before stop and dispose", async () => {
-  const capture = await captureLocalFixture([
+test("synthetic probes finish registerService start before stop and dispose", async (t) => {
+  const capture = await captureLocalFixture(t, [
     "let startFinished = false;",
     "let stopFinished = false;",
     "export function register(api) {",
@@ -932,8 +932,9 @@ test("synthetic probes finish registerService start before stop and dispose", as
   );
 });
 
-test("mock SDK capture preserves retained registration metadata across subprocesses", async () => {
+test("mock SDK capture preserves retained registration metadata across subprocesses", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-mock-sdk-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const entrypoint = path.join(dir, "fixture.mjs");
   await writeFile(
     entrypoint,
@@ -960,8 +961,9 @@ test("mock SDK capture preserves retained registration metadata across subproces
   assert.match(result.results[0].reason, /no supported callable probe/);
 });
 
-test("mock SDK entrypoint synthetic probes execute retained handlers in-process", async () => {
+test("mock SDK entrypoint synthetic probes execute retained handlers in-process", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-mock-sdk-entrypoint-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const entrypoint = path.join(dir, "fixture.ts");
   await writeFile(
     entrypoint,
@@ -991,8 +993,9 @@ test("mock SDK entrypoint synthetic probes execute retained handlers in-process"
   );
 });
 
-test("mock SDK agent runtime path helpers return concrete paths", async () => {
+test("mock SDK agent runtime path helpers return concrete paths", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-agent-dir-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const entrypoint = path.join(dir, "fixture.mjs");
   await writeFile(
     entrypoint,
@@ -1024,8 +1027,9 @@ test("mock SDK agent runtime path helpers return concrete paths", async () => {
   assert.deepEqual(result.results[0].output, { type: "object", keys: ["agentDir", "authProfiles"] });
 });
 
-test("mock SDK windows spawn helpers return concrete invocations", async () => {
+test("mock SDK windows spawn helpers return concrete invocations", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-windows-spawn-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const entrypoint = path.join(dir, "fixture.mjs");
   await writeFile(
     entrypoint,
@@ -1097,8 +1101,9 @@ test("mock SDK windows spawn helpers return concrete invocations", async () => {
 });
 
 for (const mockSdk of [false, true]) {
-  test(`synthetic modelAuth executes no-auth handlers and fails uncaught auth (mockSdk=${mockSdk})`, async () => {
+  test(`synthetic modelAuth executes no-auth handlers and fails uncaught auth (mockSdk=${mockSdk})`, async (t) => {
     const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-model-auth-"));
+    t.after(() => rm(dir, { recursive: true, force: true }));
     const entrypoint = path.join(dir, "fixture.mjs");
     await writeFile(entrypoint, [
       'import assert from "node:assert/strict";',
@@ -1140,8 +1145,9 @@ function captureRetained(register) {
   return { status: "captured", captured: api.getCapturedContracts(), retained: api.getRetainedContracts() };
 }
 
-async function captureLocalFixture(lines, options = {}) {
+async function captureLocalFixture(t, lines, options = {}) {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-probes-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const entrypoint = path.join(dir, "fixture.mjs");
   await writeFile(entrypoint, `${lines.join("\n")}\n`, "utf8");
   return captureEntrypoint(entrypoint, {
