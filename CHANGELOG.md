@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Share one exit cleanup listener across repeated in-process synthetic probe runs, avoiding listener warnings while retaining mock SDK workspaces until exit.
+
 - Resolve inherited SDK member types with the exact checker so overrides cannot prescribe absent replacements, and stop cyclic named re-exports without failing target inspection.
 
 - Run the requested runtime capture when `ci --config` points at a plugin-root config, such as the one `init` writes, instead of silently skipping it and passing. Thanks @KrasimirKralev.

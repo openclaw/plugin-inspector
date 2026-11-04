@@ -690,3 +690,42 @@ test("mock SDK preserves string and record coercion contracts", async () => {
   }
   assert.equal(mockModule.normalizeOptionalString("  fixture-value  "), "fixture-value");
 });
+
+test("repeated synthetic calls share one workspace cleanup listener", async (t) => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-synthetic-cleanup-"));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  await writeFile(path.join(root, "index.mjs"), `export function register(api) {
+    api.on("before_tool_call", () => ({ ok: true }));
+  }`);
+  const before = process.listenerCount("exit");
+  for (let index = 0; index < 12; index++) {
+    const result = await runEntrypointSyntheticProbes("index.mjs", { cwd: root, pluginRoot: root, mockSdk: true });
+    assert.equal(result.summary.passCount, 1);
+    assert.ok(process.listenerCount("exit") <= before + 1, "workspace cleanup must not add a listener for each call");
+  }
+});
+
+test("synthetic workspaces survive calls and are removed on process exit", async (t) => {
+  const root = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-synthetic-exit-"));
+  t.after(() => rm(root, { recursive: true, force: true }));
+  const temporaryRoot = path.join(root, "temporary");
+  await mkdir(temporaryRoot);
+  await writeFile(path.join(root, "good.mjs"), "export function register(api) { api.on('before_tool_call', () => ({})); }");
+  await writeFile(path.join(root, "bad.mjs"), "throw new Error('fixture import failure');");
+  const script = `
+    import assert from 'node:assert/strict';
+    import { readdir } from 'node:fs/promises';
+    import { runEntrypointSyntheticProbes } from ${JSON.stringify(new URL("../src/index.js", import.meta.url).href)};
+    const options = { cwd: process.argv[1], pluginRoot: process.argv[1], mockSdk: true };
+    await runEntrypointSyntheticProbes('good.mjs', options);
+    await runEntrypointSyntheticProbes('good.mjs', options);
+    await assert.rejects(runEntrypointSyntheticProbes('bad.mjs', options), /fixture import failure/);
+    console.log(JSON.stringify((await readdir(process.argv[2])).filter(name => name.startsWith('plugin-inspector-synthetic-mock-sdk-'))));
+  `;
+  const { stdout } = await execFileAsync(process.execPath, ["--input-type=module", "-e", script, root, temporaryRoot], {
+    env: { ...process.env, TMPDIR: temporaryRoot, TMP: temporaryRoot, TEMP: temporaryRoot }, timeout: 10000,
+  });
+  const workspaces = JSON.parse(stdout);
+  assert.equal(workspaces.length, 3, "cached modules keep their workspaces until exit, including failures");
+  for (const workspace of workspaces) await assert.rejects(stat(path.join(temporaryRoot, workspace)), { code: "ENOENT" });
+});
