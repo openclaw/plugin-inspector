@@ -1,4 +1,4 @@
-import ts from "typescript";
+import ts from "../typescript.cjs";
 
 export function walk(node, visit) {
   visit(node);

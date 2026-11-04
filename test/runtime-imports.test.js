@@ -6,13 +6,59 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import { pathToFileURL } from "node:url";
-import { collectRuntimeModuleImports } from "../src/runtime-imports.js";
+import { collectRuntimeModuleImports, createRuntimeImportAnalysisCache } from "../src/runtime-imports.js";
 import { createMockSdkPackage } from "../src/sdk-mock.js";
 
-test("ordinary calls and retained markers avoid redundant analysis", (t) => {
-  if (process.versions.bun || typeof nodeModule.stripTypeScriptTypes !== "function") {
-    return t.skip("requires Node's replaceable type-erasure builtin");
+test("enum syntax distinguishes type-only imports from identical runtime specifiers", () => {
+  const source = [
+    'type First = import("same-package").First;',
+    'const icon = "🦊";',
+    'type Second = typeof import("same-package");',
+    'enum Value { First = require("same-package") }',
+    'void import("same-package");',
+  ].join("\r\n");
+  for (const options of [{}, { includeStaticMembers: true }, { includeRuntimeMembers: true }]) {
+    const imports = collectRuntimeModuleImports(source, options);
+    assert.deepEqual(imports.map(({ kind }) => kind), ["require", "import"]);
+    assert.deepEqual(imports.map(({ index }) => index), [source.indexOf("require("), source.lastIndexOf("import(")]);
+    assert.deepEqual(imports.map(({ specifierStart }) => specifierStart), [
+      source.indexOf('"same-package"', source.indexOf("require(")) + 1,
+      source.lastIndexOf('"same-package"') + 1,
+    ]);
   }
+});
+
+test("malformed enum sources retain possible type imports conservatively", () => {
+  const source = 'enum Value { First }\ntype Only = import("possible-type").Only;\nrequire("runtime");\nfunction incomplete(';
+  const imports = collectRuntimeModuleImports(source, { includeRuntimeMembers: true });
+  assert.deepEqual(imports.map(({ specifier }) => specifier), ["possible-type", "runtime"]);
+  assert.ok(imports.every(({ names }) => names.size === 0));
+});
+
+test("unsupported-syntax fallback rejects TypeScript parse recovery as import evidence", {
+  skip: process.versions.bun || typeof nodeModule.stripTypeScriptTypes !== "function",
+}, () => {
+  const malformed = 'enum Value { First }\ntype Only = import("possible-type").Only;\nrequire("runtime");\nfunction incomplete(';
+  const script = [
+    'import assert from "node:assert/strict";',
+    'import module from "node:module";',
+    'module.stripTypeScriptTypes = () => { const error = new Error("unsupported syntax"); error.code = "ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX"; throw error; };',
+    'module.syncBuiltinESMExports();',
+    `const { collectRuntimeModuleImports } = await import(${JSON.stringify(new URL("../src/runtime-imports.js", import.meta.url).href)});`,
+    `const imports = collectRuntimeModuleImports(${JSON.stringify(malformed)}, { includeRuntimeMembers: true });`,
+    'assert.deepEqual(imports.map(({ specifier }) => specifier), ["possible-type", "runtime"]);',
+    'assert.ok(imports.every(({ names }) => names.size === 0));',
+  ].join("\n");
+  const result = spawnSync(process.execPath, ["--input-type=module", "--eval", script], {
+    encoding: "utf8", timeout: 15_000, maxBuffer: 64 * 1024,
+  });
+  assert.equal(result.error, undefined);
+  assert.equal(result.status, 0, result.stderr);
+});
+
+test("ordinary calls and retained markers avoid redundant analysis", {
+  skip: process.versions.bun || typeof nodeModule.stripTypeScriptTypes !== "function",
+}, () => {
   const source = [
     'import assert from "node:assert/strict";',
     'import module from "node:module";',
@@ -60,10 +106,9 @@ test("escaped named factory imports retain SDK calls without a raw createRequire
   }
 });
 
-test("erased import markers require full identity and preserve overlapping suffixes", (t) => {
-  if (process.versions.bun || typeof nodeModule.stripTypeScriptTypes !== "function") {
-    return t.skip("requires Node erasure before duplicate-binding AST fallback");
-  }
+test("erased import markers require full identity and preserve overlapping suffixes", {
+  skip: process.versions.bun || typeof nodeModule.stripTypeScriptTypes !== "function",
+}, () => {
   const specifier = "openclaw/plugin-sdk/embedded__plugin_inspector_runtime_import_1";
   const source = [
     'type Gone = import("openclaw/plugin-sdk/erased").Gone;',
@@ -291,5 +336,34 @@ test("generated runtime modules settle and retained callbacks compute values and
     await assert.rejects(callback("missing", true), { message: "fixture prerequisite: missing" });
   } finally {
     await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("a shared analysis cache returns the same imports as independent passes", () => {
+  const sources = [
+    [
+      'import { createRequire } from "node:module";',
+      'import * as sdk from "openclaw/plugin-sdk/core";',
+      'export { helper } from "openclaw/plugin-sdk/helpers";',
+      "const load = createRequire(import.meta.url);",
+      'const { readSessionEntry } = load("openclaw/plugin-sdk/session-store-runtime");',
+      'const lazy = await import("openclaw/plugin-sdk/channel-runtime");',
+      "lazy.sendMessage(); sdk.definePluginEntry(); api.runtime.agent.session.load();",
+      'import("openclaw/plugin-sdk/media").then(({ fetchMedia }) => fetchMedia);',
+    ].join("\n"),
+    'type Only = import("possible-type").Only;\nconst value: number = require("runtime").value;\n',
+    'enum Value { First = require("same-package") }\nvoid import("same-package");\n',
+    'require("runtime");\nfunction incomplete(',
+  ];
+  const optionSets = [{}, { includeStaticMembers: true, includeRuntimeMembers: true }, { includeStaticNamespaces: true }];
+  const plain = (imports) => imports.map((entry) => ({ ...entry, names: [...entry.names].sort() }));
+  for (const source of sources) {
+    const analysisCache = createRuntimeImportAnalysisCache();
+    for (const options of optionSets) {
+      assert.deepEqual(
+        plain(collectRuntimeModuleImports(source, { ...options, analysisCache })),
+        plain(collectRuntimeModuleImports(source, options)),
+      );
+    }
   }
 });

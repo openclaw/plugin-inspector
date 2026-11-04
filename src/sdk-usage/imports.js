@@ -1,4 +1,4 @@
-import ts from "typescript";
+import ts from "../typescript.cjs";
 import { inType, isDependencyDeclaration, isSdkSpecifier, nameText, referenceKind, stringExpressionPrefix, walk } from "./syntax.js";
 
 export function collectSdkImports({ sources, checker, report, provenance }) {

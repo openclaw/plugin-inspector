@@ -1,0 +1,108 @@
+name: Publish memory
+
+# ClawHub runs publish-time inspection inside a 512 MiB Node action. This gate
+# measures that path (packed OpenClaw target preparation, retirement
+# qualification, author-facing plugin check) on the largest official channel
+# plugins and compares it with the 0.4.5 release on the same runner, so a
+# change that regresses memory on a large plugin fails before release.
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  publish-memory:
+    name: Publish-time peak RSS
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Locate scratch directories
+        run: |
+          echo "FIXTURES=$RUNNER_TEMP/publish-memory" >> "$GITHUB_ENV"
+          echo "BASELINE=$RUNNER_TEMP/baseline-0.4.5" >> "$GITHUB_ENV"
+
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24.22.1
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache npm fixtures
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/publish-memory
+          key: publish-memory-openclaw-2026.10.10-channels-2026.10.10
+
+      - name: Fetch OpenClaw target and channel plugins
+        run: node scripts/fetch-publish-memory-fixtures.mjs --out "$FIXTURES"
+
+      - name: Install the 0.4.5 baseline
+        run: |
+          mkdir -p "$BASELINE"
+          cd "$BASELINE"
+          npm init -y >/dev/null
+          npm install --no-audit --no-fund --ignore-scripts @openclaw/plugin-inspector@0.4.5
+
+      # Local medians are 40–48% of 0.4.5 (Node 24 and 26). On these runners V8
+      # sometimes doubles the young generation to 128 MiB on discord's 351 KB
+      # bundle (40–57% across runs), so the gate leaves that headroom.
+      - name: Released OpenClaw target (shipped qualification), at most 60% of 0.4.5
+        run: >-
+          node scripts/publish-memory-benchmark.mjs
+          --target "$FIXTURES/openclaw/package"
+          --plugin @openclaw/discord="$FIXTURES/plugins/discord/package"
+          --plugin @openclaw/matrix="$FIXTURES/plugins/matrix/package"
+          --plugin @openclaw/whatsapp="$FIXTURES/plugins/whatsapp/package"
+          --baseline "$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js"
+          --runs 5 --max-ratio 0.6 --diagnose --json publish-memory-released.json
+
+      - name: Unreleased OpenClaw target (on-demand type check), at most 90% of 0.4.5
+        run: >-
+          node scripts/publish-memory-benchmark.mjs --uncached-target
+          --target "$FIXTURES/openclaw/package"
+          --plugin @openclaw/discord="$FIXTURES/plugins/discord/package"
+          --plugin @openclaw/matrix="$FIXTURES/plugins/matrix/package"
+          --plugin @openclaw/whatsapp="$FIXTURES/plugins/whatsapp/package"
+          --baseline "$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js"
+          --runs 3 --max-ratio 0.9 --diagnose --json publish-memory-unreleased.json
+
+      # ClawHub's Convex actions run the inspector from an esbuild bundle, so a
+      # dependency hidden from bundlers would only fail after deploy.
+      - name: Bundled like ClawHub's Convex actions, at most 60% of 0.4.5
+        run: |
+          banner='import { createRequire as __createRequire } from "node:module"; import { fileURLToPath as __fileURLToPath } from "node:url"; import { dirname as __dirnameOf } from "node:path"; const require = __createRequire(import.meta.url); const __filename = __fileURLToPath(import.meta.url); const __dirname = __dirnameOf(__filename);'
+          for implementation in candidate baseline; do
+            entry=src/index.js
+            if [ "$implementation" = baseline ]; then entry="$BASELINE/node_modules/@openclaw/plugin-inspector/src/index.js"; fi
+            npx --yes esbuild@0.25.12 "$entry" --bundle --platform=node --format=esm --target=node24 \
+              --banner:js="$banner" --log-level=warning --outfile="$RUNNER_TEMP/bundled/$implementation/index.mjs"
+          done
+          node scripts/publish-memory-benchmark.mjs \
+            --target "$FIXTURES/openclaw/package" \
+            --plugin @openclaw/discord="$FIXTURES/plugins/discord/package" \
+            --plugin @openclaw/matrix="$FIXTURES/plugins/matrix/package" \
+            --plugin @openclaw/whatsapp="$FIXTURES/plugins/whatsapp/package" \
+            --inspector "$RUNNER_TEMP/bundled/candidate/index.mjs" \
+            --baseline "$RUNNER_TEMP/bundled/baseline/index.mjs" \
+            --runs 3 --max-ratio 0.6 --json publish-memory-bundled.json
+
+      - name: Shipped qualifications match a full type check
+        run: node scripts/packed-sdk-qualifications.mjs --check
+
+      - name: Upload measurements
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: publish-memory
+          path: publish-memory-*.json
+          if-no-files-found: ignore

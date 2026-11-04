@@ -1,5 +1,5 @@
 import path from "node:path";
-import ts from "typescript";
+import ts from "../typescript.cjs";
 import { nameText } from "./syntax.js";
 import { capabilityContextTypes } from "./host-context.js";
 

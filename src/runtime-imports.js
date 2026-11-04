@@ -4,7 +4,18 @@ import { analyze } from "eslint-scope";
 
 const literalModuleImport = /(?<![$\w.])(?<kind>[$A-Z_a-z][$\w]*)\s*\(\s*(?<quote>["'`])(?<specifier>[^"'`\\\r\n]+)\k<quote>/dg;
 
-export function collectRuntimeModuleImports(text, { includeStaticNamespaces = false, includeStaticMembers = false, includeRuntimeMembers = false } = {}) {
+let typeScript;
+
+// Callers that classify the same source more than once (inspectSourceText runs
+// both SDK-import and registry-deprecation passes over every file) can share
+// one analysis: pass the same object as `analysisCache`. Type erasure, parsing
+// and scope analysis are reused only for byte-identical input, so results are
+// unchanged; large bundles just stop being parsed twice.
+export function createRuntimeImportAnalysisCache() {
+  return { stripped: undefined, analysis: undefined };
+}
+
+export function collectRuntimeModuleImports(text, { includeStaticNamespaces = false, includeStaticMembers = false, includeRuntimeMembers = false, analysisCache } = {}) {
   // Preserve possible-import offsets through erasure; AST and scopes classify them.
   // Named factories use createRequire or a \u escape. Avoid parsing unrelated
   // calls, which can dominate whole-plugin inspection.
@@ -14,20 +25,16 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
   if (entries.length === 0 && !includeStaticNamespaces && !includeStaticMembers && !includeRuntimeMembers) return entries;
   const { runtimeText, imports, sourceOffset } = classifyRuntimeImports(text, entries, {
     preservePositions: includeStaticMembers || includeRuntimeMembers,
+    analysisCache,
   });
-  let ast;
-  let scopes;
-  try {
-    // Accept both source modules and CommonJS wrappers without changing their runtime.
-    ast = parse(runtimeText, {
-      ecmaVersion: "latest", ranges: true, sourceType: "script",
-      allowAwaitOutsideFunction: true, allowReturnOutsideFunction: true, allowImportExportEverywhere: true,
-    });
-    scopes = analyze(ast, {
-      ecmaVersion: 2026,
-      sourceType: ast.body.some((node) => /^(?:Import|Export).*Declaration$/.test(node.type)) ? "module" : "commonjs",
-    });
-  } catch {
+  let analysis = analysisCache?.analysis;
+  if (analysis?.runtimeText !== runtimeText) {
+    // Release a different text's tree before building this one.
+    if (analysisCache) analysisCache.analysis = undefined;
+    analysis = analyzeRuntimeText(runtimeText);
+    if (analysisCache) analysisCache.analysis = analysis;
+  }
+  if (!analysis.scopes) {
     // Keep known imports if syntax is incomplete/unsupported; never guess namespace exports.
     // Type erasure has already classified each occurrence, even when AST analysis fails.
     const retained = new Set(imports.map(({ entry }) => entry.specifierStart));
@@ -35,43 +42,7 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
       ["require", "import"].includes(entry.kind) && retained.has(entry.specifierStart))
       .map((entry) => ({ ...entry, names: new Set() }));
   }
-
-  const parents = new Map();
-  const nodes = [];
-  visit(ast);
-  function visit(node, parent) {
-    if (!node || typeof node.type !== "string") return;
-    parents.set(node, parent);
-    nodes.push(node);
-    for (const value of Object.values(node)) {
-      if (Array.isArray(value)) value.forEach((child) => visit(child, node));
-      else if (value && typeof value === "object") visit(value, node);
-    }
-  }
-  const requireReferences = new Set();
-  const lexicalReferences = new Set(scopes.scopes.flatMap((scope) =>
-    scope.references.filter((reference) => reference.resolved).map((reference) => reference.identifier)));
-  for (const declaration of nodes) {
-    if (declaration.type !== "ImportDeclaration" || !["module", "node:module"].includes(declaration.source.value)) continue;
-    for (const binding of declaration.specifiers) {
-      const variable = scopes.getDeclaredVariables(declaration).find((value) => value.identifiers.includes(binding.local));
-      if (!variable || variable.defs.length !== 1 || variable.references.some((reference) => reference.isWrite())) continue;
-      // Named imports identify the factory without following mutable module objects.
-      if (binding.type !== "ImportSpecifier" || binding.imported.name !== "createRequire") continue;
-      for (const reference of variable.references) {
-        const factory = reference.identifier;
-        const call = parents.get(factory);
-        if (!reference.isStatic() || call?.type !== "CallExpression" || call.callee !== factory || call.arguments.length !== 1) continue;
-        const owner = parents.get(call);
-        if (owner?.type !== "VariableDeclarator" || owner.init !== call || owner.id.type !== "Identifier") continue;
-        const handle = scopes.getDeclaredVariables(owner).find((value) => value.identifiers.includes(owner.id));
-        if (!handle || handle.defs.length !== 1 || handle.references.some((value) => value.isWrite() && !value.init)) continue;
-        for (const use of handle.references) {
-          if (use.isStatic() && use.isRead()) requireReferences.add(use.identifier);
-        }
-      }
-    }
-  }
+  const { scopes, parents, nodes, lexicalReferences, requireReferences } = analysis;
 
   const byMarker = new Map(imports.map(({ marker, entry }) => [marker, entry]));
   const result = [];
@@ -161,6 +132,67 @@ export function collectRuntimeModuleImports(text, { includeStaticNamespaces = fa
   }
 }
 
+function analyzeRuntimeText(runtimeText) {
+  let ast;
+  let scopes;
+  try {
+    // Accept both source modules and CommonJS wrappers without changing their runtime.
+    ast = parse(runtimeText, {
+      ecmaVersion: "latest", ranges: true, sourceType: "script",
+      allowAwaitOutsideFunction: true, allowReturnOutsideFunction: true, allowImportExportEverywhere: true,
+    });
+    scopes = analyze(ast, {
+      ecmaVersion: 2026,
+      sourceType: ast.body.some((node) => /^(?:Import|Export).*Declaration$/.test(node.type)) ? "module" : "commonjs",
+    });
+  } catch {
+    return { runtimeText };
+  }
+
+  const parents = new Map();
+  const nodes = [];
+  visit(ast);
+  // Same pre-order as walking Object.values(node), without allocating a value
+  // array and a callback per node: large bundles have millions of nodes.
+  function visit(node, parent) {
+    if (!node || typeof node.type !== "string") return;
+    parents.set(node, parent);
+    nodes.push(node);
+    for (const key in node) {
+      const value = node[key];
+      if (Array.isArray(value)) {
+        for (let index = 0; index < value.length; index += 1) visit(value[index], node);
+      } else if (value && typeof value === "object") visit(value, node);
+    }
+  }
+  const requireReferences = new Set();
+  const lexicalReferences = new Set(scopes.scopes.flatMap((scope) =>
+    scope.references.filter((reference) => reference.resolved).map((reference) => reference.identifier)));
+  for (const declaration of nodes) {
+    if (declaration.type !== "ImportDeclaration" || !["module", "node:module"].includes(declaration.source.value)) continue;
+    for (const binding of declaration.specifiers) {
+      const variable = scopes.getDeclaredVariables(declaration).find((value) => value.identifiers.includes(binding.local));
+      if (!variable || variable.defs.length !== 1 || variable.references.some((reference) => reference.isWrite())) continue;
+      // Named imports identify the factory without following mutable module objects.
+      if (binding.type !== "ImportSpecifier" || binding.imported.name !== "createRequire") continue;
+      for (const reference of variable.references) {
+        const factory = reference.identifier;
+        const call = parents.get(factory);
+        if (!reference.isStatic() || call?.type !== "CallExpression" || call.callee !== factory || call.arguments.length !== 1) continue;
+        const owner = parents.get(call);
+        if (owner?.type !== "VariableDeclarator" || owner.init !== call || owner.id.type !== "Identifier") continue;
+        const handle = scopes.getDeclaredVariables(owner).find((value) => value.identifiers.includes(owner.id));
+        if (!handle || handle.defs.length !== 1 || handle.references.some((value) => value.isWrite() && !value.init)) continue;
+        for (const use of handle.references) {
+          if (use.isStatic() && use.isRead()) requireReferences.add(use.identifier);
+        }
+      }
+    }
+  }
+
+  return { runtimeText, scopes, parents, nodes, lexicalReferences, requireReferences };
+}
+
 function* scanLiteralModuleImports(text) {
   const quotedOrComment = /\/\/[^\r\n]*|\/\*[\s\S]*?(?:\*\/|$)|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'/;
   const code = new RegExp(quotedOrComment.source + "|" + literalModuleImport.source + "|[`{}]", "dg");
@@ -209,7 +241,7 @@ function moduleImportEntry(match) {
   };
 }
 
-function classifyRuntimeImports(text, entries, { preservePositions = false } = {}) {
+function classifyRuntimeImports(text, entries, { preservePositions = false, analysisCache } = {}) {
   const markedImports = entries.map((entry, index) => {
     const { specifier, specifierStart } = entry;
     return {
@@ -231,9 +263,12 @@ function classifyRuntimeImports(text, entries, { preservePositions = false } = {
   let runtimeText = null;
   try {
     runtimeText = preservePositions && typeof nodeModule.stripTypeScriptTypes === "function"
-      ? nodeModule.stripTypeScriptTypes(markedText, { mode: "strip" })
-      : eraseTypeScript(markedText);
-  } catch {
+      ? stripTypes(markedText, analysisCache)
+      : eraseTypeScript(markedText, analysisCache);
+  } catch (error) {
+    if (error?.code === "ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX") {
+      runtimeText = maskImportTypes(markedText);
+    }
     // Unsupported or incomplete TypeScript cannot prove an import is type-only.
   }
   // Scan once, including overlapping suffixes inside a specifier. The full marker
@@ -254,6 +289,37 @@ function classifyRuntimeImports(text, entries, { preservePositions = false } = {
   };
 }
 
+function maskImportTypes(text) {
+  try {
+    const ts = typeScript ??= nodeModule.createRequire(import.meta.url)("typescript");
+    const source = ts.createSourceFile(
+      "runtime-imports.ts", text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TS,
+    );
+    if (source.parseDiagnostics.length) return null;
+
+    const ranges = [];
+    function visit(node) {
+      if (ts.isImportTypeNode(node)) {
+        ranges.push([node.getStart(source), node.end]);
+        return;
+      }
+      ts.forEachChild(node, visit);
+    }
+    visit(source);
+
+    let result = "";
+    let cursor = 0;
+    for (const [start, end] of ranges) {
+      result += text.slice(cursor, start);
+      result += text.slice(start, end).replace(/[^\r\n]/g, " ");
+      cursor = end;
+    }
+    return result + text.slice(cursor);
+  } catch {
+    return null;
+  }
+}
+
 function sourceOffsetMapper(markedImports) {
   let extra = 0;
   const boundaries = markedImports.map(({ marker, entry, specifierEnd }) => {
@@ -272,13 +338,35 @@ function sourceOffsetMapper(markedImports) {
   };
 }
 
-function eraseTypeScript(text) {
+// Strip-mode erasure is deterministic; reuse it for identical input.
+function stripTypes(text, analysisCache) {
+  if (analysisCache?.stripped?.text === text) return analysisCache.stripped.output;
+  const output = nodeModule.stripTypeScriptTypes(text, { mode: "strip" });
+  if (analysisCache) analysisCache.stripped = { text, output };
+  return output;
+}
+
+function eraseTypeScript(text, analysisCache) {
   if (typeof nodeModule.stripTypeScriptTypes === "function") {
+    // Callers sharing an analysis also run the position-preserving pass, which
+    // strips the same text. When strip mode accepts a source it contains no
+    // TypeScript runtime constructs (enums, namespaces, parameter properties),
+    // so transform mode would only re-print the same JavaScript; Node 26
+    // already takes this path because it rejects "transform". Reuse the strip
+    // result rather than building a second erased text and syntax tree.
+    // Anything strip rejects still goes through transform exactly as before.
+    if (analysisCache) {
+      try {
+        return stripTypes(text, analysisCache);
+      } catch {
+        // Fall through to transform mode and its own error handling.
+      }
+    }
     try {
       return nodeModule.stripTypeScriptTypes(text, { mode: "transform" });
     } catch (error) {
       if (error?.code !== "ERR_INVALID_ARG_VALUE") throw error;
-      return nodeModule.stripTypeScriptTypes(text, { mode: "strip" });
+      return stripTypes(text, analysisCache);
     }
   }
   if (typeof globalThis.Bun?.Transpiler === "function") {

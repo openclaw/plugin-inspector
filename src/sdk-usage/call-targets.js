@@ -1,4 +1,4 @@
-import ts from "typescript";
+import ts from "../typescript.cjs";
 import { nameText } from "./syntax.js";
 
 /** Index argument flow through actual local bodies without instantiating generic signatures. */

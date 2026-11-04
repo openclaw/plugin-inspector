@@ -1,5 +1,10 @@
 import path from "node:path";
-import ts from "typescript";
+import ts from "../typescript.cjs";
+
+// SDK inventory needs type information, including JavaScript JSDoc, but not
+// TypeScript documentation trees or type-error diagnostics.
+const jsDocParsingMode = ts.JSDocParsingMode.ParseForTypeInfo;
+const sourceOptions = { languageVersion: ts.ScriptTarget.Latest, jsDocParsingMode };
 
 function publicTypePaths(targetRoot) {
   if (!targetRoot) return undefined;
@@ -27,7 +32,7 @@ function publicTypePaths(targetRoot) {
 // A single inferred export can prevent declaration emit for an otherwise typed
 // facade. Keep inferred code, but avoid crawling imports used only by typed bodies.
 function withoutTypedImplementations(text, fileName, canDropImport) {
-  const source = ts.createSourceFile(fileName, text, ts.ScriptTarget.Latest, true);
+  const source = ts.createSourceFile(fileName, text, sourceOptions, true);
   if (source.parseDiagnostics.length) return text;
   const edits = [];
   const used = new Set();
@@ -68,7 +73,7 @@ function withoutTypedImplementations(text, fileName, canDropImport) {
 
 /** Resolve inspected files and the explicit host; never crawl installed dependencies. */
 export function createUsageProgram(files, targetRoot, hostCache) {
-  const sources = files.filter((file) => !file.metadata).map((file) => ts.createSourceFile(file.path, file.text, ts.ScriptTarget.Latest, true));
+  const sources = files.filter((file) => !file.metadata).map((file) => ts.createSourceFile(file.path, file.text, sourceOptions, true));
   const byPath = new Map(sources.map((source) => [source.fileName, source]));
   function insideTarget(file) {
     if (!targetRoot) return false;
@@ -82,6 +87,7 @@ export function createUsageProgram(files, targetRoot, hostCache) {
     ...(targetRoot ? { paths: publicTypePaths(targetRoot) } : {}),
   };
   const host = ts.createCompilerHost(options);
+  host.jsDocParsingMode = jsDocParsingMode;
   const resolutionCache = hostCache?.resolutionCache ?? ts.createModuleResolutionCache(process.cwd(), host.getCanonicalFileName, options);
   if (hostCache) hostCache.resolutionCache = resolutionCache;
   const realpath = host.realpath?.bind(host);
@@ -108,7 +114,7 @@ export function createUsageProgram(files, targetRoot, hostCache) {
       if (!facts) {
         const raw = host.readFile(name);
         if (raw === undefined) return false;
-        const syntax = ts.createSourceFile(name, raw, options.target, true);
+        const syntax = ts.createSourceFile(name, raw, sourceOptions, true);
         let effects = !ts.isExternalModule(syntax) || /\.[cm]?jsx?$/.test(name) || syntax.referencedFiles.length > 0 ||
           syntax.typeReferenceDirectives.length > 0 || syntax.libReferenceDirectives.length > 0 ||
           syntax.hasNoDefaultLib || syntax.parseDiagnostics.length > 0;
@@ -132,6 +138,7 @@ export function createUsageProgram(files, targetRoot, hostCache) {
   const hostFiles = new Set();
   const libraryDirectory = path.dirname(ts.getDefaultLibFilePath(options));
   host.getSourceFile = (name, languageVersion) => {
+    const parseOptions = { ...(typeof languageVersion === "object" ? languageVersion : { languageVersion }), jsDocParsingMode };
     if (byPath.has(name)) return byPath.get(name);
     const library = path.dirname(name) === libraryDirectory && /^lib(?:\..+)?\.d\.ts$/.test(path.basename(name));
     if (!library && !hostFiles.has(name)) return undefined;
@@ -139,7 +146,7 @@ export function createUsageProgram(files, targetRoot, hostCache) {
     const cachedSource = cached?.source?.deref();
     let source = cachedSource;
     if (!source && cached) {
-      source = ts.createSourceFile(name, cached.text, languageVersion, true);
+      source = ts.createSourceFile(name, cached.text, parseOptions, true);
       source.isDeclarationFile = cached.isDeclarationFile;
     }
     if (!source && hostFiles.has(name) && /\.[cm]?tsx?$/.test(name) && !/\.d\.[cm]?ts$/.test(name)) {
@@ -151,19 +158,19 @@ export function createUsageProgram(files, targetRoot, hostCache) {
         // graph. Keep its declaration view only when TypeScript can preserve
         // exported types without inference; otherwise retain the source intact.
         const declaration = ts.transpileDeclaration(text, {
-          fileName: name, reportDiagnostics: true,
+          fileName: name, reportDiagnostics: true, jsDocParsingMode,
           compilerOptions: { target: options.target, module: options.module, isolatedDeclarations: true },
         });
         if (!declaration.diagnostics?.some((diagnostic) => diagnostic.category === ts.DiagnosticCategory.Error)) {
-          source = ts.createSourceFile(name, declaration.outputText, languageVersion, true);
+          source = ts.createSourceFile(name, declaration.outputText, parseOptions, true);
           source.isDeclarationFile = true;
         } else {
           source = ts.createSourceFile(name, withoutTypedImplementations(text, name,
-            (specifier) => canDropImport(specifier, name)), languageVersion, true);
+            (specifier) => canDropImport(specifier, name)), parseOptions, true);
         }
       }
     }
-    source ??= readSource(name, languageVersion);
+    source ??= readSource(name, parseOptions);
     // Reuse host syntax while it remains live, but let memory pressure collect
     // unused trees. The current program keeps its own input trees alive.
     if (source && hostCache && !cachedSource) hostCache.sources.set(name, { text: source.text, isDeclarationFile: source.isDeclarationFile, source: new WeakRef(source) });

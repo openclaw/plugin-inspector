@@ -195,12 +195,14 @@ test("profile budgets use valid API then environment values without a zero opt-o
 test("a stalled output-flooding ps cannot outlive the profile", posixOnly, async (t) => {
   const dir = await tempDir(t);
   const pidsFile = path.join(dir, "pids");
+  const readyFile = path.join(dir, "ready");
   const ps = path.join(dir, "ps");
-  await writeFile(ps, `#!${process.execPath}
-    require('node:fs').appendFileSync(${JSON.stringify(pidsFile)}, process.pid + '\\n');
-    process.on('SIGTERM', () => {});
-    process.stdout.write('1 1 '.repeat(20000));
-    setTimeout(() => process.exit(0), 1800);
+  await writeFile(ps, `#!/bin/sh
+    trap '' TERM
+    printf '%s\\n' "$$" >> "$PLUGIN_INSPECTOR_TEST_PS_PIDS" || exit 1
+    printf '%80000s' '' || exit 1
+    printf '%s\\n' "$$" >> "$PLUGIN_INSPECTOR_TEST_PS_READY" || exit 1
+    while :; do :; done
   `);
   await chmod(ps, 0o755);
   const originalPath = process.env.PATH;
@@ -210,12 +212,20 @@ test("a stalled output-flooding ps cannot outlive the profile", posixOnly, async
     command: process.execPath,
     args: ["-e", "setTimeout(() => {}, 500)"],
     timeoutMs: 2000,
+    env: {
+      ...process.env,
+      PLUGIN_INSPECTOR_TEST_PS_PIDS: pidsFile,
+      PLUGIN_INSPECTOR_TEST_PS_READY: readyFile,
+    },
   });
   assert.equal(result.exitCode, 0);
   assert.ok(result.wallMs < 1500, `sampler delayed completion to ${result.wallMs}ms`);
   assert.equal(result.statSampleCount, 0);
   const pids = (await readFile(pidsFile, "utf8")).trim().split(/\s+/).map(Number);
   assert.ok(pids.length > 0);
+  const readyPids = (await readFile(readyFile, "utf8")).trim().split(/\s+/).map(Number);
+  assert.ok(readyPids.length > 0);
+  assert.ok(readyPids.every((pid) => pids.includes(pid)));
   for (const pid of pids) await assertGone(pid);
 });
 
