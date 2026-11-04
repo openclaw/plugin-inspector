@@ -27,6 +27,33 @@ function assertCertified(input, names, { available = [], unavailable = [], undec
   return result;
 }
 
+test("inherited members use the effective derived property type", async () => {
+  const input = snapshot({
+    "dist/plugin-sdk/index.d.ts": [
+      "interface Base { child: { compareAndApply(): void } | { other(): void }; inheritedAsync(): void }",
+      "interface Derived extends Base { child: { other(): void } }",
+      "export { Derived };",
+    ].join("\n"),
+  });
+  assertCertified(input, ["compareAndApply", "inheritedAsync", "other"], {
+    available: ["other"],
+    undecided: ["compareAndApply", "inheritedAsync"],
+  });
+  const { retirementRecordsForPackedTarget } = await import("../src/registry-deprecations.js");
+  const records = ["compareAndApply", "inheritedAsync"].map((name) => ({
+    code: name, status: "deprecated", replacementExports: [name],
+  }));
+  assert.deepEqual(await retirementRecordsForPackedTarget(records, input), [records[1]]);
+});
+
+test("cyclic named re-exports do not hide an accompanying valid API", () => {
+  assertCertified(snapshot({
+    "dist/plugin-sdk/index.d.ts": 'export { Loop } from "../a.js"; export interface Api { compareAndApply(): void }',
+    "dist/a.d.ts": 'export { Loop } from "./b.js";',
+    "dist/b.d.ts": 'export { Loop } from "./a.js";',
+  }), ["compareAndApply"], { available: ["compareAndApply"] });
+});
+
 test("entry exports, members, statics, enums and bindings are certified available", () => {
   assertCertified(snapshot({
     "dist/plugin-sdk/index.d.ts": [

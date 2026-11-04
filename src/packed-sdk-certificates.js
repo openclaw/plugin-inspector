@@ -387,6 +387,9 @@ function resolveLocal(context, fileName, name, seen = new Set()) {
 }
 
 function resolveExport(context, fileName, name, seen = new Set()) {
+  const key = `export\0${fileName}\0${name}`;
+  if (seen.has(key)) return undefined;
+  seen.add(key);
   const module = context.modules.get(fileName);
   if (!module || module.uncertain || module.exportEquals) return undefined;
   const direct = module.exports.has(name) ? tableEntries(module.exports, name).map(exportEntry) : undefined;
@@ -698,11 +701,8 @@ function positiveNames(context, entries, queried) {
     if (meaning === "type") {
       if (ts.isInterfaceDeclaration(node)) {
         walkMembers(node.members, fileName, tainted);
-        for (const clause of node.heritageClauses ?? []) {
-          for (const base of clause.types) {
-            if (ts.isIdentifier(base.expression)) certainType(ts.factory.createTypeReferenceNode(base.expression.text, base.typeArguments ? [...base.typeArguments] : undefined), fileName, tainted);
-          }
-        }
+        // Base member types can be overridden by the derived interface. Leave
+        // inherited members to the checker, which walks the effective type.
       } else if (ts.isClassDeclaration(node)) {
         walkMembers(node.members, fileName, tainted, false);
       } else if (ts.isTypeAliasDeclaration(node)) {
