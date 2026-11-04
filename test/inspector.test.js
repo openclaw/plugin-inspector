@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdir, mkdtemp, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
@@ -452,8 +452,9 @@ test("source inspection records whole-store session helper usage through runtime
   );
 });
 
-test("package fixture inspection scans packaged runtime extension entrypoints", async () => {
+test("package fixture inspection scans packaged runtime extension entrypoints", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-package-runtime-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   await mkdir(path.join(dir, "fixture", ".crabpot-package", "dist"), { recursive: true });
   await writeFile(
     path.join(dir, "fixture", ".crabpot-package", "package.json"),
@@ -528,8 +529,9 @@ test("fixture set inspection produces a passing report", async () => {
   assert.deepEqual(report.fixtures[0].manifestContracts, ["tools"]);
 });
 
-test("compatibility inspection resolves bundled fixture membership before SDK classification", async () => {
+test("compatibility inspection resolves bundled fixture membership before SDK classification", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-membership-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   const targetDir = path.join(rootDir, "openclaw");
   const bundledDir = path.join(targetDir, "extensions/bundled");
   const externalDir = path.join(rootDir, "external");
@@ -595,8 +597,9 @@ test("fixture set inspection reports missing expected seams", async () => {
   assert.match(report.breakages[0].message, /llm_output/);
 });
 
-test("fixture set inspection treats channel factories as channel registration coverage", async () => {
+test("fixture set inspection treats channel factories as channel registration coverage", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-channel-factory-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   await mkdir(path.join(dir, "fixture"), { recursive: true });
   await writeFile(
     path.join(dir, "fixture", "index.js"),
@@ -649,8 +652,9 @@ test("fixture set inspection treats channel factories as channel registration co
   assert.deepEqual(compiledReport.fixtures[0].registrations, ["defineBundledChannelEntry"]);
 });
 
-test("capture entrypoint imports a local fixture and records registrations", async () => {
+test("capture entrypoint imports a local fixture and records registrations", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-capture-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const entrypoint = path.join(dir, "fixture.mjs");
   await writeFile(
     entrypoint,
@@ -677,8 +681,9 @@ test("capture entrypoint imports a local fixture and records registrations", asy
 });
 
 for (const mockSdk of [false, true]) {
-  test(`capture modelAuth binds a resolver during registration (mockSdk=${mockSdk})`, async () => {
+  test(`capture modelAuth binds a resolver during registration (mockSdk=${mockSdk})`, async (t) => {
     const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-model-auth-"));
+    t.after(() => rm(dir, { recursive: true, force: true }));
     const entrypoint = path.join(dir, "fixture.mjs");
     await writeFile(entrypoint, [
       "export function register(api) {",
@@ -695,8 +700,9 @@ for (const mockSdk of [false, true]) {
     assert.equal(result.captured[0].arguments[0].name, "fixture-provider");
   });
 
-  test(`capture modelAuth acquisition remains a registration failure (mockSdk=${mockSdk})`, async () => {
+  test(`capture modelAuth acquisition remains a registration failure (mockSdk=${mockSdk})`, async (t) => {
     const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-model-auth-failure-"));
+    t.after(() => rm(dir, { recursive: true, force: true }));
     const entrypoint = path.join(dir, "fixture.mjs");
     await writeFile(entrypoint, [
       "export async function register(api) {",
@@ -712,8 +718,9 @@ for (const mockSdk of [false, true]) {
   });
 }
 
-test("capture modelAuth retains a supplied runtime through the in-process entrypoint", async () => {
+test("capture modelAuth retains a supplied runtime through the in-process entrypoint", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-model-auth-custom-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const entrypoint = path.join(dir, "fixture.mjs");
   await writeFile(entrypoint, [
     "export function register(api) {",
@@ -731,8 +738,9 @@ test("capture modelAuth retains a supplied runtime through the in-process entryp
   assert.equal(result.retained[0].arguments[0].run(), runtime);
 });
 
-test("capture entrypoint can mock OpenClaw plugin SDK imports", async () => {
+test("capture entrypoint can mock OpenClaw plugin SDK imports", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-sdk-capture-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   await mkdir(path.join(dir, "src"), { recursive: true });
   const entrypoint = path.join(dir, "src", "index.mjs");
   await writeFile(
@@ -786,8 +794,9 @@ test("capture entrypoint can mock OpenClaw plugin SDK imports", async () => {
   );
 });
 
-test("mock capture supports the Lark SDK namespace import used by Feishu", async () => {
+test("mock capture supports the Lark SDK namespace import used by Feishu", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-sdk-lark-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const entrypoint = path.join(dir, "index.mjs");
   await writeFile(
     entrypoint,
@@ -821,8 +830,9 @@ test("mock capture supports the Lark SDK namespace import used by Feishu", async
   assert.deepEqual(result.captured.map((item) => `${item.kind}:${item.name}`), ["registration:registerTool"]);
 });
 
-test("mock capture ignores type-only root SDK imports", async () => {
+test("mock capture ignores type-only root SDK imports", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-sdk-type-import-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const entrypoint = path.join(dir, "index.ts");
   await writeFile(
     entrypoint,
@@ -847,8 +857,9 @@ test("mock capture ignores type-only root SDK imports", async () => {
   assert.deepEqual(result.captured.map((item) => `${item.kind}:${item.name}`), ["hook:before_tool_call"]);
 });
 
-test("mock capture supports unknown runtime root SDK exports", async () => {
+test("mock capture supports unknown runtime root SDK exports", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-sdk-dynamic-root-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const entrypoint = path.join(dir, "index.mjs");
   await writeFile(
     entrypoint,
@@ -873,8 +884,9 @@ test("mock capture supports unknown runtime root SDK exports", async () => {
   assert.deepEqual(result.captured.map((item) => `${item.kind}:${item.name}`), ["registration:registerTool"]);
 });
 
-test("mock capture accepts valid output when plugin code dirties process exit code", async () => {
+test("mock capture accepts valid output when plugin code dirties process exit code", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-exit-code-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const entrypoint = path.join(dir, "index.mjs");
   await writeFile(
     entrypoint,
@@ -902,8 +914,9 @@ test("mock capture accepts valid output when plugin code dirties process exit co
   ]);
 });
 
-test("mock capture prefers discovered bare mocks over installed dependency exports", async () => {
+test("mock capture prefers discovered bare mocks over installed dependency exports", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-mock-bare-capture-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   await mkdir(path.join(dir, "node_modules/typebox"), { recursive: true });
   await writeFile(
     path.join(dir, "node_modules/typebox/package.json"),
@@ -937,8 +950,9 @@ test("mock capture prefers discovered bare mocks over installed dependency expor
   assert.deepEqual(result.captured.map((item) => `${item.kind}:${item.name}`), ["registration:registerTool"]);
 });
 
-test("mock capture expands bundled channel entry registration shells", async () => {
+test("mock capture expands bundled channel entry registration shells", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-bundled-channel-capture-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const entrypoint = path.join(dir, "index.mjs");
   await writeFile(
     entrypoint,
@@ -970,8 +984,9 @@ test("mock capture expands bundled channel entry registration shells", async () 
   ]);
 });
 
-test("mock capture follows bundled channel linked registerFull exports", async () => {
+test("mock capture follows bundled channel linked registerFull exports", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-bundled-channel-linked-capture-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   await writeFile(
     path.join(dir, "index.ts"),
     [
