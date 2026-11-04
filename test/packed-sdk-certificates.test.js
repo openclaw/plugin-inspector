@@ -54,6 +54,40 @@ test("cyclic named re-exports do not hide an accompanying valid API", () => {
   }), ["compareAndApply"], { available: ["compareAndApply"] });
 });
 
+test("namespace export cycles terminate without hiding public APIs", () => {
+  for (const files of [
+    { "dist/plugin-sdk/index.d.ts": 'export * as self from "./index.js"; export interface Api { compareAndApply(): void }' },
+    {
+      "dist/plugin-sdk/index.d.ts": 'export * as other from "../other.js"; export interface Api { compareAndApply(): void }',
+      "dist/other.d.ts": 'export * as entry from "./plugin-sdk/index.js";',
+    },
+  ]) {
+    assertCertified(snapshot(files), ["compareAndApply", "absentAsync"], {
+      available: ["compareAndApply"], unavailable: ["absentAsync"],
+    });
+  }
+});
+
+test("imported-local export cycles terminate without hiding public APIs", () => {
+  assertCertified(snapshot({
+    "dist/plugin-sdk/index.d.ts": 'import { Loop } from "../other.js"; export { Loop }; export interface Api { compareAndApply(): void }',
+    "dist/other.d.ts": 'import { Loop } from "./plugin-sdk/index.js"; export { Loop };',
+  }), ["compareAndApply", "absentAsync"], {
+    available: ["compareAndApply"], unavailable: ["absentAsync"],
+  });
+});
+
+test("a shallow module visit can be upgraded for parameter inference", () => {
+  assertCertified(snapshot({
+    "dist/plugin-sdk/index.d.ts": [
+      'export * as ns from "../chunk.js";',
+      "type ParamsOf<T> = T extends (options: infer P) => unknown ? P : never;",
+      'export type Args = ParamsOf<typeof import("../chunk.js").configure>;',
+    ].join("\n"),
+    "dist/chunk.d.ts": "export declare function configure(options: { inferredAsync(): void }): void;",
+  }), ["inferredAsync"], { undecided: ["inferredAsync"] });
+});
+
 test("entry exports, members, statics, enums and bindings are certified available", () => {
   assertCertified(snapshot({
     "dist/plugin-sdk/index.d.ts": [

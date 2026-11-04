@@ -780,6 +780,15 @@ function reachableNameEvidence(context, entries, mayInfer) {
     // Per module: 0 unreached, 1 reached, 2 reached deeply (off-heap).
     const reached = new Map();
     const work = [];
+    const traversal = new Map();
+    const enter = (fileName, key, deep) => {
+      let states = traversal.get(fileName);
+      if (!states) traversal.set(fileName, states = new Map());
+      const want = deep || everythingDeep ? 2 : 1;
+      if ((states.get(key) ?? 0) >= want) return false;
+      states.set(key, want);
+      return true;
+    };
     const reachStatement = (fileName, index, deep) => {
       deep ||= everythingDeep;
       let states = reached.get(fileName);
@@ -790,6 +799,7 @@ function reachableNameEvidence(context, entries, mayInfer) {
       work.push([fileName, index, deep]);
     };
     const reachModule = (fileName, deep) => {
+      if (!enter(fileName, "module", deep)) return;
       for (const name of exportNames(context, fileName)) {
         // Every export name counts: even one that resolves to nothing becomes a
         // name (TypeScript's unknown symbol is a property).
@@ -801,6 +811,7 @@ function reachableNameEvidence(context, entries, mayInfer) {
       if (module && (module.uncertain || module.exportEquals)) for (let index = 0; index < statementCount(module); index += 1) reachStatement(fileName, index, deep);
     };
     const reachName = (fileName, name, deep) => {
+      if (!enter(fileName, `name\0${name}`, deep)) return;
       const module = modules.get(fileName);
       if (!module) return;
       for (const { index } of tableEntries(module.declarations, name).map(declarationEntry)) reachStatement(fileName, index, deep);
@@ -820,10 +831,8 @@ function reachableNameEvidence(context, entries, mayInfer) {
       if (target) reachModule(target, deep);
       for (const { fileName: ambientFile, index } of environment.ambientModules.get(specifier) ?? []) reachStatement(ambientFile, index, deep);
     };
-    const reachExport = (fileName, name, deep, seen = new Set()) => {
-      const key = `${fileName}\0${name}`;
-      if (seen.has(key)) return;
-      seen.add(key);
+    const reachExport = (fileName, name, deep) => {
+      if (!enter(fileName, `export\0${name}`, deep)) return;
       const module = modules.get(fileName);
       if (!module) return;
       for (const entry of tableEntries(module.exports, name).map(exportEntry)) {
@@ -833,12 +842,12 @@ function reachableNameEvidence(context, entries, mayInfer) {
           reachName(fileName, entry.local, deep);
         } else {
           const target = resolveModule(entry.from, fileName);
-          if (target) entry.name === ALL ? reachModule(target, deep) : reachExport(target, entry.name, deep, seen);
+          if (target) entry.name === ALL ? reachModule(target, deep) : reachExport(target, entry.name, deep);
         }
       }
       for (const from of module.stars) {
         const target = from !== undefined && resolveModule(from, fileName);
-        if (target) reachExport(target, name, deep, seen);
+        if (target) reachExport(target, name, deep);
       }
     };
     const arraysHaveMembers = environment.globals.has("Array") || environment.globals.has("ReadonlyArray");
