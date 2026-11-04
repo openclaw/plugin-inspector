@@ -49,6 +49,24 @@ The equivalent CLI setup after the package exists is:
 npm trust github @openclaw/plugin-inspector --repo openclaw/plugin-inspector --file release.yml
 ```
 
+## Packed OpenClaw qualifications
+
+ClawHub inspects publishes against the latest packed OpenClaw release. Before a
+release, add any new OpenClaw stable (and extended-stable) version to the
+shipped SDK-retirement qualifications so publish-time inspection skips the
+on-demand type check for it:
+
+```bash
+node scripts/packed-sdk-qualifications.mjs --write --version <openclaw-version>
+node scripts/packed-sdk-qualifications.mjs --check
+```
+
+`--write` refuses to record a version unless the reduced type check matches a
+full-snapshot type check on every public name. Changing
+`src/sdk-retirements.json` requires rerunning `--write` (a unit test enforces
+it). Snapshots missing from the table still produce identical results; they
+just pay the type check (see the Publish memory workflow).
+
 ## Local verification
 
 ```bash

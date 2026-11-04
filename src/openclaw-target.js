@@ -1,10 +1,10 @@
 import { existsSync } from "node:fs";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
-import ts from "typescript";
 import { resolveJailedPluginPath } from "./path-utils.js";
 import { readCompatRegistryRecords } from "./compat-registry.js";
 import { retirementRecordsForPackedTarget } from "./registry-deprecations.js";
+import { loadTypeScript } from "./typescript.js";
 import sdkRetirements from "./sdk-retirements.json" with { type: "json" };
 
 export const defaultOpenClawCheckoutPaths = ["./openclaw", "../openclaw"];
@@ -486,7 +486,7 @@ async function readPackedOpenClawTargetSurface({ rootDir, requestedPaths, reques
     compatRecordCount: sdkRetirements.records.length,
     compatRecords: sdkRetirements.records.map((record) => record.code),
     compatRecordStatuses: Object.fromEntries(sdkRetirements.records.map((record) => [record.code, record.status])),
-    compatDeprecations: retirementRecordsForPackedTarget(sdkRetirements.records, {
+    compatDeprecations: await retirementRecordsForPackedTarget(sdkRetirements.records, {
       declarations,
       packageJson,
       packageRoot: resolvedPath,
@@ -628,6 +628,7 @@ function readObjectTypeBody(source, typeName) {
 }
 
 function parseCheckoutHookNames(source) {
+  const ts = loadTypeScript();
   const names = parseConstStringArray(source, "PLUGIN_HOOK_NAMES");
   if (names.length > 0) return names;
 

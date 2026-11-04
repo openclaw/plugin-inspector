@@ -1,7 +1,9 @@
 import path from "node:path";
-import ts from "typescript";
+import { loadTypeScript } from "../typescript.js";
 import { nameText } from "./syntax.js";
 import { capabilityContextTypes } from "./host-context.js";
+
+const ts = loadTypeScript();
 
 const roots = new Map([["OpenClawPluginApi", "api"], ["PluginRuntime", "runtime"]]);
 

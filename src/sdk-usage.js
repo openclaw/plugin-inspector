@@ -1,5 +1,5 @@
 import path from "node:path";
-import ts from "typescript";
+import { loadTypeScript } from "./typescript.js";
 import { collectSdkImports } from "./sdk-usage/imports.js";
 import { collectManifestContracts } from "./sdk-usage/manifest.js";
 import { createUsageReport } from "./sdk-usage/model.js";
@@ -8,6 +8,8 @@ import { createUsageProgram } from "./sdk-usage/program.js";
 import { createProvenance } from "./sdk-usage/provenance.js";
 import { collectSdkMembers } from "./sdk-usage/members.js";
 import { pluginEntrypointSources } from "./sdk-usage/entrypoints.js";
+
+const ts = loadTypeScript();
 
 /** Offline static inventory. Neither plugin modules nor target modules are imported. */
 export async function inspectSdkUsage({ root, inputKind = "source", targetRoot, compatDeprecations, hostCache }) {

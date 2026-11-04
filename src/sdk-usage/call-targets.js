@@ -1,5 +1,7 @@
-import ts from "typescript";
+import { loadTypeScript } from "../typescript.js";
 import { nameText } from "./syntax.js";
+
+const ts = loadTypeScript();
 
 /** Index argument flow through actual local bodies without instantiating generic signatures. */
 export function createCallTargetResolver({ checker, program, localSource, sourceNames, consumeWork, assignments, overwrittenNativeMembers, onUnresolvedCall, onDeferredParameterCall, parameterArguments }) {

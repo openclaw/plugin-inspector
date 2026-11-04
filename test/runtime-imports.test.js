@@ -6,7 +6,7 @@ import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
 import { pathToFileURL } from "node:url";
-import { collectRuntimeModuleImports } from "../src/runtime-imports.js";
+import { collectRuntimeModuleImports, createRuntimeImportAnalysisCache } from "../src/runtime-imports.js";
 import { createMockSdkPackage } from "../src/sdk-mock.js";
 
 test("enum syntax distinguishes type-only imports from identical runtime specifiers", () => {
@@ -336,5 +336,34 @@ test("generated runtime modules settle and retained callbacks compute values and
     await assert.rejects(callback("missing", true), { message: "fixture prerequisite: missing" });
   } finally {
     await rm(root, { recursive: true, force: true });
+  }
+});
+
+test("a shared analysis cache returns the same imports as independent passes", () => {
+  const sources = [
+    [
+      'import { createRequire } from "node:module";',
+      'import * as sdk from "openclaw/plugin-sdk/core";',
+      'export { helper } from "openclaw/plugin-sdk/helpers";',
+      "const load = createRequire(import.meta.url);",
+      'const { readSessionEntry } = load("openclaw/plugin-sdk/session-store-runtime");',
+      'const lazy = await import("openclaw/plugin-sdk/channel-runtime");',
+      "lazy.sendMessage(); sdk.definePluginEntry(); api.runtime.agent.session.load();",
+      'import("openclaw/plugin-sdk/media").then(({ fetchMedia }) => fetchMedia);',
+    ].join("\n"),
+    'type Only = import("possible-type").Only;\nconst value: number = require("runtime").value;\n',
+    'enum Value { First = require("same-package") }\nvoid import("same-package");\n',
+    'require("runtime");\nfunction incomplete(',
+  ];
+  const optionSets = [{}, { includeStaticMembers: true, includeRuntimeMembers: true }, { includeStaticNamespaces: true }];
+  const plain = (imports) => imports.map((entry) => ({ ...entry, names: [...entry.names].sort() }));
+  for (const source of sources) {
+    const analysisCache = createRuntimeImportAnalysisCache();
+    for (const options of optionSets) {
+      assert.deepEqual(
+        plain(collectRuntimeModuleImports(source, { ...options, analysisCache })),
+        plain(collectRuntimeModuleImports(source, options)),
+      );
+    }
   }
 });

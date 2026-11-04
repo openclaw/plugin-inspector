@@ -1,6 +1,8 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
-import ts from "typescript";
+import { loadTypeScript } from "../typescript.js";
+
+const ts = loadTypeScript();
 
 const sourceExtension = /\.(?:[cm]?[jt]s|[jt]sx)$/i;
 const testFile = /(?:\.(?:test|spec)[.-]|(?:^|[-.])test-(?:support|helpers)|^test-|^vitest\.|^jest\.|^(?:bench|benchmark)[-.])/i;
@@ -20,25 +22,41 @@ export async function readUsageFiles(root, report) {
       report.coverage.filesDiscovered++;
       const metadata = entry.name === "package.json" || entry.name === "openclaw.plugin.json";
       if (!entry.isFile() || !metadata && !sourceExtension.test(entry.name)) { report.coverage.filesExcluded++; continue; }
-      const text = await readFile(file, "utf8");
-      const dependencies = metadata ? [] : ts.preProcessFile(text, true, true).importedFiles.map((dependency) => dependency.fileName);
+      // Excluded files matter only if an analyzed file imports them; read and
+      // scan those on demand instead of holding every bundle's text.
+      if (excluded) {
+        candidates.set(file, { path: file, text: undefined, metadata, dependencies: undefined, included: false });
+        continue;
+      }
+      const { text, dependencies } = await readCandidate(file, metadata);
       const testDependency = dependencies.some((name) => /^(?:vitest|node:test|@jest\/)/.test(name));
-      candidates.set(file, { path: file, text, metadata, dependencies, included: !excluded && (metadata || !testFile.test(entry.name) && !testDependency) });
+      candidates.set(file, { path: file, text, metadata, dependencies, included: metadata || !testFile.test(entry.name) && !testDependency });
     }
   }
   await walk(root);
-  function includeLocal(file) {
+  const pending = [...candidates.values()].filter((file) => file.included);
+  while (pending.length) {
+    const file = pending.pop();
     for (const specifier of file.dependencies) {
       if (!specifier.startsWith(".")) continue;
       const base = path.resolve(path.dirname(file.path), specifier);
       const variants = [base, ...[".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs"].map((extension) => base.replace(/\.[cm]?jsx?$/, "") + extension), ...[".ts", ".js"].map((extension) => path.join(base, `index${extension}`))];
       const imported = variants.map((variant) => candidates.get(variant)).find(Boolean);
-      if (imported && !imported.included) { imported.included = true; includeLocal(imported); }
+      if (imported && !imported.included) {
+        imported.included = true;
+        if (imported.text === undefined) Object.assign(imported, await readCandidate(imported.path, imported.metadata));
+        pending.push(imported);
+      }
     }
   }
-  for (const file of candidates.values()) if (file.included) includeLocal(file);
   const files = [...candidates.values()].filter((file) => file.included);
   report.coverage.filesAnalyzed += files.length;
   report.coverage.filesExcluded += candidates.size - files.length;
   return files;
+}
+
+async function readCandidate(file, metadata) {
+  const text = await readFile(file, "utf8");
+  const dependencies = metadata ? [] : ts.preProcessFile(text, true, true).importedFiles.map((dependency) => dependency.fileName);
+  return { text, dependencies };
 }

@@ -1,5 +1,7 @@
 import path from "node:path";
-import ts from "typescript";
+import { loadTypeScript } from "../typescript.js";
+
+const ts = loadTypeScript();
 
 function publicTypePaths(targetRoot) {
   if (!targetRoot) return undefined;

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Halve publish-time memory for packed OpenClaw targets while producing byte-identical target surfaces and findings. Released OpenClaw declaration snapshots ship with precomputed SDK-retirement qualifications (keyed by the exact declaration text, regenerated and verified against a full type check by `scripts/packed-sdk-qualifications.mjs`); any other snapshot is type-checked on demand over only the declarations its public entrypoints can reach. Load TypeScript on first use through `require`, read SDK-usage files excluded from analysis only when an analyzed file imports them, and parse each file once for both runtime-import passes. A new CI gate measures the ClawHub publish path on the large official channel plugins against 0.4.5.
+
 - Keep enum-containing TypeScript import classification compatible with Node 26 while preserving source offsets and conservative malformed-source handling.
 
 ## 0.4.5 - 2026-10-26
