@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
@@ -264,8 +264,9 @@ test("compatibility issue renderer includes author remediation guidance", () => 
   assert.doesNotMatch(markdown, /example:/);
 });
 
-test("compatibility report artifacts sanitize absolute OpenClaw target paths", async () => {
+test("compatibility report artifacts sanitize absolute OpenClaw target paths", async (t) => {
   const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-sanitized-report-"));
+  t.after(() => rm(outDir, { recursive: true, force: true }));
   const absoluteOpenClawPath = path.join(outDir, "openclaw");
   const report = {
     generatedAt: "test",
@@ -696,8 +697,9 @@ test("compat record coverage warns when plugin checkout config is rejected", () 
   assert.equal(warnings[0].code, "target-openclaw-rejected");
 });
 
-test("compatibility fixture summary reads manifests and OpenClaw package metadata", async () => {
+test("compatibility fixture summary reads manifests and OpenClaw package metadata", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-fixture-summary-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   const fixtureDir = path.join(rootDir, "plugin");
   await mkdir(path.join(fixtureDir, "src"), { recursive: true });
   await mkdir(path.join(fixtureDir, "dist"), { recursive: true });
@@ -1607,8 +1609,9 @@ test("compatibility fixture classifier groups deprecated whole-store session hel
   assert.match(issue.title, /whole-store session helper/);
 });
 
-test("writeReport writes JSON and Markdown artifacts", async () => {
+test("writeReport writes JSON and Markdown artifacts", async (t) => {
   const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-report-"));
+  t.after(() => rm(outDir, { recursive: true, force: true }));
   const config = await loadInspectorConfig("test/fixtures/inspector.config.json");
   const report = await inspectFixtureSet(config);
 
@@ -1620,8 +1623,9 @@ test("writeReport writes JSON and Markdown artifacts", async () => {
   assert.match(markdown, /Status: PASS/);
 });
 
-test("CI output helpers write SARIF and JUnit artifacts", async () => {
+test("CI output helpers write SARIF and JUnit artifacts", async (t) => {
   const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-ci-outputs-"));
+  t.after(() => rm(outDir, { recursive: true, force: true }));
   const report = {
     status: "fail",
     summary: { fixtureCount: 1, breakageCount: 1 },
@@ -1658,8 +1662,9 @@ test("CI output helpers write SARIF and JUnit artifacts", async () => {
   assert.match(await readFile(paths.junitPath, "utf8"), /<testsuite name="plugin-inspector"/);
 });
 
-test("artifact helpers write stable CI files", async () => {
+test("artifact helpers write stable CI files", async (t) => {
   const outDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-artifacts-"));
+  t.after(() => rm(outDir, { recursive: true, force: true }));
   const jsonPath = path.join(outDir, "summary.json");
   const markdownPath = path.join(outDir, "summary.md");
 

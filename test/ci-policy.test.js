@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, readFile } from "node:fs/promises";
+import { mkdtemp, readFile, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
@@ -243,8 +243,9 @@ test("ci policy validation rejects malformed policy files", () => {
   );
 });
 
-test("ci policy writer emits JSON and Markdown artifacts", async () => {
+test("ci policy writer emits JSON and Markdown artifacts", async (t) => {
   const outputDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-ci-policy-"));
+  t.after(() => rm(outputDir, { recursive: true, force: true }));
   const jsonPath = path.join(outputDir, "policy.json");
   const markdownPath = path.join(outputDir, "policy.md");
   const report = buildCiPolicyReport({

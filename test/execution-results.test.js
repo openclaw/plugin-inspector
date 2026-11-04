@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
@@ -9,8 +9,9 @@ import {
   writeExecutionResultsReport,
 } from "../src/execution-results.js";
 
-test("execution results summarize capture, synthetic, audit, and profile artifacts", async () => {
+test("execution results summarize capture, synthetic, audit, and profile artifacts", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-results-root-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   const resultsDir = path.join(rootDir, ".plugin-inspector", "results");
   const fixtureDir = path.join(resultsDir, "wecom");
   await mkdir(fixtureDir, { recursive: true });
@@ -104,8 +105,9 @@ test("execution results summarize capture, synthetic, audit, and profile artifac
   assert.match(markdown, /Execution Profiles/);
 });
 
-test("execution results count total-only audit metadata", async () => {
+test("execution results count total-only audit metadata", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-results-root-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   const fixtureDir = path.join(rootDir, ".plugin-inspector", "results", "minimal");
   await mkdir(fixtureDir, { recursive: true });
   await writeFile(
@@ -126,8 +128,9 @@ test("execution results count total-only audit metadata", async () => {
   assert.equal(report.artifacts[0].findingCount, 4);
 });
 
-test("execution results handle empty result directories", async () => {
+test("execution results handle empty result directories", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-results-root-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   const resultsDir = path.join(rootDir, ".plugin-inspector", "missing-results");
 
   const report = await buildExecutionResultsReport({ rootDir, resultsDir });
@@ -138,8 +141,9 @@ test("execution results handle empty result directories", async () => {
   assert.match(renderExecutionResultsMarkdown(report), /## Artifacts\n\n_none_/);
 });
 
-test("execution results recurse, sort artifacts, and count alternate audit shapes", async () => {
+test("execution results recurse, sort artifacts, and count alternate audit shapes", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-results-root-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   const resultsDir = path.join(rootDir, ".plugin-inspector", "results");
   await mkdir(path.join(resultsDir, "z-fixture"), { recursive: true });
   await mkdir(path.join(resultsDir, "a-fixture", "nested"), { recursive: true });
@@ -168,11 +172,13 @@ test("execution results recurse, sort artifacts, and count alternate audit shape
   );
 });
 
-test("execution results writer preserves failures and repo-relative entrypoint paths", async () => {
+test("execution results writer preserves failures and repo-relative entrypoint paths", async (t) => {
   const rootDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-results-root-"));
+  t.after(() => rm(rootDir, { recursive: true, force: true }));
   const resultsDir = path.join(rootDir, ".plugin-inspector", "results");
   const fixtureDir = path.join(resultsDir, "broken");
   const outputDir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-execution-report-"));
+  t.after(() => rm(outputDir, { recursive: true, force: true }));
   const jsonPath = path.join(outputDir, "execution.json");
   const markdownPath = path.join(outputDir, "execution.md");
   await mkdir(fixtureDir, { recursive: true });

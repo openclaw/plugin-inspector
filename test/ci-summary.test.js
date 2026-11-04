@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { test } from "node:test";
@@ -133,8 +133,9 @@ test("ci summary status fails on blocking report classes", () => {
   assert.equal(deriveCiStatus({}), "pass");
 });
 
-test("ci summary discovers runtime capture artifacts from default paths", async () => {
+test("ci summary discovers runtime capture artifacts from default paths", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-ci-summary-runtime-capture-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const reportsDir = path.join(dir, "reports");
   await mkdir(reportsDir, { recursive: true });
   await writeFile(
@@ -154,8 +155,9 @@ test("ci summary discovers runtime capture artifacts from default paths", async 
   assert.equal(summary.artifacts.capture, "reports/plugin-inspector-runtime-capture.json");
 });
 
-test("ci summary writer emits JSON and Markdown artifacts", async () => {
+test("ci summary writer emits JSON and Markdown artifacts", async (t) => {
   const dir = await mkdtemp(path.join(os.tmpdir(), "plugin-inspector-ci-summary-"));
+  t.after(() => rm(dir, { recursive: true, force: true }));
   const jsonPath = path.join(dir, "summary.json");
   const markdownPath = path.join(dir, "summary.md");
   const summary = await buildCiSummary({
