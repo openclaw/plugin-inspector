@@ -11,18 +11,23 @@ import {
   writeRuntimeCaptureReport,
 } from "../src/advanced.js";
 
-test("runtime capture report imports plugin entrypoints with mocked SDK", async (t) => {
-  const rootDir = await createTempDir(t, "plugin-inspector-runtime-capture-");
+async function createPluginFixture(t, { prefix, name, entrypoint }) {
+  const rootDir = await createTempDir(t, prefix);
   await mkdir(path.join(rootDir, "src"), { recursive: true });
+  await writePluginPackage(rootDir, name, entrypoint);
+  return rootDir;
+}
+
+async function writePluginPackage(rootDir, name, entrypoint) {
   await writeFile(
     path.join(rootDir, "package.json"),
     `${JSON.stringify(
       {
-        name: "openclaw-weather",
+        name,
         version: "1.0.0",
         type: "module",
         openclaw: {
-          extensions: ["src/index.mjs"],
+          extensions: [entrypoint],
           compat: { pluginApi: "^1.0.0" },
         },
       },
@@ -31,6 +36,20 @@ test("runtime capture report imports plugin entrypoints with mocked SDK", async 
     )}\n`,
     "utf8",
   );
+}
+
+async function capturePluginReport(rootDir) {
+  const config = await loadPluginRootConfig(null, { cwd: rootDir });
+  const compatibilityReport = await inspectCompatibilityFixtureSet(config, { openclawPath: false });
+  return buildRuntimeCaptureReport({ report: compatibilityReport, rootDir });
+}
+
+test("runtime capture report imports plugin entrypoints with mocked SDK", async (t) => {
+  const rootDir = await createPluginFixture(t, {
+    prefix: "plugin-inspector-runtime-capture-",
+    name: "openclaw-weather",
+    entrypoint: "src/index.mjs",
+  });
   await writeFile(
     path.join(rootDir, "src", "index.mjs"),
     [
@@ -44,9 +63,7 @@ test("runtime capture report imports plugin entrypoints with mocked SDK", async 
     "utf8",
   );
 
-  const config = await loadPluginRootConfig(null, { cwd: rootDir });
-  const compatibilityReport = await inspectCompatibilityFixtureSet(config, { openclawPath: false });
-  const captureReport = await buildRuntimeCaptureReport({ report: compatibilityReport, rootDir });
+  const captureReport = await capturePluginReport(rootDir);
 
   assert.equal(captureReport.summary.targetCount, 1);
   assert.equal(captureReport.summary.capturedCount, 1);
@@ -63,25 +80,11 @@ test("runtime capture report imports plugin entrypoints with mocked SDK", async 
 });
 
 test("runtime capture records conversation binding resolved callbacks", async (t) => {
-  const rootDir = await createTempDir(t, "plugin-inspector-runtime-binding-resolved-");
-  await mkdir(path.join(rootDir, "src"), { recursive: true });
-  await writeFile(
-    path.join(rootDir, "package.json"),
-    `${JSON.stringify(
-      {
-        name: "openclaw-binding-resolved",
-        version: "1.0.0",
-        type: "module",
-        openclaw: {
-          extensions: ["src/index.mjs"],
-          compat: { pluginApi: "^1.0.0" },
-        },
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
+  const rootDir = await createPluginFixture(t, {
+    prefix: "plugin-inspector-runtime-binding-resolved-",
+    name: "openclaw-binding-resolved",
+    entrypoint: "src/index.mjs",
+  });
   await writeFile(
     path.join(rootDir, "src", "index.mjs"),
     [
@@ -94,9 +97,7 @@ test("runtime capture records conversation binding resolved callbacks", async (t
     "utf8",
   );
 
-  const config = await loadPluginRootConfig(null, { cwd: rootDir });
-  const compatibilityReport = await inspectCompatibilityFixtureSet(config, { openclawPath: false });
-  const captureReport = await buildRuntimeCaptureReport({ report: compatibilityReport, rootDir });
+  const captureReport = await capturePluginReport(rootDir);
 
   assert.equal(captureReport.summary.failedCount, 0);
   assert.equal(captureReport.summary.capturedCount, 1);
@@ -108,25 +109,11 @@ test("runtime capture records conversation binding resolved callbacks", async (t
 });
 
 test("runtime capture report synthesizes newly imported mocked SDK exports", async (t) => {
-  const rootDir = await createTempDir(t, "plugin-inspector-runtime-capture-dynamic-export-");
-  await mkdir(path.join(rootDir, "src"), { recursive: true });
-  await writeFile(
-    path.join(rootDir, "package.json"),
-    `${JSON.stringify(
-      {
-        name: "openclaw-dynamic-sdk-export",
-        version: "1.0.0",
-        type: "module",
-        openclaw: {
-          extensions: ["src/index.mjs"],
-          compat: { pluginApi: "^1.0.0" },
-        },
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
+  const rootDir = await createPluginFixture(t, {
+    prefix: "plugin-inspector-runtime-capture-dynamic-export-",
+    name: "openclaw-dynamic-sdk-export",
+    entrypoint: "src/index.mjs",
+  });
   await writeFile(
     path.join(rootDir, "src", "index.mjs"),
     [
@@ -140,9 +127,7 @@ test("runtime capture report synthesizes newly imported mocked SDK exports", asy
     "utf8",
   );
 
-  const config = await loadPluginRootConfig(null, { cwd: rootDir });
-  const compatibilityReport = await inspectCompatibilityFixtureSet(config, { openclawPath: false });
-  const captureReport = await buildRuntimeCaptureReport({ report: compatibilityReport, rootDir });
+  const captureReport = await capturePluginReport(rootDir);
 
   assert.equal(captureReport.summary.failedCount, 0);
   assert.equal(captureReport.results[0].status, "captured");
@@ -159,25 +144,11 @@ test("runtime capture report synthesizes newly imported mocked SDK exports", asy
 });
 
 test("runtime capture report classifies registration execution failures", async (t) => {
-  const rootDir = await createTempDir(t, "plugin-inspector-runtime-capture-registration-error-");
-  await mkdir(path.join(rootDir, "src"), { recursive: true });
-  await writeFile(
-    path.join(rootDir, "package.json"),
-    `${JSON.stringify(
-      {
-        name: "openclaw-registration-error",
-        version: "1.0.0",
-        type: "module",
-        openclaw: {
-          extensions: ["src/index.mjs"],
-          compat: { pluginApi: "^1.0.0" },
-        },
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
+  const rootDir = await createPluginFixture(t, {
+    prefix: "plugin-inspector-runtime-capture-registration-error-",
+    name: "openclaw-registration-error",
+    entrypoint: "src/index.mjs",
+  });
   await writeFile(
     path.join(rootDir, "src", "index.mjs"),
     [
@@ -190,9 +161,7 @@ test("runtime capture report classifies registration execution failures", async 
     "utf8",
   );
 
-  const config = await loadPluginRootConfig(null, { cwd: rootDir });
-  const compatibilityReport = await inspectCompatibilityFixtureSet(config, { openclawPath: false });
-  const captureReport = await buildRuntimeCaptureReport({ report: compatibilityReport, rootDir });
+  const captureReport = await capturePluginReport(rootDir);
 
   assert.equal(captureReport.summary.failedCount, 1);
   assert.equal(captureReport.results[0].failureClass, "registration-execution-error");
@@ -200,25 +169,11 @@ test("runtime capture report classifies registration execution failures", async 
 });
 
 test("runtime capture supports TypeScript entrypoints, SDK subpaths, external mocks, and noisy output", async (t) => {
-  const rootDir = await createTempDir(t, "plugin-inspector-runtime-ts-");
-  await mkdir(path.join(rootDir, "src"), { recursive: true });
-  await writeFile(
-    path.join(rootDir, "package.json"),
-    `${JSON.stringify(
-      {
-        name: "openclaw-typescript-weather",
-        version: "1.0.0",
-        type: "module",
-        openclaw: {
-          extensions: ["src/index.ts"],
-          compat: { pluginApi: "^1.0.0" },
-        },
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
+  const rootDir = await createPluginFixture(t, {
+    prefix: "plugin-inspector-runtime-ts-",
+    name: "openclaw-typescript-weather",
+    entrypoint: "src/index.ts",
+  });
   await writeFile(
     path.join(rootDir, "src", "helper.ts"),
     ["export type WeatherConfig = { city: string };", "export const toolName: string = 'weather_ts';"].join("\n"),
@@ -268,9 +223,7 @@ test("runtime capture supports TypeScript entrypoints, SDK subpaths, external mo
     "utf8",
   );
 
-  const config = await loadPluginRootConfig(null, { cwd: rootDir });
-  const compatibilityReport = await inspectCompatibilityFixtureSet(config, { openclawPath: false });
-  const captureReport = await buildRuntimeCaptureReport({ report: compatibilityReport, rootDir });
+  const captureReport = await capturePluginReport(rootDir);
 
   assert.equal(captureReport.summary.failedCount, 0);
   assert.equal(captureReport.summary.capturedCount, 1);
@@ -281,25 +234,11 @@ test("runtime capture supports TypeScript entrypoints, SDK subpaths, external mo
 });
 
 test("runtime capture synthesizes manifest config before plugin registration", async (t) => {
-  const rootDir = await createTempDir(t, "plugin-inspector-runtime-config-");
-  await mkdir(path.join(rootDir, "src"), { recursive: true });
-  await writeFile(
-    path.join(rootDir, "package.json"),
-    `${JSON.stringify(
-      {
-        name: "openclaw-configured-memory",
-        version: "1.0.0",
-        type: "module",
-        openclaw: {
-          extensions: ["src/index.ts"],
-          compat: { pluginApi: "^1.0.0" },
-        },
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
+  const rootDir = await createPluginFixture(t, {
+    prefix: "plugin-inspector-runtime-config-",
+    name: "openclaw-configured-memory",
+    entrypoint: "src/index.ts",
+  });
   await writeFile(
     path.join(rootDir, "openclaw.plugin.json"),
     `${JSON.stringify(
@@ -356,25 +295,11 @@ test("runtime capture synthesizes manifest config before plugin registration", a
 });
 
 test("runtime capture supports namespace imports from mocked externals", async (t) => {
-  const rootDir = await createTempDir(t, "plugin-inspector-runtime-zod-namespace-");
-  await mkdir(path.join(rootDir, "src"), { recursive: true });
-  await writeFile(
-    path.join(rootDir, "package.json"),
-    `${JSON.stringify(
-      {
-        name: "openclaw-zod-namespace",
-        version: "1.0.0",
-        type: "module",
-        openclaw: {
-          extensions: ["src/index.mjs"],
-          compat: { pluginApi: "^1.0.0" },
-        },
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
+  const rootDir = await createPluginFixture(t, {
+    prefix: "plugin-inspector-runtime-zod-namespace-",
+    name: "openclaw-zod-namespace",
+    entrypoint: "src/index.mjs",
+  });
   await writeFile(
     path.join(rootDir, "src", "index.mjs"),
     [
@@ -389,34 +314,18 @@ test("runtime capture supports namespace imports from mocked externals", async (
     "utf8",
   );
 
-  const config = await loadPluginRootConfig(null, { cwd: rootDir });
-  const compatibilityReport = await inspectCompatibilityFixtureSet(config, { openclawPath: false });
-  const captureReport = await buildRuntimeCaptureReport({ report: compatibilityReport, rootDir });
+  const captureReport = await capturePluginReport(rootDir);
 
   assert.equal(captureReport.summary.failedCount, 0);
   assert.equal(captureReport.summary.registrationCount, 1);
 });
 
 test("runtime capture mock SDK supports config schemas and provider catalogs", async (t) => {
-  const rootDir = await createTempDir(t, "plugin-inspector-runtime-provider-catalog-");
-  await mkdir(path.join(rootDir, "src"), { recursive: true });
-  await writeFile(
-    path.join(rootDir, "package.json"),
-    `${JSON.stringify(
-      {
-        name: "openclaw-provider-catalog",
-        version: "1.0.0",
-        type: "module",
-        openclaw: {
-          extensions: ["src/index.mjs"],
-          compat: { pluginApi: "^1.0.0" },
-        },
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
+  const rootDir = await createPluginFixture(t, {
+    prefix: "plugin-inspector-runtime-provider-catalog-",
+    name: "openclaw-provider-catalog",
+    entrypoint: "src/index.mjs",
+  });
   await writeFile(
     path.join(rootDir, "src", "index.mjs"),
     [
@@ -443,9 +352,7 @@ test("runtime capture mock SDK supports config schemas and provider catalogs", a
     "utf8",
   );
 
-  const config = await loadPluginRootConfig(null, { cwd: rootDir });
-  const compatibilityReport = await inspectCompatibilityFixtureSet(config, { openclawPath: false });
-  const captureReport = await buildRuntimeCaptureReport({ report: compatibilityReport, rootDir });
+  const captureReport = await capturePluginReport(rootDir);
 
   assert.equal(captureReport.summary.failedCount, 0);
   assert.equal(captureReport.summary.registrationCount, 2);
@@ -456,25 +363,11 @@ test("runtime capture mock SDK supports config schemas and provider catalogs", a
 });
 
 test("runtime capture mock SDK supports channel entries, gateway responders, and action gates", async (t) => {
-  const rootDir = await createTempDir(t, "plugin-inspector-runtime-channel-entry-");
-  await mkdir(path.join(rootDir, "src"), { recursive: true });
-  await writeFile(
-    path.join(rootDir, "package.json"),
-    `${JSON.stringify(
-      {
-        name: "openclaw-channel-entry",
-        version: "1.0.0",
-        type: "module",
-        openclaw: {
-          extensions: ["src/index.mjs"],
-          compat: { pluginApi: "^1.0.0" },
-        },
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
+  const rootDir = await createPluginFixture(t, {
+    prefix: "plugin-inspector-runtime-channel-entry-",
+    name: "openclaw-channel-entry",
+    entrypoint: "src/index.mjs",
+  });
   await writeFile(
     path.join(rootDir, "src", "index.mjs"),
     [
@@ -513,9 +406,7 @@ test("runtime capture mock SDK supports channel entries, gateway responders, and
     "utf8",
   );
 
-  const config = await loadPluginRootConfig(null, { cwd: rootDir });
-  const compatibilityReport = await inspectCompatibilityFixtureSet(config, { openclawPath: false });
-  const captureReport = await buildRuntimeCaptureReport({ report: compatibilityReport, rootDir });
+  const captureReport = await capturePluginReport(rootDir);
 
   assert.equal(captureReport.summary.failedCount, 0);
   assert.deepEqual(
@@ -530,23 +421,7 @@ test("runtime capture keeps dist chunk imports rooted at their original package"
   await mkdir(path.join(rootDir, "dist", "extensions", "weather"), { recursive: true });
   await writeFile(path.join(rootDir, "dist", "package-shared.js"), "export const toolName = 'weather_dist';\n", "utf8");
   const packageRoot = path.join(rootDir, "dist", "extensions", "weather");
-  await writeFile(
-    path.join(packageRoot, "package.json"),
-    `${JSON.stringify(
-      {
-        name: "openclaw-dist-weather",
-        version: "1.0.0",
-        type: "module",
-        openclaw: {
-          extensions: ["index.js"],
-          compat: { pluginApi: "^1.0.0" },
-        },
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
+  await writePluginPackage(packageRoot, "openclaw-dist-weather", "index.js");
   await writeFile(path.join(packageRoot, "index.js"), 'export { default } from "./src/index.js";\n', "utf8");
   await mkdir(path.join(packageRoot, "src"), { recursive: true });
   await writeFile(
@@ -562,9 +437,7 @@ test("runtime capture keeps dist chunk imports rooted at their original package"
     "utf8",
   );
 
-  const config = await loadPluginRootConfig(null, { cwd: packageRoot });
-  const compatibilityReport = await inspectCompatibilityFixtureSet(config, { openclawPath: false });
-  const captureReport = await buildRuntimeCaptureReport({ report: compatibilityReport, rootDir: packageRoot });
+  const captureReport = await capturePluginReport(packageRoot);
 
   assert.equal(captureReport.summary.failedCount, 0);
   assert.equal(captureReport.summary.registrationCount, 1);
