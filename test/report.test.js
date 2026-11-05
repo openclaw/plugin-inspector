@@ -28,6 +28,14 @@ import {
 } from "../src/advanced.js";
 import { buildReport } from "../src/report.js";
 
+function classifyFixturePackage(fixtureReport) {
+  return classifyPackageContracts({
+    fixture: { id: "fixture", path: "plugins/fixture" },
+    inspection: { registrations: ["registerTool"] },
+    fixtureReport,
+  });
+}
+
 test("markdown table cell escaping preserves literal backslashes", () => {
   assert.equal(escapeMarkdownTableCell(String.raw`C:\tmp|next
 line`), String.raw`C:\\tmp\|next<br>line`);
@@ -833,41 +841,32 @@ test("compatibility fixture summary reads manifests and OpenClaw package metadat
 });
 
 test("package contract classifier reports install and entrypoint blockers", () => {
-  const result = classifyPackageContracts({
-    fixture: {
-      id: "fixture",
-      path: "plugins/fixture",
-    },
-    inspection: {
-      registrations: ["registerTool"],
-    },
-    fixtureReport: {
-      pluginManifests: [
-        {
-          path: "plugins/fixture/openclaw.plugin.json",
-          name: null,
-          version: "2.0.0",
-        },
-      ],
-      package: {
-        path: "plugins/fixture/package.json",
-        name: "fixture-plugin",
-        version: "1.0.0",
-        dependencies: ["zod"],
-        peerDependencies: [],
-        optionalDependencies: [],
-        openclaw: {
-          compatPluginApi: null,
-          entrypoints: [
-            {
-              kind: "extension",
-              specifier: "dist/index.js",
-              relativePath: "plugins/fixture/dist/index.js",
-              exists: false,
-              requiresBuild: true,
-            },
-          ],
-        },
+  const result = classifyFixturePackage({
+    pluginManifests: [
+      {
+        path: "plugins/fixture/openclaw.plugin.json",
+        name: null,
+        version: "2.0.0",
+      },
+    ],
+    package: {
+      path: "plugins/fixture/package.json",
+      name: "fixture-plugin",
+      version: "1.0.0",
+      dependencies: ["zod"],
+      peerDependencies: [],
+      optionalDependencies: [],
+      openclaw: {
+        compatPluginApi: null,
+        entrypoints: [
+          {
+            kind: "extension",
+            specifier: "dist/index.js",
+            relativePath: "plugins/fixture/dist/index.js",
+            exists: false,
+            requiresBuild: true,
+          },
+        ],
       },
     },
   });
@@ -894,35 +893,26 @@ test("package contract classifier reports install and entrypoint blockers", () =
 });
 
 test("package contract classifier treats openclaw as a host-linked dependency", () => {
-  const result = classifyPackageContracts({
-    fixture: {
-      id: "fixture",
-      path: "plugins/fixture",
-    },
-    inspection: {
-      registrations: ["registerTool"],
-    },
-    fixtureReport: {
-      pluginManifests: [{ version: "1.0.0" }],
-      package: {
-        path: "plugins/fixture/package.json",
-        name: "fixture-plugin",
-        version: "1.0.0",
-        dependencies: ["openclaw"],
-        peerDependencies: [],
-        optionalDependencies: [],
-        openclaw: {
-          compatPluginApi: "^1.0.0",
-          entrypoints: [
-            {
-              kind: "extension",
-              specifier: "dist/index.js",
-              relativePath: "plugins/fixture/dist/index.js",
-              exists: true,
-              requiresBuild: false,
-            },
-          ],
-        },
+  const result = classifyFixturePackage({
+    pluginManifests: [{ version: "1.0.0" }],
+    package: {
+      path: "plugins/fixture/package.json",
+      name: "fixture-plugin",
+      version: "1.0.0",
+      dependencies: ["openclaw"],
+      peerDependencies: [],
+      optionalDependencies: [],
+      openclaw: {
+        compatPluginApi: "^1.0.0",
+        entrypoints: [
+          {
+            kind: "extension",
+            specifier: "dist/index.js",
+            relativePath: "plugins/fixture/dist/index.js",
+            exists: true,
+            requiresBuild: false,
+          },
+        ],
       },
     },
   });
@@ -934,47 +924,38 @@ test("package contract classifier treats openclaw as a host-linked dependency", 
 });
 
 test("package contract classifier accepts an older tested host floor", () => {
-  const result = classifyPackageContracts({
-    fixture: {
-      id: "fixture",
-      path: "plugins/fixture",
-    },
-    inspection: {
-      registrations: ["registerTool"],
-    },
-    fixtureReport: {
-      pluginManifests: [{ version: "1.0.0" }],
-      package: {
-        path: "plugins/fixture/package.json",
-        name: "@openclaw/fixture-plugin",
-        version: "1.0.0",
-        dependencies: [],
-        peerDependencies: [],
-        optionalDependencies: [],
-        openclaw: {
-          compatPluginApi: "^1.0.0",
-          buildOpenClawVersion: "2026.5.2",
-          install: {
-            clawhubSpec: null,
-            npmSpec: "fixture-plugin",
-            defaultChoice: "clawhub",
-            minHostVersion: ">=2026.5.1",
-          },
-          release: {
-            publishToClawHub: true,
-            publishToNpm: true,
-          },
-          unsupportedMetadata: ["openclaw.bundle"],
-          entrypoints: [
-            {
-              kind: "extension",
-              specifier: "dist/index.js",
-              relativePath: "plugins/fixture/dist/index.js",
-              exists: true,
-              requiresBuild: false,
-            },
-          ],
+  const result = classifyFixturePackage({
+    pluginManifests: [{ version: "1.0.0" }],
+    package: {
+      path: "plugins/fixture/package.json",
+      name: "@openclaw/fixture-plugin",
+      version: "1.0.0",
+      dependencies: [],
+      peerDependencies: [],
+      optionalDependencies: [],
+      openclaw: {
+        compatPluginApi: "^1.0.0",
+        buildOpenClawVersion: "2026.5.2",
+        install: {
+          clawhubSpec: null,
+          npmSpec: "fixture-plugin",
+          defaultChoice: "clawhub",
+          minHostVersion: ">=2026.5.1",
         },
+        release: {
+          publishToClawHub: true,
+          publishToNpm: true,
+        },
+        unsupportedMetadata: ["openclaw.bundle"],
+        entrypoints: [
+          {
+            kind: "extension",
+            specifier: "dist/index.js",
+            relativePath: "plugins/fixture/dist/index.js",
+            exists: true,
+            requiresBuild: false,
+          },
+        ],
       },
     },
   });
@@ -990,39 +971,30 @@ test("package contract classifier accepts an older tested host floor", () => {
 
 test("package contract classifier compares minimum host semver with the build version", () => {
   const hasDriftWarning = (minHostVersion, buildOpenClawVersion) => {
-    const result = classifyPackageContracts({
-      fixture: {
-        id: "fixture",
-        path: "plugins/fixture",
-      },
-      inspection: {
-        registrations: ["registerTool"],
-      },
-      fixtureReport: {
-        pluginManifests: [{ version: "1.0.0" }],
-        package: {
-          path: "plugins/fixture/package.json",
-          name: "@openclaw/fixture-plugin",
-          version: "1.0.0",
-          dependencies: [],
-          peerDependencies: [],
-          optionalDependencies: [],
-          openclaw: {
-            compatPluginApi: "^1.0.0",
-            buildOpenClawVersion,
-            install: {
-              clawhubSpec: "clawhub:@openclaw/fixture-plugin",
-              npmSpec: "@openclaw/fixture-plugin",
-              defaultChoice: "clawhub",
-              minHostVersion,
-            },
-            release: {
-              publishToClawHub: true,
-              publishToNpm: true,
-            },
-            unsupportedMetadata: [],
-            entrypoints: [],
+    const result = classifyFixturePackage({
+      pluginManifests: [{ version: "1.0.0" }],
+      package: {
+        path: "plugins/fixture/package.json",
+        name: "@openclaw/fixture-plugin",
+        version: "1.0.0",
+        dependencies: [],
+        peerDependencies: [],
+        optionalDependencies: [],
+        openclaw: {
+          compatPluginApi: "^1.0.0",
+          buildOpenClawVersion,
+          install: {
+            clawhubSpec: "clawhub:@openclaw/fixture-plugin",
+            npmSpec: "@openclaw/fixture-plugin",
+            defaultChoice: "clawhub",
+            minHostVersion,
           },
+          release: {
+            publishToClawHub: true,
+            publishToNpm: true,
+          },
+          unsupportedMetadata: [],
+          entrypoints: [],
         },
       },
     });
@@ -1043,48 +1015,39 @@ test("package contract classifier compares minimum host semver with the build ve
 });
 
 test("package contract classifier reports advertised npm pack blockers", () => {
-  const result = classifyPackageContracts({
-    fixture: {
-      id: "fixture",
-      path: "plugins/fixture",
-    },
-    inspection: {
-      registrations: ["registerTool"],
-    },
-    fixtureReport: {
-      pluginManifests: [{ path: "plugins/fixture/openclaw.plugin.json", version: "1.0.0" }],
-      package: {
-        path: "plugins/fixture/package.json",
-        name: "@openclaw/fixture-plugin",
-        version: "1.0.0",
-        npmPack: {
-          advertised: true,
-          private: true,
-          filesMode: "allowlist",
-          files: ["README.md"],
-          invalidFileSpecs: ["../secrets"],
+  const result = classifyFixturePackage({
+    pluginManifests: [{ path: "plugins/fixture/openclaw.plugin.json", version: "1.0.0" }],
+    package: {
+      path: "plugins/fixture/package.json",
+      name: "@openclaw/fixture-plugin",
+      version: "1.0.0",
+      npmPack: {
+        advertised: true,
+        private: true,
+        filesMode: "allowlist",
+        files: ["README.md"],
+        invalidFileSpecs: ["../secrets"],
+      },
+      dependencies: [],
+      peerDependencies: [],
+      optionalDependencies: [],
+      openclaw: {
+        compatPluginApi: "^1.0.0",
+        install: {
+          npmSpec: "@openclaw/fixture-plugin",
         },
-        dependencies: [],
-        peerDependencies: [],
-        optionalDependencies: [],
-        openclaw: {
-          compatPluginApi: "^1.0.0",
-          install: {
-            npmSpec: "@openclaw/fixture-plugin",
-          },
-          release: {
-            publishToNpm: true,
-          },
-          entrypoints: [
-            {
-              kind: "extension",
-              specifier: "src/index.js",
-              relativePath: "plugins/fixture/src/index.js",
-              exists: true,
-              requiresBuild: false,
-            },
-          ],
+        release: {
+          publishToNpm: true,
         },
+        entrypoints: [
+          {
+            kind: "extension",
+            specifier: "src/index.js",
+            relativePath: "plugins/fixture/src/index.js",
+            exists: true,
+            requiresBuild: false,
+          },
+        ],
       },
     },
   });
@@ -1094,48 +1057,39 @@ test("package contract classifier reports advertised npm pack blockers", () => {
   assert.ok(result.warnings.some((finding) => finding.code === "package-npm-pack-entrypoint-missing"));
   assert.ok(result.decisions.some((decision) => decision.seam === "package-artifact"));
 
-  const globResult = classifyPackageContracts({
-    fixture: {
-      id: "fixture",
-      path: "plugins/fixture",
-    },
-    inspection: {
-      registrations: ["registerTool"],
-    },
-    fixtureReport: {
-      pluginManifests: [{ path: "plugins/fixture/openclaw.plugin.json", version: "1.0.0" }],
-      package: {
-        path: "plugins/fixture/package.json",
-        name: "@openclaw/fixture-plugin",
-        version: "1.0.0",
-        npmPack: {
-          advertised: true,
-          private: false,
-          filesMode: "allowlist",
-          files: ["src/**/*.js", "openclaw.plugin.json"],
-          invalidFileSpecs: [],
+  const globResult = classifyFixturePackage({
+    pluginManifests: [{ path: "plugins/fixture/openclaw.plugin.json", version: "1.0.0" }],
+    package: {
+      path: "plugins/fixture/package.json",
+      name: "@openclaw/fixture-plugin",
+      version: "1.0.0",
+      npmPack: {
+        advertised: true,
+        private: false,
+        filesMode: "allowlist",
+        files: ["src/**/*.js", "openclaw.plugin.json"],
+        invalidFileSpecs: [],
+      },
+      dependencies: [],
+      peerDependencies: [],
+      optionalDependencies: [],
+      openclaw: {
+        compatPluginApi: "^1.0.0",
+        install: {
+          npmSpec: "@openclaw/fixture-plugin",
         },
-        dependencies: [],
-        peerDependencies: [],
-        optionalDependencies: [],
-        openclaw: {
-          compatPluginApi: "^1.0.0",
-          install: {
-            npmSpec: "@openclaw/fixture-plugin",
-          },
-          release: {
-            publishToNpm: true,
-          },
-          entrypoints: [
-            {
-              kind: "extension",
-              specifier: "src/index.js",
-              relativePath: "plugins/fixture/src/index.js",
-              exists: true,
-              requiresBuild: false,
-            },
-          ],
+        release: {
+          publishToNpm: true,
         },
+        entrypoints: [
+          {
+            kind: "extension",
+            specifier: "src/index.js",
+            relativePath: "plugins/fixture/src/index.js",
+            exists: true,
+            requiresBuild: false,
+          },
+        ],
       },
     },
   });
@@ -1144,69 +1098,60 @@ test("package contract classifier reports advertised npm pack blockers", () => {
 });
 
 test("package contract classifier accepts built runtime entries for source package metadata", () => {
-  const result = classifyPackageContracts({
-    fixture: {
-      id: "fixture",
-      path: "plugins/fixture",
-    },
-    inspection: {
-      registrations: ["registerTool"],
-    },
-    fixtureReport: {
-      pluginManifests: [{ path: "plugins/fixture/openclaw.plugin.json", version: "1.0.0" }],
-      package: {
-        path: "plugins/fixture/package.json",
-        name: "@openclaw/fixture-plugin",
-        version: "1.0.0",
-        npmPack: {
-          advertised: true,
-          private: false,
-          filesMode: "allowlist",
-          files: ["dist/**", "openclaw.plugin.json"],
-          invalidFileSpecs: [],
+  const result = classifyFixturePackage({
+    pluginManifests: [{ path: "plugins/fixture/openclaw.plugin.json", version: "1.0.0" }],
+    package: {
+      path: "plugins/fixture/package.json",
+      name: "@openclaw/fixture-plugin",
+      version: "1.0.0",
+      npmPack: {
+        advertised: true,
+        private: false,
+        filesMode: "allowlist",
+        files: ["dist/**", "openclaw.plugin.json"],
+        invalidFileSpecs: [],
+      },
+      dependencies: [],
+      peerDependencies: ["openclaw"],
+      optionalDependencies: [],
+      openclaw: {
+        compatPluginApi: "^1.0.0",
+        install: {
+          npmSpec: "@openclaw/fixture-plugin",
         },
-        dependencies: [],
-        peerDependencies: ["openclaw"],
-        optionalDependencies: [],
-        openclaw: {
-          compatPluginApi: "^1.0.0",
-          install: {
-            npmSpec: "@openclaw/fixture-plugin",
-          },
-          release: {
-            publishToNpm: true,
-          },
-          entrypoints: [
-            {
-              kind: "extension",
-              specifier: "./index.ts",
-              relativePath: "plugins/fixture/index.ts",
-              exists: false,
-              requiresBuild: false,
-            },
-            {
-              kind: "runtimeExtension",
-              specifier: "./dist/index.js",
-              relativePath: "plugins/fixture/dist/index.js",
-              exists: true,
-              requiresBuild: true,
-            },
-            {
-              kind: "setupEntry",
-              specifier: "./setup-entry.ts",
-              relativePath: "plugins/fixture/setup-entry.ts",
-              exists: false,
-              requiresBuild: false,
-            },
-            {
-              kind: "runtimeSetupEntry",
-              specifier: "./dist/setup-entry.js",
-              relativePath: "plugins/fixture/dist/setup-entry.js",
-              exists: true,
-              requiresBuild: true,
-            },
-          ],
+        release: {
+          publishToNpm: true,
         },
+        entrypoints: [
+          {
+            kind: "extension",
+            specifier: "./index.ts",
+            relativePath: "plugins/fixture/index.ts",
+            exists: false,
+            requiresBuild: false,
+          },
+          {
+            kind: "runtimeExtension",
+            specifier: "./dist/index.js",
+            relativePath: "plugins/fixture/dist/index.js",
+            exists: true,
+            requiresBuild: true,
+          },
+          {
+            kind: "setupEntry",
+            specifier: "./setup-entry.ts",
+            relativePath: "plugins/fixture/setup-entry.ts",
+            exists: false,
+            requiresBuild: false,
+          },
+          {
+            kind: "runtimeSetupEntry",
+            specifier: "./dist/setup-entry.js",
+            relativePath: "plugins/fixture/dist/setup-entry.js",
+            exists: true,
+            requiresBuild: true,
+          },
+        ],
       },
     },
   });
