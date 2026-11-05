@@ -1,3 +1,4 @@
+import { createWeatherPlugin } from "./helpers/weather-plugin.js";
 import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
@@ -545,41 +546,5 @@ test("public API honors config-driven runtime capture", async (t) => {
 });
 
 async function createPluginRoot(t, options = {}) {
-  const rootDir = await createTempDir(t, "plugin-inspector-api-root-");
-  await mkdir(path.join(rootDir, "src"), { recursive: true });
-  const packageJson = {
-    name: "@example/openclaw-weather",
-    version: "1.0.0",
-    type: "module",
-    openclaw: {
-      extensions: ["src/index.js"],
-      compat: { pluginApi: "^1.0.0" },
-    },
-    ...(options.packageJson ?? {}),
-  };
-  if (packageJson.openclaw === null) {
-    delete packageJson.openclaw;
-  }
-  if (options.packageConfig) {
-    packageJson.pluginInspector = {
-      version: 1,
-      ...options.packageConfig,
-    };
-  }
-  await writeFile(
-    path.join(rootDir, "package.json"),
-    `${JSON.stringify(packageJson, null, 2)}\n`,
-    "utf8",
-  );
-  await writeFile(
-    path.join(rootDir, "openclaw.plugin.json"),
-    `${JSON.stringify({ id: "weather", name: "Weather", version: "1.0.0", contracts: { tools: {} } }, null, 2)}\n`,
-    "utf8",
-  );
-  await writeFile(
-    path.join(rootDir, "src", "index.js"),
-    'import { definePluginEntry } from "openclaw/plugin-sdk";\nexport default definePluginEntry((api) => api.registerTool({ name: "weather" }));\n',
-    "utf8",
-  );
-  return rootDir;
+  return createWeatherPlugin(t, "plugin-inspector-api-root-", options);
 }
