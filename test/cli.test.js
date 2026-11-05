@@ -1,3 +1,4 @@
+import { createWeatherPlugin } from "./helpers/weather-plugin.js";
 import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
@@ -10,35 +11,7 @@ import { test } from "node:test";
 const execFileAsync = promisify(execFile);
 
 test("check command runs from a plugin root without fixture config", async (t) => {
-  const rootDir = await createTempDir(t, "plugin-inspector-cli-root-");
-  await mkdir(path.join(rootDir, "src"), { recursive: true });
-  await writeFile(
-    path.join(rootDir, "package.json"),
-    `${JSON.stringify(
-      {
-        name: "@example/openclaw-weather",
-        version: "1.0.0",
-        type: "module",
-        openclaw: {
-          extensions: ["src/index.js"],
-          compat: { pluginApi: "^1.0.0" },
-        },
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
-  await writeFile(
-    path.join(rootDir, "openclaw.plugin.json"),
-    `${JSON.stringify({ id: "weather", name: "Weather", version: "1.0.0", contracts: { tools: {} } }, null, 2)}\n`,
-    "utf8",
-  );
-  await writeFile(
-    path.join(rootDir, "src", "index.js"),
-    'import { definePluginEntry } from "openclaw/plugin-sdk";\nexport default definePluginEntry((api) => api.registerTool({ name: "weather" }));\n',
-    "utf8",
-  );
+  const rootDir = await createWeatherPlugin(t, "plugin-inspector-cli-root-");
 
   const cliPath = path.resolve("src/cli.js");
   const { stdout } = await execFileAsync(process.execPath, [cliPath, "check", "--out", "reports", "--no-openclaw"], {
@@ -614,35 +587,7 @@ test("batch command applies author-facing filtering to aggregate summaries", asy
 });
 
 async function createCliPluginRoot(t, prefix) {
-  const rootDir = await createTempDir(t, prefix);
-  await mkdir(path.join(rootDir, "src"), { recursive: true });
-  await writeFile(
-    path.join(rootDir, "package.json"),
-    `${JSON.stringify(
-      {
-        name: "@example/openclaw-weather",
-        version: "1.0.0",
-        type: "module",
-        openclaw: {
-          extensions: ["src/index.js"],
-          compat: { pluginApi: "^1.0.0" },
-        },
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
-  await writeFile(
-    path.join(rootDir, "openclaw.plugin.json"),
-    `${JSON.stringify({ id: "weather", name: "Weather", version: "1.0.0", contracts: { tools: {} } }, null, 2)}\n`,
-    "utf8",
-  );
-  await writeFile(
-    path.join(rootDir, "src", "index.js"),
-    'import { definePluginEntry } from "openclaw/plugin-sdk";\nexport default definePluginEntry((api) => api.registerTool({ name: "weather" }));\n',
-    "utf8",
-  );
+  const rootDir = await createWeatherPlugin(t, prefix);
   await writeFile(
     path.join(rootDir, "plugin-inspector.config.json"),
     `${JSON.stringify({ version: 1, plugin: { id: "weather", priority: "high", sourceRoot: "src" } }, null, 2)}\n`,
