@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- `init --workflow <path>` now writes the workflow without also needing `--ci`, instead of exiting 0 with no workflow, and `init --help` lists the flag. Thanks @KrasimirKralev.
+
 ## 0.4.6 - 2026-11-06
 
 **Highlights:** Reduce packed-host inspection memory and preserve requested runtime capture and SDK compatibility checks.

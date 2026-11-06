@@ -110,6 +110,9 @@ npx @openclaw/plugin-inspector init --ci --scripts --dry-run
 npx @openclaw/plugin-inspector init --ci --scripts
 ```
 
+`--ci` writes the workflow to `.github/workflows/plugin-inspector.yml`; pass
+`--workflow <path>` to write it somewhere else, with or without `--ci`.
+
 `init` detects `packageManager` and common lockfiles. Override that with
 `--package-manager npm`, `--package-manager pnpm`, `--package-manager yarn`, or
 `--package-manager bun`. Existing files are protected unless you pass `--force`.
