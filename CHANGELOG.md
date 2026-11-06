@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.4.6 - 2026-11-06
+
+**Highlights:** Reduce packed-host inspection memory and preserve requested runtime capture and SDK compatibility checks.
+
 - Share one exit cleanup listener across repeated in-process synthetic probe runs, avoiding listener warnings while retaining mock SDK workspaces until exit.
 
 - Resolve inherited SDK member types with the exact checker so overrides cannot prescribe absent replacements, and stop cyclic named re-exports without failing target inspection.
