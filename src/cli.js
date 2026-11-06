@@ -165,7 +165,7 @@ async function runInit(commandArgs) {
     configPath,
     workflowPath,
     packageManager,
-    ci: commandArgs.includes("--ci"),
+    ci: commandArgs.includes("--ci") || commandArgs.includes("--workflow"),
     dryRun: commandArgs.includes("--dry-run"),
     scripts: commandArgs.includes("--scripts"),
     force: commandArgs.includes("--force"),
@@ -440,7 +440,7 @@ Usage:
   plugin-inspector
   plugin-inspector check [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path> | --openclaw-version latest|beta|<exact> | --no-openclaw] [--runtime] [--mock-sdk|--real-sdk] [--allow-execute] [--author-facing] [--json]
   plugin-inspector config [--plugin-root <path>] [--config <path>] [--json]
-  plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--scripts] [--package-manager npm|pnpm|yarn|bun] [--dry-run] [--json] [--force]
+  plugin-inspector init [--plugin-root <path>] [--config <path>] [--ci] [--workflow <path>] [--scripts] [--package-manager npm|pnpm|yarn|bun] [--dry-run] [--json] [--force]
   plugin-inspector report --config <path> [--out <dir>] [--openclaw <path> | --openclaw-version latest|beta|<exact> | --no-openclaw] [--author-facing] [--check] [--json]
   plugin-inspector batch <folder> [--out <dir>] [--openclaw <path> | --openclaw-version latest|beta|<exact> | --no-openclaw] [--concurrency <n>] [--keep-plugin-reports] [--author-facing] [--check] [--json]
   plugin-inspector inspect [--plugin-root <path>] [--config <path>] [--out <dir>] [--openclaw <path> | --openclaw-version latest|beta|<exact> | --no-openclaw] [--author-facing] [--check] [--json] [--sarif [path]] [--junit [path]] [--allow-execute]

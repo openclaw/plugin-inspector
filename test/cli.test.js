@@ -2,6 +2,7 @@ import { createWeatherPlugin } from "./helpers/weather-plugin.js";
 import { createTempDir } from "./helpers/temp-dir.js";
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
+import { existsSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
@@ -402,6 +403,23 @@ test("init command writes plugin config and CI workflow", async (t) => {
   assert.match(workflow, /node-version: 24\.22\.1(?:\n|$)/);
   assert.match(workflow, /actions\/upload-artifact@v7/);
   assert.match(workflow, /pnpm dlx @openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute/);
+});
+
+test("init command --workflow writes the workflow without --ci", async (t) => {
+  const rootDir = await createCliPluginRoot(t, "plugin-inspector-cli-init-workflow-");
+  const cliPath = path.resolve("src/cli.js");
+  const args = [cliPath, "init", "--plugin-root", rootDir, "--workflow", "ci/inspect.yml", "--force"];
+
+  const dryRun = await execFileAsync(process.execPath, [...args, "--dry-run"]);
+  assert.match(dryRun.stdout, /^would write ci\/inspect\.yml$/m);
+  assert.equal(existsSync(path.join(rootDir, "ci", "inspect.yml")), false);
+
+  const { stdout } = await execFileAsync(process.execPath, args);
+  const workflow = await readFile(path.join(rootDir, "ci", "inspect.yml"), "utf8");
+
+  assert.match(stdout, /^wrote ci\/inspect\.yml$/m);
+  assert.match(workflow, /@openclaw\/plugin-inspector ci --no-openclaw --runtime --mock-sdk --allow-execute/);
+  assert.equal(existsSync(path.join(rootDir, ".github", "workflows", "plugin-inspector.yml")), false);
 });
 
 test("init command detects plugin package managers", async (t) => {
