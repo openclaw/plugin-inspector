@@ -19,7 +19,7 @@ import {
   satisfiesOpenClawVersionRange,
 } from "../src/advanced.js";
 
-import { pluginRoot as pluginRootApi, openClawTargets } from "../src/index.js";
+import { batch, pluginRoot as pluginRootApi, openClawTargets } from "../src/index.js";
 
 const execFileAsync = promisify(execFile);
 const affectedBeta = "2026.7.2-beta.4";
@@ -422,6 +422,128 @@ test("batch CLI prepares one resolved beta target for multiple plugin inspection
   assert.ok(report.plugins.every((plugin) => plugin.targetOpenClaw.version === affectedBeta));
   assert.equal(fixture.requests.filter((request) => request.startsWith(`/openclaw/-/openclaw-${affectedBeta}.tgz`)).length, 1);
 });
+
+test("packed host batches preserve SDK inventories, isolate plugin errors, and observe later edits", async (t) => {
+  const fixture = await createRegistryFixture(t, { typedEntry: true });
+  const corpusRoot = await createTempDir(t, "plugin-inspector-packed-batch-");
+  const plugins = [["a-tool", "registerTool"], ["z-cli", "registerCli"]];
+  for (const [name, member] of plugins) {
+    const root = path.join(corpusRoot, name);
+    await writeHonchoPlugin(root, ">=2026.3.22");
+    await writeFile(path.join(root, "index.js"), packedBatchPluginSource(member));
+  }
+  const malformedRoot = path.join(corpusRoot, "m-malformed");
+  await writeHonchoPlugin(malformedRoot, ">=2026.3.22");
+  await writeFile(path.join(malformedRoot, "plugin-inspector.config.json"), "{");
+
+  const target = await openClawTargets.prepare(
+    await openClawTargets.resolveVersion("beta", { registryUrl: fixture.registryUrl }),
+    { cacheDir: fixture.cacheDir },
+  );
+  const cacheBefore = await packedBatchCacheHashes(fixture.cacheDir);
+  const common = { targetOpenClaw: target, openclawPath: false, capture: false, allowExecution: false };
+  let malformedMessage;
+  await assert.rejects(
+    pluginRootApi.runCheck({ ...common, pluginRoot: malformedRoot, outDir: path.join(corpusRoot, "reports", "malformed") }),
+    (error) => {
+      assert.ok(error instanceof SyntaxError);
+      malformedMessage = error.message;
+      return true;
+    },
+  );
+
+  const standalone = new Map();
+  for (const [name, member] of plugins) {
+    const run = await pluginRootApi.runCheck({
+      ...common, pluginRoot: path.join(corpusRoot, name), outDir: path.join(corpusRoot, "reports", "single", name),
+    });
+    const report = JSON.parse(await readFile(run.paths.jsonPath, "utf8"));
+    assertPackedBatchInventory(report.sdkUsage, member);
+    standalone.set(name, report);
+  }
+
+  const inspectBatch = async (concurrency, label) => {
+    const outDir = path.join(corpusRoot, "reports", label);
+    const run = await batch.run({ ...common, rootDir: corpusRoot, outDir, concurrency, keepPluginReports: true, generatedAt: "fixture" });
+    assert.deepEqual(run.report.plugins.map(({ relativePath }) => relativePath), ["a-tool", "m-malformed", "z-cli"]);
+    assert.equal(run.report.summary.pluginCount, 3);
+    assert.deepEqual(run.report.plugins[1], {
+      pluginRoot: malformedRoot, relativePath: "m-malformed", status: "error", packageName: "m-malformed",
+      targetOpenClaw: null, errorCount: 1, warningCount: 0,
+      findings: [{ kind: "error", code: "plugin-inspector-batch-failure", message: malformedMessage }],
+    });
+    const inventories = new Map();
+    for (const [name] of plugins) {
+      const serialized = await readFile(path.join(outDir, "plugins", name, "plugin-inspector-report.json"), "utf8");
+      inventories.set(name, JSON.parse(serialized).sdkUsage);
+      assert.equal(serialized.includes(fixture.cacheDir), false);
+    }
+    return { report: run.report, inventories };
+  };
+
+  const serial = await inspectBatch(1, "serial");
+  const concurrent = await inspectBatch(4, "concurrent");
+  assert.deepEqual(concurrent.report, serial.report);
+  for (const [name, member] of plugins) {
+    for (const result of [serial, concurrent]) {
+      assertPackedBatchInventory(result.inventories.get(name), member);
+      assert.deepEqual(result.inventories.get(name), standalone.get(name).sdkUsage);
+      assert.equal(result.report.plugins.find(({ relativePath }) => relativePath === name).status, standalone.get(name).status);
+    }
+  }
+
+  await writeFile(path.join(corpusRoot, "a-tool", "index.js"), packedBatchPluginSource("registerCli"));
+  const edited = await inspectBatch(4, "edited");
+  assertPackedBatchInventory(edited.inventories.get("a-tool"), "registerCli");
+  assert.notDeepEqual(edited.inventories.get("a-tool"), serial.inventories.get("a-tool"));
+  assert.deepEqual(edited.inventories.get("z-cli"), serial.inventories.get("z-cli"));
+  assert.deepEqual(await packedBatchCacheHashes(fixture.cacheDir), cacheBefore);
+  assert.equal(fixture.requests.filter((request) => request.startsWith(`/openclaw/-/openclaw-${affectedBeta}.tgz`)).length, 1);
+});
+
+test("batch rejects a packed target integrity failure before writing plugin or aggregate reports", async (t) => {
+  const fixture = await createRegistryFixture(t);
+  fixture.distMetadata.integrity = `sha512-${Buffer.alloc(64).toString("base64")}`;
+  const corpusRoot = await createTempDir(t, "plugin-inspector-batch-integrity-");
+  await writeHonchoPlugin(path.join(corpusRoot, "plugin"), ">=2026.3.22");
+  const outDir = path.join(corpusRoot, "reports");
+  await assert.rejects(
+    batch.run({
+      rootDir: corpusRoot, outDir, openclawVersion: "beta", registryUrl: fixture.registryUrl,
+      cacheDir: fixture.cacheDir, capture: false, allowExecution: false, keepPluginReports: true,
+    }),
+    /failed integrity verification/,
+  );
+  assert.equal(fs.existsSync(outDir), false);
+  assert.equal(fs.existsSync(fixture.cacheDir), false);
+});
+
+function packedBatchPluginSource(member) {
+  return `import { definePluginEntry } from "openclaw/plugin-sdk";
+export default definePluginEntry({ register(api) { api.${member}({}); } });`;
+}
+
+function assertPackedBatchInventory(usage, member) {
+  assert.deepEqual(usage.unknowns, []);
+  assert.deepEqual(usage.entries.map(({ key, classification, referenceKinds }) => ({ key, classification, referenceKinds })), [
+    { key: `api-member:api.${member}`, classification: "runtime", referenceKinds: ["call"] },
+    { key: "sdk-export:openclaw/plugin-sdk#definePluginEntry", classification: "runtime", referenceKinds: ["call", "import"] },
+    { key: "sdk-module:openclaw/plugin-sdk", classification: "runtime", referenceKinds: ["import"] },
+  ]);
+}
+
+async function packedBatchCacheHashes(root) {
+  const files = [];
+  async function visit(dir) {
+    for (const entry of await readdir(dir, { withFileTypes: true })) {
+      const file = path.join(dir, entry.name);
+      if (entry.isDirectory()) await visit(file);
+      else files.push([path.relative(root, file), createHash("sha256").update(await readFile(file)).digest("hex")]);
+    }
+  }
+  await visit(root);
+  return files.sort(([a], [b]) => a.localeCompare(b));
+}
 
 async function createHonchoPlugin(t, compatibilityRange) {
   const pluginRoot = await createTempDir(t, "plugin-inspector-honcho-");
