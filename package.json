@@ -76,8 +76,8 @@
   "dependencies": {
     "acorn": "^8.19.0",
     "eslint-scope": "^9.1.2",
-    "semver": "^7.8.5",
-    "tar": "^7.5.22",
+    "semver": "^7.8.6",
+    "tar": "^7.5.23",
     "typescript": "^6.0.3"
   }
 }

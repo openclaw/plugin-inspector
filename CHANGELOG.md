@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Update semver to 7.8.6 and tar to 7.5.23 while preserving the supported Node.js runtime and TypeScript compiler line.
+
 ## 0.4.6 - 2026-11-06
 
 **Highlights:** Reduce packed-host inspection memory and preserve requested runtime capture and SDK compatibility checks.
