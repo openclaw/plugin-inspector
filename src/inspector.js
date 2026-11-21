@@ -16,6 +16,7 @@ import { inspectSdkDeprecations } from "./sdk-deprecation-rules.js";
 import { inspectRegistryDeprecations } from "./registry-deprecations.js";
 import { collectRuntimeModuleImports, createRuntimeImportAnalysisCache, releaseRuntimeImportAnalysis } from "./runtime-imports.js";
 import { readText } from "./read-text.js";
+import { runInspectionPhase } from "./inspection-progress.js";
 
 const pluginFactoryNames = "defineBundledChannelEntry|defineChannelPluginEntry|createChatChannelPlugin|definePluginEntry";
 // Bundlers emit unbound calls as (0, sdk.factory)(...), including inline require receivers.
@@ -37,7 +38,7 @@ export async function inspectCompatibilityFixtureSet(config, options = {}) {
       checkoutPath: normalizeFixtureCheckoutPath(config, fixture),
     })),
   };
-  const targetOpenClaw =
+  const targetOpenClaw = await runInspectionPhase(options, { phase: "target" }, async () =>
     options.targetOpenClaw ??
     (options.openclawVersion
       ? await prepareOpenClawTarget(await resolveOpenClawTargetVersion(options.openclawVersion, options), options)
@@ -45,7 +46,7 @@ export async function inspectCompatibilityFixtureSet(config, options = {}) {
           configuredPath: options.openclawPath ?? (isPluginRootConfig(config) ? undefined : config.openclaw?.defaultCheckoutPath),
           manifest: config,
           rootDir: config.rootDir,
-        }));
+        })));
   const sdkTargetRoot = options.sdkUsageTargetPath ?? preparedOpenClawTargetPath(targetOpenClaw) ?? (!options.targetOpenClaw && targetOpenClaw.checkoutPath ? path.resolve(config.rootDir ?? process.cwd(), targetOpenClaw.checkoutPath) : undefined);
   const { inspections, failures } = await inspectConfiguredFixtures(config, { ...options, targetOpenClaw, sdkTargetRoot });
 
@@ -112,6 +113,11 @@ function satisfiesExpectedSeam(key, expected, observed) {
 }
 
 export async function inspectPlugin(fixture, options = {}) {
+  return runInspectionPhase(options, { phase: "fixture", fixtureId: fixture.id }, () =>
+    inspectPluginSource(fixture, options));
+}
+
+async function inspectPluginSource(fixture, options) {
   const config = options.config ?? { rootDir: options.rootDir ?? process.cwd() };
   const checkoutPath = fixtureCheckoutPath(config, fixture);
   const sourceRoot = fixtureSourceRoot(config, fixture);
@@ -183,7 +189,8 @@ export async function inspectPlugin(fixture, options = {}) {
     sdkDeprecations: uniqueSdkDeprecations(sdkDeprecationDetails),
     // Loaded on first use: the SDK inventory is the only per-file pass that needs
     // the TypeScript compiler, so source scanning runs without it resident.
-    sdkUsage: await (await import("./sdk-usage.js")).inspectSdkUsage({ root: sdkUsageRoot, inputKind: options.sdkUsageInputKind ?? (fixture.package ? "artifact" : "source"), targetRoot: options.sdkTargetRoot, compatDeprecations: options.targetOpenClaw?.compatDeprecations, hostCache: options.sdkUsageHostCache }),
+    sdkUsage: await runInspectionPhase(options, { phase: "sdk", fixtureId: fixture.id }, async () =>
+      (await import("./sdk-usage.js")).inspectSdkUsage({ root: sdkUsageRoot, inputKind: options.sdkUsageInputKind ?? (fixture.package ? "artifact" : "source"), targetRoot: options.sdkTargetRoot, compatDeprecations: options.targetOpenClaw?.compatDeprecations, hostCache: options.sdkUsageHostCache })),
     sourceFiles: sourceFiles.map((filePath) => path.relative(config.rootDir ?? process.cwd(), filePath)).sort(),
   };
 }
