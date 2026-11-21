@@ -735,6 +735,33 @@ Named exports remain available for existing automation. Prefer the grouped
 facades for new code because they show ownership and keep downstream wrappers
 thin.
 
+### Inspection progress
+
+Inspection APIs accept an optional `onInspectionProgress` callback for diagnosing
+slow fixture suites:
+
+```js
+import { fixtureSuites } from "@openclaw/plugin-inspector";
+
+await fixtureSuites.inspect({
+  config,
+  onInspectionProgress(event) {
+    console.error(JSON.stringify(event));
+  },
+});
+```
+
+Each event contains `phase` (`target`, `fixture`, or `sdk`), `event` (`start`,
+`end`, or `error`), and monotonic `elapsedMs`. Fixture and SDK events also contain
+`fixtureId`. SDK time is included in its enclosing fixture time. Events contain
+no source text, file paths, or error messages, and do not change report data.
+`end` means the phase returned, including reports with findings or missing
+fixtures; `error` means it threw. Missing fixtures have no SDK phase.
+
+Keep callbacks brief. Returned promises are not awaited, and callback throws or
+rejections are ignored. Synchronous callback work still runs in the inspection
+process and can delay it.
+
 ### In-process resource snapshots
 
 Workload harnesses can capture phase boundaries inside the measured runtime:
