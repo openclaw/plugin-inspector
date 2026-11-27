@@ -7,6 +7,7 @@
 - Let inspection callers observe target, fixture, and SDK phase timings without changing reports or waiting for diagnostic callbacks.
 
 - Update semver to 7.8.6 and tar to 7.5.23 while preserving the supported Node.js runtime and TypeScript compiler line.
+- `init --workflow <path>` now writes the workflow without also needing `--ci`, instead of exiting 0 with no workflow, and `init --help` lists the flag. Thanks @KrasimirKralev.
 
 ## 0.4.6 - 2026-11-06
 
