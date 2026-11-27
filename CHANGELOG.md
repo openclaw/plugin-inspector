@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Add weekly and PR CodeQL workflow coverage for Actions and JavaScript/TypeScript, with manual scans and native caching, for the managed security-setup cutover.
+- Stage weekly and PR CodeQL workflow coverage for Actions and JavaScript/TypeScript, with manual scans and native caching, for the managed security-setup cutover.
 
 - Let inspection callers observe target, fixture, and SDK phase timings without changing reports or waiting for diagnostic callbacks.
 
