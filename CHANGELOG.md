@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Stage weekly and PR CodeQL workflow coverage for Actions and JavaScript/TypeScript, with manual scans and native caching, for the managed security-setup cutover.
+
 - Let inspection callers observe target, fixture, and SDK phase timings without changing reports or waiting for diagnostic callbacks.
 
 - Update semver to 7.8.6 and tar to 7.5.23 while preserving the supported Node.js runtime and TypeScript compiler line.
